@@ -1,4 +1,6 @@
 export const NAVIGATION_ROUTES = {
-  // REGISTER: "/",
-  LOGIN: "/",
+  REGISTER: "/register",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
+  OTPVERIFY: "/otp-verify",
 };

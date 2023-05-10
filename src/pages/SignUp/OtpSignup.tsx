@@ -1,9 +1,9 @@
 import { Container } from "@chakra-ui/react";
+import OtpForm from "@nepMeds/components/FormComponents/OTP/OtpForm";
 import Header from "@nepMeds/components/Header/Header";
-import LoginForm from "@nepMeds/components/FormComponents/LoginForm/LoginForm";
 import Wrapper from "@nepMeds/components/Wrapper/Wrapper";
 
-const Login = () => {
+const OtpSignUp = () => {
   return (
     <Container
       maxWidth="100%"
@@ -13,11 +13,11 @@ const Login = () => {
       gap={12}
     >
       <Header />
-      <Wrapper title="Welcome back!" subtitle="Login to your account">
-        <LoginForm />
+      <Wrapper title="Welcome back!" subtitle="Sign Up to your account">
+        <OtpForm />
       </Wrapper>
     </Container>
   );
 };
 
-export default Login;
+export default OtpSignUp;

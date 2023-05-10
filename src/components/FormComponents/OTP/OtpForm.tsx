@@ -1,17 +1,12 @@
 import Input from "@nepMeds/components/Form/Input";
 import { useForm } from "react-hook-form";
 import { Button, Icon } from "@chakra-ui/react";
-import { Message, Lock, Hide, Show } from "react-iconly";
+import { Message } from "react-iconly";
 import { colors } from "@nepMeds/theme/colors";
 import { Link } from "react-router-dom";
-import { useState } from "react";
-const LoginForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const OtpForm = () => {
   const { register, handleSubmit } = useForm();
-  const togglepasswordView = () => {
-    setShowPassword(!showPassword);
-  };
-  //   const onSubmit = (values: any) => {};
+
   return (
     <form
       //   onSubmit={handleSubmit(onSubmit)}
@@ -30,57 +25,34 @@ const LoginForm = () => {
         placeholder="Email Address/ Mobile No."
         _placeholder={{ color: colors.placeholder }}
       />
-      <Input
-        name="password"
-        register={register}
-        type={showPassword ? "password" : "text"}
-        startIcon={<Icon as={Lock} fontSize={20} color={colors.black_40} />}
-        endIcons={
-          showPassword ? (
-            <Icon
-              as={Hide}
-              fontSize={20}
-              onClick={togglepasswordView}
-              cursor="pointer"
-            />
-          ) : (
-            <Icon
-              as={Show}
-              fontSize={20}
-              onClick={togglepasswordView}
-              cursor="pointer"
-            />
-          )
-        }
-        px={4}
-        py={6}
-        backgroundColor={colors.forminput}
-        border="none"
-        placeholder="Password"
-        mb={3}
-        _placeholder={{ color: colors.placeholder }}
-      />
-      <Link
-        to="/"
+      <p
         style={{
-          color: colors.blue_100,
-          display: "block",
           textAlign: "right",
           marginBottom: "48px",
+          color: colors.black_30,
         }}
       >
-        Recover Password
-      </Link>
-      <p style={{ textAlign: "center", color: colors.black_30 }}>
-        Don’t have an account?
+        Didnt recieve the code?
         <Link
-          to="/signup"
+          to="/"
           style={{
             color: colors.blue_100,
             marginLeft: "5px",
           }}
         >
-          Sign Up
+          Resend
+        </Link>
+      </p>
+      <p style={{ textAlign: "center", color: colors.black_30 }}>
+        Already have an account?
+        <Link
+          to="/login"
+          style={{
+            color: colors.blue_100,
+            marginLeft: "5px",
+          }}
+        >
+          Login
         </Link>
       </p>
       <Button
@@ -96,10 +68,10 @@ const LoginForm = () => {
         fontSize={20}
         fontWeight={400}
       >
-        Login
+        Verify
       </Button>
     </form>
   );
 };
 
-export default LoginForm;
+export default OtpForm;
