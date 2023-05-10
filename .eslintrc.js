@@ -35,7 +35,12 @@ module.exports = {
       "error",
       process.platform === "win32" ? "windows" : "unix",
     ],
-    "prettier/prettier": 2,
+    "prettier/prettier": [
+      "error",
+      {
+        endOfLine: "auto",
+      },
+    ],
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "react/react-in-jsx-scope": "off",

@@ -1,3 +1,4 @@
 export const NAVIGATION_ROUTES = {
-  REGISTER: "/",
+  // REGISTER: "/",
+  LOGIN: "/",
 };

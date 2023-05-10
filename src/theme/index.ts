@@ -1,11 +1,14 @@
 import { extendTheme } from "@chakra-ui/react";
 import { inputTheme } from "./Input";
+import { colors } from "./colors";
 
 export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        fontFamily: "'Inter', sans-serif",
+        fontFamily: "'Poppins', sans-serif",
+        fontWeight: 400,
+        backgroundColor: colors.background,
       },
       a: {
         _hover: {
