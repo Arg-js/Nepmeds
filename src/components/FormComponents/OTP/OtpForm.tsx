@@ -1,38 +1,39 @@
-import Input from "@nepMeds/components/Form/Input";
-import { useForm } from "react-hook-form";
-import { Button, Icon } from "@chakra-ui/react";
-import { Message } from "react-iconly";
+import { Button, Input } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { Link } from "react-router-dom";
+import OtpInput from "react-otp-input";
+import { useState } from "react";
 const OtpForm = () => {
-  const { register, handleSubmit } = useForm();
+  const [otp, setOtp] = useState("");
 
   return (
-    <form
-      //   onSubmit={handleSubmit(onSubmit)}
-      style={{ width: "100%" }}
-    >
-      <Input
-        name="email"
-        register={register}
-        type="emali"
-        startIcon={<Icon as={Message} fontSize={20} color={colors.black_40} />}
-        px={4}
-        py={6}
-        border="none"
-        backgroundColor={colors.forminput}
-        mb={6}
-        placeholder="Email Address/ Mobile No."
-        _placeholder={{ color: colors.placeholder }}
+    <form style={{ width: "100%" }}>
+      <OtpInput
+        value={otp}
+        onChange={(val) => setOtp(val)}
+        numInputs={6}
+        inputStyle={{
+          width: "50px",
+          backgroundColor: colors.forminput,
+          color: colors.light_gray,
+          padding: "12px",
+          height: "50px",
+          border: "none",
+        }}
+        renderSeparator={<span style={{ margin: "7px" }}> - </span>}
+        inputType="tel"
+        renderInput={(props) => <Input {...props} />}
       />
       <p
         style={{
           textAlign: "right",
           marginBottom: "48px",
           color: colors.black_30,
+          marginTop: "15px",
+          fontSize: "14px",
         }}
       >
-        Didnt recieve the code?
+        Didnt receive the code?
         <Link
           to="/"
           style={{
@@ -43,7 +44,13 @@ const OtpForm = () => {
           Resend
         </Link>
       </p>
-      <p style={{ textAlign: "center", color: colors.black_30 }}>
+      <p
+        style={{
+          textAlign: "center",
+          color: colors.black_30,
+          fontSize: "14px",
+        }}
+      >
         Already have an account?
         <Link
           to="/login"

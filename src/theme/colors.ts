@@ -28,6 +28,6 @@ export const colors = {
 
   /**blue-100*/
   blue_100: "#5593F1",
-  /**placeholder text*/
-  placeholder: "#ABAFB1",
+  /**light gray text*/
+  light_gray: "#ABAFB1",
 };

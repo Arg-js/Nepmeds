@@ -24,10 +24,16 @@ const SignupForm = () => {
         backgroundColor={colors.forminput}
         mb={6}
         placeholder="Email Address/ Mobile No."
-        _placeholder={{ color: colors.placeholder }}
+        _placeholder={{ color: colors.light_gray }}
       />
 
-      <p style={{ textAlign: "center", color: colors.black_30 }}>
+      <p
+        style={{
+          textAlign: "center",
+          color: colors.black_30,
+          fontSize: "14px",
+        }}
+      >
         Already have an account?
         <Link
           to="/login"

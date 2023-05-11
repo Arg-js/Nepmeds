@@ -11,12 +11,8 @@ const LoginForm = () => {
   const togglepasswordView = () => {
     setShowPassword(!showPassword);
   };
-  //   const onSubmit = (values: any) => {};
   return (
-    <form
-      //   onSubmit={handleSubmit(onSubmit)}
-      style={{ width: "100%" }}
-    >
+    <form style={{ width: "100%" }}>
       <Input
         name="email"
         register={register}
@@ -28,7 +24,7 @@ const LoginForm = () => {
         backgroundColor={colors.forminput}
         mb={6}
         placeholder="Email Address/ Mobile No."
-        _placeholder={{ color: colors.placeholder }}
+        _placeholder={{ color: colors.light_gray }}
       />
       <Input
         name="password"
@@ -58,7 +54,7 @@ const LoginForm = () => {
         border="none"
         placeholder="Password"
         mb={3}
-        _placeholder={{ color: colors.placeholder }}
+        _placeholder={{ color: colors.light_gray }}
       />
       <Link
         to="/"
@@ -67,11 +63,18 @@ const LoginForm = () => {
           display: "block",
           textAlign: "right",
           marginBottom: "48px",
+          fontSize: "14px",
         }}
       >
         Recover Password
       </Link>
-      <p style={{ textAlign: "center", color: colors.black_30 }}>
+      <p
+        style={{
+          textAlign: "center",
+          color: colors.black_30,
+          fontSize: "14px",
+        }}
+      >
         Don’t have an account?
         <Link
           to="/signup"
