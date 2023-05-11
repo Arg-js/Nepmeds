@@ -84,13 +84,12 @@ const Input = ({
     </FormControl>
   );
 };
-export interface IInput<TFieldValues extends FieldValues = FieldValues>
-  extends InputProps {
+export interface IInput extends InputProps {
   label?: string;
   helperText?: string;
   error?: string;
   name: string;
-  register: UseFormRegister<TFieldValues>;
+  register: UseFormRegister<any>;
   rules?: RegisterOptions;
   isRequired?: boolean;
   isDisabled?: boolean;

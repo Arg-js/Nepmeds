@@ -1,5 +1,5 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { IconButton } from "@chakra-ui/react";
+import { FormControlProps, IconButton } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import FormControl from "./FormControl";
 import { UseFormRegister, FieldValues } from "react-hook-form";
@@ -60,7 +60,8 @@ interface ISetPasswordViewIcon {
   isVisible: boolean;
 }
 
-export interface IPassword<TFieldValues extends FieldValues = FieldValues> {
+export interface IPassword<TFieldValues extends FieldValues = FieldValues>
+  extends FormControlProps {
   register: UseFormRegister<TFieldValues>;
   isVisible: boolean;
   error?: string;
