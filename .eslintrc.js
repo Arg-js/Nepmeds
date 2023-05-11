@@ -31,10 +31,6 @@ module.exports = {
     "no-console": "off",
     "import/first": "error",
     "react/prop-types": 0,
-    // "linebreak-style": [
-    //   "error",
-    //   process.platform === "win32" ? "windows" : "unix",
-    // ],
     "prettier/prettier": [
       "error",
       {
