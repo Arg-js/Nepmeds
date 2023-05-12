@@ -31,11 +31,12 @@ module.exports = {
     "no-console": "off",
     "import/first": "error",
     "react/prop-types": 0,
-    "linebreak-style": [
+    "prettier/prettier": [
       "error",
-      process.platform === "win32" ? "windows" : "unix",
+      {
+        endOfLine: "auto",
+      },
     ],
-    "prettier/prettier": 2,
     "arrow-body-style": "off",
     "prefer-arrow-callback": "off",
     "react/react-in-jsx-scope": "off",
