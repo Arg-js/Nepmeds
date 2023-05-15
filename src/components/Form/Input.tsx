@@ -1,16 +1,33 @@
 import {
-  FormControl,
-  FormLabel,
   Input as ChakraInput,
+  FormControl,
   FormErrorMessage,
   FormHelperText,
-  InputProps,
+  FormLabel,
   InputGroup,
   InputLeftElement,
+  InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
+
+interface IInput extends InputProps {
+  label?: string;
+  helperText?: string;
+  error?: string;
+  name: string;
+  register: UseFormRegister<any>;
+  rules?: RegisterOptions;
+  isRequired?: boolean;
+  isDisabled?: boolean;
+  startIcon?: React.ReactNode;
+  endIcons?: React.ReactNode;
+  onIconClick?: () => void;
+  required?: boolean;
+  labelDisabled?: string;
+  variant?: string;
+}
 
 const Input = ({
   label,
@@ -38,23 +55,25 @@ const Input = ({
       variant={variant}
     >
       {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+        <FormLabel htmlFor={name} fontWeight={400} fontSize={14}>
           {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
       )}
+
       {labelDisabled && (
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={14}
           opacity={"1 !important"}
         >
           {labelDisabled}
         </FormLabel>
       )}
+
       <InputGroup>
-        {startIcon ? (
+        {startIcon && (
           <InputLeftElement
             top="12%"
             pointerEvents="none"
@@ -62,42 +81,26 @@ const Input = ({
           >
             {startIcon}
           </InputLeftElement>
-        ) : (
-          ""
         )}
+
         <ChakraInput
           id={name}
           type={type}
           {...register(name, rules)}
           {...rest}
         />
-        {endIcons ? (
-          <InputRightElement onClick={onIconClick} top="8%">
+
+        {endIcons && (
+          <InputRightElement onClick={onIconClick} top="12%">
             {endIcons}
           </InputRightElement>
-        ) : (
-          ""
         )}
       </InputGroup>
+
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
-export interface IInput extends InputProps {
-  label?: string;
-  helperText?: string;
-  error?: string;
-  name: string;
-  register: UseFormRegister<any>;
-  rules?: RegisterOptions;
-  isRequired?: boolean;
-  isDisabled?: boolean;
-  startIcon?: React.ReactNode;
-  endIcons?: React.ReactNode;
-  onIconClick?: () => void;
-  required?: boolean;
-  labelDisabled?: string;
-  variant?: string;
-}
+
 export default Input;

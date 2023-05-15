@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "rbbit.typescript-hero",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode"
+    ],
+}

@@ -1,13 +1,11 @@
 {
-  "name": "@paras205/react-ts-starter",
-  "bin": "./bin/cli.js",
-  "version": "0.0.17",
+  "name": "nepmeds",
+  "version": "0.0.1",
   "type": "commonjs",
   "main": "index.js",
-  "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://gitlab.com/paras205/boilerplate-react.git"
+    "url": "https://gitlab.com/r2850/nepmeds.git"
   },
   "scripts": {
     "dev": "vite",
@@ -86,6 +84,7 @@
   },
   "husky": {
     "hooks": {
+      "prepare-commit-msg": "exec < /dev/tty && npx cz --hook || true",
       "pre-commit": "lint-staged",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "post-merge": "if [ $HUSKY_GIT_PARAMS = 'develop' ]; then yarn; fi"

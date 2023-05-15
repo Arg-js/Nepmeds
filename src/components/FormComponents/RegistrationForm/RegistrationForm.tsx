@@ -8,14 +8,14 @@ import {
   StepTitle,
   Stepper,
 } from "@chakra-ui/stepper";
-import { Box, Heading } from "@chakra-ui/layout";
+import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
-import { colors } from "@nepMeds/theme/colors";
-import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
-import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
-import { Button, Flex } from "@chakra-ui/react";
+import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
+import { colors } from "@nepMeds/theme/colors";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
+import { Button } from "@chakra-ui/button";
 const steps = [
   { title: "Registration", content: <BasicInfo /> },
   {
@@ -105,7 +105,7 @@ const RegistrationForm = () => {
       <Flex justifyContent="space-between" mt={6}>
         <Button
           onClick={() => {
-            setActiveStep((prevStep) => prevStep - 1);
+            setActiveStep(prevStep => prevStep - 1);
           }}
           background={colors.main}
           color={colors.white}
@@ -127,7 +127,7 @@ const RegistrationForm = () => {
           )}
           <Button
             onClick={() => {
-              setActiveStep((prevStep) => prevStep + 1);
+              setActiveStep(prevStep => prevStep + 1);
             }}
             isDisabled={activeStep === steps.length - 1}
             background={colors.primary}

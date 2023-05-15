@@ -1,8 +1,9 @@
 import { Button, Input } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { Link } from "react-router-dom";
-import OtpInput from "react-otp-input";
 import { useState } from "react";
+import OtpInput from "react-otp-input";
+import { Link } from "react-router-dom";
+
 const OtpForm = () => {
   const [otp, setOtp] = useState("");
 
@@ -10,7 +11,7 @@ const OtpForm = () => {
     <form style={{ width: "100%" }}>
       <OtpInput
         value={otp}
-        onChange={(val) => setOtp(val)}
+        onChange={val => setOtp(val)}
         numInputs={6}
         inputStyle={{
           width: "50px",
@@ -22,7 +23,7 @@ const OtpForm = () => {
         }}
         renderSeparator={<span style={{ margin: "7px" }}> - </span>}
         inputType="tel"
-        renderInput={(props) => <Input {...props} />}
+        renderInput={props => <Input {...props} />}
       />
       <p
         style={{

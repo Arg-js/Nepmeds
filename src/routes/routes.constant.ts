@@ -7,7 +7,7 @@ export const NAVIGATION_ROUTES = {
     CERTIFICATION_INFO: "/register/certification-info",
     EXPERIENCE_INFO: "/register/experience-info",
   },
-  LOGIN: "/login",
+  LOGIN: "/",
   SIGNUP: "/signup",
   OTPVERIFY: "/otp-verify",
 };

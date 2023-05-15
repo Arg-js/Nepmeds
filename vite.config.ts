@@ -1,16 +1,18 @@
-import { defineConfig } from "vite";
-import path from "path";
 import react from "@vitejs/plugin-react";
+import path from "path";
+import { defineConfig } from "vite";
 import checker from "vite-plugin-checker";
 import svgr from "vite-plugin-svgr";
 
 // https://vitejs.dev/config/
-export default defineConfig({
+export default defineConfig(() => ({
+  server: { open: true, port: 4400 },
   plugins: [
     svgr(),
     react(),
     checker({ eslint: { lintCommand: "eslint src" }, overlay: false }),
   ],
+  publicDir: "public",
   resolve: {
     alias: {
       src: path.resolve("src/"),
@@ -29,4 +31,4 @@ export default defineConfig({
       "@nepMeds/utils": path.resolve("src/utils"),
     },
   },
-});
+}));
