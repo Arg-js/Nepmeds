@@ -10,11 +10,7 @@ export const BasicInfoForm = () => {
   const { register } = useForm();
   return (
     <form style={{ width: "100%" }}>
-      <Grid
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(4, 1fr)"
-        gap={6}
-      >
+      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         <GridItem rowSpan={2} colSpan={1} bg="tomato" />
         <GridItem colSpan={3}>
           <Select
@@ -29,7 +25,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="First Name"
-            name="firstname"
+            name="first_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />
@@ -37,7 +33,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="Middle Name"
-            name="middlename"
+            name="middle_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />
@@ -45,7 +41,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="Last Name"
-            name="lastname"
+            name="last_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />

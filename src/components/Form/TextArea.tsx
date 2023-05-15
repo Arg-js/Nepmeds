@@ -48,7 +48,7 @@ export interface ITextArea<TFieldValues extends FieldValues = FieldValues>
   helperText?: string;
   error?: string;
   name: string;
-  register: UseFormRegister<TFieldValues>;
+  register: UseFormRegister<any>;
   rules?: RegisterOptions;
   isRequired?: boolean;
   required?: boolean;
