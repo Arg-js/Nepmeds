@@ -5,11 +5,10 @@ import {
   FormLabel,
   SelectProps,
 } from "@chakra-ui/react";
-import ReactSelect from "react-select";
-import { RegisterOptions } from "react-hook-form";
-import { Controller } from "react-hook-form";
 import { colors } from "@nepMeds/theme/colors";
+import { Controller, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import ReactSelect from "react-select";
 import { ISelectOption } from "./Select";
 
 const MultiSelect = ({
@@ -55,7 +54,7 @@ const MultiSelect = ({
               placeholder={placeholder}
               ref={ref}
               styles={{
-                control: (baseStyles) => ({
+                control: baseStyles => ({
                   ...baseStyles,
                   minHeight: "50px",
                   // borderColor: error

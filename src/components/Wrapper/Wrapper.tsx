@@ -1,4 +1,5 @@
 import { Flex, Heading, Image, Text } from "@chakra-ui/react";
+import NepmedsLogoIcon from "@nepMeds/assets/images/logo1.png";
 import { colors } from "@nepMeds/theme/colors";
 
 const Wrapper = ({ children, title, subtitle }: IWrapper) => {
@@ -15,7 +16,7 @@ const Wrapper = ({ children, title, subtitle }: IWrapper) => {
       gap={12}
     >
       <Flex gap={2} direction="column" alignItems="center">
-        <Image src="../src/assets/images/logo1.png" width={90} />
+        <Image src={NepmedsLogoIcon} width={90} />
         <Heading as="h6" fontSize="xl" fontFamily="Poppins" fontWeight={500}>
           {title}
         </Heading>
