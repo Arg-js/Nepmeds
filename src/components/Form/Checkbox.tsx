@@ -29,16 +29,17 @@ const Checkbox = <T extends FieldValues>({
       control={control}
       render={({ field, fieldState: { error } }) => (
         <FormControl isInvalid={!!error} isRequired={isRequired} display="flex">
+          <ChakraCheckbox {...field} isChecked={field.value} {...rest} />
           {label && (
             <FormLabel
               fontWeight={400}
               fontSize={"14px"}
+              m={2}
               color={colors.grey_50}
             >
               {label}:
             </FormLabel>
           )}
-          <ChakraCheckbox {...field} isChecked={field.value} {...rest} />
           {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
         </FormControl>
       )}

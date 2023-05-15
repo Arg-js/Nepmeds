@@ -10,11 +10,7 @@ export const BasicInfoForm = () => {
   const { register } = useForm();
   return (
     <form style={{ width: "100%" }}>
-      <Grid
-        templateRows="repeat(2, 1fr)"
-        templateColumns="repeat(4, 1fr)"
-        gap={6}
-      >
+      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         <GridItem rowSpan={2} colSpan={1} bg="tomato" />
         <GridItem colSpan={3}>
           <Select
