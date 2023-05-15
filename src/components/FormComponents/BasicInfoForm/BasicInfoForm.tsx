@@ -25,7 +25,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="First Name"
-            name="firstname"
+            name="first_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />
@@ -33,7 +33,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="Middle Name"
-            name="middlename"
+            name="middle_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />
@@ -41,7 +41,7 @@ export const BasicInfoForm = () => {
         <GridItem>
           <Input
             label="Last Name"
-            name="lastname"
+            name="last_name"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
           />

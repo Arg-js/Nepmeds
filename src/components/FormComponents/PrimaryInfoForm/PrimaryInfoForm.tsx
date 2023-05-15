@@ -14,7 +14,7 @@ export const PrimaryInfoForm = () => {
       <Grid templateColumns="repeat(4, 1fr)" gap={6}>
         <GridItem colSpan={4}>
           <TextArea
-            name="bio"
+            name="bio_detail"
             label="Basic Information"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
@@ -32,7 +32,7 @@ export const PrimaryInfoForm = () => {
         <GridItem colSpan={1}>
           <Input
             label="Mobile No."
-            name="mobile"
+            name="mobile_number"
             type="tel"
             register={register}
             style={{ background: colors.forminput, border: "none" }}
@@ -62,7 +62,7 @@ export const PrimaryInfoForm = () => {
             name="date"
             label="Date"
             register={register}
-            type="date"
+            type="date_of_birth"
             style={{ background: colors.forminput, border: "none" }}
           />
         </GridItem>
