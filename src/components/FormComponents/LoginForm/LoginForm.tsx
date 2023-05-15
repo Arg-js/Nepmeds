@@ -1,4 +1,4 @@
-import { Button, HStack, Icon, VStack } from "@chakra-ui/react";
+import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import Input from "@nepMeds/components/Form/Input";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
@@ -60,13 +60,8 @@ const LoginForm = () => {
       >
         Recover Password
       </Link>
-      <p
-        style={{
-          textAlign: "center",
-          color: colors.black_30,
-          fontSize: "14px",
-        }}
-      >
+
+      <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Don’t have an account?
         <Link
           to="/signup"
@@ -77,7 +72,7 @@ const LoginForm = () => {
         >
           Sign Up
         </Link>
-      </p>
+      </Text>
 
       <HStack mt={12} justifyContent="center">
         <Button

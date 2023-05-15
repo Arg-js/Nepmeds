@@ -1,4 +1,4 @@
-import { Button, Input } from "@chakra-ui/react";
+import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import OtpInput from "react-otp-input";
@@ -9,22 +9,26 @@ const OtpForm = () => {
 
   return (
     <form style={{ width: "100%" }}>
-      <OtpInput
-        value={otp}
-        onChange={val => setOtp(val)}
-        numInputs={6}
-        inputStyle={{
-          width: "50px",
-          backgroundColor: colors.forminput,
-          color: colors.light_gray,
-          padding: "12px",
-          height: "50px",
-          border: "none",
-        }}
-        renderSeparator={<span style={{ margin: "7px" }}> - </span>}
-        inputType="tel"
-        renderInput={props => <Input {...props} />}
-      />
+      <VStack gap={7.5} mb={3}>
+        <OtpInput
+          value={otp}
+          onChange={val => setOtp(val)}
+          numInputs={6}
+          inputStyle={{
+            width: 41,
+            backgroundColor: colors.forminput,
+            color: colors.light_gray,
+            padding: "12px",
+            border: "none",
+          }}
+          renderSeparator={index => (
+            <span style={{ margin: "7px" }}>{index % 2 ? "-" : ""}</span>
+          )}
+          inputType="tel"
+          renderInput={props => <Input {...props} />}
+        />
+      </VStack>
+
       <p
         style={{
           textAlign: "right",
@@ -45,13 +49,8 @@ const OtpForm = () => {
           Resend
         </Link>
       </p>
-      <p
-        style={{
-          textAlign: "center",
-          color: colors.black_30,
-          fontSize: "14px",
-        }}
-      >
+
+      <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
           to="/login"
@@ -62,22 +61,17 @@ const OtpForm = () => {
         >
           Login
         </Link>
-      </p>
-      <Button
-        margin="0 auto"
-        mt={12}
-        backgroundColor={colors.primary}
-        textColor={colors.white}
-        type="submit"
-        display="flex"
-        borderRadius="12px"
-        w="50%"
-        p={7}
-        fontSize={20}
-        fontWeight={400}
-      >
-        Verify
-      </Button>
+      </Text>
+
+      <HStack mt={12} justifyContent="center">
+        <Button
+          backgroundColor={colors.primary}
+          textColor={colors.white}
+          type="submit"
+        >
+          Verify
+        </Button>
+      </HStack>
     </form>
   );
 };
