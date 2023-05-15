@@ -1,9 +1,9 @@
-import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
 import { HelmetProvider } from "react-helmet-async";
+import { Toaster } from "react-hot-toast";
 import { QueryClient, QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
-import { Toaster } from "react-hot-toast";
+import { BrowserRouter } from "react-router-dom";
 import { theme } from "../theme";
 
 const queryClient = new QueryClient({

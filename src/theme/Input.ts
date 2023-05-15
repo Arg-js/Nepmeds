@@ -1,17 +1,20 @@
-import { inputAnatomy } from "@chakra-ui/anatomy";
-import { createMultiStyleConfigHelpers, defineStyle } from "@chakra-ui/react";
+import { ComponentStyleConfig } from "@chakra-ui/react";
 
-const { definePartsStyle, defineMultiStyleConfig } =
-  createMultiStyleConfigHelpers(inputAnatomy.keys);
+const pl = 13;
 
-const Input = {};
-const lg = defineStyle({
-  fontSize: "14px",
-  height: 51,
-});
-
-const sizes = {
-  lg: definePartsStyle({ field: lg, addon: lg }),
+export const InputTheme: ComponentStyleConfig = {
+  baseStyle: {
+    field: { fontSize: 14, minHeight: 13 },
+    element: {
+      minHeight: 11,
+      "&.chakra-input__left-element": { width: "auto", ml: 4 },
+    },
+  },
+  sizes: {
+    sm: { field: { pl } },
+    md: { field: { pl } },
+    lg: { field: { pl } },
+    xl: { field: { pl } },
+    "2xl": { field: { pl } },
+  },
 };
-
-export const inputTheme = defineMultiStyleConfig({ sizes });

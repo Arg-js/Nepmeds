@@ -1,6 +1,6 @@
 import { Container } from "@chakra-ui/react";
-import Header from "@nepMeds/components/Header/Header";
 import LoginForm from "@nepMeds/components/FormComponents/LoginForm/LoginForm";
+import Header from "@nepMeds/components/Header/Header";
 import Wrapper from "@nepMeds/components/Wrapper/Wrapper";
 
 const Login = () => {
@@ -10,7 +10,8 @@ const Login = () => {
       display="flex"
       flexDirection="column"
       maxHeight="100vh"
-      gap={12}
+      p={0}
+      gap={20}
     >
       <Header />
       <Wrapper title="Welcome back!" subtitle="Login to your account">
