@@ -1,17 +1,25 @@
 import Select from "@nepMeds/components/Form/Select";
 import { useForm } from "react-hook-form";
-import { title } from "@nepMeds/utils/index";
-import Input from "@nepMeds/components/Form/Input";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 import TextArea from "@nepMeds/components/Form/TextArea";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+import {
+  district,
+  gender,
+  idType,
+  municipality,
+  phone,
+  province,
+  specialization,
+} from "@nepMeds/utils/choices";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 export const PrimaryInfoForm = () => {
-  const { register } = useForm();
+  const { register, control } = useForm();
 
   return (
     <form style={{ width: "100%" }}>
-      <Grid templateColumns="repeat(4, 1fr)" gap={6}>
+      <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
         <GridItem colSpan={4}>
           <TextArea
             name="bio_detail"
@@ -25,12 +33,12 @@ export const PrimaryInfoForm = () => {
             placeholder=""
             name="title"
             register={register}
-            options={title}
+            options={phone}
             style={{ background: colors.forminput, border: "none" }}
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <Input
+          <FloatingLabelInput
             label="Mobile No."
             name="mobile_number"
             type="tel"
@@ -39,7 +47,7 @@ export const PrimaryInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Input
+          <FloatingLabelInput
             type="email"
             label="Email"
             name="email"
@@ -53,35 +61,46 @@ export const PrimaryInfoForm = () => {
             label="Gender"
             name="gender"
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={gender}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Input
-            name="date"
+          <FloatingLabelInput
+            name="date_of_birth"
             label="Date"
             register={register}
-            type="date_of_birth"
+            type="date"
             style={{ background: colors.forminput, border: "none" }}
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Select
-            placeholder=""
+          <MultiSelect
+            options={specialization}
             label="Specialization"
             name="specialization"
-            register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            placeholder=""
+            selectControl={control}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem>
-          <Input
+          <FloatingLabelInput
             label="Pan Number"
             name="pan_number"
             register={register}
-            style={{ background: colors.forminput, border: "none" }}
+            style={{
+              background: colors.forminput,
+              border: "none",
+            }}
           />
         </GridItem>
         <GridItem>
@@ -90,15 +109,19 @@ export const PrimaryInfoForm = () => {
             label="ID Type"
             name="id_type"
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={idType}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={4}>
           <p>Citizenship Detail</p>
         </GridItem>
         <GridItem colSpan={2}>
-          <Input
+          <FloatingLabelInput
             label="Citizenship Number"
             name="citizenship_number"
             required
@@ -113,12 +136,16 @@ export const PrimaryInfoForm = () => {
             name="issued_district"
             required
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={district}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <Input
+          <FloatingLabelInput
             name="issued_date"
             label="Issued Date"
             register={register}
@@ -137,8 +164,12 @@ export const PrimaryInfoForm = () => {
             name="province"
             required
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={province}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={1}>
@@ -148,8 +179,12 @@ export const PrimaryInfoForm = () => {
             name="district"
             required
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={district}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={1}>
@@ -159,12 +194,16 @@ export const PrimaryInfoForm = () => {
             name="municipality"
             required
             register={register}
-            options={title}
-            style={{ background: colors.forminput, border: "none" }}
+            options={municipality}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <Input
+          <FloatingLabelInput
             placeholder=""
             label="Ward"
             name="ward"
@@ -174,7 +213,7 @@ export const PrimaryInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={1}>
-          <Input
+          <FloatingLabelInput
             placeholder=""
             label="Tole"
             name="tole"

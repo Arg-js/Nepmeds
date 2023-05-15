@@ -5,14 +5,13 @@ import {
   FormErrorMessage,
   FormHelperText,
   InputProps,
-  InputGroup,
   InputLeftElement,
   InputRightElement,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
-const Input = ({
+const FloatingLabelInput = ({
   label,
   helperText,
   name,
@@ -27,7 +26,7 @@ const Input = ({
   endIcons,
   onIconClick,
   required,
-  variant,
+  variant = "floating",
   ...rest
 }: IInput) => {
   return (
@@ -35,8 +34,34 @@ const Input = ({
       isInvalid={!!error}
       isRequired={isRequired}
       isDisabled={isDisabled}
-      variant={variant}
+      variant="floating"
     >
+      {startIcon ? (
+        <InputLeftElement top="12%" pointerEvents="none" onClick={onIconClick}>
+          {startIcon}
+        </InputLeftElement>
+      ) : (
+        ""
+      )}
+      {endIcons ? (
+        <InputRightElement onClick={onIconClick} top="8%">
+          {endIcons}
+        </InputRightElement>
+      ) : (
+        ""
+      )}
+      <ChakraInput
+        id={name}
+        type={type}
+        {...register(name, rules)}
+        {...rest}
+        placeholder=" "
+        h={14}
+        pt={4}
+        pr={8}
+        pb={2}
+      />
+
       {label && (
         <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
           {label}
@@ -53,32 +78,7 @@ const Input = ({
           {labelDisabled}
         </FormLabel>
       )}
-      <InputGroup>
-        {startIcon ? (
-          <InputLeftElement
-            top="12%"
-            pointerEvents="none"
-            onClick={onIconClick}
-          >
-            {startIcon}
-          </InputLeftElement>
-        ) : (
-          ""
-        )}
-        <ChakraInput
-          id={name}
-          type={type}
-          {...register(name, rules)}
-          {...rest}
-        />
-        {endIcons ? (
-          <InputRightElement onClick={onIconClick} top="8%">
-            {endIcons}
-          </InputRightElement>
-        ) : (
-          ""
-        )}
-      </InputGroup>
+
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
@@ -100,4 +100,4 @@ export interface IInput extends InputProps {
   labelDisabled?: string;
   variant?: string;
 }
-export default Input;
+export default FloatingLabelInput;

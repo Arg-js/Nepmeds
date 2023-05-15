@@ -2,8 +2,8 @@ import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
-import Input from "@nepMeds/components/Form/Input";
-import TextArea from "@nepMeds/components/Form/TextArea";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
@@ -33,7 +33,7 @@ export const ExperienceForm = () => {
             <GridItem colSpan={2}>
               <Controller
                 render={({ field }) => (
-                  <Input
+                  <FloatingLabelInput
                     label="Hospital/ Clinic Name"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
@@ -48,7 +48,7 @@ export const ExperienceForm = () => {
             <GridItem>
               <Controller
                 render={({ field }) => (
-                  <Input
+                  <FloatingLabelInput
                     label="From"
                     register={register}
                     type="date"
@@ -63,7 +63,7 @@ export const ExperienceForm = () => {
             <GridItem>
               <Controller
                 render={({ field }) => (
-                  <Input
+                  <FloatingLabelInput
                     label="To"
                     register={register}
                     type="date"
@@ -78,7 +78,7 @@ export const ExperienceForm = () => {
             <GridItem colSpan={4}>
               <Controller
                 render={({ field }) => (
-                  <TextArea
+                  <FloatinglabelTextArea
                     label="Description"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
@@ -118,6 +118,7 @@ export const ExperienceForm = () => {
         leftIcon={<span color={colors.error}> + </span>}
         fontWeight={400}
         w="100%"
+        mb={8}
         onClick={() =>
           append({
             name: "",

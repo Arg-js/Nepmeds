@@ -3,3 +3,34 @@ export const title = [
   { label: "Miss", value: "Miss" },
   { label: "Mrs", value: "Mrs" },
 ];
+
+export const gender = [
+  { label: "Male", value: "Male" },
+  { label: "Female", value: "Female" },
+  { label: "Other", value: "Other" },
+];
+
+export const specialization = [
+  { label: "General Physician", value: "General Physician" },
+  { label: "Dentist", value: "Dentist" },
+];
+
+export const idType = [
+  { label: "Citizenship", value: "Citizenship" },
+  { label: "Passport", value: "Passport" },
+];
+export const district = [
+  { label: "Kathmandu", value: "Kathmandu" },
+  { label: "Bhaktapur", value: "Bhaktapur" },
+];
+export const province = [
+  { label: "Province 1", value: "Province 1" },
+  { label: "Province 2", value: "Province 2" },
+];
+
+export const municipality = [
+  { label: "Lalitpur Sub Metro", value: "Lalitpur Sub Metro" },
+  { label: "Bhaktapur Municipality", value: "Bhaktapur Municipality" },
+];
+
+export const phone = [{ label: "+977", value: "+977" }];

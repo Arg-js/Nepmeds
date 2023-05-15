@@ -1,17 +1,12 @@
 import React from "react";
-import { useForm } from "react-hook-form";
-import { AcademicInfoForm } from "../AcademicInfoForm/AcademicInfoForm";
 import {
   Step,
-  StepDescription,
-  StepIcon,
   StepIndicator,
   StepNumber,
   StepSeparator,
   StepStatus,
   StepTitle,
   Stepper,
-  useSteps,
 } from "@chakra-ui/stepper";
 import { Box, Heading } from "@chakra-ui/layout";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
@@ -49,13 +44,29 @@ const RegistrationForm = () => {
   };
   return (
     <Box mx={20}>
-      <Stepper index={activeStep} orientation="vertical" gap="0" h="80vh">
+      <Stepper
+        index={activeStep}
+        orientation="vertical"
+        gap={2}
+        h="80vh"
+        background={colors.main}
+        pl={8}
+        alignItems="center"
+        pb={20}
+      >
+        <Flex direction="column" color={colors.white} pt={12} gap={2}>
+          <Heading as="h6" fontWeight={400}>
+            Step {activeStep + 1}
+          </Heading>
+          <p style={{ color: colors.blue_30, marginBottom: "55px" }}>
+            Next -{steps[activeStep + 1].title}
+          </p>
+        </Flex>
         {steps.map((step, index) => (
           <>
             <Step
               key={index}
               style={{
-                background: colors.main,
                 width: "330px",
                 alignItems: "baseline",
               }}
@@ -66,9 +77,9 @@ const RegistrationForm = () => {
                 }}
               >
                 <StepStatus
-                  complete={<StepIcon />}
+                  complete={<StepNumber />}
                   incomplete={<StepNumber />}
-                  active={<StepNumber style={{ background: colors.main }} />}
+                  active={<StepNumber />}
                 />
               </StepIndicator>
               <StepTitle
@@ -80,8 +91,9 @@ const RegistrationForm = () => {
               >
                 {step.title}
               </StepTitle>
-
-              <StepSeparator />
+              <StepSeparator
+                style={{ background: "transparent", height: "40px" }}
+              />
             </Step>
           </>
         ))}
@@ -102,17 +114,29 @@ const RegistrationForm = () => {
         >
           Go Back
         </Button>
-        <Button
-          onClick={() => {
-            setActiveStep((prevStep) => prevStep + 1);
-          }}
-          isDisabled={activeStep === steps.length - 1}
-          background={colors.primary}
-          color={colors.white}
-          fontWeight={400}
-        >
-          Next Step
-        </Button>
+        <Flex gap={4}>
+          {activeStep > 1 && (
+            <Button
+              onClick={() => null}
+              border={`1px solid ${colors.primary}`}
+              color={colors.primary}
+              fontWeight={400}
+            >
+              Skip
+            </Button>
+          )}
+          <Button
+            onClick={() => {
+              setActiveStep((prevStep) => prevStep + 1);
+            }}
+            isDisabled={activeStep === steps.length - 1}
+            background={colors.primary}
+            color={colors.white}
+            fontWeight={400}
+          >
+            Next Step
+          </Button>
+        </Flex>
       </Flex>
     </Box>
   );

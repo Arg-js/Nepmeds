@@ -11,6 +11,7 @@ const Wrapper = ({ children, title, subtitle }: IWrapper) => {
           overflow={"auto"}
           height="80vh"
           background="#fff"
+          w="95%"
         >
           {/* <Box bg={colors.main} flex={0.2}></Box> */}
           <Box px={16} py={23} flex={1} bgColor={colors.white}>
