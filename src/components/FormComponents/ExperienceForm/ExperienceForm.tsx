@@ -113,6 +113,7 @@ export const ExperienceForm = () => {
       })}
       <Button
         variant="outline"
+        size="sm"
         color={colors.primary}
         borderColor={colors.primary}
         leftIcon={<span color={colors.error}> + </span>}

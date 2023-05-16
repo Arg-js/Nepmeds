@@ -88,6 +88,7 @@ export const CertificationInfoForm = () => {
         borderColor={colors.primary}
         leftIcon={<span color={colors.error}> + </span>}
         w="100%"
+        size="sm"
         mb={8}
         onClick={() =>
           append({ title: "", issuedBy: "", credentialId: "", issuedDate: "" })

@@ -60,6 +60,7 @@ const FloatingLabelInput = ({
         pt={4}
         pr={8}
         pb={2}
+        variant="floating"
       />
 
       {label && (

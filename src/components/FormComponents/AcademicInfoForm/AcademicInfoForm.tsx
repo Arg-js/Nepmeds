@@ -83,6 +83,7 @@ export const AcademicInfoForm = () => {
       })}
       <Button
         variant="outline"
+        size="sm"
         fontWeight={400}
         color={colors.primary}
         borderColor={colors.primary}
