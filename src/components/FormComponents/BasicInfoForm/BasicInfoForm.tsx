@@ -7,6 +7,7 @@ import { Grid, GridItem } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 
 export const BasicInfoForm = () => {
   const { register } = useForm();
@@ -55,9 +56,10 @@ export const BasicInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Password
+          <FloatingPassword
             label="Password"
             name="password"
+            required
             register={register}
             isVisible={passwordVisible}
             onToggleVisibility={() => setPasswordVisible(!passwordVisible)}
@@ -65,9 +67,10 @@ export const BasicInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Password
+          <FloatingPassword
             label="Confirm Password"
             name="confirmpassword"
+            required
             register={register}
             isVisible={confirmpasswordVisible}
             onToggleVisibility={() =>
