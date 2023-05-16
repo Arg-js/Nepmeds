@@ -2,7 +2,6 @@ import Select from "@nepMeds/components/Form/Select";
 import { useForm } from "react-hook-form";
 import { title } from "@nepMeds/utils/index";
 import Input from "@nepMeds/components/Form/Input";
-import Password from "@nepMeds/components/Form/Password";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";

@@ -1,39 +1,35 @@
+import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import Input from "@nepMeds/components/Form/Input";
-import { useForm } from "react-hook-form";
-import { Button, Icon } from "@chakra-ui/react";
-import { Message } from "react-iconly";
 import { colors } from "@nepMeds/theme/colors";
+import { useForm } from "react-hook-form";
+import { Message } from "react-iconly";
 import { Link, useNavigate } from "react-router-dom";
+
 const SignupForm = () => {
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
-  const onSubmit = (e: any) => {
-    // e.preventDefault();
+  const onSubmit = () => {
     navigate("/otp-verify");
   };
+
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
-      <Input
-        name="email"
-        register={register}
-        type="emali"
-        startIcon={<Icon as={Message} fontSize={20} color={colors.black_40} />}
-        px={4}
-        py={6}
-        border="none"
-        backgroundColor={colors.forminput}
-        mb={6}
-        placeholder="Email Address/ Mobile No."
-        _placeholder={{ color: colors.light_gray }}
-      />
+      <VStack gap={7.5} mb={12}>
+        <Input
+          name="email"
+          register={register}
+          type="emali"
+          startIcon={
+            <Icon as={Message} fontSize={20} color={colors.black_40} />
+          }
+          border="none"
+          backgroundColor={colors.forminput}
+          placeholder="Email Address/ Mobile No."
+          _placeholder={{ color: colors.light_gray }}
+        />
+      </VStack>
 
-      <p
-        style={{
-          textAlign: "center",
-          color: colors.black_30,
-          fontSize: "14px",
-        }}
-      >
+      <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
           to="/login"
@@ -44,22 +40,17 @@ const SignupForm = () => {
         >
           Login
         </Link>
-      </p>
-      <Button
-        margin="0 auto"
-        mt={12}
-        backgroundColor={colors.primary}
-        textColor={colors.white}
-        type="submit"
-        display="flex"
-        borderRadius="12px"
-        w="50%"
-        p={7}
-        fontSize={20}
-        fontWeight={400}
-      >
-        Sign Up
-      </Button>
+      </Text>
+
+      <HStack mt={12} justifyContent="center">
+        <Button
+          backgroundColor={colors.primary}
+          textColor={colors.white}
+          type="submit"
+        >
+          Sign Up
+        </Button>
+      </HStack>
     </form>
   );
 };
