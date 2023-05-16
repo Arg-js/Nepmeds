@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
 import { Flex } from "@chakra-ui/react";
-import Input from "@nepMeds/components/Form/Input";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
@@ -24,7 +24,7 @@ export const CertificationInfoForm = () => {
           <Flex gap={6} alignItems="flex-end" key={item.id} mb={6}>
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Title"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -37,7 +37,7 @@ export const CertificationInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Issued  By"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -50,7 +50,7 @@ export const CertificationInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="College/ University"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -63,7 +63,7 @@ export const CertificationInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Issued Date"
                   register={register}
                   type="date"
@@ -88,6 +88,8 @@ export const CertificationInfoForm = () => {
         borderColor={colors.primary}
         leftIcon={<span color={colors.error}> + </span>}
         w="100%"
+        size="sm"
+        mb={8}
         onClick={() =>
           append({ title: "", issuedBy: "", credentialId: "", issuedDate: "" })
         }

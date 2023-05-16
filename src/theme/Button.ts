@@ -12,7 +12,7 @@ export const ButtonTheme: ComponentStyleConfig = {
     ...p,
   },
   sizes: {
-    sm: { ...p },
+    sm: { ...p, minHeight: 10.5 },
     md: { ...p },
     lg: { ...p },
     xl: { ...p },

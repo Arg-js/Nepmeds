@@ -44,7 +44,7 @@ const Input = ({
   endIcons,
   onIconClick,
   required,
-  variant = "floating",
+  variant,
   ...rest
 }: IInput) => {
   return (
