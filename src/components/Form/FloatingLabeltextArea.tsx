@@ -3,49 +3,36 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  Select as ChakraSelect,
-  SelectProps,
+  Textarea,
+  TextareaProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
 
-const Select = ({
-  placeholder,
+const FloatinglabelTextArea = ({
   label,
-  options,
-  rules,
-  register,
   helperText,
   name,
-  error,
+  error = "",
+  rules,
+  register,
   isRequired,
   required,
-  enabled,
   ...rest
-}: ISelect) => {
+}: ITextArea) => {
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
-      <ChakraSelect
+      <Textarea
+        sx={{ fontSize: 14, height: 120 }}
+        id={name}
+        size="xl"
+        resize={"none"}
         {...register(name, rules)}
         {...rest}
-        id={name}
-        h={14}
-        pr={8}
-      >
-        {placeholder && (
-          <option value="" disabled={!enabled}>
-            {placeholder}
-          </option>
-        )}
-        {options?.map(({ label, value }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </ChakraSelect>
+      />
       {label && (
         <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-          {label}{" "}
+          {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
       )}
@@ -56,23 +43,16 @@ const Select = ({
   );
 };
 
-export interface ISelect<TFieldValues extends FieldValues = FieldValues>
-  extends SelectProps {
-  placeholder?: string;
-  options: ISelectOption[];
+export interface ITextArea<TFieldValues extends FieldValues = FieldValues>
+  extends TextareaProps {
   label?: string;
-  name: string;
-  register: UseFormRegister<TFieldValues>;
-  error?: string;
-  rules?: RegisterOptions;
   helperText?: string;
+  error?: string;
+  name: string;
+  register: UseFormRegister<any>;
+  rules?: RegisterOptions;
   isRequired?: boolean;
   required?: boolean;
-  enabled?: boolean;
 }
-export default Select;
 
-export interface ISelectOption {
-  label: string;
-  value: string;
-}
+export default FloatinglabelTextArea;

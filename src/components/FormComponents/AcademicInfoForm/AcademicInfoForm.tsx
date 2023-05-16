@@ -1,8 +1,7 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Grid, GridItem } from "@chakra-ui/layout";
 import { Flex } from "@chakra-ui/react";
-import Input from "@nepMeds/components/Form/Input";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
@@ -25,7 +24,7 @@ export const AcademicInfoForm = () => {
           <Flex key={item.id} gap={6} alignItems="flex-end" mb={6}>
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Degree"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -38,7 +37,7 @@ export const AcademicInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Major"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -51,7 +50,7 @@ export const AcademicInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="College/ University"
                   register={register}
                   style={{ background: colors.forminput, border: "none" }}
@@ -64,9 +63,10 @@ export const AcademicInfoForm = () => {
 
             <Controller
               render={({ field }) => (
-                <Input
+                <FloatingLabelInput
                   label="Passed Year"
                   register={register}
+                  type="date"
                   style={{ background: colors.forminput, border: "none" }}
                   {...field}
                 />
@@ -83,10 +83,12 @@ export const AcademicInfoForm = () => {
       })}
       <Button
         variant="outline"
+        size="sm"
         fontWeight={400}
         color={colors.primary}
         borderColor={colors.primary}
         w="100%"
+        mb={8}
         leftIcon={<span color={colors.error}> + </span>}
         onClick={() =>
           append({ degree: "", major: "", college: "", passedYear: "" })

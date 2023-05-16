@@ -35,15 +35,11 @@ const MultiSelect = ({
         // note: react select ko design select or input component sanga match garam hai.
 
         return (
-          <FormControl isInvalid={!!error} isRequired={isRequired}>
-            {label && (
-              <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-                {label}
-                {required && (
-                  <span style={{ color: colors.error }}>&nbsp;*</span>
-                )}
-              </FormLabel>
-            )}
+          <FormControl
+            isInvalid={!!error}
+            isRequired={isRequired}
+            variant="floating"
+          >
             <ReactSelect
               isMulti
               name={name}
@@ -56,16 +52,22 @@ const MultiSelect = ({
               styles={{
                 control: baseStyles => ({
                   ...baseStyles,
-                  minHeight: "50px",
-                  // borderColor: error
-                  //   ? samriddhi_colors.red_textColor
-                  //   : samriddhi_colors.gray_header,
+                  height: "58px",
                   borderRadius: "8px",
                   borderWidth: error ? "2px" : "1px",
                   ...style,
                 }),
               }}
             />
+            {label && (
+              <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+                {label}
+                {required && (
+                  <span style={{ color: colors.error }}>&nbsp;*</span>
+                )}
+              </FormLabel>
+            )}
+
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
             {error?.message && (
               <FormErrorMessage>{t(error.message)}</FormErrorMessage>

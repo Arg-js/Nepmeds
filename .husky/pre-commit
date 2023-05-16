@@ -9,9 +9,9 @@ echo "🏗️👷${yellow} Executing pre-commit hook...${no_color}👷‍♂️�
 echo "🏗️👷 ${green} Styling your project before committing...${no_color}👷‍♂️🏗️"
 echo "🏗️👷  ${green} please be patient, this may take a while...${no_color}👷‍♂️🏗️"
 
-if [ "$OSTYPE" == "msys" ]; then
-    exec >/dev/console 2>&1
-fi
+# if [ "$OSTYPE" == "msys" ]; then
+#     exec >/dev/console 2>&1
+# fi
 consoleregexp='console\.[clear|dir|log|info]'
 # CHECK
 if test $(git diff --cached | grep $consoleregexp | wc -l) != 0; then
