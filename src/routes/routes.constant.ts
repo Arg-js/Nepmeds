@@ -10,4 +10,5 @@ export const NAVIGATION_ROUTES = {
   LOGIN: "/",
   SIGNUP: "/signup",
   OTPVERIFY: "/otp-verify",
+  DASHBOARD: "/dashboard",
 };

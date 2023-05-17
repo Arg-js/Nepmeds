@@ -60,9 +60,8 @@ interface ISetPasswordViewIcon {
   isVisible: boolean;
 }
 
-export interface IPassword<TFieldValues extends FieldValues = FieldValues>
-  extends FormControlProps {
-  register: UseFormRegister<TFieldValues>;
+export interface IPassword extends FormControlProps {
+  register: UseFormRegister<any>;
   isVisible: boolean;
   error?: string;
   onToggleVisibility: () => void;

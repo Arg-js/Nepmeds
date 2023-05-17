@@ -7,20 +7,16 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 export const ExperienceForm = () => {
-  const { control, register } = useForm({
-    defaultValues: {
-      experience: [
-        { name: "", from: "", to: "", description: "", currentWorking: false },
-      ],
-    },
-  });
+  const { control, register } = useForm<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experience",
   });
+
   return (
-    <form style={{ width: "100%" }}>
+    <>
       {fields.map((item, index) => {
         return (
           <Grid
@@ -132,6 +128,6 @@ export const ExperienceForm = () => {
       >
         Add Another experience Detail
       </Button>
-    </form>
+    </>
   );
 };

@@ -3,24 +3,19 @@ import { Icon } from "@chakra-ui/icon";
 import { Flex } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { Controller, useFieldArray, useForm } from "react-hook-form";
 import { Delete } from "react-iconly";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = () => {
-  const { control, register } = useForm({
-    defaultValues: {
-      academic: [
-        { degree: "", major: "", college: "", passedYear: "", file: [] },
-      ],
-    },
-  });
+  const { control, register } = useForm<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
   });
 
   return (
-    <form style={{ width: "100%" }}>
+    <>
       {fields.map((item, index) => {
         return (
           <Flex mb={4} key={item.id} flexDirection="column" gap={3}>
@@ -121,6 +116,6 @@ export const AcademicInfoForm = () => {
       >
         Add Another Academic Detail
       </Button>
-    </form>
+    </>
   );
 };

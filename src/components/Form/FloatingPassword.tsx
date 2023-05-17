@@ -1,18 +1,17 @@
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
-  FormControl,
-  FormLabel,
   Input as ChakraInput,
+  FormControl,
   FormErrorMessage,
   FormHelperText,
-  InputProps,
-  InputLeftElement,
-  InputRightElement,
+  FormLabel,
   IconButton,
   InputGroup,
+  InputProps,
+  InputRightElement,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 enum Type {
   TEXT = "type",

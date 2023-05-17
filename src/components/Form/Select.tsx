@@ -56,13 +56,12 @@ const Select = ({
   );
 };
 
-export interface ISelect<TFieldValues extends FieldValues = FieldValues>
-  extends SelectProps {
+export interface ISelect extends SelectProps {
   placeholder?: string;
   options: ISelectOption[];
   label?: string;
   name: string;
-  register: UseFormRegister<TFieldValues>;
+  register: UseFormRegister<any>;
   error?: string;
   rules?: RegisterOptions;
   helperText?: string;

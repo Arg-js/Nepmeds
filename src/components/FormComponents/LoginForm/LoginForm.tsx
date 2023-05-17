@@ -3,10 +3,10 @@ import Input from "@nepMeds/components/Form/Input";
 import { useLoginMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, set, useForm } from "react-hook-form";
 import { Hide, Lock, Message, Show } from "react-iconly";
 import { Link } from "react-router-dom";
-
+import { Spinner } from "@chakra-ui/react";
 const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const { register, handleSubmit } = useForm({
@@ -16,15 +16,15 @@ const LoginForm = () => {
     },
   });
   const loginAction = useLoginMutation();
-
+  const [loading, setLoading] = useState(false);
   const togglepasswordView = () => {
     setShowPassword(!showPassword);
   };
-
   const onSubmit: SubmitHandler<{ email: string; password: string }> = async ({
     email,
     password,
   }) => {
+    setLoading(true);
     loginAction.mutate({ email, password });
   };
 
@@ -95,7 +95,7 @@ const LoginForm = () => {
           textColor={colors.white}
           type="submit"
         >
-          Login
+          {!loading ? "Login" : <Spinner />}
         </Button>
       </HStack>
     </form>
