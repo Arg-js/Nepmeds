@@ -1,11 +1,11 @@
 import {
-  FormControl,
-  FormLabel,
   Input as ChakraInput,
+  FormControl,
   FormErrorMessage,
   FormHelperText,
-  InputProps,
+  FormLabel,
   InputLeftElement,
+  InputProps,
   InputRightElement,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
@@ -55,7 +55,7 @@ const FloatingLabelInput = ({
         type={type}
         {...register(name, rules)}
         {...rest}
-        placeholder=" "
+        placeholder=""
         h={14}
         pt={4}
         pr={8}

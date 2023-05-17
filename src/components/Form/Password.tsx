@@ -1,8 +1,8 @@
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { FormControlProps, IconButton } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
+import { UseFormRegister } from "react-hook-form";
 import FormControl from "./FormControl";
-import { UseFormRegister, FieldValues } from "react-hook-form";
 
 enum Type {
   TEXT = "type",
