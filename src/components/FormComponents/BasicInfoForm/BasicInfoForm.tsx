@@ -2,11 +2,11 @@ import Select from "@nepMeds/components/Form/Select";
 import { useForm } from "react-hook-form";
 import { title } from "@nepMeds/utils/index";
 import Input from "@nepMeds/components/Form/Input";
-import Password from "@nepMeds/components/Form/Password";
 import { Grid, GridItem } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 
 export const BasicInfoForm = () => {
   const { register } = useForm();
@@ -55,9 +55,10 @@ export const BasicInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Password
+          <FloatingPassword
             label="Password"
             name="password"
+            required
             register={register}
             isVisible={passwordVisible}
             onToggleVisibility={() => setPasswordVisible(!passwordVisible)}
@@ -65,9 +66,10 @@ export const BasicInfoForm = () => {
           />
         </GridItem>
         <GridItem colSpan={2}>
-          <Password
+          <FloatingPassword
             label="Confirm Password"
             name="confirmpassword"
+            required
             register={register}
             isVisible={confirmpasswordVisible}
             onToggleVisibility={() =>
