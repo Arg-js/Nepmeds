@@ -8,7 +8,7 @@ import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
-import Register from "@nepMeds/pages/Register/Register";
+import Register from "@nepMeds/pages/Register";
 
 const routes = [
   {

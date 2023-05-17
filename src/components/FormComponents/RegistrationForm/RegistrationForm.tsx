@@ -1,4 +1,5 @@
-import React from "react";
+import { Button } from "@chakra-ui/button";
+import { Box, Flex, Heading } from "@chakra-ui/layout";
 import {
   Step,
   StepIndicator,
@@ -14,8 +15,7 @@ import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import { colors } from "@nepMeds/theme/colors";
-import { Box, Flex, Heading } from "@chakra-ui/layout";
-import { Button } from "@chakra-ui/button";
+import React from "react";
 const steps = [
   { title: "Registration", content: <BasicInfo /> },
   {
@@ -43,7 +43,7 @@ const RegistrationForm = () => {
     setActiveStep(index);
   };
   return (
-    <Box mx={20}>
+    <Box mx={30} mt={13.5} mb={10}>
       <Stepper
         index={activeStep}
         orientation="vertical"
