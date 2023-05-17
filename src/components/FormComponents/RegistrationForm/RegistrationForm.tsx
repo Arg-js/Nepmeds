@@ -4,10 +4,10 @@ import {
   Step,
   StepIndicator,
   StepNumber,
-  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
+  Stepper,
 } from "@chakra-ui/stepper";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
@@ -43,7 +43,15 @@ const registerDefaultValues = {
   municipality: "",
   ward: "",
   tole: "",
-  academic: [{ degree: "", major: "", college: "", passedYear: "" }],
+  academic: [
+    {
+      degree: "",
+      major: "",
+      college: "",
+      passedYear: "",
+      file: undefined as undefined | [],
+    },
+  ],
   experience: [
     { name: "", from: "", to: "", description: "", currentWorking: false },
   ],
