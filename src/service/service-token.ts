@@ -1,6 +1,6 @@
 export interface TokenDetails {
-  access_token: string;
-  refresh_token: string;
+  access: string;
+  refresh: string;
 }
 
 export interface TokenInfo {
@@ -18,15 +18,15 @@ export interface TokenInfo {
 }
 
 function setToken(token: TokenDetails) {
-  localStorage.setItem("token", token.access_token);
-  localStorage.setItem("refresh_token", token.refresh_token);
+  localStorage.setItem("token", token.access);
+  localStorage.setItem("refresh_token", token.refresh);
 }
 
 function getToken() {
   try {
     return {
-      access_token: localStorage.getItem("token") ?? "",
-      refresh_token: localStorage.getItem("refresh_token") ?? "",
+      access: localStorage.getItem("token") ?? "",
+      refresh: localStorage.getItem("refresh_token") ?? "",
     } as TokenDetails;
   } catch (e) {
     return null;
@@ -37,7 +37,7 @@ function getTokenDetails(): TokenInfo | null {
   try {
     const token = getToken();
     return token
-      ? (JSON.parse(window.atob(token.access_token.split(".")[1])) as TokenInfo)
+      ? (JSON.parse(window.atob(token.access.split(".")[1])) as TokenInfo)
       : null;
   } catch (e) {
     return null;

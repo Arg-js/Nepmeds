@@ -9,6 +9,7 @@ import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import Register from "@nepMeds/pages/Register/Register";
+import Dashboard from "@nepMeds/pages/Dashboard";
 
 const routes = [
   {
@@ -46,6 +47,10 @@ const routes = [
   {
     path: NAVIGATION_ROUTES.OTPVERIFY,
     element: <OtpSignUp />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DASHBOARD,
+    element: <Dashboard />,
   },
 ];
 

@@ -5,20 +5,15 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 export const CertificationInfoForm = () => {
-  const { control, register } = useForm({
-    defaultValues: {
-      certification: [
-        { title: "", issuedBy: "", credentialId: "", issuedDate: "" },
-      ],
-    },
-  });
+  const { control, register } = useForm<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",
   });
   return (
-    <form style={{ width: "100%" }}>
+    <>
       {fields.map((item, index) => {
         return (
           <Flex gap={6} alignItems="flex-end" key={item.id} mb={6}>
@@ -96,6 +91,6 @@ export const CertificationInfoForm = () => {
       >
         Add Another Certification Detail
       </Button>
-    </form>
+    </>
   );
 };

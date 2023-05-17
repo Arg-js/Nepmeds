@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
-import { api } from "./service-api";
+import { NepMedsResponse, api } from "./service-api";
 import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
 import { BroadcastChannel } from "broadcast-channel";
@@ -45,7 +45,7 @@ const useLogoutMutation = (noToast?: boolean) => {
 };
 
 const initLogin = (loginData: LoginDetails) => {
-  return HttpClient.post<TokenDetails>(api.login, loginData);
+  return HttpClient.post<NepMedsResponse<TokenDetails>>(api.login, loginData);
 };
 
 const useLoginMutation = () => {
@@ -57,13 +57,13 @@ const useLoginMutation = () => {
       loginChannel.postMessage(loginBroadcast);
 
       const tokens = {
-        access_token: response.data.access_token,
-        refresh_token: response.data.refresh_token,
+        access: response.data.data.access,
+        refresh: response.data.data.refresh,
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
-
-      navigate("/", { replace: true });
+      toastSuccess("Login Successful!!");
+      navigate("/dashboard", { replace: true });
     },
     onError: error => {
       const loginErr = error as AxiosError<{ message: string; error: string }>;
@@ -104,7 +104,7 @@ const checkAuthentication = async () => {
       return initRefreshToken();
     }
     return Promise.resolve(true);
-  } else if (TokenService.getToken()?.refresh_token) {
+  } else if (TokenService.getToken()?.refresh) {
     return initRefreshToken();
   }
   return Promise.resolve(null);

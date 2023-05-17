@@ -18,7 +18,7 @@ const HttpClient = axios.create({
  * Pass API Key in Header
  */
 HttpClient.interceptors.request.use(async config => {
-  const token = TokenService.getToken()?.access_token;
+  const token = TokenService.getToken()?.access;
 
   if (config && config.headers) {
     if (token && config.headers["Authorization"] !== "") {

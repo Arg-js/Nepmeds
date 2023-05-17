@@ -5,20 +5,17 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = () => {
-  const { control, register } = useForm({
-    defaultValues: {
-      academic: [{ degree: "", major: "", college: "", passedYear: "" }],
-    },
-  });
+  const { control, register } = useForm<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
   });
 
   return (
-    <form style={{ width: "100%" }}>
+    <>
       {fields.map((item, index) => {
         return (
           <Flex key={item.id} gap={6} alignItems="flex-end" mb={6}>
@@ -96,6 +93,6 @@ export const AcademicInfoForm = () => {
       >
         Add Another Academic Detail
       </Button>
-    </form>
+    </>
   );
 };

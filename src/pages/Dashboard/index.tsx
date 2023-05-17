@@ -1,5 +1,12 @@
+import Header from "@nepMeds/components/Header/Header";
+
 const Dashboard = () => {
-  return <div>Dashboard</div>;
+  return (
+    <>
+      <Header />
+      Welcome to Dashboard!!
+    </>
+  );
 };
 
 export default Dashboard;
