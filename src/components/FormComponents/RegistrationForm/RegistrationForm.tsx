@@ -42,6 +42,7 @@ const RegistrationForm = () => {
   const onClickHandler = (index: number) => {
     setActiveStep(index);
   };
+  const submitForm = () => null;
   return (
     <Box mx={30} mt={13.5} mb={10}>
       <Stepper
@@ -127,14 +128,15 @@ const RegistrationForm = () => {
           )}
           <Button
             onClick={() => {
-              setActiveStep(prevStep => prevStep + 1);
+              activeStep !== steps.length - 1
+                ? setActiveStep(prevStep => prevStep + 1)
+                : submitForm;
             }}
-            isDisabled={activeStep === steps.length - 1}
             background={colors.primary}
             color={colors.white}
             fontWeight={400}
           >
-            Next Step
+            {activeStep !== steps.length - 1 ? "Next Step" : "Submit Form"}
           </Button>
         </Flex>
       </Flex>
