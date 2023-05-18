@@ -1,9 +1,9 @@
 import Input from "./Input";
-import Select from "./Select";
-import Radio from "./Radio";
-import Password from "./Password";
-import TextArea from "./TextArea";
 import MultiSelect from "./MultiSelect";
+import Password from "./Password";
+import Radio from "./Radio";
+import Select from "./Select";
+import TextArea from "./TextArea";
 
 function FormControl(props: any) {
   const { control, ...rest } = props;

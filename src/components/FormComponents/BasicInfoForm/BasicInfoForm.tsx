@@ -1,4 +1,6 @@
-import { Grid, GridItem } from "@chakra-ui/layout";
+import { Flex, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/layout";
+import { FormLabel } from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Input from "@nepMeds/components/Form/Input";
 import Password from "@nepMeds/components/Form/Password";
@@ -16,9 +18,19 @@ export const BasicInfoForm = () => {
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-      {/* <GridItem rowSpan={2} colSpan={1} bg="tomato" /> */}
       <GridItem rowSpan={2} colSpan={1}>
-        <Input type="file" name="file" register={register} />
+        <FormLabel htmlFor="file" h="100%">
+          <Flex bg={colors.forminput} borderRadius={12} h="100%">
+            <VStack justifyContent="center" w="100%">
+              <svgs.image />
+              <HStack>
+                <svgs.upload />
+                <Text>Upload Image</Text>
+              </HStack>
+            </VStack>
+          </Flex>
+        </FormLabel>
+        <Input type="file" id="file" name="file" hidden register={register} />
       </GridItem>
 
       <GridItem colSpan={3}>
