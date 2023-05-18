@@ -1,33 +1,20 @@
 import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useVerifySingUpOTP } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
-import { useForm } from "react-hook-form";
+import { FormEvent, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
-import * as yup from "yup";
-
-const schema = yup.object().shape({
-  otp: yup
-    .string()
-    .min(6, "OTP should be if min 6 length!")
-    .required("OTP is required!"),
-});
 
 const OtpForm = () => {
   const navigate = useNavigate();
-  const { getValues, setValue, handleSubmit } = useForm({
-    defaultValues: {
-      otp: "",
-    },
-    resolver: yupResolver(schema),
-  });
+  const [otp, setOtp] = useState("");
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
-  const onFormSubmit = ({ otp }: { otp: string }) => {
+  const onFormSubmit = (e: FormEvent) => {
     try {
+      e.preventDefault();
       verifySingUpOTPAction.mutateAsync({ otp });
       toastSuccess("OTP has been verified successfully!");
       navigate("/register");
@@ -37,11 +24,11 @@ const OtpForm = () => {
   };
 
   return (
-    <form style={{ width: "100%" }} onSubmit={handleSubmit(onFormSubmit)}>
+    <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
       <VStack gap={7.5} mb={3}>
         <OtpInput
-          value={getValues("otp")}
-          onChange={val => setValue("otp", val)}
+          value={otp}
+          onChange={val => setOtp(val)}
           numInputs={6}
           inputStyle={{
             width: 41,
@@ -97,7 +84,7 @@ const OtpForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
-          isDisabled={getValues("otp").length !== 6}
+          isDisabled={otp.length !== 6}
         >
           Verify
         </Button>

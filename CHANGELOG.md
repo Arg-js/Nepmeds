@@ -11,6 +11,7 @@
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * theme ([d9b253d](https://gitlab.com/r2850/nepmeds/commit/d9b253dd52ac704173087328aaa3a2476492b641))
+* validation and forms ([a3ce00d](https://gitlab.com/r2850/nepmeds/commit/a3ce00d9a27d3203b98b8f6b15e6ad074192e5f3))
 
 
 ### Features

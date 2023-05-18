@@ -1,7 +1,7 @@
 export const api = {
   login: "login/token/",
-  signup: "api/v1/user_management/mobile/",
-  otp_verify: "api/v1/user_management/mobile/verify/",
+  signup: "user_management/mobile/",
+  otp_verify: "user_management/mobile/verify/",
   register: "register/",
   symptom: "/api/v1/doctor_consult/symptom/",
 };
