@@ -73,5 +73,5 @@ export default Select;
 
 export interface ISelectOption {
   label: string;
-  value: string;
+  value: string | number;
 }

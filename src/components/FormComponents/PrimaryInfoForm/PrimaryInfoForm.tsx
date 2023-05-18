@@ -11,12 +11,13 @@ import {
   municipality,
   phone,
   province,
-  specialization,
 } from "@nepMeds/utils/choices";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 
 const PrimaryInfo = () => {
   const { register, control } = useFormContext();
+  const specialization = useSpecializationData();
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
@@ -80,10 +81,9 @@ const PrimaryInfo = () => {
       </GridItem>
       <GridItem colSpan={2}>
         <MultiSelect
-          options={specialization}
+          options={specialization.data || []}
           label="Specialization"
           name="specialization"
-          placeholder=""
           selectControl={control}
           style={{
             background: colors.forminput,
@@ -146,7 +146,7 @@ const PrimaryInfo = () => {
       </GridItem>
       <GridItem colSpan={1}>
         <FloatingLabelInput
-          name="issued_date"
+          name="citizenship_issued_date"
           label="Issued Date"
           register={register}
           type="date"
@@ -191,7 +191,7 @@ const PrimaryInfo = () => {
         <Select
           placeholder=""
           label="Municipality/ VDC"
-          name="municipality"
+          name="municipality_vdc"
           required
           register={register}
           options={municipality}

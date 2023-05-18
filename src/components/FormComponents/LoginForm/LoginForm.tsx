@@ -16,7 +16,6 @@ const LoginForm = () => {
     },
   });
   const loginAction = useLoginMutation();
-  const [loading, setLoading] = useState(false);
   const togglepasswordView = () => {
     setShowPassword(!showPassword);
   };
@@ -24,7 +23,6 @@ const LoginForm = () => {
     email,
     password,
   }) => {
-    setLoading(true);
     loginAction.mutate({ email, password });
   };
 
@@ -94,8 +92,9 @@ const LoginForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
+          isLoading={loginAction.isLoading}
         >
-          {!loading ? "Login" : <Spinner />}
+          Login
         </Button>
       </HStack>
     </form>
