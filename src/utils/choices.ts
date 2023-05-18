@@ -10,11 +10,6 @@ export const gender = [
   { label: "Other", value: "Other" },
 ];
 
-export const specialization = [
-  { label: "General Physician", value: "General Physician" },
-  { label: "Dentist", value: "Dentist" },
-];
-
 export const idType = [
   { label: "Citizenship", value: "Citizenship" },
   { label: "Passport", value: "Passport" },
@@ -34,3 +29,5 @@ export const municipality = [
 ];
 
 export const phone = [{ label: "+977", value: "+977" }];
+
+export const year = [{ label: "2019", value: "2019" }];

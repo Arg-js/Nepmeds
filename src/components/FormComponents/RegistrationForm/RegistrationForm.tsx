@@ -14,12 +14,14 @@ import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
+import { useAcademicInfoRegister } from "@nepMeds/service/nepmeds-academic";
 import { usePrimaryInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 const registerDefaultValues = {
+  image: undefined as undefined | [],
   title: "",
   first_name: "",
   middle_name: "",
@@ -32,7 +34,7 @@ const registerDefaultValues = {
   email: "",
   gender: "",
   date_of_birth: "",
-  specialization: "",
+  specialization: [] as { label: string; value: string }[],
   pan_number: "",
   id_type: "",
   citizenship_number: "",
@@ -43,12 +45,18 @@ const registerDefaultValues = {
   municipality: "",
   ward: "",
   tole: "",
+  age: 0,
+  medical_degree: "",
+  designation: "",
+  municipality_vdc: "",
+  citizenship_issued_date: "",
   academic: [
     {
-      degree: "",
+      doctor: 0,
+      degree_program: "",
       major: "",
-      college: "",
-      passedYear: "",
+      university: "",
+      graduation_year: 2000,
       file: undefined as undefined | [],
     },
   ],
@@ -64,6 +72,7 @@ export type IRegisterFields = typeof registerDefaultValues;
 const RegistrationForm = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const primaryInfoRegister = usePrimaryInfoRegister();
+  const academicInfoRegister = useAcademicInfoRegister();
 
   const formMethods = useForm({
     defaultValues: registerDefaultValues,
@@ -82,6 +91,7 @@ const RegistrationForm = () => {
       case 1: {
         try {
           primaryInfoRegister.mutateAsync({
+            image: values.image,
             title: values.title,
             first_name: values.first_name,
             middle_name: values.middle_name,
@@ -90,6 +100,17 @@ const RegistrationForm = () => {
             confirm_password: values.confirm_password,
             email: values.email,
             mobile_number: values.mobile_number,
+            bio_detail: values.bio_detail,
+            gender: values.gender,
+            date_of_birth: values.date_of_birth,
+            specialization: values.specialization.map(s => s.value),
+            age: 20,
+            medical_degree: "test",
+            designation: "Test",
+            pan_number: values.pan_number,
+            citizenship_number: values.citizenship_number,
+            municipality_vdc: values.municipality_vdc,
+            citizenship_issued_date: values.citizenship_issued_date,
           });
         } catch (error) {
           <p>error</p>;
@@ -97,6 +118,19 @@ const RegistrationForm = () => {
         break;
       }
       case 2: {
+        try {
+          const lastValue = values.academic.length - 1;
+          academicInfoRegister.mutateAsync({
+            doctor: 0,
+            degree_program: values.academic[lastValue].degree_program,
+            major: values.academic[lastValue].major,
+            university: values.academic[lastValue].university,
+            graduation_year: 2019,
+            file: values.academic[lastValue].file,
+          });
+        } catch (error) {
+          <p>error</p>;
+        }
         break;
       }
     }

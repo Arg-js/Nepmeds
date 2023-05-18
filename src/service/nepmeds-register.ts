@@ -12,9 +12,22 @@ type PrimaryInfo = Pick<
   | "last_name"
   | "password"
   | "confirm_password"
+  | "image"
+  | "bio_detail"
   | "mobile_number"
   | "email"
->;
+  | "gender"
+  | "date_of_birth"
+  | "age"
+  | "medical_degree"
+  | "designation"
+  | "municipality_vdc"
+  | "citizenship_issued_date"
+  | "citizenship_number"
+  | "pan_number"
+> & {
+  specialization: string[];
+};
 
 const signUpUser = async (data: { mobile_number: string }) => {
   const response = await HttpClient.post(api.signup, toFormData(data));
@@ -31,7 +44,14 @@ const verifySingUpOTP = async (data: { otp: string }) => {
 export const useVerifySingUpOTP = () => useMutation(verifySingUpOTP);
 
 const createPrimaryData = async (data: PrimaryInfo) => {
-  const response = await HttpClient.post(api.register, data);
+  const formData = new FormData();
+  data.specialization.forEach(s => {
+    formData.append("specialization", s);
+  });
+  const response = await HttpClient.post(
+    api.register,
+    toFormData(data, formData)
+  );
   return response;
 };
 

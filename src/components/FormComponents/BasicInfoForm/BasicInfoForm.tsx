@@ -10,6 +10,7 @@ import { title } from "@nepMeds/utils/index";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 
 export const BasicInfoForm = () => {
   const { register } = useFormContext<IRegisterFields>();
@@ -68,7 +69,7 @@ export const BasicInfoForm = () => {
         />
       </GridItem>
       <GridItem colSpan={2}>
-        <Password
+        <FloatingPassword
           label="Password"
           name="password"
           register={register}
@@ -78,7 +79,7 @@ export const BasicInfoForm = () => {
         />
       </GridItem>
       <GridItem colSpan={2}>
-        <Password
+        <FloatingPassword
           label="Confirm Password"
           name="confirm_password"
           register={register}

@@ -16,6 +16,7 @@ const MultiSelect = ({
   options,
   helperText,
   name,
+  value,
   isRequired,
   selectControl,
   style,
@@ -84,6 +85,7 @@ interface IMultiSelect extends SelectProps {
   options: ISelectOption[];
   label?: string;
   name?: string;
+  value?: string;
   error?: string;
   rules?: RegisterOptions;
   helperText?: string;

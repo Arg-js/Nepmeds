@@ -3,12 +3,14 @@ import { Icon } from "@chakra-ui/icon";
 import { Flex } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
-import { Controller, useFieldArray, useForm } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import Select from "@nepMeds/components/Form/Select";
+import { year } from "@nepMeds/utils/choices";
 
 export const AcademicInfoForm = () => {
-  const { control, register } = useForm<IRegisterFields>();
+  const { control, register } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
@@ -29,7 +31,7 @@ export const AcademicInfoForm = () => {
                     {...field}
                   />
                 )}
-                name={`academic.${index}.degree`}
+                name={`academic.${index}.degree_program`}
                 control={control}
               />
 
@@ -55,21 +57,33 @@ export const AcademicInfoForm = () => {
                     {...field}
                   />
                 )}
-                name={`academic.${index}.college`}
+                name={`academic.${index}.university`}
                 control={control}
               />
 
               <Controller
                 render={({ field }) => (
-                  <FloatingLabelInput
+                  // <FloatingLabelInput
+                  //   label="Passed Year"
+                  //   register={register}
+                  //   type="date"
+                  //   style={{ background: colors.forminput, border: "none" }}
+                  //   {...field}
+                  // />
+                  <Select
+                    placeholder=""
                     label="Passed Year"
                     register={register}
-                    type="date"
-                    style={{ background: colors.forminput, border: "none" }}
+                    options={year}
                     {...field}
+                    style={{
+                      background: colors.forminput,
+                      border: "none",
+                      paddingTop: "15px",
+                    }}
                   />
                 )}
-                name={`academic.${index}.passedYear`}
+                name={`academic.${index}.graduation_year`}
                 control={control}
               />
             </Flex>
@@ -106,10 +120,11 @@ export const AcademicInfoForm = () => {
         leftIcon={<span color={colors.error}> + </span>}
         onClick={() =>
           append({
-            degree: "",
+            doctor: 0,
+            degree_program: "",
             major: "",
-            college: "",
-            passedYear: "",
+            university: "",
+            graduation_year: 2019,
             file: [],
           })
         }

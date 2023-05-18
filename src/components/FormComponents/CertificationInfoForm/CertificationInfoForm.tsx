@@ -3,11 +3,11 @@ import { Icon } from "@chakra-ui/icon";
 import { Flex } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 export const CertificationInfoForm = () => {
-  const { control, register } = useForm<IRegisterFields>();
+  const { control, register } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",

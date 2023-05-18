@@ -131,18 +131,19 @@ export const theme = extendTheme({
       variants: {
         floating: {
           container: {
-            _focusWithin: {
-              label: {
-                ...activeLabelStyles,
-              },
-            },
+            // _focusWithin: {
+            //   label: {
+            //     ...activeLabelStyles,
+            //   },
+            // },
 
-            "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, .chakra-form-control label, textarea:not(:placeholder-shown) ~ label":
-              {
-                ...activeLabelStyles,
-              },
+            // "input:not(:placeholder-shown) + label, .chakra-select__wrapper + label, .chakra-form-control label, textarea:not(:placeholder-shown) ~ label":
+            //   {
+            //     ...activeLabelStyles,
+            //   },
             label: {
               top: "10px",
+              transform: "scale(0.8) translateY(-19px)",
               left: 0,
               zIndex: 1,
               position: "absolute",
