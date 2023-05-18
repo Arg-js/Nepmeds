@@ -11,4 +11,5 @@ export const NAVIGATION_ROUTES = {
   SIGNUP: "/signup",
   OTPVERIFY: "/otp-verify",
   DASHBOARD: "/dashboard",
+  NO_MATCH: "*",
 };

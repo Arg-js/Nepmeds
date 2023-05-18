@@ -1,18 +1,34 @@
 import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { colors } from "@nepMeds/theme/colors";
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 import OtpInput from "react-otp-input";
 import { Link } from "react-router-dom";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  otp: yup
+    .string()
+    .min(6, "OTP should be if min 6 length!")
+    .required("OTP is required!"),
+});
 
 const OtpForm = () => {
-  const [otp, setOtp] = useState("");
+  const { getValues, setValue, handleSubmit } = useForm({
+    defaultValues: {
+      otp: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
+  const onFormSubmit = () => {};
 
   return (
-    <form style={{ width: "100%" }}>
+    <form style={{ width: "100%" }} onSubmit={handleSubmit(onFormSubmit)}>
       <VStack gap={7.5} mb={3}>
         <OtpInput
-          value={otp}
-          onChange={val => setOtp(val)}
+          value={getValues("otp")}
+          onChange={val => setValue("otp", val)}
           numInputs={6}
           inputStyle={{
             width: 41,
@@ -68,6 +84,7 @@ const OtpForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
+          isDisabled={getValues("otp").length !== 6}
         >
           Verify
         </Button>

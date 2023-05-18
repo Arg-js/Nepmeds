@@ -3,6 +3,7 @@
 
 ### Bug Fixes
 
+* academic file ([8de7423](https://gitlab.com/r2850/nepmeds/commit/8de742336d82e12055d40b204f8e6b743c802715))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))

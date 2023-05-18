@@ -1,16 +1,41 @@
 import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "@nepMeds/components/Form/Input";
+import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
 import { colors } from "@nepMeds/theme/colors";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Message } from "react-iconly";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter a valid email!")
+    .required("Email is required!"),
+});
 
 const SignupForm = () => {
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
+  const [enableOTP, setEnableOTP] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      email: "",
+    },
+    resolver: yupResolver(schema),
+  });
+
   const onSubmit = () => {
-    navigate("/otp-verify");
+    setEnableOTP(true);
   };
+
+  if (enableOTP) {
+    return <OtpSignUp />;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
@@ -26,6 +51,7 @@ const SignupForm = () => {
           backgroundColor={colors.forminput}
           placeholder="Email Address/ Mobile No."
           _placeholder={{ color: colors.light_gray }}
+          error={errors.email?.message}
         />
       </VStack>
 

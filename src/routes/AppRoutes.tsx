@@ -6,7 +6,6 @@ import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
-import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
@@ -45,12 +44,12 @@ const routes = [
     element: <SignUp />,
   },
   {
-    path: NAVIGATION_ROUTES.OTPVERIFY,
-    element: <OtpSignUp />,
-  },
-  {
     path: NAVIGATION_ROUTES.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    path: NAVIGATION_ROUTES.NO_MATCH,
+    element: <Login />,
   },
 ];
 

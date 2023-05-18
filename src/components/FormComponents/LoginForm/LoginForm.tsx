@@ -1,30 +1,46 @@
 import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "@nepMeds/components/Form/Input";
 import { useLoginMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { SubmitHandler, set, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Hide, Lock, Message, Show } from "react-iconly";
 import { Link } from "react-router-dom";
-import { Spinner } from "@chakra-ui/react";
+import * as yup from "yup";
+
+const schema = yup.object().shape({
+  email: yup
+    .string()
+    .email("Please enter a valid email!")
+    .required("Email is required!"),
+  password: yup.string().required("Password is required"),
+});
+
 const LoginForm = () => {
+  const loginAction = useLoginMutation();
+
   const [showPassword, setShowPassword] = useState(false);
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       email: "",
       password: "",
     },
+    resolver: yupResolver(schema),
   });
-  const loginAction = useLoginMutation();
-  const [loading, setLoading] = useState(false);
+
   const togglepasswordView = () => {
     setShowPassword(!showPassword);
   };
+
   const onSubmit: SubmitHandler<{ email: string; password: string }> = async ({
     email,
     password,
   }) => {
-    setLoading(true);
     loginAction.mutate({ email, password });
   };
 
@@ -42,6 +58,7 @@ const LoginForm = () => {
           backgroundColor={colors.forminput}
           placeholder="Email Address/ Mobile No."
           _placeholder={{ color: colors.light_gray }}
+          error={errors.email?.message}
         />
         <Input
           name="password"
@@ -60,6 +77,7 @@ const LoginForm = () => {
           border="none"
           placeholder="Password"
           _placeholder={{ color: colors.light_gray }}
+          error={errors.password?.message}
         />
       </VStack>
 
@@ -94,8 +112,9 @@ const LoginForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
+          isLoading={loginAction.isLoading}
         >
-          {!loading ? "Login" : <Spinner />}
+          Login
         </Button>
       </HStack>
     </form>
