@@ -1,9 +1,11 @@
 import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useVerifySingUpOTP } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm } from "react-hook-form";
 import OtpInput from "react-otp-input";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -14,6 +16,7 @@ const schema = yup.object().shape({
 });
 
 const OtpForm = () => {
+  const navigate = useNavigate();
   const { getValues, setValue, handleSubmit } = useForm({
     defaultValues: {
       otp: "",
@@ -21,7 +24,17 @@ const OtpForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onFormSubmit = () => {};
+  const verifySingUpOTPAction = useVerifySingUpOTP();
+
+  const onFormSubmit = ({ otp }: { otp: string }) => {
+    try {
+      verifySingUpOTPAction.mutateAsync({ otp });
+      toastSuccess("OTP has been verified successfully!");
+      navigate("/register");
+    } catch (error) {
+      toastFail("Failed to verify OTP!");
+    }
+  };
 
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onFormSubmit)}>

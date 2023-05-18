@@ -1,7 +1,9 @@
 import { Button, HStack, Icon, Text, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "@nepMeds/components/Form/Input";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
+import { useSignUpUser } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,8 +31,16 @@ const SignupForm = () => {
     resolver: yupResolver(schema),
   });
 
-  const onSubmit = () => {
-    setEnableOTP(true);
+  const singUpAction = useSignUpUser();
+
+  const onSubmit = ({ email }: { email: string }) => {
+    try {
+      singUpAction.mutateAsync({ mobile_number: email });
+      setEnableOTP(true);
+      toastSuccess("OTP has been sent to your email!");
+    } catch (error) {
+      toastFail("Failed to sign up!");
+    }
   };
 
   if (enableOTP) {

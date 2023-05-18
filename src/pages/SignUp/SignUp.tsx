@@ -7,7 +7,7 @@ const SignUp = () => {
   return (
     <LayoutContainer>
       <Header />
-      <Wrapper title="Welcome back!" subtitle="Sign Up to your account">
+      <Wrapper title="Welcome!" subtitle="Sign Up to your account">
         <SignupForm />
       </Wrapper>
     </LayoutContainer>
