@@ -23,9 +23,11 @@
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * **login component:** slicing started for login component ([f8d1632](https://gitlab.com/r2850/nepmeds/commit/f8d163273265dc1dada652904f7cf85a60c8c16e))
 * **login, signup and otp component:** modified login, added signup and otp (wip) ([9fcb4b3](https://gitlab.com/r2850/nepmeds/commit/9fcb4b32b0c646f71ab088749a63b887740c16f3))
+* **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))
 * **sign up:** changes in styles,removed component,otp input,api ([079389d](https://gitlab.com/r2850/nepmeds/commit/079389d3d93e597a0be7a35fb0a013cdb751aec7))
+* **stepper form components:** integrated apis ([66ec744](https://gitlab.com/r2850/nepmeds/commit/66ec7445c7764139c7b500fe188570bd41b20a0d))
 * **stepper form field name:** changes in form field name ([fa90159](https://gitlab.com/r2850/nepmeds/commit/fa90159f2e8de00e1ad1fcd7d797694d3126d34c))
 * **stepper forms:** created stepper forms and adjusted styles ([db8e878](https://gitlab.com/r2850/nepmeds/commit/db8e87873ff7993fdcf27f2bb2052e1f25b9f253))
 

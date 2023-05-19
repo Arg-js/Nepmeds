@@ -1,0 +1,43 @@
+.react-calendar{
+    border-radius: 12px;
+    width: 416px;
+}
+.react-calendar__tile--now {
+    background: linear-gradient(135deg, #FFCFAD 0%, #FA8532 100%);
+    border-radius: 50%;
+    height: 40px;
+    width: 40px;
+}
+.react-calendar__tile--active {
+    background: linear-gradient(135deg, #FFCFAD 0%, #FA8532 100%);
+    color: white;
+}
+.react-calendar__navigation__prev2-button,
+.react-calendar__navigation__next2-button
+{
+    visibility: hidden !important;
+
+}
+.react-calendar__navigation{
+    position: relative;
+}
+.react-calendar__navigation__prev-button{
+    position: absolute;
+    right:18%;
+    top: 30%;
+    font-size: 24px;
+
+}
+.react-calendar__navigation__next-button{
+    position: absolute;
+    right:10%;
+    top: 30%;
+    font-size: 24px;
+
+
+}
+.react-calendar__navigation__label{
+    position: absolute;
+    top:32%;
+    left: 5%;
+}
