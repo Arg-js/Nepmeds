@@ -7,7 +7,7 @@ import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 export const CertificationInfoForm = () => {
-  const { control, register } = useFormContext<IRegisterFields>();
+  const { control, register, setValue } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",
@@ -16,63 +16,86 @@ export const CertificationInfoForm = () => {
     <>
       {fields.map((item, index) => {
         return (
-          <Flex gap={6} alignItems="flex-end" key={item.id} mb={6}>
-            <Controller
-              render={({ field }) => (
-                <FloatingLabelInput
-                  label="Title"
-                  register={register}
-                  style={{ background: colors.forminput, border: "none" }}
-                  {...field}
-                />
-              )}
-              name={`certification.${index}.title`}
-              control={control}
-            />
+          <Flex mb={4} key={item.id} flexDirection="column" gap={3}>
+            <Flex gap={6} alignItems="flex-end">
+              <Controller
+                render={({ field }) => (
+                  <FloatingLabelInput
+                    label="Title"
+                    register={register}
+                    style={{ background: colors.forminput, border: "none" }}
+                    {...field}
+                  />
+                )}
+                name={`certification.${index}.title`}
+                control={control}
+              />
+              <Controller
+                render={({ field }) => (
+                  <FloatingLabelInput
+                    label="Issued  By"
+                    register={register}
+                    style={{ background: colors.forminput, border: "none" }}
+                    {...field}
+                  />
+                )}
+                name={`certification.${index}.issued_by`}
+                control={control}
+              />
 
-            <Controller
-              render={({ field }) => (
-                <FloatingLabelInput
-                  label="Issued  By"
-                  register={register}
-                  style={{ background: colors.forminput, border: "none" }}
-                  {...field}
-                />
-              )}
-              name={`certification.${index}.issuedBy`}
-              control={control}
-            />
+              <Controller
+                render={({ field }) => (
+                  <FloatingLabelInput
+                    label="Credential ID"
+                    register={register}
+                    style={{ background: colors.forminput, border: "none" }}
+                    {...field}
+                  />
+                )}
+                name={`certification.${index}.certificate_number`}
+                control={control}
+              />
 
-            <Controller
-              render={({ field }) => (
-                <FloatingLabelInput
-                  label="College/ University"
-                  register={register}
-                  style={{ background: colors.forminput, border: "none" }}
-                  {...field}
-                />
-              )}
-              name={`certification.${index}.credentialId`}
-              control={control}
-            />
+              <Controller
+                render={({ field }) => (
+                  <FloatingLabelInput
+                    label="Issued Date"
+                    register={register}
+                    type="date"
+                    style={{ background: colors.forminput, border: "none" }}
+                    {...field}
+                  />
+                )}
+                name={`certification.${index}.certificate_issued_date`}
+                control={control}
+              />
+            </Flex>
 
-            <Controller
-              render={({ field }) => (
-                <FloatingLabelInput
-                  label="Issued Date"
-                  register={register}
-                  type="date"
-                  style={{ background: colors.forminput, border: "none" }}
-                  {...field}
-                />
-              )}
-              name={`certification.${index}.issuedDate`}
-              control={control}
-            />
+            <Flex>
+              <Controller
+                render={({ field: { value, ...otherFields } }) => (
+                  <FloatingLabelInput
+                    label="Upload Document"
+                    register={register}
+                    type="file"
+                    style={{ background: colors.forminput, border: "none" }}
+                    {...otherFields}
+                    onChange={e => {
+                      setValue(
+                        `certification.${index}.file`,
+                        e.target.files?.[0]
+                      );
+                    }}
+                  />
+                )}
+                name={`certification.${index}.file`}
+                control={control}
+              />
 
-            <Button type="button" onClick={() => remove(index)}>
-              <Icon as={Delete} fontSize={20} color={colors.error} />
-            </Button>
+              <Button type="button" onClick={() => remove(index)} w="auto">
+                <Icon as={Delete} fontSize={20} color={colors.error} />
+              </Button>
+            </Flex>
           </Flex>
         );
       })}
@@ -86,7 +109,14 @@ export const CertificationInfoForm = () => {
         size="sm"
         mb={8}
         onClick={() =>
-          append({ title: "", issuedBy: "", credentialId: "", issuedDate: "" })
+          append({
+            doctor: 0,
+            title: "",
+            issued_by: "",
+            certificate_number: "",
+            certificate_issued_date: "",
+            file: undefined,
+          })
         }
       >
         Add Another Certification Detail

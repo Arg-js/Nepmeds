@@ -5,11 +5,11 @@ import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { colors } from "@nepMeds/theme/colors";
-import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 export const ExperienceForm = () => {
-  const { control, register } = useForm<IRegisterFields>();
+  const { control, register, setValue } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experience",
@@ -36,7 +36,7 @@ export const ExperienceForm = () => {
                     {...field}
                   />
                 )}
-                name={`experience.${index}.name`}
+                name={`experience.${index}.hospital`}
                 control={control}
               />
             </GridItem>
@@ -52,7 +52,7 @@ export const ExperienceForm = () => {
                     {...field}
                   />
                 )}
-                name={`experience.${index}.from`}
+                name={`experience.${index}.from_date`}
                 control={control}
               />
             </GridItem>
@@ -67,7 +67,7 @@ export const ExperienceForm = () => {
                     {...field}
                   />
                 )}
-                name={`experience.${index}.to`}
+                name={`experience.${index}.to_date`}
                 control={control}
               />
             </GridItem>
@@ -85,7 +85,24 @@ export const ExperienceForm = () => {
                 control={control}
               />
             </GridItem>
-            <GridItem>
+            <GridItem colSpan={4}>
+              <Controller
+                render={({ field: { value, ...otherFields } }) => (
+                  <FloatingLabelInput
+                    type="file"
+                    register={register}
+                    label="Upload File"
+                    {...otherFields}
+                    onChange={e =>
+                      setValue(`experience.${index}.file`, e.target.files?.[0])
+                    }
+                  />
+                )}
+                name={`experience.${index}.file`}
+                control={control}
+              />
+            </GridItem>
+            <GridItem colSpan={3}>
               <Controller
                 render={({ field: { value, ...fieldValues } }) => (
                   <Checkbox
@@ -95,12 +112,13 @@ export const ExperienceForm = () => {
                     checked={value}
                   />
                 )}
-                name={`experience.${index}.currentWorking`}
+                name={`experience.${index}.currently_working`}
                 control={control}
               />
             </GridItem>
-            <GridItem gridColumn={4}>
-              <Button type="button" onClick={() => remove(index)}>
+
+            <GridItem colSpan={1} justifyContent="flex-end" display="grid">
+              <Button type="button" onClick={() => remove(index)} w="auto">
                 <Icon as={Delete} fontSize={20} color={colors.error} />
               </Button>
             </GridItem>
@@ -118,11 +136,13 @@ export const ExperienceForm = () => {
         mb={8}
         onClick={() =>
           append({
-            name: "",
-            from: "",
-            to: "",
+            doctor: 0,
+            hospital: "",
             description: "",
-            currentWorking: false,
+            from_date: "",
+            to_date: "",
+            currently_working: false,
+            file: undefined as File | undefined,
           })
         }
       >

@@ -10,7 +10,7 @@ import Select from "@nepMeds/components/Form/Select";
 import { year } from "@nepMeds/utils/choices";
 
 export const AcademicInfoForm = () => {
-  const { control, register } = useFormContext<IRegisterFields>();
+  const { control, register, setValue } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
@@ -63,13 +63,6 @@ export const AcademicInfoForm = () => {
 
               <Controller
                 render={({ field }) => (
-                  // <FloatingLabelInput
-                  //   label="Passed Year"
-                  //   register={register}
-                  //   type="date"
-                  //   style={{ background: colors.forminput, border: "none" }}
-                  //   {...field}
-                  // />
                   <Select
                     placeholder=""
                     label="Passed Year"
@@ -89,13 +82,16 @@ export const AcademicInfoForm = () => {
             </Flex>
             <Flex>
               <Controller
-                render={({ field }) => (
+                render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
                     label="Upload Document"
                     register={register}
                     type="file"
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
+                    {...otherFields}
+                    onChange={e =>
+                      setValue(`academic.${index}.file`, e.target.files?.[0])
+                    }
                   />
                 )}
                 name={`academic.${index}.file`}
@@ -124,8 +120,8 @@ export const AcademicInfoForm = () => {
             degree_program: "",
             major: "",
             university: "",
-            graduation_year: 2019,
-            file: [],
+            graduation_year: "",
+            file: undefined,
           })
         }
       >

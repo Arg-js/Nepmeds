@@ -79,6 +79,9 @@ export const theme = extendTheme({
       ".chakra-step__separator": {
         border: `1px dashed ${colors.white}`,
       },
+      "div.chakra-modal__content-container": {
+        alignItems: "center",
+      },
     },
   },
   fontSizes: {
