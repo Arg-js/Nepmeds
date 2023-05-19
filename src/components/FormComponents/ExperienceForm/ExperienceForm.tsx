@@ -85,21 +85,7 @@ export const ExperienceForm = () => {
                 control={control}
               />
             </GridItem>
-            <GridItem>
-              <Controller
-                render={({ field: { value, ...fieldValues } }) => (
-                  <Checkbox
-                    label="Currently working here"
-                    control={control}
-                    {...fieldValues}
-                    checked={value}
-                  />
-                )}
-                name={`experience.${index}.currently_working`}
-                control={control}
-              />
-            </GridItem>
-            <GridItem>
+            <GridItem colSpan={4}>
               <Controller
                 render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
@@ -116,8 +102,23 @@ export const ExperienceForm = () => {
                 control={control}
               />
             </GridItem>
-            <GridItem gridColumn={4}>
-              <Button type="button" onClick={() => remove(index)}>
+            <GridItem colSpan={3}>
+              <Controller
+                render={({ field: { value, ...fieldValues } }) => (
+                  <Checkbox
+                    label="Currently working here"
+                    control={control}
+                    {...fieldValues}
+                    checked={value}
+                  />
+                )}
+                name={`experience.${index}.currently_working`}
+                control={control}
+              />
+            </GridItem>
+
+            <GridItem colSpan={1} justifyContent="flex-end" display="grid">
+              <Button type="button" onClick={() => remove(index)} w="auto">
                 <Icon as={Delete} fontSize={20} color={colors.error} />
               </Button>
             </GridItem>

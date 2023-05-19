@@ -9,6 +9,8 @@ import {
   StepStatus,
   StepTitle,
 } from "@chakra-ui/stepper";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { svgs } from "@nepMeds/assets/svgs";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
@@ -22,6 +24,7 @@ import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { useDisclosure } from "@chakra-ui/react";
 
 const registerDefaultValues = {
   image: undefined as undefined | [],
@@ -90,6 +93,9 @@ export type IRegisterFields = typeof registerDefaultValues;
 const RegistrationForm = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [doctor, setDoctor] = React.useState(0);
+  const [name, setName] = React.useState("");
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
   const certificationInfoRegister = useCertificateInfoRegister();
@@ -139,6 +145,7 @@ const RegistrationForm = () => {
             .then(response => {
               const { data } = response.data;
               setDoctor(data?.doctor.id);
+              setName(data?.user.first_name);
               setActiveStep(prev => prev + 1);
             });
         } catch (error) {
@@ -187,19 +194,16 @@ const RegistrationForm = () => {
       case 4: {
         try {
           const lastValue = values.experience.length - 1;
-          experienceInfoRegister
-            .mutateAsync({
-              doctor: doctor,
-              hospital: values.experience[lastValue].hospital,
-              description: values.experience[lastValue].description,
-              currently_working: values.experience[lastValue].currently_working,
-              from_date: values.experience[lastValue].from_date,
-              to_date: values.experience[lastValue].to_date,
-              file: values.experience[lastValue].file,
-            })
-            .then(
-              response => response && alert("Successfully registered doctor!!")
-            );
+          await experienceInfoRegister.mutateAsync({
+            doctor: doctor,
+            hospital: values.experience[lastValue].hospital,
+            description: values.experience[lastValue].description,
+            currently_working: values.experience[lastValue].currently_working,
+            from_date: values.experience[lastValue].from_date,
+            to_date: values.experience[lastValue].to_date,
+            file: values.experience[lastValue].file,
+          });
+          onOpen();
         } catch (error) {
           toastFail("Please check form values");
         }
@@ -348,6 +352,30 @@ const RegistrationForm = () => {
           </Flex>
         </form>
       </FormProvider>
+
+      <ModalComponent
+        isOpen={isOpen}
+        onClose={onClose}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Confirmation</Text>
+          </HStack>
+        }
+        primaryText="Okay"
+      >
+        <svgs.confirmed style={{ margin: "0 auto" }} />
+        <VStack>
+          <Heading
+            fontSize="lg"
+            fontWeight={600}
+          >{`Hello, Dr. ${name}`}</Heading>
+          <Text>
+            Your account has been on approval process. After approval you will
+            be informed on your email or mobile number.
+          </Text>
+        </VStack>
+      </ModalComponent>
     </Box>
   );
 };
