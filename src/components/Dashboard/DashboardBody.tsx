@@ -6,29 +6,36 @@ import { images } from "@nepMeds/assets/images";
 import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/reactCalender.css";
 
+interface IDashboardData {
+  title: string;
+  no: number;
+  path: string;
+}
+
+const dashboardDatas: IDashboardData[] = [
+  {
+    title: "No. of Patient",
+    no: 232,
+    path: images?.dashboard1,
+  },
+  {
+    title: "Appointments",
+    no: 232,
+    path: images?.dashboard2,
+  },
+  {
+    title: "Pending Appointments",
+    no: 232,
+    path: images?.dashboard3,
+  },
+  {
+    title: "Follow - Ups",
+    no: 232,
+    path: images?.dashboard4,
+  },
+];
+
 const DashboardBody = () => {
-  const dashboardDatas = [
-    {
-      title: "No. of Patient",
-      no: 232,
-      path: images?.dashboard1,
-    },
-    {
-      title: "Appointments",
-      no: 232,
-      path: images?.dashboard2,
-    },
-    {
-      title: "Pending Appointments",
-      no: 232,
-      path: images?.dashboard3,
-    },
-    {
-      title: "Follow - Ups",
-      no: 232,
-      path: images?.dashboard4,
-    },
-  ];
   return (
     <>
       <SimpleGrid
@@ -36,10 +43,10 @@ const DashboardBody = () => {
         templateColumns="repeat(4, 1fr)"
         margin={"28px 19px 20px"}
       >
-        {dashboardDatas.map((dashboardData, index) => {
+        {dashboardDatas.map(dashboardData => {
           return (
             <Card
-              key={index}
+              key={dashboardData.title.trim()}
               boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
               backdropFilter={"blur(11px)"}
               borderRadius={"20px"}
@@ -57,7 +64,7 @@ const DashboardBody = () => {
                       fontSize={"14px"}
                       lineHeight={"24px"}
                       letterSpacing={"-0.02em"}
-                      color={"#2F5496"}
+                      color={colors?.primary_blue}
                     >
                       {dashboardData?.title}
                     </Text>

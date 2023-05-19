@@ -10,6 +10,50 @@ import {
 } from "react-iconly";
 
 import { images } from "@nepMeds/assets/images";
+import { colors } from "@nepMeds/theme/colors";
+type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
+interface ISidebarOption {
+  icon: React.ElementType;
+  set: IconSet;
+  text: string;
+}
+const sidebarOptions: ISidebarOption[] = [
+  {
+    icon: Category,
+    set: "two-tone",
+    text: "Dashboard",
+  },
+  {
+    icon: TimeCircle,
+    set: "light",
+    text: "Appoinments",
+  },
+  {
+    icon: Call,
+    set: "light",
+    text: "Follow Up",
+  },
+  {
+    icon: Paper,
+    set: "light",
+    text: "Patient's History",
+  },
+  {
+    icon: Calendar,
+    set: "light",
+    text: "Calender",
+  },
+  {
+    icon: Work,
+    set: "light",
+    text: "Bank Details",
+  },
+  {
+    icon: Wallet,
+    set: "light",
+    text: "Payment",
+  },
+];
 
 const Sidebar = () => {
   return (
@@ -18,40 +62,30 @@ const Sidebar = () => {
         <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={20} />
         <Box p={"0 8px"}>
           <List ml={8} spacing={8}>
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Category set="two-tone" primaryColor="black" />
-              <Text ml={"18px"}>Dashboard</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <TimeCircle set="light" primaryColor="black" />
-              <Text ml={"18px"}>Appoinments</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Call set="light" primaryColor="black" />
-              <Text ml={"18px"}>Follow Up</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Paper set="light" primaryColor="black" />
-              <Text ml={"18px"}>Patient’s History</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Calendar set="light" primaryColor="black" />
-              <Text ml={"18px"}>Calender</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Work set="light" primaryColor="black" />
-              <Text ml={"18px"}>Bank Details</Text>
-            </ListItem>
-
-            <ListItem display={"flex"} alignItems={"center"}>
-              <Wallet set="light" primaryColor="black" />
-              <Text ml={"18px"}>Payment</Text>
-            </ListItem>
+            {sidebarOptions.map(sidebarOption => {
+              return (
+                <ListItem
+                  display={"flex"}
+                  alignItems={"center"}
+                  key={sidebarOption.text.trim()}
+                >
+                  <sidebarOption.icon
+                    set={sidebarOption.set}
+                    primaryColor={colors?.black_50}
+                    size={20}
+                  />
+                  <Text
+                    fontWeight={"400"}
+                    fontSize={"14px"}
+                    lineHeight={"17px"}
+                    color={colors?.black_50}
+                    ml={"18px"}
+                  >
+                    {sidebarOption?.text}
+                  </Text>
+                </ListItem>
+              );
+            })}
           </List>
         </Box>
       </Stack>
