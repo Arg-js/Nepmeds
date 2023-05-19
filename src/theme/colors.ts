@@ -30,7 +30,11 @@ export const colors = {
   blue_100: "#5593F1",
   /**blue-30*/
   blue_30: "#B6CAE8",
+  /**blue-10 */
+  blue_10: "#F2FBFE",
 
   /**light gray text*/
   light_gray: "#ABAFB1",
+  /**gray-700 */
+  gray_700: "#5B5B5B",
 };
