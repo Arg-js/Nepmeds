@@ -24,6 +24,8 @@ type PrimaryInfo = Pick<
   | "municipality_vdc"
   | "citizenship_issued_date"
   | "citizenship_number"
+  | "ward"
+  | "tole"
   | "pan_number"
 > & {
   specialization: string[];
