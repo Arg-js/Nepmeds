@@ -17,8 +17,7 @@ const ModalComponent = ({
   secondaryText,
   isOpen,
   onClose,
-}: // navigateTo,
-IModalProps) => {
+}: IModalProps) => {
   return (
     <>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -35,7 +34,6 @@ IModalProps) => {
           <ModalFooter justifyContent="center">
             <Button
               mr={3}
-              // onClick={navigateTo}
               background={colors.primary}
               color={colors.white}
               borderRadius={12}
@@ -57,7 +55,6 @@ interface IModalProps {
   primaryText: string;
   secondaryText?: string;
   isOpen: boolean;
-  // navigateTo: () => void;
   onClose: () => void;
 }
 
