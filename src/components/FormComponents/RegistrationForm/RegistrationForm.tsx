@@ -387,6 +387,7 @@ const RegistrationForm = () => {
       <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
+        align={true}
         heading={
           <HStack>
             <svgs.logo_small />

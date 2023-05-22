@@ -44,4 +44,7 @@ export const colors = {
   gray_700: "#5B5B5B",
 
   bg: "#F4F5FA",
+
+  /** table header*/
+  table_header: "#D1F4FF",
 };

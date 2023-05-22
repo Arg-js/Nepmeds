@@ -17,8 +17,10 @@ const ModalComponent = ({
   primaryText,
   secondaryText,
   isOpen,
+  onApiCall,
   onClose,
   size,
+  otherAction,
 }: IModalProps) => {
   return (
     <>
@@ -32,6 +34,7 @@ const ModalComponent = ({
           <ModalFooter justifyContent="center">
             <Button
               mr={3}
+              onClick={onApiCall || onClose}
               background={colors.primary}
               color={colors.white}
               borderRadius={12}
@@ -39,7 +42,11 @@ const ModalComponent = ({
             >
               {primaryText}
             </Button>
-            {secondaryText && <Button variant="ghost">{secondaryText}</Button>}
+            {secondaryText && (
+              <Button variant="ghost" onClick={otherAction}>
+                {secondaryText}
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -55,6 +62,8 @@ interface IModalProps {
   isOpen: boolean;
   onClose: () => void;
   size?: ModalProps["size"];
+  onApiCall?: () => void;
+  otherAction?: () => void;
 }
 
 export default ModalComponent;

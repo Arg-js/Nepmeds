@@ -1,6 +1,7 @@
 import Layout from "@nepMeds/components/Layout";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
 import Dashboard from "@nepMeds/pages/Dashboard";
+import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
 import Login from "@nepMeds/pages/Login/Login";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
@@ -25,6 +26,10 @@ const routes = [
       {
         path: NAVIGATION_ROUTES.MASTER_DATA,
         element: <MasterData />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_LIST,
+        element: <AllDoctors />,
       },
     ],
   },

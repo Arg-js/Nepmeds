@@ -30,6 +30,7 @@
     "@hookform/resolvers": "^3.1.0",
     "@tanstack/react-table": "^8.9.1",
     "@types/react-calendar": "^4.1.0",
+    "@types/react-table": "^7.7.14",
     "axios": "^1.4.0",
     "framer-motion": "^10.12.9",
     "http-status": "^1.6.2",
@@ -49,6 +50,7 @@
     "react-router-dom": "^6.3.0",
     "react-select": "^5.7.3",
     "react-svg": "^16.1.10",
+    "react-table": "^7.8.0",
     "yup": "^0.32.11"
   },
   "devDependencies": {
