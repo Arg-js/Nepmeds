@@ -9,6 +9,8 @@ import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import ApprovedDoctor from "@nepMeds/pages/DoctorList/ApprovedDoctor";
+import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
 
 const routes = [
   {
@@ -46,6 +48,10 @@ const routes = [
   {
     path: NAVIGATION_ROUTES.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DOCTOR_LIST,
+    element: <AllDoctors />,
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,

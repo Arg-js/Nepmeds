@@ -11,5 +11,6 @@ export const NAVIGATION_ROUTES = {
   SIGNUP: "/signup",
   OTPVERIFY: "/otp-verify",
   DASHBOARD: "/dashboard",
+  DOCTOR_LIST: "/doctor-list",
   NO_MATCH: "*",
 };

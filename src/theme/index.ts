@@ -82,6 +82,12 @@ export const theme = extendTheme({
       "div.chakra-modal__content-container": {
         alignItems: "center",
       },
+      tr: {
+        height: "48px",
+      },
+      "tr:nth-of-type(even)": {
+        background: colors.blue_10,
+      },
     },
   },
   fontSizes: {

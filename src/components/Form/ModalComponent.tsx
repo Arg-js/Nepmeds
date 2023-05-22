@@ -16,7 +16,10 @@ const ModalComponent = ({
   primaryText,
   secondaryText,
   isOpen,
+  align,
+  onApiCall,
   onClose,
+  otherAction,
 }: IModalProps) => {
   return (
     <>
@@ -26,7 +29,11 @@ const ModalComponent = ({
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
           <ModalBody
-            style={{ width: "50%", margin: "0 auto", textAlign: "center" }}
+            style={{
+              width: align ? "50%" : "100%",
+              margin: align ? "0 auto" : "initial",
+              textAlign: align ? "center" : "initial",
+            }}
           >
             {children}
           </ModalBody>
@@ -34,7 +41,7 @@ const ModalComponent = ({
           <ModalFooter justifyContent="center">
             <Button
               mr={3}
-              onClick={onClose}
+              onClick={onApiCall || onClose}
               background={colors.primary}
               color={colors.white}
               borderRadius={12}
@@ -42,7 +49,11 @@ const ModalComponent = ({
             >
               {primaryText}
             </Button>
-            {secondaryText && <Button variant="ghost">{secondaryText}</Button>}
+            {secondaryText && (
+              <Button variant="ghost" onClick={otherAction}>
+                {secondaryText}
+              </Button>
+            )}
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -52,11 +63,14 @@ const ModalComponent = ({
 
 interface IModalProps {
   heading: JSX.Element;
+  align: boolean;
   children: JSX.Element | JSX.Element[];
   primaryText: string;
   secondaryText?: string;
   isOpen: boolean;
   onClose: () => void;
+  onApiCall?: () => void;
+  otherAction?: () => void;
 }
 
 export default ModalComponent;

@@ -8,6 +8,9 @@ export const api = {
   certificate: "/user_management/certificate",
   experience: "/user_management/experience",
   specialization: "/doctor_consult/specialization",
+  registereddoctor: "/dashboard/registered_doctor_list",
+  pendingdoctor: "/dashboard/pending_doctor_list",
+  approveddoctor: "/dashboard/approved_doctor_list",
 };
 
 export interface NepMedsResponse<T = any> {

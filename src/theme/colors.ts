@@ -40,4 +40,7 @@ export const colors = {
   light_gray: "#ABAFB1",
   /**gray-700 */
   gray_700: "#5B5B5B",
+
+  /** table header*/
+  table_header: "#D1F4FF",
 };
