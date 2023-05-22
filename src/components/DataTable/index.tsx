@@ -12,6 +12,7 @@ import {
   Thead,
   Tr,
 } from "@chakra-ui/react";
+import { colors } from "@nepMeds/theme/colors";
 import {
   ColumnDef,
   GroupingState,
@@ -26,7 +27,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Dispatch, SetStateAction, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Pagination from "./Pagination";
 
 export type DataTableProps = {
@@ -45,7 +46,6 @@ export type DataTableProps = {
   };
   filter?: {
     globalFilter: string;
-    setGlobalFilter: Dispatch<SetStateAction<string>>;
   };
   sortingColumn?: string;
   setTable?: (table: any) => void;
@@ -97,18 +97,15 @@ export function DataTable({
     columns,
     data,
     state: {
-      globalFilter: filter?.globalFilter,
       grouping,
       sorting,
     },
-
     getFilteredRowModel: getFilteredRowModel(),
     onGroupingChange: setGrouping,
     getGroupedRowModel: getGroupedRowModel(),
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-    onGlobalFilterChange: filter?.setGlobalFilter,
     ...paginationParams,
   });
 
@@ -125,10 +122,15 @@ export function DataTable({
     );
   }, [columns, data, table]);
 
+  useEffect(() => {
+    table.setGlobalFilter(filter?.globalFilter || "");
+  }, [filter?.globalFilter]);
+
   return (
     <>
       <Box
         overflowX={isLoading ? "hidden" : "scroll"}
+        mt={5}
         pb={2}
         css={{
           scrollbarGutter: "stable",
@@ -171,6 +173,9 @@ export function DataTable({
                       colSpan={header.colSpan}
                       textTransform="capitalize"
                       whiteSpace="nowrap"
+                      bg={colors.table_header}
+                      color={colors.primary}
+                      fontSize={14}
                       style={{
                         width: `${columns[index]?.size}%` ?? header.getSize(),
                         textAlign:

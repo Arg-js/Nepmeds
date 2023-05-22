@@ -110,6 +110,7 @@ const LoginForm = () => {
           textColor={colors.white}
           type="submit"
           isLoading={loginAction.isLoading}
+          variant="register"
         >
           Login
         </Button>

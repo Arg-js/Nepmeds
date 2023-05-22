@@ -3,7 +3,7 @@ import { colors } from "./colors";
 
 export const InputTheme: ComponentStyleConfig = {
   baseStyle: {
-    field: { fontSize: 14, minHeight: 13 },
+    field: { fontSize: 14 },
     element: {
       minHeight: 11,
       "&.chakra-input__left-element": { width: "auto", ml: 4 },

@@ -349,6 +349,7 @@ const RegistrationForm = () => {
               color={colors.white}
               fontWeight={400}
               isDisabled={activeStep === 0}
+              variant="register"
             >
               Go Back
             </Button>
@@ -360,6 +361,7 @@ const RegistrationForm = () => {
                   border={`1px solid ${colors.primary}`}
                   color={colors.primary}
                   fontWeight={400}
+                  variant="register"
                 >
                   Skip
                 </Button>
@@ -376,6 +378,7 @@ const RegistrationForm = () => {
                 color={colors.white}
                 fontWeight={400}
                 type="submit"
+                variant="register"
               >
                 Next Step
               </Button>
@@ -387,7 +390,6 @@ const RegistrationForm = () => {
       <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
-        align={true}
         heading={
           <HStack>
             <svgs.logo_small />

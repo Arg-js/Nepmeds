@@ -26,6 +26,7 @@ const Select = ({
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
       <ChakraSelect
+        sx={{ background: colors.forminput }}
         {...register(name, rules)}
         {...rest}
         id={name}

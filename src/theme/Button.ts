@@ -7,15 +7,8 @@ const p = {
 
 export const ButtonTheme: ComponentStyleConfig = {
   baseStyle: {
-    w: 180,
-    minH: 14.5,
-    ...p,
+    // minH: 14.5,
   },
-  sizes: {
-    sm: { ...p, minHeight: 10.5 },
-    md: { ...p },
-    lg: { ...p },
-    xl: { ...p },
-    "2xl": { ...p },
-  },
+  sizes: {},
+  variants: { register: { ...p, w: 180 } },
 };

@@ -1,4 +1,4 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
@@ -15,6 +15,7 @@ export interface Symptom {
   keyword: string;
   file?: string;
 }
+
 const getSpecializationData = async () => {
   const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
     api.specialization
@@ -26,3 +27,25 @@ export const useSpecializationData = () =>
   useQuery(api.specialization, getSpecializationData, {
     select: res => res.data.data,
   });
+
+const saveSpecialization = async (specializationInfo: {
+  id: string | null;
+  name: string;
+  symptom: string;
+}) => {
+  const response = await HttpClient.post<NepMedsResponse>(
+    api.specialization,
+    specializationInfo
+  );
+  return response;
+};
+
+export const useSaveSpecialization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(saveSpecialization, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.specialization);
+    },
+  });
+};

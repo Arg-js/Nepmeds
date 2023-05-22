@@ -16,7 +16,6 @@ const MultiSelect = ({
   options,
   helperText,
   name,
-  value,
   isRequired,
   selectControl,
   style,
@@ -53,7 +52,10 @@ const MultiSelect = ({
               styles={{
                 control: baseStyles => ({
                   ...baseStyles,
-                  height: "58px",
+                  background: colors.forminput,
+                  border: "none",
+                  paddingTop: 20,
+                  minHeight: "58px",
                   borderRadius: "8px",
                   borderWidth: error ? "2px" : "1px",
                   ...style,

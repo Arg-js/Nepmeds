@@ -5,7 +5,7 @@ import Symptoms from "./Symptoms";
 const MasterData = () => {
   return (
     <Tabs>
-      <TabList border="none">
+      <TabList border="none" mb={4} p={4}>
         <Tab>Symptoms</Tab>
         <Tab>Specialist</Tab>
       </TabList>

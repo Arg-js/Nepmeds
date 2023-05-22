@@ -89,6 +89,7 @@ const SignupForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
+          variant="register"
         >
           Sign Up
         </Button>

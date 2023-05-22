@@ -10,6 +10,7 @@ import {
   ModalProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
+import { ReactNode } from "react";
 
 const ModalComponent = ({
   heading,
@@ -21,6 +22,7 @@ const ModalComponent = ({
   onClose,
   size,
   otherAction,
+  footer,
 }: IModalProps) => {
   return (
     <>
@@ -32,20 +34,24 @@ const ModalComponent = ({
           <ModalBody textAlign="center">{children}</ModalBody>
 
           <ModalFooter justifyContent="center">
-            <Button
-              mr={3}
-              onClick={onApiCall || onClose}
-              background={colors.primary}
-              color={colors.white}
-              borderRadius={12}
-              size="md"
-            >
-              {primaryText}
-            </Button>
-            {secondaryText && (
-              <Button variant="ghost" onClick={otherAction}>
-                {secondaryText}
-              </Button>
+            {footer || (
+              <>
+                <Button
+                  mr={3}
+                  onClick={onApiCall || onClose}
+                  background={colors.primary}
+                  color={colors.white}
+                  borderRadius={12}
+                  size="md"
+                >
+                  {primaryText}
+                </Button>
+                {secondaryText && (
+                  <Button variant="ghost" onClick={otherAction}>
+                    {secondaryText}
+                  </Button>
+                )}
+              </>
             )}
           </ModalFooter>
         </ModalContent>
@@ -57,13 +63,14 @@ const ModalComponent = ({
 interface IModalProps {
   heading: JSX.Element;
   children: JSX.Element | JSX.Element[];
-  primaryText: string;
+  primaryText?: string;
   secondaryText?: string;
   isOpen: boolean;
   onClose: () => void;
   size?: ModalProps["size"];
   onApiCall?: () => void;
   otherAction?: () => void;
+  footer?: ReactNode;
 }
 
 export default ModalComponent;
