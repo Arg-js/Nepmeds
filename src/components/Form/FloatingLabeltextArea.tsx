@@ -7,7 +7,7 @@ import {
   TextareaProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 const FloatinglabelTextArea = ({
   label,
@@ -23,7 +23,17 @@ const FloatinglabelTextArea = ({
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
       <Textarea
-        sx={{ fontSize: 14, height: 120 }}
+        sx={{
+          fontSize: 14,
+          pt: 5,
+          pl: 4,
+          pr: 8,
+          pb: 2,
+          height: 120,
+          background: colors.forminput,
+          border: "none",
+          borderRadius: "sm",
+        }}
         id={name}
         size="xl"
         resize={"none"}
@@ -43,8 +53,7 @@ const FloatinglabelTextArea = ({
   );
 };
 
-export interface ITextArea<TFieldValues extends FieldValues = FieldValues>
-  extends TextareaProps {
+export interface ITextArea extends TextareaProps {
   label?: string;
   helperText?: string;
   error?: string;

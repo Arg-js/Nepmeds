@@ -10,6 +10,10 @@ export const NAVIGATION_ROUTES = {
   LOGIN: "/",
   SIGNUP: "/signup",
   OTPVERIFY: "/otp-verify",
-  DASHBOARD: "/dashboard",
+
+  LOGGEDIN: "/",
+  DASHBOARD: "dashboard",
+  MASTER_DATA: "master-data",
+
   NO_MATCH: "*",
 };

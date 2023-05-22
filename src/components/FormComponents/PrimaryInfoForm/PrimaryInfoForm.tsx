@@ -1,9 +1,10 @@
-import Select from "@nepMeds/components/Form/Select";
-import { useFormContext } from "react-hook-form";
 import { Grid, GridItem } from "@chakra-ui/layout";
-import { colors } from "@nepMeds/theme/colors";
-import TextArea from "@nepMeds/components/Form/TextArea";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+import Select from "@nepMeds/components/Form/Select";
+import TextArea from "@nepMeds/components/Form/TextArea";
+import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { colors } from "@nepMeds/theme/colors";
 import {
   district,
   gender,
@@ -12,12 +13,15 @@ import {
   phone,
   province,
 } from "@nepMeds/utils/choices";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useFormContext } from "react-hook-form";
 
 const PrimaryInfo = () => {
   const { register, control } = useFormContext();
-  const specialization = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationData();
+  const specializationOptions = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
@@ -81,7 +85,7 @@ const PrimaryInfo = () => {
       </GridItem>
       <GridItem colSpan={2}>
         <MultiSelect
-          options={specialization.data || []}
+          options={specializationOptions}
           label="Specialization"
           name="specialization"
           selectControl={control}

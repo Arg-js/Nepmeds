@@ -7,6 +7,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
+  ModalProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 
@@ -17,19 +18,16 @@ const ModalComponent = ({
   secondaryText,
   isOpen,
   onClose,
+  size,
 }: IModalProps) => {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose} size={size}>
         <ModalOverlay />
-        <ModalContent style={{ maxWidth: "700px" }}>
+        <ModalContent>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody
-            style={{ width: "50%", margin: "0 auto", textAlign: "center" }}
-          >
-            {children}
-          </ModalBody>
+          <ModalBody textAlign="center">{children}</ModalBody>
 
           <ModalFooter justifyContent="center">
             <Button
@@ -56,6 +54,7 @@ interface IModalProps {
   secondaryText?: string;
   isOpen: boolean;
   onClose: () => void;
+  size?: ModalProps["size"];
 }
 
 export default ModalComponent;

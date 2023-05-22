@@ -61,6 +61,7 @@ const FloatingLabelInput = ({
         pr={8}
         pb={2}
         variant="floating"
+        style={{ background: colors.forminput, border: "none" }}
       />
 
       {label && (

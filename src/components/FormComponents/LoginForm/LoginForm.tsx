@@ -47,7 +47,7 @@ const LoginForm = () => {
         <Input
           name="email"
           register={register}
-          type="emali"
+          type="email"
           startIcon={
             <Icon as={Message} fontSize={20} color={colors.black_40} />
           }

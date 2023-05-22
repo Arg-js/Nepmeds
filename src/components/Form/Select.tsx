@@ -1,13 +1,13 @@
 import {
+  Select as ChakraSelect,
   FormControl,
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  Select as ChakraSelect,
   SelectProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 const Select = ({
   placeholder,
@@ -30,7 +30,7 @@ const Select = ({
         {...rest}
         id={name}
         h={14}
-        pr={8}
+        // pr={8}
       >
         {placeholder && (
           <option value="" disabled={!enabled}>

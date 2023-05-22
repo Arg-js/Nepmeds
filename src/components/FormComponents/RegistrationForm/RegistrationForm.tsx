@@ -1,5 +1,13 @@
 import { Button } from "@chakra-ui/button";
-import { Box, Flex, Heading, HStack, Text, VStack } from "@chakra-ui/layout";
+import {
+  Box,
+  Container,
+  Flex,
+  Heading,
+  HStack,
+  Text,
+  VStack,
+} from "@chakra-ui/layout";
 import { useDisclosure } from "@chakra-ui/react";
 import {
   Step,
@@ -23,9 +31,9 @@ import { useExperienceInfoRegister } from "@nepMeds/service/nepmeds-experience";
 import { usePrimaryInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
-import React from "react";
+import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const registerDefaultValues = {
   image: undefined as undefined | [],
@@ -92,10 +100,12 @@ const registerDefaultValues = {
 export type IRegisterFields = typeof registerDefaultValues;
 
 const RegistrationForm = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [activeStep, setActiveStep] = React.useState(0);
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
-  const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
@@ -237,9 +247,23 @@ const RegistrationForm = () => {
     },
   ];
 
+  useEffect(() => {
+    if (location.state) {
+      const mobileNumber = (location.state as { mobile: string }).mobile;
+      if (mobileNumber) {
+        formMethods.setValue("mobile_number", mobileNumber);
+      } else {
+        navigate("/signup");
+      }
+    } else {
+      navigate("/signup");
+    }
+  }, [location.state]);
+
   const { content } = steps[activeStep];
+
   return (
-    <Box mx={20}>
+    <Container maxW="container.xl" m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
           <HStack
@@ -328,6 +352,7 @@ const RegistrationForm = () => {
             >
               Go Back
             </Button>
+
             <Flex gap={4}>
               {activeStep > 1 && (
                 <Button
@@ -341,6 +366,12 @@ const RegistrationForm = () => {
               )}
               <Button
                 onClick={() => onSubmitForm(formMethods.getValues())}
+                isLoading={
+                  primaryInfoRegister.isLoading ||
+                  academicInfoRegister.isLoading ||
+                  certificationInfoRegister.isLoading ||
+                  experienceInfoRegister.isLoading
+                }
                 background={colors.primary}
                 color={colors.white}
                 fontWeight={400}
@@ -376,7 +407,7 @@ const RegistrationForm = () => {
           </Text>
         </VStack>
       </ModalComponent>
-    </Box>
+    </Container>
   );
 };
 

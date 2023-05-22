@@ -36,8 +36,12 @@ export const colors = {
   /** primary-blue */
   primary_blue: "#2F5496",
 
+  red: "#CC5F5F",
+
   /**light gray text*/
   light_gray: "#ABAFB1",
   /**gray-700 */
   gray_700: "#5B5B5B",
+
+  bg: "#F4F5FA",
 };

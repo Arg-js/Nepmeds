@@ -23,10 +23,6 @@ const getSpecializationData = async () => {
 };
 
 export const useSpecializationData = () =>
-  useQuery("specialization", getSpecializationData, {
-    select: res =>
-      res.data.data.map(s => ({
-        label: s.name,
-        value: s.id,
-      })),
+  useQuery(api.specialization, getSpecializationData, {
+    select: res => res.data.data,
   });

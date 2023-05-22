@@ -2,15 +2,14 @@ import { Flex, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/layout";
 import { FormLabel } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 import Input from "@nepMeds/components/Form/Input";
-import Password from "@nepMeds/components/Form/Password";
 import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 import { title } from "@nepMeds/utils/index";
 import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 
 export const BasicInfoForm = () => {
   const { register } = useFormContext<IRegisterFields>();
@@ -26,7 +25,7 @@ export const BasicInfoForm = () => {
               <svgs.image />
               <HStack>
                 <svgs.upload />
-                <Text>Upload Image</Text>
+                <Text fontSize={14}>Upload Image</Text>
               </HStack>
             </VStack>
           </Flex>

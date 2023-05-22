@@ -1,3 +1,5 @@
+import Layout from "@nepMeds/components/Layout";
+import MasterData from "@nepMeds/pages/Admin/MasterData";
 import Dashboard from "@nepMeds/pages/Dashboard";
 import Login from "@nepMeds/pages/Login/Login";
 import Register from "@nepMeds/pages/Register";
@@ -7,10 +9,32 @@ import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
+import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 
 const routes = [
+  {
+    path: NAVIGATION_ROUTES.LOGGEDIN,
+    element: <Layout />,
+    children: [
+      {
+        path: NAVIGATION_ROUTES.DASHBOARD,
+        element: <Dashboard />,
+      },
+      {
+        path: NAVIGATION_ROUTES.MASTER_DATA,
+        element: <MasterData />,
+      },
+    ],
+  },
+  {
+    path: NAVIGATION_ROUTES.NO_MATCH,
+    element: <Login />,
+  },
+];
+
+const openRoutes = [
   {
     path: NAVIGATION_ROUTES.REGISTER,
     element: <Register />,
@@ -43,18 +67,12 @@ const routes = [
     path: NAVIGATION_ROUTES.SIGNUP,
     element: <SignUp />,
   },
-  {
-    path: NAVIGATION_ROUTES.DASHBOARD,
-    element: <Dashboard />,
-  },
-  {
-    path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Login />,
-  },
 ];
 
 const AppRoutes = () => {
-  return useRoutes(routes);
+  const isAuthenticated = useAuthentication();
+
+  return useRoutes(isAuthenticated ? routes : openRoutes);
 };
 
 export default AppRoutes;

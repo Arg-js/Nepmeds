@@ -6,18 +6,18 @@ import { FormEvent, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
-const OtpForm = () => {
+const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
   const navigate = useNavigate();
-  const [otp, setOtp] = useState("");
+  const [otpCode, setOtp] = useState("");
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
   const onFormSubmit = (e: FormEvent) => {
     try {
       e.preventDefault();
-      verifySingUpOTPAction.mutateAsync({ otp });
+      verifySingUpOTPAction.mutateAsync({ otp: otpCode });
       toastSuccess("OTP has been verified successfully!");
-      navigate("/register");
+      navigate("/register", { state: { mobile } });
     } catch (error) {
       toastFail("Failed to verify OTP!");
     }
@@ -27,7 +27,7 @@ const OtpForm = () => {
     <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
       <VStack gap={7.5} mb={3}>
         <OtpInput
-          value={otp}
+          value={otpCode}
           onChange={val => setOtp(val)}
           numInputs={6}
           inputStyle={{
@@ -43,6 +43,8 @@ const OtpForm = () => {
           inputType="tel"
           renderInput={props => <Input {...props} />}
         />
+
+        <Text>Your OTP is {otp}</Text>
       </VStack>
 
       <p
@@ -84,7 +86,7 @@ const OtpForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
-          isDisabled={otp.length !== 6}
+          isDisabled={otpCode.length !== 6}
         >
           Verify
         </Button>
