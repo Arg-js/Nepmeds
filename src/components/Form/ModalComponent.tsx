@@ -34,7 +34,6 @@ const ModalComponent = ({
           <ModalFooter justifyContent="center">
             <Button
               mr={3}
-              onClick={onClose}
               background={colors.primary}
               color={colors.white}
               borderRadius={12}

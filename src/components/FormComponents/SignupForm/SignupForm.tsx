@@ -12,10 +12,7 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please enter a valid email!")
-    .required("Email is required!"),
+  email: yup.string().required("Email is required!"),
 });
 
 const SignupForm = () => {

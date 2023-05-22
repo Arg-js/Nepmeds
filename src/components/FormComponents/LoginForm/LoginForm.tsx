@@ -10,10 +10,7 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  email: yup
-    .string()
-    .email("Please enter a valid email!")
-    .required("Email is required!"),
+  email: yup.string().required("Email is required!"),
   password: yup.string().required("Password is required"),
 });
 
@@ -63,11 +60,11 @@ const LoginForm = () => {
         <Input
           name="password"
           register={register}
-          type={showPassword ? "password" : "text"}
+          type={showPassword ? "text" : "password"}
           startIcon={<Icon as={Lock} fontSize={20} color={colors.black_40} />}
           endIcons={
             <Icon
-              as={showPassword ? Hide : Show}
+              as={showPassword ? Show : Hide}
               fontSize={20}
               onClick={togglepasswordView}
               cursor="pointer"

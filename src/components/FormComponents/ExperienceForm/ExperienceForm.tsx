@@ -77,7 +77,11 @@ export const ExperienceForm = () => {
                   <FloatinglabelTextArea
                     label="Description"
                     register={register}
-                    style={{ background: colors.forminput, border: "none" }}
+                    style={{
+                      background: colors.forminput,
+                      border: "none",
+                      padding: "17px",
+                    }}
                     {...field}
                   />
                 )}
