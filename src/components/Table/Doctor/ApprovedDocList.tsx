@@ -1,6 +1,3 @@
-import React from "react";
-import "../ComponentTable";
-// import ComponentTable from "../ComponentTable";
 import {
   Badge,
   Divider,
@@ -9,22 +6,20 @@ import {
   Icon,
   Image,
   Text,
-  VStack,
-  color,
   useDisclosure,
 } from "@chakra-ui/react";
-import { CellProps } from "react-table";
-import { Show } from "react-iconly";
+import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { svgs } from "@nepMeds/assets/svgs";
+import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
-import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { colors } from "@nepMeds/theme/colors";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { FormProvider, useForm } from "react-hook-form";
-import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import ComponentTable from "../ComponentTable";
+import { colors } from "@nepMeds/theme/colors";
+import { CellContext } from "@tanstack/react-table";
+import React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { Show } from "react-iconly";
 
 const ApprovedDocList = () => {
   const {
@@ -42,30 +37,30 @@ const ApprovedDocList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "S.N",
-        accessor: "id",
+        header: "S.N",
+        accessorKey: "id",
       },
       {
-        Header: "Doctor's Name",
-        accessor: "full_name",
+        header: "Doctor's Name",
+        accessorKey: "full_name",
       },
       {
-        Header: "Contact Number",
-        accessor: "contact",
+        header: "Contact Number",
+        accessorKey: "contact",
       },
       {
-        Header: "Specialization",
-        accessor: "specialization",
-        Cell: ({ row }: CellProps<{ specialization: any }>) => {
+        header: "Specialization",
+        accessorKey: "specialization",
+        Cell: ({ row }: CellContext<{ specialization: any }, any>) => {
           const { name } = row?.original?.specialization[0] ?? "";
 
           return <p>{name}</p>;
         },
       },
       {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ row }: CellProps<{ status: string }>) => {
+        header: "Status",
+        accessorKey: "status",
+        Cell: ({ row }: CellContext<{ status: string }, any>) => {
           const { status } = row.original;
           return (
             <Badge colorScheme={status === "Approved" ? "green" : "yellow"}>
@@ -75,8 +70,8 @@ const ApprovedDocList = () => {
         },
       },
       {
-        Header: "Actions",
-        accessor: "actions",
+        header: "Actions",
+        accessorKey: "actions",
         Cell: () => {
           return (
             <Icon
@@ -106,18 +101,17 @@ const ApprovedDocList = () => {
   };
 
   // const approvedList = useApprovedDoctorList();
-  const { data, isLoading } = useDoctorList();
+  const { data } = useDoctorList();
 
   const formMethods = useForm();
   const onSubmitForm = (values: any) => {};
 
   return (
     <>
-      <ComponentTable columns={columns} data={data || []} />
+      <DataTable columns={columns} data={data || []} />
       <ModalComponent
         isOpen={isDetailsModalOpen}
         onClose={acceptDoctor}
-        align={false}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -218,7 +212,6 @@ const ApprovedDocList = () => {
       <ModalComponent
         isOpen={isRejectModalOpen}
         onClose={RejectDoctor}
-        align={false}
         heading={
           <HStack>
             <svgs.logo_small />

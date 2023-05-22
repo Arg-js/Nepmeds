@@ -1,39 +1,38 @@
 import { Badge, Icon } from "@chakra-ui/react";
-import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
+import { DataTable } from "@nepMeds/components/DataTable";
+import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
+import { CellContext } from "@tanstack/react-table";
 import React from "react";
 import { Show } from "react-iconly";
-import { CellProps } from "react-table";
-import ComponentTable from "../ComponentTable";
-import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
 
 const PendingDocList = () => {
   const columns = React.useMemo(
     () => [
       {
-        Header: "S.N",
-        accessor: "id",
+        header: "S.N",
+        accessorKey: "id",
       },
       {
-        Header: "Doctor's Name",
-        accessor: "full_name",
+        header: "Doctor's Name",
+        accessorKey: "full_name",
       },
       {
-        Header: "Contact Number",
-        accessor: "contact",
+        header: "Contact Number",
+        accessorKey: "contact",
       },
       {
-        Header: "Specialization",
-        accessor: "specialization",
-        Cell: ({ row }: CellProps<{ specialization: any }>) => {
+        header: "Specialization",
+        accessorKey: "specialization",
+        Cell: ({ row }: CellContext<{ specialization: any }, any>) => {
           const { name } = row?.original?.specialization[0] ?? "";
 
           return <p>{name}</p>;
         },
       },
       {
-        Header: "Status",
-        accessor: "status",
-        Cell: ({ row }: CellProps<{ status: string }>) => {
+        header: "Status",
+        accessorKey: "status",
+        Cell: ({ row }: CellContext<{ status: string }, any>) => {
           const { status } = row.original;
           return (
             <Badge colorScheme={status === "Approved" ? "green" : "yellow"}>
@@ -43,17 +42,10 @@ const PendingDocList = () => {
         },
       },
       {
-        Header: "Actions",
-        accessor: "actions",
+        header: "Actions",
+        accessorKey: "actions",
         Cell: () => {
-          return (
-            <Icon
-              as={Show}
-              fontSize={20}
-              //   onClick={onDetailsModalOpen}
-              cursor="pointer"
-            />
-          );
+          return <Icon as={Show} fontSize={20} cursor="pointer" />;
         },
       },
     ],
@@ -62,7 +54,7 @@ const PendingDocList = () => {
 
   const { data } = usePendingDoctorList();
 
-  return <ComponentTable columns={columns} data={data || []} />;
+  return <DataTable columns={columns} data={data || []} />;
 };
 
 export default PendingDocList;
