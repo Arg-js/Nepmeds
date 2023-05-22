@@ -10,5 +10,5 @@ export const ButtonTheme: ComponentStyleConfig = {
     // minH: 14.5,
   },
   sizes: {},
-  variants: { register: { ...p, w: 180 } },
+  variants: { register: { ...p, w: 180, minH: 14.5 } },
 };

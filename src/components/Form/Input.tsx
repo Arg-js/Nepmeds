@@ -86,6 +86,7 @@ const Input = ({
         <ChakraInput
           id={name}
           type={type}
+          variant="register"
           {...register(name, rules)}
           {...rest}
         />

@@ -15,6 +15,7 @@
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
+* table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
 * theme ([d9b253d](https://gitlab.com/r2850/nepmeds/commit/d9b253dd52ac704173087328aaa3a2476492b641))
 * update image field ([fd72a2e](https://gitlab.com/r2850/nepmeds/commit/fd72a2e3f9e9cf2aeb637b419ea38f5752977e20))

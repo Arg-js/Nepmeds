@@ -41,6 +41,14 @@ const routes = [
 
 const openRoutes = [
   {
+    path: NAVIGATION_ROUTES.LOGIN,
+    element: <Login />,
+  },
+  {
+    path: NAVIGATION_ROUTES.SIGNUP,
+    element: <SignUp />,
+  },
+  {
     path: NAVIGATION_ROUTES.REGISTER,
     element: <Register />,
   },
@@ -65,17 +73,13 @@ const openRoutes = [
     element: <ExperienceInfo />,
   },
   {
-    path: NAVIGATION_ROUTES.LOGIN,
+    path: NAVIGATION_ROUTES.NO_MATCH,
     element: <Login />,
-  },
-  {
-    path: NAVIGATION_ROUTES.SIGNUP,
-    element: <SignUp />,
   },
 ];
 
 const AppRoutes = () => {
-  const isAuthenticated = useAuthentication();
+  const { data: isAuthenticated } = useAuthentication();
 
   return useRoutes(isAuthenticated ? routes : openRoutes);
 };

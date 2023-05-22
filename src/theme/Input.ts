@@ -18,5 +18,6 @@ export const InputTheme: ComponentStyleConfig = {
         },
       },
     },
+    register: { field: { minHeight: 13 } },
   },
 };
