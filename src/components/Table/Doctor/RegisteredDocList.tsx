@@ -62,9 +62,7 @@ const RegisteredDocList = () => {
 
   const { data, isLoading } = useDoctorList();
   return (
-    <>
-      <DataTable columns={columns} data={data ?? []} isLoading={isLoading} />;
-    </>
+    <DataTable columns={columns} data={data ?? []} isLoading={isLoading} />
   );
 };
 

@@ -1,11 +1,7 @@
 import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
 
 const AllDoctors = () => {
-  return (
-    <>
-      <DoctorsList />
-    </>
-  );
+  return <DoctorsList />;
 };
 
 export default AllDoctors;
