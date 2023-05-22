@@ -25,6 +25,7 @@ import { colors } from "@nepMeds/theme/colors";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useDisclosure } from "@chakra-ui/react";
+import { useNavigate } from "react-router-dom";
 
 const registerDefaultValues = {
   image: undefined as undefined | [],
@@ -94,6 +95,7 @@ const RegistrationForm = () => {
   const [activeStep, setActiveStep] = React.useState(0);
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
+  const navigate = useNavigate();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
@@ -112,7 +114,7 @@ const RegistrationForm = () => {
   const onSubmitForm = async (values: IRegisterFields) => {
     switch (activeStep) {
       case 0: {
-        setActiveStep(prev => prev + 1);
+        setActiveStep(1);
         break;
       }
       case 1: {
@@ -146,7 +148,7 @@ const RegistrationForm = () => {
               const { data } = response.data;
               setDoctor(data?.doctor.id);
               setName(data?.user.first_name);
-              setActiveStep(prev => prev + 1);
+              setActiveStep(2);
             });
         } catch (error) {
           toastFail("Please check form values");
@@ -165,7 +167,7 @@ const RegistrationForm = () => {
               graduation_year: values.academic[lastValue].graduation_year,
               file: values.academic[lastValue].file,
             })
-            .then(response => response && setActiveStep(prev => prev + 1));
+            .then(response => response && setActiveStep(3));
         } catch (error) {
           toastFail("Please check form values");
         }
@@ -185,7 +187,7 @@ const RegistrationForm = () => {
                 values.certification[lastValue].certificate_number,
               file: values.certification[lastValue].file,
             })
-            .then(response => response && setActiveStep(prev => prev + 1));
+            .then(response => response && setActiveStep(4));
         } catch (error) {
           toastFail("Please check form values");
         }
@@ -236,7 +238,6 @@ const RegistrationForm = () => {
   ];
 
   const { content } = steps[activeStep];
-
   return (
     <Box mx={20}>
       <FormProvider {...formMethods}>
@@ -356,6 +357,7 @@ const RegistrationForm = () => {
       <ModalComponent
         isOpen={isOpen}
         onClose={onClose}
+        // navigateTo={navigate("/login")}
         heading={
           <HStack>
             <svgs.logo_small />
