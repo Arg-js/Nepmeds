@@ -10,10 +10,7 @@ import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
-import {
-  useAuthentication,
-  useUserInfoQuery,
-} from "@nepMeds/service/nepmeds-auth";
+import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 

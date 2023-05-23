@@ -1,7 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Button,
   Divider,
   Flex,
   HStack,
@@ -18,14 +17,10 @@ import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { RejectionForm } from "@nepMeds/components/FormComponents";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
-import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
 import { Show } from "react-iconly";
 
 const ApprovedDocList = () => {
@@ -34,12 +29,6 @@ const ApprovedDocList = () => {
     onOpen: onDetailsModalOpen,
     onClose: onDetailsModalClose,
   } = useDisclosure();
-  const {
-    isOpen: isRejectModalOpen,
-    onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose,
-  } = useDisclosure();
-  const [isRejected, setIsRejected] = React.useState(false);
 
   const columns = React.useMemo(
     () => [
@@ -98,24 +87,9 @@ const ApprovedDocList = () => {
     []
   );
 
-  const rejectModal = () => {
-    setIsRejected(true);
-    onDetailsModalClose();
-    onRejectModalOpen();
-  };
-  const acceptDoctor = () => {
-    onDetailsModalClose();
-    toastSuccess("Doctor Approved");
-  };
-  const RejectDoctor = () => {
-    onRejectModalClose();
-  };
-
   const { data, isLoading } = useApprovedDoctorList();
   const [searchFilter, setSearchFilter] = useState("");
 
-  const formMethods = useForm();
-  const onSubmitForm = (values: any) => {};
   if (isLoading)
     return (
       <Spinner
@@ -147,21 +121,16 @@ const ApprovedDocList = () => {
         filter={{ globalFilter: searchFilter }}
       />
       <ModalComponent
+        size="xl"
         isOpen={isDetailsModalOpen}
-        onClose={acceptDoctor}
+        onClose={onDetailsModalClose}
         heading={
           <HStack>
             <svgs.logo_small />
             <Text>Doctor Info</Text>
           </HStack>
         }
-        primaryText="Accept"
-        secondaryText="Reject"
-        otherAction={rejectModal}
-        onApiCall={() => {
-          onDetailsModalClose();
-          toastSuccess("Doctor Approved");
-        }}
+        footer={<></>}
       >
         <Flex gap={4}>
           <Image
@@ -248,31 +217,6 @@ const ApprovedDocList = () => {
             <p>9990</p>
           </Flex>
         </Flex>
-      </ModalComponent>
-
-      <ModalComponent
-        isOpen={isRejectModalOpen}
-        onClose={RejectDoctor}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Remarks for rejection</Text>
-          </HStack>
-        }
-        primaryText="Reject"
-        secondaryText="Cancel"
-        otherAction={onRejectModalClose}
-        onApiCall={() => {
-          formMethods.trigger("remarks");
-          const val = formMethods.getValues("remarks");
-          toastFail("Doctor Rejected!");
-          onRejectModalClose();
-          formMethods.reset();
-        }}
-      >
-        <FormProvider {...formMethods}>
-          <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
-        </FormProvider>
       </ModalComponent>
     </>
   );

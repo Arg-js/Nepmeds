@@ -10,7 +10,9 @@ export const api = {
   specialization: "/doctor_consult/specialization",
   registereddoctor: "/dashboard/registered_doctor_list",
   pendingdoctor: "/dashboard/pending_doctor_list",
-  approveddoctor: "/dashboard/approved_doctor_list/{id}",
+  approveddoctor: "/dashboard/approved_doctor_list",
+  approvesingledoctor: "/dashboard/approve_doctor/{id}/",
+  rejectsingledoctor: "/dashboard/reject_doctor/{id}/",
 };
 
 export interface NepMedsResponse<T = any> {

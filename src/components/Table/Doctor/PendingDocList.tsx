@@ -15,10 +15,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
-import {
-  useApproveDoc,
-  usePendingDoctorList,
-} from "@nepMeds/service/nepmeds-pending-doctor-list";
+import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { Show } from "react-iconly";
@@ -29,7 +26,14 @@ import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { colors } from "@nepMeds/theme/colors";
+import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
+import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
+const schema = yup.object().shape({
+  remarks: yup.string().required("Remarks  is required!"),
+});
 const PendingDocList = () => {
   const {
     isOpen: isDetailsModalOpen,
@@ -43,11 +47,28 @@ const PendingDocList = () => {
   } = useDisclosure();
   const [isRejected, setIsRejected] = React.useState(false);
   const { data, isLoading } = usePendingDoctorList();
+  const [id, setId] = React.useState(null);
 
   const approvePendingDoc = useApproveDoc();
+  const rejectPendingDoc = useRejectDoc();
 
-  const formMethods = useForm();
-  const onSubmitForm = (values: any) => {};
+  const formMethods = useForm({ resolver: yupResolver(schema) });
+  const onSubmitForm = async () => {
+    try {
+      const isValid = await formMethods.trigger("remarks");
+      if (!isValid) return;
+
+      const val = formMethods.getValues("remarks");
+      await rejectPendingDoc.mutateAsync({
+        id: id ?? "",
+        remarks: val,
+      });
+      onRejectModalClose();
+      formMethods.reset();
+    } catch (error) {
+      toastFail("Doctor Rejected!");
+    }
+  };
 
   const columns = React.useMemo(
     () => [
@@ -97,12 +118,10 @@ const PendingDocList = () => {
               as={Show}
               fontSize={20}
               cursor="pointer"
-              onClick={async () => {
+              onClick={() => {
                 formMethods.reset(cell.row.original);
                 onDetailsModalOpen();
-                await approvePendingDoc.mutateAsync({
-                  // id: id.toString(),
-                });
+                setId(cell.row.original.id);
               }}
             />
           );
@@ -132,13 +151,6 @@ const PendingDocList = () => {
       />
     );
 
-  // const onDoctorAccept = async () => {
-  //   try {
-  //   } catch (error) {
-  //     toastFail("Failed to approve doctor!");
-  //   }
-  // };
-
   return (
     <>
       <HStack justifyContent="space-between">
@@ -163,6 +175,7 @@ const PendingDocList = () => {
         filter={{ globalFilter: searchFilter }}
       />
       <ModalComponent
+        size="xl"
         isOpen={isDetailsModalOpen}
         onClose={acceptDoctor}
         heading={
@@ -176,6 +189,7 @@ const PendingDocList = () => {
         otherAction={rejectModal}
         onApiCall={() => {
           onDetailsModalClose();
+          approvePendingDoc.mutateAsync(id ?? "");
           toastSuccess("Doctor Approved");
         }}
       >
@@ -269,6 +283,7 @@ const PendingDocList = () => {
       <ModalComponent
         isOpen={isRejectModalOpen}
         onClose={RejectDoctor}
+        size="xl"
         heading={
           <HStack>
             <svgs.logo_small />
@@ -278,13 +293,6 @@ const PendingDocList = () => {
         primaryText="Reject"
         secondaryText="Cancel"
         otherAction={onRejectModalClose}
-        onApiCall={() => {
-          formMethods.trigger("remarks");
-          const val = formMethods.getValues("remarks");
-          toastFail("Doctor Rejected!");
-          onRejectModalClose();
-          formMethods.reset();
-        }}
       >
         <FormProvider {...formMethods}>
           <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
