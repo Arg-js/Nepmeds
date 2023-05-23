@@ -16,5 +16,6 @@ export const NAVIGATION_ROUTES = {
   MASTER_DATA: "master-data",
 
   DOCTOR_LIST: "doctor-list",
+  DOCTOR_PROFILE: "/doctor-profile",
   NO_MATCH: "*",
 };

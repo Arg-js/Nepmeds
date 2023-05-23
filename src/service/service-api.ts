@@ -7,6 +7,7 @@ export const api = {
   academic: "/user_management/academic",
   certificate: "/user_management/certificate",
   experience: "/user_management/experience",
+  doctor_profile: "/user_management/doctor-profile",
   specialization: "/doctor_consult/specialization",
   registereddoctor: "/dashboard/registered_doctor_list",
   pendingdoctor: "/dashboard/pending_doctor_list",
