@@ -2,10 +2,6 @@ import { extendTheme } from "@chakra-ui/react";
 import { ButtonTheme } from "./Button";
 import { InputTheme } from "./Input";
 import { colors } from "./colors";
-const activeLabelStyles = {
-  transform: "scale(0.8) translateY(-19px)",
-  marginBottom: "5px",
-};
 
 const space = {
   px: "1px",

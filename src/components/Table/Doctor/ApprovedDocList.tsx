@@ -32,7 +32,7 @@ const ApprovedDocList = () => {
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
   } = useDisclosure();
-  const [isRejected, setIsRejected] = React.useState(false);
+  const [_, setIsRejected] = React.useState(false);
 
   const columns = React.useMemo(
     () => [
@@ -104,7 +104,7 @@ const ApprovedDocList = () => {
   const { data } = useDoctorList();
 
   const formMethods = useForm();
-  const onSubmitForm = (values: any) => {};
+  const onSubmitForm = (_values: any) => {};
 
   return (
     <>
@@ -223,7 +223,7 @@ const ApprovedDocList = () => {
         otherAction={onRejectModalClose}
         onApiCall={() => {
           formMethods.trigger("remarks");
-          const val = formMethods.getValues("remarks");
+          formMethods.getValues("remarks");
           toastFail("Doctor Rejected!");
           onRejectModalClose();
           formMethods.reset();

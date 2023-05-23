@@ -7,7 +7,7 @@ import {
   TextareaProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 const TextArea = ({
   label,
@@ -42,8 +42,7 @@ const TextArea = ({
   );
 };
 
-export interface ITextArea<TFieldValues extends FieldValues = FieldValues>
-  extends TextareaProps {
+export interface ITextArea<>extends TextareaProps {
   label?: string;
   helperText?: string;
   error?: string;

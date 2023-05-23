@@ -25,7 +25,7 @@ const Icon = ({
     <Box sx={styles.wrapper}>
       <ReactSVG
         onClick={onClick}
-        src={svgs[name]}
+        src={svgs[name].toString() ?? ""}
         loading={() => <p>loading</p>}
         fallback={() => <p>loading</p>}
         {...rest}
