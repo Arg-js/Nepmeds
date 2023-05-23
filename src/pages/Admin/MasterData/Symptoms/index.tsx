@@ -19,6 +19,7 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   Symptom,
+  useDeleteSymptom,
   useGetSymptoms,
   useSaveSymptoms,
 } from "@nepMeds/service/nepmeds-symptoms";
@@ -37,8 +38,16 @@ const schema = yup.object().shape({
 const Symptoms = () => {
   const { data: symptomList = [] } = useGetSymptoms();
   const saveSymptomAction = useSaveSymptoms();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  const deleteSymptomAction = useDeleteSymptom();
 
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const {
+    isOpen: isDeleteModalOpen,
+    onClose: onCloseDeleteModal,
+    onOpen: onOpenDeleteModal,
+  } = useDisclosure();
+
+  const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
 
   const formMethods = useForm({
@@ -82,7 +91,16 @@ const Symptoms = () => {
             >
               <AiOutlineEdit size={20} fill={colors.blue_100} />
             </IconButton>
-            <IconButton aria-label="delete" variant="ghost" size="sm" w="auto">
+            <IconButton
+              aria-label="delete"
+              variant="ghost"
+              size="sm"
+              w="auto"
+              onClick={() => {
+                setDeleteSymptom(cell.row.original);
+                onOpenDeleteModal();
+              }}
+            >
               <AiOutlineDelete size={20} fill={colors.red} />
             </IconButton>
           </HStack>
@@ -105,6 +123,20 @@ const Symptoms = () => {
       toastSuccess("Symptom saved successfully!");
     } catch (error) {
       toastFail("Failed to save symptom!");
+    }
+  };
+
+  const onDeleteSymptom = async () => {
+    try {
+      if (!deleteSymptom?.id) return;
+
+      await deleteSymptomAction.mutateAsync({
+        id: deleteSymptom.id.toString(),
+      });
+      onCloseDeleteModal();
+      toastSuccess("Symptom deleted successfully!");
+    } catch (error) {
+      toastFail("Failed to delete symptom!");
     }
   };
 
@@ -190,6 +222,43 @@ const Symptoms = () => {
             />
           </FormProvider>
         </VStack>
+      </ModalComponent>
+
+      <ModalComponent
+        size="sm"
+        isOpen={isDeleteModalOpen}
+        onClose={onCloseDeleteModal}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Delete Symptom</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+              Cancel
+            </Button>
+            <Button
+              flex={1}
+              onClick={onDeleteSymptom}
+              borderColor={colors.red}
+              color={colors.red}
+              isLoading={deleteSymptomAction.isLoading}
+              variant="outline"
+            >
+              Delete
+            </Button>
+          </HStack>
+        }
+      >
+        <Text>
+          Are you sure you want to delete symptom{" "}
+          <Text fontWeight="bold" display="inline">
+            {deleteSymptom?.name}
+          </Text>
+          ?
+        </Text>
       </ModalComponent>
     </Fragment>
   );
