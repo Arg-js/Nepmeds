@@ -13,7 +13,7 @@ export const api = {
   approveddoctor: "/dashboard/approved_doctor_list",
 
   province: "core/province",
-  district: "core/district",
+  district: "core/districtlist",
 };
 
 export interface NepMedsResponse<T = any> {

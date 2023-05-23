@@ -1,7 +1,9 @@
 import Layout from "@nepMeds/components/Layout";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
+import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
 import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
+import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
@@ -11,10 +13,8 @@ import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
-import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
-import { useRoutes } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
-import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 
 const routes = [
   {
@@ -37,7 +37,7 @@ const routes = [
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Login />,
+    element: <Navigate to={NAVIGATION_ROUTES.LOGGEDIN} replace />,
   },
 ];
 
@@ -93,6 +93,10 @@ const openRoutes = [
   {
     path: NAVIGATION_ROUTES.DASHBOARD,
     element: <Dashboard />,
+  },
+  {
+    path: NAVIGATION_ROUTES.NO_MATCH,
+    element: <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />,
   },
 ];
 

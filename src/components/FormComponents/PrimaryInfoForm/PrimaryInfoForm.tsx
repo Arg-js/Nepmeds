@@ -6,13 +6,7 @@ import Select from "@nepMeds/components/Form/Select";
 import { useGetDistricts, useGetProvince } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import {
-  district,
-  gender,
-  idType,
-  municipality,
-  phone,
-} from "@nepMeds/utils/choices";
+import { district, gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
@@ -207,18 +201,13 @@ const PrimaryInfo = () => {
         />
       </GridItem>
       <GridItem colSpan={1}>
-        <Select
+        <FloatingLabelInput
           placeholder=""
           label="Municipality/ VDC"
           name="municipality_vdc"
           required
           register={register}
-          options={municipality}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
+          style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
       <GridItem colSpan={1}>
