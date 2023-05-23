@@ -12,13 +12,13 @@ import RegisteredDocList from "./RegisteredDocList";
 
 const DoctorsList = () => {
   return (
-    <Tabs position="relative" variant="unstyled">
-      <TabList>
+    <Tabs>
+      <TabList border="none" mb={4} p={4}>
         <Tab>Registered Doctors</Tab>
         <Tab>Pending Approval</Tab>
         <Tab>Approved</Tab>
       </TabList>
-      <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
+      {/* <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" /> */}
       <TabPanels>
         <TabPanel>
           <RegisteredDocList />

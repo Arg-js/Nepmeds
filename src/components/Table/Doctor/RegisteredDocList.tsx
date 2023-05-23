@@ -1,8 +1,18 @@
-import { Badge, Icon } from "@chakra-ui/react";
+import { SearchIcon } from "@chakra-ui/icons";
+import {
+  Badge,
+  HStack,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spinner,
+  Text,
+} from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { CellContext } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 import { Show } from "react-iconly";
 
 const RegisteredDocList = () => {
@@ -10,7 +20,9 @@ const RegisteredDocList = () => {
     () => [
       {
         header: "S.N",
-        accessorKey: "id",
+        accessorFn: (_cell: CellContext<any, any>, index: number) => {
+          return index + 1;
+        },
       },
       {
         header: "Doctor's Name",
@@ -18,12 +30,12 @@ const RegisteredDocList = () => {
       },
       {
         header: "Contact Number",
-        accessorKey: "contact",
+        accessorKey: "contact_number",
       },
       {
         header: "Specialization",
         accessorKey: "specialization",
-        Cell: ({ row }: CellContext<{ specialization: any }, any>) => {
+        cell: ({ row }: CellContext<{ specialization: any }, any>) => {
           const { name } = row?.original?.specialization[0] ?? "";
 
           return <p>{name}</p>;
@@ -31,13 +43,15 @@ const RegisteredDocList = () => {
       },
       {
         header: "Status",
-        accessorKey: "status",
-        Cell: ({ row }: CellContext<{ status: string }, any>) => {
-          const { status } = row.original;
+        accessorKey: "profile_status",
+        cell: ({ row }: CellContext<{ profile_status: string }, any>) => {
+          const { profile_status } = row.original;
 
           return (
-            <Badge colorScheme={status === "Approved" ? "green" : "yellow"}>
-              {status}
+            <Badge
+              colorScheme={profile_status === "approved" ? "green" : "yellow"}
+            >
+              {profile_status}
             </Badge>
           );
         },
@@ -45,7 +59,7 @@ const RegisteredDocList = () => {
       {
         header: "Actions",
         accessorKey: "actions",
-        Cell: () => {
+        cell: () => {
           return (
             <Icon
               as={Show}
@@ -61,8 +75,37 @@ const RegisteredDocList = () => {
   );
 
   const { data, isLoading } = useDoctorList();
+  const [searchFilter, setSearchFilter] = useState("");
+
+  if (isLoading)
+    return (
+      <Spinner
+        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+      />
+    );
   return (
-    <DataTable columns={columns} data={data ?? []} isLoading={isLoading} />
+    <>
+      <HStack justifyContent="space-between">
+        <Text fontWeight="medium">Registered Doctors</Text>
+        <HStack>
+          <InputGroup w="auto">
+            <InputLeftElement pointerEvents="none" h={8}>
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              w={40}
+              h={8}
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+        </HStack>
+      </HStack>
+      <DataTable
+        columns={columns}
+        data={data ?? []}
+        filter={{ globalFilter: searchFilter }}
+      />
+    </>
   );
 };
 

@@ -1,8 +1,17 @@
-import { Stack, Image, Box, List, ListItem, Text } from "@chakra-ui/react";
+import {
+  Stack,
+  Image,
+  Box,
+  List,
+  ListItem,
+  Text,
+  Icon,
+} from "@chakra-ui/react";
 import {
   Calendar,
   Call,
   Category,
+  Logout,
   Paper,
   TimeCircle,
   Wallet,
@@ -11,62 +20,139 @@ import {
 
 import { images } from "@nepMeds/assets/images";
 import { colors } from "@nepMeds/theme/colors";
+import {
+  useLogoutMutation,
+  useUserInfoQuery,
+} from "@nepMeds/service/nepmeds-auth";
+import { Link } from "react-router-dom";
+
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarOption {
   icon: React.ElementType;
   set: IconSet;
   text: string;
+  link: string;
 }
 const sidebarOptions: ISidebarOption[] = [
   {
     icon: Category,
     set: "two-tone",
     text: "Dashboard",
+    link: "/dashboard",
   },
   {
     icon: TimeCircle,
     set: "light",
-    text: "Appoinments",
+    text: "Appointments",
+    link: "/appointments",
   },
   {
     icon: Call,
     set: "light",
     text: "Follow Up",
+    link: "/followup",
   },
   {
     icon: Paper,
     set: "light",
     text: "Patient's History",
+    link: "/patient-history",
   },
   {
     icon: Calendar,
     set: "light",
     text: "Calender",
+    link: "/calendar",
   },
   {
     icon: Work,
     set: "light",
     text: "Bank Details",
+    link: "/bank-details",
   },
   {
     icon: Wallet,
     set: "light",
     text: "Payment",
+    link: "/payment",
+  },
+];
+
+const AdminSidebarOptions: ISidebarOption[] = [
+  {
+    icon: Category,
+    set: "two-tone",
+    text: "Dashboard",
+    link: "/dashboard",
+  },
+  {
+    icon: TimeCircle,
+    set: "light",
+    text: "Master Data",
+    link: "/master-data",
+  },
+  {
+    icon: Call,
+    set: "light",
+    text: "Doctors",
+    link: "/doctor-list",
+  },
+  {
+    icon: Paper,
+    set: "light",
+    text: "Patients",
+    link: "/patients",
+  },
+  {
+    icon: Calendar,
+    set: "light",
+    text: "Appointments",
+    link: "/appointments",
+  },
+  {
+    icon: Work,
+    set: "light",
+    text: "User Role",
+    link: "/user-role",
+  },
+  {
+    icon: Wallet,
+    set: "light",
+    text: "Instant Consult Request",
+    link: "/consult-request",
   },
 ];
 
 const Sidebar = () => {
+  const logoutAction = useLogoutMutation();
+  const logout = () => {
+    logoutAction.mutate();
+  };
+  // const is_doctor = localStorage.getItem("doctor");
+  const menuOptions = AdminSidebarOptions;
   return (
-    <Box>
-      <Stack h={"100vh"} py={3.75} px={3.75} background="white">
-        <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={20} />
+    <Box
+      display="flex"
+      flexDirection="column"
+      h="100vh"
+      py={3.75}
+      px={3.75}
+      background="white"
+      position="fixed"
+      justifyContent="space-between"
+    >
+      <Stack>
+        <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={65} />
         <Box p={"0 8px"}>
           <List ml={8} spacing={8}>
-            {sidebarOptions.map(sidebarOption => {
+            {menuOptions.map(sidebarOption => {
               return (
                 <ListItem
                   display={"flex"}
                   alignItems={"center"}
+                  as={Link}
+                  _activeLink={{ background: "red" }}
+                  to={sidebarOption.link}
                   key={sidebarOption.text.trim()}
                 >
                   <sidebarOption.icon
@@ -89,6 +175,19 @@ const Sidebar = () => {
           </List>
         </Box>
       </Stack>
+      <Box
+        display="flex"
+        gap={3}
+        onClick={logout}
+        cursor="pointer"
+        alignItems="center"
+        height="48px"
+        pl="40px"
+        transition="0.35s ease-in-out"
+      >
+        <Icon as={Logout} fontSize={20} color={colors.error} />
+        <span>Logout</span>
+      </Box>
     </Box>
   );
 };

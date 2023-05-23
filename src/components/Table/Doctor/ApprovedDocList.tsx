@@ -1,10 +1,16 @@
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Button,
   Divider,
   Flex,
   HStack,
   Icon,
   Image,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -14,10 +20,11 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
-import React from "react";
+import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { Show } from "react-iconly";
 
@@ -37,8 +44,10 @@ const ApprovedDocList = () => {
   const columns = React.useMemo(
     () => [
       {
-        header: "S.N",
-        accessorKey: "id",
+        header: "S.N.",
+        accessorFn: (_cell: CellContext<any, any>, index: number) => {
+          return index + 1;
+        },
       },
       {
         header: "Doctor's Name",
@@ -46,12 +55,12 @@ const ApprovedDocList = () => {
       },
       {
         header: "Contact Number",
-        accessorKey: "contact",
+        accessorKey: "contact_number",
       },
       {
         header: "Specialization",
         accessorKey: "specialization",
-        Cell: ({ row }: CellContext<{ specialization: any }, any>) => {
+        cell: ({ row }: CellContext<{ specialization: any }, any>) => {
           const { name } = row?.original?.specialization[0] ?? "";
 
           return <p>{name}</p>;
@@ -59,12 +68,14 @@ const ApprovedDocList = () => {
       },
       {
         header: "Status",
-        accessorKey: "status",
-        Cell: ({ row }: CellContext<{ status: string }, any>) => {
-          const { status } = row.original;
+        accessorKey: "profile_status",
+        cell: ({ row }: CellContext<{ profile_status: string }, any>) => {
+          const { profile_status } = row.original;
           return (
-            <Badge colorScheme={status === "Approved" ? "green" : "yellow"}>
-              {status}
+            <Badge
+              colorScheme={profile_status === "approved" ? "green" : "yellow"}
+            >
+              {profile_status}
             </Badge>
           );
         },
@@ -72,7 +83,7 @@ const ApprovedDocList = () => {
       {
         header: "Actions",
         accessorKey: "actions",
-        Cell: () => {
+        cell: () => {
           return (
             <Icon
               as={Show}
@@ -100,15 +111,41 @@ const ApprovedDocList = () => {
     onRejectModalClose();
   };
 
-  // const approvedList = useApprovedDoctorList();
-  const { data } = useDoctorList();
+  const { data, isLoading } = useApprovedDoctorList();
+  const [searchFilter, setSearchFilter] = useState("");
 
   const formMethods = useForm();
   const onSubmitForm = (values: any) => {};
+  if (isLoading)
+    return (
+      <Spinner
+        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+      />
+    );
 
   return (
     <>
-      <DataTable columns={columns} data={data || []} />
+      <HStack justifyContent="space-between">
+        <Text fontWeight="medium">Approved Doctors</Text>
+
+        <HStack>
+          <InputGroup w="auto">
+            <InputLeftElement pointerEvents="none" h={8}>
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              w={40}
+              h={8}
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+        </HStack>
+      </HStack>
+      <DataTable
+        columns={columns}
+        data={data || []}
+        filter={{ globalFilter: searchFilter }}
+      />
       <ModalComponent
         isOpen={isDetailsModalOpen}
         onClose={acceptDoctor}
@@ -121,6 +158,10 @@ const ApprovedDocList = () => {
         primaryText="Accept"
         secondaryText="Reject"
         otherAction={rejectModal}
+        onApiCall={() => {
+          onDetailsModalClose();
+          toastSuccess("Doctor Approved");
+        }}
       >
         <Flex gap={4}>
           <Image

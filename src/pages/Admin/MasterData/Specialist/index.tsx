@@ -20,7 +20,6 @@ import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   Specialization,
-  useDeleteSpecialization,
   useSaveSpecialization,
   useSpecializationData,
 } from "@nepMeds/service/nepmeds-specialization";
@@ -35,24 +34,14 @@ import * as yup from "yup";
 const schema = yup.object().shape({
   name: yup.string().required("Symptom name is required!"),
   keyword: yup.string().required("Symptom keyword is required"),
-  consultation_fees: yup.number().min(5, "Please enter fees greater than 5!"),
 });
 
 const Specializations = () => {
   const { data: symptomList = [] } = useGetSymptoms();
   const { data: specialization = [] } = useSpecializationData();
   const saveSpecializationAction = useSaveSpecialization();
-  const deleteSpecializationAction = useDeleteSpecialization();
-
   const { isOpen, onClose, onOpen } = useDisclosure();
-  const {
-    isOpen: isDeleteModalOpen,
-    onClose: onCloseDeleteModal,
-    onOpen: onOpenDeleteModal,
-  } = useDisclosure();
 
-  const [deleteSpecialization, setDeleteSpecialization] =
-    useState<Specialization | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
 
   const symptomsOptions = symptomList.map(s => ({
@@ -65,7 +54,6 @@ const Specializations = () => {
       id: null as number | null,
       name: "",
       symptom: [] as { label: string; value: string }[],
-      consultation_fees: 0,
     },
     resolver: yupResolver(schema),
   });
@@ -80,10 +68,6 @@ const Specializations = () => {
     {
       header: "Specialization Name",
       accessorKey: "name",
-    },
-    {
-      header: "Rate",
-      accessorKey: "consultation_fees",
     },
     {
       header: "Symptom",
@@ -122,16 +106,7 @@ const Specializations = () => {
             >
               <AiOutlineEdit size={20} fill={colors.blue_100} />
             </IconButton>
-            <IconButton
-              aria-label="delete"
-              variant="ghost"
-              size="sm"
-              w="auto"
-              onClick={() => {
-                setDeleteSpecialization(cell.row.original);
-                onOpenDeleteModal();
-              }}
-            >
+            <IconButton aria-label="delete" variant="ghost" size="sm" w="auto">
               <AiOutlineDelete size={20} fill={colors.red} />
             </IconButton>
           </HStack>
@@ -152,28 +127,11 @@ const Specializations = () => {
           .getValues("symptom")
           .map(s => s.value)
           .join(""),
-        consultation_fees: formMethods
-          .getValues("consultation_fees")
-          .toString(),
       });
       onClose();
       toastSuccess("Specialization saved successfully!");
     } catch (error) {
       toastFail("Failed to save Specialization!");
-    }
-  };
-
-  const onDeleteSymptom = async () => {
-    try {
-      if (!deleteSpecialization?.id) return;
-
-      await deleteSpecializationAction.mutateAsync({
-        id: deleteSpecialization.id.toString(),
-      });
-      onCloseDeleteModal();
-      toastSuccess("Specialization deleted successfully!");
-    } catch (error) {
-      toastFail("Failed to delete Specialization!");
     }
   };
 
@@ -260,52 +218,8 @@ const Specializations = () => {
               options={symptomsOptions}
               selectControl={formMethods.control}
             />
-
-            <FloatingLabelInput
-              label="Rate"
-              name="consultation_fees"
-              type="number"
-              register={formMethods.register}
-            />
           </FormProvider>
         </VStack>
-      </ModalComponent>
-
-      <ModalComponent
-        size="sm"
-        isOpen={isDeleteModalOpen}
-        onClose={onCloseDeleteModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Delete Symptom</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={onDeleteSymptom}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteSpecializationAction.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>
-          Are you sure you want to delete symptom{" "}
-          <Text fontWeight="bold" display="inline">
-            {deleteSpecialization?.name}
-          </Text>
-          ?
-        </Text>
       </ModalComponent>
     </Fragment>
   );

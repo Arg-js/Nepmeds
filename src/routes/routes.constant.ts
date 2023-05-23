@@ -14,7 +14,17 @@ export const NAVIGATION_ROUTES = {
   LOGGEDIN: "/",
   DASHBOARD: "dashboard",
   MASTER_DATA: "master-data",
+  PATIENTS: "/patients",
+  USER_ROLE: "user-role",
+  CONSULT_REQUEST: "/consult-request",
 
   DOCTOR_LIST: "doctor-list",
+  APPOINTMENTS: "appointments",
+  FOLLOWUP: "followup",
+  PATIENT_HISTORY: "patient-history",
+  CALENDER: "calendar",
+  BANK_DETAILS: "bank-details",
+  PAYMENT: "payment",
+
   NO_MATCH: "*",
 };
