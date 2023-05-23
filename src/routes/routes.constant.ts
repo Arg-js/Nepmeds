@@ -9,6 +9,8 @@ export const NAVIGATION_ROUTES = {
   },
   LOGIN: "/",
   SIGNUP: "/signup",
+  FORGOTPASSWORD: "/forgot-password",
+  CONFIRMPASSWORD: "/confirm-password",
   OTPVERIFY: "/otp-verify",
 
   LOGGEDIN: "/",

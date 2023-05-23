@@ -11,8 +11,10 @@ import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
+import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import { useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 
 const routes = [
   {
@@ -73,8 +75,24 @@ const openRoutes = [
     element: <ExperienceInfo />,
   },
   {
-    path: NAVIGATION_ROUTES.NO_MATCH,
+    path: NAVIGATION_ROUTES.LOGIN,
     element: <Login />,
+  },
+  {
+    path: NAVIGATION_ROUTES.SIGNUP,
+    element: <SignUp />,
+  },
+  {
+    path: NAVIGATION_ROUTES.FORGOTPASSWORD,
+    element: <ForgotPassword />,
+  },
+  {
+    path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
+    element: <ConfirmPassword />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DASHBOARD,
+    element: <Dashboard />,
   },
 ];
 
