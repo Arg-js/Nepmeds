@@ -1,8 +1,9 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
-import TextArea from "@nepMeds/components/Form/TextArea";
+import { useGetDistricts, useGetProvince } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import {
@@ -11,13 +12,28 @@ import {
   idType,
   municipality,
   phone,
-  province,
 } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 const PrimaryInfo = () => {
-  const { register, control } = useFormContext();
+  const { register, control, watch } = useFormContext<IRegisterFields>();
+  const provinceInfo = useGetProvince();
+  const districtInfo = useGetDistricts(watch("province"));
   const { data: specialization = [] } = useSpecializationData();
+
+  const provinceOptions =
+    provinceInfo.data?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
+
+  const districtOptions =
+    districtInfo.data?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
+
   const specializationOptions = specialization.map(s => ({
     label: s.name,
     value: s.id,
@@ -26,11 +42,10 @@ const PrimaryInfo = () => {
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
       <GridItem colSpan={4}>
-        <TextArea
-          name="bio_detail"
+        <FloatinglabelTextArea
           label="Basic Information"
+          name="bio_detail"
           register={register}
-          style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
       <GridItem colSpan={1}>
@@ -168,7 +183,7 @@ const PrimaryInfo = () => {
           name="province"
           required
           register={register}
-          options={province}
+          options={provinceOptions}
           style={{
             background: colors.forminput,
             border: "none",
@@ -183,7 +198,7 @@ const PrimaryInfo = () => {
           name="district"
           required
           register={register}
-          options={district}
+          options={districtOptions}
           style={{
             background: colors.forminput,
             border: "none",

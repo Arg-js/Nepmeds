@@ -11,6 +11,9 @@ export const api = {
   registereddoctor: "/dashboard/registered_doctor_list",
   pendingdoctor: "/dashboard/pending_doctor_list",
   approveddoctor: "/dashboard/approved_doctor_list",
+
+  province: "core/province",
+  district: "core/district",
 };
 
 export interface NepMedsResponse<T = any> {
