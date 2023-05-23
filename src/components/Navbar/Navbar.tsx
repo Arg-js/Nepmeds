@@ -53,8 +53,10 @@ const Navbar = () => {
               primaryColor={colors.blue_100}
             />
           </Flex>
-          <Flex gap={"20px"} alignItems={"center"} w={"15%"}>
-            <Text>Rahul Maharjan</Text>
+          <Flex gap={"20px"} alignItems={"center"}>
+            <Text fontSize={{ sm: "12px", xl: "18px", base: "16px" }}>
+              Rahul Maharjan
+            </Text>
             <Avatar size="md" />
           </Flex>
         </HStack>
