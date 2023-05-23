@@ -42,7 +42,7 @@ const TextArea = ({
   );
 };
 
-export interface ITextArea<>extends TextareaProps {
+export interface ITextArea extends TextareaProps {
   label?: string;
   helperText?: string;
   error?: string;
