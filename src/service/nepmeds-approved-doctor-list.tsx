@@ -8,6 +8,6 @@ const getApprovedDoctorList = async () => {
 };
 
 export const useApprovedDoctorList = () =>
-  useQuery("approveddoctors", getApprovedDoctorList, {
+  useQuery(api.approveddoctor, getApprovedDoctorList, {
     select: data => data.data.data,
   });

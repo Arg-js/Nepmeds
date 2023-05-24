@@ -8,6 +8,6 @@ const getPendingDoctorList = async () => {
 };
 
 export const usePendingDoctorList = () =>
-  useQuery("pendingdoctors", getPendingDoctorList, {
+  useQuery(api.pendingdoctor, getPendingDoctorList, {
     select: data => data.data.data,
   });

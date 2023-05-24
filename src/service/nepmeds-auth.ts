@@ -17,8 +17,17 @@ export interface LoginDetails {
   email: string;
   password: string;
 }
+type AuthInfo = {
+  first_name: string;
+  last_name: string;
+  email: string;
+  mobile_number: string;
+  is_doctor: boolean;
+  is_superuser: boolean;
+};
 
 export const authTokenKey = "authToken";
+export const auth = "authInfo";
 const authTokenDetails = "authTokenDetails";
 
 const initLogout = () => {
@@ -55,13 +64,13 @@ const useLoginMutation = () => {
   return useMutation(initLogin, {
     onSuccess: response => {
       loginChannel.postMessage(loginBroadcast);
-
       const tokens = {
         access: response.data.data.access,
         refresh: response.data.data.refresh,
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
+      queryClient.setQueryData(auth, () => response);
       toastSuccess("Login Successful!!");
       navigate("/dashboard", { replace: true });
     },
@@ -127,6 +136,10 @@ const useAuthentication = () => {
       }
     },
   });
+};
+
+export const useUserInfoQuery = () => {
+  return useQuery<AuthInfo>(auth);
 };
 
 const useLoginTokenDetailQuery = () => {
