@@ -123,6 +123,7 @@ const Specializations = () => {
       await saveSpecializationAction.mutateAsync({
         id: formMethods.getValues("id")?.toString() || null,
         name: formMethods.getValues("name"),
+        consultation_fees: "kjh",
         symptom: formMethods
           .getValues("symptom")
           .map(s => s.value)

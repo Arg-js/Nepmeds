@@ -47,4 +47,7 @@ export const colors = {
 
   /** table header*/
   table_header: "#D1F4FF",
+
+  /**dark-grey*/
+  dark_grey: "#5E6366",
 };
