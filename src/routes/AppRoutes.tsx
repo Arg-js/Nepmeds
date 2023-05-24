@@ -146,10 +146,10 @@ const openRoutes = [
     path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
     element: <ConfirmPassword />,
   },
-  {
-    path: NAVIGATION_ROUTES.DASHBOARD,
-    element: <Dashboard />,
-  },
+  // {
+  //   path: NAVIGATION_ROUTES.DASHBOARD,
+  //   element: <Dashboard />,
+  // },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
     element: <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />,

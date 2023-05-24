@@ -7,7 +7,7 @@ const BasicInfo = () => {
       title="Registration"
       subtitle="Please enter your details for registration."
     >
-      <BasicInfoForm hidePasswordField={false} />
+      <BasicInfoForm hidePasswordField={true} />
     </Wrapper>
   );
 };
