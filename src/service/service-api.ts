@@ -1,5 +1,7 @@
 export const api = {
   login: "user_management/login/token/",
+  forgotPassword: "user_management/reset-password/",
+  resetPassword: "user_management/confirm-password-reset/{uid}/{token}",
   signup: "user_management/mobile/",
   otp_verify: "user_management/mobile/verify/",
   register: "user_management/register/",

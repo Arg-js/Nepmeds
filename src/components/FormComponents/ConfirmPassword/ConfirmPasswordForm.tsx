@@ -1,12 +1,16 @@
 import { Button, HStack, Icon, VStack } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Hide, Lock, Show } from "react-iconly";
+import * as yup from "yup";
 
-import { colors } from "@nepMeds/theme/colors";
 import Input from "@nepMeds/components/Form/Input";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useResetPasswordMutation } from "@nepMeds/service/nepmeds-forgot-password";
+import { colors } from "@nepMeds/theme/colors";
+import { Navigate, useParams } from "react-router-dom";
 
 const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
@@ -14,10 +18,14 @@ const schema = yup.object().shape({
 });
 
 const ConformPasswordForm = () => {
+  const { uid = "", token = "" } = useParams<{ uid: string; token: string }>();
+  const resetPasswordAction = useResetPasswordMutation();
+
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const {
+    getValues,
     register,
     handleSubmit,
     formState: { errors },
@@ -28,15 +36,33 @@ const ConformPasswordForm = () => {
     },
     resolver: yupResolver(schema),
   });
+
   const togglepasswordView = () => {
     setShowPassword(!showPassword);
   };
+
   const toggleConfirmPasswordView = () => {
     setShowConfirmPassword(!showConfirmPassword);
   };
-  const onSubmit = () => {
-    alert("done");
+
+  const onSubmit = async () => {
+    try {
+      await resetPasswordAction.mutateAsync({
+        token,
+        uid,
+        new_password: getValues("password"),
+        confirm_new_password: getValues("confirmPassword"),
+      });
+      toastSuccess("New password saved successfully!");
+    } catch (error) {
+      toastFail("Failed to update password!");
+    }
   };
+
+  if (!uid && !token) {
+    return <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />;
+  }
+
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={7.5} mb={3}>
@@ -84,9 +110,9 @@ const ConformPasswordForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
-          //   isLoading={loginAction.isLoading}
+          isLoading={resetPasswordAction.isLoading}
         >
-          Create Password
+          Update Password
         </Button>
       </HStack>
     </form>

@@ -7,6 +7,7 @@
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
+* image layout ([288726f](https://gitlab.com/r2850/nepmeds/commit/288726f426bd5c2f393d04fef3cfdd811731c3e9))
 * input fields ([357d009](https://gitlab.com/r2850/nepmeds/commit/357d00981cec4a43262cddbef6d8a0de399f449d))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))

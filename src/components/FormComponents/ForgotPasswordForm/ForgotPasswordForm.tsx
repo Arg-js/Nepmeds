@@ -1,15 +1,16 @@
-import { HStack, VStack } from "@chakra-ui/layout";
-import { useForm } from "react-hook-form";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
+import { HStack, VStack } from "@chakra-ui/layout";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import { Message } from "react-iconly";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
 
-import { colors } from "@nepMeds/theme/colors";
 import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useGenerateForgetPasswordLink } from "@nepMeds/service/nepmeds-forgot-password";
+import { colors } from "@nepMeds/theme/colors";
 
 const schema = yup.object().shape({
   email: yup.string().email("Please enter a valid email"),
@@ -17,32 +18,24 @@ const schema = yup.object().shape({
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
+  const forgotPasswordAction = useGenerateForgetPasswordLink();
 
-  const { register, handleSubmit } = useForm({
+  const { register, getValues, handleSubmit } = useForm({
     defaultValues: {
       email: "",
     },
     resolver: yupResolver(schema),
   });
-  const onSubmit = () => {
-    // try {
-    //   singUpAction.mutateAsync({ mobile_number: email });
-    //   setEnableOTP(true);
-    //   toastSuccess("Forgot password link has been sent to your email!");
-    // } catch (error) {
-    //   toastFail("Failed to sign up!");
-    // }
+  const onSubmit = async () => {
     try {
-      toastSuccess("Forgot password link has been sent to your email!");
+      await forgotPasswordAction.mutateAsync({ email: getValues("email") });
+      toastSuccess("Reset password link has been sent to your email!");
       navigate("/");
     } catch {
-      toastFail("Failed to sign up!");
+      toastFail("Failed to send reset password link!");
     }
   };
 
-  // if (enableOTP) {
-  //   return <OtpSignUp otpText={otpText} />;
-  // }
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
       <VStack gap={7.5} mb={12}>
@@ -64,6 +57,7 @@ const ForgotPasswordForm = () => {
           backgroundColor={colors.primary}
           textColor={colors.white}
           type="submit"
+          isLoading={forgotPasswordAction.isLoading}
         >
           Submit
         </Button>
