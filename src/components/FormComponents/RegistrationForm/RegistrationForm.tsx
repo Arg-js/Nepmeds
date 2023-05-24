@@ -31,12 +31,13 @@ import { useExperienceInfoRegister } from "@nepMeds/service/nepmeds-experience";
 import { usePrimaryInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
+import { AxiosError } from "axios";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const registerDefaultValues = {
-  image: undefined as undefined | [],
+  image: undefined as undefined | File[],
   title: "",
   first_name: "",
   middle_name: "",
@@ -107,7 +108,11 @@ const RegistrationForm = () => {
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isConfirmationOpen,
+    onOpen: onOpenConfirmation,
+    onClose: onCloseConfirmation,
+  } = useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
   const certificationInfoRegister = useCertificateInfoRegister();
@@ -129,7 +134,7 @@ const RegistrationForm = () => {
       }
       case 1: {
         try {
-          primaryInfoRegister
+          await primaryInfoRegister
             .mutateAsync({
               image: values.image,
               title: values.title,
@@ -161,7 +166,11 @@ const RegistrationForm = () => {
               setActiveStep(2);
             });
         } catch (error) {
-          toastFail("Please check form values");
+          const err = error as AxiosError<{ message: string }>;
+          toastFail(
+            err?.response?.data?.message ||
+              "Failed to update primary information!"
+          );
         }
         break;
       }
@@ -179,7 +188,11 @@ const RegistrationForm = () => {
             })
             .then(response => response && setActiveStep(3));
         } catch (error) {
-          toastFail("Please check form values");
+          const err = error as AxiosError<{ message: string }>;
+          toastFail(
+            err?.response?.data?.message ||
+              "Failed to add academic information!"
+          );
         }
         break;
       }
@@ -199,7 +212,11 @@ const RegistrationForm = () => {
             })
             .then(response => response && setActiveStep(4));
         } catch (error) {
-          toastFail("Please check form values");
+          const err = error as AxiosError<{ message: string }>;
+          toastFail(
+            err?.response?.data?.message ||
+              "Failed to add certification information!"
+          );
         }
         break;
       }
@@ -215,9 +232,13 @@ const RegistrationForm = () => {
             to_date: values.experience[lastValue].to_date,
             file: values.experience[lastValue].file,
           });
-          onOpen();
+          onOpenConfirmation();
         } catch (error) {
-          toastFail("Please check form values");
+          const err = error as AxiosError<{ message: string }>;
+          toastFail(
+            err?.response?.data?.message ||
+              "Failed to add experience information!"
+          );
         }
         break;
       }
@@ -357,7 +378,12 @@ const RegistrationForm = () => {
             <Flex gap={4}>
               {activeStep > 1 && (
                 <Button
-                  onClick={() => null}
+                  onClick={() => {
+                    if (activeStep === steps.length) {
+                      return onOpenConfirmation();
+                    }
+                    setActiveStep(prev => prev + 1);
+                  }}
                   border={`1px solid ${colors.primary}`}
                   color={colors.primary}
                   fontWeight={400}
@@ -367,7 +393,6 @@ const RegistrationForm = () => {
                 </Button>
               )}
               <Button
-                onClick={() => onSubmitForm(formMethods.getValues())}
                 isLoading={
                   primaryInfoRegister.isLoading ||
                   academicInfoRegister.isLoading ||
@@ -388,8 +413,8 @@ const RegistrationForm = () => {
       </FormProvider>
 
       <ModalComponent
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isConfirmationOpen}
+        onClose={onCloseConfirmation}
         heading={
           <HStack>
             <svgs.logo_small />

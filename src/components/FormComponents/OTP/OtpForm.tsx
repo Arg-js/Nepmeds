@@ -71,7 +71,7 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/login"
+          to="/"
           style={{
             color: colors.blue_100,
             marginLeft: "5px",

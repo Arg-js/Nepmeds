@@ -1,5 +1,7 @@
 export const api = {
   login: "user_management/login/token/",
+  forgotPassword: "user_management/reset-password/",
+  resetPassword: "user_management/confirm-password-reset/{uid}/{token}",
   signup: "user_management/mobile/",
   otp_verify: "user_management/mobile/verify/",
   register: "user_management/register/",
@@ -13,6 +15,9 @@ export const api = {
   approveddoctor: "/dashboard/approved_doctor_list",
   approvesingledoctor: "/dashboard/approve_doctor/{id}/",
   rejectsingledoctor: "/dashboard/reject_doctor/{id}/",
+
+  province: "core/province",
+  district: "core/districtlist",
 };
 
 export interface NepMedsResponse<T = any> {

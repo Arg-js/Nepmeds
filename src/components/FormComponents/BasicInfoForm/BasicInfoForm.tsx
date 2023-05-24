@@ -1,5 +1,5 @@
 import { Flex, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/layout";
-import { FormLabel } from "@chakra-ui/react";
+import { FormLabel, Image } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
@@ -7,30 +7,67 @@ import Input from "@nepMeds/components/Form/Input";
 import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 import { title } from "@nepMeds/utils/index";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const BasicInfoForm = () => {
-  const { register } = useFormContext<IRegisterFields>();
+  const { watch, register } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
+
+  const image = watch("image");
+  const imageURL = useMemo(() => {
+    try {
+      const file = image?.[0];
+      return file ? URL.createObjectURL(file) : "";
+    } catch (error) {
+      return "";
+    }
+  }, [image]);
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6}>
       <GridItem rowSpan={2} colSpan={1}>
         <FormLabel htmlFor="file" h="100%">
-          <Flex bg={colors.forminput} borderRadius={12} h="100%">
-            <VStack justifyContent="center" w="100%">
-              <svgs.image />
-              <HStack>
-                <svgs.upload />
-                <Text fontSize={14}>Upload Image</Text>
-              </HStack>
-            </VStack>
+          <Flex
+            bg={colors.forminput}
+            borderRadius={12}
+            h="100%"
+            _hover={{
+              "& > img": { opacity: 0.5 },
+              "& > div": { display: "flex" },
+            }}
+            cursor="pointer"
+            pos="relative"
+          >
+            {imageURL ? (
+              <>
+                <Image src={imageURL} />
+
+                <HStack
+                  w="100%"
+                  pos="absolute"
+                  display="none"
+                  bottom={3}
+                  justifyContent="center"
+                >
+                  <svgs.upload />
+                  <Text fontSize={14}>Upload Image</Text>
+                </HStack>
+              </>
+            ) : (
+              <VStack justifyContent="center" w="100%">
+                <svgs.image />
+                <HStack>
+                  <svgs.upload />
+                  <Text fontSize={14}>Upload Image</Text>
+                </HStack>
+              </VStack>
+            )}
           </Flex>
         </FormLabel>
-        <Input type="file" id="file" name="file" hidden register={register} />
+        <Input type="file" id="file" name="image" hidden register={register} />
       </GridItem>
 
       <GridItem colSpan={3}>
