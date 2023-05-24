@@ -11,7 +11,11 @@ import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
-export const BasicInfoForm = () => {
+export const BasicInfoForm = ({
+  hidePasswordField,
+}: {
+  hidePasswordField: boolean;
+}) => {
   const { watch, register } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
@@ -104,28 +108,32 @@ export const BasicInfoForm = () => {
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
-        <FloatingPassword
-          label="Password"
-          name="password"
-          register={register}
-          isVisible={passwordVisible}
-          onToggleVisibility={() => setPasswordVisible(!passwordVisible)}
-          style={{ background: colors.forminput, border: "none" }}
-        />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <FloatingPassword
-          label="Confirm Password"
-          name="confirm_password"
-          register={register}
-          isVisible={confirmpasswordVisible}
-          onToggleVisibility={() =>
-            setConfirmpasswordVisible(!confirmpasswordVisible)
-          }
-          style={{ background: colors.forminput, border: "none" }}
-        />
-      </GridItem>
+      {hidePasswordField && (
+        <>
+          <GridItem colSpan={2}>
+            <FloatingPassword
+              label="Password"
+              name="password"
+              register={register}
+              isVisible={passwordVisible}
+              onToggleVisibility={() => setPasswordVisible(!passwordVisible)}
+              style={{ background: colors.forminput, border: "none" }}
+            />
+          </GridItem>
+          <GridItem colSpan={2}>
+            <FloatingPassword
+              label="Confirm Password"
+              name="confirm_password"
+              register={register}
+              isVisible={confirmpasswordVisible}
+              onToggleVisibility={() =>
+                setConfirmpasswordVisible(!confirmpasswordVisible)
+              }
+              style={{ background: colors.forminput, border: "none" }}
+            />
+          </GridItem>
+        </>
+      )}
     </Grid>
   );
 };
