@@ -6,7 +6,7 @@ import Select from "@nepMeds/components/Form/Select";
 import { useGetDistricts, useGetProvince } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { district, gender, idType, phone } from "@nepMeds/utils/choices";
+import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
@@ -146,10 +146,10 @@ const PrimaryInfo = () => {
         <Select
           placeholder=""
           label="Issued District"
-          name="issued_district"
+          name="citizenship_issued_district"
           required
           register={register}
-          options={district}
+          options={districtOptions}
           style={{
             background: colors.forminput,
             border: "none",

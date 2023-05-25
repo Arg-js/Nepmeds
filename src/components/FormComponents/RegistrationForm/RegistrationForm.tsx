@@ -54,7 +54,7 @@ const registerDefaultValues = {
   pan_number: "",
   id_type: "",
   citizenship_number: "",
-  issued_district: "",
+  citizenship_issued_district: "",
   issued_date: "",
   province: "",
   district: "",
@@ -418,7 +418,19 @@ const RegistrationForm = () => {
             <Text>Confirmation</Text>
           </HStack>
         }
-        primaryText="Okay"
+        footer={
+          <HStack gap={3}>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/login")}
+              flex={1}
+              background={colors.primary}
+              color={colors.white}
+            >
+              Okay
+            </Button>
+          </HStack>
+        }
         alignment="center"
       >
         <svgs.confirmed style={{ margin: "0 auto" }} />
