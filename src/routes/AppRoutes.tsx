@@ -19,6 +19,8 @@ import {
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
+import { Suspense } from "react";
+import { Center, Spinner } from "@chakra-ui/react";
 
 const routes = [
   {
@@ -161,17 +163,28 @@ const openRoutes = [
 ];
 
 const AppRoutes = () => {
-  const { data: isAuthenticated } = useAuthentication();
+  const { data: isAuthenticated, isLoading } = useAuthentication();
   const { data: userInfo } = useLoginTokenDetailQuery();
 
-  return useRoutes(
-    // isAuthenticated ? adminRoutes : openRoutes
+  if (isLoading) {
+    return (
+      <Center h="100vh">
+        <Spinner />
+      </Center>
+    );
+  }
 
-    isAuthenticated
-      ? userInfo?.is_superuser
-        ? adminRoutes
-        : routes
-      : openRoutes
+  return (
+    <Suspense fallback={<Spinner />}>
+      {useRoutes(
+        // isAuthenticated ? adminRoutes : openRoutes
+        isAuthenticated
+          ? userInfo?.is_superuser
+            ? adminRoutes
+            : routes
+          : openRoutes
+      )}
+    </Suspense>
   );
 };
 

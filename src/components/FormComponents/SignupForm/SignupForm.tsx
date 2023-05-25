@@ -40,7 +40,7 @@ const SignupForm = () => {
         mobile_number: mobile,
       });
       setEnableOTP(true);
-      setOTP(otpInfo.data);
+      setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
       toastSuccess("OTP code has been sent to your mobile!");
     } catch (error) {
       toastFail("Failed to send OTP code!");
