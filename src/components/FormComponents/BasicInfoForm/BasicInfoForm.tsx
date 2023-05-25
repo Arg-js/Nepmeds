@@ -16,7 +16,7 @@ export const BasicInfoForm = ({
 }: {
   hidePasswordField: boolean;
 }) => {
-  const { watch, register } = useFormContext<IRegisterFields>();
+  const { register, watch } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
 

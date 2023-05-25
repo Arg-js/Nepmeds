@@ -3,7 +3,7 @@ import { api } from "./service-api";
 import { HttpClient, toFormData } from "./service-axios";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
-type AcademicInfo = IRegisterFields["academic"][number];
+export type AcademicInfo = IRegisterFields["academic"][number];
 
 const createAcademicData = async (data: AcademicInfo) => {
   const response = await HttpClient.post(api.academic, toFormData(data));

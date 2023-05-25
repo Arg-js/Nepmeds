@@ -16,6 +16,7 @@ export const api = {
   approveddoctor: "/dashboard/approved_doctor_list",
   approvesingledoctor: "/dashboard/approve_doctor/{id}/",
   rejectsingledoctor: "/dashboard/reject_doctor/{id}/",
+  doctordetails: "/dashboard/view_doctor_profile/{id}/",
 
   province: "core/province",
   district: "core/districtlist",

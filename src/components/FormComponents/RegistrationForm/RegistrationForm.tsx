@@ -422,6 +422,7 @@ const RegistrationForm = () => {
           </HStack>
         }
         primaryText="Okay"
+        alignment="center"
       >
         <svgs.confirmed style={{ margin: "0 auto" }} />
         <VStack>

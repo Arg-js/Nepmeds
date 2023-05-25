@@ -23,15 +23,21 @@ const ModalComponent = ({
   size,
   otherAction,
   footer,
+  alignment,
 }: IModalProps) => {
   return (
     <>
-      <Modal isOpen={isOpen} onClose={onClose} size={size}>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        size={size}
+        scrollBehavior="inside"
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
-          <ModalBody textAlign="center">{children}</ModalBody>
+          <ModalBody style={{ textAlign: alignment }}>{children}</ModalBody>
 
           <ModalFooter justifyContent="center">
             {footer || (
@@ -71,6 +77,7 @@ interface IModalProps {
   onApiCall?: () => void;
   otherAction?: () => void;
   footer?: ReactNode;
+  alignment?: any;
 }
 
 export default ModalComponent;
