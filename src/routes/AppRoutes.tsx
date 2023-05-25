@@ -15,6 +15,7 @@ import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
 
 const routes = [
   {
@@ -84,6 +85,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
+        element: <DoctorProfile />,
       },
     ],
   },

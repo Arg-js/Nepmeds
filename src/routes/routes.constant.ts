@@ -28,5 +28,6 @@ export const NAVIGATION_ROUTES = {
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
 
+  DOCTOR_PROFILE: "/doctor-profile",
   NO_MATCH: "*",
 };

@@ -1,7 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Button,
   HStack,
   Text,
   Icon,
@@ -10,9 +9,6 @@ import {
   InputLeftElement,
   Spinner,
   useDisclosure,
-  Divider,
-  Flex,
-  Image,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
@@ -24,12 +20,12 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { colors } from "@nepMeds/theme/colors";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
+import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -45,13 +41,13 @@ const PendingDocList = () => {
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
   } = useDisclosure();
-  const [isRejected, setIsRejected] = React.useState(false);
+  const [_isRejected, setIsRejected] = React.useState(false);
   const { data, isLoading } = usePendingDoctorList();
-  const [id, setId] = React.useState(null);
+  const [id, setId] = React.useState("");
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
-
+  const { data: detail } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
     try {
@@ -175,7 +171,8 @@ const PendingDocList = () => {
         filter={{ globalFilter: searchFilter }}
       />
       <ModalComponent
-        size="xl"
+        alignment="left"
+        size="2xl"
         isOpen={isDetailsModalOpen}
         onClose={acceptDoctor}
         heading={
@@ -193,91 +190,7 @@ const PendingDocList = () => {
           toastSuccess("Doctor Approved");
         }}
       >
-        <Flex gap={4}>
-          <Image
-            src={NepmedsLogo}
-            alt="nepmeds logo"
-            h={20}
-            w={20}
-            borderRadius="100%"
-            objectFit="cover"
-          />
-          <Flex direction="column">
-            <Text color={colors.primary_blue} fontWeight={600}>
-              Rahul Moktan
-            </Text>
-
-            <Text>MBBS M.S. (Gen. Surg), M.Ch.(PL Surg)</Text>
-            <Text>
-              Hello, I am a Plastic Surgeon. I have more than 5 years of
-              experience in the field.
-            </Text>
-          </Flex>
-        </Flex>
-
-        <Text>Basic Information</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Number</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Email</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Gender</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Specialization</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Patients name</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Age</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Divider my={4} />
-        <Text>Citizenship Details</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Citizenship Number</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Issued District</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Issued Date</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Divider my={4} />
-        <Text>Address Details</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Province</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>District</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Municipality/ VDC</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
+        <DoctorDetail {...detail} />
       </ModalComponent>
 
       <ModalComponent
