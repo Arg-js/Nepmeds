@@ -10,11 +10,15 @@ import { useForm } from "react-hook-form";
 import { Call } from "react-iconly";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 const schema = yup.object().shape({
-  mobile: yup.number().required("Mobile number is required!"),
-  // .min(10, "Please enter a 10 digit mobile number")
-  // .max(10, "Please enter a 10 digit mobile number"),
+  mobile: yup
+    .string()
+    .required("Mobile number is required!")
+    .matches(phoneRegExp, "Mobile number is not valid")
+    .min(10, "Please enter a 10 digit mobile number")
+    .max(10, "Please enter a 10 digit mobile number"),
 });
 
 const SignupForm = () => {
