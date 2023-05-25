@@ -12,7 +12,10 @@ import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import SignUp from "@nepMeds/pages/SignUp/SignUp";
-import { useAuthentication } from "@nepMeds/service/nepmeds-auth";
+import {
+  useAuthentication,
+  useLoginTokenDetailQuery,
+} from "@nepMeds/service/nepmeds-auth";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
@@ -50,6 +53,10 @@ const routes = [
         path: NAVIGATION_ROUTES.PAYMENT,
         element: <>Payment</>,
       },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
+        element: <DoctorProfile />,
+      },
     ],
   },
 ];
@@ -70,10 +77,7 @@ const adminRoutes = [
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
         element: <AllDoctors />,
       },
-      {
-        path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
-        element: <DoctorProfile />,
-      },
+
       {
         path: NAVIGATION_ROUTES.PATIENTS,
         element: <>Patients</>,
@@ -158,13 +162,16 @@ const openRoutes = [
 
 const AppRoutes = () => {
   const { data: isAuthenticated } = useAuthentication();
-  // const dataInfo = useUserInfoQuery();
-  // const is_doctor = dataInfo.data?.data?.data?.is_doctor;
-  // localStorage.setItem("doctor", is_doctor);
-  return useRoutes(
-    isAuthenticated ? adminRoutes : openRoutes
+  const { data: userInfo } = useLoginTokenDetailQuery();
 
-    // isAuthenticated ? (is_doctor ? routes : adminRoutes) : openRoutes
+  return useRoutes(
+    // isAuthenticated ? adminRoutes : openRoutes
+
+    isAuthenticated
+      ? userInfo?.is_superuser
+        ? adminRoutes
+        : routes
+      : openRoutes
   );
 };
 

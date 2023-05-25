@@ -7,16 +7,14 @@ import { useSignUpUser } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Message } from "react-iconly";
+import { Call } from "react-iconly";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  mobile: yup
-    .number()
-    // .min(10, "Please enter a 10 digit mobile number")
-    // .max(10, "Please enter a 10 digit mobile number")
-    .required("Mobile number is required!"),
+  mobile: yup.number().required("Mobile number is required!"),
+  // .min(10, "Please enter a 10 digit mobile number")
+  // .max(10, "Please enter a 10 digit mobile number"),
 });
 
 const SignupForm = () => {
@@ -60,9 +58,7 @@ const SignupForm = () => {
           name="mobile"
           register={register}
           type="number"
-          startIcon={
-            <Icon as={Message} fontSize={20} color={colors.black_40} />
-          }
+          startIcon={<Icon as={Call} fontSize={20} color={colors.black_40} />}
           border="none"
           backgroundColor={colors.forminput}
           placeholder="Mobile No."

@@ -10,10 +10,7 @@ export const gender = [
   { label: "Other", value: "Other" },
 ];
 
-export const idType = [
-  { label: "Citizenship", value: "Citizenship" },
-  { label: "Passport", value: "Passport" },
-];
+export const idType = [{ label: "Citizenship", value: "Citizenship" }];
 export const district = [
   { label: "Kathmandu", value: "Kathmandu" },
   { label: "Bhaktapur", value: "Bhaktapur" },

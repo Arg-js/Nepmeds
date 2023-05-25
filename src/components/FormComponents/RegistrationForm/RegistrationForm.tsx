@@ -108,11 +108,8 @@ const RegistrationForm = () => {
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
 
-  const {
-    isOpen: isConfirmationOpen,
-    onOpen: onOpenConfirmation,
-    onClose: onCloseConfirmation,
-  } = useDisclosure();
+  const { isOpen: isConfirmationOpen, onOpen: onOpenConfirmation } =
+    useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
   const certificationInfoRegister = useCertificateInfoRegister();
@@ -414,7 +411,7 @@ const RegistrationForm = () => {
 
       <ModalComponent
         isOpen={isConfirmationOpen}
-        onClose={onCloseConfirmation}
+        onClose={() => navigate("/login")}
         heading={
           <HStack>
             <svgs.logo_small />

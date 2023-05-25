@@ -1,5 +1,6 @@
 import {
   Button,
+  Icon,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -11,6 +12,8 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { ReactNode } from "react";
+import { ApproveButton, RejectButton } from "../Button/Button";
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 const ModalComponent = ({
   heading,
@@ -24,6 +27,8 @@ const ModalComponent = ({
   otherAction,
   footer,
   alignment,
+  approve,
+  reject,
 }: IModalProps) => {
   return (
     <>
@@ -39,23 +44,49 @@ const ModalComponent = ({
           <ModalCloseButton />
           <ModalBody style={{ textAlign: alignment }}>{children}</ModalBody>
 
-          <ModalFooter justifyContent="center">
+          <ModalFooter justifyContent="center" gap={3}>
             {footer || (
               <>
-                <Button
-                  mr={3}
-                  onClick={onApiCall || onClose}
-                  background={colors.primary}
-                  color={colors.white}
-                  borderRadius={12}
-                  size="md"
-                >
-                  {primaryText}
-                </Button>
-                {secondaryText && (
+                {approve ? (
+                  <ApproveButton
+                    mr={3}
+                    onClick={onApiCall || onClose}
+                    background={colors.primary}
+                    color={colors.white}
+                    borderRadius={12}
+                    size="md"
+                  >
+                    <Icon as={CheckIcon} fontSize={20} m={3} />
+
+                    {primaryText}
+                  </ApproveButton>
+                ) : (
+                  <Button
+                    mr={3}
+                    onClick={onApiCall || onClose}
+                    background={colors.primary}
+                    color={colors.white}
+                    borderRadius={12}
+                    size="md"
+                  >
+                    {primaryText}
+                  </Button>
+                )}
+                {!reject && secondaryText ? (
                   <Button variant="ghost" onClick={otherAction}>
                     {secondaryText}
                   </Button>
+                ) : (
+                  <RejectButton mr={3} onClick={otherAction}>
+                    <Icon
+                      as={CloseIcon}
+                      fontSize={20}
+                      color={colors.error}
+                      m={3}
+                    />
+
+                    {secondaryText}
+                  </RejectButton>
                 )}
               </>
             )}
@@ -77,6 +108,8 @@ interface IModalProps {
   onApiCall?: () => void;
   otherAction?: () => void;
   footer?: ReactNode;
+  approve?: ReactNode;
+  reject?: ReactNode;
   alignment?: any;
 }
 

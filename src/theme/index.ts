@@ -2,10 +2,6 @@ import { extendTheme } from "@chakra-ui/react";
 import { ButtonTheme } from "./Button";
 import { InputTheme } from "./Input";
 import { colors } from "./colors";
-const activeLabelStyles = {
-  transform: "scale(0.8) translateY(-19px)",
-  marginBottom: "5px",
-};
 
 const space = {
   px: "1px",
@@ -87,6 +83,15 @@ export const theme = extendTheme({
       },
       "tr:nth-of-type(even)": {
         background: colors.blue_10,
+      },
+      "a.active p": {
+        color: colors.white,
+      },
+      "a.active svg": {
+        color: "#fff!important",
+      },
+      ".chakra-form-control": {
+        zIndex: "9",
       },
     },
   },

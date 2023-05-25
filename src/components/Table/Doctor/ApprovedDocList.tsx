@@ -60,6 +60,12 @@ const ApprovedDocList = () => {
           return (
             <Badge
               colorScheme={profile_status === "approved" ? "green" : "yellow"}
+              p={1}
+              borderRadius={20}
+              fontSize={11}
+              w={20}
+              textAlign="center"
+              textTransform="capitalize"
             >
               {profile_status}
             </Badge>
@@ -123,7 +129,7 @@ const ApprovedDocList = () => {
       />
       <ModalComponent
         alignment="left"
-        size="6xl"
+        size="3xl"
         isOpen={isDetailsModalOpen}
         onClose={onDetailsModalClose}
         heading={

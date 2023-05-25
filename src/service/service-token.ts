@@ -4,17 +4,15 @@ export interface TokenDetails {
 }
 
 export interface TokenInfo {
-  contactNo: string;
-  email: string;
-  id: null | number;
-  name: string;
-  profilePic: string;
-  role: string;
-  roleId: null | number;
-  schemeBased: boolean;
-  username: string;
+  token_type: string;
   exp: number;
-  workspacedataid: number;
+  iat: number;
+  jti: string;
+  user_id: number;
+  email: string;
+  is_doctor: boolean;
+  is_patient: boolean;
+  is_superuser: boolean;
 }
 
 function setToken(token: TokenDetails) {
@@ -59,7 +57,7 @@ function clearToken() {
 }
 
 export const getRole = () => {
-  return getTokenDetails()?.workspacedataid;
+  return getTokenDetails();
 };
 
 const TokenService = {

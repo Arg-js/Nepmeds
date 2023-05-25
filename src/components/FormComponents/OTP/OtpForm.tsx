@@ -12,10 +12,12 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
-  const onFormSubmit = (e: FormEvent) => {
+  const onFormSubmit = async (e: FormEvent) => {
     try {
       e.preventDefault();
-      verifySingUpOTPAction.mutateAsync({ otp: otpCode });
+      await verifySingUpOTPAction.mutateAsync({
+        otp: otpCode,
+      });
       toastSuccess("OTP has been verified successfully!");
       navigate("/register", { state: { mobile } });
     } catch (error) {

@@ -21,10 +21,10 @@ import {
 import { images } from "@nepMeds/assets/images";
 import { colors } from "@nepMeds/theme/colors";
 import {
+  useLoginTokenDetailQuery,
   useLogoutMutation,
-  useUserInfoQuery,
 } from "@nepMeds/service/nepmeds-auth";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarOption {
@@ -128,8 +128,11 @@ const Sidebar = () => {
   const logout = () => {
     logoutAction.mutate();
   };
-  // const is_doctor = localStorage.getItem("doctor");
-  const menuOptions = AdminSidebarOptions;
+  const { data: userInfo } = useLoginTokenDetailQuery();
+
+  const menuOptions =
+    (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
+
   return (
     <Box
       display="flex"
@@ -144,20 +147,26 @@ const Sidebar = () => {
       <Stack>
         <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={65} />
         <Box p={"0 8px"}>
-          <List ml={8} spacing={8}>
-            {menuOptions.map(sidebarOption => {
+          <List pl={3}>
+            {menuOptions?.map((sidebarOption: any) => {
               return (
                 <ListItem
                   display={"flex"}
                   alignItems={"center"}
-                  as={Link}
-                  _activeLink={{ background: "red" }}
+                  as={NavLink}
+                  height="56px"
+                  pl={4}
+                  borderRadius={12}
+                  _activeLink={{
+                    background: colors.blue_100,
+                    color: colors.white,
+                  }}
                   to={sidebarOption.link}
                   key={sidebarOption.text.trim()}
                 >
                   <sidebarOption.icon
                     set={sidebarOption.set}
-                    primaryColor={colors?.black_50}
+                    color={colors?.black_50}
                     size={20}
                   />
                   <Text
@@ -166,6 +175,7 @@ const Sidebar = () => {
                     lineHeight={"17px"}
                     color={colors?.black_50}
                     ml={"18px"}
+                    w="140px"
                   >
                     {sidebarOption?.text}
                   </Text>
