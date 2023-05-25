@@ -52,7 +52,6 @@ const initLogin = (loginData: LoginDetails) => {
 
 const useLoginMutation = () => {
   const queryClient = useQueryClient();
-  const navigate = useNavigate();
 
   return useMutation(initLogin, {
     onSuccess: response => {
@@ -64,7 +63,6 @@ const useLoginMutation = () => {
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
       toastSuccess("Login Successful!!");
-      navigate("/dashboard", { replace: true });
     },
     onError: error => {
       const loginErr = error as AxiosError<{ message: string; error: string }>;
@@ -99,16 +97,20 @@ const initRefreshToken = async () => {
 };
 
 const checkAuthentication = async () => {
-  if (TokenService.isAuthenticated()) {
-    const tokenInfo = TokenService.getTokenDetails();
-    if (tokenInfo && tokenInfo.exp * 1000 < Date.now() + 5 * 60 * 1000) {
-      return initRefreshToken();
-    }
+  // if (TokenService.isAuthenticated()) {
+  //   const tokenInfo = TokenService.getTokenDetails();
+  //   if (tokenInfo && tokenInfo.exp * 1000 < Date.now() + 5 * 60 * 1000) {
+  //     return initRefreshToken();
+  //   }
+  //   return Promise.resolve(true);
+  // } else if (TokenService.getToken()?.refresh) {
+  //   return initRefreshToken();
+  // }
+  // return Promise.resolve(null);
+  if (TokenService.getTokenDetails()) {
     return Promise.resolve(true);
-  } else if (TokenService.getToken()?.refresh) {
-    return initRefreshToken();
   }
-  return Promise.resolve(null);
+  return Promise.resolve(false);
 };
 
 /**

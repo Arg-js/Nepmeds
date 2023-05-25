@@ -46,6 +46,7 @@
 * **login, signup and otp component:** modified login, added signup and otp (wip) ([9fcb4b3](https://gitlab.com/r2850/nepmeds/commit/9fcb4b32b0c646f71ab088749a63b887740c16f3))
 * master data ([4a76f43](https://gitlab.com/r2850/nepmeds/commit/4a76f43b2c29144c0ce55322f9c9999163c982c2))
 * master data ([9a65e00](https://gitlab.com/r2850/nepmeds/commit/9a65e00258290f254ba1d4753f1c4d3b63d6f7b8))
+* **mobile number validation:** regex for mobile number added ([acc623f](https://gitlab.com/r2850/nepmeds/commit/acc623f68fe11df7eec3c717edf920e633ed12ab))
 * **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))
