@@ -14,6 +14,7 @@ import { Home, Notification } from "react-iconly";
 
 import Input from "@nepMeds/components/Form/Input";
 import { colors } from "@nepMeds/theme/colors";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { register } = useForm();
@@ -57,7 +58,7 @@ const Navbar = () => {
             <Text fontSize={{ sm: "12px", xl: "18px", base: "16px" }}>
               Rahul Maharjan
             </Text>
-            <Avatar size="md" />
+            <Avatar as={Link} to="/doctor-profile" size="md" />
           </Flex>
         </HStack>
         <Divider mt={"14px"} />

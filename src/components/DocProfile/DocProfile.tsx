@@ -14,11 +14,11 @@ import {
   CertificationInfoForm,
 } from "../FormComponents";
 import { FormProvider, useForm } from "react-hook-form";
-import { useDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+// import { useDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const DocProfile = () => {
   const method = useForm();
-  const { data } = useDoctorProfile();
+  // const { data } = useDoctorProfile();
   return (
     <Tabs position="relative" variant="unstyled">
       <TabList>

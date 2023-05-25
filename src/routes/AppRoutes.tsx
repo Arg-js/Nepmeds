@@ -71,6 +71,10 @@ const adminRoutes = [
         element: <AllDoctors />,
       },
       {
+        path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
+        element: <DoctorProfile />,
+      },
+      {
         path: NAVIGATION_ROUTES.PATIENTS,
         element: <>Patients</>,
       },
@@ -85,10 +89,6 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
-      },
-      {
-        path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
-        element: <DoctorProfile />,
       },
     ],
   },
@@ -146,10 +146,10 @@ const openRoutes = [
     path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
     element: <ConfirmPassword />,
   },
-  {
-    path: NAVIGATION_ROUTES.DASHBOARD,
-    element: <Dashboard />,
-  },
+  // {
+  //   path: NAVIGATION_ROUTES.DASHBOARD,
+  //   element: <Dashboard />,
+  // },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
     element: <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />,
