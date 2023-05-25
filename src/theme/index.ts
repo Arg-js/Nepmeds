@@ -90,9 +90,6 @@ export const theme = extendTheme({
       "a.active svg": {
         color: "#fff!important",
       },
-      ".chakra-form-control": {
-        zIndex: "9",
-      },
     },
   },
   fontSizes: {
@@ -159,7 +156,6 @@ export const theme = extendTheme({
               top: "10px",
               transform: "scale(0.8) translateY(-19px)",
               left: 0,
-              zIndex: 1,
               position: "absolute",
               pointerEvents: "none",
               mx: 3,
