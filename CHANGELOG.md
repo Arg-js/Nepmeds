@@ -11,6 +11,7 @@
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
+* doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))

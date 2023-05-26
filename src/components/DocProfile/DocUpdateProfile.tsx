@@ -26,7 +26,8 @@ export const DocUpdateProfile = ({
         <Image
           w={"159px"}
           h={"159px"}
-          src="https://images.unsplash.com/photo-1667489022797-ab608913feeb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHw5fHx8ZW58MHx8fHw%3D&auto=format&fit=crop&w=800&q=60"
+          src={doctorProfileData?.image}
+          fallbackSrc="https://via.placeholder.com/159"
           alt="Caffe Latte"
         />
 
@@ -41,7 +42,8 @@ export const DocUpdateProfile = ({
             >
               {doctorProfileData?.user?.first_name}&nbsp;
               {doctorProfileData?.user?.middle_name}&nbsp;
-              {doctorProfileData?.user?.last_name}&nbsp; ( Dentist)
+              {doctorProfileData?.user?.last_name}&nbsp; (
+              {doctorProfileData?.specialization?.[0]})
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Icon as={EditIcon} boxSize={5} color={colors?.main} mr={"8px"} />

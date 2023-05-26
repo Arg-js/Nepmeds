@@ -40,7 +40,7 @@ export interface IGetDoctorProfile {
   title: string;
   bio_detail: string;
   age: number;
-  image: string | null;
+  image: string;
   province: string;
   district: string;
   municipality_vdc: string;
