@@ -1,24 +1,23 @@
+import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Divider,
-  Flex,
   HStack,
   Icon,
-  Image,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { RejectionForm } from "@nepMeds/components/FormComponents";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { colors } from "@nepMeds/theme/colors";
+import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
+import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import { CellContext } from "@tanstack/react-table";
-import React from "react";
-import { FormProvider, useForm } from "react-hook-form";
+import React, { useState } from "react";
 import { Show } from "react-iconly";
 
 const ApprovedDocList = () => {
@@ -27,18 +26,14 @@ const ApprovedDocList = () => {
     onOpen: onDetailsModalOpen,
     onClose: onDetailsModalClose,
   } = useDisclosure();
-  const {
-    isOpen: isRejectModalOpen,
-    onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose,
-  } = useDisclosure();
-  const [_, setIsRejected] = React.useState(false);
 
   const columns = React.useMemo(
     () => [
       {
-        header: "S.N",
-        accessorKey: "id",
+        header: "S.N.",
+        accessorFn: (_cell: CellContext<any, any>, index: number) => {
+          return index + 1;
+        },
       },
       {
         header: "Doctor's Name",
@@ -46,12 +41,12 @@ const ApprovedDocList = () => {
       },
       {
         header: "Contact Number",
-        accessorKey: "contact",
+        accessorKey: "contact_number",
       },
       {
         header: "Specialization",
         accessorKey: "specialization",
-        Cell: ({ row }: CellContext<{ specialization: any }, any>) => {
+        cell: ({ row }: CellContext<{ specialization: any }, any>) => {
           const { name } = row?.original?.specialization[0] ?? "";
 
           return <p>{name}</p>;
@@ -59,12 +54,20 @@ const ApprovedDocList = () => {
       },
       {
         header: "Status",
-        accessorKey: "status",
-        Cell: ({ row }: CellContext<{ status: string }, any>) => {
-          const { status } = row.original;
+        accessorKey: "profile_status",
+        cell: ({ row }: CellContext<{ profile_status: string }, any>) => {
+          const { profile_status } = row.original;
           return (
-            <Badge colorScheme={status === "Approved" ? "green" : "yellow"}>
-              {status}
+            <Badge
+              colorScheme={profile_status === "approved" ? "green" : "yellow"}
+              p={1}
+              borderRadius={20}
+              fontSize={11}
+              w={20}
+              textAlign="center"
+              textTransform="capitalize"
+            >
+              {profile_status}
             </Badge>
           );
         },
@@ -72,13 +75,16 @@ const ApprovedDocList = () => {
       {
         header: "Actions",
         accessorKey: "actions",
-        Cell: () => {
+        cell: (cell: CellContext<any, any>) => {
           return (
             <Icon
               as={Show}
               fontSize={20}
-              onClick={onDetailsModalOpen}
               cursor="pointer"
+              onClick={() => {
+                onDetailsModalOpen();
+                setId(cell.row.original.id);
+              }}
             />
           );
         },
@@ -87,151 +93,60 @@ const ApprovedDocList = () => {
     []
   );
 
-  const rejectModal = () => {
-    setIsRejected(true);
-    onDetailsModalClose();
-    onRejectModalOpen();
-  };
-  const acceptDoctor = () => {
-    onDetailsModalClose();
-    toastSuccess("Doctor Approved");
-  };
-  const RejectDoctor = () => {
-    onRejectModalClose();
-  };
-
-  // const approvedList = useApprovedDoctorList();
-  const { data } = useDoctorList();
-
-  const formMethods = useForm();
-  const onSubmitForm = (_values: any) => {};
+  const { data, isLoading } = useApprovedDoctorList();
+  const [searchFilter, setSearchFilter] = useState("");
+  const [id, setId] = React.useState("");
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
+  if (isLoading)
+    return (
+      <Spinner
+        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+      />
+    );
 
   return (
     <>
-      <DataTable columns={columns} data={data || []} />
+      <HStack justifyContent="space-between">
+        <Text fontWeight="medium">Approved Doctors</Text>
+
+        <HStack>
+          <InputGroup w="auto">
+            <InputLeftElement pointerEvents="none" h={8}>
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              w={40}
+              h={8}
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+        </HStack>
+      </HStack>
+      <DataTable
+        columns={columns}
+        data={data || []}
+        filter={{ globalFilter: searchFilter }}
+      />
       <ModalComponent
+        alignment="left"
+        size="3xl"
         isOpen={isDetailsModalOpen}
-        onClose={acceptDoctor}
+        onClose={onDetailsModalClose}
         heading={
           <HStack>
             <svgs.logo_small />
             <Text>Doctor Info</Text>
           </HStack>
         }
-        primaryText="Accept"
-        secondaryText="Reject"
-        otherAction={rejectModal}
+        footer={<></>}
       >
-        <Flex gap={4}>
-          <Image
-            src={NepmedsLogo}
-            alt="nepmeds logo"
-            h={20}
-            w={20}
-            borderRadius="100%"
-            objectFit="cover"
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
           />
-          <Flex direction="column">
-            <Text color={colors.primary_blue} fontWeight={600}>
-              Rahul Moktan
-            </Text>
-
-            <Text>MBBS M.S. (Gen. Surg), M.Ch.(PL Surg)</Text>
-            <Text>
-              Hello, I am a Plastic Surgeon. I have more than 5 years of
-              experience in the field.
-            </Text>
-          </Flex>
-        </Flex>
-
-        <Text>Basic Information</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Number</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Email</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Gender</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Specialization</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Patients name</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Age</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Divider my={4} />
-        <Text>Citizenship Details</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Citizenship Number</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Issued District</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Issued Date</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-        <Divider my={4} />
-        <Text>Address Details</Text>
-        <Flex gap={30}>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Province</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>District</p>
-            <p>9990</p>
-          </Flex>
-          <Flex direction="column">
-            <p style={{ fontSize: "small" }}>Municipality/ VDC</p>
-            <p>9990</p>
-          </Flex>
-        </Flex>
-      </ModalComponent>
-
-      <ModalComponent
-        isOpen={isRejectModalOpen}
-        onClose={RejectDoctor}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Remarks for rejection</Text>
-          </HStack>
-        }
-        primaryText="Reject"
-        secondaryText="Cancel"
-        otherAction={onRejectModalClose}
-        onApiCall={() => {
-          formMethods.trigger("remarks");
-          formMethods.getValues("remarks");
-          toastFail("Doctor Rejected!");
-          onRejectModalClose();
-          formMethods.reset();
-        }}
-      >
-        <FormProvider {...formMethods}>
-          <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
-        </FormProvider>
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
     </>
   );

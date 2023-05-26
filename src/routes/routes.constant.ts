@@ -9,12 +9,25 @@ export const NAVIGATION_ROUTES = {
   },
   LOGIN: "/",
   SIGNUP: "/signup",
+  FORGOTPASSWORD: "/forgot-password",
+  CONFIRMPASSWORD: "/reset-password/:uidb64/:token",
   OTPVERIFY: "/otp-verify",
 
   LOGGEDIN: "/",
   DASHBOARD: "dashboard",
   MASTER_DATA: "master-data",
+  PATIENTS: "/patients",
+  USER_ROLE: "user-role",
+  CONSULT_REQUEST: "/consult-request",
 
   DOCTOR_LIST: "doctor-list",
+  DOCTOR_PROFILE: "/doctor-profile",
+  APPOINTMENTS: "appointments",
+  FOLLOWUP: "followup",
+  PATIENT_HISTORY: "patient-history",
+  CALENDER: "calendar",
+  BANK_DETAILS: "bank-details",
+  PAYMENT: "payment",
+
   NO_MATCH: "*",
 };

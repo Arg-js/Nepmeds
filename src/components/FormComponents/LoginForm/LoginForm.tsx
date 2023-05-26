@@ -79,7 +79,7 @@ const LoginForm = () => {
       </VStack>
 
       <Link
-        to="/"
+        to="/forgot-password"
         style={{
           color: colors.blue_100,
           display: "block",
@@ -88,7 +88,7 @@ const LoginForm = () => {
           fontSize: "14px",
         }}
       >
-        Recover Password
+        Forgot Password
       </Link>
 
       <Text textAlign="center" fontSize={14} color={colors.black_30}>

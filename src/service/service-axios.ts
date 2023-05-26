@@ -4,7 +4,7 @@ import TokenService from "./service-token";
 
 const THREE_MINUTES = 3 * 60 * 1000;
 export const baseURL = import.meta.env.VITE_APP_BACKEND_API;
-
+export const normalURL = import.meta.env.VITE_APP_NORMAL_API;
 /**
  * Axios HTTP Client
  * {@link https://github.com/axios/axios#request-config Axios Request Config}

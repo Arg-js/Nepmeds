@@ -26,6 +26,7 @@ export const AcademicInfoForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="Degree"
+                    required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
@@ -38,6 +39,7 @@ export const AcademicInfoForm = () => {
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
+                    required
                     label="Major"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
@@ -51,6 +53,7 @@ export const AcademicInfoForm = () => {
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
+                    required
                     label="College/ University"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
@@ -64,6 +67,7 @@ export const AcademicInfoForm = () => {
               <Controller
                 render={({ field }) => (
                   <Select
+                    required
                     placeholder=""
                     label="Passed Year"
                     register={register}
@@ -87,6 +91,7 @@ export const AcademicInfoForm = () => {
                     label="Upload Document"
                     register={register}
                     type="file"
+                    required
                     style={{ background: colors.forminput, border: "none" }}
                     {...otherFields}
                     onChange={e =>

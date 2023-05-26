@@ -123,6 +123,7 @@ const Specializations = () => {
       await saveSpecializationAction.mutateAsync({
         id: formMethods.getValues("id")?.toString() || null,
         name: formMethods.getValues("name"),
+        consultation_fees: "kjh",
         symptom: formMethods
           .getValues("symptom")
           .map(s => s.value)
@@ -187,7 +188,15 @@ const Specializations = () => {
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onClose} flex={1}>
+            <Button
+              variant="outline"
+              onClick={onClose}
+              flex={1}
+              border="1px solid"
+              borderColor={colors.primary}
+              color={colors.primary}
+              fontWeight={400}
+            >
               Discard
             </Button>
             <Button

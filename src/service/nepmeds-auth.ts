@@ -17,8 +17,8 @@ export interface LoginDetails {
   email: string;
   password: string;
 }
-
 export const authTokenKey = "authToken";
+export const auth = "userInfo";
 const authTokenDetails = "authTokenDetails";
 
 const initLogout = () => {
@@ -38,6 +38,8 @@ const useLogoutMutation = (noToast?: boolean) => {
       logoutChannel.postMessage("Logout");
       queryClient.clear();
       queryClient.setQueryData(authTokenKey, () => false);
+      localStorage.setItem("doctor", "false");
+      localStorage.setItem("admin", "false");
       navigate("/", { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
     },
@@ -51,19 +53,17 @@ const initLogin = (loginData: LoginDetails) => {
 const useLoginMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-
   return useMutation(initLogin, {
     onSuccess: response => {
       loginChannel.postMessage(loginBroadcast);
-
       const tokens = {
         access: response.data.data.access,
         refresh: response.data.data.refresh,
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
+      navigate("/dashboard");
       toastSuccess("Login Successful!!");
-      navigate("/dashboard", { replace: true });
     },
     onError: error => {
       const loginErr = error as AxiosError<{ message: string; error: string }>;
@@ -76,38 +76,42 @@ const useLoginMutation = () => {
   });
 };
 
-const initRefreshToken = async () => {
-  try {
-    // const response = await HttpClient.get<TokenDetails>(api.refreshToken, {
-    //   params: {
-    //     refreshToken: TokenService.getToken()?.refresh_token,
-    //   },
-    //   headers: {
-    //     Authorization: "",
-    //   },
-    // });
-    // const tokens = {
-    //   access_token: response.data.access_token,
-    //   refresh_token: response.data.refresh_token,
-    // };
-    // TokenService.setToken(tokens);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
+// const initRefreshToken = async () => {
+//   try {
+//     // const response = await HttpClient.get<TokenDetails>(api.refreshToken, {
+//     //   params: {
+//     //     refreshToken: TokenService.getToken()?.refresh_token,
+//     //   },
+//     //   headers: {
+//     //     Authorization: "",
+//     //   },
+//     // });
+//     // const tokens = {
+//     //   access_token: response.data.access_token,
+//     //   refresh_token: response.data.refresh_token,
+//     // };
+//     // TokenService.setToken(tokens);
+//     return true;
+//   } catch (error) {
+//     return false;
+//   }
+// };
 
 const checkAuthentication = async () => {
-  if (TokenService.isAuthenticated()) {
-    const tokenInfo = TokenService.getTokenDetails();
-    if (tokenInfo && tokenInfo.exp * 1000 < Date.now() + 5 * 60 * 1000) {
-      return initRefreshToken();
-    }
+  // if (TokenService.isAuthenticated()) {
+  //   const tokenInfo = TokenService.getTokenDetails();
+  //   if (tokenInfo && tokenInfo.exp * 1000 < Date.now() + 5 * 60 * 1000) {
+  //     return initRefreshToken();
+  //   }
+  //   return Promise.resolve(true);
+  // } else if (TokenService.getToken()?.refresh) {
+  //   return initRefreshToken();
+  // }
+  // return Promise.resolve(null);
+  if (TokenService.getTokenDetails()) {
     return Promise.resolve(true);
-  } else if (TokenService.getToken()?.refresh) {
-    return initRefreshToken();
   }
-  return Promise.resolve(null);
+  return Promise.resolve(false);
 };
 
 /**
@@ -127,6 +131,14 @@ const useAuthentication = () => {
       }
     },
   });
+};
+
+const checkUserInfo = async () => {
+  return TokenService.getTokenDetails();
+};
+
+export const useUserInfoQuery = () => {
+  return useQuery<TokenInfo | null>(auth, checkUserInfo);
 };
 
 const useLoginTokenDetailQuery = () => {

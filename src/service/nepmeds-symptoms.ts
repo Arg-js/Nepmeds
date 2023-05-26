@@ -24,17 +24,45 @@ const saveSymptoms = async (symptomInfo: {
   name: string;
   keyword: string;
 }) => {
-  const response = await HttpClient.post<NepMedsResponse>(
-    api.symptom,
-    symptomInfo
-  );
-  return response;
+  if (symptomInfo.id) {
+    const response = await HttpClient.put<NepMedsResponse>(
+      api.symptom + "/" + symptomInfo.id,
+      {
+        name: symptomInfo.name,
+        keyword: symptomInfo.keyword,
+      }
+    );
+    return response;
+  } else {
+    const response = await HttpClient.post<NepMedsResponse>(
+      api.symptom,
+      symptomInfo
+    );
+    return response;
+  }
 };
 
 export const useSaveSymptoms = () => {
   const queryClient = useQueryClient();
 
   return useMutation(saveSymptoms, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.symptom);
+    },
+  });
+};
+
+const deleteSymptom = async (symptomInfo: { id: string | null }) => {
+  const response = await HttpClient.delete<NepMedsResponse>(
+    api.symptom + "/" + symptomInfo.id
+  );
+  return response;
+};
+
+export const useDeleteSymptom = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteSymptom, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.symptom);
     },

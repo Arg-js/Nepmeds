@@ -8,6 +8,6 @@ const getDoctorList = async () => {
 };
 
 export const useDoctorList = () =>
-  useQuery("doctorlist", getDoctorList, {
+  useQuery(api.registereddoctor, getDoctorList, {
     select: data => data.data.data,
   });
