@@ -14,11 +14,11 @@ import {
   CertificationInfoForm,
 } from "../FormComponents";
 import { FormProvider, useForm } from "react-hook-form";
-// import { useDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const DocProfile = () => {
   const method = useForm();
-  // const { data } = useDoctorProfile();
+  const { data: doctorProfileData } = useDoctorProfile();
   return (
     <Tabs position="relative" variant="unstyled">
       <TabList>
@@ -32,12 +32,15 @@ const DocProfile = () => {
       <TabPanels>
         <FormProvider {...method}>
           <TabPanel>
-            <BasicInfoForm hidePasswordField={false} />
+            <BasicInfoForm
+              doctorProfileData={doctorProfileData}
+              hidePasswordField={false}
+            />
           </TabPanel>
         </FormProvider>
         <FormProvider {...method}>
           <TabPanel>
-            <PrimaryInfoForm />
+            <PrimaryInfoForm doctorProfileData={doctorProfileData} />
           </TabPanel>
         </FormProvider>
         <FormProvider {...method}>
