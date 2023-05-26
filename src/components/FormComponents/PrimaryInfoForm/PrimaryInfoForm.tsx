@@ -56,6 +56,7 @@ const PrimaryInfo = () => {
           label="Mobile No."
           name="mobile_number"
           type="tel"
+          required
           register={register}
           style={{ background: colors.forminput, border: "none" }}
         />
@@ -64,6 +65,7 @@ const PrimaryInfo = () => {
         <FloatingLabelInput
           type="email"
           label="Email"
+          required
           name="email"
           register={register}
           style={{ background: colors.forminput, border: "none" }}
@@ -96,6 +98,7 @@ const PrimaryInfo = () => {
         <MultiSelect
           options={specializationOptions}
           label="Specialization"
+          required
           name="specialization"
           selectControl={control}
           style={{
@@ -109,6 +112,7 @@ const PrimaryInfo = () => {
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
+          required
           register={register}
           style={{
             background: colors.forminput,
@@ -148,6 +152,7 @@ const PrimaryInfo = () => {
           label="Issued District"
           name="citizenship_issued_district"
           required
+          defaultValue=""
           register={register}
           options={districtOptions}
           style={{
@@ -225,6 +230,7 @@ const PrimaryInfo = () => {
           placeholder=""
           label="Tole"
           name="tole"
+          required
           register={register}
           style={{ background: colors.forminput, border: "none" }}
         />

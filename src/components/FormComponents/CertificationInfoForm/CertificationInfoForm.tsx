@@ -22,6 +22,7 @@ export const CertificationInfoForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="Title"
+                    required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
@@ -33,6 +34,7 @@ export const CertificationInfoForm = () => {
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
+                    required
                     label="Issued  By"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
@@ -47,6 +49,7 @@ export const CertificationInfoForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="Credential ID"
+                    required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
@@ -60,6 +63,7 @@ export const CertificationInfoForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="Issued Date"
+                    required
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
@@ -76,6 +80,7 @@ export const CertificationInfoForm = () => {
                 render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
                     label="Upload Document"
+                    required
                     register={register}
                     type="file"
                     style={{ background: colors.forminput, border: "none" }}

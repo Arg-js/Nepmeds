@@ -96,7 +96,7 @@ const ApprovedDocList = () => {
   const { data, isLoading } = useApprovedDoctorList();
   const [searchFilter, setSearchFilter] = useState("");
   const [id, setId] = React.useState("");
-  const { data: detail } = useDoctorDetail(id);
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   if (isLoading)
     return (
       <Spinner
@@ -140,7 +140,13 @@ const ApprovedDocList = () => {
         }
         footer={<></>}
       >
-        <DoctorDetail {...detail} />
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+          />
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
     </>
   );

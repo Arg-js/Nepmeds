@@ -52,7 +52,7 @@ const initLogin = (loginData: LoginDetails) => {
 
 const useLoginMutation = () => {
   const queryClient = useQueryClient();
-
+  const navigate = useNavigate();
   return useMutation(initLogin, {
     onSuccess: response => {
       loginChannel.postMessage(loginBroadcast);
@@ -62,6 +62,7 @@ const useLoginMutation = () => {
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
+      navigate("/dashboard");
       toastSuccess("Login Successful!!");
     },
     onError: error => {
@@ -75,26 +76,26 @@ const useLoginMutation = () => {
   });
 };
 
-const initRefreshToken = async () => {
-  try {
-    // const response = await HttpClient.get<TokenDetails>(api.refreshToken, {
-    //   params: {
-    //     refreshToken: TokenService.getToken()?.refresh_token,
-    //   },
-    //   headers: {
-    //     Authorization: "",
-    //   },
-    // });
-    // const tokens = {
-    //   access_token: response.data.access_token,
-    //   refresh_token: response.data.refresh_token,
-    // };
-    // TokenService.setToken(tokens);
-    return true;
-  } catch (error) {
-    return false;
-  }
-};
+// const initRefreshToken = async () => {
+//   try {
+//     // const response = await HttpClient.get<TokenDetails>(api.refreshToken, {
+//     //   params: {
+//     //     refreshToken: TokenService.getToken()?.refresh_token,
+//     //   },
+//     //   headers: {
+//     //     Authorization: "",
+//     //   },
+//     // });
+//     // const tokens = {
+//     //   access_token: response.data.access_token,
+//     //   refresh_token: response.data.refresh_token,
+//     // };
+//     // TokenService.setToken(tokens);
+//     return true;
+//   } catch (error) {
+//     return false;
+//   }
+// };
 
 const checkAuthentication = async () => {
   // if (TokenService.isAuthenticated()) {

@@ -47,7 +47,7 @@ const PendingDocList = () => {
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
-  const { data: detail } = useDoctorDetail(id);
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
     try {
@@ -198,7 +198,13 @@ const PendingDocList = () => {
           toastSuccess("Doctor Approved");
         }}
       >
-        <DoctorDetail {...detail} />
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+          />
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
 
       <ModalComponent

@@ -111,7 +111,7 @@ const RegisteredDocList = () => {
     []
   );
   const [id, setId] = React.useState("");
-  const { data: detail } = useDoctorDetail(id);
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const { data, isLoading } = useDoctorList();
   const [searchFilter, setSearchFilter] = useState("");
   const acceptDoctor = () => {
@@ -161,7 +161,13 @@ const RegisteredDocList = () => {
         secondaryText="Reject"
         footer={<HStack w="100%" gap={3}></HStack>}
       >
-        <DoctorDetail {...detail} />
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+          />
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
     </>
   );

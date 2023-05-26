@@ -32,6 +32,7 @@ export const ExperienceForm = () => {
                   <FloatingLabelInput
                     label="Hospital/ Clinic Name"
                     register={register}
+                    required
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
                   />
@@ -46,6 +47,7 @@ export const ExperienceForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="From"
+                    required
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
@@ -61,6 +63,7 @@ export const ExperienceForm = () => {
                 render={({ field }) => (
                   <FloatingLabelInput
                     label="To"
+                    required
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
@@ -77,6 +80,7 @@ export const ExperienceForm = () => {
                   <FloatinglabelTextArea
                     label="Description"
                     register={register}
+                    required
                     style={{
                       background: colors.forminput,
                       border: "none",
@@ -94,6 +98,7 @@ export const ExperienceForm = () => {
                 render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
                     type="file"
+                    required
                     register={register}
                     label="Upload File"
                     {...otherFields}
