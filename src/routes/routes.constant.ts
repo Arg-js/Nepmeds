@@ -10,7 +10,7 @@ export const NAVIGATION_ROUTES = {
   LOGIN: "/",
   SIGNUP: "/signup",
   FORGOTPASSWORD: "/forgot-password",
-  CONFIRMPASSWORD: "/reset-password/:uid/:token",
+  CONFIRMPASSWORD: "/reset-password/:uidb64/:token",
   OTPVERIFY: "/otp-verify",
 
   LOGGEDIN: "/",

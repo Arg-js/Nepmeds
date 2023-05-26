@@ -192,7 +192,15 @@ const Symptoms = () => {
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onClose} flex={1}>
+            <Button
+              variant="outline"
+              onClick={onClose}
+              flex={1}
+              border="1px solid"
+              borderColor={colors.primary}
+              color={colors.primary}
+              fontWeight={400}
+            >
               Discard
             </Button>
             <Button

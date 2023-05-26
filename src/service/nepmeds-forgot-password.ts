@@ -3,7 +3,7 @@ import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 const generateForgetPasswordLink = async ({ email }: { email: string }) => {
-  const response = (await HttpClient.post)<NepMedsResponse<string>>(
+  const response = await HttpClient.post<NepMedsResponse<string>>(
     api.forgotPassword,
     { email }
   );
@@ -14,21 +14,19 @@ export const useGenerateForgetPasswordLink = () =>
   useMutation(generateForgetPasswordLink);
 
 const resetPassword = async ({
-  uid,
+  uidb64,
   token,
   new_password,
   confirm_new_password,
 }: {
-  uid: string;
+  uidb64: string;
   token: string;
   new_password: string;
   confirm_new_password: string;
 }) => {
-  const response = (await HttpClient.post)<NepMedsResponse<string>>(
-    api.resetPassword,
+  const response = await HttpClient.post<NepMedsResponse<string>>(
+    api.resetPassword.replace("{uidb64}", uidb64).replace("{token}", token),
     {
-      uid,
-      token,
       new_password,
       confirm_new_password,
     }

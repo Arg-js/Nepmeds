@@ -1,11 +1,15 @@
-## 0.0.1 (2023-05-25)
+## 0.0.1 (2023-05-26)
 
 
 ### Bug Fixes
 
 * academic file ([8de7423](https://gitlab.com/r2850/nepmeds/commit/8de742336d82e12055d40b204f8e6b743c802715))
 * **api fixes:** api fixes in doctor list ([9f44f04](https://gitlab.com/r2850/nepmeds/commit/9f44f04d8adbb4ac4a3224c4ab7a54b1fc581024))
+* **auth:** login redirecting issue ([24cc990](https://gitlab.com/r2850/nepmeds/commit/24cc990426a6ace563e56c208c12c066d1720515))
+* **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
+* doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
+* **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
@@ -27,6 +31,7 @@
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
 * theme ([d9b253d](https://gitlab.com/r2850/nepmeds/commit/d9b253dd52ac704173087328aaa3a2476492b641))
+* **toast type fixes:** changed toast type of fail to success on rejection ([9b60c93](https://gitlab.com/r2850/nepmeds/commit/9b60c93a43ba60c04a2ea9bc08cd54f15c6f62ca))
 * update image field ([fd72a2e](https://gitlab.com/r2850/nepmeds/commit/fd72a2e3f9e9cf2aeb637b419ea38f5752977e20))
 * validation and forms ([a3ce00d](https://gitlab.com/r2850/nepmeds/commit/a3ce00d9a27d3203b98b8f6b15e6ad074192e5f3))
 
