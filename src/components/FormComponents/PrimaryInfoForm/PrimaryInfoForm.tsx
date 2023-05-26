@@ -63,6 +63,8 @@ const PrimaryInfo = ({
           name="mobile_number"
           type="tel"
           required
+          isReadOnly
+          cursor="not-allowed"
           register={register}
           defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
