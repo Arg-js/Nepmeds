@@ -60,9 +60,10 @@ const PendingDocList = () => {
         remarks: val,
       });
       onRejectModalClose();
+      toastSuccess("Doctor Rejected!");
       formMethods.reset();
     } catch (error) {
-      toastFail("Doctor Rejected!");
+      toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
 
@@ -233,10 +234,10 @@ const PendingDocList = () => {
               remarks: val,
             });
             onRejectModalClose();
-            toastFail("Doctor Rejected!");
+            toastSuccess("Doctor Rejected!");
             formMethods.reset();
           } catch (error) {
-            toastFail("Some issue while rejection!");
+            toastFail("Doctor cannot be rejected. Try Again!!");
           }
         }}
       >
