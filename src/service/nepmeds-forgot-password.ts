@@ -25,10 +25,8 @@ const resetPassword = async ({
   confirm_new_password: string;
 }) => {
   const response = await HttpClient.post<NepMedsResponse<string>>(
-    api.resetPassword,
+    api.resetPassword.replace("{uidb64}", uidb64).replace("{token}", token),
     {
-      uidb64,
-      token,
       new_password,
       confirm_new_password,
     }

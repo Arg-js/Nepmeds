@@ -6,6 +6,7 @@
 * academic file ([8de7423](https://gitlab.com/r2850/nepmeds/commit/8de742336d82e12055d40b204f8e6b743c802715))
 * **api fixes:** api fixes in doctor list ([9f44f04](https://gitlab.com/r2850/nepmeds/commit/9f44f04d8adbb4ac4a3224c4ab7a54b1fc581024))
 * **auth:** login redirecting issue ([24cc990](https://gitlab.com/r2850/nepmeds/commit/24cc990426a6ace563e56c208c12c066d1720515))
+* **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))

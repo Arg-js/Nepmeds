@@ -10,7 +10,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useResetPasswordMutation } from "@nepMeds/service/nepmeds-forgot-password";
 import { colors } from "@nepMeds/theme/colors";
-import { Navigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AxiosError } from "axios";
 
 const schema = yup.object().shape({
@@ -24,6 +24,7 @@ const ConformPasswordForm = () => {
     token: string;
   }>();
   const resetPasswordAction = useResetPasswordMutation();
+  const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -58,7 +59,10 @@ const ConformPasswordForm = () => {
           new_password: getValues("password"),
           confirm_new_password: getValues("confirmPassword"),
         })
-        .then(() => toastSuccess("New password saved successfully!"))
+        .then(() => {
+          toastSuccess("New password saved successfully!");
+          navigate("/login");
+        })
         .catch(error => {
           {
             const err = error as AxiosError<{ message: string }>;
