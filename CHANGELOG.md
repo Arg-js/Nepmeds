@@ -1,4 +1,4 @@
-## 0.0.1 (2023-05-24)
+## 0.0.1 (2023-05-25)
 
 
 ### Bug Fixes
@@ -7,12 +7,14 @@
 * **api fixes:** api fixes in doctor list ([9f44f04](https://gitlab.com/r2850/nepmeds/commit/9f44f04d8adbb4ac4a3224c4ab7a54b1fc581024))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
+* few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
 * image layout ([288726f](https://gitlab.com/r2850/nepmeds/commit/288726f426bd5c2f393d04fef3cfdd811731c3e9))
 * input fields ([357d009](https://gitlab.com/r2850/nepmeds/commit/357d00981cec4a43262cddbef6d8a0de399f449d))
 * interface of doctor-profile api ([35038c8](https://gitlab.com/r2850/nepmeds/commit/35038c89bcbf65bebfe3f0b3d8d649485977bcbd))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
+* minor changes ([ead2752](https://gitlab.com/r2850/nepmeds/commit/ead275217351fd4126a1b29c7a08de9a759b686f))
 * otp api integration ([95349a1](https://gitlab.com/r2850/nepmeds/commit/95349a1690d1ac9d8e16e8e0e7790b4e8cf9a3f5))
 * otp form api integration ([0334c28](https://gitlab.com/r2850/nepmeds/commit/0334c28fae96d5b88e43df4f4ecd203072c48a54))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
@@ -20,6 +22,7 @@
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
+* **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
@@ -30,10 +33,12 @@
 
 ### Features
 
+* added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
 * **doctor approval:** doctor api ([cc0196e](https://gitlab.com/r2850/nepmeds/commit/cc0196e5d173c45bafdff7af173e1627b142342b))
+* **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))
 * doctor profile slicing ([55826e8](https://gitlab.com/r2850/nepmeds/commit/55826e8bc4d0798c74960a23c912611a1d7c34f8))
 * forgot password ([fbd5eb5](https://gitlab.com/r2850/nepmeds/commit/fbd5eb54d18db3db41b40876e8416b7594fa0f72))
 * forgot password slicing ([f6879f5](https://gitlab.com/r2850/nepmeds/commit/f6879f5ced3d03c386a2a53547a63d835a63bab4))
@@ -41,6 +46,7 @@
 * **login, signup and otp component:** modified login, added signup and otp (wip) ([9fcb4b3](https://gitlab.com/r2850/nepmeds/commit/9fcb4b32b0c646f71ab088749a63b887740c16f3))
 * master data ([4a76f43](https://gitlab.com/r2850/nepmeds/commit/4a76f43b2c29144c0ce55322f9c9999163c982c2))
 * master data ([9a65e00](https://gitlab.com/r2850/nepmeds/commit/9a65e00258290f254ba1d4753f1c4d3b63d6f7b8))
+* **mobile number validation:** regex for mobile number added ([acc623f](https://gitlab.com/r2850/nepmeds/commit/acc623f68fe11df7eec3c717edf920e633ed12ab))
 * **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))

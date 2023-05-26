@@ -50,4 +50,7 @@ export const colors = {
 
   /**dark-grey*/
   dark_grey: "#5E6366",
+
+  /**green-button*/
+  green_button: "#32936F",
 };

@@ -70,7 +70,19 @@ const RegisteredDocList = () => {
           const { profile_status } = row.original;
           return (
             <Badge
-              colorScheme={profile_status === "approved" ? "green" : "yellow"}
+              colorScheme={
+                profile_status === "approved"
+                  ? "green"
+                  : profile_status === "rejected"
+                  ? "red"
+                  : "yellow"
+              }
+              p={1}
+              borderRadius={20}
+              fontSize={11}
+              w={20}
+              textAlign="center"
+              textTransform="capitalize"
             >
               {profile_status}
             </Badge>
@@ -99,7 +111,7 @@ const RegisteredDocList = () => {
     []
   );
   const [id, setId] = React.useState("");
-  const { data: detail } = useDoctorDetail(id);
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const { data, isLoading } = useDoctorList();
   const [searchFilter, setSearchFilter] = useState("");
   const acceptDoctor = () => {
@@ -149,7 +161,13 @@ const RegisteredDocList = () => {
         secondaryText="Reject"
         footer={<HStack w="100%" gap={3}></HStack>}
       >
-        <DoctorDetail {...detail} />
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+          />
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
     </>
   );

@@ -19,7 +19,7 @@ export const api = {
   doctordetails: "/dashboard/view_doctor_profile/{id}/",
 
   province: "core/province",
-  district: "core/districtlist",
+  district: "core/district",
 };
 
 export interface NepMedsResponse<T = any> {

@@ -54,11 +54,9 @@ const registerDefaultValues = {
   pan_number: "",
   id_type: "",
   citizenship_number: "",
-  issued_district: "",
-  issued_date: "",
+  citizenship_issued_district: "",
   province: "",
   district: "",
-  municipality: "",
   ward: "",
   tole: "",
   age: 0,
@@ -108,11 +106,8 @@ const RegistrationForm = () => {
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
 
-  const {
-    isOpen: isConfirmationOpen,
-    onOpen: onOpenConfirmation,
-    onClose: onCloseConfirmation,
-  } = useDisclosure();
+  const { isOpen: isConfirmationOpen, onOpen: onOpenConfirmation } =
+    useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
   const certificationInfoRegister = useCertificateInfoRegister();
@@ -154,6 +149,10 @@ const RegistrationForm = () => {
               designation: "Test",
               pan_number: values.pan_number,
               citizenship_number: values.citizenship_number,
+              province: values.province,
+              id_type: values.id_type,
+              citizenship_issued_district: values.citizenship_issued_district,
+              district: values.district,
               ward: values.ward,
               tole: values.tole,
               municipality_vdc: values.municipality_vdc,
@@ -177,6 +176,7 @@ const RegistrationForm = () => {
       case 2: {
         try {
           const lastValue = values.academic.length - 1;
+
           academicInfoRegister
             .mutateAsync({
               doctor: doctor,
@@ -186,7 +186,16 @@ const RegistrationForm = () => {
               graduation_year: values.academic[lastValue].graduation_year,
               file: values.academic[lastValue].file,
             })
-            .then(response => response && setActiveStep(3));
+            .then(response => response && setActiveStep(3))
+            .catch(error => {
+              {
+                const err = error as AxiosError<{ message: string }>;
+                toastFail(
+                  err?.response?.data?.message ||
+                    "Failed to add academic information!"
+                );
+              }
+            });
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
           toastFail(
@@ -210,7 +219,16 @@ const RegistrationForm = () => {
                 values.certification[lastValue].certificate_number,
               file: values.certification[lastValue].file,
             })
-            .then(response => response && setActiveStep(4));
+            .then(response => response && setActiveStep(4))
+            .catch(error => {
+              {
+                const err = error as AxiosError<{ message: string }>;
+                toastFail(
+                  err?.response?.data?.message ||
+                    "Failed to add certification information!"
+                );
+              }
+            });
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
           toastFail(
@@ -414,14 +432,26 @@ const RegistrationForm = () => {
 
       <ModalComponent
         isOpen={isConfirmationOpen}
-        onClose={onCloseConfirmation}
+        onClose={() => navigate("/login")}
         heading={
           <HStack>
             <svgs.logo_small />
             <Text>Confirmation</Text>
           </HStack>
         }
-        primaryText="Okay"
+        footer={
+          <HStack gap={3}>
+            <Button
+              variant="outline"
+              onClick={() => navigate("/login")}
+              flex={1}
+              background={colors.primary}
+              color={colors.white}
+            >
+              Okay
+            </Button>
+          </HStack>
+        }
         alignment="center"
       >
         <svgs.confirmed style={{ margin: "0 auto" }} />

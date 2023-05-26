@@ -26,7 +26,7 @@ export const useGetProvince = () =>
 
 const getDistrict = (provinceId: string) => async () => {
   const response = await HttpClient.get<NepMedsResponse<District[]>>(
-    api.province,
+    api.district,
     {
       params: { province_id: provinceId },
     }

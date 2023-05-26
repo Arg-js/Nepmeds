@@ -32,6 +32,9 @@ interface IDoctorDetails {
   citizenship_issued_district: string;
   province: string;
   district: string;
+  profile_status: string;
+  no_of_rejected_times: number;
+  rejected_remarks: string;
   specialization: string[];
   municipality_vdc: string;
   doctor_academic_info: AcademicInfo[];
@@ -52,6 +55,9 @@ const DoctorDetail = ({
   specialization,
   district,
   municipality_vdc,
+  profile_status,
+  no_of_rejected_times,
+  rejected_remarks,
   doctor_academic_info,
   doctor_certification_info,
   doctor_experience,
@@ -112,6 +118,22 @@ const DoctorDetail = ({
         </SimpleGrid>
       </VStack>
 
+      {profile_status === "rejected" && (
+        <>
+          <Divider my={4} />
+          <SimpleGrid columns={2} gap={6} mb={18} color={colors.dark_grey}>
+            <Box>
+              <p style={{ fontSize: "small" }}>No. of rejected times</p>
+              <p>{no_of_rejected_times || 0}</p>
+            </Box>
+
+            <Box>
+              <p style={{ fontSize: "small" }}>Rejected Remarks</p>
+              <p>{rejected_remarks}</p>
+            </Box>
+          </SimpleGrid>
+        </>
+      )}
       <Divider my={4} />
 
       <Text mb={3}>Citizenship Details</Text>

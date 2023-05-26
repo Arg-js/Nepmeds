@@ -82,6 +82,8 @@ export const BasicInfoForm = ({
           label="Title"
           placeholder=""
           name="title"
+          required
+          defaultValue=""
           register={register}
           defaultValue={doctorProfileData?.title}
           options={title}
@@ -121,6 +123,7 @@ export const BasicInfoForm = ({
             <FloatingPassword
               label="Password"
               name="password"
+              required
               register={register}
               isVisible={passwordVisible}
               onToggleVisibility={() => setPasswordVisible(!passwordVisible)}
@@ -132,6 +135,7 @@ export const BasicInfoForm = ({
               label="Confirm Password"
               name="confirm_password"
               register={register}
+              required
               isVisible={confirmpasswordVisible}
               onToggleVisibility={() =>
                 setConfirmpasswordVisible(!confirmpasswordVisible)

@@ -47,7 +47,7 @@ const PendingDocList = () => {
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
-  const { data: detail } = useDoctorDetail(id);
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
     try {
@@ -99,6 +99,12 @@ const PendingDocList = () => {
           return (
             <Badge
               colorScheme={profile_status === "approved" ? "green" : "yellow"}
+              p={1}
+              borderRadius={20}
+              fontSize={11}
+              w={20}
+              textAlign="center"
+              textTransform="capitalize"
             >
               {profile_status}
             </Badge>
@@ -173,6 +179,8 @@ const PendingDocList = () => {
       <ModalComponent
         alignment="left"
         size="2xl"
+        approve
+        reject
         isOpen={isDetailsModalOpen}
         onClose={acceptDoctor}
         heading={
@@ -190,12 +198,20 @@ const PendingDocList = () => {
           toastSuccess("Doctor Approved");
         }}
       >
-        <DoctorDetail {...detail} />
+        {isFetching ? (
+          <Spinner
+            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
+          />
+        ) : (
+          <DoctorDetail {...detail} />
+        )}
       </ModalComponent>
 
       <ModalComponent
         isOpen={isRejectModalOpen}
         onClose={RejectDoctor}
+        approve
+        reject
         size="xl"
         heading={
           <HStack>
@@ -206,6 +222,23 @@ const PendingDocList = () => {
         primaryText="Reject"
         secondaryText="Cancel"
         otherAction={onRejectModalClose}
+        onApiCall={async () => {
+          try {
+            const isValid = await formMethods.trigger("remarks");
+            if (!isValid) return;
+
+            const val = formMethods.getValues("remarks");
+            await rejectPendingDoc.mutateAsync({
+              id: id ?? "",
+              remarks: val,
+            });
+            onRejectModalClose();
+            toastFail("Doctor Rejected!");
+            formMethods.reset();
+          } catch (error) {
+            toastFail("Some issue while rejection!");
+          }
+        }}
       >
         <FormProvider {...formMethods}>
           <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
