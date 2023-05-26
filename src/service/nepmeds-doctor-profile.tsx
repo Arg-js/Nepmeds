@@ -10,27 +10,30 @@ interface IUser {
   mobile_number: string;
   address: string;
 }
-interface IDoctorAcademicInfo {
+export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
   university: string;
   major: string;
   file: string;
+  doctor: number;
 }
-interface IDoctorCertificationInfo {
+export interface IDoctorCertificationInfo {
   title: string;
   issued_by: string;
-  certification_name: string;
+  certificate_number: string;
   file: string;
-  certification_issued_data: string;
+  certificate_issued_data: string;
+  doctor: number;
 }
-interface IDoctorExperience {
+export interface IDoctorExperience {
   hospital: string;
   description: string;
   currently_working: boolean;
   from_date: string;
   to_date: string;
   file: string;
+  doctor: number;
 }
 export interface IGetDoctorProfile {
   user: IUser;

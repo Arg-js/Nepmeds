@@ -1,7 +1,12 @@
 import { EditIcon } from "@chakra-ui/icons";
 import { Grid, GridItem, Text, Box, Flex } from "@chakra-ui/layout";
 import { Card, CardBody, Image, Icon, VStack, Center } from "@chakra-ui/react";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import {
+  IDoctorAcademicInfo,
+  IDoctorCertificationInfo,
+  IDoctorExperience,
+  IGetDoctorProfile,
+} from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 import { Download } from "react-iconly";
 
@@ -269,7 +274,7 @@ export const DocUpdateProfile = ({
           >
             {doctorProfileData?.doctor_academic_info?.length ? (
               doctorProfileData?.doctor_academic_info?.map(
-                (singleAcademicInfo: any) => {
+                (singleAcademicInfo: IDoctorAcademicInfo) => {
                   return (
                     <>
                       <GridItem w="100%">
@@ -456,7 +461,7 @@ export const DocUpdateProfile = ({
           >
             {doctorProfileData?.doctor_certification_info?.length ? (
               doctorProfileData?.doctor_certification_info?.map(
-                (singleCertificationInfo: any) => {
+                (singleCertificationInfo: IDoctorCertificationInfo) => {
                   return (
                     <>
                       <GridItem w="100%">
@@ -500,7 +505,7 @@ export const DocUpdateProfile = ({
                               color={colors?.black}
                             >
                               :&nbsp;
-                              {singleCertificationInfo?.certificate_issued_date}
+                              {singleCertificationInfo?.certificate_issued_data}
                             </Text>
                           </Box>
                         </VStack>
@@ -628,7 +633,7 @@ export const DocUpdateProfile = ({
           >
             {doctorProfileData?.doctor_experience?.length ? (
               doctorProfileData?.doctor_experience?.map(
-                (singleExperience: any) => {
+                (singleExperience: IDoctorExperience) => {
                   return (
                     <>
                       <GridItem w="100%">

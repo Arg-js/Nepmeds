@@ -29,12 +29,7 @@ const DocProfile = () => {
           <Tab>Payments</Tab>
           <Tab>Rating & Feedbacks</Tab>
         </TabList>
-        <TabIndicator
-          mt="-20px"
-          height="4px"
-          bg="blue.500"
-          transform="scaleX(0.9)"
-        />
+        <TabIndicator mt="-20px" height="4px" bg="blue.500" />
         <TabPanels sx={{ "&>div": { px: "0px" } }}>
           <FormProvider {...method}>
             <TabPanel>
