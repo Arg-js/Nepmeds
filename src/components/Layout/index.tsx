@@ -1,4 +1,4 @@
-import { Box, Card, CardBody, Flex } from "@chakra-ui/react";
+import { Box, Card, CardBody, Flex, Grid, GridItem } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
@@ -6,19 +6,35 @@ import Sidebar from "../Sidebar/Sidebar";
 
 const Layout = () => {
   return (
-    <Flex>
-      <Box flex={"1"}>
+    // <Flex>
+    //   <Box flex={"1"}>
+    //     <Sidebar />
+    //   </Box>
+    //   <Box flex={"6"} bg={colors.bg}>
+    //     <Navbar />
+    //     <Card m={5} borderRadius={12} boxShadow="none">
+    //       <CardBody>
+    //         <Outlet />
+    //       </CardBody>
+    //     </Card>
+    //   </Box>
+    // </Flex>
+    // "nav footer"
+    <Grid
+      templateAreas={`"side nav"`}
+      gridTemplateColumns={"296px 1fr"}
+      gap="1"
+    >
+      <GridItem area={"side"}>
         <Sidebar />
-      </Box>
-      <Box flex={"5"} bg={colors.bg}>
+      </GridItem>
+      <GridItem bg={colors.bg} area={"nav"}>
         <Navbar />
-        <Card m={5} borderRadius={12} boxShadow="none">
-          <CardBody>
-            <Outlet />
-          </CardBody>
-        </Card>
-      </Box>
-    </Flex>
+        <Box m={5}>
+          <Outlet />
+        </Box>
+      </GridItem>
+    </Grid>
   );
 };
 

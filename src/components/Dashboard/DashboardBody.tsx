@@ -37,7 +37,7 @@ const dashboardDatas: IDashboardData[] = [
 
 const DashboardBody = () => {
   return (
-    <>
+    <Box>
       <SimpleGrid
         spacing={8}
         templateColumns="repeat(4, 1fr)"
@@ -92,7 +92,7 @@ const DashboardBody = () => {
       >
         <Calendar />
       </Box>
-    </>
+    </Box>
   );
 };
 

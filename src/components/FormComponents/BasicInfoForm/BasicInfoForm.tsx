@@ -83,7 +83,6 @@ export const BasicInfoForm = ({
           placeholder=""
           name="title"
           required
-          defaultValue=""
           register={register}
           defaultValue={doctorProfileData?.title}
           options={title}

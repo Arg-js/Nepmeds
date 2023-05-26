@@ -167,7 +167,6 @@ const PrimaryInfo = ({
           label="Issued District"
           name="citizenship_issued_district"
           required
-          defaultValue=""
           register={register}
           options={districtOptions}
           defaultValue={doctorProfileData?.citizenship_issued_district}

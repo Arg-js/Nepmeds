@@ -49,7 +49,7 @@ export interface IGetDoctorProfile {
   citizenship_number: string;
   citizenship_issued_district: number;
   citizenship_issued_date: string;
-  doctor_academic_info: IDoctorAcademicInfo[] | null;
+  doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | null;
   doctor_experience: IDoctorExperience[] | null;
 }
