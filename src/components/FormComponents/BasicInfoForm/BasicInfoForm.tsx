@@ -10,11 +10,14 @@ import { title } from "@nepMeds/utils/index";
 import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 export const BasicInfoForm = ({
   hidePasswordField,
+  doctorProfileData,
 }: {
   hidePasswordField: boolean;
+  doctorProfileData?: IGetDoctorProfile;
 }) => {
   const { register, watch } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -82,6 +85,7 @@ export const BasicInfoForm = ({
           required
           defaultValue=""
           register={register}
+          defaultValue={doctorProfileData?.title}
           options={title}
           style={{ background: colors.forminput, border: "none" }}
         />
@@ -91,6 +95,7 @@ export const BasicInfoForm = ({
           label="First Name"
           name="first_name"
           register={register}
+          defaultValue={doctorProfileData?.user?.first_name}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -99,6 +104,7 @@ export const BasicInfoForm = ({
           label="Middle Name"
           name="middle_name"
           register={register}
+          defaultValue={doctorProfileData?.user?.middle_name}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -107,6 +113,7 @@ export const BasicInfoForm = ({
           label="Last Name"
           name="last_name"
           register={register}
+          defaultValue={doctorProfileData?.user?.last_name}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>

@@ -32,22 +32,26 @@ interface IDoctorExperience {
   to_date: string;
   file: string;
 }
-interface IGetDoctorProfile {
+export interface IGetDoctorProfile {
   user: IUser;
-  image: string;
-  province: number;
-  district: number;
+  title: string;
+  bio_detail: string;
+  age: number;
+  image: string | null;
+  province: string;
+  district: string;
   municipality_vdc: string;
   ward: number;
   tole: string;
   gender: string;
+  specialization: string[];
   date_of_birth: string;
   citizenship_number: string;
   citizenship_issued_district: number;
   citizenship_issued_date: string;
-  doctor_academic_info: IDoctorAcademicInfo[];
-  doctor_certification_info: IDoctorCertificationInfo[];
-  doctor_experience: IDoctorExperience[];
+  doctor_academic_info: IDoctorAcademicInfo[] | null;
+  doctor_certification_info: IDoctorCertificationInfo[] | null;
+  doctor_experience: IDoctorExperience[] | null;
 }
 
 const getDoctorProfile = async () => {

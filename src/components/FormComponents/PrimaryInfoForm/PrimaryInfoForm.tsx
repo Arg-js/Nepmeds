@@ -9,8 +9,13 @@ import { colors } from "@nepMeds/theme/colors";
 import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
-const PrimaryInfo = () => {
+const PrimaryInfo = ({
+  doctorProfileData,
+}: {
+  doctorProfileData?: IGetDoctorProfile;
+}) => {
   const { register, control, watch } = useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
@@ -40,6 +45,7 @@ const PrimaryInfo = () => {
           label="Basic Information"
           name="bio_detail"
           register={register}
+          defaultValue={doctorProfileData?.bio_detail}
         />
       </GridItem>
       <GridItem colSpan={1}>
@@ -58,6 +64,7 @@ const PrimaryInfo = () => {
           type="tel"
           required
           register={register}
+          defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -68,6 +75,7 @@ const PrimaryInfo = () => {
           required
           name="email"
           register={register}
+          defaultValue={doctorProfileData?.user?.email}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>{" "}
@@ -77,6 +85,7 @@ const PrimaryInfo = () => {
           label="Gender"
           name="gender"
           register={register}
+          defaultValue={doctorProfileData?.gender}
           options={gender}
           style={{
             background: colors.forminput,
@@ -90,16 +99,21 @@ const PrimaryInfo = () => {
           name="date_of_birth"
           label="Date"
           register={register}
+          defaultValue={doctorProfileData?.date_of_birth}
           type="date"
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
       <GridItem colSpan={2}>
         <MultiSelect
-          options={specializationOptions}
           label="Specialization"
           required
           name="specialization"
+          multiValue={doctorProfileData?.specialization.map(item => ({
+            label: item,
+            value: item,
+          }))}
+          options={specializationOptions}
           selectControl={control}
           style={{
             background: colors.forminput,
@@ -143,6 +157,7 @@ const PrimaryInfo = () => {
           name="citizenship_number"
           required
           register={register}
+          defaultValue={doctorProfileData?.citizenship_number}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -155,6 +170,7 @@ const PrimaryInfo = () => {
           defaultValue=""
           register={register}
           options={districtOptions}
+          defaultValue={doctorProfileData?.citizenship_issued_district}
           style={{
             background: colors.forminput,
             border: "none",
@@ -167,6 +183,7 @@ const PrimaryInfo = () => {
           name="citizenship_issued_date"
           label="Issued Date"
           register={register}
+          defaultValue={doctorProfileData?.citizenship_issued_date}
           type="date"
           required
           style={{ background: colors.forminput, border: "none" }}
@@ -182,6 +199,7 @@ const PrimaryInfo = () => {
           name="province"
           required
           register={register}
+          defaultValue={doctorProfileData?.province}
           options={provinceOptions}
           style={{
             background: colors.forminput,
@@ -197,6 +215,7 @@ const PrimaryInfo = () => {
           name="district"
           required
           register={register}
+          defaultValue={doctorProfileData?.district}
           options={districtOptions}
           style={{
             background: colors.forminput,
@@ -212,6 +231,7 @@ const PrimaryInfo = () => {
           name="municipality_vdc"
           required
           register={register}
+          defaultValue={doctorProfileData?.municipality_vdc}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -222,6 +242,7 @@ const PrimaryInfo = () => {
           name="ward"
           required
           register={register}
+          defaultValue={doctorProfileData?.ward}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
@@ -232,6 +253,7 @@ const PrimaryInfo = () => {
           name="tole"
           required
           register={register}
+          defaultValue={doctorProfileData?.tole}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
