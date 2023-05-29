@@ -5,61 +5,59 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  VStack,
 } from "@chakra-ui/react";
-import {
-  PrimaryInfoForm,
-  BasicInfoForm,
-  ExperienceForm,
-  AcademicInfoForm,
-  CertificationInfoForm,
-} from "../FormComponents";
 import { FormProvider, useForm } from "react-hook-form";
-import { useDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import {
+  IGetDoctorProfile,
+  useDoctorProfile,
+} from "@nepMeds/service/nepmeds-doctor-profile";
+import DocUpdateProfile from "./DocUpdateProfile";
+import DocAppointments from "./DocAppointments";
+import DocPayments from "./DocPayments";
+import DocRatingAndFeedbacks from "./DocRatingAndFeedbacks";
 
 const DocProfile = () => {
   const method = useForm();
   const { data: doctorProfileData } = useDoctorProfile();
   return (
-    <Tabs position="relative" variant="unstyled">
-      <TabList>
-        <Tab>Profile</Tab>
-        <Tab>Primary Info</Tab>
-        <Tab>Academic Info</Tab>
-        <Tab>Certification Info</Tab>
-        <Tab>Experience</Tab>
-      </TabList>
-      <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
-      <TabPanels>
-        <FormProvider {...method}>
-          <TabPanel>
-            <BasicInfoForm
-              doctorProfileData={doctorProfileData}
-              hidePasswordField={false}
-            />
-          </TabPanel>
-        </FormProvider>
-        <FormProvider {...method}>
-          <TabPanel>
-            <PrimaryInfoForm doctorProfileData={doctorProfileData} />
-          </TabPanel>
-        </FormProvider>
-        <FormProvider {...method}>
-          <TabPanel>
-            <AcademicInfoForm />
-          </TabPanel>
-        </FormProvider>
-        <FormProvider {...method}>
-          <TabPanel>
-            <CertificationInfoForm />
-          </TabPanel>
-        </FormProvider>
-        <FormProvider {...method}>
-          <TabPanel>
-            <ExperienceForm />
-          </TabPanel>
-        </FormProvider>
-      </TabPanels>
-    </Tabs>
+    <VStack align={"stretch"} p={4}>
+      <Tabs position="relative" variant="unstyled">
+        <TabList bg="white" px={6} pt={5} pb={6} borderRadius={"xl"}>
+          <Tab>Update Profile</Tab>
+          <Tab>Appointments</Tab>
+          <Tab>Payments</Tab>
+          <Tab>Rating & Feedbacks</Tab>
+        </TabList>
+        <TabIndicator mt="-20px" height="4px" bg="blue.500" />
+        <TabPanels sx={{ "&>div": { px: "0px" } }}>
+          <FormProvider {...method}>
+            <TabPanel>
+              <DocUpdateProfile
+                doctorProfileData={
+                  doctorProfileData ?? ({} as IGetDoctorProfile)
+                }
+              />
+            </TabPanel>
+          </FormProvider>
+          <FormProvider {...method}>
+            <TabPanel>
+              <DocAppointments />
+            </TabPanel>
+          </FormProvider>
+          <FormProvider {...method}>
+            <TabPanel>
+              <DocPayments />
+            </TabPanel>
+          </FormProvider>
+          <FormProvider {...method}>
+            <TabPanel>
+              <DocRatingAndFeedbacks />
+            </TabPanel>
+          </FormProvider>
+        </TabPanels>
+      </Tabs>
+    </VStack>
   );
 };
 

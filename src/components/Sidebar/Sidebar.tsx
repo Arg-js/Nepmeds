@@ -135,6 +135,7 @@ const Sidebar = () => {
 
   return (
     <Box
+      w={"300px"}
       display="flex"
       flexDirection="column"
       h="100vh"
