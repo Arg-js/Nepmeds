@@ -13,9 +13,11 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 export const BasicInfoForm = ({
+  isEditable,
   hidePasswordField,
   doctorProfileData,
 }: {
+  isEditable?: boolean;
   hidePasswordField: boolean;
   doctorProfileData?: IGetDoctorProfile;
 }) => {
@@ -34,13 +36,18 @@ export const BasicInfoForm = ({
   }, [image]);
 
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-      <GridItem rowSpan={2} colSpan={1}>
+    <Grid
+      templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
+      gap={6}
+    >
+      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
         <FormLabel htmlFor="file" h="100%">
           <Flex
             bg={colors.forminput}
             borderRadius={12}
-            h="100%"
+            h={isEditable ? "20vh" : "100%"}
+            width={isEditable ? "30%" : "auto"}
+            margin={isEditable ? "0 auto" : "initial"}
             _hover={{
               "& > img": { opacity: 0.5 },
               "& > div": { display: "flex" },
@@ -89,7 +96,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="First Name"
           name="first_name"
@@ -98,7 +105,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="Middle Name"
           name="middle_name"
@@ -107,7 +114,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="Last Name"
           name="last_name"

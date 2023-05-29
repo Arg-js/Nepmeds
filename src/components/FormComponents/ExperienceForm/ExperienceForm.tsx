@@ -8,7 +8,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-export const ExperienceForm = () => {
+export const ExperienceForm = ({ isEditable }: { isEditable?: boolean }) => {
   const { control, register, setValue } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -21,12 +21,13 @@ export const ExperienceForm = () => {
         return (
           <Grid
             templateColumns="repeat(4,1fr)"
-            gap={6}
+            gap={3}
+            mb={3}
             alignItems="flex-end"
             key={item.id}
-            mb={6}
+            w="100%"
           >
-            <GridItem colSpan={2}>
+            <GridItem colSpan={isEditable ? 4 : 2}>
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
@@ -42,7 +43,7 @@ export const ExperienceForm = () => {
               />
             </GridItem>
 
-            <GridItem>
+            <GridItem colSpan={isEditable ? 2 : 1}>
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
@@ -58,7 +59,7 @@ export const ExperienceForm = () => {
                 control={control}
               />
             </GridItem>
-            <GridItem>
+            <GridItem colSpan={isEditable ? 2 : 1}>
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput

@@ -13,8 +13,10 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const PrimaryInfo = ({
   doctorProfileData,
+  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
 }) => {
   const { register, control, watch } = useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
@@ -48,7 +50,7 @@ const PrimaryInfo = ({
           defaultValue={doctorProfileData?.bio_detail}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           name="phone"
@@ -57,7 +59,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -68,7 +70,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -104,7 +106,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <MultiSelect
           label="Specialization"
           required
@@ -122,7 +124,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
@@ -134,7 +136,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="ID Type"
@@ -161,7 +163,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="Issued District"
@@ -177,7 +179,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           name="citizenship_issued_date"
           label="Issued Date"
@@ -207,7 +209,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="District"
@@ -223,7 +225,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Municipality/ VDC"
@@ -234,7 +236,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
@@ -245,7 +247,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"
