@@ -1,32 +1,26 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-red='\033[0;31m'
-green='\033[0;32m'
-yellow='\033[0;33m'
-no_color='\033[0m'
-
-echo "🏗️👷${yellow} Executing pre-commit hook...${no_color}👷‍♂️🏗️"
-echo "🏗️👷 ${green} Styling your project before committing...${no_color}👷‍♂️🏗️"
-echo "🏗️👷  ${green} please be patient, this may take a while...${no_color}👷‍♂️🏗️"
-
-# if [ "$OSTYPE" == "msys" ]; then
-#     exec >/dev/console 2>&1
-# fi
-consoleregexp='console\.[clear|dir|log|info]'
-# CHECK
-if test $(git diff --cached | grep $consoleregexp | wc -l) != 0; then
-    exec git diff --cached | grep -ne $consoleregexp
-    echo "${red} COMMIT REJECTED!  Found console. references. Please remove them before committing.\n${no_color}"
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+GREEN='\033[0;32m'
+RED='\033[0;31m'
+NC='\033[0m'
+echo "${GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - -${NC}"
+echo "${GREEN}Compiling TYPESCRIPT: :rocket: :bulb: ${NC}"
+yarn tsc --noEmit || {
+    echo "${RED} TYPESCRIPT Compile failed: :rotating_light: :clown_face: :rotating_light:  ${NC}"
     exit 1
+}
+echo "${GREEN}Compile success: :white_check_mark: :money_with_wings: ${NC}"
+echo "${GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - -${NC}"
+# Running this command on windows to stop excessive output
+# https://github.com/okonet/lint-staged/issues/1164
+if [ "$OSTYPE" == "msys" ]; then
+    exec >/dev/console 2>&1
 fi
-
-# Check ESLint Standards
-npx lint-staged ||
-    (
-        echo "🔨❌ ${red} Yoo, you have a problem in your code. Check linter 🔨❌
-          Run yarn lint, add changes and try commit again.${no_color}"
-        false
-    )
-echo "${green}No console. references found!${no_color}\n"
-echo "${green}Git pre-commit hook was successful!${no_color}\n"
-echo "🎉 ${green} No error found: Checking the commit message....${no_color} ✨🚀🏄‍♂️🍻"
+echo "${GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - -${NC}"
+echo "${GREEN}Linting files: :truck: :memo: ${NC}"
+yarn lint-staged || {
+    echo "${RED}Linting failed: :fire: :clown_face::hankey: :fire: ${NC}"
+    exit 1
+}
+echo "${GREEN}Linting success: :beers: :tada: ${NC}"
+echo "${GREEN}- - - - - - - - - - - - - - - - - - - - - - - - - - - -${NC}"

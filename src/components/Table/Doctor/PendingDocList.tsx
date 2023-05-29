@@ -9,6 +9,7 @@ import {
   InputLeftElement,
   Spinner,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
@@ -26,6 +27,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
+import { colors } from "@nepMeds/theme/colors";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -190,8 +192,8 @@ const PendingDocList = () => {
             <Text>Doctor Info</Text>
           </HStack>
         }
-        primaryText="Accept"
-        secondaryText="Reject"
+        primaryText="Verify"
+        secondaryText="On Hold"
         otherAction={rejectModal}
         onApiCall={() => {
           onDetailsModalClose();
@@ -220,26 +222,48 @@ const PendingDocList = () => {
             <Text>Remarks for rejection</Text>
           </HStack>
         }
-        primaryText="Reject"
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button
+              variant="outline"
+              onClick={RejectDoctor}
+              flex={1}
+              border="2px solid"
+              borderColor={colors.primary}
+              color={colors.primary}
+              fontWeight={400}
+            >
+              Cancel
+            </Button>
+            <Button
+              flex={1}
+              onClick={async () => {
+                try {
+                  const isValid = await formMethods.trigger("remarks");
+                  if (!isValid) return;
+
+                  const val = formMethods.getValues("remarks");
+                  await rejectPendingDoc.mutateAsync({
+                    id: id ?? "",
+                    remarks: val,
+                  });
+                  onRejectModalClose();
+                  toastSuccess("Doctor Rejected!");
+                  formMethods.reset();
+                } catch (error) {
+                  toastFail("Doctor cannot be rejected. Try Again!!");
+                }
+              }}
+              background={colors.primary}
+              color={colors.white}
+            >
+              Done
+            </Button>
+          </HStack>
+        }
+        primaryText="Done"
         secondaryText="Cancel"
         otherAction={onRejectModalClose}
-        onApiCall={async () => {
-          try {
-            const isValid = await formMethods.trigger("remarks");
-            if (!isValid) return;
-
-            const val = formMethods.getValues("remarks");
-            await rejectPendingDoc.mutateAsync({
-              id: id ?? "",
-              remarks: val,
-            });
-            onRejectModalClose();
-            toastSuccess("Doctor Rejected!");
-            formMethods.reset();
-          } catch (error) {
-            toastFail("Doctor cannot be rejected. Try Again!!");
-          }
-        }}
       >
         <FormProvider {...formMethods}>
           <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />

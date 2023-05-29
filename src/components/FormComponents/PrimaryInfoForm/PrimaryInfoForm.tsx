@@ -10,6 +10,7 @@ import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -18,7 +19,8 @@ const PrimaryInfo = ({
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { register, control, watch } = useFormContext<IRegisterFields>();
+  const { register, control, getValues, watch, reset } =
+    useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
   const { data: specialization = [] } = useSpecializationData();
@@ -40,16 +42,38 @@ const PrimaryInfo = ({
     value: s.id,
   }));
 
+  useEffect(() => {
+    if (doctorProfileData) {
+      reset({
+        ...getValues(),
+        // phone: doctorProfileData.
+        citizenship_issued_district: districtOptions.find(
+          p => p.label === doctorProfileData.district
+        )?.value,
+        province: provinceOptions.find(
+          p => p.label === doctorProfileData.province
+        )?.value,
+        district: districtOptions.find(
+          p => p.label === doctorProfileData.district
+        )?.value,
+      });
+    }
+  }, [doctorProfileData, provinceOptions]);
+
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      <GridItem colSpan={4}>
-        <FloatinglabelTextArea
-          label="Basic Information"
-          name="bio_detail"
-          register={register}
-          defaultValue={doctorProfileData?.bio_detail}
-        />
-      </GridItem>
+      {isEditable ? (
+        <></>
+      ) : (
+        <GridItem colSpan={4}>
+          <FloatinglabelTextArea
+            label="Basic Information"
+            name="bio_detail"
+            register={register}
+            defaultValue={doctorProfileData?.bio_detail}
+          />
+        </GridItem>
+      )}
       <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
@@ -65,6 +89,8 @@ const PrimaryInfo = ({
           name="mobile_number"
           type="tel"
           required
+          isReadOnly
+          cursor="not-allowed"
           register={register}
           defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
@@ -111,7 +137,7 @@ const PrimaryInfo = ({
           label="Specialization"
           required
           name="specialization"
-          multiValue={doctorProfileData?.specialization.map(item => ({
+          multiValue={doctorProfileData?.specialization?.map(item => ({
             label: item,
             value: item,
           }))}
@@ -200,7 +226,7 @@ const PrimaryInfo = ({
           name="province"
           required
           register={register}
-          defaultValue={doctorProfileData?.province}
+          // defaultValue={doctorProfileData?.province}
           options={provinceOptions}
           style={{
             background: colors.forminput,

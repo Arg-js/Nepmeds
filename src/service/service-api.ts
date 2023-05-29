@@ -1,7 +1,7 @@
 export const api = {
   login: "user_management/login/token/",
   forgotPassword: "user_management/reset-password/",
-  resetPassword: "user_management/confirm-password-reset/{uid}/{token}",
+  resetPassword: "user_management/confirm-password-reset/{uidb64}/{token}/",
   signup: "user_management/mobile/",
   otp_verify: "user_management/mobile/verify/",
   register: "user_management/register/",
@@ -9,7 +9,7 @@ export const api = {
   academic: "/user_management/academic",
   certificate: "/user_management/certificate",
   experience: "/user_management/experience",
-  doctor_profile: "/user_management/doctor-profile",
+  doctor_profile: "/user_management/doctor-profile/",
   specialization: "/doctor_consult/specialization",
   registereddoctor: "/dashboard/registered_doctor_list",
   pendingdoctor: "/dashboard/pending_doctor_list",
@@ -17,6 +17,10 @@ export const api = {
   approvesingledoctor: "/dashboard/approve_doctor/{id}/",
   rejectsingledoctor: "/dashboard/reject_doctor/{id}/",
   doctordetails: "/dashboard/view_doctor_profile/{id}/",
+  // certificate fetch garda ko id
+  certificate_update: "/user_management/certificate/{id}",
+  experience_update: "/user_management/experience/{id}",
+  academic_update: "/user_management/academic/{id}",
 
   province: "core/province",
   district: "core/district",

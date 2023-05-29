@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Box, Flex, SimpleGrid } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -8,13 +8,37 @@ import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import Select from "@nepMeds/components/Form/Select";
 import { year } from "@nepMeds/utils/choices";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 
-export const AcademicInfoForm = ({ isEditable }: { isEditable?: boolean }) => {
-  const { control, register, setValue } = useFormContext<IRegisterFields>();
+export const AcademicInfoForm = ({
+  doctorProfileData,
+  isEditable,
+}: {
+  doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
+}) => {
+  const { control, register, getValues, setValue, reset } =
+    useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
   });
+
+  useEffect(() => {
+    if (doctorProfileData?.doctor_academic_info.length) {
+      reset({
+        ...getValues(),
+        academic: doctorProfileData?.doctor_academic_info.map(a => ({
+          degree_program: a.degree_program,
+          doctor: a.doctor,
+          major: a.major,
+          university: a.university,
+          graduation_year: a.graduation_year?.toString(),
+        })),
+      });
+    }
+  }, [doctorProfileData]);
 
   return (
     <>

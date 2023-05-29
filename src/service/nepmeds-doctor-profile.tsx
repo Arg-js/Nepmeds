@@ -10,34 +10,40 @@ interface IUser {
   mobile_number: string;
   address: string;
 }
-interface IDoctorAcademicInfo {
+export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
   university: string;
   major: string;
   file: string;
+  doctor: number;
+  id?: number;
 }
-interface IDoctorCertificationInfo {
+export interface IDoctorCertificationInfo {
   title: string;
   issued_by: string;
-  certification_name: string;
+  certificate_number: string;
   file: string;
-  certification_issued_data: string;
+  certificate_issued_date: string;
+  doctor: number;
+  id?: number;
 }
-interface IDoctorExperience {
+export interface IDoctorExperience {
   hospital: string;
   description: string;
   currently_working: boolean;
   from_date: string;
   to_date: string;
   file: string;
+  doctor: number;
+  id?: number;
 }
 export interface IGetDoctorProfile {
   user: IUser;
   title: string;
   bio_detail: string;
   age: number;
-  image: string | null;
+  image: string;
   province: string;
   district: string;
   municipality_vdc: string;
@@ -49,7 +55,7 @@ export interface IGetDoctorProfile {
   citizenship_number: string;
   citizenship_issued_district: number;
   citizenship_issued_date: string;
-  doctor_academic_info: IDoctorAcademicInfo[] | null;
+  doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | null;
   doctor_experience: IDoctorExperience[] | null;
 }
@@ -61,7 +67,7 @@ const getDoctorProfile = async () => {
   return response;
 };
 export const useDoctorProfile = () => {
-  return useQuery("doctorprofile", getDoctorProfile, {
+  return useQuery([api.doctor_profile], getDoctorProfile, {
     select: data => data.data.data,
   });
 };

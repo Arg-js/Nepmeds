@@ -8,12 +8,36 @@ import { colors } from "@nepMeds/theme/colors";
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-export const ExperienceForm = ({ isEditable }: { isEditable?: boolean }) => {
-  const { control, register, setValue } = useFormContext<IRegisterFields>();
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
+export const ExperienceForm = ({
+  doctorProfileData,
+  isEditable,
+}: {
+  doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
+}) => {
+  const { control, register, getValues, reset, setValue } =
+    useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experience",
   });
+  useEffect(() => {
+    if (doctorProfileData?.doctor_experience?.length) {
+      reset({
+        ...getValues(),
+        experience: doctorProfileData?.doctor_experience?.map(a => ({
+          hospital: a.hospital,
+          doctor: a.doctor,
+          description: a.description,
+          from_date: a.from_date,
+          to_date: a.to_date,
+          currently_working: a.currently_working,
+        })),
+      });
+    }
+  }, [doctorProfileData]);
 
   return (
     <>

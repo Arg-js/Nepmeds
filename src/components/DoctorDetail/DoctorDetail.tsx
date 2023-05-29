@@ -91,7 +91,7 @@ const DoctorDetail = ({
       <Text mb={3}>Basic Information</Text>
 
       <VStack gap={2} color={colors.dark_grey}>
-        <SimpleGrid columns={3} gap={6} mb={18}>
+        <SimpleGrid columns={3} gap={6} mb={18} w="100%">
           <Box>
             <p style={{ fontSize: "small" }}>Number</p>
             <p>{user?.mobile_number}</p>
@@ -106,7 +106,7 @@ const DoctorDetail = ({
           </Box>
         </SimpleGrid>
 
-        <SimpleGrid columns={3} gap={6} mb={18}>
+        <SimpleGrid columns={3} gap={6} mb={18} w="100%">
           <Box>
             <p style={{ fontSize: "small" }}>Age</p>
             <p>{age}</p>
@@ -121,7 +121,13 @@ const DoctorDetail = ({
       {profile_status === "rejected" && (
         <>
           <Divider my={4} />
-          <SimpleGrid columns={2} gap={6} mb={18} color={colors.dark_grey}>
+          <SimpleGrid
+            columns={2}
+            gap={6}
+            mb={18}
+            color={colors.dark_grey}
+            w="100%"
+          >
             <Box>
               <p style={{ fontSize: "small" }}>No. of rejected times</p>
               <p>{no_of_rejected_times || 0}</p>
@@ -137,7 +143,7 @@ const DoctorDetail = ({
       <Divider my={4} />
 
       <Text mb={3}>Citizenship Details</Text>
-      <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey}>
+      <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey} w="100%">
         <Box>
           <p style={{ fontSize: "small" }}>Citizenship Number</p>
           <p>{citizenship_number}</p>
@@ -155,7 +161,7 @@ const DoctorDetail = ({
       </SimpleGrid>
       <Divider my={4} />
       <Text mb={3}>Address Details</Text>
-      <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey}>
+      <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey} w="100%">
         <Box>
           <p style={{ fontSize: "small" }}>Province</p>
           <p>{province}</p>
@@ -180,7 +186,13 @@ const DoctorDetail = ({
 
         return (
           <div key={id}>
-            <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey}>
+            <SimpleGrid
+              columns={3}
+              gap={6}
+              mb={18}
+              color={colors.dark_grey}
+              w="100%"
+            >
               <Box>
                 <p style={{ fontSize: "small" }}>Degree Program</p>
                 <p>{academic_info?.degree_program}</p>
@@ -202,7 +214,13 @@ const DoctorDetail = ({
               </Box>
             </SimpleGrid>
 
-            <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey}>
+            <SimpleGrid
+              columns={3}
+              gap={6}
+              mb={18}
+              color={colors.dark_grey}
+              w="100%"
+            >
               <Box>
                 <p style={{ fontSize: "small" }}>Documents</p>
                 <a
@@ -227,7 +245,13 @@ const DoctorDetail = ({
 
         return (
           <div key={id}>
-            <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey}>
+            <SimpleGrid
+              columns={3}
+              gap={6}
+              mb={18}
+              color={colors.dark_grey}
+              w="100%"
+            >
               <Box>
                 <p style={{ fontSize: "small" }}>Title</p>
                 <p>{certification_info?.title}</p>
@@ -248,7 +272,7 @@ const DoctorDetail = ({
                 <p>{certification_info?.certificate_issued_date}</p>
               </Box>
             </SimpleGrid>
-            <SimpleGrid columns={3} gap={6} mb={18}>
+            <SimpleGrid columns={3} gap={6} mb={18} w="100%">
               <Box>
                 <p style={{ fontSize: "small" }}>Documents</p>
                 <a
@@ -273,7 +297,7 @@ const DoctorDetail = ({
 
         return (
           <div key={id}>
-            <SimpleGrid columns={3} gap={6} mb={18}>
+            <SimpleGrid columns={3} gap={6} mb={18} w="100%">
               <Box>
                 <p style={{ fontSize: "small" }}>Hospital</p>
                 <p>{experience_info?.hospital}</p>
@@ -294,13 +318,13 @@ const DoctorDetail = ({
                 <p>{experience_info?.to_date}</p>
               </Box>
             </SimpleGrid>
-            <SimpleGrid columns={3} gap={6} mb={18}>
+            <SimpleGrid columns={3} gap={6} mb={18} w="100%">
               <Box>
                 <p style={{ fontSize: "small" }}>Description</p>
                 <p>{experience_info?.description}</p>
               </Box>
             </SimpleGrid>
-            <SimpleGrid columns={3} gap={6} mb={18}>
+            <SimpleGrid columns={3} gap={6} mb={18} w="100%">
               <Box>
                 <p style={{ fontSize: "small" }}>Documents</p>
                 <a

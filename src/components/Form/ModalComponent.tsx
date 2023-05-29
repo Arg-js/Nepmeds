@@ -1,5 +1,6 @@
 import {
   Button,
+  Divider,
   Icon,
   Modal,
   ModalBody,
@@ -42,9 +43,14 @@ const ModalComponent = ({
         <ModalContent>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
+          <Divider mb={3} />
           <ModalBody style={{ textAlign: alignment }}>{children}</ModalBody>
 
-          <ModalFooter justifyContent="center" gap={3}>
+          <ModalFooter
+            justifyContent="center"
+            gap={3}
+            flexDirection={approve ? "row-reverse" : "row"}
+          >
             {footer || (
               <>
                 {approve ? (

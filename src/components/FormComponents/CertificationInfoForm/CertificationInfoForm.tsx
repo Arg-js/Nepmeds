@@ -6,16 +6,35 @@ import { colors } from "@nepMeds/theme/colors";
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 export const CertificationInfoForm = ({
+  doctorProfileData,
   isEditable,
 }: {
+  doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { control, register, setValue } = useFormContext<IRegisterFields>();
+  const { control, register, getValues, reset, setValue } =
+    useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",
   });
+  useEffect(() => {
+    if (doctorProfileData?.doctor_certification_info?.length) {
+      reset({
+        ...getValues(),
+        certification: doctorProfileData?.doctor_certification_info.map(a => ({
+          certificate_issued_date: a.certificate_issued_date,
+          doctor: a.doctor,
+          certificate_number: a.certificate_number,
+          title: a.title,
+          issued_by: a.issued_by,
+        })),
+      });
+    }
+  }, [doctorProfileData]);
   return (
     <>
       {fields.map((item, index) => {
