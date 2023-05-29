@@ -1,6 +1,7 @@
 import { EditIcon } from "@chakra-ui/icons";
 import { Grid, GridItem, Text, Box, Flex } from "@chakra-ui/layout";
 import { Card, CardBody, Image, Icon, VStack, Center } from "@chakra-ui/react";
+import { images } from "@nepMeds/assets/images";
 import {
   IDoctorAcademicInfo,
   IDoctorCertificationInfo,
@@ -33,18 +34,31 @@ export const DocUpdateProfile = ({
 
         <CardBody w={"100%"}>
           <Box display={"flex"} justifyContent={"space-between"}>
-            <Text
-              fontWeight={"700"}
-              fontSize={"26.8085px"}
-              lineHeight={"32px"}
-              color={colors?.dark_1}
-              mb={"4px"}
-            >
-              {doctorProfileData?.user?.first_name}&nbsp;
-              {doctorProfileData?.user?.middle_name}&nbsp;
-              {doctorProfileData?.user?.last_name}&nbsp; (
-              {doctorProfileData?.specialization?.[0]})
-            </Text>
+            <Box display={"flex"} alignItems={"center"}>
+              <Text
+                fontWeight={"700"}
+                fontSize={"26.8085px"}
+                lineHeight={"32px"}
+                color={colors?.dark_1}
+                mb={"4px"}
+              >
+                {doctorProfileData?.user?.first_name}&nbsp;
+                {doctorProfileData?.user?.middle_name}&nbsp;
+                {doctorProfileData?.user?.last_name}&nbsp;
+                {doctorProfileData?.specialization?.length
+                  ? `(${doctorProfileData?.specialization?.[0]})`
+                  : ""}
+              </Text>
+              {doctorProfileData?.profile_status === "approved" && (
+                <Image
+                  ml={"9px"}
+                  h={6}
+                  w={6}
+                  src={images?.verified}
+                  alt="verified"
+                />
+              )}
+            </Box>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Icon as={EditIcon} boxSize={5} color={colors?.main} mr={"8px"} />
               <Text

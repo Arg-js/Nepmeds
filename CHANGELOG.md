@@ -1,9 +1,10 @@
-## 0.0.1 (2023-05-26)
+## 0.0.1 (2023-05-29)
 
 
 ### Bug Fixes
 
 * academic file ([8de7423](https://gitlab.com/r2850/nepmeds/commit/8de742336d82e12055d40b204f8e6b743c802715))
+* adding fallbackSrc image and managing type docprofile image ([4637a90](https://gitlab.com/r2850/nepmeds/commit/4637a90d919b66058291d2a8ed94fde491df39ef))
 * **api fixes:** api fixes in doctor list ([9f44f04](https://gitlab.com/r2850/nepmeds/commit/9f44f04d8adbb4ac4a3224c4ab7a54b1fc581024))
 * **api:** changes uid name to uidb64,disable mobile field ([1ac8fea](https://gitlab.com/r2850/nepmeds/commit/1ac8feaa31af7aa0572a0800cee7373d84392b5f))
 * **auth:** login redirecting issue ([24cc990](https://gitlab.com/r2850/nepmeds/commit/24cc990426a6ace563e56c208c12c066d1720515))
@@ -29,6 +30,7 @@
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
+* removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
