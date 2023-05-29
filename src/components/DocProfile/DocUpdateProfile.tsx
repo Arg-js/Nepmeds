@@ -34,31 +34,31 @@ export const DocUpdateProfile = ({
 
         <CardBody w={"100%"}>
           <Box display={"flex"} justifyContent={"space-between"}>
-            <Box display={"flex"} alignItems={"center"}>
-              <Text
-                fontWeight={"700"}
-                fontSize={"26.8085px"}
-                lineHeight={"32px"}
-                color={colors?.dark_1}
-                mb={"4px"}
-              >
-                {doctorProfileData?.user?.first_name}&nbsp;
-                {doctorProfileData?.user?.middle_name}&nbsp;
-                {doctorProfileData?.user?.last_name}&nbsp;
-                {doctorProfileData?.specialization?.length
-                  ? `(${doctorProfileData?.specialization?.[0]})`
-                  : ""}
-              </Text>
+            <Text
+              display={"flex"}
+              alignItems={"center"}
+              fontWeight={"700"}
+              fontSize={"26.8085px"}
+              lineHeight={"32px"}
+              color={colors?.dark_1}
+              mb={"4px"}
+            >
+              {doctorProfileData?.user?.first_name}&nbsp;
+              {doctorProfileData?.user?.middle_name}&nbsp;
+              {doctorProfileData?.user?.last_name}&nbsp;
+              {doctorProfileData?.specialization?.length
+                ? `(${doctorProfileData?.specialization?.[0]})`
+                : ""}
               {doctorProfileData?.profile_status === "approved" && (
                 <Image
+                  display={"inline-block"}
                   ml={"9px"}
-                  h={6}
                   w={6}
                   src={images?.verified}
                   alt="verified"
                 />
               )}
-            </Box>
+            </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Icon as={EditIcon} boxSize={5} color={colors?.main} mr={"8px"} />
               <Text

@@ -41,6 +41,7 @@
 * **toast type fixes:** changed toast type of fail to success on rejection ([9b60c93](https://gitlab.com/r2850/nepmeds/commit/9b60c93a43ba60c04a2ea9bc08cd54f15c6f62ca))
 * update image field ([fd72a2e](https://gitlab.com/r2850/nepmeds/commit/fd72a2e3f9e9cf2aeb637b419ea38f5752977e20))
 * validation and forms ([a3ce00d](https://gitlab.com/r2850/nepmeds/commit/a3ce00d9a27d3203b98b8f6b15e6ad074192e5f3))
+* verified image added in doctor profile ([32d18ba](https://gitlab.com/r2850/nepmeds/commit/32d18bac441ca217fc1879d01260cf21a84eb941))
 
 
 ### Features
