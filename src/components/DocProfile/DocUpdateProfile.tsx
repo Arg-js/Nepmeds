@@ -35,8 +35,6 @@ export const DocUpdateProfile = ({
         <CardBody w={"100%"}>
           <Box display={"flex"} justifyContent={"space-between"}>
             <Text
-              display={"flex"}
-              alignItems={"center"}
               fontWeight={"700"}
               fontSize={"26.8085px"}
               lineHeight={"32px"}
@@ -53,9 +51,11 @@ export const DocUpdateProfile = ({
                 <Image
                   display={"inline-block"}
                   ml={"9px"}
-                  w={6}
                   src={images?.verified}
                   alt="verified"
+                  fontSize={"sm"}
+                  fontWeight={"normal"}
+                  whiteSpace={"nowrap"}
                 />
               )}
             </Text>
