@@ -10,13 +10,17 @@ import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 
 const PrimaryInfo = ({
   doctorProfileData,
+  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
 }) => {
-  const { register, control, watch } = useFormContext<IRegisterFields>();
+  const { register, control, getValues, watch, reset } =
+    useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
   const { data: specialization = [] } = useSpecializationData();
@@ -38,17 +42,39 @@ const PrimaryInfo = ({
     value: s.id,
   }));
 
+  useEffect(() => {
+    if (doctorProfileData) {
+      reset({
+        ...getValues(),
+        // phone: doctorProfileData.
+        citizenship_issued_district: districtOptions.find(
+          p => p.label === doctorProfileData.district
+        )?.value,
+        province: provinceOptions.find(
+          p => p.label === doctorProfileData.province
+        )?.value,
+        district: districtOptions.find(
+          p => p.label === doctorProfileData.district
+        )?.value,
+      });
+    }
+  }, [doctorProfileData, provinceOptions]);
+
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      <GridItem colSpan={4}>
-        <FloatinglabelTextArea
-          label="Basic Information"
-          name="bio_detail"
-          register={register}
-          defaultValue={doctorProfileData?.bio_detail}
-        />
-      </GridItem>
-      <GridItem colSpan={1}>
+      {isEditable ? (
+        <></>
+      ) : (
+        <GridItem colSpan={4}>
+          <FloatinglabelTextArea
+            label="Basic Information"
+            name="bio_detail"
+            register={register}
+            defaultValue={doctorProfileData?.bio_detail}
+          />
+        </GridItem>
+      )}
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           name="phone"
@@ -57,7 +83,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -70,7 +96,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -106,12 +132,12 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <MultiSelect
           label="Specialization"
           required
           name="specialization"
-          multiValue={doctorProfileData?.specialization.map(item => ({
+          multiValue={doctorProfileData?.specialization?.map(item => ({
             label: item,
             value: item,
           }))}
@@ -124,7 +150,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
@@ -136,7 +162,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="ID Type"
@@ -163,7 +189,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="Issued District"
@@ -179,7 +205,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           name="citizenship_issued_date"
           label="Issued Date"
@@ -200,7 +226,7 @@ const PrimaryInfo = ({
           name="province"
           required
           register={register}
-          defaultValue={doctorProfileData?.province}
+          // defaultValue={doctorProfileData?.province}
           options={provinceOptions}
           style={{
             background: colors.forminput,
@@ -209,7 +235,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="District"
@@ -225,7 +251,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Municipality/ VDC"
@@ -236,7 +262,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
@@ -247,7 +273,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"

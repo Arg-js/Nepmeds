@@ -1,6 +1,6 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { toFormData } from "axios";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
@@ -65,3 +65,60 @@ const createPrimaryData = async (data: PrimaryInfo) => {
 };
 
 export const usePrimaryInfoRegister = () => useMutation(createPrimaryData);
+
+const editPersonalData = async (
+  data: Pick<PrimaryInfo, "title" | "bio_detail" | "image"> & {
+    user: Pick<PrimaryInfo, "first_name" | "middle_name" | "last_name">;
+  }
+) => {
+  const response = await HttpClient.patch(
+    api.doctor_profile,
+    // toFormData(data, formData)
+    data
+  );
+  return response;
+};
+export const useUpdatePersonalInfoRegister = () => {
+  const queryClient = useQueryClient();
+  return useMutation(editPersonalData, {
+    onSuccess() {
+      queryClient.invalidateQueries(api.doctor_profile);
+    },
+  });
+};
+
+const editPrimaryData = async (
+  data: Pick<
+    PrimaryInfo,
+    | "mobile_number"
+    | "email"
+    | "gender"
+    | "date_of_birth"
+    | "specialization"
+    | "pan_number"
+    | "id_type"
+    | "citizenship_number"
+    | "citizenship_issued_district"
+    | "citizenship_issued_date"
+    | "province"
+    | "district"
+    | "municipality_vdc"
+    | "tole"
+    | "ward"
+  >
+) => {
+  const formData = new FormData();
+  const response = await HttpClient.patch(
+    api.doctor_profile,
+    toFormData(data, formData)
+  );
+  return response;
+};
+export const useUpdatePrimaryInfoRegister = () => {
+  const queryClient = useQueryClient();
+  return useMutation(editPrimaryData, {
+    onSuccess() {
+      queryClient.invalidateQueries(api.doctor_profile);
+    },
+  });
+};

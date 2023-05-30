@@ -1,4 +1,4 @@
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { api } from "./service-api";
 import { HttpClient, toFormData } from "./service-axios";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
@@ -11,3 +11,20 @@ const createAcademicData = async (data: AcademicInfo) => {
 };
 
 export const useAcademicInfoRegister = () => useMutation(createAcademicData);
+
+const updateAcademicData = async (data: { id: any; data: AcademicInfo }) => {
+  const response = await HttpClient.patch(
+    api.academic_update.replace("{id}", data?.id),
+    toFormData(data.data)
+  );
+  return response;
+};
+
+export const useUpdateAcademicInfo = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateAcademicData, {
+    onSuccess() {
+      queryClient.invalidateQueries(api.doctor_profile);
+    },
+  });
+};

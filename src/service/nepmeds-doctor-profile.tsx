@@ -17,14 +17,16 @@ export interface IDoctorAcademicInfo {
   major: string;
   file: string;
   doctor: number;
+  id?: number;
 }
 export interface IDoctorCertificationInfo {
   title: string;
   issued_by: string;
   certificate_number: string;
   file: string;
-  certificate_issued_data: string;
+  certificate_issued_date: string;
   doctor: number;
+  id?: number;
 }
 export interface IDoctorExperience {
   hospital: string;
@@ -34,6 +36,7 @@ export interface IDoctorExperience {
   to_date: string;
   file: string;
   doctor: number;
+  id?: number;
 }
 export interface IGetDoctorProfile {
   user: IUser;
@@ -67,7 +70,7 @@ const getDoctorProfile = async () => {
   return response;
 };
 export const useDoctorProfile = () => {
-  return useQuery("doctorprofile", getDoctorProfile, {
+  return useQuery([api.doctor_profile], getDoctorProfile, {
     select: data => data.data.data,
   });
 };
