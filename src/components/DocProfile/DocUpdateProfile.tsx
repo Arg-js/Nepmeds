@@ -1,6 +1,7 @@
 import { EditIcon } from "@chakra-ui/icons";
 import { Grid, GridItem, Text, Box, Flex } from "@chakra-ui/layout";
 import { Card, CardBody, Image, Icon, VStack, Center } from "@chakra-ui/react";
+import { images } from "@nepMeds/assets/images";
 import {
   IDoctorAcademicInfo,
   IDoctorCertificationInfo,
@@ -42,8 +43,21 @@ export const DocUpdateProfile = ({
             >
               {doctorProfileData?.user?.first_name}&nbsp;
               {doctorProfileData?.user?.middle_name}&nbsp;
-              {doctorProfileData?.user?.last_name}&nbsp; (
-              {doctorProfileData?.specialization?.[0]})
+              {doctorProfileData?.user?.last_name}&nbsp;
+              {doctorProfileData?.specialization?.length
+                ? `(${doctorProfileData?.specialization?.[0]})`
+                : ""}
+              {doctorProfileData?.profile_status === "approved" && (
+                <Image
+                  display={"inline-block"}
+                  ml={"9px"}
+                  src={images?.verified}
+                  alt="verified"
+                  fontSize={"sm"}
+                  fontWeight={"normal"}
+                  whiteSpace={"nowrap"}
+                />
+              )}
             </Text>
             <Flex alignItems={"center"} justifyContent={"center"}>
               <Icon as={EditIcon} boxSize={5} color={colors?.main} mr={"8px"} />
