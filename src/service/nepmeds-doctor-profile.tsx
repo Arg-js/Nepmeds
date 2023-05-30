@@ -58,6 +58,9 @@ export interface IGetDoctorProfile {
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | null;
   doctor_experience: IDoctorExperience[] | null;
+  profile_status: string;
+  no_of_rejected_times: number;
+  rejected_remarks: string;
 }
 
 const getDoctorProfile = async () => {
