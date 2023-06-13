@@ -10,15 +10,26 @@ import { useForm } from "react-hook-form";
 import { Call } from "react-iconly";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
-const phoneRegExp =
-  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+const phoneRegExp = /^(?:\+977[-\s]?)?9[78]\d{8}$/;
+
+const emailRegExp = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
+
 const schema = yup.object().shape({
-  mobile: yup
+  email_or_mobile_number: yup
     .string()
-    .required("Mobile number is required!")
-    .matches(phoneRegExp, "Mobile number is not valid")
-    .min(10, "Please enter a 10 digit mobile number")
-    .max(10, "Please enter a 10 digit mobile number"),
+    .required("Mobile number or email is required!")
+    .test(
+      "is-email-or-phone",
+      "Please enter a valid email or phone number",
+      value => {
+        const emailRegex = emailRegExp;
+        const phoneRegex = phoneRegExp;
+        return (
+          value !== undefined &&
+          (emailRegex.test(value) || phoneRegex.test(value))
+        );
+      }
+    ),
 });
 
 const SignupForm = () => {
@@ -31,17 +42,21 @@ const SignupForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      mobile: "",
+      email_or_mobile_number: "",
     },
     resolver: yupResolver(schema),
   });
 
   const singUpAction = useSignUpUser();
 
-  const onSubmit = async ({ mobile }: { mobile: string }) => {
+  const onSubmit = async ({
+    email_or_mobile_number,
+  }: {
+    email_or_mobile_number: string;
+  }) => {
     try {
       const { data: otpInfo } = await singUpAction.mutateAsync({
-        mobile_number: mobile,
+        email_or_mobile_number: email_or_mobile_number,
       });
       setEnableOTP(true);
       setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
@@ -52,22 +67,21 @@ const SignupForm = () => {
   };
 
   if (enableOTP) {
-    return <OtpSignUp mobile={getValues("mobile")} otp={otp} />;
+    return <OtpSignUp mobile={getValues("email_or_mobile_number")} otp={otp} />;
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
       <VStack gap={7.5} mb={12}>
         <Input
-          name="mobile"
+          name="email_or_mobile_number"
           register={register}
-          type="number"
           startIcon={<Icon as={Call} fontSize={20} color={colors.black_40} />}
           border="none"
           backgroundColor={colors.forminput}
-          placeholder="Mobile No."
+          placeholder="Email Address/ Mobile No."
           _placeholder={{ color: colors.light_gray }}
-          error={errors.mobile?.message}
+          error={errors.email_or_mobile_number?.message}
         />
       </VStack>
 
