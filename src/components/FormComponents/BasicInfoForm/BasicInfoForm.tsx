@@ -1,4 +1,5 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
+// import { Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 import Select from "@nepMeds/components/Form/Select";
@@ -9,6 +10,7 @@ import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+// import { FormLabel, Image } from "@chakra-ui/react";
 
 export const BasicInfoForm = ({
   isEditable,
@@ -23,23 +25,13 @@ export const BasicInfoForm = ({
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
 
-  // const image = watch("image");
-  // const imageURL = useMemo(() => {
-  //   try {
-  //     const file = image?.[0];
-  //     return file ? URL.createObjectURL(file) : "";
-  //   } catch (error) {
-  //     return "";
-  //   }
-  // }, [image]);
-
   return (
     <Grid
       templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
       gap={6}
     >
-      {/* <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
-        <FormLabel htmlFor="file" h="100%">
+      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
+        {/* <FormLabel htmlFor="file" h="100%">
           <Flex
             bg={colors.forminput}
             borderRadius={12}
@@ -78,9 +70,15 @@ export const BasicInfoForm = ({
               </VStack>
             )}
           </Flex>
-        </FormLabel>
-        <Input type="file" id="file" name="image" hidden register={register} />
-      </GridItem> */}
+        </FormLabel> */}
+
+        <FloatingLabelInput
+          type="file"
+          name="profile_picture"
+          register={register}
+        />
+      </GridItem>
+
       {isEditable ? (
         <GridItem colSpan={4}>
           <FloatinglabelTextArea

@@ -20,6 +20,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
+import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditBasic = ({
@@ -34,16 +35,31 @@ const EditBasic = ({
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
-
+      const profilePicture = formMethods.getValues("profile_picture")?.[0];
+      console.log(profilePicture);
       await updatePersonalInfo.mutateAsync({
-        image: formMethods.getValues("image"),
-        bio_detail: formMethods.getValues("bio_detail"),
-        title: formMethods.getValues("title"),
         user: {
           first_name: formMethods.getValues("first_name"),
           middle_name: formMethods.getValues("middle_name"),
           last_name: formMethods.getValues("last_name"),
+          profile_picture: profilePicture
+            ? await imagetobase64(profilePicture)
+            : "",
         },
+        specialization: formMethods.getValues("specialization"),
+        pan_number: formMethods.getValues("pan_number"),
+        id_type: formMethods.getValues("id_type"),
+        id_number: formMethods.getValues("id_number"),
+        id_issued_district: formMethods.getValues("id_issued_district"),
+        id_issued_date: formMethods.getValues("id_issued_date"),
+        title: formMethods.getValues("title"),
+
+        bio_detail: formMethods.getValues("title"),
+        age: 20,
+        medical_degree: "test",
+        designation: "Test",
+        id_back_image: formMethods.getValues("id_back_image"),
+        id_front_image: formMethods.getValues("id_front_image"),
       });
       onClose();
       toastSuccess("Personal information updated successfully!");
@@ -62,7 +78,7 @@ const EditBasic = ({
         <Image
           w={"159px"}
           h={"159px"}
-          src={doctorProfileData?.image}
+          // src={doctorProfileData?.user?.profile_picture}
           fallbackSrc="https://via.placeholder.com/159"
           alt="Caffe Latte"
         />

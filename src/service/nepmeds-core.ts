@@ -3,12 +3,12 @@ import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 type Province = {
-  id: string;
+  id: number;
   name: string;
 };
 
 type District = {
-  id: string;
+  id: number;
   name: string;
 };
 
@@ -24,7 +24,7 @@ export const useGetProvince = () =>
     select: res => res.data.data,
   });
 
-const getDistrict = (provinceId: string) => async () => {
+const getDistrict = (provinceId: number) => async () => {
   const response = await HttpClient.get<NepMedsResponse<District[]>>(
     api.district,
     {
@@ -34,7 +34,19 @@ const getDistrict = (provinceId: string) => async () => {
   return response;
 };
 
-export const useGetDistricts = (provinceId: string) =>
+export const useGetDistricts = (provinceId: number) =>
   useQuery([api.district, provinceId], getDistrict(provinceId), {
+    select: res => res.data.data,
+  });
+
+const getAllDistrict = () => async () => {
+  const response = await HttpClient.get<NepMedsResponse<District[]>>(
+    api.district
+  );
+  return response;
+};
+
+export const useGetAllDistricts = () =>
+  useQuery([api.district], getAllDistrict(), {
     select: res => res.data.data,
   });

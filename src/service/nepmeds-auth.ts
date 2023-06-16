@@ -14,7 +14,8 @@ const loginChannel = new BroadcastChannel("login");
 const loginBroadcast = "logged_in";
 
 export interface LoginDetails {
-  email: string;
+  email?: string;
+  mobile_number?: string;
   password: string;
 }
 export const authTokenKey = "authToken";
