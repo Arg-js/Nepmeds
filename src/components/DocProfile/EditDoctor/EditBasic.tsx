@@ -20,7 +20,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
-import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditBasic = ({
@@ -43,7 +43,7 @@ const EditBasic = ({
           middle_name: formMethods.getValues("middle_name"),
           last_name: formMethods.getValues("last_name"),
           profile_picture: profilePicture
-            ? await imagetobase64(profilePicture)
+            ? await imageToBase64(profilePicture)
             : "",
         },
         specialization: formMethods.getValues("specialization"),

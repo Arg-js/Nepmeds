@@ -24,7 +24,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
-import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 import { Download } from "react-iconly";
 
@@ -61,7 +61,7 @@ const EditAcademic = ({
             graduation_year: formMethods.getValues(
               `academic.${i}.graduation_year`
             ),
-            file: file ? await imagetobase64(file) : "",
+            file: file ? await imageToBase64(file) : "",
           },
           id: doctorProfileData?.doctor_academic_info[i]?.id,
         });

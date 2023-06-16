@@ -1,4 +1,4 @@
-## 0.0.1 (2023-06-13)
+## 0.0.1 (2023-06-16)
 
 
 ### Bug Fixes
@@ -25,12 +25,18 @@
 * interface of doctor-profile api ([35038c8](https://gitlab.com/r2850/nepmeds/commit/35038c89bcbf65bebfe3f0b3d8d649485977bcbd))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
+* **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))
 * minor changes ([ead2752](https://gitlab.com/r2850/nepmeds/commit/ead275217351fd4126a1b29c7a08de9a759b686f))
 * otp api integration ([95349a1](https://gitlab.com/r2850/nepmeds/commit/95349a1690d1ac9d8e16e8e0e7790b4e8cf9a3f5))
 * otp form api integration ([0334c28](https://gitlab.com/r2850/nepmeds/commit/0334c28fae96d5b88e43df4f4ecd203072c48a54))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
+* **registration:** edit  registration ([12bc927](https://gitlab.com/r2850/nepmeds/commit/12bc9270f79349fe81f06a9937d43ea422002025))
+* **registration:** edit  registration step issues resolved ([feebd3c](https://gitlab.com/r2850/nepmeds/commit/feebd3c48dccaf6a4e1f672007a1206fccf6b823))
+* **registration:** edit  registration step issues resolved ([2165a62](https://gitlab.com/r2850/nepmeds/commit/2165a6263cb6dd6b2f7f114cbe442278045c9490))
+* **registration:** edit  registration step issues resolved ([36c80bf](https://gitlab.com/r2850/nepmeds/commit/36c80bf4c6f4bd5d42e760338b2120ee385bb8f6))
+* **registration:** edit  registration step issues resolved ([d181a5c](https://gitlab.com/r2850/nepmeds/commit/d181a5cea1ed08d68465fdf8a8cf8446c82ca925))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
