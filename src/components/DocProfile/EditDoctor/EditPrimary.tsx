@@ -19,7 +19,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
-import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditPrimary = ({
@@ -59,8 +59,8 @@ const EditPrimary = ({
         age: 20,
         medical_degree: "test",
         designation: "Test",
-        id_back_image: idBackImage ? await imagetobase64(idBackImage) : "",
-        id_front_image: idFrontImage ? await imagetobase64(idFrontImage) : "",
+        id_back_image: idBackImage ? await imageToBase64(idBackImage) : "",
+        id_front_image: idFrontImage ? await imageToBase64(idFrontImage) : "",
       });
       onPrimaryClose();
       toastSuccess("Primary information updated successfully!");
