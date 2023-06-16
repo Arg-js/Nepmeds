@@ -17,8 +17,9 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { PrimaryInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useUpdatePrimaryInfoRegister } from "@nepMeds/service/nepmeds-register";
+import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
+import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditPrimary = ({
@@ -32,33 +33,34 @@ const EditPrimary = ({
     onOpen: onPrimaryOpen,
   } = useDisclosure();
   const formMethods = useForm();
-  const updatePrimaryData = useUpdatePrimaryInfoRegister();
+  const updatePrimaryData = useUpdatePersonalInfoRegister();
 
   const onSavePrimaryInfo = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
-
+      const idFrontImage = formMethods.getValues("id_front_image")?.[0];
+      const idBackImage = formMethods.getValues("id_back_image")?.[0];
       await updatePrimaryData.mutateAsync({
-        mobile_number: formMethods.getValues("mobile_number"),
-        email: formMethods.getValues("email"),
-        gender: formMethods.getValues("gender"),
-        date_of_birth: formMethods.getValues("date_of_birth"),
+        user: {
+          gender: formMethods.getValues("gender"),
+          date_of_birth: formMethods.getValues("date_of_birth"),
+        },
+
         specialization: formMethods.getValues("specialization"),
         pan_number: formMethods.getValues("pan_number"),
         id_type: formMethods.getValues("id_type"),
-        citizenship_number: formMethods.getValues("citizenship_number"),
-        citizenship_issued_district: formMethods.getValues(
-          "citizenship_issued_district"
-        ),
-        citizenship_issued_date: formMethods.getValues(
-          "citizenship_issued_date"
-        ),
-        province: formMethods.getValues("province"),
-        district: formMethods.getValues("district"),
-        municipality_vdc: formMethods.getValues("municipality_vdc"),
-        tole: formMethods.getValues("tole"),
-        ward: formMethods.getValues("ward"),
+        id_number: formMethods.getValues("id_number"),
+        id_issued_district: formMethods.getValues("id_issued_district"),
+        id_issued_date: formMethods.getValues("id_issued_date"),
+        title: formMethods.getValues("title"),
+
+        bio_detail: formMethods.getValues("title"),
+        age: 20,
+        medical_degree: "test",
+        designation: "Test",
+        id_back_image: idBackImage ? await imagetobase64(idBackImage) : "",
+        id_front_image: idFrontImage ? await imagetobase64(idFrontImage) : "",
       });
       onPrimaryClose();
       toastSuccess("Primary information updated successfully!");
@@ -153,7 +155,7 @@ const EditPrimary = ({
                     lineHeight={"19px"}
                     color={colors?.black}
                   >
-                    :&nbsp;{doctorProfileData?.province}
+                    :&nbsp;{doctorProfileData?.user?.province}
                   </Text>
                 </Box>
                 <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -173,7 +175,7 @@ const EditPrimary = ({
                     lineHeight={"19px"}
                     color={colors?.black}
                   >
-                    :&nbsp;{doctorProfileData?.ward}
+                    :&nbsp;{doctorProfileData?.user?.ward}
                   </Text>
                 </Box>
               </VStack>
@@ -198,7 +200,7 @@ const EditPrimary = ({
                     lineHeight={"19px"}
                     color={colors?.black}
                   >
-                    :&nbsp;{doctorProfileData?.district}
+                    :&nbsp;{doctorProfileData?.user?.district}
                   </Text>
                 </Box>
                 <Box display={"flex"} gap={3}>
@@ -218,7 +220,7 @@ const EditPrimary = ({
                     lineHeight={"19px"}
                     color={colors?.black}
                   >
-                    :&nbsp;{doctorProfileData?.tole}
+                    :&nbsp;{doctorProfileData?.user?.tole}
                   </Text>
                 </Box>
               </VStack>
@@ -243,7 +245,7 @@ const EditPrimary = ({
                     lineHeight={"19px"}
                     color={colors?.black}
                   >
-                    :&nbsp;{doctorProfileData?.municipality_vdc}
+                    :&nbsp;{doctorProfileData?.user?.municipality}
                   </Text>
                 </Box>
               </VStack>

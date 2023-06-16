@@ -24,6 +24,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
+import { imagetobase64 } from "@nepMeds/utils/imgtobase64";
 import { useForm, FormProvider } from "react-hook-form";
 import { Download } from "react-iconly";
 
@@ -47,6 +48,8 @@ const EditAcademic = ({
       const allAcademic = formMethods.getValues("academic") || [];
 
       for (let i = 0; i < allAcademic?.length; i++) {
+        const file = formMethods.getValues(`academic.${i}.file`);
+
         await updateAcademicInfo.mutateAsync({
           data: {
             doctor: formMethods.getValues("doctor"),
@@ -58,7 +61,7 @@ const EditAcademic = ({
             graduation_year: formMethods.getValues(
               `academic.${i}.graduation_year`
             ),
-            file: formMethods.getValues(`academic.${i}.file`),
+            file: file ? await imagetobase64(file) : "",
           },
           id: doctorProfileData?.doctor_academic_info[i]?.id,
         });
@@ -248,7 +251,7 @@ const EditAcademic = ({
                                   }}
                                   download
                                 >
-                                  {singleAcademicInfo?.file?.split("/").pop()}
+                                  {/* {singleAcademicInfo?.file?.split("/").pop()} */}
                                   <Download
                                     set="light"
                                     primaryColor={colors?.main}

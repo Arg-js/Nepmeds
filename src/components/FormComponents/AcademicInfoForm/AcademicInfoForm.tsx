@@ -38,7 +38,7 @@ export const AcademicInfoForm = ({
         })),
       });
     }
-  }, [doctorProfileData]);
+  }, [doctorProfileData, reset]);
 
   return (
     <>

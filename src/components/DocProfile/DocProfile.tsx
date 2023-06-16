@@ -20,7 +20,7 @@ import DocRatingAndFeedbacks from "./DocRatingAndFeedbacks";
 const DocProfile = () => {
   const { data: doctorProfileData } = useDoctorProfile();
   const formMethods = useForm();
-
+  console.log(doctorProfileData);
   return (
     <VStack align={"stretch"} p={4}>
       <Tabs position="relative" variant="unstyled">

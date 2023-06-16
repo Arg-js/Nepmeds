@@ -6,11 +6,12 @@ export const api = {
   otp_verify: "user_management/otp-verify/",
   register: "/doctor_consult/register/",
   symptom: "/doctor_consult/symptom",
-  academic: "/user_management/academic",
-  certificate: "/user_management/certificate",
-  experience: "/user_management/experience",
-  doctor_profile: "/user_management/doctor-profile/",
-  specialization: "/core/specialization",
+  academic: "/doctor_consult/academic-info/",
+  certificate: "/doctor_consult/certificate-info/",
+  experience: "/doctor_consult/experience-info/",
+  doctor_profile: "/doctor_consult/doctor-profile/",
+  edit_doctor_profile: "/doctor_consult/doctor-profile-update/",
+  specialization: "/core/specialization-list/",
   registereddoctor: "/dashboard/registered_doctor_list",
   pendingdoctor: "/dashboard/pending_doctor_list",
   approveddoctor: "/dashboard/approved_doctor_list",
@@ -22,8 +23,8 @@ export const api = {
   experience_update: "/user_management/experience/{id}",
   academic_update: "/user_management/academic/{id}",
 
-  province: "core/province",
-  district: "core/district",
+  province: "core/provinces/",
+  district: "core/districts/",
 };
 
 export interface NepMedsResponse<T = any> {
