@@ -6,25 +6,38 @@ interface IUser {
   first_name: string;
   middle_name: string;
   last_name: string;
-  email: string;
   mobile_number: string;
-  address: string;
+  profile_picture: File;
+  district: number;
+  ward: number;
+  tole: number;
+  municipality: number;
+  province: number;
+  gender: string;
+  date_of_birth: string;
+  email: string;
+  password: string;
+  confirm_password: string;
+  is_mobile_number_verified: boolean;
+  is_email_verified: boolean;
 }
 export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
   university: string;
   major: string;
-  file: string;
+  file: File;
   doctor: number;
+  id?: number;
 }
 export interface IDoctorCertificationInfo {
   title: string;
   issued_by: string;
   certificate_number: string;
   file: string;
-  certificate_issued_data: string;
+  certificate_issued_date: string;
   doctor: number;
+  id?: number;
 }
 export interface IDoctorExperience {
   hospital: string;
@@ -34,27 +47,26 @@ export interface IDoctorExperience {
   to_date: string;
   file: string;
   doctor: number;
+  id?: number;
 }
 export interface IGetDoctorProfile {
   user: IUser;
   title: string;
   bio_detail: string;
   age: number;
-  image: string;
-  province: string;
-  district: string;
-  municipality_vdc: string;
-  ward: number;
-  tole: string;
-  gender: string;
+  pan_number: string;
   specialization: string[];
-  date_of_birth: string;
-  citizenship_number: string;
-  citizenship_issued_district: number;
-  citizenship_issued_date: string;
+  id_front_image: File;
+  id_back_image: File;
+  id_number: string;
+  id_issued_district: number;
+  id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | null;
   doctor_experience: IDoctorExperience[] | null;
+  profile_status: string;
+  no_of_rejected_times: number;
+  rejected_remarks: string;
 }
 
 const getDoctorProfile = async () => {
@@ -64,7 +76,7 @@ const getDoctorProfile = async () => {
   return response;
 };
 export const useDoctorProfile = () => {
-  return useQuery("doctorprofile", getDoctorProfile, {
+  return useQuery([api.doctor_profile], getDoctorProfile, {
     select: data => data.data.data,
   });
 };

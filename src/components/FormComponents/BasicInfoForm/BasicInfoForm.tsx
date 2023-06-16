@@ -1,46 +1,43 @@
-import { Flex, Grid, GridItem, HStack, Text, VStack } from "@chakra-ui/layout";
-import { FormLabel, Image } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
+import { Grid, GridItem } from "@chakra-ui/layout";
+// import { Flex, HStack, Text, VStack } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
-import Input from "@nepMeds/components/Form/Input";
 import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 import { title } from "@nepMeds/utils/index";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+// import { FormLabel, Image } from "@chakra-ui/react";
 
 export const BasicInfoForm = ({
+  isEditable,
   hidePasswordField,
   doctorProfileData,
 }: {
+  isEditable?: boolean;
   hidePasswordField: boolean;
   doctorProfileData?: IGetDoctorProfile;
 }) => {
-  const { register, watch } = useFormContext<IRegisterFields>();
+  const { register } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
 
-  const image = watch("image");
-  const imageURL = useMemo(() => {
-    try {
-      const file = image?.[0];
-      return file ? URL.createObjectURL(file) : "";
-    } catch (error) {
-      return "";
-    }
-  }, [image]);
-
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6}>
-      <GridItem rowSpan={2} colSpan={1}>
-        <FormLabel htmlFor="file" h="100%">
+    <Grid
+      templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
+      gap={6}
+    >
+      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
+        {/* <FormLabel htmlFor="file" h="100%">
           <Flex
             bg={colors.forminput}
             borderRadius={12}
-            h="100%"
+            h={isEditable ? "20vh" : "100%"}
+            width={isEditable ? "30%" : "auto"}
+            margin={isEditable ? "0 auto" : "initial"}
             _hover={{
               "& > img": { opacity: 0.5 },
               "& > div": { display: "flex" },
@@ -73,11 +70,29 @@ export const BasicInfoForm = ({
               </VStack>
             )}
           </Flex>
-        </FormLabel>
-        <Input type="file" id="file" name="image" hidden register={register} />
+        </FormLabel> */}
+
+        <FloatingLabelInput
+          type="file"
+          name="profile_picture"
+          register={register}
+        />
       </GridItem>
 
-      <GridItem colSpan={3}>
+      {isEditable ? (
+        <GridItem colSpan={4}>
+          <FloatinglabelTextArea
+            label="Basic Information"
+            name="bio_detail"
+            register={register}
+            defaultValue={doctorProfileData?.bio_detail}
+          />
+        </GridItem>
+      ) : (
+        <></>
+      )}
+
+      <GridItem colSpan={4}>
         <Select
           label="Title"
           placeholder=""
@@ -89,7 +104,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="First Name"
           name="first_name"
@@ -98,7 +113,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="Middle Name"
           name="middle_name"
@@ -107,7 +122,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={1}>
         <FloatingLabelInput
           label="Last Name"
           name="last_name"

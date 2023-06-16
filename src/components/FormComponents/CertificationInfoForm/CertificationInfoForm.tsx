@@ -1,23 +1,53 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Flex } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { useFormContext, useFieldArray, Controller } from "react-hook-form";
 import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-export const CertificationInfoForm = () => {
-  const { control, register, setValue } = useFormContext<IRegisterFields>();
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
+export const CertificationInfoForm = ({
+  doctorProfileData,
+  isEditable,
+}: {
+  doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
+}) => {
+  const { control, register, getValues, reset, setValue } =
+    useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",
   });
+  useEffect(() => {
+    if (doctorProfileData?.doctor_certification_info?.length) {
+      reset({
+        ...getValues(),
+        certification: doctorProfileData?.doctor_certification_info.map(a => ({
+          certificate_issued_date: a.certificate_issued_date,
+          doctor: a.doctor,
+          certificate_number: a.certificate_number,
+          title: a.title,
+          issued_by: a.issued_by,
+        })),
+      });
+    }
+  }, [doctorProfileData]);
   return (
     <>
       {fields.map((item, index) => {
         return (
-          <Flex mb={4} key={item.id} flexDirection="column" gap={3}>
-            <Flex gap={6} alignItems="flex-end">
+          <>
+            <SimpleGrid
+              mb={4}
+              key={item.id}
+              gridTemplateColumns={
+                isEditable ? "repeat(2,1fr)" : "repeat(4,1fr)"
+              }
+              gap={3}
+            >
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
@@ -31,6 +61,7 @@ export const CertificationInfoForm = () => {
                 name={`certification.${index}.title`}
                 control={control}
               />
+
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
@@ -73,9 +104,13 @@ export const CertificationInfoForm = () => {
                 name={`certification.${index}.certificate_issued_date`}
                 control={control}
               />
-            </Flex>
-
-            <Flex>
+            </SimpleGrid>
+            <SimpleGrid
+              gridTemplateColumns="1fr 50px"
+              width="100%"
+              gap={3}
+              mb={8}
+            >
               <Controller
                 render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
@@ -100,8 +135,8 @@ export const CertificationInfoForm = () => {
               <Button type="button" onClick={() => remove(index)} w="auto">
                 <Icon as={Delete} fontSize={20} color={colors.error} />
               </Button>
-            </Flex>
-          </Flex>
+            </SimpleGrid>
+          </>
         );
       })}
       <Button

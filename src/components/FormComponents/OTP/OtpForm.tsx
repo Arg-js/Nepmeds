@@ -9,7 +9,7 @@ import { Link, useNavigate } from "react-router-dom";
 const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
-
+  console.log({ mobile, otp });
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
   const onFormSubmit = async (e: FormEvent) => {
@@ -17,6 +17,7 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
       e.preventDefault();
       await verifySingUpOTPAction.mutateAsync({
         otp: otpCode,
+        email_or_mobile_number: mobile,
       });
       toastSuccess("OTP has been verified successfully!");
       navigate("/register", { state: { mobile } });

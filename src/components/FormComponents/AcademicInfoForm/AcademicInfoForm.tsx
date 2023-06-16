@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Flex } from "@chakra-ui/react";
+import { SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
@@ -8,20 +8,51 @@ import { Delete } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import Select from "@nepMeds/components/Form/Select";
 import { year } from "@nepMeds/utils/choices";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 
-export const AcademicInfoForm = () => {
-  const { control, register, setValue } = useFormContext<IRegisterFields>();
+export const AcademicInfoForm = ({
+  doctorProfileData,
+  isEditable,
+}: {
+  doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
+}) => {
+  const { control, register, getValues, setValue, reset } =
+    useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
   });
 
+  useEffect(() => {
+    if (doctorProfileData?.doctor_academic_info.length) {
+      reset({
+        ...getValues(),
+        academic: doctorProfileData?.doctor_academic_info.map(a => ({
+          degree_program: a.degree_program,
+          doctor: a.doctor,
+          major: a.major,
+          university: a.university,
+          graduation_year: a.graduation_year?.toString(),
+        })),
+      });
+    }
+  }, [doctorProfileData, reset]);
+
   return (
     <>
       {fields.map((item, index) => {
         return (
-          <Flex mb={4} key={item.id} flexDirection="column" gap={3}>
-            <Flex gap={6} alignItems="flex-end">
+          <>
+            <SimpleGrid
+              mb={4}
+              key={item.id}
+              gridTemplateColumns={
+                isEditable ? "repeat(2,1fr)" : "repeat(4,1fr)"
+              }
+              gap={3}
+            >
               <Controller
                 render={({ field }) => (
                   <FloatingLabelInput
@@ -83,8 +114,13 @@ export const AcademicInfoForm = () => {
                 name={`academic.${index}.graduation_year`}
                 control={control}
               />
-            </Flex>
-            <Flex>
+            </SimpleGrid>
+            <SimpleGrid
+              gridTemplateColumns="1fr 50px"
+              width="100%"
+              gap={3}
+              mb={8}
+            >
               <Controller
                 render={({ field: { value, ...otherFields } }) => (
                   <FloatingLabelInput
@@ -106,8 +142,8 @@ export const AcademicInfoForm = () => {
               <Button type="button" onClick={() => remove(index)} w="auto">
                 <Icon as={Delete} fontSize={20} color={colors.error} />
               </Button>
-            </Flex>
-          </Flex>
+            </SimpleGrid>
+          </>
         );
       })}
       <Button

@@ -3,22 +3,31 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
-import { useGetDistricts, useGetProvince } from "@nepMeds/service/nepmeds-core";
+import {
+  useGetAllDistricts,
+  useGetDistricts,
+  useGetProvince,
+} from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
 
 const PrimaryInfo = ({
   doctorProfileData,
+  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  isEditable?: boolean;
 }) => {
-  const { register, control, watch } = useFormContext<IRegisterFields>();
+  const { register, control, watch, reset, getValues } =
+    useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
+  const allDistrictInfo = useGetAllDistricts();
   const { data: specialization = [] } = useSpecializationData();
 
   const provinceOptions =
@@ -33,22 +42,58 @@ const PrimaryInfo = ({
       value: p.id,
     })) || [];
 
+  const allDistrictOptions =
+    allDistrictInfo.data?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
+
   const specializationOptions = specialization.map(s => ({
     label: s.name,
     value: s.id,
   }));
 
+  useEffect(() => {
+    if (doctorProfileData) {
+      reset({
+        ...getValues(),
+        // phone: doctorProfileData.
+        id_issued_district: allDistrictOptions.find(
+          p => p.value === doctorProfileData.id_issued_district
+        )?.value,
+        province: provinceOptions.find(
+          p => p.value === doctorProfileData.user.province
+        )?.value,
+        district: districtOptions.find(
+          p => p.value === doctorProfileData.user.district
+        )?.value,
+      });
+    }
+  }, [doctorProfileData, reset]);
+
+  const watchIdType = watch("id_type");
+  function IdType(watchIdType: string) {
+    return watchIdType;
+  }
+  useEffect(() => {
+    IdType(watchIdType);
+  }, [watchIdType]);
+
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      <GridItem colSpan={4}>
-        <FloatinglabelTextArea
-          label="Basic Information"
-          name="bio_detail"
-          register={register}
-          defaultValue={doctorProfileData?.bio_detail}
-        />
-      </GridItem>
-      <GridItem colSpan={1}>
+      {isEditable ? (
+        <></>
+      ) : (
+        <GridItem colSpan={4}>
+          <FloatinglabelTextArea
+            label="Basic Information"
+            name="bio_detail"
+            register={register}
+            defaultValue={doctorProfileData?.bio_detail}
+          />
+        </GridItem>
+      )}
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           name="phone"
@@ -57,7 +102,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -70,7 +115,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -87,7 +132,7 @@ const PrimaryInfo = ({
           label="Gender"
           name="gender"
           register={register}
-          defaultValue={doctorProfileData?.gender}
+          defaultValue={doctorProfileData?.user?.gender}
           options={gender}
           style={{
             background: colors.forminput,
@@ -101,17 +146,17 @@ const PrimaryInfo = ({
           name="date_of_birth"
           label="Date"
           register={register}
-          defaultValue={doctorProfileData?.date_of_birth}
+          defaultValue={doctorProfileData?.user?.date_of_birth}
           type="date"
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={isEditable ? 4 : 2}>
         <MultiSelect
           label="Specialization"
           required
           name="specialization"
-          multiValue={doctorProfileData?.specialization.map(item => ({
+          multiValue={doctorProfileData?.specialization?.map(item => ({
             label: item,
             value: item,
           }))}
@@ -124,10 +169,11 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
+          defaultValue={doctorProfileData?.pan_number}
           required
           register={register}
           style={{
@@ -136,7 +182,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="ID Type"
@@ -151,27 +197,27 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={4}>
-        <p>Citizenship Detail</p>
+        <p>{IdType(watchIdType)} Detail</p>
       </GridItem>
       <GridItem colSpan={2}>
         <FloatingLabelInput
-          label="Citizenship Number"
-          name="citizenship_number"
+          label="ID Number"
+          name="id_number"
           required
           register={register}
-          defaultValue={doctorProfileData?.citizenship_number}
+          defaultValue={doctorProfileData?.id_number}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="Issued District"
-          name="citizenship_issued_district"
+          name="id_issued_district"
           required
           register={register}
           options={districtOptions}
-          defaultValue={doctorProfileData?.citizenship_issued_district}
+          defaultValue={doctorProfileData?.id_issued_district}
           style={{
             background: colors.forminput,
             border: "none",
@@ -179,15 +225,30 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
-          name="citizenship_issued_date"
+          name="id_issued_date"
           label="Issued Date"
           register={register}
-          defaultValue={doctorProfileData?.citizenship_issued_date}
+          defaultValue={doctorProfileData?.id_issued_date}
           type="date"
           required
           style={{ background: colors.forminput, border: "none" }}
+        />
+      </GridItem>
+      <GridItem colSpan={4}>
+        <FloatingLabelInput
+          label="Id front image"
+          name="id_front_image"
+          register={register}
+          type="file"
+        />
+      </GridItem>
+      <GridItem colSpan={4}>
+        <FloatingLabelInput
+          name="id_back_image"
+          register={register}
+          type="file"
         />
       </GridItem>
       <GridItem colSpan={4}>
@@ -200,7 +261,7 @@ const PrimaryInfo = ({
           name="province"
           required
           register={register}
-          defaultValue={doctorProfileData?.province}
+          defaultValue={doctorProfileData?.user?.province}
           options={provinceOptions}
           style={{
             background: colors.forminput,
@@ -209,14 +270,14 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
           label="District"
           name="district"
           required
           register={register}
-          defaultValue={doctorProfileData?.district}
+          defaultValue={doctorProfileData?.user?.district}
           options={districtOptions}
           style={{
             background: colors.forminput,
@@ -225,36 +286,36 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Municipality/ VDC"
-          name="municipality_vdc"
+          name="municipality"
           required
           register={register}
-          defaultValue={doctorProfileData?.municipality_vdc}
+          defaultValue={doctorProfileData?.user?.municipality}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
           name="ward"
           required
           register={register}
-          defaultValue={doctorProfileData?.ward}
+          defaultValue={doctorProfileData?.user?.ward}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={isEditable ? 2 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"
           name="tole"
           required
           register={register}
-          defaultValue={doctorProfileData?.tole}
+          defaultValue={doctorProfileData?.user?.tole}
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>

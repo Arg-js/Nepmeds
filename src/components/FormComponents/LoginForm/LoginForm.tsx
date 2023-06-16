@@ -34,11 +34,15 @@ const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
+  const pattern = /^(?:\+977[-\s]?)?9[78]\d{8}$/;
+
   const onSubmit: SubmitHandler<{ email: string; password: string }> = async ({
     email,
     password,
   }) => {
-    loginAction.mutate({ email, password });
+    if (pattern.test(email)) {
+      loginAction.mutate({ mobile_number: email, password: password });
+    } else loginAction.mutate({ email: email, password: password });
   };
 
   return (
@@ -47,7 +51,6 @@ const LoginForm = () => {
         <Input
           name="email"
           register={register}
-          type="email"
           startIcon={
             <Icon as={Message} fontSize={20} color={colors.black_40} />
           }
