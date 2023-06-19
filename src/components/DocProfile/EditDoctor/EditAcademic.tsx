@@ -47,25 +47,31 @@ const EditAcademic = ({
       if (!isValid) return;
       const allAcademic = formMethods.getValues("academic") || [];
 
-      for (let i = 0; i < allAcademic?.length; i++) {
-        const file = formMethods.getValues(`academic.${i}.file`);
-
-        await updateAcademicInfo.mutateAsync({
-          data: {
+      const academicData = allAcademic?.map(
+        async (doctorProfileData: IGetDoctorProfile, index: number) => {
+          const file = formMethods.getValues(`academic.${index}.file`);
+          console.log(doctorProfileData);
+          return {
             doctor: formMethods.getValues("doctor"),
             degree_program: formMethods.getValues(
-              `academic.${i}.degree_program`
+              `academic.${index}.degree_program`
             ),
-            university: formMethods.getValues(`academic.${i}.university`),
-            major: formMethods.getValues(`academic.${i}.major`),
+            university: formMethods.getValues(`academic.${index}.university`),
+            major: formMethods.getValues(`academic.${index}.major`),
             graduation_year: formMethods.getValues(
-              `academic.${i}.graduation_year`
+              `academic.${index}.graduation_year`
             ),
             file: file ? await imageToBase64(file) : "",
-          },
-          id: doctorProfileData?.doctor_academic_info[i]?.id,
+          };
+        }
+      );
+
+      await Promise.all(academicData).then(academicDataArray => {
+        updateAcademicInfo.mutateAsync({
+          data: academicDataArray,
+          id: doctorProfileData.user.id ?? 0,
         });
-      }
+      });
       onAcademicClose();
       toastSuccess("Academic information updated successfully!");
     } catch (error) {

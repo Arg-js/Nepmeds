@@ -21,7 +21,6 @@ export const api = {
   // certificate fetch garda ko id
   certificate_update: "/user_management/certificate/{id}",
   experience_update: "/user_management/experience/{id}",
-  academic_update: "/user_management/academic/{id}",
 
   province: "core/provinces/",
   district: "core/districts/",

@@ -1,4 +1,5 @@
 import { EditIcon } from "@chakra-ui/icons";
+import React from "react";
 import {
   Card,
   CardBody,
@@ -31,6 +32,7 @@ const EditBasic = ({
   const { isOpen, onClose, onOpen } = useDisclosure();
   const formMethods = useForm();
   const updatePersonalInfo = useUpdatePersonalInfoRegister();
+
   const onSavePersonalInfo = async () => {
     try {
       const isValid = formMethods.trigger();
@@ -67,6 +69,26 @@ const EditBasic = ({
       toastFail("Failed to update personal information!");
     }
   };
+
+  const [imageDataUrl, setImageDataUrl] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    if (doctorProfileData?.user?.profile_picture) {
+      const { profile_picture } = doctorProfileData.user;
+
+      if (typeof profile_picture === "string") {
+        setImageDataUrl(profile_picture);
+      } else {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          if (typeof reader.result === "string") {
+            setImageDataUrl(reader.result);
+          }
+        };
+        reader.readAsDataURL(profile_picture);
+      }
+    }
+  }, [doctorProfileData]);
   return (
     <>
       <Card
@@ -75,14 +97,14 @@ const EditBasic = ({
         mb={"18px"}
         p={4}
       >
-        <Image
-          w={"159px"}
-          h={"159px"}
-          // src={doctorProfileData?.user?.profile_picture}
-          fallbackSrc="https://via.placeholder.com/159"
-          alt="Caffe Latte"
-        />
-
+        {imageDataUrl && (
+          <Image
+            w={"159px"}
+            h={"159px"}
+            // src={doctorProfileData?.user?.profile_picture}
+            src={`http://38.242.204.217:8005/media/${imageDataUrl}`}
+          />
+        )}
         <CardBody w={"100%"}>
           <Box display={"flex"} justifyContent={"space-between"}>
             <Text

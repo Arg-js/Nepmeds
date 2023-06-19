@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { api } from "./service-api";
 import { HttpClient, toFormData } from "./service-axios";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { AxiosResponse } from "axios";
 
 export type ExperienceInfo = IRegisterFields["experience"][number];
 
@@ -13,22 +14,23 @@ const createExperienceData = async (data: ExperienceInfo) => {
 export const useExperienceInfoRegister = () =>
   useMutation(createExperienceData);
 
-const updateExperienceData = async (data: {
-  id: any;
-  data: ExperienceInfo;
-}) => {
-  const response = await HttpClient.patch(
-    api.experience_update.replace("{id}", data?.id),
-    toFormData(data.data)
-  );
+const updateExperienceData = async (id: number, data: ExperienceInfo[]) => {
+  const response = await HttpClient.patch(api.experience + `${id}/`, data);
   return response;
 };
 
 export const useUpdateExperienceInfo = () => {
   const queryClient = useQueryClient();
-  return useMutation(updateExperienceData, {
-    onSuccess() {
-      queryClient.invalidateQueries(api.doctor_profile);
+
+  const mutation = useMutation<
+    AxiosResponse<any, any>,
+    unknown,
+    { id: number; data: ExperienceInfo[] }
+  >(variables => updateExperienceData(variables.id, variables.data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.experience);
     },
   });
+
+  return mutation;
 };

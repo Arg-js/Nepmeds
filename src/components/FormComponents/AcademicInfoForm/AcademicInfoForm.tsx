@@ -18,7 +18,7 @@ export const AcademicInfoForm = ({
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { control, register, getValues, setValue, reset } =
+  const { control, register, getValues, reset } =
     useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -122,7 +122,7 @@ export const AcademicInfoForm = ({
               mb={8}
             >
               <Controller
-                render={({ field: { value, ...otherFields } }) => (
+                render={({ field: { value, onChange, ...otherFields } }) => (
                   <FloatingLabelInput
                     label="Upload Document"
                     register={register}
@@ -130,15 +130,14 @@ export const AcademicInfoForm = ({
                     required
                     style={{ background: colors.forminput, border: "none" }}
                     {...otherFields}
-                    onChange={e =>
-                      setValue(`academic.${index}.file`, e.target.files?.[0])
-                    }
+                    onChange={e => {
+                      onChange(e.target.files?.[0]);
+                    }}
                   />
                 )}
                 name={`academic.${index}.file`}
                 control={control}
               />
-
               <Button type="button" onClick={() => remove(index)} w="auto">
                 <Icon as={Delete} fontSize={20} color={colors.error} />
               </Button>
