@@ -17,7 +17,7 @@ export const ExperienceForm = ({
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { control, register, getValues, reset, setValue } =
+  const { control, register, getValues, reset } =
     useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -120,16 +120,16 @@ export const ExperienceForm = ({
             </GridItem>
             <GridItem colSpan={4}>
               <Controller
-                render={({ field: { value, ...otherFields } }) => (
+                render={({ field: { value, onChange, ...otherFields } }) => (
                   <FloatingLabelInput
                     type="file"
                     required
                     register={register}
                     label="Upload File"
                     {...otherFields}
-                    onChange={e =>
-                      setValue(`experience.${index}.file`, e.target.files?.[0])
-                    }
+                    onChange={e => {
+                      onChange(e.target.files?.[0]);
+                    }}
                   />
                 )}
                 name={`experience.${index}.file`}

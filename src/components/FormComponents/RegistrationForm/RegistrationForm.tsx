@@ -91,7 +91,7 @@ const registerDefaultValues = {
       from_date: "",
       to_date: "",
       currently_working: false,
-      file: undefined as File | undefined,
+      file: undefined as File | string | undefined,
     },
   ],
   certification: [
@@ -101,7 +101,7 @@ const registerDefaultValues = {
       issued_by: "",
       certificate_number: "",
       certificate_issued_date: "",
-      file: undefined as File | undefined,
+      file: undefined as File | string | undefined,
     },
   ],
 };
@@ -418,12 +418,7 @@ const RegistrationForm = () => {
     <Container maxW="container.xl" m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-          <HStack
-            pt={12}
-            spacing={0}
-            alignItems="flex-start"
-            height="calc(100vh - 240px)"
-          >
+          <HStack pt={12} spacing={0} alignItems="flex-start">
             <VStack
               bg={colors.main}
               alignItems="flex-start"
@@ -431,7 +426,7 @@ const RegistrationForm = () => {
               pl={12}
               pb={24}
               gap={12}
-              h="100%"
+              h="100vh"
             >
               <Box>
                 <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
@@ -489,7 +484,7 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="100%">{content}</Box>
+            <Box h="100vh">{content}</Box>
           </HStack>
 
           <Flex justifyContent="space-between" mt={6}>
@@ -507,7 +502,7 @@ const RegistrationForm = () => {
             </Button>
 
             <Flex gap={4}>
-              {activeStep > 1 && activeStep < 3 && (
+              {activeStep > 1 && activeStep < 4 && (
                 <Button
                   onClick={() => {
                     if (activeStep === steps.length) {

@@ -24,6 +24,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 import { Download } from "react-iconly";
 
@@ -46,9 +47,11 @@ const EditCertification = ({
       if (!isValid) return;
       const allCertifications = formMethods.getValues("certification") || [];
 
-      for (let i = 0; i < allCertifications.length; i++) {
-        await updateCertificateInfo.mutateAsync({
-          data: {
+      const certificateData = allCertifications?.map(
+        async (doctorProfileData: IGetDoctorProfile, i: number) => {
+          const file = formMethods.getValues(`certification.${i}.file`);
+          console.log(doctorProfileData);
+          return {
             doctor: formMethods.getValues("doctor"),
             certificate_issued_date: formMethods.getValues(
               `certification.${i}.certificate_issued_date`
@@ -58,11 +61,17 @@ const EditCertification = ({
             ),
             title: formMethods.getValues(`certification.${i}.title`),
             issued_by: formMethods.getValues(`certification.${i}.issued_by`),
-            file: formMethods.getValues(`certification.${i}.file`),
-          },
-          id: doctorProfileData?.doctor_certification_info?.[i]?.id,
+            file: file ? await imageToBase64(file) : "",
+          };
+        }
+      );
+
+      await Promise.all(certificateData).then(certificateDataArray => {
+        updateCertificateInfo.mutateAsync({
+          data: certificateDataArray,
+          id: doctorProfileData.user.id ?? 0,
         });
-      }
+      });
       onCertificateClose();
       toastSuccess("Certification information updated successfully!");
     } catch (error) {

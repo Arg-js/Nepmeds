@@ -15,7 +15,7 @@ export const CertificationInfoForm = ({
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { control, register, getValues, reset, setValue } =
+  const { control, register, getValues, reset } =
     useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -112,7 +112,7 @@ export const CertificationInfoForm = ({
               mb={8}
             >
               <Controller
-                render={({ field: { value, ...otherFields } }) => (
+                render={({ field: { value, onChange, ...otherFields } }) => (
                   <FloatingLabelInput
                     label="Upload Document"
                     required
@@ -121,10 +121,7 @@ export const CertificationInfoForm = ({
                     style={{ background: colors.forminput, border: "none" }}
                     {...otherFields}
                     onChange={e => {
-                      setValue(
-                        `certification.${index}.file`,
-                        e.target.files?.[0]
-                      );
+                      onChange(e.target.files?.[0]);
                     }}
                   />
                 )}

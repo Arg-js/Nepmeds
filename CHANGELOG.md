@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+## 0.0.1 (2023-06-19)
+=======
 ## 0.0.1 (2023-06-16)
+>>>>>>> 28efc1fd08ef785bae5b1e15fc41911239e7ac89
 
 
 ### Bug Fixes
@@ -12,6 +16,7 @@
 * **bug fixes:** fixed build issues ([ec4d743](https://gitlab.com/r2850/nepmeds/commit/ec4d7438ca0e887bd4d3a6f48f6c919bfc155c65))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
+* Committing local changes to CHANGELOG.md ([4952bc2](https://gitlab.com/r2850/nepmeds/commit/4952bc2b8223639a9cb54f19e20371ae92695903))
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
 * doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
