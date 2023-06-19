@@ -24,6 +24,7 @@ const FloatingLabelInput = ({
   type,
   startIcon,
   endIcons,
+  value,
   onIconClick,
   required,
   variant = "floating",
@@ -53,6 +54,7 @@ const FloatingLabelInput = ({
       <ChakraInput
         id={name}
         type={type}
+        value={value}
         {...register(name, rules)}
         {...rest}
         placeholder=""

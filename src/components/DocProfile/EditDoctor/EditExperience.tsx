@@ -23,6 +23,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdateExperienceInfo } from "@nepMeds/service/nepmeds-experience";
 import { colors } from "@nepMeds/theme/colors";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditExperience = ({
@@ -43,9 +44,12 @@ const EditExperience = ({
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const allExperiences = formMethods.getValues("experience") || [];
-      for (let i = 0; i < allExperiences.length; i++) {
-        await updateExperienceInfo.mutateAsync({
-          data: {
+
+      const experienceData = allExperiences?.map(
+        async (doctorProfileData: IGetDoctorProfile, i: number) => {
+          const file = formMethods.getValues(`experience.${i}.file`);
+          console.log(doctorProfileData);
+          return {
             doctor: formMethods.getValues("doctor"),
             hospital: formMethods.getValues(`experience.${i}.hospital`),
             description: formMethods.getValues(`experience.${i}.description`),
@@ -54,11 +58,17 @@ const EditExperience = ({
             currently_working: formMethods.getValues(
               `experience.${i}.currently_working`
             ),
-            file: formMethods.getValues(`experience.${i}.file`),
-          },
-          id: doctorProfileData?.doctor_experience?.[i]?.id,
+            file: file ? await imageToBase64(file) : "",
+          };
+        }
+      );
+      await Promise.all(experienceData).then(experienceDataArray => {
+        updateExperienceInfo.mutateAsync({
+          data: experienceDataArray,
+          id: doctorProfileData.user.id ?? 0,
         });
-      }
+      });
+
       onExperienceClose();
       toastSuccess("Experience information updated successfully!");
     } catch (error) {

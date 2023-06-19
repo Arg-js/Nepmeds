@@ -29,6 +29,7 @@ export default defineConfig(() => ({
       "@nepMeds/translations": path.resolve("src/translations"),
       "@nepMeds/types": path.resolve("src/types"),
       "@nepMeds/utils": path.resolve("src/utils"),
+      "@nepMeds/config": path.resolve("src/config"),
     },
   },
 }));
