@@ -3,11 +3,12 @@ import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 interface IUser {
+  id?: number;
   first_name: string;
   middle_name: string;
   last_name: string;
   mobile_number: string;
-  profile_picture: File;
+  profile_picture: File | string;
   district: number;
   ward: number;
   tole: number;
