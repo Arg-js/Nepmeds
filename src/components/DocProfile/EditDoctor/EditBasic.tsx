@@ -18,7 +18,10 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { BasicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import {
+  IGetDoctorProfile,
+  IUser,
+} from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
@@ -38,16 +41,18 @@ const EditBasic = ({
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
-      console.log(profilePicture);
+      const user = {
+        first_name: formMethods.getValues("first_name"),
+        middle_name: formMethods.getValues("middle_name"),
+        last_name: formMethods.getValues("last_name"),
+      } as IUser;
+
+      if (profilePicture) {
+        user.profile_picture = await imageToBase64(profilePicture);
+      }
+
       await updatePersonalInfo.mutateAsync({
-        user: {
-          first_name: formMethods.getValues("first_name"),
-          middle_name: formMethods.getValues("middle_name"),
-          last_name: formMethods.getValues("last_name"),
-          profile_picture: profilePicture
-            ? await imageToBase64(profilePicture)
-            : "",
-        },
+        user: user,
         specialization: formMethods.getValues("specialization"),
         pan_number: formMethods.getValues("pan_number"),
         id_type: formMethods.getValues("id_type"),
@@ -56,7 +61,7 @@ const EditBasic = ({
         id_issued_date: formMethods.getValues("id_issued_date"),
         title: formMethods.getValues("title"),
 
-        bio_detail: formMethods.getValues("title"),
+        bio_detail: formMethods.getValues("bio_detail"),
         age: 20,
         medical_degree: "test",
         designation: "Test",

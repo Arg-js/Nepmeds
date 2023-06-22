@@ -154,8 +154,8 @@ const EditCertification = ({
             {doctorProfileData?.doctor_certification_info?.length ? (
               doctorProfileData?.doctor_certification_info?.map(
                 (singleCertificationInfo: IDoctorCertificationInfo) => {
-                  const fileURL = singleCertificationInfo?.file
-                    ? `${normalURL}${singleCertificationInfo?.file}`
+                  const fileURL = singleCertificationInfo?.certificate_document
+                    ? `${normalURL}${singleCertificationInfo?.certificate_document}`
                     : "";
                   return (
                     <>
@@ -259,9 +259,6 @@ const EditCertification = ({
                                   }}
                                   download
                                 >
-                                  {singleCertificationInfo?.file
-                                    ?.split("/")
-                                    .pop()}
                                   <Download
                                     set="light"
                                     primaryColor={colors?.main}

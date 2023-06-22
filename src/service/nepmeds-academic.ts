@@ -1,17 +1,33 @@
 import { useMutation, useQueryClient } from "react-query";
 import { api } from "./service-api";
-import { HttpClient, toFormData } from "./service-axios";
+import { HttpClient } from "./service-axios";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { AxiosResponse } from "axios";
 
 export type AcademicInfo = IRegisterFields["academic"][number];
 
 const createAcademicData = async (data: AcademicInfo) => {
-  const response = await HttpClient.post(api.academic, toFormData(data));
+  const response = await HttpClient.post(api.academic, data);
   return response;
 };
 
 export const useAcademicInfoRegister = () => useMutation(createAcademicData);
+
+const createAcademicFile = async (data: AcademicInfo) => {
+  const formData = new FormData();
+  formData.append("doctor_id", data.doctor.toString());
+  console.log(data);
+  if (data.academic_document) {
+    // Append multiple files to formData
+    data.academic_document.forEach((file, index) => {
+      formData.append(`files[${index}]`, file);
+    });
+  }
+  const response = await HttpClient.post(api.academic_file, formData);
+  return response;
+};
+
+export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
 const updateAcademicData = async (id: number, data: AcademicInfo[]) => {
   const response = await HttpClient.patch(api.academic + `${id}/`, data);
