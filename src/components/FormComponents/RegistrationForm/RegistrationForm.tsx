@@ -87,9 +87,13 @@ const registerDefaultValues = {
       doctor: 0,
       degree_program: "",
       major: "",
+      id: "",
+      editMode: false,
+      submitMode: false,
+      isSubmitted: false,
       university: "",
       graduation_year: "2019",
-      academic_document: undefined as undefined | File[],
+      academic_documents: undefined as undefined | File[],
     },
   ],
   experience: [
@@ -100,7 +104,11 @@ const registerDefaultValues = {
       from_date: "",
       to_date: "",
       currently_working: false,
-      experience_document: undefined as undefined | File[],
+      experience_documents: undefined as undefined | File[],
+      id: "",
+      editMode: false,
+      submitMode: false,
+      isSubmitted: false,
     },
   ],
   certification: [
@@ -110,7 +118,11 @@ const registerDefaultValues = {
       issued_by: "",
       certificate_number: "",
       certificate_issued_date: "2019",
-      certificate_document: undefined as undefined | File[],
+      certificate_documents: undefined as undefined | File[],
+      id: "",
+      editMode: false,
+      submitMode: false,
+      isSubmitted: false,
     },
   ],
 };
@@ -293,37 +305,52 @@ const RegistrationForm = () => {
         try {
           const lastValue = values.academic.length - 1;
 
-          const academicData = {
-            degree_program: values.academic[lastValue].degree_program,
-            graduation_year: values.academic[lastValue].graduation_year,
-            university: values.academic[lastValue].university,
-            major: values.academic[lastValue].major,
-            doctor: doctor,
-            academic_document: values.academic[lastValue].academic_document,
-          };
-          const createAcademicFileResponse =
-            await academicFileRegister.mutateAsync(academicData);
-
-          if (createAcademicFileResponse) {
-            const academicInfoData = {
-              ...academicData,
-              academic_document: createAcademicFileResponse.data.data.map(
-                (file: string) => ({
-                  file: file,
-                })
-              ),
+          if (formMethods.watch(`academic.${lastValue}.isSubmitted`) !== true) {
+            const academicData = {
+              degree_program: values.academic[lastValue].degree_program,
+              graduation_year: values.academic[lastValue].graduation_year,
+              university: values.academic[lastValue].university,
+              major: values.academic[lastValue].major,
+              doctor: doctor,
+              academic_documents: values.academic[lastValue].academic_documents,
+              id: "",
+              editMode: false,
+              submitMode: false,
+              isSubmitted: false,
             };
-            const academicInfoResponse = await academicInfoRegister.mutateAsync(
-              academicInfoData
-            );
+            const createAcademicFileResponse =
+              await academicFileRegister.mutateAsync(academicData);
 
-            if (academicInfoResponse) {
-              setActiveStep(3);
+            if (createAcademicFileResponse) {
+              const academicInfoData = {
+                ...academicData,
+                academic_documents: createAcademicFileResponse.data.data.map(
+                  (file: string) => ({
+                    file: file,
+                  })
+                ),
+              };
+              const academicInfoResponse =
+                await academicInfoRegister.mutateAsync(academicInfoData);
+
+              if (academicInfoResponse) {
+                setActiveStep(3);
+                formMethods.setValue(
+                  `academic.${lastValue}.id`,
+                  academicInfoResponse?.data?.data?.id
+                );
+                formMethods.setValue(`academic.${lastValue}.isSubmitted`, true);
+
+                formMethods.setValue(`academic.${lastValue}.editMode`, true);
+                formMethods.setValue(`academic.${lastValue}.submitMode`, false);
+              } else {
+                toastFail("Failed to add academic information!");
+              }
             } else {
-              toastFail("Failed to add academic information!");
+              toastFail("Failed to upload academic files!");
             }
           } else {
-            toastFail("Failed to upload academic files!");
+            setActiveStep(3);
           }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
@@ -337,41 +364,69 @@ const RegistrationForm = () => {
       case 3: {
         try {
           const lastValue = values.certification.length - 1;
-
-          const certificateData = {
-            doctor: doctor,
-            title: values.certification[lastValue].title,
-            issued_by: values.certification[lastValue].issued_by,
-            certificate_issued_date:
-              values.certification[lastValue].certificate_issued_date,
-            certificate_number:
-              values.certification[lastValue].certificate_number,
-            certificate_document:
-              values.certification[lastValue].certificate_document,
-          };
-
-          const createCertificateFileResponse =
-            await certificateFileRegister.mutateAsync(certificateData);
-
-          if (createCertificateFileResponse) {
-            const certificateInfoData = {
-              ...certificateData,
-              certificate_document: createCertificateFileResponse.data.data.map(
-                (file: string) => ({
-                  file: file,
-                })
-              ),
+          if (
+            formMethods.watch(`certification.${lastValue}.isSubmitted`) !== true
+          ) {
+            const certificateData = {
+              doctor: doctor,
+              title: values.certification[lastValue].title,
+              issued_by: values.certification[lastValue].issued_by,
+              certificate_issued_date:
+                values.certification[lastValue].certificate_issued_date,
+              certificate_number:
+                values.certification[lastValue].certificate_number,
+              certificate_documents:
+                values.certification[lastValue].certificate_documents,
+              id: "",
+              editMode: false,
+              submitMode: false,
+              isSubmitted: false,
             };
-            const certificateInfoResponse =
-              await certificationInfoRegister.mutateAsync(certificateInfoData);
 
-            if (certificateInfoResponse) {
-              setActiveStep(4);
+            const createCertificateFileResponse =
+              await certificateFileRegister.mutateAsync(certificateData);
+
+            if (createCertificateFileResponse) {
+              const certificateInfoData = {
+                ...certificateData,
+                certificate_documents:
+                  createCertificateFileResponse.data.data.map(
+                    (file: string) => ({
+                      file: file,
+                    })
+                  ),
+              };
+              const certificateInfoResponse =
+                await certificationInfoRegister.mutateAsync(
+                  certificateInfoData
+                );
+
+              if (certificateInfoResponse) {
+                setActiveStep(4);
+                formMethods.setValue(
+                  `certification.${lastValue}.id`,
+                  certificateInfoResponse?.data?.data?.id
+                );
+                formMethods.setValue(
+                  `certification.${lastValue}.isSubmitted`,
+                  true
+                );
+                formMethods.setValue(
+                  `certification.${lastValue}.editMode`,
+                  true
+                );
+                formMethods.setValue(
+                  `certification.${lastValue}.submitMode`,
+                  false
+                );
+              } else {
+                toastFail("Failed to add certificate information!");
+              }
             } else {
-              toastFail("Failed to add certificate information!");
+              toastFail("Failed to upload certificate files!");
             }
           } else {
-            toastFail("Failed to upload certificate files!");
+            setActiveStep(4);
           }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
@@ -385,38 +440,61 @@ const RegistrationForm = () => {
       case 4: {
         try {
           const lastValue = values.experience.length - 1;
-
-          const experienceData = {
-            doctor: doctor,
-            hospital: values.experience[lastValue].hospital,
-            description: values.experience[lastValue].description,
-            currently_working: values.experience[lastValue].currently_working,
-            from_date: values.experience[lastValue].from_date,
-            to_date: values.experience[lastValue].to_date,
-            experience_document:
-              values.experience[lastValue].experience_document,
-          };
-          const createExperienceFileResponse =
-            await experienceFileRegister.mutateAsync(experienceData);
-
-          if (createExperienceFileResponse) {
-            const experienceInfoData = {
-              ...experienceData,
-              experience_document: createExperienceFileResponse.data.data.map(
-                (file: string) => ({
-                  file: file,
-                })
-              ),
+          if (
+            formMethods.watch(`experience.${lastValue}.isSubmitted`) !== true
+          ) {
+            const experienceData = {
+              doctor: doctor,
+              hospital: values.experience[lastValue].hospital,
+              description: values.experience[lastValue].description,
+              currently_working: values.experience[lastValue].currently_working,
+              from_date: values.experience[lastValue].from_date,
+              to_date: values.experience[lastValue].to_date,
+              experience_documents:
+                values.experience[lastValue].experience_documents,
+              id: "",
+              editMode: false,
+              submitMode: false,
+              isSubmitted: false,
             };
-            const experienceInfoResponse =
-              await experienceInfoRegister.mutateAsync(experienceInfoData);
-            if (experienceInfoResponse) {
-              onOpenConfirmation();
+            const createExperienceFileResponse =
+              await experienceFileRegister.mutateAsync(experienceData);
+
+            if (createExperienceFileResponse) {
+              const experienceInfoData = {
+                ...experienceData,
+                experience_documents:
+                  createExperienceFileResponse.data.data.map(
+                    (file: string) => ({
+                      file: file,
+                    })
+                  ),
+              };
+              const experienceInfoResponse =
+                await experienceInfoRegister.mutateAsync(experienceInfoData);
+              if (experienceInfoResponse) {
+                onOpenConfirmation();
+                formMethods.setValue(
+                  `experience.${lastValue}.id`,
+                  experienceInfoRegister?.data?.data?.id
+                );
+                formMethods.setValue(
+                  `experience.${lastValue}.isSubmitted`,
+                  true
+                );
+                formMethods.setValue(`experience.${lastValue}.editMode`, true);
+                formMethods.setValue(
+                  `experience.${lastValue}.submitMode`,
+                  false
+                );
+              } else {
+                toastFail("Failed to add experience information!");
+              }
             } else {
-              toastFail("Failed to add experience information!");
+              toastFail("Faield to upload experience files!");
             }
           } else {
-            toastFail("Faield to upload experience files!");
+            onOpenConfirmation();
           }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;

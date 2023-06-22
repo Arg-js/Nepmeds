@@ -4,7 +4,8 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { Delete } from "react-iconly";
+import { Delete, Edit } from "react-iconly";
+import { CheckIcon } from "@chakra-ui/icons";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect, useState } from "react";
@@ -12,6 +13,7 @@ import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import {
   useCertificateFileRegister,
   useCertificateInfoRegister,
+  useUpdateCertificateInfo,
 } from "@nepMeds/service/nepmeds-certificate";
 import { toastSuccess, toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";
@@ -28,6 +30,7 @@ export const CertificationInfoForm = ({
     register,
     getValues,
     reset,
+    watch,
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
@@ -61,6 +64,8 @@ export const CertificationInfoForm = ({
   const certificationInfoRegister = useCertificateInfoRegister();
   const certificateFileRegister = useCertificateFileRegister();
 
+  const updateCertificateInfoRegister = useUpdateCertificateInfo();
+
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
     imageIndex: number,
@@ -85,7 +90,7 @@ export const CertificationInfoForm = ({
         ];
         updatedImages[certificateIndex][imageIndex] = selectedFiles[0];
         setValue(
-          `certification.${certificateIndex}.certificate_document.${imageIndex}`,
+          `certification.${certificateIndex}.certificate_documents.${imageIndex}`,
           selectedFiles[0]
         );
 
@@ -98,21 +103,88 @@ export const CertificationInfoForm = ({
 
   const handleSendCertificateData = async () => {
     try {
-      const lastValue = getValues("certification").length - 1;
+      const index = getValues("certification").length - 1;
+      if (getValues(`certification.${index}.isSubmitted`) !== true) {
+        const certificateData = {
+          doctor: getValues("doctor_id"),
+          title: getValues(`certification.${index}.title`),
+          issued_by: getValues(`certification.${index}.issued_by`),
+          certificate_issued_date: getValues(
+            `certification.${index}.certificate_issued_date`
+          ),
+          certificate_number: getValues(
+            `certification.${index}.certificate_number`
+          ),
+          certificate_documents: getValues(
+            `certification.${index}.certificate_documents`
+          ),
+          id: "",
+          editMode: false,
+          submitMode: false,
+          isSubmitted: false,
+        };
 
+        const createCertificateFileResponse =
+          await certificateFileRegister.mutateAsync(certificateData);
+
+        if (createCertificateFileResponse) {
+          const certificateInfoData = {
+            ...certificateData,
+            certificate_documents: createCertificateFileResponse.data.data.map(
+              (file: string) => ({
+                file: file,
+              })
+            ),
+          };
+          const certificateInfoResponse =
+            await certificationInfoRegister.mutateAsync(certificateInfoData);
+
+          if (certificateInfoResponse) {
+            toastSuccess("Certificate data updated successfully");
+
+            setValue(
+              `certification.${index}.id`,
+              certificateInfoResponse?.data?.data?.id
+            );
+            setValue(`certification.${index}.isSubmitted`, false);
+
+            setValue(`certification.${index}.editMode`, true);
+            setValue(`certification.${index}.submitMode`, false);
+          } else {
+            toastFail("Failed to add certificate information!");
+          }
+        } else {
+          toastFail("Failed to upload certificate files!");
+        }
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ message: string }>;
+      toastFail(
+        err?.response?.data?.message ||
+          "Failed to add certification information!"
+      );
+    }
+  };
+
+  const handleEditData = async (index: number, id: string) => {
+    try {
       const certificateData = {
         doctor: getValues("doctor_id"),
-        title: getValues(`certification.${lastValue}.title`),
-        issued_by: getValues(`certification.${lastValue}.issued_by`),
+        title: getValues(`certification.${index}.title`),
+        issued_by: getValues(`certification.${index}.issued_by`),
         certificate_issued_date: getValues(
-          `certification.${lastValue}.certificate_issued_date`
+          `certification.${index}.certificate_issued_date`
         ),
         certificate_number: getValues(
-          `certification.${lastValue}.certificate_number`
+          `certification.${index}.certificate_number`
         ),
-        certificate_document: getValues(
-          `certification.${lastValue}.certificate_document`
+        certificate_documents: getValues(
+          `certification.${index}.certificate_documents`
         ),
+        id: "",
+        editMode: false,
+        submitMode: false,
+        isSubmitted: false,
       };
 
       const createCertificateFileResponse =
@@ -121,17 +193,29 @@ export const CertificationInfoForm = ({
       if (createCertificateFileResponse) {
         const certificateInfoData = {
           ...certificateData,
-          certificate_document: createCertificateFileResponse.data.data.map(
+          certificate_documents: createCertificateFileResponse.data.data.map(
             (file: string) => ({
               file: file,
             })
           ),
         };
         const certificateInfoResponse =
-          await certificationInfoRegister.mutateAsync(certificateInfoData);
+          await updateCertificateInfoRegister.mutateAsync({
+            id: parseInt(id),
+            data: certificateInfoData,
+          });
 
         if (certificateInfoResponse) {
           toastSuccess("Certificate data updated successfully");
+
+          setValue(
+            `certification.${index}.id`,
+            certificateInfoResponse?.data?.data?.id
+          );
+          setValue(`certification.${index}.isSubmitted`, false);
+
+          setValue(`certification.${index}.editMode`, true);
+          setValue(`certification.${index}.submitMode`, false);
         } else {
           toastFail("Failed to add certificate information!");
         }
@@ -179,8 +263,8 @@ export const CertificationInfoForm = ({
                 handleImageChange={(e, imageIndex) =>
                   handleImageChange(e, imageIndex, index)
                 }
-                name={`certification.${index}.certificate_document`}
-                fieldValues={`certification.${index}.certificate_document`}
+                name={`certification.${index}.certificate_documents`}
+                fieldValues={`certification.${index}.certificate_documents`}
                 uploadText="Upload Images"
                 background="#F9FAFB"
                 academicIndex={index}
@@ -199,6 +283,7 @@ export const CertificationInfoForm = ({
                   <FloatingLabelInput
                     label="Title"
                     required
+                    isDisabled={getValues(`certification.${index}.editMode`)}
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
@@ -218,6 +303,7 @@ export const CertificationInfoForm = ({
                     required
                     label="Issued By"
                     register={register}
+                    isDisabled={getValues(`certification.${index}.editMode`)}
                     rules={{
                       required: "Issued by is required.",
                     }}
@@ -237,6 +323,7 @@ export const CertificationInfoForm = ({
                     label="Credential ID"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
+                    isDisabled={getValues(`certification.${index}.editMode`)}
                     {...field}
                     rules={{
                       required: "Credential Id is required.",
@@ -258,6 +345,7 @@ export const CertificationInfoForm = ({
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
+                    isDisabled={getValues(`certification.${index}.editMode`)}
                     {...field}
                     rules={{
                       required: "Issued date is required.",
@@ -281,6 +369,37 @@ export const CertificationInfoForm = ({
             >
               <Icon as={Delete} fontSize={18} color={colors.error} />
             </Button>
+            {watch(`certification.${index}.editMode`) && (
+              <Button
+                type="button"
+                position={"absolute"}
+                bottom={"14"}
+                right="-15"
+                // Edit button props...
+                onClick={() => {
+                  setValue(`certification.${index}.submitMode`, true);
+                  setValue(`certification.${index}.editMode`, false);
+                }}
+              >
+                <Icon as={Edit} fontSize={18} color={colors.error} />
+              </Button>
+            )}
+            {watch(`certification.${index}.submitMode`) && (
+              <Button
+                type="button"
+                position={"absolute"}
+                bottom={"14"}
+                right="-15"
+                // Submit button props...
+                onClick={() => {
+                  handleEditData(index, getValues(`certification.${index}.id`));
+                  setValue(`certification.${index}.submitMode`, false);
+                  setValue(`certification.${index}.editMode`, true);
+                }}
+              >
+                <Icon as={CheckIcon} fontSize={18} color={colors.error} />
+              </Button>
+            )}
           </Box>
         );
       })}
@@ -301,7 +420,11 @@ export const CertificationInfoForm = ({
             issued_by: "",
             certificate_number: "",
             certificate_issued_date: "",
-            certificate_document: undefined,
+            certificate_documents: undefined,
+            id: "",
+            editMode: false,
+            submitMode: false,
+            isSubmitted: false,
           });
         }}
       >
