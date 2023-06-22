@@ -1,8 +1,12 @@
 <<<<<<< HEAD
 ## 0.0.1 (2023-06-19)
 =======
+<<<<<<< HEAD
+## 0.0.1 (2023-06-19)
+=======
 ## 0.0.1 (2023-06-16)
 >>>>>>> 28efc1fd08ef785bae5b1e15fc41911239e7ac89
+>>>>>>> 4c63d32b33032d0f833cdee65681c0f2d46147d2
 
 
 ### Bug Fixes
@@ -37,6 +41,7 @@
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
+* **registration:** design issue resolved ([39eea86](https://gitlab.com/r2850/nepmeds/commit/39eea86d6ee52b94e866bad7b525971f2ca7b190))
 * **registration:** edit  registration ([12bc927](https://gitlab.com/r2850/nepmeds/commit/12bc9270f79349fe81f06a9937d43ea422002025))
 * **registration:** edit  registration step issues resolved ([feebd3c](https://gitlab.com/r2850/nepmeds/commit/feebd3c48dccaf6a4e1f672007a1206fccf6b823))
 * **registration:** edit  registration step issues resolved ([2165a62](https://gitlab.com/r2850/nepmeds/commit/2165a6263cb6dd6b2f7f114cbe442278045c9490))
@@ -68,6 +73,7 @@
 * **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))
 * doctor profile slicing ([55826e8](https://gitlab.com/r2850/nepmeds/commit/55826e8bc4d0798c74960a23c912611a1d7c34f8))
 * **edit profile:** added modal in edit profile component ([961f49b](https://gitlab.com/r2850/nepmeds/commit/961f49bdc5103b65d0281c63ddb1afeecfcd71ff))
+* **edit profile:** edit profile implementation ([4d1c7d6](https://gitlab.com/r2850/nepmeds/commit/4d1c7d68c06ae4a64516a71fde48b623bba08dda))
 * forgot password ([fbd5eb5](https://gitlab.com/r2850/nepmeds/commit/fbd5eb54d18db3db41b40876e8416b7594fa0f72))
 * forgot password slicing ([f6879f5](https://gitlab.com/r2850/nepmeds/commit/f6879f5ced3d03c386a2a53547a63d835a63bab4))
 * **login component:** slicing started for login component ([f8d1632](https://gitlab.com/r2850/nepmeds/commit/f8d163273265dc1dada652904f7cf85a60c8c16e))

@@ -10,7 +10,8 @@ import { Controller, RegisterOptions } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
 import { ISelectOption } from "./Select";
-
+import { UseFormRegister } from "react-hook-form";
+import { useEffect } from "react";
 const MultiSelect = ({
   label,
   options,
@@ -20,30 +21,38 @@ const MultiSelect = ({
   selectControl,
   style,
   placeholder,
+  register,
+  rules,
   required,
   multiValue,
 }: IMultiSelect) => {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (name) {
+      register(name, rules); // Register the field with the validation rules when the component mounts
+    }
+  }, [name, register, rules]);
+
   return (
     <Controller
       control={selectControl}
       name={name ?? ""}
-      render={({
-        field: { onChange, onBlur, value, name, ref },
-        fieldState: { error },
-      }) => {
-        // note: react select ko design select or input component sanga match garam hai.
+      render={({ field, fieldState }) => {
+        const { onChange, onBlur, value, name, ref } = field;
 
         return (
           <FormControl
-            isInvalid={!!error}
+            isInvalid={!!fieldState.error}
             isRequired={isRequired}
             variant="floating"
           >
             <ReactSelect
               isMulti
-              name={name}
-              onChange={onChange}
+              onChange={newValue => {
+                onChange(newValue);
+                register(name, rules); // Register the value after onChange
+              }}
               onBlur={onBlur}
               value={value || multiValue}
               options={options}
@@ -57,7 +66,7 @@ const MultiSelect = ({
                   paddingTop: 20,
                   minHeight: "58px",
                   borderRadius: "8px",
-                  borderWidth: error ? "2px" : "1px",
+                  borderWidth: fieldState.error ? "2px" : "1px",
                   ...style,
                 }),
               }}
@@ -72,8 +81,8 @@ const MultiSelect = ({
             )}
 
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            {error?.message && (
-              <FormErrorMessage>{t(error.message)}</FormErrorMessage>
+            {fieldState.error?.message && (
+              <FormErrorMessage>{t(fieldState.error.message)}</FormErrorMessage>
             )}
           </FormControl>
         );
@@ -96,5 +105,7 @@ interface IMultiSelect extends SelectProps {
   style?: Record<string, string>;
   required?: boolean;
   multiValue?: { label: string; value: string }[];
+  register: UseFormRegister<any>;
 }
+
 export default MultiSelect;

@@ -154,8 +154,8 @@ const EditAcademic = ({
             {doctorProfileData?.doctor_academic_info?.length ? (
               doctorProfileData?.doctor_academic_info?.map(
                 (singleAcademicInfo: IDoctorAcademicInfo) => {
-                  const fileURL = singleAcademicInfo?.file
-                    ? `${normalURL}${singleAcademicInfo?.file}`
+                  const fileURL = singleAcademicInfo?.academic_document
+                    ? `${normalURL}${singleAcademicInfo?.academic_document}`
                     : "";
                   return (
                     <>

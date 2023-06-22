@@ -14,7 +14,11 @@ import { gender, idType, phone } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useEffect } from "react";
+import { ChangeEvent, useEffect } from "react";
+
+import React from "react";
+import { fileToString } from "@nepMeds/utils/fileToString";
+import ImageUpload from "@nepMeds/components/ImageUpload";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -23,8 +27,14 @@ const PrimaryInfo = ({
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
 }) => {
-  const { register, control, watch, reset, getValues } =
-    useFormContext<IRegisterFields>();
+  const {
+    register,
+    control,
+    watch,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
   const allDistrictInfo = useGetAllDistricts();
@@ -79,6 +89,57 @@ const PrimaryInfo = ({
     IdType(watchIdType);
   }, [watchIdType]);
 
+  const [selectedFrontImage, setSelectedFrontImage] = React.useState<
+    File | string | null
+  >(null);
+
+  const [selectedBackImage, setSelectedBackFrontImage] = React.useState<
+    File | string | null
+  >(null);
+
+  useEffect(() => {
+    if (isEditable && doctorProfileData?.id_front_image) {
+      setSelectedFrontImage(
+        `http://38.242.204.217:8005/media/${doctorProfileData.id_front_image}`
+      );
+    } else setSelectedFrontImage(getValues("id_front_image")?.[0] ?? null);
+
+    if (isEditable && doctorProfileData?.id_back_image) {
+      setSelectedBackFrontImage(
+        `http://38.242.204.217:8005/media/${doctorProfileData.id_back_image}`
+      );
+    } else setSelectedBackFrontImage(getValues("id_back_image")?.[0] ?? null);
+  }, [doctorProfileData]);
+
+  const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const imgData = await fileToString(e);
+    setSelectedFrontImage(imgData);
+  };
+
+  const handleBackImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
+    const imgData = await fileToString(e);
+    setSelectedBackFrontImage(imgData);
+  };
+
+  const validateDateOfBirth = () => {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const dateOfBirth = getValues("date_of_birth");
+    if (dateOfBirth > currentDate) {
+      return "Date of birth cannot be greater than the current date.";
+    }
+
+    return true; // Return true if the validation passes
+  };
+
+  const validateDateOfCardIssued = () => {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const idIssuedDate = getValues("id_issued_date");
+    if (idIssuedDate > currentDate) {
+      return "Date of birth cannot be greater than the current date.";
+    }
+
+    return true; // Return true if the validation passes
+  };
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
       {isEditable ? (
@@ -93,7 +154,7 @@ const PrimaryInfo = ({
           />
         </GridItem>
       )}
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
           placeholder=""
           name="phone"
@@ -102,17 +163,23 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={isEditable ? 3 : 1}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
           type="tel"
           required
-          isReadOnly
+          // isReadOnly
           cursor="not-allowed"
           register={register}
           defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Phone no is required.",
+            min: "Phone no can be only 10 digit long",
+            max: "Phone no can be only 10 digit long",
+          }}
+          error={errors.mobile_number?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 4 : 2}>
@@ -124,6 +191,14 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.email}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Email is required.",
+            pattern: {
+              value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
+              message: "Email address must be a valid address",
+            },
+          }}
+          error={errors.email?.message}
         />
       </GridItem>{" "}
       <GridItem colSpan={2}>
@@ -139,6 +214,10 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "Gender is required.",
+          }}
+          error={errors.gender?.message}
         />
       </GridItem>
       <GridItem colSpan={2}>
@@ -149,6 +228,11 @@ const PrimaryInfo = ({
           defaultValue={doctorProfileData?.user?.date_of_birth}
           type="date"
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Date of birth is required.",
+            validate: validateDateOfBirth,
+          }}
+          error={errors.date_of_birth?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 4 : 2}>
@@ -160,6 +244,7 @@ const PrimaryInfo = ({
             label: item,
             value: item,
           }))}
+          register={register}
           options={specializationOptions}
           selectControl={control}
           style={{
@@ -167,6 +252,10 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "Specialization is required.",
+          }}
+          error={errors.specialization?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -180,6 +269,18 @@ const PrimaryInfo = ({
             background: colors.forminput,
             border: "none",
           }}
+          rules={{
+            required: "Pan no is required.",
+            minLength: {
+              value: 9,
+              message: "Pan no can be only 9 digits long.",
+            },
+            maxLength: {
+              value: 9,
+              message: "Pan no can be only 9 digits long.",
+            },
+          }}
+          error={errors.pan_number?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -194,6 +295,10 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "ID type is required.",
+          }}
+          error={errors.id_type?.message}
         />
       </GridItem>
       <GridItem colSpan={4}>
@@ -207,6 +312,10 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.id_number}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "ID no is required.",
+          }}
+          error={errors.id_number?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -216,13 +325,17 @@ const PrimaryInfo = ({
           name="id_issued_district"
           required
           register={register}
-          options={districtOptions}
+          options={allDistrictOptions}
           defaultValue={doctorProfileData?.id_issued_district}
           style={{
             background: colors.forminput,
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "ID issued district is required.",
+          }}
+          error={errors.id_issued_district?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -234,21 +347,39 @@ const PrimaryInfo = ({
           type="date"
           required
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "ID issued date is required.",
+            validate: validateDateOfCardIssued,
+          }}
+          error={errors.id_issued_date?.message}
         />
       </GridItem>
-      <GridItem colSpan={4}>
-        <FloatingLabelInput
-          label="Id front image"
+      <GridItem colSpan={2}>
+        <ImageUpload
+          SelectedImage={selectedFrontImage}
+          setSelectedImage={setSelectedFrontImage}
+          handleImageChange={handleImageChange}
           name="id_front_image"
-          register={register}
-          type="file"
+          helperText={true}
+          upload_text="Upload Front of your Id "
+          error={errors.id_front_image?.message}
+          rules={{
+            required: "Front of your id is required",
+          }}
         />
       </GridItem>
-      <GridItem colSpan={4}>
-        <FloatingLabelInput
+      <GridItem colSpan={2}>
+        <ImageUpload
+          SelectedImage={selectedBackImage}
+          setSelectedImage={setSelectedBackFrontImage}
+          handleImageChange={handleBackImageChange}
           name="id_back_image"
-          register={register}
-          type="file"
+          upload_text="Upload Back of your Id "
+          helperText={true}
+          error={errors.id_back_image?.message}
+          rules={{
+            required: "Back of your id is required",
+          }}
         />
       </GridItem>
       <GridItem colSpan={4}>
@@ -268,6 +399,10 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "Province is required.",
+          }}
+          error={errors.province?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -284,6 +419,10 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
+          rules={{
+            required: "District is required.",
+          }}
+          error={errors.district?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -295,6 +434,10 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.municipality}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Municipality is required.",
+          }}
+          error={errors.municipality?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -306,6 +449,10 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.ward}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Ward is required.",
+          }}
+          error={errors.ward?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
@@ -317,6 +464,10 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.tole}
           style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "Tole  is required.",
+          }}
+          error={errors.tole?.message}
         />
       </GridItem>
     </Grid>
