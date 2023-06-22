@@ -17,7 +17,7 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { CertificationInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useUpdateCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
+// import { useUpdateCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
 import {
   IDoctorCertificationInfo,
   IGetDoctorProfile,
@@ -39,7 +39,7 @@ const EditCertification = ({
     onOpen: onCertificateOpen,
   } = useDisclosure();
   const formMethods = useForm();
-  const updateCertificateInfo = useUpdateCertificateInfo();
+  // const updateCertificateInfo = useUpdateCertificateInfo();
 
   const onSaveCertificateInfo = async () => {
     try {
@@ -65,13 +65,14 @@ const EditCertification = ({
           };
         }
       );
+      console.log(certificateData);
 
-      await Promise.all(certificateData).then(certificateDataArray => {
-        updateCertificateInfo.mutateAsync({
-          data: certificateDataArray,
-          id: doctorProfileData.user.id ?? 0,
-        });
-      });
+      // await Promise.all(certificateData).then(certificateDataArray => {
+      //   updateCertificateInfo.mutateAsync({
+      //     data: certificateDataArray,
+      //     id: doctorProfileData.user.id ?? 0,
+      //   });
+      // });
       onCertificateClose();
       toastSuccess("Certification information updated successfully!");
     } catch (error) {

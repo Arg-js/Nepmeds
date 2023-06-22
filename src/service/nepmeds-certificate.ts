@@ -14,13 +14,13 @@ const createCertificateData = async (data: CertificateInfo) => {
 export const useCertificateInfoRegister = () =>
   useMutation(createCertificateData);
 
-const createAcademicFile = async (data: CertificateInfo) => {
+const createCertificateFile = async (data: CertificateInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
   console.log(data);
-  if (data.certificate_document) {
+  if (data.certificate_documents) {
     // Append multiple files to formData
-    data.certificate_document.forEach((file, index) => {
+    data.certificate_documents.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
   }
@@ -28,9 +28,11 @@ const createAcademicFile = async (data: CertificateInfo) => {
   return response;
 };
 
-export const useCertificateFileRegister = () => useMutation(createAcademicFile);
+export const useCertificateFileRegister = () =>
+  useMutation(createCertificateFile);
 
-const updateCertificateData = async (id: number, data: CertificateInfo[]) => {
+const updateCertificateData = async (id: number, data: CertificateInfo) => {
+  console.log(id);
   const response = await HttpClient.patch(api.certificate + `${id}/`, data);
   return response;
 };
@@ -41,7 +43,7 @@ export const useUpdateCertificateInfo = () => {
   const mutation = useMutation<
     AxiosResponse<any, any>,
     unknown,
-    { id: number; data: CertificateInfo[] }
+    { id: number; data: CertificateInfo }
   >(variables => updateCertificateData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.certificate);

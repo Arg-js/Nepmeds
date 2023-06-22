@@ -18,9 +18,9 @@ const createExperienceFile = async (data: ExperienceInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
   console.log(data);
-  if (data.experience_document) {
+  if (data.experience_documents) {
     // Append multiple files to formData
-    data.experience_document.forEach((file, index) => {
+    data.experience_documents.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
   }
@@ -31,7 +31,8 @@ const createExperienceFile = async (data: ExperienceInfo) => {
 export const useExperienceFileRegister = () =>
   useMutation(createExperienceFile);
 
-const updateExperienceData = async (id: number, data: ExperienceInfo[]) => {
+const updateExperienceData = async (id: number, data: ExperienceInfo) => {
+  console.log(id);
   const response = await HttpClient.patch(api.experience + `${id}/`, data);
   return response;
 };
@@ -42,7 +43,7 @@ export const useUpdateExperienceInfo = () => {
   const mutation = useMutation<
     AxiosResponse<any, any>,
     unknown,
-    { id: number; data: ExperienceInfo[] }
+    { id: number; data: ExperienceInfo }
   >(variables => updateExperienceData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.experience);

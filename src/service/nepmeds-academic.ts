@@ -17,9 +17,9 @@ const createAcademicFile = async (data: AcademicInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
   console.log(data);
-  if (data.academic_document) {
+  if (data.academic_documents) {
     // Append multiple files to formData
-    data.academic_document.forEach((file, index) => {
+    data.academic_documents.forEach((file, index) => {
       formData.append(`files[${index}]`, file);
     });
   }
@@ -29,7 +29,8 @@ const createAcademicFile = async (data: AcademicInfo) => {
 
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
-const updateAcademicData = async (id: number, data: AcademicInfo[]) => {
+const updateAcademicData = async (id: number, data: AcademicInfo) => {
+  console.log(id);
   const response = await HttpClient.patch(api.academic + `${id}/`, data);
   return response;
 };
@@ -40,7 +41,7 @@ export const useUpdateAcademicInfo = () => {
   const mutation = useMutation<
     AxiosResponse<any, any>,
     unknown,
-    { id: number; data: AcademicInfo[] }
+    { id: number; data: AcademicInfo }
   >(variables => updateAcademicData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.academic);
