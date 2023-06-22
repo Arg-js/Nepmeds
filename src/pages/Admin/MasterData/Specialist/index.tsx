@@ -224,6 +224,7 @@ const Specializations = () => {
               label="Symptoms"
               name="symptom"
               required
+              register={formMethods.register}
               options={symptomsOptions}
               selectControl={formMethods.control}
             />

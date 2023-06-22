@@ -40,6 +40,7 @@ const EditPrimary = ({
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const idFrontImage = formMethods.getValues("id_front_image")?.[0];
+
       const idBackImage = formMethods.getValues("id_back_image")?.[0];
       await updatePrimaryData.mutateAsync({
         user: {

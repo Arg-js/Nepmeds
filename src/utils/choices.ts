@@ -38,7 +38,7 @@ export const municipality = [
   { label: "Bhaktapur Municipality", value: "Bhaktapur Municipality" },
 ];
 
-export const phone = [{ label: "+977", value: "+977" }];
+export const phone = [{ label: " +977", value: "+977" }];
 
 export const year = [
   { label: "2019", value: "2019" },
