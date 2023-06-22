@@ -25,9 +25,18 @@ import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
-import { useAcademicInfoRegister } from "@nepMeds/service/nepmeds-academic";
-import { useCertificateInfoRegister } from "@nepMeds/service/nepmeds-certificate";
-import { useExperienceInfoRegister } from "@nepMeds/service/nepmeds-experience";
+import {
+  useAcademicFileRegister,
+  useAcademicInfoRegister,
+} from "@nepMeds/service/nepmeds-academic";
+import {
+  useCertificateFileRegister,
+  useCertificateInfoRegister,
+} from "@nepMeds/service/nepmeds-certificate";
+import {
+  useExperienceFileRegister,
+  useExperienceInfoRegister,
+} from "@nepMeds/service/nepmeds-experience";
 import {
   usePrimaryInfoRegister,
   useUpdatePrimaryInfoRegister,
@@ -38,8 +47,6 @@ import { AxiosError } from "axios";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
-import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from "yup";
 
 const registerDefaultValues = {
   first_name: "",
@@ -52,17 +59,17 @@ const registerDefaultValues = {
   tole: 1,
   municipality: 1,
   province: 1,
-  gender: "",
+  gender: "Male",
   date_of_birth: "",
   email: "",
-  title: "",
+  title: "Mr",
   password: "",
   confirm_password: "",
   bio_detail: "",
-  phone: "",
+  phone: "+977",
   specialization: [] as { label: string; value: string }[],
   pan_number: "",
-  id_type: "",
+  id_type: "Citizenship",
   id_number: "",
   id_issued_date: "",
   id_issued_district: 1,
@@ -73,14 +80,16 @@ const registerDefaultValues = {
   medical_degree: "",
   designation: "",
 
+  doctor_id: 0,
+
   academic: [
     {
       doctor: 0,
       degree_program: "",
       major: "",
       university: "",
-      graduation_year: "",
-      file: undefined as File | string | undefined,
+      graduation_year: "2019",
+      academic_document: undefined as undefined | File[],
     },
   ],
   experience: [
@@ -91,7 +100,7 @@ const registerDefaultValues = {
       from_date: "",
       to_date: "",
       currently_working: false,
-      file: undefined as File | string | undefined,
+      experience_document: undefined as undefined | File[],
     },
   ],
   certification: [
@@ -100,8 +109,8 @@ const registerDefaultValues = {
       title: "",
       issued_by: "",
       certificate_number: "",
-      certificate_issued_date: "",
-      file: undefined as File | string | undefined,
+      certificate_issued_date: "2019",
+      certificate_document: undefined as undefined | File[],
     },
   ],
 };
@@ -122,17 +131,16 @@ const RegistrationForm = () => {
     useDisclosure();
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
+  const academicFileRegister = useAcademicFileRegister();
   const certificationInfoRegister = useCertificateInfoRegister();
+  const certificateFileRegister = useCertificateFileRegister();
   const experienceInfoRegister = useExperienceInfoRegister();
+  const experienceFileRegister = useExperienceFileRegister();
 
   const editPrimaryInfoRegister = useUpdatePrimaryInfoRegister();
 
-  const schema = yup.object().shape({
-    // pan_number: yup.string().required("Email is required!"),
-  });
   const formMethods = useForm({
     defaultValues: registerDefaultValues,
-    resolver: yupResolver(schema),
   });
 
   const onClickHandler = (index: number) => {
@@ -158,6 +166,7 @@ const RegistrationForm = () => {
     HTMLButtonElement
   > = async () => {
     const profilePicture = formMethods.getValues("profile_picture")?.[0];
+    console.log(profilePicture);
     // const idFontImage = values.id_front_image?.[0];
     // const idBackImage = values.id_back_image?.[0];
 
@@ -205,6 +214,7 @@ const RegistrationForm = () => {
         const { data } = response.data;
         setDoctor(data?.id);
         setName(data?.user.first_name);
+
         setIsPrimarySubmitted(true);
         setActiveStep(2);
       });
@@ -266,6 +276,7 @@ const RegistrationForm = () => {
               setDoctor(data?.id);
               setName(data?.user.first_name);
               setIsPrimarySubmitted(true);
+              formMethods.setValue("doctor_id", data?.id);
               setActiveStep(2);
             });
         } catch (error) {
@@ -282,25 +293,38 @@ const RegistrationForm = () => {
         try {
           const lastValue = values.academic.length - 1;
 
-          academicInfoRegister
-            .mutateAsync({
-              doctor: doctor,
-              degree_program: values.academic[lastValue].degree_program,
-              major: values.academic[lastValue].major,
-              university: values.academic[lastValue].university,
-              graduation_year: values.academic[lastValue].graduation_year,
-              file: values.academic[lastValue].file,
-            })
-            .then(response => response && setActiveStep(3))
-            .catch(error => {
-              {
-                const err = error as AxiosError<{ message: string }>;
-                toastFail(
-                  err?.response?.data?.message ||
-                    "Failed to add academic information!"
-                );
-              }
-            });
+          const academicData = {
+            degree_program: values.academic[lastValue].degree_program,
+            graduation_year: values.academic[lastValue].graduation_year,
+            university: values.academic[lastValue].university,
+            major: values.academic[lastValue].major,
+            doctor: doctor,
+            academic_document: values.academic[lastValue].academic_document,
+          };
+          const createAcademicFileResponse =
+            await academicFileRegister.mutateAsync(academicData);
+
+          if (createAcademicFileResponse) {
+            const academicInfoData = {
+              ...academicData,
+              academic_document: createAcademicFileResponse.data.data.map(
+                (file: string) => ({
+                  file: file,
+                })
+              ),
+            };
+            const academicInfoResponse = await academicInfoRegister.mutateAsync(
+              academicInfoData
+            );
+
+            if (academicInfoResponse) {
+              setActiveStep(3);
+            } else {
+              toastFail("Failed to add academic information!");
+            }
+          } else {
+            toastFail("Failed to upload academic files!");
+          }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
           toastFail(
@@ -313,27 +337,42 @@ const RegistrationForm = () => {
       case 3: {
         try {
           const lastValue = values.certification.length - 1;
-          certificationInfoRegister
-            .mutateAsync({
-              doctor: doctor,
-              title: values.certification[lastValue].title,
-              issued_by: values.certification[lastValue].issued_by,
-              certificate_issued_date:
-                values.certification[lastValue].certificate_issued_date,
-              certificate_number:
-                values.certification[lastValue].certificate_number,
-              file: values.certification[lastValue].file,
-            })
-            .then(response => response && setActiveStep(4))
-            .catch(error => {
-              {
-                const err = error as AxiosError<{ message: string }>;
-                toastFail(
-                  err?.response?.data?.message ||
-                    "Failed to add certification information!"
-                );
-              }
-            });
+
+          const certificateData = {
+            doctor: doctor,
+            title: values.certification[lastValue].title,
+            issued_by: values.certification[lastValue].issued_by,
+            certificate_issued_date:
+              values.certification[lastValue].certificate_issued_date,
+            certificate_number:
+              values.certification[lastValue].certificate_number,
+            certificate_document:
+              values.certification[lastValue].certificate_document,
+          };
+
+          const createCertificateFileResponse =
+            await certificateFileRegister.mutateAsync(certificateData);
+
+          if (createCertificateFileResponse) {
+            const certificateInfoData = {
+              ...certificateData,
+              certificate_document: createCertificateFileResponse.data.data.map(
+                (file: string) => ({
+                  file: file,
+                })
+              ),
+            };
+            const certificateInfoResponse =
+              await certificationInfoRegister.mutateAsync(certificateInfoData);
+
+            if (certificateInfoResponse) {
+              setActiveStep(4);
+            } else {
+              toastFail("Failed to add certificate information!");
+            }
+          } else {
+            toastFail("Failed to upload certificate files!");
+          }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
           toastFail(
@@ -346,16 +385,39 @@ const RegistrationForm = () => {
       case 4: {
         try {
           const lastValue = values.experience.length - 1;
-          await experienceInfoRegister.mutateAsync({
+
+          const experienceData = {
             doctor: doctor,
             hospital: values.experience[lastValue].hospital,
             description: values.experience[lastValue].description,
             currently_working: values.experience[lastValue].currently_working,
             from_date: values.experience[lastValue].from_date,
             to_date: values.experience[lastValue].to_date,
-            file: values.experience[lastValue].file,
-          });
-          onOpenConfirmation();
+            experience_document:
+              values.experience[lastValue].experience_document,
+          };
+          const createExperienceFileResponse =
+            await experienceFileRegister.mutateAsync(experienceData);
+
+          if (createExperienceFileResponse) {
+            const experienceInfoData = {
+              ...experienceData,
+              experience_document: createExperienceFileResponse.data.data.map(
+                (file: string) => ({
+                  file: file,
+                })
+              ),
+            };
+            const experienceInfoResponse =
+              await experienceInfoRegister.mutateAsync(experienceInfoData);
+            if (experienceInfoResponse) {
+              onOpenConfirmation();
+            } else {
+              toastFail("Failed to add experience information!");
+            }
+          } else {
+            toastFail("Faield to upload experience files!");
+          }
         } catch (error) {
           const err = error as AxiosError<{ message: string }>;
           toastFail(
@@ -368,6 +430,10 @@ const RegistrationForm = () => {
     }
   };
 
+  const handleNextButtonClick = () => {
+    console.log("errrr");
+    formMethods.handleSubmit(onSubmitForm)();
+  };
   const steps = [
     {
       title: "Registration",
@@ -426,7 +492,7 @@ const RegistrationForm = () => {
               pl={12}
               pb={24}
               gap={12}
-              h="100vh"
+              h="90vh"
             >
               <Box>
                 <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
@@ -484,10 +550,10 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="100vh">{content}</Box>
+            <Box h="90vh">{content}</Box>
           </HStack>
 
-          <Flex justifyContent="space-between" mt={6}>
+          <Flex justifyContent="space-between" mt={4} mb={4}>
             <Button
               onClick={() => {
                 setActiveStep(prevStep => prevStep - 1);
@@ -546,7 +612,7 @@ const RegistrationForm = () => {
                   background={colors.primary}
                   color={colors.white}
                   fontWeight={400}
-                  type="submit"
+                  onClick={handleNextButtonClick}
                   variant="register"
                 >
                   Next Step

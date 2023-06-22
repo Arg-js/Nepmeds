@@ -21,6 +21,8 @@ const Select = ({
   isRequired,
   required,
   enabled,
+  SelectedOption,
+  defaultValue,
   ...rest
 }: ISelect) => {
   return (
@@ -31,6 +33,9 @@ const Select = ({
         {...rest}
         id={name}
         h={14}
+        // value={defaultValue}
+        defaultValue={defaultValue}
+
         // pr={8}
       >
         {placeholder && (
@@ -69,6 +74,7 @@ export interface ISelect extends SelectProps {
   isRequired?: boolean;
   required?: boolean;
   enabled?: boolean;
+  SelectedOption?: string;
 }
 export default Select;
 

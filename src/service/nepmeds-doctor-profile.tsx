@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-interface IUser {
+export interface IUser {
   id?: number;
   first_name: string;
   middle_name: string;
@@ -27,7 +27,7 @@ export interface IDoctorAcademicInfo {
   graduation_year: number;
   university: string;
   major: string;
-  file: File;
+  academic_document: File[];
   doctor: number;
   id?: number;
 }
@@ -35,7 +35,8 @@ export interface IDoctorCertificationInfo {
   title: string;
   issued_by: string;
   certificate_number: string;
-  file: string;
+  certificate_document: File[];
+
   certificate_issued_date: string;
   doctor: number;
   id?: number;
@@ -46,7 +47,8 @@ export interface IDoctorExperience {
   currently_working: boolean;
   from_date: string;
   to_date: string;
-  file: string;
+  experience_document: File[];
+
   doctor: number;
   id?: number;
 }
