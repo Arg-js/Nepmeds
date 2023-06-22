@@ -17,7 +17,7 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { AcademicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useUpdateAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+// import { useUpdateAcademicInfo } from "@nepMeds/service/nepmeds-academic";
 import {
   IDoctorAcademicInfo,
   IGetDoctorProfile,
@@ -39,7 +39,7 @@ const EditAcademic = ({
     onOpen: onAcademicOpen,
   } = useDisclosure();
   const formMethods = useForm();
-  const updateAcademicInfo = useUpdateAcademicInfo();
+  // const updateAcademicInfo = useUpdateAcademicInfo();
 
   const onSaveAcademicInfo = async () => {
     try {
@@ -65,13 +65,13 @@ const EditAcademic = ({
           };
         }
       );
-
-      await Promise.all(academicData).then(academicDataArray => {
-        updateAcademicInfo.mutateAsync({
-          data: academicDataArray,
-          id: doctorProfileData.user.id ?? 0,
-        });
-      });
+      console.log(academicData);
+      // await Promise.all(academicData).then(academicDataArray => {
+      //   updateAcademicInfo.mutateAsync({
+      //     data: academicDataArray,
+      //     id: doctorProfileData.user.id ?? 0,
+      //   });
+      // });
       onAcademicClose();
       toastSuccess("Academic information updated successfully!");
     } catch (error) {

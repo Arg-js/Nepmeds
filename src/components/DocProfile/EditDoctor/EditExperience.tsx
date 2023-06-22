@@ -21,7 +21,7 @@ import {
   IDoctorExperience,
   IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useUpdateExperienceInfo } from "@nepMeds/service/nepmeds-experience";
+// import { useUpdateExperienceInfo } from "@nepMeds/service/nepmeds-experience";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
@@ -37,7 +37,7 @@ const EditExperience = ({
     onOpen: onExperienceOpen,
   } = useDisclosure();
   const formMethods = useForm();
-  const updateExperienceInfo = useUpdateExperienceInfo();
+  // const updateExperienceInfo = useUpdateExperienceInfo();
 
   const onSaveExperienceInfo = async () => {
     try {
@@ -62,12 +62,13 @@ const EditExperience = ({
           };
         }
       );
-      await Promise.all(experienceData).then(experienceDataArray => {
-        updateExperienceInfo.mutateAsync({
-          data: experienceDataArray,
-          id: doctorProfileData.user.id ?? 0,
-        });
-      });
+      console.log(experienceData);
+      // await Promise.all(experienceData).then(experienceDataArray => {
+      //   updateExperienceInfo.mutateAsync({
+      //     data: experienceDataArray,
+      //     id: doctorProfileData.user.id ?? 0,
+      //   });
+      // });
 
       onExperienceClose();
       toastSuccess("Experience information updated successfully!");
