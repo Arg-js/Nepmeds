@@ -47,8 +47,29 @@ export const useUpdateCertificateInfo = () => {
   >(variables => updateCertificateData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.certificate);
+      queryClient.fetchQuery(api.doctor_profile);
     },
   });
+
+  return mutation;
+};
+
+const deleteCertificateData = async (id: number) => {
+  const response = await HttpClient.delete(api.certificate + `${id}/`);
+  return response;
+};
+
+export const useDeleteCertificateInfo = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<AxiosResponse<any, any>, unknown, number>(
+    id => deleteCertificateData(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.certificate);
+        queryClient.fetchQuery(api.doctor_profile);
+      },
+    }
+  );
 
   return mutation;
 };

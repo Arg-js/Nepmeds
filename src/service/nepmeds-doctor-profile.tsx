@@ -58,6 +58,7 @@ export interface IGetDoctorProfile {
   bio_detail: string;
   age: number;
   pan_number: string;
+  id?: number;
   specialization: string[];
   id_front_image: File;
   id_back_image: File;
@@ -65,8 +66,8 @@ export interface IGetDoctorProfile {
   id_issued_district: number;
   id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
-  doctor_certification_info: IDoctorCertificationInfo[] | null;
-  doctor_experience: IDoctorExperience[] | null;
+  doctor_certification_info: IDoctorCertificationInfo[] | [];
+  doctor_experience: IDoctorExperience[] | [];
   profile_status: string;
   no_of_rejected_times: number;
   rejected_remarks: string;
