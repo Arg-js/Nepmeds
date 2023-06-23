@@ -294,8 +294,9 @@ const RegistrationForm = () => {
         } catch (error) {
           console.log(error);
           const err = error as AxiosError<{ message: string }>;
+
           toastFail(
-            err?.response?.data?.message ||
+            err?.response?.data?.message[0] ||
               "Failed to update primary information!"
           );
         }

@@ -5,6 +5,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
 import { useSignUpUser } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
+import { AxiosError } from "axios";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Call } from "react-iconly";
@@ -62,7 +63,8 @@ const SignupForm = () => {
       setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
       toastSuccess("OTP code has been sent to your mobile!");
     } catch (error) {
-      toastFail("Failed to send OTP code!");
+      const err = error as AxiosError<{ message: string }>;
+      toastFail(err?.response?.data?.message[0] || "Failed to send Otp!");
     }
   };
 

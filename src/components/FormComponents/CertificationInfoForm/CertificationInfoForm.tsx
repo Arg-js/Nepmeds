@@ -230,7 +230,17 @@ export const CertificationInfoForm = ({
       );
     }
   };
+  const validateIssuedDate = (index: number) => {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const issuedDate = getValues(
+      `certification.${index}.certificate_issued_date`
+    );
+    if (issuedDate > currentDate) {
+      return "Issued date cannot be greater than the current date.";
+    }
 
+    return true; // Return true if the validation passes
+  };
   return (
     <>
       {fields.map((item, index) => {
@@ -349,6 +359,7 @@ export const CertificationInfoForm = ({
                     {...field}
                     rules={{
                       required: "Issued date is required.",
+                      validate: () => validateIssuedDate(index),
                     }}
                     error={
                       errors?.certification?.[index]?.certificate_issued_date
