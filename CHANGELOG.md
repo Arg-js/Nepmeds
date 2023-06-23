@@ -1,4 +1,4 @@
-## 0.0.1 (2023-06-22)
+## 0.0.1 (2023-06-23)
 
 
 ### Bug Fixes
@@ -66,6 +66,7 @@
 * master data ([9a65e00](https://gitlab.com/r2850/nepmeds/commit/9a65e00258290f254ba1d4753f1c4d3b63d6f7b8))
 * **mobile number validation:** regex for mobile number added ([acc623f](https://gitlab.com/r2850/nepmeds/commit/acc623f68fe11df7eec3c717edf920e633ed12ab))
 * **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
+* **profile:** profile edit ([e52a6bb](https://gitlab.com/r2850/nepmeds/commit/e52a6bb66e839b02c1d48f1abe6dec5eeb0df133))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))
 * **routing and search in doctor list:** added routing and search in doctor list ([5cb2788](https://gitlab.com/r2850/nepmeds/commit/5cb2788c23b710dcd84a6f038758d9a082096023))

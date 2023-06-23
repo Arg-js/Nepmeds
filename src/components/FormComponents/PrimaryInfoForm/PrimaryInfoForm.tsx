@@ -19,6 +19,7 @@ import { ChangeEvent, useEffect } from "react";
 import React from "react";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import ImageUpload from "@nepMeds/components/ImageUpload";
+// import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -135,7 +136,7 @@ const PrimaryInfo = ({
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const idIssuedDate = getValues("id_issued_date");
     if (idIssuedDate > currentDate) {
-      return "Date of birth cannot be greater than the current date.";
+      return "Citizenship issued date cannot be greater than the current date.";
     }
 
     return true; // Return true if the validation passes
@@ -156,6 +157,7 @@ const PrimaryInfo = ({
       )}
       <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
+          // startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
           placeholder=""
           name="phone"
           register={register}
@@ -170,7 +172,7 @@ const PrimaryInfo = ({
           type="tel"
           required
           // isReadOnly
-          cursor="not-allowed"
+
           register={register}
           defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
@@ -223,7 +225,7 @@ const PrimaryInfo = ({
       <GridItem colSpan={2}>
         <FloatingLabelInput
           name="date_of_birth"
-          label="Date"
+          label="Date of birth"
           register={register}
           defaultValue={doctorProfileData?.user?.date_of_birth}
           type="date"
@@ -460,14 +462,9 @@ const PrimaryInfo = ({
           placeholder=""
           label="Tole"
           name="tole"
-          required
           register={register}
           defaultValue={doctorProfileData?.user?.tole}
           style={{ background: colors.forminput, border: "none" }}
-          rules={{
-            required: "Tole  is required.",
-          }}
-          error={errors.tole?.message}
         />
       </GridItem>
     </Grid>

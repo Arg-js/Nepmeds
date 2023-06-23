@@ -213,6 +213,28 @@ export const ExperienceForm = ({
     }
   };
 
+  const validateFromDate = (index: number) => {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const fromDate = getValues(`experience.${index}.from_date`);
+    if (fromDate > currentDate) {
+      return "From cannot be greater than the current date.";
+    }
+
+    return true; // Return true if the validation passes
+  };
+
+  const validateToDate = (index: number) => {
+    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const toDate = getValues(`experience.${index}.to_date`);
+    const fromDate = getValues(`experience.${index}.from_date`);
+    if (toDate > currentDate) {
+      return "To cannot be greater than the current date.";
+    } else if (toDate < fromDate) {
+      return "To date cannot be less than from date";
+    }
+    return true; // Return true if the validation passes
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -295,6 +317,7 @@ export const ExperienceForm = ({
                       {...field}
                       rules={{
                         required: "From date is required.",
+                        validate: () => validateFromDate(index),
                       }}
                       error={errors?.experience?.[index]?.from_date?.message}
                     />
@@ -317,6 +340,7 @@ export const ExperienceForm = ({
                         {...field}
                         rules={{
                           required: "To date is required.",
+                          validate: () => validateToDate(index),
                         }}
                         error={errors?.experience?.[index]?.to_date?.message}
                       />
