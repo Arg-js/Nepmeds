@@ -4,7 +4,6 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  InputGroup,
   InputLeftElement,
   InputProps,
   InputRightElement,
@@ -38,61 +37,70 @@ const FloatingLabelInput = ({
       isDisabled={isDisabled}
       variant="floating"
     >
-      <InputGroup>
-        {startIcon ? (
-          <InputLeftElement
-            top="12%"
-            pointerEvents="none"
-            onClick={onIconClick}
-          >
-            {startIcon}
-          </InputLeftElement>
-        ) : (
-          ""
-        )}
-        {endIcons ? (
-          <InputRightElement onClick={onIconClick} top="8%">
-            {endIcons}
-          </InputRightElement>
-        ) : (
-          ""
-        )}
+      {startIcon ? (
+        <InputLeftElement top="12%" pointerEvents="none" onClick={onIconClick}>
+          {startIcon}
+        </InputLeftElement>
+      ) : (
+        ""
+      )}
+      {endIcons ? (
+        <InputRightElement onClick={onIconClick} top="8%">
+          {endIcons}
+        </InputRightElement>
+      ) : (
+        ""
+      )}
 
-        <ChakraInput
-          id={name}
-          type={type}
-          value={value}
-          {...register(name, rules)}
-          {...rest}
-          placeholder=""
-          h={14}
-          pt={4}
-          pr={8}
-          pb={2}
-          variant="floating"
-          style={{ background: colors.forminput, border: "none" }}
-        />
+      <ChakraInput
+        id={name}
+        type={type}
+        value={value}
+        {...register(name, rules)}
+        {...rest}
+        placeholder=""
+        h={14}
+        pt={4}
+        pr={8}
+        pb={2}
+        variant="floating"
+        style={{ background: colors.forminput, border: "none" }}
+      />
 
-        {label && (
-          <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-            {label}
-            {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
-          </FormLabel>
-        )}
-        {labelDisabled && (
-          <FormLabel
-            htmlFor={name}
-            fontWeight={400}
-            fontSize={"14px"}
-            opacity={"1 !important"}
-          >
-            {labelDisabled}
-          </FormLabel>
-        )}
+      <ChakraInput
+        id={name}
+        type={type}
+        value={value}
+        {...register(name, rules)}
+        {...rest}
+        placeholder=""
+        h={14}
+        pt={4}
+        pr={8}
+        pb={2}
+        variant="floating"
+        style={{ background: colors.forminput, border: "none" }}
+      />
 
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
-      </InputGroup>
+      {label && (
+        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+          {label}
+          {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
+        </FormLabel>
+      )}
+      {labelDisabled && (
+        <FormLabel
+          htmlFor={name}
+          fontWeight={400}
+          fontSize={"14px"}
+          opacity={"1 !important"}
+        >
+          {labelDisabled}
+        </FormLabel>
+      )}
+
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
