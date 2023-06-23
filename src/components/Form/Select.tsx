@@ -4,6 +4,9 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
   SelectProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
@@ -23,41 +26,65 @@ const Select = ({
   enabled,
   SelectedOption,
   defaultValue,
+  startIcon,
+  onIconClick,
+  endIcons,
   ...rest
 }: ISelect) => {
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
-      <ChakraSelect
-        sx={{ background: colors.forminput }}
-        {...register(name, rules)}
-        {...rest}
-        id={name}
-        h={14}
-        // value={defaultValue}
-        defaultValue={defaultValue}
-
-        // pr={8}
-      >
-        {placeholder && (
-          <option value="" disabled={!enabled}>
-            {placeholder}
-          </option>
+      <InputGroup>
+        {startIcon ? (
+          <InputLeftElement
+            top="10%"
+            left={"-20px"}
+            pointerEvents="none"
+            onClick={onIconClick}
+          >
+            {startIcon}
+          </InputLeftElement>
+        ) : (
+          ""
         )}
-        {options?.map(({ label, value }) => (
-          <option key={value} value={value}>
-            {label}
-          </option>
-        ))}
-      </ChakraSelect>
-      {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-          {label}{" "}
-          {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
-        </FormLabel>
-      )}
+        {endIcons ? (
+          <InputRightElement onClick={onIconClick} top="8%">
+            {endIcons}
+          </InputRightElement>
+        ) : (
+          ""
+        )}
+        <ChakraSelect
+          sx={{ background: colors.forminput }}
+          {...register(name, rules)}
+          {...rest}
+          id={name}
+          h={14}
+          // value={defaultValue}
+          defaultValue={defaultValue}
 
-      {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+          // pr={8}
+        >
+          {placeholder && (
+            <option value="" disabled={!enabled}>
+              {placeholder}
+            </option>
+          )}
+          {options?.map(({ label, value }) => (
+            <option key={value} value={value}>
+              {label}
+            </option>
+          ))}
+        </ChakraSelect>
+        {label && (
+          <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+            {label}{" "}
+            {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
+          </FormLabel>
+        )}
+
+        {helperText && <FormHelperText>{helperText}</FormHelperText>}
+        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      </InputGroup>
     </FormControl>
   );
 };
@@ -75,6 +102,9 @@ export interface ISelect extends SelectProps {
   required?: boolean;
   enabled?: boolean;
   SelectedOption?: string;
+  startIcon?: React.ReactNode;
+  endIcons?: React.ReactNode;
+  onIconClick?: () => void;
 }
 export default Select;
 
