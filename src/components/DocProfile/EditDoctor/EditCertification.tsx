@@ -81,11 +81,10 @@ const EditCertification = ({
         submitMode: false,
         isSubmitted: false,
       };
+      try {
+        const createCertificateFileResponse =
+          await certificateFileRegister.mutateAsync(certificateData);
 
-      const createCertificateFileResponse =
-        await certificateFileRegister.mutateAsync(certificateData);
-
-      if (createCertificateFileResponse) {
         const certificateInfoData = {
           ...certificateData,
           certificate_documents: createCertificateFileResponse.data.data.map(
@@ -106,14 +105,27 @@ const EditCertification = ({
         } else {
           toastFail("Failed to add certificate information!");
         }
-      } else {
-        toastFail("Failed to upload certificate files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to add certificate files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message ||
-          "Failed to add certification information!"
+        firstErrorMessage?.toString() ||
+          "Failed to add certificate information!"
       );
     }
   };
@@ -150,11 +162,10 @@ const EditCertification = ({
         submitMode: false,
         isSubmitted: false,
       };
+      try {
+        const createCertificateFileResponse =
+          await certificateFileRegister.mutateAsync(certificateData);
 
-      const createCertificateFileResponse =
-        await certificateFileRegister.mutateAsync(certificateData);
-
-      if (createCertificateFileResponse) {
         const certificateInfoData = {
           ...certificateData,
           certificate_documents: createCertificateFileResponse.data.data.map(
@@ -172,14 +183,27 @@ const EditCertification = ({
         } else {
           toastFail("Failed to add certificate information!");
         }
-      } else {
-        toastFail("Failed to upload certificate files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to update certificate files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message ||
-          "Failed to add certification information!"
+        firstErrorMessage?.toString() ||
+          "Failed to update certificate information!"
       );
     }
   };
@@ -199,7 +223,7 @@ const EditCertification = ({
             display={"flex"}
             alignItems={"center"}
             justifyContent={"center"}
-            onClick={() => setOpenCertificateModal(true)}
+            onClick={() => setOpenCertificateAddModal(true)}
             cursor="pointer"
           >
             <Icon as={AddIcon} boxSize={5} color={colors?.main} mr={"8px"} />

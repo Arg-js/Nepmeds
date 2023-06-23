@@ -20,6 +20,7 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
+import { AxiosError } from "axios";
 import { useForm, FormProvider } from "react-hook-form";
 
 const EditPrimary = ({
@@ -66,7 +67,15 @@ const EditPrimary = ({
       onPrimaryClose();
       toastSuccess("Primary information updated successfully!");
     } catch (error) {
-      toastFail("Failed to update primary information!");
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(
+        firstErrorMessage?.toString() || "Failed to edit primary information!"
+      );
     }
   };
   return (

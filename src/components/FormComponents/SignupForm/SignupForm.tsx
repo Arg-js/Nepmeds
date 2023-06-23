@@ -56,6 +56,7 @@ const SignupForm = () => {
     email_or_mobile_number: string;
   }) => {
     try {
+      console.log(otp);
       const { data: otpInfo } = await singUpAction.mutateAsync({
         email_or_mobile_number: email_or_mobile_number,
       });
@@ -63,13 +64,18 @@ const SignupForm = () => {
       setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
       toastSuccess("OTP code has been sent to your mobile!");
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toastFail(err?.response?.data?.message[0] || "Failed to send Otp!");
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(firstErrorMessage?.toString() || "Failed to send OTP!");
     }
   };
 
   if (enableOTP) {
-    return <OtpSignUp mobile={getValues("email_or_mobile_number")} otp={otp} />;
+    return <OtpSignUp mobile={getValues("email_or_mobile_number")} />;
   }
 
   return (

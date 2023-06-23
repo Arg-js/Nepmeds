@@ -72,10 +72,15 @@ const Input = ({
         </FormLabel>
       )}
 
-      <InputGroup>
+      <InputGroup
+        display={"flex"}
+        alignItems={"center"}
+        justifyContent={"center"}
+      >
         {startIcon && (
           <InputLeftElement
             top="12%"
+            left={"-5%"}
             pointerEvents="none"
             onClick={onIconClick}
           >
