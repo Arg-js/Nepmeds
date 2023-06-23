@@ -26,6 +26,7 @@ import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
+import { AxiosError } from "axios";
 
 const EditBasic = ({
   doctorProfileData,
@@ -71,7 +72,15 @@ const EditBasic = ({
       onClose();
       toastSuccess("Personal information updated successfully!");
     } catch (error) {
-      toastFail("Failed to update personal information!");
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(
+        firstErrorMessage?.toString() || "Failed to edit basic information!"
+      );
     }
   };
 

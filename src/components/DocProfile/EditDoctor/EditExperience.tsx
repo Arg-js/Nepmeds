@@ -79,10 +79,10 @@ const EditExperience = ({
         submitMode: false,
         isSubmitted: false,
       };
-      const createExperienceFileResponse =
-        await experienceFileRegister.mutateAsync(experienceData);
+      try {
+        const createExperienceFileResponse =
+          await experienceFileRegister.mutateAsync(experienceData);
 
-      if (createExperienceFileResponse) {
         const experienceInfoData = {
           ...experienceData,
           experience_documents: createExperienceFileResponse.data.data.map(
@@ -102,13 +102,26 @@ const EditExperience = ({
         } else {
           toastFail("Failed to add experience information!");
         }
-      } else {
-        toastFail("Faield to upload experience files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to add experience files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message || "Failed to add experience information!"
+        firstErrorMessage?.toString() || "Failed to add experience information!"
       );
     }
   };
@@ -145,10 +158,10 @@ const EditExperience = ({
         submitMode: false,
         isSubmitted: false,
       };
-      const createExperienceFileResponse =
-        await experienceFileRegister.mutateAsync(experienceData);
+      try {
+        const createExperienceFileResponse =
+          await experienceFileRegister.mutateAsync(experienceData);
 
-      if (createExperienceFileResponse) {
         const experienceInfoData = {
           ...experienceData,
           experience_documents: createExperienceFileResponse.data.data.map(
@@ -166,13 +179,26 @@ const EditExperience = ({
         } else {
           toastFail("Failed to add experience information!");
         }
-      } else {
-        toastFail("Failed to upload experience files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to add experience files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message || "Failed to add experience information!"
+        firstErrorMessage?.toString() || "Failed to add experience information!"
       );
     }
   };

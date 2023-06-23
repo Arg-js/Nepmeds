@@ -1,15 +1,19 @@
 import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useVerifySingUpOTP } from "@nepMeds/service/nepmeds-register";
+import {
+  useSignUpUser,
+  useVerifySingUpOTP,
+} from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
+import { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
-const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
+const OtpForm = ({ mobile }: { mobile: string }) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
-  console.log({ mobile, otp });
+
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
   const onFormSubmit = async (e: FormEvent) => {
@@ -22,10 +26,34 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
       toastSuccess("OTP has been verified successfully!");
       navigate("/register", { state: { mobile } });
     } catch (error) {
-      toastFail("Failed to verify OTP!");
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(firstErrorMessage?.toString() || "Failed to verify otp!");
     }
   };
 
+  const singUpAction = useSignUpUser();
+  const onSubmit = async () => {
+    try {
+      await singUpAction.mutateAsync({
+        email_or_mobile_number: mobile,
+      });
+
+      toastSuccess("OTP code has been sent to your mobile!");
+    } catch (error) {
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(firstErrorMessage?.toString() || "Failed to send OTP!");
+    }
+  };
   return (
     <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
       <VStack gap={7.5} mb={3}>
@@ -46,8 +74,6 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
           inputType="tel"
           renderInput={props => <Input {...props} />}
         />
-
-        <Text>Your OTP is {otp}</Text>
       </VStack>
 
       <p
@@ -55,20 +81,23 @@ const OtpForm = ({ mobile, otp }: { mobile: string; otp: string }) => {
           textAlign: "right",
           marginBottom: "48px",
           color: colors.black_30,
+          display: "flex",
           marginTop: "15px",
           fontSize: "14px",
+          justifyContent: "end",
         }}
       >
         Didnt receive the code?
-        <Link
-          to="/"
+        <p
+          onClick={() => onSubmit()}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",
+            cursor: "pointer",
           }}
         >
           Resend
-        </Link>
+        </p>
       </p>
 
       <Text textAlign="center" fontSize={14} color={colors.black_30}>

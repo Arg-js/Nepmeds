@@ -11,9 +11,21 @@ const createExperienceData = async (data: ExperienceInfo) => {
   return response;
 };
 
-export const useExperienceInfoRegister = () =>
-  useMutation(createExperienceData);
+export const useExperienceInfoRegister = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<
+    AxiosResponse<any, any>,
+    unknown,
+    ExperienceInfo
+  >(createExperienceData, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.doctor_profile);
+      queryClient.fetchQuery(api.doctor_profile);
+    },
+  });
 
+  return mutation;
+};
 const createExperienceFile = async (data: ExperienceInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
@@ -21,7 +33,7 @@ const createExperienceFile = async (data: ExperienceInfo) => {
   if (data.experience_documents) {
     // Append multiple files to formData
     data.experience_documents.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
+      if (file !== null) formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.experience_file, formData);
@@ -46,7 +58,7 @@ export const useUpdateExperienceInfo = () => {
     { id: number; data: ExperienceInfo }
   >(variables => updateExperienceData(variables.id, variables.data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.experience);
+      queryClient.invalidateQueries(api.doctor_profile);
       queryClient.fetchQuery(api.doctor_profile);
     },
   });
@@ -65,7 +77,7 @@ export const useDeleteExperienceInfo = () => {
     id => deleteExperienceData(id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(api.experience);
+        queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
     }

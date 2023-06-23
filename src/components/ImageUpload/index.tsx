@@ -65,7 +65,6 @@ const ImageUpload = ({
           </Box>
         ) : (
           <Box
-            as="label"
             width={"100%"}
             height="160px"
             borderRadius="4px"

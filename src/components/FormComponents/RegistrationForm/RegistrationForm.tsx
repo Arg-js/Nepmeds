@@ -20,6 +20,7 @@ import {
 } from "@chakra-ui/stepper";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { toastSuccess } from "@nepMeds/components/Toast";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
@@ -28,10 +29,12 @@ import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import {
   useAcademicFileRegister,
   useAcademicInfoRegister,
+  useUpdateAcademicInfo,
 } from "@nepMeds/service/nepmeds-academic";
 import {
   useCertificateFileRegister,
   useCertificateInfoRegister,
+  useUpdateCertificateInfo,
 } from "@nepMeds/service/nepmeds-certificate";
 import {
   useExperienceFileRegister,
@@ -88,9 +91,7 @@ const registerDefaultValues = {
       degree_program: "",
       major: "",
       id: "",
-      editMode: false,
-      submitMode: false,
-      isSubmitted: false,
+
       university: "",
       graduation_year: "2019",
       academic_documents: undefined as undefined | File[],
@@ -106,9 +107,6 @@ const registerDefaultValues = {
       currently_working: false,
       experience_documents: undefined as undefined | File[],
       id: "",
-      editMode: false,
-      submitMode: false,
-      isSubmitted: false,
     },
   ],
   certification: [
@@ -120,9 +118,6 @@ const registerDefaultValues = {
       certificate_issued_date: "2019",
       certificate_documents: undefined as undefined | File[],
       id: "",
-      editMode: false,
-      submitMode: false,
-      isSubmitted: false,
     },
   ],
 };
@@ -136,6 +131,7 @@ const RegistrationForm = () => {
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
   const [isPrimarySubmitted, setIsPrimarySubmitted] = React.useState(false);
+
   const [isMobileVerified, setIsMobileVerified] = React.useState(false);
   const [isEmailVerified, setIsEmailVerified] = React.useState(false);
 
@@ -144,8 +140,10 @@ const RegistrationForm = () => {
   const primaryInfoRegister = usePrimaryInfoRegister();
   const academicInfoRegister = useAcademicInfoRegister();
   const academicFileRegister = useAcademicFileRegister();
+  const updateAcademicInfoRegister = useUpdateAcademicInfo();
   const certificationInfoRegister = useCertificateInfoRegister();
   const certificateFileRegister = useCertificateFileRegister();
+  const updateCertificateInfoRegister = useUpdateCertificateInfo();
   const experienceInfoRegister = useExperienceInfoRegister();
   const experienceFileRegister = useExperienceFileRegister();
 
@@ -177,59 +175,71 @@ const RegistrationForm = () => {
   const editPrimaryInfoRegisterHandler: React.MouseEventHandler<
     HTMLButtonElement
   > = async () => {
-    const profilePicture = formMethods.getValues("profile_picture")?.[0];
-    console.log(profilePicture);
-    // const idFontImage = values.id_front_image?.[0];
-    // const idBackImage = values.id_back_image?.[0];
+    try {
+      const profilePicture = formMethods.getValues("profile_picture")?.[0];
+      console.log(profilePicture);
+      // const idFontImage = values.id_front_image?.[0];
+      // const idBackImage = values.id_back_image?.[0];
 
-    const specializationValues = formMethods.getValues("specialization");
-    const specializationArray = specializationValues.map(
-      specialization => specialization.value
-    );
-    const doctorData = {
-      user: {
-        first_name: formMethods.getValues("first_name"),
-        middle_name: formMethods.getValues("middle_name"),
-        last_name: formMethods.getValues("last_name"),
-        profile_picture: profilePicture ? await base64(profilePicture) : "",
+      const specializationValues = formMethods.getValues("specialization");
+      const specializationArray = specializationValues.map(
+        specialization => specialization.value
+      );
+      const doctorData = {
+        user: {
+          first_name: formMethods.getValues("first_name"),
+          middle_name: formMethods.getValues("middle_name"),
+          last_name: formMethods.getValues("last_name"),
+          profile_picture: profilePicture ? await base64(profilePicture) : "",
 
-        district: formMethods.getValues("district"),
-        ward: formMethods.getValues("ward"),
-        tole: formMethods.getValues("tole"),
-        municipality: formMethods.getValues("municipality"),
-        province: formMethods.getValues("province"),
-        gender: formMethods.getValues("gender"),
-        date_of_birth: formMethods.getValues("date_of_birth"),
-        is_mobile_number_verified: isMobileVerified,
-        is_email_verified: isEmailVerified,
-        password: formMethods.getValues("password"),
-        confirm_password: formMethods.getValues("confirm_password"),
-      },
-      title: formMethods.getValues("title"),
+          district: formMethods.getValues("district"),
+          ward: formMethods.getValues("ward"),
+          tole: formMethods.getValues("tole"),
+          municipality: formMethods.getValues("municipality"),
+          province: formMethods.getValues("province"),
+          gender: formMethods.getValues("gender"),
+          date_of_birth: formMethods.getValues("date_of_birth"),
+          is_mobile_number_verified: isMobileVerified,
+          is_email_verified: isEmailVerified,
+          password: formMethods.getValues("password"),
+          confirm_password: formMethods.getValues("confirm_password"),
+        },
+        title: formMethods.getValues("title"),
 
-      bio_detail: formMethods.getValues("bio_detail"),
-      specialization: specializationArray,
-      age: 20,
-      medical_degree: "test",
-      designation: "Test",
-      pan_number: formMethods.getValues("pan_number"),
-      id_number: formMethods.getValues("id_number"),
-      id_type: formMethods.getValues("id_type"),
-      id_issued_district: formMethods.getValues("id_issued_district"),
-      id_issued_date: formMethods.getValues("id_issued_date"),
-      // id_back_image: idBackImage ? await base64(idBackImage) : "",
-      // id_front_image: idFontImage ? await base64(idFontImage) : "",
-    };
-    await editPrimaryInfoRegister
-      .mutateAsync({ id: doctor, data: doctorData })
-      .then(response => {
-        const { data } = response.data;
-        setDoctor(data?.id);
-        setName(data?.user.first_name);
+        bio_detail: formMethods.getValues("bio_detail"),
+        specialization: specializationArray,
+        age: 20,
+        medical_degree: "test",
+        designation: "Test",
+        pan_number: formMethods.getValues("pan_number"),
+        id_number: formMethods.getValues("id_number"),
+        id_type: formMethods.getValues("id_type"),
+        id_issued_district: formMethods.getValues("id_issued_district"),
+        id_issued_date: formMethods.getValues("id_issued_date"),
+        // id_back_image: idBackImage ? await base64(idBackImage) : "",
+        // id_front_image: idFontImage ? await base64(idFontImage) : "",
+      };
+      await editPrimaryInfoRegister
+        .mutateAsync({ id: doctor, data: doctorData })
+        .then(response => {
+          const { data } = response.data;
+          setDoctor(data?.id);
+          setName(data?.user.first_name);
 
-        setIsPrimarySubmitted(true);
-        setActiveStep(2);
-      });
+          setIsPrimarySubmitted(true);
+          setActiveStep(2);
+        });
+    } catch (error) {
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
+      toastFail(
+        firstErrorMessage?.toString() || "Failed to update primary information!"
+      );
+    }
   };
 
   const onSubmitForm = async (values: IRegisterFields) => {
@@ -292,226 +302,271 @@ const RegistrationForm = () => {
               setActiveStep(2);
             });
         } catch (error) {
-          console.log(error);
-          const err = error as AxiosError<{ message: string }>;
+          const err = error as AxiosError<{ errors: [0] }>;
 
+          const errorObject = err?.response?.data?.errors?.[0];
+          const firstErrorMessage = errorObject
+            ? Object.values(errorObject)[0]
+            : null;
           toastFail(
-            err?.response?.data?.message[0] ||
-              "Failed to update primary information!"
+            firstErrorMessage?.toString() ||
+              "Failed to add primary information!"
           );
         }
         break;
       }
       case 2: {
         try {
-          const lastValue = values.academic.length - 1;
+          const academicArray = formMethods.getValues("academic");
 
-          if (formMethods.watch(`academic.${lastValue}.isSubmitted`) !== true) {
-            const academicData = {
-              degree_program: values.academic[lastValue].degree_program,
-              graduation_year: values.academic[lastValue].graduation_year,
-              university: values.academic[lastValue].university,
-              major: values.academic[lastValue].major,
-              doctor: doctor,
-              academic_documents: values.academic[lastValue].academic_documents,
-              id: "",
-              editMode: false,
-              submitMode: false,
-              isSubmitted: false,
-            };
+          const academicPromises = academicArray.map(async academicData => {
             const createAcademicFileResponse =
               await academicFileRegister.mutateAsync(academicData);
 
-            if (createAcademicFileResponse) {
-              const academicInfoData = {
-                ...academicData,
-                academic_documents: createAcademicFileResponse.data.data.map(
-                  (file: string) => ({
-                    file: file,
-                  })
-                ),
-              };
+            const academicInfoData = {
+              ...academicData,
+              doctor: doctor,
+              academic_documents: createAcademicFileResponse.data.data.map(
+                (file: string) => ({
+                  file: file,
+                })
+              ),
+            };
+
+            if (academicData.id) {
+              const academicInfoResponse =
+                await updateAcademicInfoRegister.mutateAsync({
+                  id: parseInt(academicData.id),
+                  data: academicInfoData,
+                });
+
+              if (academicInfoResponse) {
+                return academicInfoResponse.data.data;
+              } else {
+                throw new Error("Failed to update academic information!");
+              }
+            } else {
               const academicInfoResponse =
                 await academicInfoRegister.mutateAsync(academicInfoData);
 
               if (academicInfoResponse) {
-                setActiveStep(3);
+                return academicInfoResponse.data.data;
+              } else {
+                throw new Error("Failed to add academic information!");
+              }
+            }
+          });
+
+          const academicInfoResponses = await Promise.all(academicPromises);
+
+          if (academicInfoResponses) {
+            // Process the responses or perform any required actions
+            academicInfoResponses.forEach((academicInfoResponse, index) => {
+              if (academicInfoResponse) {
+                const lastValue = index;
                 formMethods.setValue(
                   `academic.${lastValue}.id`,
-                  academicInfoResponse?.data?.data?.id
+                  academicInfoResponse.id
                 );
-                formMethods.setValue(`academic.${lastValue}.isSubmitted`, true);
-
-                formMethods.setValue(`academic.${lastValue}.editMode`, true);
-                formMethods.setValue(`academic.${lastValue}.submitMode`, false);
-              } else {
-                toastFail("Failed to add academic information!");
+                setActiveStep(3);
               }
-            } else {
-              toastFail("Failed to upload academic files!");
-            }
+            });
+
+            toastSuccess("Academic Information updated");
           } else {
-            setActiveStep(3);
+            throw new Error("Failed to update academic information!");
           }
         } catch (error) {
-          const err = error as AxiosError<{ errors: [] }>;
-          const errorObject = err?.response?.data?.errors;
+          const err = error as AxiosError<{ errors: [0] }>;
+
+          const errorObject = err?.response?.data?.errors?.[0];
           const firstErrorMessage = errorObject
             ? Object.values(errorObject)[0]
             : null;
-          toastFail(firstErrorMessage || "Failed to add academic information!");
+
+          toastFail(
+            firstErrorMessage?.toString() ||
+              "Failed to update academic information!"
+          );
         }
+
         break;
       }
       case 3: {
         try {
-          const lastValue = values.certification.length - 1;
-          if (
-            formMethods.watch(`certification.${lastValue}.isSubmitted`) !== true
-          ) {
-            const certificateData = {
-              doctor: doctor,
-              title: values.certification[lastValue].title,
-              issued_by: values.certification[lastValue].issued_by,
-              certificate_issued_date:
-                values.certification[lastValue].certificate_issued_date,
-              certificate_number:
-                values.certification[lastValue].certificate_number,
-              certificate_documents:
-                values.certification[lastValue].certificate_documents,
-              id: "",
-              editMode: false,
-              submitMode: false,
-              isSubmitted: false,
-            };
+          const certificationArray = formMethods.getValues("certification");
 
-            const createCertificateFileResponse =
-              await certificateFileRegister.mutateAsync(certificateData);
+          const certificationPromises = certificationArray.map(
+            async certificationData => {
+              const createCertificateFileResponse =
+                await certificateFileRegister.mutateAsync(certificationData);
 
-            if (createCertificateFileResponse) {
-              const certificateInfoData = {
-                ...certificateData,
-                certificate_documents:
-                  createCertificateFileResponse.data.data.map(
-                    (file: string) => ({
-                      file: file,
-                    })
-                  ),
-              };
-              const certificateInfoResponse =
-                await certificationInfoRegister.mutateAsync(
-                  certificateInfoData
-                );
+              if (createCertificateFileResponse) {
+                const certificateInfoData = {
+                  ...certificationData,
+                  doctor: doctor,
+                  certificate_documents:
+                    createCertificateFileResponse.data.data.map(
+                      (file: string) => ({
+                        file: file,
+                      })
+                    ),
+                };
 
-              if (certificateInfoResponse) {
-                setActiveStep(4);
-                formMethods.setValue(
-                  `certification.${lastValue}.id`,
-                  certificateInfoResponse?.data?.data?.id
-                );
-                formMethods.setValue(
-                  `certification.${lastValue}.isSubmitted`,
-                  true
-                );
-                formMethods.setValue(
-                  `certification.${lastValue}.editMode`,
-                  true
-                );
-                formMethods.setValue(
-                  `certification.${lastValue}.submitMode`,
-                  false
-                );
+                if (certificationData.id) {
+                  const certificateInfoResponse =
+                    await updateCertificateInfoRegister.mutateAsync({
+                      id: parseInt(certificationData.id),
+                      data: certificateInfoData,
+                    });
+
+                  if (certificateInfoResponse) {
+                    return certificateInfoResponse.data.data;
+                  } else {
+                    throw new Error(
+                      "Failed to update certificate information!"
+                    );
+                  }
+                } else {
+                  const certificateInfoResponse =
+                    await certificationInfoRegister.mutateAsync(
+                      certificateInfoData
+                    );
+
+                  if (certificateInfoResponse) {
+                    return certificateInfoResponse.data.data;
+                  } else {
+                    throw new Error("Failed to add certificate information!");
+                  }
+                }
               } else {
-                toastFail("Failed to add certificate information!");
+                throw new Error("Failed to upload certificate files!");
               }
-            } else {
-              toastFail("Failed to upload certificate files!");
             }
-          } else {
+          );
+
+          const certificateInfoResponses = await Promise.all(
+            certificationPromises
+          );
+
+          if (certificateInfoResponses) {
             setActiveStep(4);
+
+            certificateInfoResponses.forEach(
+              (certificateInfoResponse, index) => {
+                if (certificateInfoResponse) {
+                  formMethods.setValue(
+                    `certification.${index}.id`,
+                    certificateInfoResponse.id
+                  );
+                }
+              }
+            );
+
+            toastSuccess("Certificate Information updated");
+          } else {
+            throw new Error("Failed to add certificate information!");
           }
         } catch (error) {
-          const err = error as AxiosError<{ message: string }>;
+          const err = error as AxiosError<{ errors: [0] }>;
+          const errorObject = err?.response?.data?.errors?.[0];
+          const firstErrorMessage = errorObject
+            ? Object.values(errorObject)[0]
+            : null;
+
           toastFail(
-            err?.response?.data?.message ||
-              "Failed to add certification information!"
+            firstErrorMessage?.toString() ||
+              "Failed to add certificate information!"
           );
         }
+
         break;
       }
       case 4: {
         try {
-          const lastValue = values.experience.length - 1;
-          if (
-            formMethods.watch(`experience.${lastValue}.isSubmitted`) !== true
-          ) {
-            const experienceData = {
-              doctor: doctor,
-              hospital: values.experience[lastValue].hospital,
-              description: values.experience[lastValue].description,
-              currently_working: values.experience[lastValue].currently_working,
-              from_date: values.experience[lastValue].from_date,
-              to_date: values.experience[lastValue].to_date,
-              experience_documents:
-                values.experience[lastValue].experience_documents,
-              id: "",
-              editMode: false,
-              submitMode: false,
-              isSubmitted: false,
-            };
-            const createExperienceFileResponse =
-              await experienceFileRegister.mutateAsync(experienceData);
+          const experienceArray = formMethods.getValues("experience");
 
-            if (createExperienceFileResponse) {
-              const experienceInfoData = {
-                ...experienceData,
-                experience_documents:
-                  createExperienceFileResponse.data.data.map(
-                    (file: string) => ({
-                      file: file,
-                    })
-                  ),
-              };
-              const experienceInfoResponse =
-                await experienceInfoRegister.mutateAsync(experienceInfoData);
-              if (experienceInfoResponse) {
-                onOpenConfirmation();
-                formMethods.setValue(
-                  `experience.${lastValue}.id`,
-                  experienceInfoRegister?.data?.data?.id
-                );
-                formMethods.setValue(
-                  `experience.${lastValue}.isSubmitted`,
-                  true
-                );
-                formMethods.setValue(`experience.${lastValue}.editMode`, true);
-                formMethods.setValue(
-                  `experience.${lastValue}.submitMode`,
-                  false
-                );
+          const experiencePromises = experienceArray.map(
+            async experienceData => {
+              const createExperienceFileResponse =
+                await experienceFileRegister.mutateAsync(experienceData);
+
+              if (createExperienceFileResponse) {
+                const experienceInfoData = {
+                  ...experienceData,
+                  doctor: doctor,
+                  experience_documents:
+                    createExperienceFileResponse.data.data.map(
+                      (file: string) => ({
+                        file: file,
+                      })
+                    ),
+                };
+
+                try {
+                  const experienceInfoResponse =
+                    await experienceInfoRegister.mutateAsync(
+                      experienceInfoData
+                    );
+
+                  if (experienceInfoResponse) {
+                    return experienceInfoResponse.data.data;
+                  } else {
+                    throw new Error("Failed to add experience information!");
+                  }
+                } catch (error) {
+                  const err = error as AxiosError<{ errors: [0] }>;
+                  const errorObject = err?.response?.data?.errors?.[0];
+                  const firstErrorMessage = errorObject
+                    ? Object.values(errorObject)[0]
+                    : null;
+                  throw new Error(
+                    firstErrorMessage?.toString() ||
+                      "Failed to add experience information!"
+                  );
+                }
               } else {
-                toastFail("Failed to add experience information!");
+                throw new Error("Failed to upload experience files!");
               }
-            } else {
-              toastFail("Faield to upload experience files!");
             }
-          } else {
+          );
+
+          const experienceInfoResponses = await Promise.all(experiencePromises);
+
+          if (experienceInfoResponses) {
             onOpenConfirmation();
+
+            experienceInfoResponses.forEach((experienceInfoResponse, index) => {
+              if (experienceInfoResponse) {
+                formMethods.setValue(
+                  `experience.${index}.id`,
+                  experienceInfoResponse.id
+                );
+              }
+            });
+
+            toastSuccess("Experience Information updated");
+          } else {
+            throw new Error("Failed to add experience information!");
           }
         } catch (error) {
-          const err = error as AxiosError<{ message: string }>;
+          const err = error as AxiosError<{ errors: [0] }>;
+          const errorObject = err?.response?.data?.errors?.[0];
+          const firstErrorMessage = errorObject
+            ? Object.values(errorObject)[0]
+            : null;
           toastFail(
-            err?.response?.data?.message ||
+            firstErrorMessage?.toString() ||
               "Failed to add experience information!"
           );
         }
+
         break;
       }
     }
   };
 
   const handleNextButtonClick = () => {
-    console.log("errrr");
     formMethods.handleSubmit(onSubmitForm)();
   };
   const steps = [
@@ -572,7 +627,7 @@ const RegistrationForm = () => {
               pl={12}
               pb={24}
               gap={12}
-              h="90vh"
+              h="80vh"
             >
               <Box>
                 <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
@@ -630,7 +685,7 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="90vh">{content}</Box>
+            <Box h="80vh">{content}</Box>
           </HStack>
 
           <Flex justifyContent="space-between" mt={4} mb={4}>
@@ -648,13 +703,16 @@ const RegistrationForm = () => {
             </Button>
 
             <Flex gap={4}>
-              {activeStep > 1 && activeStep < 4 && (
+              {activeStep > 1 && activeStep < 5 && (
                 <Button
                   onClick={() => {
-                    if (activeStep === steps.length) {
+                    if (activeStep === 4) {
+                      console.log(activeStep);
                       return onOpenConfirmation();
+                    } else {
+                      console.log(activeStep);
+                      setActiveStep(prev => prev + 1);
                     }
-                    setActiveStep(prev => prev + 1);
                   }}
                   border={`1px solid ${colors.primary}`}
                   color={colors.primary}
@@ -664,7 +722,6 @@ const RegistrationForm = () => {
                   Skip
                 </Button>
               )}
-
               {activeStep === 1 && isPrimarySubmitted === true ? (
                 <Button
                   isLoading={
