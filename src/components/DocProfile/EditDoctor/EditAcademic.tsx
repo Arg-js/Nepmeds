@@ -79,12 +79,10 @@ const EditAcademic = ({
         submitMode: false,
         isSubmitted: false,
       };
+      try {
+        const createAcademicFileResponse =
+          await academicFileRegister.mutateAsync(academicData);
 
-      const createAcademicFileResponse = await academicFileRegister.mutateAsync(
-        academicData
-      );
-
-      if (createAcademicFileResponse) {
         const academicInfoData = {
           ...academicData,
           academic_documents: createAcademicFileResponse.data.data.map(
@@ -105,13 +103,26 @@ const EditAcademic = ({
         } else {
           toastFail("Failed to add academic information!");
         }
-      } else {
-        toastFail("Failed to upload academic files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to add academic files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message || "Failed to add academic information!"
+        firstErrorMessage?.toString() || "Failed to add academic files!"
       );
     }
   };
@@ -148,12 +159,10 @@ const EditAcademic = ({
         submitMode: false,
         isSubmitted: false,
       };
+      try {
+        const createAcademicFileResponse =
+          await academicFileRegister.mutateAsync(academicData);
 
-      const createAcademicFileResponse = await academicFileRegister.mutateAsync(
-        academicData
-      );
-
-      if (createAcademicFileResponse) {
         const academicInfoData = {
           ...academicData,
           academic_documents: createAcademicFileResponse.data.data.map(
@@ -172,13 +181,27 @@ const EditAcademic = ({
         } else {
           toastFail("Failed to add academic information!");
         }
-      } else {
-        toastFail("Failed to upload academic files!");
+      } catch (error) {
+        const err = error as AxiosError<{ errors: [0] }>;
+
+        const errorObject = err?.response?.data?.errors?.[0];
+        const firstErrorMessage = errorObject
+          ? Object.values(errorObject)[0]
+          : null;
+        toastFail(
+          firstErrorMessage?.toString() || "Failed to update academic files!"
+        );
       }
     } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
+      const err = error as AxiosError<{ errors: [0] }>;
+
+      const errorObject = err?.response?.data?.errors?.[0];
+      const firstErrorMessage = errorObject
+        ? Object.values(errorObject)[0]
+        : null;
       toastFail(
-        err?.response?.data?.message || "Failed to add academic information!"
+        firstErrorMessage?.toString() ||
+          "Failed to update academic information!"
       );
     }
   };

@@ -10,7 +10,7 @@ import {
 } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { gender, idType, phone } from "@nepMeds/utils/choices";
+import { gender, idType } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
@@ -19,7 +19,8 @@ import { ChangeEvent, useEffect } from "react";
 import React from "react";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import ImageUpload from "@nepMeds/components/ImageUpload";
-// import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
+import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
+import Input from "@nepMeds/components/Form/Input";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -156,13 +157,14 @@ const PrimaryInfo = ({
         </GridItem>
       )}
       <GridItem colSpan={isEditable ? 1 : 1}>
-        <Select
-          // startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
-          placeholder=""
+        <Input
           name="phone"
           register={register}
-          options={phone}
+          defaultValue={"+977"}
+          isReadOnly
+          startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
           style={{ background: colors.forminput, border: "none" }}
+          error={errors.phone?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 3 : 1}>

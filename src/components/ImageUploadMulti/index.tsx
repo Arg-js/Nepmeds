@@ -52,6 +52,7 @@ const MultipleImageUpload = ({
     const updatedShowAddImageBox = [...showAddImageBox];
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
+
     setValue(`${name}.${index}`, null);
   };
 
@@ -105,8 +106,7 @@ const MultipleImageUpload = ({
         </Flex>
       ))}
       {selectedImages.length < 5 && (
-        <label
-          htmlFor={`input-${name}`}
+        <Box
           style={{
             position: "relative",
             width: "60px",
@@ -157,7 +157,7 @@ const MultipleImageUpload = ({
               ]);
             }}
           />
-        </label>
+        </Box>
       )}
     </Flex>
   );

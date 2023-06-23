@@ -4,21 +4,12 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { Delete, Edit } from "react-iconly";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import Select from "@nepMeds/components/Form/Select";
-import { year } from "@nepMeds/utils/choices";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import {
-  useAcademicFileRegister,
-  useAcademicInfoRegister,
-  useUpdateAcademicInfo,
-} from "@nepMeds/service/nepmeds-academic";
-import { AxiosError } from "axios";
-import { CheckIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -33,7 +24,6 @@ export const AcademicInfoForm = ({
     getValues,
     reset,
     setValue,
-    watch,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
@@ -55,11 +45,6 @@ export const AcademicInfoForm = ({
       });
     }
   }, [doctorProfileData, reset]);
-
-  const academicInfoRegister = useAcademicInfoRegister();
-  const academicFileRegister = useAcademicFileRegister();
-
-  const updateAcademicInfoRegister = useUpdateAcademicInfo();
 
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | string | null>>
@@ -103,122 +88,19 @@ export const AcademicInfoForm = ({
   console.log(selectedImages, selectedImagesFile);
   console.log(getValues("academic"));
 
-  const handleSendAcademic = async () => {
-    try {
-      const lastValue = getValues("academic").length - 1;
-      if (getValues(`academic.${lastValue}.isSubmitted`) !== true) {
-        const academicData = {
-          degree_program: getValues(`academic.${lastValue}.degree_program`),
-          graduation_year: getValues(`academic.${lastValue}.graduation_year`),
-          university: getValues(`academic.${lastValue}.university`),
-          major: getValues(`academic.${lastValue}.major`),
-          doctor: getValues("doctor_id"),
-          academic_documents: getValues(
-            `academic.${lastValue}.academic_documents`
-          ),
-          id: "",
-          editMode: false,
-          submitMode: false,
-          isSubmitted: false,
-        };
-
-        const createAcademicFileResponse =
-          await academicFileRegister.mutateAsync(academicData);
-
-        if (createAcademicFileResponse) {
-          const academicInfoData = {
-            ...academicData,
-            academic_documents: createAcademicFileResponse.data.data.map(
-              (file: string) => ({
-                file: file,
-              })
-            ),
-          };
-          const academicInfoResponse = await academicInfoRegister.mutateAsync(
-            academicInfoData
-          );
-
-          if (academicInfoResponse) {
-            toastSuccess("Academic Information updated");
-            setValue(
-              `academic.${lastValue}.id`,
-              academicInfoResponse?.data?.data?.id
-            );
-            setValue(`academic.${lastValue}.isSubmitted`, false);
-
-            setValue(`academic.${lastValue}.editMode`, true);
-            setValue(`academic.${lastValue}.submitMode`, false);
-          } else {
-            toastFail("Failed to add academic information!");
-          }
-        } else {
-          toastFail("Failed to upload academic files!");
-        }
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toastFail(
-        err?.response?.data?.message || "Failed to add academic information!"
-      );
-    }
-  };
-
-  const handleEditData = async (index: number, id: string) => {
-    try {
-      const academicData = {
-        degree_program: getValues(`academic.${index}.degree_program`),
-        graduation_year: getValues(`academic.${index}.graduation_year`),
-        university: getValues(`academic.${index}.university`),
-        major: getValues(`academic.${index}.major`),
-        doctor: getValues("doctor_id"),
-        academic_documents: getValues(`academic.${index}.academic_documents`),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-
-      const createAcademicFileResponse = await academicFileRegister.mutateAsync(
-        academicData
-      );
-
-      if (createAcademicFileResponse) {
-        const academicInfoData = {
-          ...academicData,
-          academic_documents: createAcademicFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        const academicInfoResponse =
-          await updateAcademicInfoRegister.mutateAsync({
-            id: parseInt(id),
-            data: academicInfoData,
-          });
-
-        if (academicInfoResponse) {
-          toastSuccess("Academic Information updated");
-        } else {
-          toastFail("Failed to add academic information!");
-        }
-      } else {
-        toastFail("Failed to upload academic files!");
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toastFail(
-        err?.response?.data?.message || "Failed to add academic information!"
-      );
-    }
-  };
+  // generating year
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1950 + 1 }, (_, index) => {
+    const year = currentYear - index;
+    return { label: year.toString(), value: year.toString() };
+  });
   return (
     <>
       {fields.map((item, index) => {
         const academicIndex = index;
         const selectedImagesForAcademic = selectedImages[academicIndex] || [];
 
-        const handleRemoveAcademic = () => {
+        const handleRemoveAcademic = async () => {
           remove(index);
 
           // Remove corresponding files from selectedImagesFile state
@@ -264,7 +146,6 @@ export const AcademicInfoForm = ({
                     label="Degree"
                     required
                     register={register}
-                    isDisabled={getValues(`academic.${index}.editMode`)}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
                     rules={{
@@ -283,7 +164,6 @@ export const AcademicInfoForm = ({
                     required
                     label="Major"
                     register={register}
-                    isDisabled={getValues(`academic.${index}.editMode`)}
                     rules={{
                       required: "Major is required.",
                     }}
@@ -301,7 +181,6 @@ export const AcademicInfoForm = ({
                   <FloatingLabelInput
                     required
                     label="College/ University"
-                    isDisabled={getValues(`academic.${index}.editMode`)}
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
@@ -320,10 +199,9 @@ export const AcademicInfoForm = ({
                   <Select
                     required
                     placeholder=""
-                    isDisabled={getValues(`academic.${index}.editMode`)}
                     label="Passed Year"
                     register={register}
-                    options={year}
+                    options={years}
                     {...field}
                     style={{
                       background: colors.forminput,
@@ -339,47 +217,18 @@ export const AcademicInfoForm = ({
                 name={`academic.${index}.graduation_year`}
                 control={control}
               />
+              <Button
+                type="button"
+                position={"absolute"}
+                right="-15"
+                top="150px"
+                variant={"ghost"}
+                _hover={{ background: "transparent" }}
+                onClick={handleRemoveAcademic}
+              >
+                <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
+              </Button>
             </SimpleGrid>
-            <Button
-              type="button"
-              position={"absolute"}
-              bottom={"0"}
-              right="-15"
-              onClick={handleRemoveAcademic}
-            >
-              <Icon as={Delete} fontSize={18} color={colors.error} />
-            </Button>
-            {watch(`academic.${index}.editMode`) && (
-              <Button
-                type="button"
-                position={"absolute"}
-                bottom={"14"}
-                right="-15"
-                // Edit button props...
-                onClick={() => {
-                  setValue(`academic.${index}.submitMode`, true);
-                  setValue(`academic.${index}.editMode`, false);
-                }}
-              >
-                <Icon as={Edit} fontSize={18} color={colors.error} />
-              </Button>
-            )}
-            {watch(`academic.${index}.submitMode`) && (
-              <Button
-                type="button"
-                position={"absolute"}
-                bottom={"14"}
-                right="-15"
-                // Submit button props...
-                onClick={() => {
-                  handleEditData(index, getValues(`academic.${index}.id`));
-                  setValue(`academic.${index}.submitMode`, false);
-                  setValue(`academic.${index}.editMode`, true);
-                }}
-              >
-                <Icon as={CheckIcon} fontSize={18} color={colors.error} />
-              </Button>
-            )}
           </Box>
         );
       })}
@@ -392,8 +241,7 @@ export const AcademicInfoForm = ({
         w="100%"
         mb={8}
         leftIcon={<span color={colors.error}> + </span>}
-        onClick={async () => {
-          await handleSendAcademic();
+        onClick={() => {
           append({
             id: "",
             doctor: 0,
@@ -402,9 +250,6 @@ export const AcademicInfoForm = ({
             university: "",
             graduation_year: "",
             academic_documents: undefined,
-            editMode: false,
-            submitMode: false,
-            isSubmitted: false,
           });
         }}
       >

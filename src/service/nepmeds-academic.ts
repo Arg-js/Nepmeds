@@ -11,8 +11,20 @@ const createAcademicData = async (data: AcademicInfo) => {
   return response;
 };
 
-export const useAcademicInfoRegister = () => useMutation(createAcademicData);
+export const useAcademicInfoRegister = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<AxiosResponse<any, any>, unknown, AcademicInfo>(
+    createAcademicData,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+        queryClient.fetchQuery(api.doctor_profile);
+      },
+    }
+  );
 
+  return mutation;
+};
 const createAcademicFile = async (data: AcademicInfo) => {
   const formData = new FormData();
   console.log(data);
@@ -20,7 +32,7 @@ const createAcademicFile = async (data: AcademicInfo) => {
   if (data.academic_documents) {
     // Append multiple files to formData
     data.academic_documents.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
+      if (file !== null) formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.academic_file, formData);
@@ -43,7 +55,7 @@ export const useUpdateAcademicInfo = () => {
     { id: number; data: AcademicInfo }
   >(variables => updateAcademicData(variables.id, variables.data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.academic);
+      queryClient.invalidateQueries(api.doctor_profile);
       queryClient.fetchQuery(api.doctor_profile);
     },
   });
@@ -63,7 +75,7 @@ export const useDeleteAcademicInfo = () => {
     id => deleteAcademicData(id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(api.academic);
+        queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
     }
