@@ -47,8 +47,29 @@ export const useUpdateExperienceInfo = () => {
   >(variables => updateExperienceData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.experience);
+      queryClient.fetchQuery(api.doctor_profile);
     },
   });
+
+  return mutation;
+};
+
+const deleteExperienceData = async (id: number) => {
+  const response = await HttpClient.delete(api.experience + `${id}/`);
+  return response;
+};
+
+export const useDeleteExperienceInfo = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<AxiosResponse<any, any>, unknown, number>(
+    id => deleteExperienceData(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.experience);
+        queryClient.fetchQuery(api.doctor_profile);
+      },
+    }
+  );
 
   return mutation;
 };

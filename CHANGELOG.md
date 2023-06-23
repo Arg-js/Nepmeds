@@ -1,32 +1,4 @@
-<<<<<<< HEAD
-## 0.0.1 (2023-06-19)
-=======
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> cba2c47dd0fdc8275d4b664dda7f09423dc0ed6a
-=======
->>>>>>> ec2c28b27d6cdd8aa3b1f39670663e9dffb3182c
-## 0.0.1 (2023-06-19)
-=======
-## 0.0.1 (2023-06-16)
->>>>>>> 28efc1fd08ef785bae5b1e15fc41911239e7ac89
->>>>>>> 4c63d32b33032d0f833cdee65681c0f2d46147d2
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> ec2c28b27d6cdd8aa3b1f39670663e9dffb3182c
-=======
-## 0.0.1 (2023-06-16)
->>>>>>> 28efc1fd08ef785bae5b1e15fc41911239e7ac89
->>>>>>> ed1b6f2f7829058cfe187b49c0f67da041989cb4
-<<<<<<< HEAD
->>>>>>> cba2c47dd0fdc8275d4b664dda7f09423dc0ed6a
-=======
->>>>>>> ec2c28b27d6cdd8aa3b1f39670663e9dffb3182c
+## 0.0.1 (2023-06-22)
 
 
 ### Bug Fixes
@@ -40,7 +12,6 @@
 * **bug fixes:** fixed build issues ([ec4d743](https://gitlab.com/r2850/nepmeds/commit/ec4d7438ca0e887bd4d3a6f48f6c919bfc155c65))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
-* Committing local changes to CHANGELOG.md ([4952bc2](https://gitlab.com/r2850/nepmeds/commit/4952bc2b8223639a9cb54f19e20371ae92695903))
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
 * doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
@@ -61,12 +32,6 @@
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
-* **registration:** design issue resolved ([39eea86](https://gitlab.com/r2850/nepmeds/commit/39eea86d6ee52b94e866bad7b525971f2ca7b190))
-* **registration:** edit  registration ([12bc927](https://gitlab.com/r2850/nepmeds/commit/12bc9270f79349fe81f06a9937d43ea422002025))
-* **registration:** edit  registration step issues resolved ([feebd3c](https://gitlab.com/r2850/nepmeds/commit/feebd3c48dccaf6a4e1f672007a1206fccf6b823))
-* **registration:** edit  registration step issues resolved ([2165a62](https://gitlab.com/r2850/nepmeds/commit/2165a6263cb6dd6b2f7f114cbe442278045c9490))
-* **registration:** edit  registration step issues resolved ([36c80bf](https://gitlab.com/r2850/nepmeds/commit/36c80bf4c6f4bd5d42e760338b2120ee385bb8f6))
-* **registration:** edit  registration step issues resolved ([d181a5c](https://gitlab.com/r2850/nepmeds/commit/d181a5cea1ed08d68465fdf8a8cf8446c82ca925))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
@@ -93,7 +58,6 @@
 * **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))
 * doctor profile slicing ([55826e8](https://gitlab.com/r2850/nepmeds/commit/55826e8bc4d0798c74960a23c912611a1d7c34f8))
 * **edit profile:** added modal in edit profile component ([961f49b](https://gitlab.com/r2850/nepmeds/commit/961f49bdc5103b65d0281c63ddb1afeecfcd71ff))
-* **edit profile:** edit profile implementation ([4d1c7d6](https://gitlab.com/r2850/nepmeds/commit/4d1c7d68c06ae4a64516a71fde48b623bba08dda))
 * forgot password ([fbd5eb5](https://gitlab.com/r2850/nepmeds/commit/fbd5eb54d18db3db41b40876e8416b7594fa0f72))
 * forgot password slicing ([f6879f5](https://gitlab.com/r2850/nepmeds/commit/f6879f5ced3d03c386a2a53547a63d835a63bab4))
 * **login component:** slicing started for login component ([f8d1632](https://gitlab.com/r2850/nepmeds/commit/f8d163273265dc1dada652904f7cf85a60c8c16e))

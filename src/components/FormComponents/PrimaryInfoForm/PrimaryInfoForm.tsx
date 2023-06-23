@@ -338,7 +338,7 @@ const PrimaryInfo = ({
           error={errors.id_issued_district?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={isEditable ? 4 : 1}>
         <FloatingLabelInput
           name="id_issued_date"
           label="Issued Date"
