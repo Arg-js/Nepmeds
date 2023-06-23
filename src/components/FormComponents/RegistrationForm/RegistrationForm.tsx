@@ -354,11 +354,12 @@ const RegistrationForm = () => {
             setActiveStep(3);
           }
         } catch (error) {
-          const err = error as AxiosError<{ message: string }>;
-          toastFail(
-            err?.response?.data?.message ||
-              "Failed to add academic information!"
-          );
+          const err = error as AxiosError<{ errors: [] }>;
+          const errorObject = err?.response?.data?.errors;
+          const firstErrorMessage = errorObject
+            ? Object.values(errorObject)[0]
+            : null;
+          toastFail(firstErrorMessage || "Failed to add academic information!");
         }
         break;
       }
