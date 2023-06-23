@@ -19,7 +19,7 @@ import { ChangeEvent, useEffect } from "react";
 import React from "react";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import ImageUpload from "@nepMeds/components/ImageUpload";
-import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
+// import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -157,7 +157,7 @@ const PrimaryInfo = ({
       )}
       <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
-          startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
+          // startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
           placeholder=""
           name="phone"
           register={register}
