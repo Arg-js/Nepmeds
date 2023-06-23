@@ -55,7 +55,7 @@ export const BasicInfoForm = ({
   return (
     <Grid
       templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
-      gap={6}
+      gap={4}
     >
       <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
         <ImageUpload

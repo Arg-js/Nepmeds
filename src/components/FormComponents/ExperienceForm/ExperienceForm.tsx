@@ -4,22 +4,14 @@ import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { Delete, Edit } from "react-iconly";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
-import {
-  useExperienceFileRegister,
-  useExperienceInfoRegister,
-  useUpdateExperienceInfo,
-} from "@nepMeds/service/nepmeds-experience";
-import { toastSuccess } from "@nepMeds/components/Toast";
-import { toastFail } from "@nepMeds/service/service-toast";
-import { AxiosError } from "axios";
-import { CheckIcon } from "@chakra-ui/icons";
+
+import { DeleteIcon } from "@chakra-ui/icons";
+import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
@@ -100,119 +92,6 @@ export const ExperienceForm = ({
   console.log(selectedImages, selectedImagesFile);
   console.log(getValues("experience"));
 
-  const experienceInfoRegister = useExperienceInfoRegister();
-  const experienceFileRegister = useExperienceFileRegister();
-  const updateExperienceFileRegister = useUpdateExperienceInfo();
-
-  const handleSubmitExperienceData = async () => {
-    const index = getValues("experience").length - 1;
-
-    try {
-      if (getValues(`experience.${index}.isSubmitted`) !== true) {
-        const experienceData = {
-          doctor: getValues("doctor_id"),
-          hospital: getValues(`experience.${index}.hospital`),
-          description: getValues(`experience.${index}.description`),
-          currently_working: getValues(`experience.${index}.currently_working`),
-          from_date: getValues(`experience.${index}.from_date`),
-          to_date: getValues(`experience.${index}.to_date`),
-          experience_documents: getValues(
-            `experience.${index}.experience_documents`
-          ),
-          id: "",
-          editMode: false,
-          submitMode: false,
-          isSubmitted: false,
-        };
-        const createExperienceFileResponse =
-          await experienceFileRegister.mutateAsync(experienceData);
-
-        if (createExperienceFileResponse) {
-          const experienceInfoData = {
-            ...experienceData,
-            experience_documents: createExperienceFileResponse.data.data.map(
-              (file: string) => ({
-                file: file,
-              })
-            ),
-          };
-          const experienceInfoResponse =
-            await experienceInfoRegister.mutateAsync(experienceInfoData);
-          if (experienceInfoResponse) {
-            toastSuccess("Experience data updated successfully");
-            setValue(
-              `experience.${index}.id`,
-              experienceInfoResponse?.data?.data?.id
-            );
-            setValue(`experience.${index}.isSubmitted`, true);
-
-            setValue(`experience.${index}.editMode`, true);
-            setValue(`experience.${index}.submitMode`, false);
-          } else {
-            toastFail("Failed to add experience information!");
-          }
-        } else {
-          toastFail("Failed to upload experience files!");
-        }
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toastFail(
-        err?.response?.data?.message || "Failed to add experience information!"
-      );
-    }
-  };
-
-  const handleEditData = async (index: number, id: string) => {
-    try {
-      const experienceData = {
-        doctor: getValues("doctor_id"),
-        hospital: getValues(`experience.${index}.hospital`),
-        description: getValues(`experience.${index}.description`),
-        currently_working: getValues(`experience.${index}.currently_working`),
-        from_date: getValues(`experience.${index}.from_date`),
-        to_date: getValues(`experience.${index}.to_date`),
-        experience_documents: getValues(
-          `experience.${index}.experience_documents`
-        ),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-      const createExperienceFileResponse =
-        await experienceFileRegister.mutateAsync(experienceData);
-
-      if (createExperienceFileResponse) {
-        const experienceInfoData = {
-          ...experienceData,
-          experience_documents: createExperienceFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        const experienceInfoResponse =
-          await updateExperienceFileRegister.mutateAsync({
-            id: parseInt(id),
-            data: experienceInfoData,
-          });
-        if (experienceInfoResponse) {
-          toastSuccess("Experience data updated successfully");
-        } else {
-          toastFail("Failed to add experience information!");
-        }
-      } else {
-        toastFail("Faield to upload experience files!");
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ message: string }>;
-      toastFail(
-        err?.response?.data?.message || "Failed to add experience information!"
-      );
-    }
-  };
-
   const validateFromDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const fromDate = getValues(`experience.${index}.from_date`);
@@ -242,7 +121,7 @@ export const ExperienceForm = ({
         const selectedImagesForExperience =
           selectedImages[experienceIndex] || [];
 
-        const handleRemoveAcademic = () => {
+        const handleRemoveExperience = async () => {
           remove(index);
 
           // Remove corresponding files from selectedImagesFile state
@@ -279,7 +158,7 @@ export const ExperienceForm = ({
               templateColumns="repeat(4,1fr)"
               gap={3}
               mb={3}
-              alignItems="flex-end"
+              // alignItems="flex-end"
               key={item.id}
               w="100%"
             >
@@ -291,7 +170,6 @@ export const ExperienceForm = ({
                       register={register}
                       required
                       style={{ background: colors.forminput, border: "none" }}
-                      isDisabled={getValues(`experience.${index}.editMode`)}
                       {...field}
                       rules={{
                         required: "Hospital/Clinic name is required.",
@@ -312,7 +190,6 @@ export const ExperienceForm = ({
                       required
                       register={register}
                       type="date"
-                      isDisabled={getValues(`experience.${index}.editMode`)}
                       style={{ background: colors.forminput, border: "none" }}
                       {...field}
                       rules={{
@@ -333,7 +210,6 @@ export const ExperienceForm = ({
                       <FloatingLabelInput
                         label="To"
                         required
-                        isDisabled={getValues(`experience.${index}.editMode`)}
                         register={register}
                         type="date"
                         style={{ background: colors.forminput, border: "none" }}
@@ -357,7 +233,6 @@ export const ExperienceForm = ({
                       label="Description"
                       register={register}
                       required
-                      isDisabled={getValues(`experience.${index}.editMode`)}
                       style={{
                         background: colors.forminput,
                         border: "none",
@@ -381,54 +256,24 @@ export const ExperienceForm = ({
                       label="Currently working here"
                       control={control}
                       {...fieldValues}
-                      isDisabled={getValues(`experience.${index}.editMode`)}
                       checked={value}
                     />
                   )}
                   name={`experience.${index}.currently_working`}
                   control={control}
                 />
+                <Button
+                  type="button"
+                  position={"absolute"}
+                  right="-5"
+                  top="400px"
+                  variant={"ghost"}
+                  _hover={{ background: "transparent" }}
+                  onClick={handleRemoveExperience}
+                >
+                  <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
+                </Button>
               </GridItem>
-              <Button
-                type="button"
-                position={"absolute"}
-                bottom={"0"}
-                right="-15"
-                onClick={handleRemoveAcademic}
-              >
-                <Icon as={Delete} fontSize={18} color={colors.error} />
-              </Button>
-              {watch(`experience.${index}.editMode`) && (
-                <Button
-                  type="button"
-                  position={"absolute"}
-                  bottom={"14"}
-                  right="-15"
-                  // Edit button props...
-                  onClick={() => {
-                    setValue(`experience.${index}.submitMode`, true);
-                    setValue(`experience.${index}.editMode`, false);
-                  }}
-                >
-                  <Icon as={Edit} fontSize={18} color={colors.error} />
-                </Button>
-              )}
-              {watch(`experience.${index}.submitMode`) && (
-                <Button
-                  type="button"
-                  position={"absolute"}
-                  bottom={"14"}
-                  right="-15"
-                  // Submit button props...
-                  onClick={() => {
-                    handleEditData(index, getValues(`experience.${index}.id`));
-                    setValue(`experience.${index}.submitMode`, false);
-                    setValue(`experience.${index}.editMode`, true);
-                  }}
-                >
-                  <Icon as={CheckIcon} fontSize={18} color={colors.error} />
-                </Button>
-              )}
             </Grid>
           </Box>
         );
@@ -442,8 +287,7 @@ export const ExperienceForm = ({
         w="100%"
         mb={8}
         leftIcon={<span color={colors.error}> + </span>}
-        onClick={async () => {
-          await handleSubmitExperienceData();
+        onClick={() => {
           append({
             doctor: 0,
             hospital: "",
@@ -453,9 +297,6 @@ export const ExperienceForm = ({
             currently_working: false,
             experience_documents: undefined,
             id: "",
-            editMode: false,
-            submitMode: false,
-            isSubmitted: false,
           });
         }}
       >

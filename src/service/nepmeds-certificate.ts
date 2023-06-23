@@ -11,8 +11,21 @@ const createCertificateData = async (data: CertificateInfo) => {
   return response;
 };
 
-export const useCertificateInfoRegister = () =>
-  useMutation(createCertificateData);
+export const useCertificateInfoRegister = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<
+    AxiosResponse<any, any>,
+    unknown,
+    CertificateInfo
+  >(createCertificateData, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.doctor_profile);
+      queryClient.fetchQuery(api.doctor_profile);
+    },
+  });
+
+  return mutation;
+};
 
 const createCertificateFile = async (data: CertificateInfo) => {
   const formData = new FormData();
@@ -21,7 +34,7 @@ const createCertificateFile = async (data: CertificateInfo) => {
   if (data.certificate_documents) {
     // Append multiple files to formData
     data.certificate_documents.forEach((file, index) => {
-      formData.append(`files[${index}]`, file);
+      if (file !== null) formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.certificate_file, formData);
@@ -46,7 +59,7 @@ export const useUpdateCertificateInfo = () => {
     { id: number; data: CertificateInfo }
   >(variables => updateCertificateData(variables.id, variables.data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.certificate);
+      queryClient.invalidateQueries(api.doctor_profile);
       queryClient.fetchQuery(api.doctor_profile);
     },
   });
@@ -65,7 +78,7 @@ export const useDeleteCertificateInfo = () => {
     id => deleteCertificateData(id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries(api.certificate);
+        queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
     }
