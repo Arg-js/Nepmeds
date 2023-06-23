@@ -70,7 +70,7 @@ export const BasicInfoForm = ({
       </GridItem>
 
       {isEditable ? (
-        <GridItem colSpan={4}>
+        <GridItem colSpan={3}>
           <FloatinglabelTextArea
             label="Basic Information"
             name="bio_detail"

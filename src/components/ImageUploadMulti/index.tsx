@@ -11,6 +11,7 @@ const MultipleImageUpload = ({
   name,
   background,
   fieldValues,
+  editMode,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
     Array(selectedImages.length).fill(false)
@@ -19,9 +20,29 @@ const MultipleImageUpload = ({
 
   useEffect(() => {
     // Initialize selected images from field values when the component mounts
-    const initialValues = getValues(fieldValues);
-    setSelectedImages(initialValues);
+    if (editMode) {
+      if (fieldValues && fieldValues.length > 0) {
+        const defaultImages = fieldValues.map((item: any) => {
+          // Extract the file path from each item in the array
+          const filePath = item?.file;
+
+          // Append the base URL with the file name
+          const imageUrl = `http://38.242.204.217:8005/media/${filePath}`;
+
+          // Create a new image object using the file URL
+          return [imageUrl];
+        });
+
+        // Set the default images as the initial selected images
+        setSelectedImages(defaultImages);
+      }
+    } else {
+      const initialValues = getValues(fieldValues);
+
+      setSelectedImages(initialValues);
+    }
   }, [fieldValues]);
+  console.log(selectedImages);
 
   const handleRemoveImage = (index: number) => {
     const updatedImages = [...selectedImages];
@@ -57,7 +78,9 @@ const MultipleImageUpload = ({
             {image && (
               <Image
                 src={
-                  typeof image === "string"
+                  editMode
+                    ? (image as string)
+                    : typeof image === "string"
                     ? image
                     : image instanceof File
                     ? URL.createObjectURL(image)
@@ -150,6 +173,7 @@ interface MultipleImageUploadProps {
   uploadText: string;
   academicIndex: number;
   background?: string;
+  editMode?: boolean;
   fieldValues?: any;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
 }

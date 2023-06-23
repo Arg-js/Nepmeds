@@ -15,8 +15,8 @@ export const useAcademicInfoRegister = () => useMutation(createAcademicData);
 
 const createAcademicFile = async (data: AcademicInfo) => {
   const formData = new FormData();
-  formData.append("doctor_id", data.doctor.toString());
   console.log(data);
+  formData.append("doctor_id", data.doctor.toString());
   if (data.academic_documents) {
     // Append multiple files to formData
     data.academic_documents.forEach((file, index) => {
@@ -37,7 +37,6 @@ const updateAcademicData = async (id: number, data: AcademicInfo) => {
 
 export const useUpdateAcademicInfo = () => {
   const queryClient = useQueryClient();
-
   const mutation = useMutation<
     AxiosResponse<any, any>,
     unknown,
@@ -45,8 +44,30 @@ export const useUpdateAcademicInfo = () => {
   >(variables => updateAcademicData(variables.id, variables.data), {
     onSuccess: () => {
       queryClient.invalidateQueries(api.academic);
+      queryClient.fetchQuery(api.doctor_profile);
     },
   });
+
+  return mutation;
+};
+
+const deleteAcademicData = async (id: number) => {
+  console.log(id);
+  const response = await HttpClient.delete(api.academic + `${id}/`);
+  return response;
+};
+
+export const useDeleteAcademicInfo = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<AxiosResponse<any, any>, unknown, number>(
+    id => deleteAcademicData(id),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.academic);
+        queryClient.fetchQuery(api.doctor_profile);
+      },
+    }
+  );
 
   return mutation;
 };
