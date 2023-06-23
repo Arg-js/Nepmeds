@@ -51,6 +51,7 @@ const Select = ({
       ) : (
         ""
       )}
+
       <ChakraSelect
         sx={{ background: colors.forminput }}
         {...register(name, rules)}

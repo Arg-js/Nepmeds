@@ -67,6 +67,21 @@ const FloatingLabelInput = ({
         style={{ background: colors.forminput, border: "none" }}
       />
 
+      <ChakraInput
+        id={name}
+        type={type}
+        value={value}
+        {...register(name, rules)}
+        {...rest}
+        placeholder=""
+        h={14}
+        pt={4}
+        pr={8}
+        pb={2}
+        variant="floating"
+        style={{ background: colors.forminput, border: "none" }}
+      />
+
       {label && (
         <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
           {label}
