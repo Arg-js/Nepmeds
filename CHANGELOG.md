@@ -23,6 +23,7 @@
 * image layout ([288726f](https://gitlab.com/r2850/nepmeds/commit/288726f426bd5c2f393d04fef3cfdd811731c3e9))
 * input fields ([357d009](https://gitlab.com/r2850/nepmeds/commit/357d00981cec4a43262cddbef6d8a0de399f449d))
 * interface of doctor-profile api ([35038c8](https://gitlab.com/r2850/nepmeds/commit/35038c89bcbf65bebfe3f0b3d8d649485977bcbd))
+* **issued:** bug list fixing ([c1153fe](https://gitlab.com/r2850/nepmeds/commit/c1153fe0f5906dbba96092d73bd2033ddbb3686f))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
 * **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))

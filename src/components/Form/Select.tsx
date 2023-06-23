@@ -4,7 +4,6 @@ import {
   FormErrorMessage,
   FormHelperText,
   FormLabel,
-  InputGroup,
   InputLeftElement,
   InputRightElement,
   SelectProps,
@@ -33,58 +32,56 @@ const Select = ({
 }: ISelect) => {
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
-      <InputGroup>
-        {startIcon ? (
-          <InputLeftElement
-            top="10%"
-            left={"-20px"}
-            pointerEvents="none"
-            onClick={onIconClick}
-          >
-            {startIcon}
-          </InputLeftElement>
-        ) : (
-          ""
-        )}
-        {endIcons ? (
-          <InputRightElement onClick={onIconClick} top="8%">
-            {endIcons}
-          </InputRightElement>
-        ) : (
-          ""
-        )}
-        <ChakraSelect
-          sx={{ background: colors.forminput }}
-          {...register(name, rules)}
-          {...rest}
-          id={name}
-          h={14}
-          // value={defaultValue}
-          defaultValue={defaultValue}
-
-          // pr={8}
+      {startIcon ? (
+        <InputLeftElement
+          top="10%"
+          left={"-20px"}
+          pointerEvents="none"
+          onClick={onIconClick}
         >
-          {placeholder && (
-            <option value="" disabled={!enabled}>
-              {placeholder}
-            </option>
-          )}
-          {options?.map(({ label, value }) => (
-            <option key={value} value={value}>
-              {label}
-            </option>
-          ))}
-        </ChakraSelect>
-        {label && (
-          <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-            {label}{" "}
-            {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
-          </FormLabel>
-        )}
+          {startIcon}
+        </InputLeftElement>
+      ) : (
+        ""
+      )}
+      {endIcons ? (
+        <InputRightElement onClick={onIconClick} top="8%">
+          {endIcons}
+        </InputRightElement>
+      ) : (
+        ""
+      )}
+      <ChakraSelect
+        sx={{ background: colors.forminput }}
+        {...register(name, rules)}
+        {...rest}
+        id={name}
+        h={14}
+        // value={defaultValue}
+        defaultValue={defaultValue}
 
-        {helperText && <FormHelperText>{helperText}</FormHelperText>}
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
-      </InputGroup>
+        // pr={8}
+      >
+        {placeholder && (
+          <option value="" disabled={!enabled}>
+            {placeholder}
+          </option>
+        )}
+        {options?.map(({ label, value }) => (
+          <option key={value} value={value}>
+            {label}
+          </option>
+        ))}
+      </ChakraSelect>
+      {label && (
+        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+          {label}{" "}
+          {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
+        </FormLabel>
+      )}
+
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
+      {error && <FormErrorMessage>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
