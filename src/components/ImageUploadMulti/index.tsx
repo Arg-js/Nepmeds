@@ -58,7 +58,7 @@ const MultipleImageUpload = ({
 
   return (
     <Flex
-      p={5}
+      p={2}
       bg={"#F9FAFB"}
       border={"2px dashed"}
       borderColor={"#D1D5DB"}
@@ -109,8 +109,8 @@ const MultipleImageUpload = ({
         <Box
           style={{
             position: "relative",
-            width: "60px",
-            height: "60px",
+            width: "80px",
+            height: "80px",
 
             borderRadius: "4px",
             border: "2px dashed",

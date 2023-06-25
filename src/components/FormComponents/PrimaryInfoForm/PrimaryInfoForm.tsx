@@ -15,7 +15,7 @@ import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect } from "react";
-
+import { Text } from "@chakra-ui/react";
 import React from "react";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import ImageUpload from "@nepMeds/components/ImageUpload";
@@ -162,7 +162,9 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={"+977"}
           isReadOnly
-          startIcon={<img src={NepalFlag} alt="Nepal Flag" />}
+          startIcon={
+            <img src={NepalFlag} style={{ height: "25px" }} alt="Nepal Flag" />
+          }
           style={{ background: colors.forminput, border: "none" }}
           error={errors.phone?.message}
         />
@@ -306,7 +308,9 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={4}>
-        <p>{IdType(watchIdType)} Detail</p>
+        <Text fontWeight={100} fontSize={"20px"}>
+          {IdType(watchIdType)} Detail
+        </Text>
       </GridItem>
       <GridItem colSpan={2}>
         <FloatingLabelInput
@@ -387,7 +391,9 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={4}>
-        <p>Address Details</p>
+        <Text fontWeight={100} fontSize={"20px"}>
+          Address Details{" "}
+        </Text>
       </GridItem>
       <GridItem colSpan={2}>
         <Select

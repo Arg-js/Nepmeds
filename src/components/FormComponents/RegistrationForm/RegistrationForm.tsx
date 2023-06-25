@@ -91,10 +91,10 @@ const registerDefaultValues = {
       degree_program: "",
       major: "",
       id: "",
-
       university: "",
-      graduation_year: "2019",
+      graduation_year: "",
       academic_documents: undefined as undefined | File[],
+      isSubmitted: false,
     },
   ],
   experience: [
@@ -103,10 +103,11 @@ const registerDefaultValues = {
       hospital: "",
       description: "",
       from_date: "",
-      to_date: "",
-      currently_working: false,
+      to_date: undefined as undefined | string, // Make 'to_date' field optional
+      currently_working: undefined as undefined | boolean, // Make 'currently_working' field optiona
       experience_documents: undefined as undefined | File[],
       id: "",
+      isSubmitted: false,
     },
   ],
   certification: [
@@ -115,9 +116,10 @@ const registerDefaultValues = {
       title: "",
       issued_by: "",
       certificate_number: "",
-      certificate_issued_date: "2019",
+      certificate_issued_date: "",
       certificate_documents: undefined as undefined | File[],
       id: "",
+      isSubmitted: false,
     },
   ],
 };
@@ -368,6 +370,7 @@ const RegistrationForm = () => {
                   `academic.${lastValue}.id`,
                   academicInfoResponse.id
                 );
+                formMethods.setValue(`academic.${lastValue}.isSubmitted`, true);
                 setActiveStep(3);
               }
             });
@@ -459,6 +462,10 @@ const RegistrationForm = () => {
                     `certification.${index}.id`,
                     certificateInfoResponse.id
                   );
+                  formMethods.setValue(
+                    `certification.${index}.isSubmitted`,
+                    true
+                  );
                 }
               }
             );
@@ -502,7 +509,9 @@ const RegistrationForm = () => {
                       })
                     ),
                 };
-
+                if (experienceData.currently_working) {
+                  delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
+                }
                 try {
                   const experienceInfoResponse =
                     await experienceInfoRegister.mutateAsync(
@@ -542,6 +551,7 @@ const RegistrationForm = () => {
                   `experience.${index}.id`,
                   experienceInfoResponse.id
                 );
+                formMethods.setValue(`experience.${index}.isSubmitted`, true);
               }
             });
 
@@ -627,7 +637,7 @@ const RegistrationForm = () => {
               pl={12}
               pb={24}
               gap={12}
-              h="80vh"
+              h="75vh"
             >
               <Box>
                 <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
@@ -685,7 +695,7 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="80vh">{content}</Box>
+            <Box h="75vh">{content}</Box>
           </HStack>
 
           <Flex justifyContent="space-between" mt={4} mb={4}>

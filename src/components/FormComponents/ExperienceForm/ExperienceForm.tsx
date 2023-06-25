@@ -106,11 +106,12 @@ export const ExperienceForm = ({
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const toDate = getValues(`experience.${index}.to_date`);
     const fromDate = getValues(`experience.${index}.from_date`);
-    if (toDate > currentDate) {
-      return "To cannot be greater than the current date.";
-    } else if (toDate < fromDate) {
-      return "To date cannot be less than from date";
-    }
+    if (toDate)
+      if (toDate > currentDate) {
+        return "To cannot be greater than the current date.";
+      } else if (toDate < fromDate) {
+        return "To date cannot be less than from date";
+      }
     return true; // Return true if the validation passes
   };
 
@@ -161,6 +162,7 @@ export const ExperienceForm = ({
               // alignItems="flex-end"
               key={item.id}
               w="100%"
+              position={"relative"}
             >
               <GridItem colSpan={isEditable ? 4 : 2}>
                 <Controller
@@ -249,7 +251,12 @@ export const ExperienceForm = ({
                   control={control}
                 />
               </GridItem>
-              <GridItem colSpan={3}>
+              <GridItem
+                display={"flex"}
+                alignItems={"center"}
+                justifyContent={"space-between"}
+                colSpan={4}
+              >
                 <Controller
                   render={({ field: { value, ...fieldValues } }) => (
                     <Checkbox
@@ -262,17 +269,15 @@ export const ExperienceForm = ({
                   name={`experience.${index}.currently_working`}
                   control={control}
                 />
-                <Button
+
+                <Icon
                   type="button"
-                  position={"absolute"}
-                  right="-5"
-                  top="400px"
-                  variant={"ghost"}
-                  _hover={{ background: "transparent" }}
+                  cursor={"pointer"}
+                  as={DeleteIcon}
                   onClick={handleRemoveExperience}
-                >
-                  <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
-                </Button>
+                  fontSize={28}
+                  color={colors.error}
+                />
               </GridItem>
             </Grid>
           </Box>
@@ -297,6 +302,7 @@ export const ExperienceForm = ({
             currently_working: false,
             experience_documents: undefined,
             id: "",
+            isSubmitted: false,
           });
         }}
       >
