@@ -10,6 +10,8 @@ import { ChangeEvent, useEffect, useState } from "react";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 
 import { DeleteIcon } from "@chakra-ui/icons";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDeleteCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
@@ -22,6 +24,7 @@ export const CertificationInfoForm = ({
     control,
     register,
     getValues,
+    watch,
     reset,
     setValue,
     formState: { errors },
@@ -30,6 +33,8 @@ export const CertificationInfoForm = ({
     control,
     name: "certification",
   });
+
+  const deleteCertificateInfoRegister = useDeleteCertificateInfo();
 
   useEffect(() => {
     if (doctorProfileData?.doctor_certification_info?.length) {
@@ -44,7 +49,7 @@ export const CertificationInfoForm = ({
         })),
       });
     }
-  }, [doctorProfileData]);
+  }, [doctorProfileData, getValues]);
 
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | string | null>>
@@ -93,11 +98,11 @@ export const CertificationInfoForm = ({
     const issuedDate = getValues(
       `certification.${index}.certificate_issued_date`
     );
-    if (issuedDate > currentDate) {
+    if (!issuedDate) {
+      return "Issued Date is required";
+    } else if (issuedDate > currentDate) {
       return "Issued date cannot be greater than the current date.";
-    }
-
-    return true; // Return true if the validation passes
+    } else return true; // Return true if the validation passes
   };
   return (
     <>
@@ -107,7 +112,19 @@ export const CertificationInfoForm = ({
           selectedImages[certificateIndex] || [];
 
         const handleRemoveCertificate = async () => {
-          remove(index);
+          if (watch(`certification.${index}.isSubmitted`)) {
+            const certificateInfoResponse =
+              await deleteCertificateInfoRegister.mutateAsync(
+                parseInt(getValues(`certification.${index}.id`))
+              );
+
+            if (certificateInfoResponse) {
+              toastSuccess("Certification data deleted successfully");
+              remove(index);
+            } else {
+              toastFail("Failed to delete certification information!");
+            }
+          } else remove(index);
 
           // Remove corresponding files from selectedImagesFile state
           setSelectedImagesFile(prevImages => {
@@ -119,24 +136,30 @@ export const CertificationInfoForm = ({
         return (
           <Box key={item.id} position="relative">
             <SimpleGrid gridTemplateColumns="1fr" mb={4}>
-              <MultipleImageUpload
-                selectedImages={selectedImagesForCertification}
-                setSelectedImages={images => {
-                  setSelectedImages(prevImages => {
-                    const updatedImages = [...prevImages];
-                    updatedImages[certificateIndex] = images;
-                    return updatedImages;
-                  });
-                }}
-                handleImageChange={(e, imageIndex) =>
-                  handleImageChange(e, imageIndex, index)
-                }
-                name={`certification.${index}.certificate_documents`}
-                fieldValues={`certification.${index}.certificate_documents`}
-                uploadText="Upload Images"
-                background="#F9FAFB"
-                academicIndex={index}
-                helperText={false}
+              <Controller
+                render={({ field }) => (
+                  <MultipleImageUpload
+                    selectedImages={selectedImagesForCertification}
+                    setSelectedImages={images => {
+                      setSelectedImages(prevImages => {
+                        const updatedImages = [...prevImages];
+                        updatedImages[certificateIndex] = images;
+                        return updatedImages;
+                      });
+                    }}
+                    handleImageChange={(e, imageIndex) =>
+                      handleImageChange(e, imageIndex, index)
+                    }
+                    fieldValues={`certification.${index}.certificate_documents`}
+                    uploadText="Upload Images"
+                    background="#F9FAFB"
+                    academicIndex={index}
+                    helperText={false}
+                    {...field} // Pass the `field` props to ensure integration with `react-hook-form`
+                  />
+                )}
+                name={`certification.${index}.certificate_documents`} // Add the field name for registration and validation
+                control={control} // Pass the `control` prop to ensure integration with `react-hook-form`
               />
             </SimpleGrid>
             <SimpleGrid
@@ -212,7 +235,6 @@ export const CertificationInfoForm = ({
                     style={{ background: colors.forminput, border: "none" }}
                     {...field}
                     rules={{
-                      required: "Issued date is required.",
                       validate: () => validateIssuedDate(index),
                     }}
                     error={
@@ -257,6 +279,7 @@ export const CertificationInfoForm = ({
             certificate_issued_date: "",
             certificate_documents: undefined,
             id: "",
+            isSubmitted: false,
           });
         }}
       >

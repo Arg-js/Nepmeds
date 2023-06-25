@@ -44,9 +44,9 @@ export interface IDoctorCertificationInfo {
 export interface IDoctorExperience {
   hospital: string;
   description: string;
-  currently_working: boolean;
+  currently_working?: boolean;
   from_date: string;
-  to_date: string;
+  to_date?: string;
   experience_document: File[];
 
   doctor: number;
