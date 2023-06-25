@@ -10,6 +10,8 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -23,14 +25,17 @@ export const AcademicInfoForm = ({
     register,
     getValues,
     reset,
+    watch,
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
   });
 
+  const deleteAcademicInfoRegister = useDeleteAcademicInfo();
   useEffect(() => {
     if (doctorProfileData?.doctor_academic_info.length) {
       reset({
@@ -92,7 +97,10 @@ export const AcademicInfoForm = ({
   const currentYear = new Date().getFullYear();
   const years = Array.from({ length: currentYear - 1950 + 1 }, (_, index) => {
     const year = currentYear - index;
-    return { label: year.toString(), value: year.toString() };
+    return {
+      label: year.toString(),
+      value: year.toString(),
+    };
   });
   return (
     <>
@@ -101,7 +109,19 @@ export const AcademicInfoForm = ({
         const selectedImagesForAcademic = selectedImages[academicIndex] || [];
 
         const handleRemoveAcademic = async () => {
-          remove(index);
+          if (watch(`academic.${index}.isSubmitted`)) {
+            const academicInfoResponse =
+              await deleteAcademicInfoRegister.mutateAsync(
+                parseInt(getValues(`academic.${index}.id`))
+              );
+
+            if (academicInfoResponse) {
+              toastSuccess("Academic data deleted successfully");
+              remove(index);
+            } else {
+              toastFail("Failed to delete academic information!");
+            }
+          } else remove(index);
 
           // Remove corresponding files from selectedImagesFile state
           setSelectedImagesFile(prevImages => {
@@ -200,6 +220,7 @@ export const AcademicInfoForm = ({
                     required
                     placeholder=""
                     label="Passed Year"
+                    defaultValue={"2023"}
                     register={register}
                     options={years}
                     {...field}
@@ -250,6 +271,7 @@ export const AcademicInfoForm = ({
             university: "",
             graduation_year: "",
             academic_documents: undefined,
+            isSubmitted: false,
           });
         }}
       >
