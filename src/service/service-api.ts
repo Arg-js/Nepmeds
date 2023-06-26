@@ -27,6 +27,7 @@ export const api = {
 
   province: "core/provinces/",
   district: "core/districts/",
+  municipality: "/core/municipalities",
 };
 
 export interface NepMedsResponse<T = any> {

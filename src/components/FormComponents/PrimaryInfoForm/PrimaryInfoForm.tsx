@@ -6,6 +6,7 @@ import Select from "@nepMeds/components/Form/Select";
 import {
   useGetAllDistricts,
   useGetDistricts,
+  useGetMunicipality,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
@@ -40,10 +41,17 @@ const PrimaryInfo = ({
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
   const allDistrictInfo = useGetAllDistricts();
+  const municipalityInfo = useGetMunicipality(watch("district"));
   const { data: specialization = [] } = useSpecializationData();
 
   const provinceOptions =
     provinceInfo.data?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
+
+  const municipalityOptions =
+    municipalityInfo?.data?.map(p => ({
       label: p.name,
       value: p.id,
     })) || [];
@@ -436,14 +444,19 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
-        <FloatingLabelInput
+        <Select
           placeholder=""
           label="Municipality/ VDC"
           name="municipality"
           required
           register={register}
           defaultValue={doctorProfileData?.user?.municipality}
-          style={{ background: colors.forminput, border: "none" }}
+          options={municipalityOptions}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
           rules={{
             required: "Municipality is required.",
           }}

@@ -102,6 +102,7 @@ export const BasicInfoForm = ({
           label="First Name"
           name="first_name"
           register={register}
+          required
           defaultValue={doctorProfileData?.user?.first_name}
           style={{ background: colors.forminput, border: "none" }}
           rules={{
@@ -121,6 +122,7 @@ export const BasicInfoForm = ({
       </GridItem>
       <GridItem colSpan={1}>
         <FloatingLabelInput
+          required
           label="Last Name"
           name="last_name"
           register={register}
