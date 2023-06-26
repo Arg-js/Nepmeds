@@ -72,7 +72,6 @@
 * **profile:** profile edit ([e52a6bb](https://gitlab.com/r2850/nepmeds/commit/e52a6bb66e839b02c1d48f1abe6dec5eeb0df133))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))
-* **registration:** register with edit completed ([e11770f](https://gitlab.com/r2850/nepmeds/commit/e11770f81d98b0c8016c1143800195e76d688303))
 * **routing and search in doctor list:** added routing and search in doctor list ([5cb2788](https://gitlab.com/r2850/nepmeds/commit/5cb2788c23b710dcd84a6f038758d9a082096023))
 * **sign up:** changes in styles,removed component,otp input,api ([079389d](https://gitlab.com/r2850/nepmeds/commit/079389d3d93e597a0be7a35fb0a013cdb751aec7))
 * **stepper form components:** integrated apis ([66ec744](https://gitlab.com/r2850/nepmeds/commit/66ec7445c7764139c7b500fe188570bd41b20a0d))

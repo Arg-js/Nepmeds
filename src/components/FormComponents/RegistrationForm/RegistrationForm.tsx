@@ -65,7 +65,7 @@ const registerDefaultValues = {
   gender: "Male",
   date_of_birth: "",
   email: "",
-  title: "Mr",
+  title: "Dr",
   password: "",
   confirm_password: "",
   bio_detail: "",
