@@ -58,6 +58,7 @@ export function DataTable({
   isLoading,
   setTable,
   filter,
+
   sortingColumn,
 }: DataTableProps) {
   const [grouping, setGrouping] = useState<GroupingState>([]);
@@ -93,9 +94,11 @@ export function DataTable({
           },
     [pagination]
   );
+
   const table = useReactTable({
     columns,
     data,
+
     state: {
       grouping,
       sorting,

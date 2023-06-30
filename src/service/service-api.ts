@@ -15,19 +15,19 @@ export const api = {
   doctor_profile: "/doctor_consult/doctor-profile/",
   edit_doctor_profile: "/doctor_consult/doctor-profile-update/",
   specialization: "/core/specialization-list/",
-  registereddoctor: "/dashboard/registered_doctor_list",
-  pendingdoctor: "/dashboard/pending_doctor_list",
-  approveddoctor: "/dashboard/approved_doctor_list",
-  approvesingledoctor: "/dashboard/approve_doctor/{id}/",
-  rejectsingledoctor: "/dashboard/reject_doctor/{id}/",
-  doctordetails: "/dashboard/view_doctor_profile/{id}/",
+  registereddoctor: "/dashboard/registered-doctor-list",
+  pendingdoctor: "/dashboard/pending-doctor-list",
+  approveddoctor: "/dashboard/approved-doctor-list",
+  approvesingledoctor: "/dashboard/approve-doctor/{id}/",
+  rejectsingledoctor: "/dashboard/reject-doctor/{id}/",
+  doctordetails: "/dashboard/view-doctor-profile/{id}/",
   // certificate fetch garda ko id
   certificate_update: "/user_management/certificate/{id}",
   experience_update: "/user_management/experience/{id}",
 
   province: "core/provinces/",
   district: "core/districts/",
-  municipality: "/core/municipalities",
+  municipalities: "core/municipalities/",
 };
 
 export interface NepMedsResponse<T = any> {
