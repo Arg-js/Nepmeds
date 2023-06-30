@@ -6,7 +6,7 @@ import Select from "@nepMeds/components/Form/Select";
 import {
   useGetAllDistricts,
   useGetDistricts,
-  useGetMunicipality,
+  useGetMunicipalities,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
@@ -40,8 +40,8 @@ const PrimaryInfo = ({
   } = useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
   const districtInfo = useGetDistricts(watch("province"));
+  const municipalityInfo = useGetMunicipalities(watch("district"));
   const allDistrictInfo = useGetAllDistricts();
-  const municipalityInfo = useGetMunicipality(watch("district"));
   const { data: specialization = [] } = useSpecializationData();
 
   const provinceOptions =
@@ -51,11 +51,10 @@ const PrimaryInfo = ({
     })) || [];
 
   const municipalityOptions =
-    municipalityInfo?.data?.map(p => ({
+    municipalityInfo.data?.map(p => ({
       label: p.name,
       value: p.id,
     })) || [];
-
   const districtOptions =
     districtInfo.data?.map(p => ({
       label: p.name,
@@ -446,7 +445,7 @@ const PrimaryInfo = ({
       <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
           placeholder=""
-          label="Municipality/ VDC"
+          label="Municipality/Vdc"
           name="municipality"
           required
           register={register}

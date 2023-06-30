@@ -10,6 +10,7 @@ import {
   Spinner,
   useDisclosure,
   Button,
+  Box,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
@@ -69,6 +70,13 @@ const PendingDocList = () => {
     }
   };
 
+  interface CellContextSearch {
+    user: {
+      first_name: string;
+      middle_name: string;
+      last_name: string;
+    };
+  }
   const columns = React.useMemo(
     () => [
       {
@@ -79,37 +87,68 @@ const PendingDocList = () => {
       },
       {
         header: "Doctor's Name",
-        accessorKey: "full_name",
+        accessorKey: "first_name",
+        accessorFn: (_cell: CellContextSearch) => {
+          return (
+            _cell?.user?.first_name +
+            " " +
+            _cell?.user?.middle_name +
+            " " +
+            _cell?.user?.last_name
+          );
+        },
       },
       {
         header: "Contact Number",
-        accessorKey: "contact_number",
+        cell: ({
+          row,
+        }: CellContext<
+          {
+            user: IBasicInfo;
+          },
+          any
+        >) => {
+          const { mobile_number } = row?.original?.user ?? "";
+
+          return <p>{mobile_number}</p>;
+        },
       },
       {
         header: "Specialization",
         accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: any }, any>) => {
-          const { name } = row?.original?.specialization[0] ?? "";
+        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
+          const specialization = row?.original?.specialization ?? "";
 
-          return <p>{name}</p>;
+          return (
+            <Box
+              display={"flex"}
+              flexWrap={"wrap"}
+              // width={"fit-content"}
+              // p={1}
+              // background={colors.grey}
+              // borderRadius={20}
+            >
+              <p>{specialization.join(", ")}</p>
+            </Box>
+          );
         },
       },
       {
         header: "Status",
         accessorKey: "profile_status",
-        cell: ({ row }: CellContext<{ profile_status: string }, any>) => {
-          const { profile_status } = row.original;
+        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
+          const { is_approved } = row.original;
           return (
             <Badge
-              colorScheme={profile_status === "approved" ? "green" : "yellow"}
+              colorScheme={is_approved ? "green" : "red"}
               p={1}
               borderRadius={20}
               fontSize={11}
-              w={20}
+              w={24}
               textAlign="center"
               textTransform="capitalize"
             >
-              {profile_status}
+              {is_approved ? "Approved" : "Not approved"}
             </Badge>
           );
         },

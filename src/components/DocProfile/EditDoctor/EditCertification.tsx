@@ -11,6 +11,11 @@ import {
   Grid,
   GridItem,
   Icon,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -31,6 +36,7 @@ import {
 } from "@nepMeds/service/nepmeds-certificate";
 import { AxiosError } from "axios";
 import AddCertificateField from "./AddCertificateField";
+import { AiOutlineMore } from "react-icons/ai";
 
 const EditCertification = ({
   doctorProfileData,
@@ -318,7 +324,7 @@ const EditCertification = ({
           <Grid
             templateColumns={
               doctorProfileData?.doctor_certification_info?.length
-                ? "repeat(4, 1fr)"
+                ? "repeat(10, 1fr)"
                 : ""
             }
           >
@@ -330,7 +336,7 @@ const EditCertification = ({
                   //   : "";
                   return (
                     <>
-                      <GridItem mt={"30px"} w="100%">
+                      <GridItem colSpan={2} mt={"30px"} w="100%">
                         <VStack spacing={3} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
@@ -353,6 +359,10 @@ const EditCertification = ({
                               :&nbsp;{singleCertificationInfo?.title}
                             </Text>
                           </Box>
+                        </VStack>
+                      </GridItem>
+                      <GridItem colSpan={3} mt={"30px"} w="100%">
+                        <VStack spacing={3} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
                               fontWeight={"500"}
@@ -376,7 +386,7 @@ const EditCertification = ({
                           </Box>
                         </VStack>
                       </GridItem>
-                      <GridItem mt={"30px"} w="100%">
+                      <GridItem colSpan={2} mt={"30px"} w="100%">
                         <VStack spacing={3} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
@@ -441,7 +451,7 @@ const EditCertification = ({
                           </Box> */}
                         </VStack>
                       </GridItem>
-                      <GridItem mt={"30px"} w="100%">
+                      <GridItem colSpan={2} mt={"30px"} w="100%">
                         <VStack spacing={3} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
@@ -467,67 +477,73 @@ const EditCertification = ({
                           </Box>
                         </VStack>
                       </GridItem>
-                      <Grid mt={"30px"} templateColumns={"repeat(4, 1fr)"}>
-                        <GridItem w="100%">
-                          <VStack spacing={2} align="stretch">
-                            <Box
-                              display={"flex"}
-                              alignItems={"center"}
-                              justifyContent={"center"}
-                              onClick={() =>
-                                onEditCertificate(
-                                  i,
-                                  singleCertificationInfo?.id ?? 0,
-                                  singleCertificationInfo?.doctor ?? 0
-                                )
-                              }
-                              cursor="pointer"
-                            >
-                              <Icon
-                                as={EditIcon}
-                                boxSize={5}
-                                color={colors?.main}
-                                mr={"8px"}
-                              />
-                              <Text
-                                color={colors?.main}
-                                fontWeight={"400"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                              >
-                                Edit
-                              </Text>
-                            </Box>
-                          </VStack>
-                        </GridItem>
-                        <GridItem w="100%">
-                          <VStack spacing={2} align="stretch">
-                            <Box
-                              display={"flex"}
-                              alignItems={"center"}
-                              justifyContent={"center"}
-                              onClick={() =>
-                                deleteData(singleCertificationInfo?.id ?? 0)
-                              }
-                              cursor="pointer"
-                            >
-                              <Icon
-                                as={EditIcon}
-                                boxSize={5}
-                                color={colors?.red}
-                                mr={"8px"}
-                              />
-                              <Text
-                                color={colors?.red}
-                                fontWeight={"400"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                              >
-                                Delete
-                              </Text>
-                            </Box>
-                          </VStack>
-                        </GridItem>
+                      <Grid mt={"30px"}>
+                        <VStack spacing={2} align="end">
+                          <Menu>
+                            <MenuButton transition="all 0.2s">
+                              <AiOutlineMore />
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem>
+                                <Box
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                  justifyContent={"center"}
+                                  onClick={() =>
+                                    onEditCertificate(
+                                      i,
+                                      singleCertificationInfo?.id ?? 0,
+                                      singleCertificationInfo?.doctor ?? 0
+                                    )
+                                  }
+                                  cursor="pointer"
+                                >
+                                  <Icon
+                                    as={EditIcon}
+                                    boxSize={5}
+                                    color={colors?.main}
+                                    mr={"8px"}
+                                  />
+                                  <Text
+                                    color={colors?.main}
+                                    fontWeight={"400"}
+                                    fontSize={"16px"}
+                                    lineHeight={"19px"}
+                                  >
+                                    Edit
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+                              <MenuDivider />
+                              <MenuItem>
+                                <Box
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                  justifyContent={"center"}
+                                  onClick={() =>
+                                    deleteData(singleCertificationInfo?.id ?? 0)
+                                  }
+                                  cursor="pointer"
+                                >
+                                  <Icon
+                                    as={EditIcon}
+                                    boxSize={5}
+                                    color={colors?.red}
+                                    mr={"8px"}
+                                  />
+                                  <Text
+                                    color={colors?.red}
+                                    fontWeight={"400"}
+                                    fontSize={"16px"}
+                                    lineHeight={"19px"}
+                                  >
+                                    Delete
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </VStack>
                       </Grid>
                     </>
                   );
