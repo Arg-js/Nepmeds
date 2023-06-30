@@ -20,6 +20,11 @@ interface IUser {
   last_name: string;
   mobile_number: number;
   email: string;
+  gender: string;
+  date_of_birth: string;
+  province: string;
+  district: string;
+  municipality: string;
 }
 interface IDoctorDetails {
   user: IUser;
@@ -27,9 +32,9 @@ interface IDoctorDetails {
   bio_detail: string;
   age: number;
   gender: string;
-  citizenship_number: string;
-  citizenship_issued_date: string;
-  citizenship_issued_district: string;
+  id_number: string;
+  id_issued_date: string;
+  id_issued_district: string;
   province: string;
   district: string;
   profile_status: string;
@@ -45,16 +50,14 @@ interface IDoctorDetails {
 const DoctorDetail = ({
   image,
   user,
-  age,
-  gender,
+
   bio_detail,
-  citizenship_number,
-  citizenship_issued_district,
-  citizenship_issued_date,
-  province,
+  id_number,
+  id_issued_district,
+  id_issued_date,
+
   specialization,
-  district,
-  municipality_vdc,
+
   profile_status,
   no_of_rejected_times,
   rejected_remarks,
@@ -62,6 +65,7 @@ const DoctorDetail = ({
   doctor_certification_info,
   doctor_experience,
 }: IDoctorDetails) => {
+  console.log(user);
   const imageSrc = image ? `${normalURL}${image}` : NepmedsLogoIcon;
   return (
     <>
@@ -79,11 +83,6 @@ const DoctorDetail = ({
             {user?.first_name} {user?.middle_name} {user?.last_name}
           </Text>
 
-          <Text>
-            {doctor_academic_info?.map(
-              doctor => `${doctor.degree_program} (${doctor.university}), `
-            )}
-          </Text>
           <Text color={colors.dark_grey}>{bio_detail}</Text>
         </Flex>
       </Flex>
@@ -102,14 +101,14 @@ const DoctorDetail = ({
           </Box>
           <Box>
             <p style={{ fontSize: "small" }}>Gender</p>
-            <p>{gender}</p>
+            <p>{user?.gender}</p>
           </Box>
         </SimpleGrid>
 
         <SimpleGrid columns={3} gap={6} mb={18} w="100%">
           <Box>
-            <p style={{ fontSize: "small" }}>Age</p>
-            <p>{age}</p>
+            <p style={{ fontSize: "small" }}>Date of birth</p>
+            <p>{user?.date_of_birth}</p>
           </Box>
           <Box>
             <p style={{ fontSize: "small" }}>Specialization</p>
@@ -146,17 +145,17 @@ const DoctorDetail = ({
       <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey} w="100%">
         <Box>
           <p style={{ fontSize: "small" }}>Citizenship Number</p>
-          <p>{citizenship_number}</p>
+          <p>{id_number}</p>
         </Box>
 
         <Box>
           <p style={{ fontSize: "small" }}>Issued District</p>
-          <p>{citizenship_issued_district}</p>
+          <p>{id_issued_district}</p>
         </Box>
 
         <Box>
           <p style={{ fontSize: "small" }}>Issued Date</p>
-          <p>{citizenship_issued_date}</p>
+          <p>{id_issued_date}</p>
         </Box>
       </SimpleGrid>
       <Divider my={4} />
@@ -164,17 +163,17 @@ const DoctorDetail = ({
       <SimpleGrid columns={3} gap={6} mb={18} color={colors.dark_grey} w="100%">
         <Box>
           <p style={{ fontSize: "small" }}>Province</p>
-          <p>{province}</p>
+          <p>{user?.province}</p>
         </Box>
 
         <Box>
           <p style={{ fontSize: "small" }}>District</p>
-          <p>{district}</p>
+          <p>{user?.district}</p>
         </Box>
 
         <Box>
           <p style={{ fontSize: "small" }}>Municipality/ VDC</p>
-          <p>{municipality_vdc}</p>
+          <p>{user?.municipality}</p>
         </Box>
       </SimpleGrid>
       <Divider my={4} />
