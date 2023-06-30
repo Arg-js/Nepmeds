@@ -15,9 +15,7 @@ type District = {
 type Municipality = {
   id: number;
   name: string;
-  district: number;
 };
-
 const getProvince = async () => {
   const response = await HttpClient.get<NepMedsResponse<Province[]>>(
     api.province
@@ -57,9 +55,9 @@ export const useGetAllDistricts = () =>
     select: res => res.data.data,
   });
 
-const getMunicipality = (districtId: number) => async () => {
+const getMunicipalities = (districtId: number) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
-    api.municipality,
+    api.municipalities,
     {
       params: { district_id: districtId },
     }
@@ -67,7 +65,7 @@ const getMunicipality = (districtId: number) => async () => {
   return response;
 };
 
-export const useGetMunicipality = (districtId: number) =>
-  useQuery([api.municipality, districtId], getMunicipality(districtId), {
+export const useGetMunicipalities = (districtId: number) =>
+  useQuery([api.municipalities, districtId], getMunicipalities(districtId), {
     select: res => res.data.data,
   });

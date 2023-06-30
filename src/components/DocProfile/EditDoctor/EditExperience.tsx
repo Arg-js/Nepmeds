@@ -11,6 +11,11 @@ import {
   Center,
   Grid,
   GridItem,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -31,6 +36,7 @@ import {
 import { AxiosError } from "axios";
 import EditExperienceField from "./EditExperienceField";
 import AddExperienceField from "./AddExperienceField";
+import { AiOutlineMore } from "react-icons/ai";
 
 const EditExperience = ({
   doctorProfileData,
@@ -91,6 +97,9 @@ const EditExperience = ({
             })
           ),
         };
+        if (experienceData.currently_working) {
+          delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
+        }
         const experienceInfoResponse =
           await updateExperienceFileRegister.mutateAsync({
             id: editId,
@@ -170,6 +179,9 @@ const EditExperience = ({
             })
           ),
         };
+        if (experienceData.currently_working) {
+          delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
+        }
         const experienceInfoResponse = await experienceInfoRegister.mutateAsync(
           experienceInfoData
         );
@@ -313,7 +325,7 @@ const EditExperience = ({
           <Grid
             templateColumns={
               doctorProfileData?.doctor_experience?.length
-                ? "repeat(4, 1fr)"
+                ? "repeat(8, 1fr)"
                 : ""
             }
           >
@@ -322,7 +334,7 @@ const EditExperience = ({
                 (singleExperience: IDoctorExperience, i) => {
                   return (
                     <>
-                      <GridItem mt={"30px"} w="100%">
+                      <GridItem colSpan={3} mt={"30px"} w="100%">
                         <VStack spacing={4} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
@@ -346,7 +358,7 @@ const EditExperience = ({
                           </Box>
                         </VStack>
                       </GridItem>
-                      <GridItem mt={"30px"} w="100%">
+                      <GridItem colSpan={2} mt={"30px"} w="100%">
                         <VStack spacing={4} align="stretch">
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
@@ -370,8 +382,15 @@ const EditExperience = ({
                           </Box>
                         </VStack>
                       </GridItem>
-                      <GridItem mt={"30px"} w="100%">
-                        <VStack spacing={4} align="stretch">
+                      <GridItem colSpan={2} mt={"30px"} w="100%">
+                        <VStack
+                          spacing={4}
+                          align={
+                            singleExperience?.currently_working
+                              ? "end"
+                              : "stretch"
+                          }
+                        >
                           <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
                               fontWeight={"500"}
@@ -381,81 +400,92 @@ const EditExperience = ({
                               color={"#4D4D4D"}
                               w={"137px"}
                             >
-                              To
+                              {singleExperience?.currently_working ? (
+                                <>currently working</>
+                              ) : (
+                                <>to</>
+                              )}
                             </Text>
-
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleExperience?.to_date}
-                            </Text>
+                            {singleExperience?.currently_working !== true && (
+                              <Text
+                                fontWeight={"500"}
+                                fontSize={"16px"}
+                                lineHeight={"19px"}
+                                color={colors?.black}
+                              >
+                                :&nbsp;{singleExperience?.to_date}
+                              </Text>
+                            )}
                           </Box>
                         </VStack>
                       </GridItem>
-                      <Grid mt={"30px"} templateColumns={"repeat(4, 1fr)"}>
-                        <GridItem w="100%">
-                          <VStack spacing={2} align="stretch">
-                            <Box
-                              display={"flex"}
-                              alignItems={"center"}
-                              justifyContent={"center"}
-                              onClick={() =>
-                                onEditExperience(
-                                  i,
-                                  singleExperience?.id ?? 0,
-                                  singleExperience?.doctor ?? 0
-                                )
-                              }
-                              cursor="pointer"
-                            >
-                              <Icon
-                                as={EditIcon}
-                                boxSize={5}
-                                color={colors?.main}
-                                mr={"8px"}
-                              />
-                              <Text
-                                color={colors?.main}
-                                fontWeight={"400"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                              >
-                                Edit
-                              </Text>
-                            </Box>
-                          </VStack>
-                        </GridItem>
-                        <GridItem w="100%">
-                          <VStack spacing={2} align="stretch">
-                            <Box
-                              display={"flex"}
-                              alignItems={"center"}
-                              justifyContent={"center"}
-                              onClick={() =>
-                                deleteData(singleExperience?.id ?? 0)
-                              }
-                              cursor="pointer"
-                            >
-                              <Icon
-                                as={EditIcon}
-                                boxSize={5}
-                                color={colors?.red}
-                                mr={"8px"}
-                              />
-                              <Text
-                                color={colors?.red}
-                                fontWeight={"400"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                              >
-                                Delete
-                              </Text>
-                            </Box>
-                          </VStack>
-                        </GridItem>
+                      <Grid mt={"30px"}>
+                        <VStack spacing={2} align="end">
+                          <Menu>
+                            <MenuButton transition="all 0.2s">
+                              <AiOutlineMore />
+                            </MenuButton>
+                            <MenuList>
+                              <MenuItem>
+                                <Box
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                  justifyContent={"center"}
+                                  onClick={() =>
+                                    onEditExperience(
+                                      i,
+                                      singleExperience?.id ?? 0,
+                                      singleExperience?.doctor ?? 0
+                                    )
+                                  }
+                                  cursor="pointer"
+                                >
+                                  <Icon
+                                    as={EditIcon}
+                                    boxSize={5}
+                                    color={colors?.main}
+                                    mr={"8px"}
+                                  />
+                                  <Text
+                                    color={colors?.main}
+                                    fontWeight={"400"}
+                                    fontSize={"16px"}
+                                    lineHeight={"19px"}
+                                  >
+                                    Edit
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+                              <MenuDivider />
+                              <MenuItem>
+                                <Box
+                                  display={"flex"}
+                                  alignItems={"center"}
+                                  justifyContent={"center"}
+                                  onClick={() =>
+                                    deleteData(singleExperience?.id ?? 0)
+                                  }
+                                  cursor="pointer"
+                                >
+                                  <Icon
+                                    as={EditIcon}
+                                    boxSize={5}
+                                    color={colors?.red}
+                                    mr={"8px"}
+                                  />
+                                  <Text
+                                    color={colors?.red}
+                                    fontWeight={"400"}
+                                    fontSize={"16px"}
+                                    lineHeight={"19px"}
+                                  >
+                                    Delete
+                                  </Text>
+                                </Box>
+                              </MenuItem>
+                            </MenuList>
+                          </Menu>
+                        </VStack>
                       </Grid>
                     </>
                   );
