@@ -147,6 +147,10 @@ export const BasicInfoForm = ({
               style={{ background: colors.forminput, border: "none" }}
               rules={{
                 required: "Password is required.",
+                minLength: {
+                  value: 8,
+                  message: "Password must be at least 8 characters long.",
+                },
               }}
               error={errors.password?.message}
             />

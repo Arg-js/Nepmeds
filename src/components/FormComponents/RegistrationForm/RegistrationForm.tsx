@@ -58,7 +58,7 @@ const registerDefaultValues = {
   mobile_number: "",
   profile_picture: undefined as undefined | File[],
   district: 1,
-  ward: 1,
+  ward: "" || 1,
   tole: 1,
   municipality: 1,
   province: 1,

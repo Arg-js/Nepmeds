@@ -60,7 +60,6 @@ const Select = ({
         h={14}
         // value={defaultValue}
         defaultValue={defaultValue}
-
         // pr={8}
       >
         {placeholder && (
