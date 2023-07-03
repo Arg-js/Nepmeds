@@ -1,7 +1,10 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 ## 0.0.1 (2023-07-03)
 =======
 <<<<<<< HEAD
+=======
+>>>>>>> a2175ae09c42961883bdc4b576c23bb396aa23bc
 <<<<<<< HEAD
 ## 0.0.1 (2023-07-03)
 =======
@@ -10,7 +13,10 @@
 =======
 ## 0.0.1 (2023-06-29)
 >>>>>>> 711ed098918c61cfbe62d2db93fa2e5647b77739
+<<<<<<< HEAD
 >>>>>>> 14dc269f3aca8fd42f30636a453083d2576bd60f
+=======
+>>>>>>> a2175ae09c42961883bdc4b576c23bb396aa23bc
 
 
 ### Bug Fixes
@@ -72,9 +78,12 @@
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * **calender:** added scheduler calender for appointment scheduling ([7bfbd68](https://gitlab.com/r2850/nepmeds/commit/7bfbd6861b69157b989b09261e05f234d8d0a57a))
 <<<<<<< HEAD
+<<<<<<< HEAD
 * **calender:** availability calendar implemented ([045aed8](https://gitlab.com/r2850/nepmeds/commit/045aed8026668a91018e980a23e038934fe1b119))
 =======
 >>>>>>> 14dc269f3aca8fd42f30636a453083d2576bd60f
+=======
+>>>>>>> a2175ae09c42961883bdc4b576c23bb396aa23bc
 * **calender:** UI in calendar modified ([0f77463](https://gitlab.com/r2850/nepmeds/commit/0f774636aa25cc1ae2cd2d87be71036f88d9449d))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
 * **doctor approval:** doctor api ([cc0196e](https://gitlab.com/r2850/nepmeds/commit/cc0196e5d173c45bafdff7af173e1627b142342b))
