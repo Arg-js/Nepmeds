@@ -8,9 +8,12 @@ export const colors = {
   /**main*/
   main: "#3B6BB3",
   /**dark*/
+  dark: "#333333",
   dark_1: "#1A1A1A",
   /**grey-50*/
   grey_50: "#808080",
+  /** grey_dark */
+  grey_dark: "#999999",
   /**grey_90*/
   grey_90: "#E6E6E6",
   /**error color*/
@@ -58,7 +61,13 @@ export const colors = {
 
   /**green-button*/
   green_button: "#32936F",
+  green_light: "#59C3C8",
 
   /* Purple/Purple-900 */
   purple_900: "#322659",
+
+  // yellow_light
+  yellow_light: "#FEF4E8",
+  // yellow dark
+  yellow_dark: "#F48F18",
 };
