@@ -53,8 +53,9 @@ export const AppointmentType = [
 ];
 
 export const FrequencyType = [
-  { label: "Does not Repeat", value: "Weekday" },
-  { label: "Weekends", value: "Weekends" },
   { label: "Everyday", value: "Everyday" },
+
+  { label: "Weekends", value: "Weekends" },
+  { label: "Does not Repeat", value: "Weekday" },
   { label: "Repeat Daily", value: "Weekdays" },
 ];

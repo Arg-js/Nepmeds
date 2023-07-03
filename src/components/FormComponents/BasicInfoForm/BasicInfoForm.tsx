@@ -13,6 +13,7 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { fileToString } from "@nepMeds/utils/fileToString";
+import { normalURL } from "@nepMeds/service/service-axios";
 export const BasicInfoForm = ({
   isEditable,
   hidePasswordField,
@@ -37,7 +38,7 @@ export const BasicInfoForm = ({
   useEffect(() => {
     if (isEditable && doctorProfileData?.user?.profile_picture) {
       setSelectedImage(
-        `http://38.242.204.217:8005/media/${doctorProfileData.user.profile_picture}`
+        `${normalURL}/media/${doctorProfileData.user.profile_picture}`
       );
     } else setSelectedImage(getValues("profile_picture")?.[0] ?? null);
   }, [doctorProfileData]);
