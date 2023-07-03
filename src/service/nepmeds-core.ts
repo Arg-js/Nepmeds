@@ -57,7 +57,7 @@ export const useGetAllDistricts = () =>
 
 const getMunicipalities = (districtId: number) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
-    api.municipalities,
+    api.municipality,
     {
       params: { district_id: districtId },
     }
@@ -66,6 +66,6 @@ const getMunicipalities = (districtId: number) => async () => {
 };
 
 export const useGetMunicipalities = (districtId: number) =>
-  useQuery([api.municipalities, districtId], getMunicipalities(districtId), {
+  useQuery([api.municipality, districtId], getMunicipalities(districtId), {
     select: res => res.data.data,
   });

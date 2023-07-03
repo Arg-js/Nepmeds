@@ -46,3 +46,15 @@ export const year = [
   { label: "2021", value: "2021" },
   { label: "2022", value: "2022" },
 ];
+
+export const AppointmentType = [
+  { label: "Follow up", value: "followup" },
+  { label: "Appointment", value: "Appointment" },
+];
+
+export const FrequencyType = [
+  { label: "Does not Repeat", value: "Weekday" },
+  { label: "Weekends", value: "Weekends" },
+  { label: "Everyday", value: "Everyday" },
+  { label: "Repeat Daily", value: "Weekdays" },
+];
