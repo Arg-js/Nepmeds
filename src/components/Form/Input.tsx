@@ -80,7 +80,6 @@ const Input = ({
         {startIcon && (
           <InputLeftElement
             top="12%"
-            left={"-5%"}
             pointerEvents="none"
             onClick={onIconClick}
           >
