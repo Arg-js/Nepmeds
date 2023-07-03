@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+## 0.0.1 (2023-07-03)
+=======
 ## 0.0.1 (2023-06-29)
+>>>>>>> 74826cc31bbeae3be91e7c2f9b50449b372f163b
 
 
 ### Bug Fixes
@@ -44,6 +48,7 @@
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
 * **textarea props:** fixes in text area props ([0487971](https://gitlab.com/r2850/nepmeds/commit/0487971d5970bd9eeedb4971aff173f29aa9a41d))
 * theme ([d9b253d](https://gitlab.com/r2850/nepmeds/commit/d9b253dd52ac704173087328aaa3a2476492b641))
+* **title:** title updated ([28dcbb4](https://gitlab.com/r2850/nepmeds/commit/28dcbb4aef9fcca698e4102f4b786b77c2599f2b))
 * **toast type fixes:** changed toast type of fail to success on rejection ([9b60c93](https://gitlab.com/r2850/nepmeds/commit/9b60c93a43ba60c04a2ea9bc08cd54f15c6f62ca))
 * update image field ([fd72a2e](https://gitlab.com/r2850/nepmeds/commit/fd72a2e3f9e9cf2aeb637b419ea38f5752977e20))
 * validation and forms ([a3ce00d](https://gitlab.com/r2850/nepmeds/commit/a3ce00d9a27d3203b98b8f6b15e6ad074192e5f3))
@@ -56,6 +61,8 @@
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
+* **calender:** added scheduler calender for appointment scheduling ([7bfbd68](https://gitlab.com/r2850/nepmeds/commit/7bfbd6861b69157b989b09261e05f234d8d0a57a))
+* **calender:** UI in calendar modified ([0f77463](https://gitlab.com/r2850/nepmeds/commit/0f774636aa25cc1ae2cd2d87be71036f88d9449d))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
 * **doctor approval:** doctor api ([cc0196e](https://gitlab.com/r2850/nepmeds/commit/cc0196e5d173c45bafdff7af173e1627b142342b))
 * **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))
