@@ -37,3 +37,33 @@ export const RejectButton = ({ children, ...props }: any) => {
     </Button>
   );
 };
+
+export const CustomButton = ({
+  children,
+  backgroundColor = colors.green_button,
+  color = colors.white,
+  borderRadius = 12,
+  size = "sm",
+  fontWeight = "400",
+  hoverbg = colors.green_light,
+  ...props
+}: any) => {
+  return (
+    <Button
+      backgroundColor={backgroundColor}
+      borderRadius={borderRadius}
+      size={size}
+      display={"flex"}
+      justifyContent={"space-around"}
+      w="100%"
+      p={2}
+      color={color}
+      fontWeight={fontWeight}
+      _hover={{ bg: hoverbg }}
+      height={10}
+      {...props}
+    >
+      {children}
+    </Button>
+  );
+};

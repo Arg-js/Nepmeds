@@ -21,6 +21,7 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
 import { Suspense } from "react";
 import { Center, Spinner } from "@chakra-ui/react";
+import Calendar from "@nepMeds/pages/Calendar";
 
 const routes = [
   {
@@ -45,7 +46,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.CALENDER,
-        element: <>Calendar</>,
+        element: <Calendar />,
       },
       {
         path: NAVIGATION_ROUTES.BANK_DETAILS,

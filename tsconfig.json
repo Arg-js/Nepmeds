@@ -1,76 +1,44 @@
 {
-    "compilerOptions": {
-        "noUnusedLocals": true,
-        "noUnusedParameters": true,
-        "target": "ESNext",
-        "useDefineForClassFields": true,
-        "lib": [
-            "DOM",
-            "DOM.Iterable",
-            "ESNext"
-        ],
-        "allowJs": false,
-        "skipLibCheck": true,
-        "esModuleInterop": false,
-        "baseUrl": "./src",
-        "paths": {
-            "@nepMeds/hooks/*": [
-                "hooks/*"
-            ],
-            "@nepMeds/components/*": [
-                "components/*"
-            ],
-            "@nepMeds/pages/*": [
-                "pages/*"
-            ],
-            "@nepMeds/providers/*": [
-                "providers/*"
-            ],
-            "@nepMeds/routes/*": [
-                "routes/*"
-            ],
-            "@nepMeds/service/*": [
-                "service/*"
-            ],
-            "@nepMeds/theme/*": [
-                "theme/*"
-            ],
-            "@nepMeds/translations/*": [
-                "translations/*"
-            ],
-            "@nepMeds/types/*": [
-                "types/*"
-            ],
-            "@nepMeds/assets/*": [
-                "assets/*"
-            ],
-            "@nepMeds/utils/*": [
-                "utils/*"
-            ]
-        },
-        "allowSyntheticDefaultImports": true,
-        "strict": true,
-        "forceConsistentCasingInFileNames": true,
-        "module": "ESNext",
-        "moduleResolution": "Node",
-        "resolveJsonModule": true,
-        "isolatedModules": true,
-        "noEmit": true,
-        "jsx": "react-jsx",
-        "types": [
-            "vite-plugin-svgr/client"
-        ]
+  "compilerOptions": {
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "target": "ESNext",
+    "useDefineForClassFields": true,
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "allowJs": false,
+    "skipLibCheck": true,
+    "esModuleInterop": false,
+    "baseUrl": "./src",
+    "paths": {
+      "@nepMeds/hooks/*": ["hooks/*"],
+      "@nepMeds/helper/*": ["helper/*"],
+      "@nepMeds/components/*": ["components/*"],
+      "@nepMeds/pages/*": ["pages/*"],
+      "@nepMeds/providers/*": ["providers/*"],
+      "@nepMeds/routes/*": ["routes/*"],
+      "@nepMeds/service/*": ["service/*"],
+      "@nepMeds/theme/*": ["theme/*"],
+      "@nepMeds/translations/*": ["translations/*"],
+      "@nepMeds/types/*": ["types/*"],
+      "@nepMeds/assets/*": ["assets/*"],
+      "@nepMeds/utils/*": ["utils/*"]
     },
-    "exclude": [
-        "d.ts"
-    ],
-    "include": [
-        "src",
-        "types.ts"
-    ],
-    "references": [
-        {
-            "path": "./tsconfig.node.json"
-        }
-    ]
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["vite-plugin-svgr/client"]
+  },
+  "exclude": ["d.ts"],
+  "include": ["src", "types.ts"],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }
