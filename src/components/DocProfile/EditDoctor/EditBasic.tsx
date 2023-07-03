@@ -27,6 +27,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 import { AxiosError } from "axios";
+import { normalURL } from "@nepMeds/service/service-axios";
 
 const EditBasic = ({
   doctorProfileData,
@@ -116,7 +117,7 @@ const EditBasic = ({
             w={"159px"}
             h={"159px"}
             // src={doctorProfileData?.user?.profile_picture}
-            src={`http://38.242.204.217:8005/media/${imageDataUrl}`}
+            src={`${normalURL}/media/${imageDataUrl}`}
           />
         )}
         <CardBody w={"100%"}>
