@@ -608,7 +608,6 @@ const RegistrationForm = () => {
   }
   useEffect(() => {
     if (location.state) {
-      console.log(location.state);
       const mobileNumber = (location.state as { mobile: string }).mobile;
       if (checkNumberMatch(mobileNumber)) {
         formMethods.setValue("mobile_number", mobileNumber);
@@ -623,13 +622,12 @@ const RegistrationForm = () => {
   }, [location.state]);
 
   const { content } = steps[activeStep];
-  console.log(content);
 
   return (
     <Container maxW="container.xl" m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-          <HStack pt={12} spacing={0} alignItems="flex-start">
+          <HStack pt={8} spacing={0} alignItems="flex-start">
             <VStack
               bg={colors.main}
               alignItems="flex-start"
@@ -717,10 +715,8 @@ const RegistrationForm = () => {
                 <Button
                   onClick={() => {
                     if (activeStep === 4) {
-                      console.log(activeStep);
                       return onOpenConfirmation();
                     } else {
-                      console.log(activeStep);
                       setActiveStep(prev => prev + 1);
                     }
                   }}
