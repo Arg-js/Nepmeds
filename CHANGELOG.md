@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-03)
+## 0.0.1 (2023-07-04)
 
 
 ### Bug Fixes
@@ -39,6 +39,10 @@
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
+* **signup/primary:** must be atleast 18 years old ([4ee3367](https://gitlab.com/r2850/nepmeds/commit/4ee3367f2148a9c09cb0453e11468ac0e3dbbee9))
+* **signup/primary:** ward and tole default value ([0d2e397](https://gitlab.com/r2850/nepmeds/commit/0d2e397ed02bf3d3e6e9ce776562a9b0cd3b4fe8))
+* **signup:** fixed otp text alignment and removed unnecessary comment ([312cfcd](https://gitlab.com/r2850/nepmeds/commit/312cfcd40c01a3d6b0a19ca368569107fa68e3fd))
+* **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))

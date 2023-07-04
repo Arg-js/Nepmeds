@@ -1,17 +1,17 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import Select from "@nepMeds/components/Form/Select";
+import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import Select from "@nepMeds/components/Form/Select";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect, useState } from "react";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -268,7 +268,7 @@ export const AcademicInfoForm = ({
             degree_program: "",
             major: "",
             university: "",
-            graduation_year: "",
+            graduation_year: "2023",
             academic_documents: undefined,
             isSubmitted: false,
           });

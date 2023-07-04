@@ -1,29 +1,28 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
+import { Text } from "@chakra-ui/react";
+import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
+import ImageUpload from "@nepMeds/components/ImageUpload";
+import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
   useGetAllDistricts,
   useGetDistricts,
   useGetMunicipalities,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
+import { fileToString } from "@nepMeds/utils/fileToString";
+import React, { ChangeEvent, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect } from "react";
-import { Text } from "@chakra-ui/react";
-import React from "react";
-import { fileToString } from "@nepMeds/utils/fileToString";
-import ImageUpload from "@nepMeds/components/ImageUpload";
-import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
-import Input from "@nepMeds/components/Form/Input";
-import { normalURL } from "@nepMeds/service/service-axios";
-import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -73,6 +72,16 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
+
+  useEffect(() => {
+    if (watch("province") !== 0) {
+      reset({
+        ...getValues(),
+        district: 0,
+        municipality: 0,
+      });
+    }
+  }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
@@ -410,7 +419,7 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={2}>
         <Select
-          placeholder=""
+          placeholder="Select Province"
           label="Province"
           name="province"
           required
@@ -430,7 +439,7 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
-          placeholder=""
+          placeholder="Select District"
           label="District"
           name="district"
           required
@@ -450,7 +459,7 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={isEditable ? 2 : 1}>
         <Select
-          placeholder=""
+          placeholder="Select Municipality/Vdc"
           label="Municipality/Vdc"
           name="municipality"
           required

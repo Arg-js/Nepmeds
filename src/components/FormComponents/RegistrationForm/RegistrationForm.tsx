@@ -57,11 +57,11 @@ const registerDefaultValues = {
   last_name: "",
   mobile_number: "",
   profile_picture: undefined as undefined | File[],
-  district: 1,
+  district: 0,
   ward: "",
   tole: "",
-  municipality: 1,
-  province: 1,
+  municipality: 0,
+  province: 0,
   gender: "Male",
   date_of_birth: "",
   email: "",
@@ -624,7 +624,7 @@ const RegistrationForm = () => {
   const { content } = steps[activeStep];
 
   return (
-    <Container maxW="container.xl" m="auto">
+    <Container maxW={"container.xl"} m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
           <HStack pt={8} spacing={0} alignItems="flex-start">
