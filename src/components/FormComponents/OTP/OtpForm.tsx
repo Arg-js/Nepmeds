@@ -93,6 +93,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           style={{
             color: colors.blue_100,
             marginLeft: "5px",
+            marginRight: "22px",
             cursor: "pointer",
           }}
         >
