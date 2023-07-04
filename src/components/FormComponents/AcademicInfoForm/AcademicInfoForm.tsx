@@ -90,8 +90,6 @@ export const AcademicInfoForm = ({
       });
     }
   };
-  console.log(selectedImages, selectedImagesFile);
-  console.log(getValues("academic"));
 
   // generating year
   const currentYear = new Date().getFullYear();
@@ -102,6 +100,7 @@ export const AcademicInfoForm = ({
       value: year.toString(),
     };
   });
+
   return (
     <>
       {fields.map((item, index) => {
@@ -220,7 +219,6 @@ export const AcademicInfoForm = ({
                     required
                     placeholder=""
                     label="Passed Year"
-                    defaultValue={"2023"}
                     register={register}
                     options={years}
                     {...field}

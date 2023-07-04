@@ -92,7 +92,7 @@ const registerDefaultValues = {
       major: "",
       id: "",
       university: "",
-      graduation_year: "",
+      graduation_year: "2023",
       academic_documents: undefined as undefined | File[],
       isSubmitted: false,
     },
