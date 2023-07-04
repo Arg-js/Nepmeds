@@ -132,12 +132,19 @@ const PrimaryInfo = ({
   };
 
   const validateDateOfBirth = () => {
-    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const currentDateObj = new Date();
+    const currentDate = currentDateObj.toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const dateOfBirth = getValues("date_of_birth");
     if (dateOfBirth > currentDate) {
       return "Date of birth cannot be greater than the current date.";
     }
 
+    if (
+      new Date(dateOfBirth).getFullYear() >
+      currentDateObj.getFullYear() - 18
+    ) {
+      return "You must be at least 18 years old to register.";
+    }
     return true; // Return true if the validation passes
   };
 

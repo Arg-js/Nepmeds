@@ -29,8 +29,8 @@ type PrimaryInfo = Pick<
     mobile_number?: string;
     profile_picture?: File | string;
     district?: number;
-    ward?: number;
-    tole?: number;
+    ward?: number | string;
+    tole?: number | string;
     municipality?: number;
     province?: number;
     gender?: string;
