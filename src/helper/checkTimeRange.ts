@@ -1,3 +1,5 @@
+import { differenceInYears } from "date-fns";
+
 export function isTimeInRange(
   start: string,
   end: string,
@@ -60,3 +62,8 @@ export function addOneHour(timeString: string): string {
 
   return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
 }
+
+export const calculateAge = (dob: Date): number => {
+  const age = differenceInYears(new Date(), dob);
+  return age;
+};

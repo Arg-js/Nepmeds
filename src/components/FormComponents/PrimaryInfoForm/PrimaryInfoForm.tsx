@@ -23,6 +23,7 @@ import ImageUpload from "@nepMeds/components/ImageUpload";
 import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 import Input from "@nepMeds/components/Form/Input";
 import { normalURL } from "@nepMeds/service/service-axios";
+import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -139,10 +140,7 @@ const PrimaryInfo = ({
       return "Date of birth cannot be greater than the current date.";
     }
 
-    if (
-      new Date(dateOfBirth).getFullYear() >
-      currentDateObj.getFullYear() - 18
-    ) {
+    if (calculateAge(new Date(dateOfBirth)) < 18) {
       return "You must be at least 18 years old to register.";
     }
     return true; // Return true if the validation passes
