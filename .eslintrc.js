@@ -32,6 +32,7 @@ module.exports = {
     "import/first": "error",
     "react/prop-types": 0,
     "prettier/prettier": [
+      "off",
       "error",
       {
         endOfLine: "auto",
