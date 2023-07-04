@@ -57,6 +57,7 @@ export const AcademicInfoForm = ({
   const [selectedImagesFile, setSelectedImagesFile] = useState<
     Array<Array<File | null>>
   >([]);
+  console.log(selectedImagesFile);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
