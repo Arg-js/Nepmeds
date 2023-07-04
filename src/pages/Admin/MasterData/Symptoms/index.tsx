@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
+import { CustomButton } from "@nepMeds/components/Button/Button";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
@@ -28,6 +29,7 @@ import { CellContext } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { IoAdd } from "react-icons/io5";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -157,18 +159,16 @@ const Symptoms = () => {
             />
           </InputGroup>
 
-          <Button
-            size="sm"
-            w="auto"
-            variant="outline"
+          <CustomButton
+            backgroundColor={colors.primary}
             fontWeight="light"
             onClick={() => {
               onOpen();
               formMethods.reset({});
             }}
           >
-            Add Symptom
-          </Button>
+            <IoAdd /> Add Symptom
+          </CustomButton>
         </HStack>
       </HStack>
 

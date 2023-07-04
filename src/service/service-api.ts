@@ -5,7 +5,7 @@ export const api = {
   signup: "user_management/otp-send/",
   otp_verify: "user_management/otp-verify/",
   register: "/doctor_consult/register/",
-  symptom: "/doctor_consult/symptom",
+  symptom: "core/symptom",
   academic: "/doctor_consult/academic-info/",
   certificate: "/doctor_consult/certificate-info/",
   experience: "/doctor_consult/experience-info/",
