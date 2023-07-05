@@ -10,8 +10,8 @@ import { Link } from "react-router-dom";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  email: yup.string().required("Email is required!"),
-  password: yup.string().required("Password is required"),
+  email: yup.string().required("Mobile number or Email is required!"),
+  password: yup.string().required("Password is required!"),
 });
 
 const LoginForm = () => {

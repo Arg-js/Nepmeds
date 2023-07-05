@@ -26,7 +26,7 @@ const saveSymptoms = async (symptomInfo: {
 }) => {
   if (symptomInfo.id) {
     const response = await HttpClient.put<NepMedsResponse>(
-      api.symptom + "/" + symptomInfo.id,
+      api.symptom + symptomInfo.id + "/",
       {
         name: symptomInfo.name,
         keyword: symptomInfo.keyword,
@@ -54,7 +54,7 @@ export const useSaveSymptoms = () => {
 
 const deleteSymptom = async (symptomInfo: { id: string | null }) => {
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.symptom + "/" + symptomInfo.id
+    api.symptom + symptomInfo.id + "/"
   );
   return response;
 };
@@ -63,6 +63,24 @@ export const useDeleteSymptom = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSymptom, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.symptom);
+    },
+  });
+};
+
+const deleteBulkSymptoms = async (symptomInfo: { id: number[] }) => {
+  const payload = { id: symptomInfo.id };
+  const response = await HttpClient.delete<NepMedsResponse>(api.symptom, {
+    data: payload,
+  });
+  return response;
+};
+
+export const useDeleteBulkSymptoms = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteBulkSymptoms, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.symptom);
     },

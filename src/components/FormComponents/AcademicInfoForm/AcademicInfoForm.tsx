@@ -1,24 +1,22 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import Select from "@nepMeds/components/Form/Select";
+import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import Select from "@nepMeds/components/Form/Select";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect, useState } from "react";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
-import { DeleteIcon } from "@chakra-ui/icons";
-import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
-  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  isEditable?: boolean;
 }) => {
   const {
     control,
@@ -57,6 +55,7 @@ export const AcademicInfoForm = ({
   const [selectedImagesFile, setSelectedImagesFile] = useState<
     Array<Array<File | null>>
   >([]);
+  console.log(selectedImagesFile);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -90,8 +89,6 @@ export const AcademicInfoForm = ({
       });
     }
   };
-  console.log(selectedImages, selectedImagesFile);
-  console.log(getValues("academic"));
 
   // generating year
   const currentYear = new Date().getFullYear();
@@ -102,6 +99,7 @@ export const AcademicInfoForm = ({
       value: year.toString(),
     };
   });
+
   return (
     <>
       {fields.map((item, index) => {
@@ -132,7 +130,7 @@ export const AcademicInfoForm = ({
         };
         return (
           <Box key={item.id} position="relative">
-            <SimpleGrid gridTemplateColumns="1fr" mb={4}>
+            <Box mb={4}>
               <MultipleImageUpload
                 selectedImages={selectedImagesForAcademic}
                 setSelectedImages={images => {
@@ -152,13 +150,11 @@ export const AcademicInfoForm = ({
                 academicIndex={index}
                 helperText={false}
               />
-            </SimpleGrid>
+            </Box>
             <SimpleGrid
-              gridTemplateColumns={
-                isEditable ? "repeat(2,1fr)" : "repeat(4,1fr)"
-              }
               mb={8}
               gap={2}
+              columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
                 render={({ field }) => (
@@ -220,7 +216,6 @@ export const AcademicInfoForm = ({
                     required
                     placeholder=""
                     label="Passed Year"
-                    defaultValue={"2023"}
                     register={register}
                     options={years}
                     {...field}
@@ -269,7 +264,7 @@ export const AcademicInfoForm = ({
             degree_program: "",
             major: "",
             university: "",
-            graduation_year: "",
+            graduation_year: "2023",
             academic_documents: undefined,
             isSubmitted: false,
           });
