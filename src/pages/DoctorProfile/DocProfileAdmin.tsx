@@ -1,4 +1,5 @@
 import {
+  Spinner,
   Tab,
   TabIndicator,
   TabList,
@@ -15,7 +16,22 @@ import { useParams } from "react-router-dom";
 const DocProfileAdmin = () => {
   const formMethods = useForm();
   const { id } = useParams();
-  const { data: doctorProfileData } = fetchDoctorProfileById(id ?? "0");
+  const { data: doctorProfileData, isLoading } = fetchDoctorProfileById(
+    id ?? "0"
+  );
+  if (isLoading)
+    return (
+      <Spinner
+        style={{
+          margin: "0 auto",
+          textAlign: "center",
+          display: "block",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "25%",
+        }}
+      />
+    );
   return (
     <VStack align={"stretch"} p={4}>
       <Tabs position="relative" variant="unstyled">

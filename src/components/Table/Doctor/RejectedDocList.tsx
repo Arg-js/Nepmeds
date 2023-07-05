@@ -1,6 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Badge,
   HStack,
   Text,
   Icon,
@@ -13,7 +12,6 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { Delete, Show } from "react-iconly";
@@ -31,6 +29,7 @@ import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import { colors } from "@nepMeds/theme/colors";
 import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useFetchRejectedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -47,7 +46,9 @@ const RejectedDocList = () => {
     onClose: onRejectModalClose,
   } = useDisclosure();
   const [_isRejected, setIsRejected] = React.useState(false);
-  const { data, isLoading } = usePendingDoctorList();
+  const { data, isLoading } = useFetchRejectedDoctorList();
+  console.log(data, "oooo");
+
   const [id, setId] = React.useState("");
 
   const approvePendingDoc = useApproveDoc();
@@ -139,8 +140,8 @@ const RejectedDocList = () => {
       {
         header: "Reason",
         accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
-          const specialization = row?.original?.specialization ?? "";
+        cell: ({ row }: CellContext<{ rejected_remarks: string }, any>) => {
+          const rejected_remarks = row?.original?.rejected_remarks ?? "";
 
           return (
             <Box
@@ -151,31 +152,12 @@ const RejectedDocList = () => {
               // background={colors.grey}
               // borderRadius={20}
             >
-              <p>{specialization.join(", ")}</p>
+              <p>{rejected_remarks}</p>
             </Box>
           );
         },
       },
-      {
-        header: "Status",
-        accessorKey: "profile_status",
-        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
-          const { is_approved } = row.original;
-          return (
-            <Badge
-              colorScheme={is_approved ? "green" : "red"}
-              p={1}
-              borderRadius={20}
-              fontSize={11}
-              w={24}
-              textAlign="center"
-              textTransform="capitalize"
-            >
-              {is_approved ? "Approved" : "Not approved"}
-            </Badge>
-          );
-        },
-      },
+
       {
         header: "Actions",
         accessorKey: "actions",
