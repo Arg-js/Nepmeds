@@ -65,7 +65,7 @@ const CalendarView = () => {
   };
 
   return (
-    <Grid templateColumns="repeat(5, 14%)" gap={0}>
+    <Grid templateColumns="repeat(5, 13%)" gap={0}>
       <GridItem colSpan={2} bg="#F2FBFE">
         <CalenderWeekView
           handleDateSelection={handleDateSelection}
@@ -224,7 +224,7 @@ const CalenderWeekView = ({
 
               <Text
                 ml={3}
-                fontSize={"28px"}
+                fontSize={"24px"}
                 fontWeight={500}
                 lineHeight={"39px"}
                 color={colors.dark}
@@ -267,7 +267,7 @@ const CalenderWeekView = ({
               alignSelf={"flex-start"}
             >
               <Box>
-                <Text fontSize={"28px"} lineHeight={"39px"} fontWeight={500}>
+                <Text fontSize={"24px"} lineHeight={"39px"} fontWeight={500}>
                   {data.day}
                 </Text>
               </Box>
@@ -388,12 +388,12 @@ const CalendarDailyDetailView = ({
           >
             {selectedDate},
             <Text
-              fontSize={"40px"}
+              fontSize={"30px"}
               color={colors.black}
               lineHeight={"49px"}
               ml={1}
             >
-              {" "}
+              &nbsp;
               {selectedDay}
             </Text>
           </Text>

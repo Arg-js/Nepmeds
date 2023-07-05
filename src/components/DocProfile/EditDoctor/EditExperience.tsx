@@ -426,18 +426,19 @@ const EditExperience = ({
                               <AiOutlineMore />
                             </MenuButton>
                             <MenuList>
-                              <MenuItem>
+                              <MenuItem
+                                onClick={() =>
+                                  onEditExperience(
+                                    i,
+                                    singleExperience?.id ?? 0,
+                                    singleExperience?.doctor ?? 0
+                                  )
+                                }
+                              >
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
-                                  onClick={() =>
-                                    onEditExperience(
-                                      i,
-                                      singleExperience?.id ?? 0,
-                                      singleExperience?.doctor ?? 0
-                                    )
-                                  }
                                   cursor="pointer"
                                 >
                                   <Icon
@@ -457,14 +458,15 @@ const EditExperience = ({
                                 </Box>
                               </MenuItem>
                               <MenuDivider />
-                              <MenuItem>
+                              <MenuItem
+                                onClick={() =>
+                                  deleteData(singleExperience?.id ?? 0)
+                                }
+                              >
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
-                                  onClick={() =>
-                                    deleteData(singleExperience?.id ?? 0)
-                                  }
                                   cursor="pointer"
                                 >
                                   <Icon

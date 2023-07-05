@@ -4,7 +4,7 @@ import Select from "@nepMeds/components/Form/Select";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { colors } from "@nepMeds/theme/colors";
-import { year } from "@nepMeds/utils/choices";
+import { years } from "@nepMeds/utils/choices";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -145,7 +145,7 @@ const AddAcademicField = ({ index }: { index?: number }) => {
               placeholder=""
               label="Passed Year"
               register={register}
-              options={year}
+              options={years}
               {...field}
               style={{
                 background: colors.forminput,
