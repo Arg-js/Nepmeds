@@ -15,10 +15,8 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
-  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  isEditable?: boolean;
 }) => {
   const {
     control,
@@ -132,7 +130,7 @@ export const AcademicInfoForm = ({
         };
         return (
           <Box key={item.id} position="relative">
-            <SimpleGrid gridTemplateColumns="1fr" mb={4}>
+            <Box mb={4}>
               <MultipleImageUpload
                 selectedImages={selectedImagesForAcademic}
                 setSelectedImages={images => {
@@ -152,13 +150,11 @@ export const AcademicInfoForm = ({
                 academicIndex={index}
                 helperText={false}
               />
-            </SimpleGrid>
+            </Box>
             <SimpleGrid
-              gridTemplateColumns={
-                isEditable ? "repeat(2,1fr)" : "repeat(4,1fr)"
-              }
               mb={8}
               gap={2}
+              columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
                 render={({ field }) => (

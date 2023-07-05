@@ -3,8 +3,8 @@ import {
   Box,
   Container,
   Flex,
-  Heading,
   HStack,
+  Heading,
   Text,
   VStack,
 } from "@chakra-ui/layout";
@@ -13,10 +13,10 @@ import {
   Step,
   StepIndicator,
   StepNumber,
-  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
+  Stepper,
 } from "@chakra-ui/stepper";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -652,7 +652,7 @@ const RegistrationForm = () => {
                 index={activeStep}
                 orientation="vertical"
                 gap={1}
-                w={330}
+                w={260}
                 h={350}
                 alignItems="center"
               >
@@ -693,7 +693,9 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="75vh">{content}</Box>
+            <Flex flexGrow={1} h="75vh">
+              {content}
+            </Flex>
           </HStack>
 
           <Flex justifyContent="space-between" mt={4} mb={4}>

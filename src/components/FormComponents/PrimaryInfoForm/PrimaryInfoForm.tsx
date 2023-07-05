@@ -165,10 +165,8 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      {isEditable ? (
-        <></>
-      ) : (
+    <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
+      {!isEditable && (
         <GridItem colSpan={4}>
           <FloatinglabelTextArea
             label="Basic Information"
@@ -178,7 +176,7 @@ const PrimaryInfo = ({
           />
         </GridItem>
       )}
-      <GridItem colSpan={isEditable ? 1 : 1}>
+      <GridItem colSpan={{ base: 2, lg: 1 }}>
         <Input
           name="phone"
           register={register}
@@ -191,7 +189,7 @@ const PrimaryInfo = ({
           error={errors.phone?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 3 : 1}>
+      <GridItem colSpan={{ base: 2, lg: 3, xl: 1 }}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -210,7 +208,7 @@ const PrimaryInfo = ({
           error={errors.mobile_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -228,8 +226,8 @@ const PrimaryInfo = ({
           }}
           error={errors.email?.message}
         />
-      </GridItem>{" "}
-      <GridItem colSpan={2}>
+      </GridItem>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <Select
           placeholder=""
           label="Gender"
@@ -248,7 +246,7 @@ const PrimaryInfo = ({
           error={errors.gender?.message}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <FloatingLabelInput
           name="date_of_birth"
           label="Date of birth"
@@ -263,7 +261,7 @@ const PrimaryInfo = ({
           error={errors.date_of_birth?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <MultiSelect
           label="Specialization"
           required
@@ -286,7 +284,7 @@ const PrimaryInfo = ({
           error={errors.specialization?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
@@ -311,7 +309,7 @@ const PrimaryInfo = ({
           error={errors.pan_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
           placeholder=""
           label="ID Type"
@@ -334,7 +332,7 @@ const PrimaryInfo = ({
           {IdType(watchIdType)} Detail
         </Text>
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <FloatingLabelInput
           label="ID Number"
           name="id_number"
@@ -348,7 +346,7 @@ const PrimaryInfo = ({
           error={errors.id_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
         <Select
           placeholder=""
           label="Issued District"
@@ -368,7 +366,7 @@ const PrimaryInfo = ({
           error={errors.id_issued_district?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 1}>
+      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
         <FloatingLabelInput
           name="id_issued_date"
           label="Issued Date"
@@ -384,7 +382,7 @@ const PrimaryInfo = ({
           error={errors.id_issued_date?.message}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, lg: 2 }}>
         <ImageUpload
           SelectedImage={selectedFrontImage}
           setSelectedImage={setSelectedFrontImage}
@@ -398,7 +396,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, lg: 2 }}>
         <ImageUpload
           SelectedImage={selectedBackImage}
           setSelectedImage={setSelectedBackFrontImage}
@@ -414,10 +412,10 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={4}>
         <Text fontWeight={100} fontSize={"20px"}>
-          Address Details{" "}
+          Address Details
         </Text>
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <Select
           placeholder="Select Province"
           label="Province"
@@ -437,7 +435,7 @@ const PrimaryInfo = ({
           error={errors.province?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
           placeholder="Select District"
           label="District"
@@ -457,7 +455,7 @@ const PrimaryInfo = ({
           error={errors.district?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
           placeholder="Select Municipality/Vdc"
           label="Municipality/Vdc"
@@ -477,7 +475,7 @@ const PrimaryInfo = ({
           error={errors.municipality?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 2, md: 1 }}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
@@ -492,7 +490,7 @@ const PrimaryInfo = ({
           error={errors.ward?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 2, md: 1 }}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"

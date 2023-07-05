@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
+import { Box, Flex, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
@@ -16,10 +16,8 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
-  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  isEditable?: boolean;
 }) => {
   const {
     control,
@@ -141,7 +139,7 @@ export const ExperienceForm = ({
         };
         return (
           <Box key={item.id} position="relative">
-            <SimpleGrid gridTemplateColumns="1fr" mb={4}>
+            <SimpleGrid mb={4}>
               <MultipleImageUpload
                 selectedImages={selectedImagesForExperience}
                 setSelectedImages={images => {
@@ -162,16 +160,15 @@ export const ExperienceForm = ({
                 helperText={false}
               />
             </SimpleGrid>
+
             <Grid
-              templateColumns="repeat(4,1fr)"
               gap={3}
               mb={3}
               // alignItems="flex-end"
               key={item.id}
-              w="100%"
-              position={"relative"}
+              templateColumns="repeat(4, 1fr)"
             >
-              <GridItem colSpan={isEditable ? 4 : 2}>
+              <GridItem colSpan={{ base: 4, xl: 2 }}>
                 <Controller
                   render={({ field }) => (
                     <FloatingLabelInput
@@ -190,8 +187,7 @@ export const ExperienceForm = ({
                   control={control}
                 />
               </GridItem>
-
-              <GridItem colSpan={isEditable ? 2 : 1}>
+              <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                 <Controller
                   render={({ field }) => (
                     <FloatingLabelInput
@@ -212,8 +208,9 @@ export const ExperienceForm = ({
                   control={control}
                 />
               </GridItem>
-              <GridItem colSpan={isEditable ? 2 : 1}>
-                {watch(`experience.${index}.currently_working`) !== true && (
+
+              {watch(`experience.${index}.currently_working`) !== true && (
+                <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                   <Controller
                     render={({ field }) => (
                       <FloatingLabelInput
@@ -233,60 +230,55 @@ export const ExperienceForm = ({
                     name={`experience.${index}.to_date`}
                     control={control}
                   />
-                )}
-              </GridItem>
-              <GridItem colSpan={4}>
-                <Controller
-                  render={({ field }) => (
-                    <FloatinglabelTextArea
-                      label="Description"
-                      register={register}
-                      required
-                      style={{
-                        background: colors.forminput,
-                        border: "none",
-                        padding: "17px",
-                      }}
-                      {...field}
-                      rules={{
-                        required: "Description is required.",
-                      }}
-                      error={errors?.experience?.[index]?.description?.message}
-                    />
-                  )}
-                  name={`experience.${index}.description`}
-                  control={control}
-                />
-              </GridItem>
-              <GridItem
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                colSpan={4}
-              >
-                <Controller
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <Checkbox
-                      label="Currently working here"
-                      control={control}
-                      {...fieldValues}
-                      checked={value}
-                    />
-                  )}
-                  name={`experience.${index}.currently_working`}
-                  control={control}
-                />
-
-                <Icon
-                  type="button"
-                  cursor={"pointer"}
-                  as={DeleteIcon}
-                  onClick={handleRemoveExperience}
-                  fontSize={28}
-                  color={colors.error}
-                />
-              </GridItem>
+                </GridItem>
+              )}
             </Grid>
+            <Box>
+              <Controller
+                render={({ field }) => (
+                  <FloatinglabelTextArea
+                    label="Description"
+                    register={register}
+                    required
+                    style={{
+                      background: colors.forminput,
+                      border: "none",
+                      padding: "17px",
+                    }}
+                    {...field}
+                    rules={{
+                      required: "Description is required.",
+                    }}
+                    error={errors?.experience?.[index]?.description?.message}
+                  />
+                )}
+                name={`experience.${index}.description`}
+                control={control}
+              />
+            </Box>
+            <Flex my={4} alignItems={"center"} justifyContent={"space-between"}>
+              <Controller
+                render={({ field: { value, ...fieldValues } }) => (
+                  <Checkbox
+                    label="Currently working here"
+                    control={control}
+                    {...fieldValues}
+                    checked={value}
+                  />
+                )}
+                name={`experience.${index}.currently_working`}
+                control={control}
+              />
+
+              <Icon
+                type="button"
+                cursor={"pointer"}
+                as={DeleteIcon}
+                onClick={handleRemoveExperience}
+                fontSize={28}
+                color={colors.error}
+              />
+            </Flex>
           </Box>
         );
       })}
