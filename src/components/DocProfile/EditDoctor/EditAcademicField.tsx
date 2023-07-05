@@ -5,7 +5,7 @@ import { IRegisterFields } from "@nepMeds/components/FormComponents/Registration
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
-import { years } from "@nepMeds/utils/choices";
+import { year } from "@nepMeds/utils/choices";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -170,7 +170,7 @@ const EditAcademicField = ({
                   ?.graduation_year
               }
               register={register}
-              options={years}
+              options={year}
               {...field}
               style={{
                 background: colors.forminput,
