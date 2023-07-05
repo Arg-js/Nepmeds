@@ -3,8 +3,8 @@ import {
   Box,
   Container,
   Flex,
-  Heading,
   HStack,
+  Heading,
   Text,
   VStack,
 } from "@chakra-ui/layout";
@@ -13,10 +13,10 @@ import {
   Step,
   StepIndicator,
   StepNumber,
-  Stepper,
   StepSeparator,
   StepStatus,
   StepTitle,
+  Stepper,
 } from "@chakra-ui/stepper";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -57,11 +57,11 @@ const registerDefaultValues = {
   last_name: "",
   mobile_number: "",
   profile_picture: undefined as undefined | File[],
-  district: 1,
-  ward: 1,
-  tole: 1,
-  municipality: 1,
-  province: 1,
+  district: 0,
+  ward: "",
+  tole: "",
+  municipality: 0,
+  province: 0,
   gender: "Male",
   date_of_birth: "",
   email: "",
@@ -92,7 +92,7 @@ const registerDefaultValues = {
       major: "",
       id: "",
       university: "",
-      graduation_year: "",
+      graduation_year: "2023",
       academic_documents: undefined as undefined | File[],
       isSubmitted: false,
     },
@@ -608,7 +608,6 @@ const RegistrationForm = () => {
   }
   useEffect(() => {
     if (location.state) {
-      console.log(location.state);
       const mobileNumber = (location.state as { mobile: string }).mobile;
       if (checkNumberMatch(mobileNumber)) {
         formMethods.setValue("mobile_number", mobileNumber);
@@ -623,13 +622,12 @@ const RegistrationForm = () => {
   }, [location.state]);
 
   const { content } = steps[activeStep];
-  console.log(content);
 
   return (
-    <Container maxW="container.xl" m="auto">
+    <Container maxW={"container.xl"} m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-          <HStack pt={12} spacing={0} alignItems="flex-start">
+          <HStack pt={8} spacing={0} alignItems="flex-start">
             <VStack
               bg={colors.main}
               alignItems="flex-start"
@@ -654,7 +652,7 @@ const RegistrationForm = () => {
                 index={activeStep}
                 orientation="vertical"
                 gap={1}
-                w={330}
+                w={260}
                 h={350}
                 alignItems="center"
               >
@@ -695,7 +693,9 @@ const RegistrationForm = () => {
               </Stepper>
             </VStack>
 
-            <Box h="75vh">{content}</Box>
+            <Flex flexGrow={1} h="75vh">
+              {content}
+            </Flex>
           </HStack>
 
           <Flex justifyContent="space-between" mt={4} mb={4}>
@@ -717,10 +717,8 @@ const RegistrationForm = () => {
                 <Button
                   onClick={() => {
                     if (activeStep === 4) {
-                      console.log(activeStep);
                       return onOpenConfirmation();
                     } else {
-                      console.log(activeStep);
                       setActiveStep(prev => prev + 1);
                     }
                   }}

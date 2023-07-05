@@ -1,5 +1,5 @@
-import Wrapper from "./Wrapper";
 import { PrimaryInfoForm } from "@nepMeds/components/FormComponents";
+import Wrapper from "./Wrapper";
 
 const PrimaryInfo = () => {
   return (

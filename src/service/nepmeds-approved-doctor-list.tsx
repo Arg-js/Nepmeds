@@ -11,3 +11,14 @@ export const useApprovedDoctorList = () =>
   useQuery(api.approveddoctor, getApprovedDoctorList, {
     select: data => data.data.data,
   });
+
+const getRejectedDoctorList = async () => {
+  const response = await HttpClient.get<NepMedsResponse>(
+    api.rejectedDoctorList
+  );
+  return response;
+};
+export const useFetchRejectedDoctorList = () =>
+  useQuery(api.rejectedDoctorList, getRejectedDoctorList, {
+    select: data => data.data.data,
+  });

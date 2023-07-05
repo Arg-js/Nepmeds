@@ -55,7 +55,6 @@ const AddCertificateField = ({ index }: { index?: number }) => {
   };
   const certificateIndex = index !== undefined ? index : 0;
   const selectedImagesForCertificate = selectedImages[certificateIndex] || [];
-  console.log(certificateIndex);
   return (
     <Box position="relative">
       <SimpleGrid gridTemplateColumns="1fr" mb={4}>
