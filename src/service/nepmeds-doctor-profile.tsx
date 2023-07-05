@@ -84,3 +84,28 @@ export const useDoctorProfile = () => {
     select: data => data.data.data,
   });
 };
+
+const getDoctorProfileById = (DoctorId: string) => () => {
+  return HttpClient.get<NepMedsResponse<IGetDoctorProfile>>(
+    api.doctorProfileById.replace("{id}", DoctorId)
+  );
+};
+
+// export const fetchDoctorProfileByIds = () => {
+//   return useMutation(getDoctorProfileById, {
+//     onError: (error: AxiosDefaults) => {
+//       console.log(error);
+//     },
+//   });
+// };
+export const fetchDoctorProfileById = (DoctorId: string) => {
+  return useQuery(
+    [api.doctorProfileById, DoctorId],
+    getDoctorProfileById(DoctorId ?? ""),
+    {
+      enabled: !!DoctorId,
+      select: ({ data }) => data,
+      onError: () => {},
+    }
+  );
+};
