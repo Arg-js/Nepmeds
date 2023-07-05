@@ -39,6 +39,7 @@
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
+* **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))

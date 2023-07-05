@@ -22,6 +22,7 @@ import { fileToString } from "@nepMeds/utils/fileToString";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 import Input from "@nepMeds/components/Form/Input";
+import { normalURL } from "@nepMeds/service/service-axios";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -109,13 +110,13 @@ const PrimaryInfo = ({
   useEffect(() => {
     if (isEditable && doctorProfileData?.id_front_image) {
       setSelectedFrontImage(
-        `http://38.242.204.217:8005/media/${doctorProfileData.id_front_image}`
+        `${normalURL}/media/${doctorProfileData.id_front_image}`
       );
     } else setSelectedFrontImage(getValues("id_front_image")?.[0] ?? null);
 
     if (isEditable && doctorProfileData?.id_back_image) {
       setSelectedBackFrontImage(
-        `http://38.242.204.217:8005/media/${doctorProfileData.id_back_image}`
+        `${normalURL}/media/${doctorProfileData.id_back_image}`
       );
     } else setSelectedBackFrontImage(getValues("id_back_image")?.[0] ?? null);
   }, [doctorProfileData]);
@@ -131,12 +132,19 @@ const PrimaryInfo = ({
   };
 
   const validateDateOfBirth = () => {
-    const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
+    const currentDateObj = new Date();
+    const currentDate = currentDateObj.toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const dateOfBirth = getValues("date_of_birth");
     if (dateOfBirth > currentDate) {
       return "Date of birth cannot be greater than the current date.";
     }
 
+    if (
+      new Date(dateOfBirth).getFullYear() >
+      currentDateObj.getFullYear() - 18
+    ) {
+      return "You must be at least 18 years old to register.";
+    }
     return true; // Return true if the validation passes
   };
 

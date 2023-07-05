@@ -9,6 +9,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import {
+  IoCalendar,
   IoChevronBackCircleOutline,
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
@@ -36,9 +37,13 @@ import {
   format,
   isToday,
   getDay,
+  addMonths,
+  subMonths,
 } from "date-fns";
 import { useState } from "react";
-const Calendar = () => {
+import Calendar from "react-calendar";
+
+const CalendarView = () => {
   const currentDate = new Date();
   const formattedDate = format(currentDate, "do MMMM");
   const dayOfWeek = format(currentDate, "EEEE");
@@ -65,6 +70,7 @@ const Calendar = () => {
         <CalenderWeekView
           handleDateSelection={handleDateSelection}
           selectedBox={selectedBox}
+          setSelectedBox={setSelectedBox}
           selectedDay={selectedDay}
         />
       </GridItem>
@@ -79,11 +85,12 @@ const Calendar = () => {
   );
 };
 
-export default Calendar;
+export default CalendarView;
 
 const CalenderWeekView = ({
   handleDateSelection,
   selectedBox,
+  setSelectedBox,
 }: {
   handleDateSelection: (
     date: string,
@@ -92,12 +99,32 @@ const CalenderWeekView = ({
     i: number
   ) => void;
   selectedBox: number;
+  setSelectedBox: (box: number) => void;
   selectedDay: string;
 }) => {
-  const currentDate = new Date();
-  const startOfWeekDate = startOfWeek(currentDate);
-  const endOfWeekDate = endOfWeek(currentDate);
+  const [date, setDate] = useState(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
+  const handleIconClick = () => {
+    setShowCalendar(!showCalendar);
+  };
+  const handleCalendarChange = (value: any) => {
+    const date = new Date(value);
+    setDate(date);
+    setShowCalendar(false);
+    setSelectedBox(getDay(date));
+  };
+  const startOfWeekDate = startOfWeek(date);
+  const endOfWeekDate = endOfWeek(date);
 
+  // October 2022 (Note: Month is zero-based)
+
+  const handleNextMonth = () => {
+    setDate(prevMonth => addMonths(prevMonth, 1));
+  };
+
+  const handlePreviousMonth = () => {
+    setDate(prevMonth => subMonths(prevMonth, 1));
+  };
   const weekDates = eachDayOfInterval({
     start: startOfWeekDate,
     end: endOfWeekDate,
@@ -123,25 +150,48 @@ const CalenderWeekView = ({
           fontSize={"25px"}
           color={colors.grey_dark}
           cursor={"pointer"}
+          onClick={handlePreviousMonth}
         />
         <Text fontSize={"16px"} lineHeight={"22px"} fontWeight={600}>
-          October 2022
+          {format(date, "MMMM yyyy")}
         </Text>
         <IoChevronForwardCircleOutline
           fontSize={"25px"}
           color={colors.grey_dark}
           cursor={"pointer"}
+          onClick={handleNextMonth}
         />
       </Box>
-      <Box display={"flex"} mt={3} alignItems={"baseline"}>
-        <Text fontSize={"24px"} color={colors.grey_dark} fontWeight={"400"}>
-          This{" "}
-        </Text>
-        <Text fontSize={"35px"} ml={2} fontWeight={600} color={"#333333"}>
-          Week
-        </Text>
+      <Box
+        display={"flex"}
+        alignItems={"baseline"}
+        position="relative"
+        justifyContent={"space-between"}
+        mt={3}
+      >
+        <Box display={"flex"} alignItems={"baseline"}>
+          <Text fontSize={"24px"} color={colors.grey_dark} fontWeight={"400"}>
+            This{" "}
+          </Text>
+          <Text fontSize={"35px"} ml={2} fontWeight={600} color={"#333333"}>
+            Week
+          </Text>
+        </Box>{" "}
+        <IoCalendar
+          onClick={handleIconClick}
+          color={colors.green_light}
+          fontSize={20}
+          cursor={"pointer"}
+        />
+        <Box position={"absolute"} top={12} width={300}>
+          {showCalendar && (
+            <Calendar
+              onChange={value => handleCalendarChange(value)}
+              value={date}
+            />
+          )}
+        </Box>
       </Box>
-
       {CalenderWeeklyDatas?.map((data, i) =>
         selectedBox === i ? (
           <Box
@@ -297,7 +347,7 @@ const CalendarDailyDetailView = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Add Event</Text>
+            <Text>Add Availability</Text>
           </HStack>
         }
         footer={
@@ -350,7 +400,7 @@ const CalendarDailyDetailView = ({
           <Box onClick={onAddEventOpen} width="130px">
             <CustomButton backgroundColor={colors.primary}>
               <AiOutlinePlus />
-              <Text>Add Event</Text>
+              <Text>Add Availability</Text>
             </CustomButton>
           </Box>
         </Box>
