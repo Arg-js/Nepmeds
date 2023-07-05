@@ -9,7 +9,7 @@ import {
   useGetMunicipalities,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { useFormContext } from "react-hook-form";
@@ -43,7 +43,7 @@ const PrimaryInfo = ({
   const districtInfo = useGetDistricts(watch("province"));
   const municipalityInfo = useGetMunicipalities(watch("district"));
   const allDistrictInfo = useGetAllDistricts();
-  const { data: specialization = [] } = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationRegisterData();
 
   const provinceOptions =
     provinceInfo.data?.map(p => ({

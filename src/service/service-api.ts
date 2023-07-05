@@ -15,6 +15,7 @@ export const api = {
   doctor_profile: "/doctor_consult/doctor-profile/",
   edit_doctor_profile: "/doctor_consult/doctor-profile-update/",
   specialization: "/core/specialization/",
+  specialization_register: "/core/specialization-list/",
   registereddoctor: "/dashboard/registered-doctor-list",
   pendingdoctor: "/dashboard/pending-doctor-list",
   approveddoctor: "/dashboard/approved-doctor-list",

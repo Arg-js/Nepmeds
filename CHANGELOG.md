@@ -1,8 +1,4 @@
-<<<<<<< HEAD
 ## 0.0.1 (2023-07-05)
-=======
-## 0.0.1 (2023-07-03)
->>>>>>> ad43cbe168e061cb1a6352fd744eeb1268701e97
 
 
 ### Bug Fixes
@@ -44,7 +40,6 @@
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
-* **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
@@ -74,6 +69,8 @@
 * **login, signup and otp component:** modified login, added signup and otp (wip) ([9fcb4b3](https://gitlab.com/r2850/nepmeds/commit/9fcb4b32b0c646f71ab088749a63b887740c16f3))
 * master data ([4a76f43](https://gitlab.com/r2850/nepmeds/commit/4a76f43b2c29144c0ce55322f9c9999163c982c2))
 * master data ([9a65e00](https://gitlab.com/r2850/nepmeds/commit/9a65e00258290f254ba1d4753f1c4d3b63d6f7b8))
+* **master data:** add,delete and edit integrated in master data ([e62ee6e](https://gitlab.com/r2850/nepmeds/commit/e62ee6e5505ab7e24466f9c39e977bad4a03299d))
+* **master data:** add,delete and edit integrated in master data ([ac9a780](https://gitlab.com/r2850/nepmeds/commit/ac9a78077fb890b57472650cd6739d311be95637))
 * **mobile number validation:** regex for mobile number added ([acc623f](https://gitlab.com/r2850/nepmeds/commit/acc623f68fe11df7eec3c717edf920e633ed12ab))
 * **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
 * **profile:** profile edit ([e52a6bb](https://gitlab.com/r2850/nepmeds/commit/e52a6bb66e839b02c1d48f1abe6dec5eeb0df133))
