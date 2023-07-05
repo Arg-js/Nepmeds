@@ -22,6 +22,7 @@ import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
 import { Suspense } from "react";
 import { Center, Spinner } from "@chakra-ui/react";
 import Calendar from "@nepMeds/pages/Calendar";
+import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 
 const routes = [
   {
@@ -79,6 +80,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
         element: <AllDoctors />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOC_PROFILE,
+        element: <DocProfileAdmin />,
       },
 
       {

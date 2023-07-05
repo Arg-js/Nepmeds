@@ -30,6 +30,7 @@ export const api = {
   municipality: "/core/municipalities",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
+  doctorProfileById: "/dashboard/view-doctor-profile/{id}",
 };
 
 export interface NepMedsResponse<T = any> {

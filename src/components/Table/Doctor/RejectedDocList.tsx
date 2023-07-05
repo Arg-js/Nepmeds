@@ -1,69 +1,59 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Box,
-  Button,
   HStack,
+  Text,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
   Spinner,
-  Text,
   useDisclosure,
+  Button,
+  Box,
 } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import {
-  useDeleteDoctorData,
-  useDoctorList,
-} from "@nepMeds/service/nepmeds-doctorlist";
+import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
 import { Delete, Show } from "react-iconly";
+import { FormProvider, useForm } from "react-hook-form";
+import { svgs } from "@nepMeds/assets/svgs";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { RejectionForm } from "@nepMeds/components/FormComponents";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
+import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
-import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { colors } from "@nepMeds/theme/colors";
-import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const schema = yup.object().shape({
-  remarks: yup.string().required("Remarks is required!"),
+  remarks: yup.string().required("Remarks  is required!"),
 });
-
-const RegisteredDocList = () => {
+const RejectedDocList = () => {
   const {
     isOpen: isDetailsModalOpen,
     // onOpen: onDetailsModalOpen,
     onClose: onDetailsModalClose,
   } = useDisclosure();
-
   const {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
   } = useDisclosure();
   const [_isRejected, setIsRejected] = React.useState(false);
-  const rejectModal = () => {
-    setIsRejected(true);
-    onDetailsModalClose();
-    onRejectModalOpen();
-  };
+  const { data, isLoading } = usePendingDoctorList();
+  const [id, setId] = React.useState("");
 
-  const RejectDoctor = () => {
-    onRejectModalClose();
-  };
   const approvePendingDoc = useApproveDoc();
-
   const rejectPendingDoc = useRejectDoc();
+  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
+  const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
     try {
       const isValid = await formMethods.trigger("remarks");
@@ -81,10 +71,6 @@ const RegisteredDocList = () => {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
-  const formMethods = useForm({
-    resolver: yupResolver(schema),
-  });
-  const navigate = useNavigate();
 
   interface CellContextSearch {
     user: {
@@ -93,18 +79,7 @@ const RegisteredDocList = () => {
       last_name: string;
     };
   }
-  const deleteDoctorMethod = useDeleteDoctorData();
-
-  const handleDeleteDoctor = async (id: number) => {
-    const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
-
-    if (deleteDoctorResponse) {
-      toastSuccess("Academic data deleted successfully");
-    } else {
-      toastFail("Failed to delete academic information!");
-    }
-  };
-
+  const navigate = useNavigate();
   const columns = React.useMemo(
     () => [
       {
@@ -162,6 +137,26 @@ const RegisteredDocList = () => {
         },
       },
       {
+        header: "Reason",
+        accessorKey: "specialization",
+        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
+          const specialization = row?.original?.specialization ?? "";
+
+          return (
+            <Box
+              display={"flex"}
+              flexWrap={"wrap"}
+              // width={"fit-content"}
+              // p={1}
+              // background={colors.grey}
+              // borderRadius={20}
+            >
+              <p>{specialization.join(", ")}</p>
+            </Box>
+          );
+        },
+      },
+      {
         header: "Status",
         accessorKey: "profile_status",
         cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
@@ -195,6 +190,7 @@ const RegisteredDocList = () => {
                   formMethods.reset(cell.row.original);
                   // onDetailsModalOpen();
                   setId(cell.row.original.id);
+                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
                   navigate(
                     generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
                       id: cell.row.original.id,
@@ -202,13 +198,14 @@ const RegisteredDocList = () => {
                   );
                 }}
               />
+
               <Icon
                 as={Delete}
                 fontSize={20}
                 cursor="pointer"
                 color={colors.red}
                 onClick={() => {
-                  handleDeleteDoctor(cell.row.original.id);
+                  // handleDeleteDoctor(cell.row.original.id);
                   // formMethods.reset(cell.row.original);
                   // onDetailsModalOpen();
                   // setId(cell.row.original.id);
@@ -221,13 +218,19 @@ const RegisteredDocList = () => {
     ],
     []
   );
-  const [id, setId] = React.useState("");
-  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
-  const { data, isLoading } = useDoctorList();
-  const [searchFilter, setSearchFilter] = useState("");
+  const rejectModal = () => {
+    setIsRejected(true);
+    onDetailsModalClose();
+    onRejectModalOpen();
+  };
   const acceptDoctor = () => {
     onDetailsModalClose();
   };
+  const RejectDoctor = () => {
+    onRejectModalClose();
+  };
+
+  const [searchFilter, setSearchFilter] = useState("");
 
   if (isLoading)
     return (
@@ -235,10 +238,12 @@ const RegisteredDocList = () => {
         style={{ margin: "0 auto", textAlign: "center", display: "block" }}
       />
     );
+
   return (
     <>
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Registered Doctors</Text>
+        <Text fontWeight="medium">Rejected Doctors</Text>
+
         <HStack>
           <InputGroup w="auto">
             <InputLeftElement pointerEvents="none" h={8}>
@@ -254,7 +259,7 @@ const RegisteredDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data ?? []}
+        data={data || []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           // manual: true,
@@ -359,4 +364,4 @@ const RegisteredDocList = () => {
   );
 };
 
-export default RegisteredDocList;
+export default RejectedDocList;

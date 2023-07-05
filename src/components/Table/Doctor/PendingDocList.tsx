@@ -16,7 +16,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { Show } from "react-iconly";
+import { Delete, Show } from "react-iconly";
 import { FormProvider, useForm } from "react-hook-form";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -29,6 +29,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import { colors } from "@nepMeds/theme/colors";
+import { generatePath, useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -36,7 +39,7 @@ const schema = yup.object().shape({
 const PendingDocList = () => {
   const {
     isOpen: isDetailsModalOpen,
-    onOpen: onDetailsModalOpen,
+    // onOpen: onDetailsModalOpen,
     onClose: onDetailsModalClose,
   } = useDisclosure();
   const {
@@ -69,7 +72,17 @@ const PendingDocList = () => {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
+  const deleteDoctorMethod = useDeleteDoctorData();
 
+  const handleDeleteDoctor = async (id: number) => {
+    const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
+
+    if (deleteDoctorResponse) {
+      toastSuccess("Academic data deleted successfully");
+    } else {
+      toastFail("Failed to delete academic information!");
+    }
+  };
   interface CellContextSearch {
     user: {
       first_name: string;
@@ -77,6 +90,7 @@ const PendingDocList = () => {
       last_name: string;
     };
   }
+  const navigate = useNavigate();
   const columns = React.useMemo(
     () => [
       {
@@ -158,16 +172,35 @@ const PendingDocList = () => {
         accessorKey: "actions",
         cell: (cell: CellContext<any, any>) => {
           return (
-            <Icon
-              as={Show}
-              fontSize={20}
-              cursor="pointer"
-              onClick={() => {
-                formMethods.reset(cell.row.original);
-                onDetailsModalOpen();
-                setId(cell.row.original.id);
-              }}
-            />
+            <HStack>
+              <Icon
+                as={Show}
+                fontSize={20}
+                cursor="pointer"
+                onClick={() => {
+                  formMethods.reset(cell.row.original);
+                  // onDetailsModalOpen();
+                  setId(cell.row.original.id);
+                  navigate(
+                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                      id: cell.row.original.id,
+                    })
+                  );
+                }}
+              />
+              <Icon
+                as={Delete}
+                fontSize={20}
+                cursor="pointer"
+                color={colors.red}
+                onClick={() => {
+                  handleDeleteDoctor(cell.row.original.id);
+                  // formMethods.reset(cell.row.original);
+                  // onDetailsModalOpen();
+                  // setId(cell.row.original.id);
+                }}
+              />
+            </HStack>
           );
         },
       },
@@ -217,6 +250,14 @@ const PendingDocList = () => {
         columns={columns}
         data={data || []}
         filter={{ globalFilter: searchFilter }}
+        pagination={{
+          // manual: true,
+          pageParams: {
+            pageIndex: 1,
+            pageSize: 5,
+          },
+          pageCount: 20,
+        }}
       />
       <ModalComponent
         alignment="left"
