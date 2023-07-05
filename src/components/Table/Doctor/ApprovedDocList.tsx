@@ -18,6 +18,8 @@ import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
@@ -28,11 +30,12 @@ import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Delete, Show } from "react-iconly";
+import { generatePath, useNavigate } from "react-router-dom";
 
 const ApprovedDocList = () => {
   const {
     isOpen: isDetailsModalOpen,
-    onOpen: onDetailsModalOpen,
+    // onOpen: onDetailsModalOpen,
     onClose: onDetailsModalClose,
   } = useDisclosure();
   const {
@@ -40,6 +43,8 @@ const ApprovedDocList = () => {
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
   } = useDisclosure();
+
+  const navigate = useNavigate();
   const [_isRejected, setIsRejected] = React.useState(false);
   const rejectModal = () => {
     setIsRejected(true);
@@ -179,10 +184,19 @@ const ApprovedDocList = () => {
                 cursor="pointer"
                 onClick={() => {
                   formMethods.reset(cell.row.original);
-                  onDetailsModalOpen();
+                  // // onDetailsModalOpen();
                   setId(cell.row.original.id);
+                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
+                  navigate(
+                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                      id: cell.row.original.id,
+                    })
+                  );
+
+                  // navigate(`${"/doc-profile"}`)
                 }}
               />
+
               <Icon
                 as={Delete}
                 fontSize={20}
@@ -236,6 +250,14 @@ const ApprovedDocList = () => {
         columns={columns}
         data={data || []}
         filter={{ globalFilter: searchFilter }}
+        pagination={{
+          // manual: true,
+          pageParams: {
+            pageIndex: 1,
+            pageSize: 5,
+          },
+          pageCount: 20,
+        }}
       />
       <ModalComponent
         alignment="left"
