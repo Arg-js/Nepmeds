@@ -4,16 +4,16 @@ import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { title } from "@nepMeds/utils/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 
 import ImageUpload from "@nepMeds/components/ImageUpload";
-import { fileToString } from "@nepMeds/utils/fileToString";
 import { normalURL } from "@nepMeds/service/service-axios";
+import { fileToString } from "@nepMeds/utils/fileToString";
 export const BasicInfoForm = ({
   isEditable,
   hidePasswordField,
@@ -58,7 +58,7 @@ export const BasicInfoForm = ({
       templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
       gap={4}
     >
-      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={isEditable ? 3 : 1}>
+      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={{ base: 4, xlg: 1 }}>
         <ImageUpload
           SelectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
@@ -83,7 +83,7 @@ export const BasicInfoForm = ({
         <></>
       )}
 
-      <GridItem colSpan={3}>
+      <GridItem colSpan={{ base: 4, md: 2, xlg: 3 }}>
         <Select
           label="Title"
           name="title"
@@ -98,7 +98,7 @@ export const BasicInfoForm = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={{ base: 4, md: 2, xlg: 1 }}>
         <FloatingLabelInput
           label="First Name"
           name="first_name"
@@ -112,7 +112,7 @@ export const BasicInfoForm = ({
           error={errors.first_name?.message}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={{ base: 4, md: 2, xlg: 1 }}>
         <FloatingLabelInput
           label="Middle Name"
           name="middle_name"
@@ -121,7 +121,7 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
         />
       </GridItem>
-      <GridItem colSpan={1}>
+      <GridItem colSpan={{ base: 4, md: 2, xlg: 1 }}>
         <FloatingLabelInput
           required
           label="Last Name"
@@ -137,7 +137,7 @@ export const BasicInfoForm = ({
       </GridItem>
       {hidePasswordField && (
         <>
-          <GridItem colSpan={2}>
+          <GridItem colSpan={{ base: 4, md: 2, xlg: 2 }}>
             <FloatingPassword
               label="Password"
               name="password"
@@ -156,7 +156,7 @@ export const BasicInfoForm = ({
               error={errors.password?.message}
             />
           </GridItem>
-          <GridItem colSpan={2}>
+          <GridItem colSpan={{ base: 4, md: 2, xlg: 2 }}>
             <FloatingPassword
               label="Confirm Password"
               name="confirm_password"

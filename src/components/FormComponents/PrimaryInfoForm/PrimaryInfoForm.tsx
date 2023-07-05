@@ -1,8 +1,13 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
+import { Text } from "@chakra-ui/react";
+import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
+import ImageUpload from "@nepMeds/components/ImageUpload";
+import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
   useGetAllDistricts,
   useGetDistricts,
@@ -12,16 +17,11 @@ import {
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
+import { fileToString } from "@nepMeds/utils/fileToString";
+import React, { ChangeEvent, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect } from "react";
-import { Text } from "@chakra-ui/react";
-import React from "react";
-import { fileToString } from "@nepMeds/utils/fileToString";
-import ImageUpload from "@nepMeds/components/ImageUpload";
-import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
-import Input from "@nepMeds/components/Form/Input";
 import { normalURL } from "@nepMeds/service/service-axios";
 
 const PrimaryInfo = ({
@@ -72,6 +72,16 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
+
+  useEffect(() => {
+    if (watch("province") !== 0) {
+      reset({
+        ...getValues(),
+        district: 0,
+        municipality: 0,
+      });
+    }
+  }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
@@ -139,10 +149,7 @@ const PrimaryInfo = ({
       return "Date of birth cannot be greater than the current date.";
     }
 
-    if (
-      new Date(dateOfBirth).getFullYear() >
-      currentDateObj.getFullYear() - 18
-    ) {
+    if (calculateAge(new Date(dateOfBirth)) < 18) {
       return "You must be at least 18 years old to register.";
     }
     return true; // Return true if the validation passes
@@ -158,10 +165,8 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
   return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      {isEditable ? (
-        <></>
-      ) : (
+    <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
+      {!isEditable && (
         <GridItem colSpan={4}>
           <FloatinglabelTextArea
             label="Basic Information"
@@ -171,7 +176,7 @@ const PrimaryInfo = ({
           />
         </GridItem>
       )}
-      <GridItem colSpan={isEditable ? 1 : 1}>
+      <GridItem colSpan={{ base: 2, lg: 1 }}>
         <Input
           name="phone"
           register={register}
@@ -184,7 +189,7 @@ const PrimaryInfo = ({
           error={errors.phone?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 3 : 1}>
+      <GridItem colSpan={{ base: 2, lg: 3, xl: 1 }}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -203,7 +208,7 @@ const PrimaryInfo = ({
           error={errors.mobile_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -221,8 +226,8 @@ const PrimaryInfo = ({
           }}
           error={errors.email?.message}
         />
-      </GridItem>{" "}
-      <GridItem colSpan={2}>
+      </GridItem>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <Select
           placeholder=""
           label="Gender"
@@ -241,7 +246,7 @@ const PrimaryInfo = ({
           error={errors.gender?.message}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <FloatingLabelInput
           name="date_of_birth"
           label="Date of birth"
@@ -256,7 +261,7 @@ const PrimaryInfo = ({
           error={errors.date_of_birth?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <MultiSelect
           label="Specialization"
           required
@@ -279,7 +284,7 @@ const PrimaryInfo = ({
           error={errors.specialization?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
@@ -304,7 +309,7 @@ const PrimaryInfo = ({
           error={errors.pan_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
           placeholder=""
           label="ID Type"
@@ -327,7 +332,7 @@ const PrimaryInfo = ({
           {IdType(watchIdType)} Detail
         </Text>
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, xl: 2 }}>
         <FloatingLabelInput
           label="ID Number"
           name="id_number"
@@ -341,7 +346,7 @@ const PrimaryInfo = ({
           error={errors.id_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
         <Select
           placeholder=""
           label="Issued District"
@@ -361,7 +366,7 @@ const PrimaryInfo = ({
           error={errors.id_issued_district?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 4 : 1}>
+      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
         <FloatingLabelInput
           name="id_issued_date"
           label="Issued Date"
@@ -377,7 +382,7 @@ const PrimaryInfo = ({
           error={errors.id_issued_date?.message}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, lg: 2 }}>
         <ImageUpload
           SelectedImage={selectedFrontImage}
           setSelectedImage={setSelectedFrontImage}
@@ -391,7 +396,7 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, lg: 2 }}>
         <ImageUpload
           SelectedImage={selectedBackImage}
           setSelectedImage={setSelectedBackFrontImage}
@@ -407,12 +412,12 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={4}>
         <Text fontWeight={100} fontSize={"20px"}>
-          Address Details{" "}
+          Address Details
         </Text>
       </GridItem>
-      <GridItem colSpan={2}>
+      <GridItem colSpan={{ base: 4, md: 2 }}>
         <Select
-          placeholder=""
+          placeholder="Select Province"
           label="Province"
           name="province"
           required
@@ -430,9 +435,9 @@ const PrimaryInfo = ({
           error={errors.province?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
-          placeholder=""
+          placeholder="Select District"
           label="District"
           name="district"
           required
@@ -450,9 +455,9 @@ const PrimaryInfo = ({
           error={errors.district?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
         <Select
-          placeholder=""
+          placeholder="Select Municipality/Vdc"
           label="Municipality/Vdc"
           name="municipality"
           required
@@ -470,7 +475,7 @@ const PrimaryInfo = ({
           error={errors.municipality?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 2, md: 1 }}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
@@ -485,7 +490,7 @@ const PrimaryInfo = ({
           error={errors.ward?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 2 : 1}>
+      <GridItem colSpan={{ base: 2, md: 1 }}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"

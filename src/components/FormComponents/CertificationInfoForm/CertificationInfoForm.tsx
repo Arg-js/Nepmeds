@@ -2,12 +2,12 @@ import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
+import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect, useState } from "react";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
@@ -15,10 +15,8 @@ import { useDeleteCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
-  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  isEditable?: boolean;
 }) => {
   const {
     control,
@@ -135,7 +133,7 @@ export const CertificationInfoForm = ({
         };
         return (
           <Box key={item.id} position="relative">
-            <SimpleGrid gridTemplateColumns="1fr" mb={4}>
+            <Box mb={4}>
               <Controller
                 render={({ field }) => (
                   <MultipleImageUpload
@@ -161,13 +159,11 @@ export const CertificationInfoForm = ({
                 name={`certification.${index}.certificate_documents`} // Add the field name for registration and validation
                 control={control} // Pass the `control` prop to ensure integration with `react-hook-form`
               />
-            </SimpleGrid>
+            </Box>
             <SimpleGrid
-              gridTemplateColumns={
-                isEditable ? "repeat(2,1fr)" : "repeat(4,1fr)"
-              }
               mb={8}
               gap={2}
+              columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
                 render={({ field }) => (
