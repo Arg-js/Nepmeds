@@ -13,14 +13,19 @@ import { useGenerateForgetPasswordLink } from "@nepMeds/service/nepmeds-forgot-p
 import { colors } from "@nepMeds/theme/colors";
 
 const schema = yup.object().shape({
-  email: yup.string().email("Please enter a valid email"),
+  email: yup.string().required("Mobile number or email is required!"),
 });
 
 const ForgotPasswordForm = () => {
   const navigate = useNavigate();
   const forgotPasswordAction = useGenerateForgetPasswordLink();
 
-  const { register, getValues, handleSubmit } = useForm({
+  const {
+    register,
+    getValues,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       email: "",
     },
@@ -50,6 +55,7 @@ const ForgotPasswordForm = () => {
           backgroundColor={colors.forminput}
           placeholder="Email Address/ Mobile No."
           _placeholder={{ color: colors.light_gray }}
+          error={errors.email?.message}
         />
       </VStack>
       <HStack mt={12} justifyContent="center">

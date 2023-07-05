@@ -58,7 +58,7 @@ const Select = ({
         id={name}
         h={14}
         // value={defaultValue}
-        s
+
         // pr={8}
       >
         {placeholder && (
