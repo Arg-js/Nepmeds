@@ -7,9 +7,6 @@ export function isTimeInRange(
   const endTime = getTimeInMinutes(end);
   const targetTime = getTimeInMinutes(target);
 
-  // if (startTime <= targetTime && targetTime < endTime) {
-  //   console.log(true);
-  // } else console.log(false);
   return startTime <= targetTime && targetTime < endTime;
 }
 

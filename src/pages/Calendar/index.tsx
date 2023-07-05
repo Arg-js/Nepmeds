@@ -65,7 +65,7 @@ const CalendarView = () => {
   };
 
   return (
-    <Grid templateColumns="repeat(5, 16%)" gap={0}>
+    <Grid templateColumns="repeat(5, 14%)" gap={0}>
       <GridItem colSpan={2} bg="#F2FBFE">
         <CalenderWeekView
           handleDateSelection={handleDateSelection}
