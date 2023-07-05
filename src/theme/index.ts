@@ -57,7 +57,12 @@ const space = {
   96: "384px",
 };
 
+const breakpoints = {
+  xlg: "1025px",
+};
+
 export const theme = extendTheme({
+  breakpoints,
   styles: {
     global: {
       body: {

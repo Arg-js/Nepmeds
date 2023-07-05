@@ -62,7 +62,7 @@ const Select = ({
         // pr={8}
       >
         {placeholder && (
-          <option value="" disabled={enabled}>
+          <option value={""} hidden disabled={enabled}>
             {placeholder}
           </option>
         )}
