@@ -24,7 +24,6 @@ const Select = ({
   required,
   enabled,
   SelectedOption,
-  defaultValue,
   startIcon,
   onIconClick,
   endIcons,
@@ -59,7 +58,7 @@ const Select = ({
         id={name}
         h={14}
         // value={defaultValue}
-        defaultValue={defaultValue}
+
         // pr={8}
       >
         {placeholder && (

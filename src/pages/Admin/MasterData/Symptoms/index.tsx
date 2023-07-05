@@ -1,17 +1,25 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  Grid,
+  GridItem,
   HStack,
   IconButton,
   Input,
   InputGroup,
   InputLeftElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
+import { CustomButton } from "@nepMeds/components/Button/Button";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
@@ -19,6 +27,7 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   Symptom,
+  useDeleteBulkSymptoms,
   useDeleteSymptom,
   useGetSymptoms,
   useSaveSymptoms,
@@ -28,6 +37,7 @@ import { CellContext } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { IoAdd, IoChevronDownOutline } from "react-icons/io5";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -39,12 +49,19 @@ const Symptoms = () => {
   const { data: symptomList = [] } = useGetSymptoms();
   const saveSymptomAction = useSaveSymptoms();
   const deleteSymptomAction = useDeleteSymptom();
+  const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
     onOpen: onOpenDeleteModal,
+  } = useDisclosure();
+
+  const {
+    isOpen: isBulkOpen,
+    onClose: onCloseBulkModal,
+    onOpen: onOpenBulkModal,
   } = useDisclosure();
 
   const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
@@ -139,43 +156,83 @@ const Symptoms = () => {
       toastFail("Failed to delete symptom!");
     }
   };
+  const onBulkDelete = async (data: Symptom[]) => {
+    const id = data.map(data => data.id);
 
+    try {
+      await deleteBulkSymptom.mutateAsync({
+        id: id,
+      });
+      onCloseBulkModal();
+      toastSuccess("Symptoms deleted successfully!");
+    } catch (error) {
+      toastFail("Failed to delete symptom!");
+    }
+  };
   return (
     <Fragment>
-      <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Symptoms</Text>
-
-        <HStack>
-          <InputGroup w="auto">
-            <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color="gray.300" boxSize={3} />
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Symptoms
+          </Text>
+        </GridItem>
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color={colors.black} boxSize={3} />
             </InputLeftElement>
             <Input
-              w={40}
-              h={8}
+              placeholder="search"
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
-
-          <Button
-            size="sm"
-            w="auto"
-            variant="outline"
-            fontWeight="light"
-            onClick={() => {
-              onOpen();
-              formMethods.reset({});
-            }}
-          >
-            Add Symptom
-          </Button>
-        </HStack>
-      </HStack>
+          <Box ml={1}>
+            <Menu>
+              <MenuButton as={Button} variant={"outline"}>
+                <Text
+                  display={"flex"}
+                  alignItems={"center"}
+                  fontWeight={400}
+                  color={colors.light_gray}
+                >
+                  {" "}
+                  Bulk Action{" "}
+                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
+                </Text>
+              </MenuButton>
+              <MenuList onClick={onOpenBulkModal}>
+                <MenuItem>Bulk Delete </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box>
+          <Box ml={1}>
+            <CustomButton
+              backgroundColor={colors.primary}
+              borderRadius={7}
+              fontWeight="light"
+              onClick={() => {
+                onOpen();
+                formMethods.reset({});
+              }}
+            >
+              <IoAdd /> Add Symptom
+            </CustomButton>
+          </Box>
+        </GridItem>
+      </Grid>
 
       <DataTable
         columns={columns}
         data={symptomList}
         filter={{ globalFilter: searchFilter }}
+        pagination={{
+          pageParams: {
+            pageIndex: 1,
+            pageSize: 5,
+          },
+          pageCount: 20,
+        }}
       />
 
       <ModalComponent
@@ -267,6 +324,38 @@ const Symptoms = () => {
           </Text>
           ?
         </Text>
+      </ModalComponent>
+
+      {/* bulk modal */}
+      <ModalComponent
+        size="sm"
+        isOpen={isBulkOpen}
+        onClose={onCloseBulkModal}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Bulk Delete Symptoms</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
+              Cancel
+            </Button>
+            <Button
+              flex={1}
+              onClick={() => onBulkDelete(symptomList)}
+              borderColor={colors.red}
+              color={colors.red}
+              isLoading={deleteBulkSymptom.isLoading}
+              variant="outline"
+            >
+              Delete
+            </Button>
+          </HStack>
+        }
+      >
+        <Text>Are you sure you want to delete all the symptoms </Text>
       </ModalComponent>
     </Fragment>
   );

@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 ## 0.0.1 (2023-07-04)
+=======
+<<<<<<< HEAD
+## 0.0.1 (2023-07-05)
+=======
+## 0.0.1 (2023-07-03)
+>>>>>>> ad43cbe168e061cb1a6352fd744eeb1268701e97
+>>>>>>> badef29318af803e80faba74422c88b3970a6d9f
 
 
 ### Bug Fixes
@@ -26,6 +34,7 @@
 * **issued:** bug list fixing ([898a584](https://gitlab.com/r2850/nepmeds/commit/898a584471df4c576c8eaf4f2ffa70a46b43a94e))
 * **issued:** bug list fixing ([ad2f596](https://gitlab.com/r2850/nepmeds/commit/ad2f5961d266abdf3e98018cbe73ef59ac2ac9fa))
 * **issued:** bug list fixing ([c1153fe](https://gitlab.com/r2850/nepmeds/commit/c1153fe0f5906dbba96092d73bd2033ddbb3686f))
+* **issues:**  dropdown fixed in municipalities ([f3a072c](https://gitlab.com/r2850/nepmeds/commit/f3a072c2ad70e9ccace1bf1d1687d19e0dc710fa))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
 * **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))

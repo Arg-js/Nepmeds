@@ -29,14 +29,14 @@ export const useSpecializationData = () =>
   });
 
 const saveSpecialization = async (specializationInfo: {
-  id: string | null;
+  id?: string | null;
   name: string;
-  symptom: string;
+  symptom: Symptom[];
   consultation_fees: string;
 }) => {
   if (specializationInfo.id) {
     const response = await HttpClient.put<NepMedsResponse>(
-      api.symptom + "/" + specializationInfo.id,
+      api.specialization + "/" + specializationInfo.id,
       {
         name: specializationInfo.name,
         symptom: specializationInfo.symptom,
@@ -67,7 +67,7 @@ const deleteSpecialization = async (specializationInfo: {
   id: string | null;
 }) => {
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.specialization + "/" + specializationInfo.id
+    api.specialization + specializationInfo.id
   );
   return response;
 };
@@ -76,6 +76,52 @@ export const useDeleteSpecialization = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSpecialization, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.specialization);
+    },
+  });
+};
+
+const deleteBulkSpecialization = async (specializationInfo: {
+  id: number[];
+}) => {
+  const payload = { id: specializationInfo.id };
+  const response = await HttpClient.delete<NepMedsResponse>(
+    api.specialization,
+    {
+      data: payload,
+    }
+  );
+  return response;
+};
+
+export const useDeleteBulkSpecialization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(deleteBulkSpecialization, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.specialization);
+    },
+  });
+};
+
+const updateSpecialization = async (specializationInfo: {
+  id: number;
+  data: Specialization;
+}) => {
+  const response = await HttpClient.put<NepMedsResponse>(
+    api.specialization + specializationInfo.id + "/",
+    {
+      data: specializationInfo.data,
+    }
+  );
+  return response;
+};
+
+export const useUpdateSpecialization = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation(updateSpecialization, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.specialization);
     },
