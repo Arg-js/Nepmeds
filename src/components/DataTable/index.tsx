@@ -1,7 +1,6 @@
 import {
   Box,
   FormControl,
-  FormLabel,
   HStack,
   Select,
   Table,
@@ -261,12 +260,13 @@ export function DataTable({
                   </option>
                 ))}
               </Select>
-              <FormLabel
+              {/* <FormLabel
                 marginInlineStart={"5% !important"}
                 marginStart={"5% !important"}
+                marginTop={"10% !important"}
               >
                 Items
-              </FormLabel>
+              </FormLabel> */}
             </FormControl>
           </HStack>
           <Pagination
