@@ -1,24 +1,23 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { colors } from "@nepMeds/theme/colors";
-import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { ChangeEvent, useEffect, useState } from "react";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
-import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import { Box, Flex, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { colors } from "@nepMeds/theme/colors";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { DeleteIcon } from "@chakra-ui/icons";
+import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
-  isEditable,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  isEditable?: boolean;
 }) => {
   const {
     control,
@@ -106,11 +105,17 @@ export const ExperienceForm = ({
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const toDate = getValues(`experience.${index}.to_date`);
     const fromDate = getValues(`experience.${index}.from_date`);
+    const daysCount = getDayDifference(
+      new Date(toDate ?? ""),
+      new Date(fromDate ?? "")
+    );
     if (toDate)
       if (toDate > currentDate) {
         return "To cannot be greater than the current date.";
       } else if (toDate < fromDate) {
         return "To date cannot be less than from date";
+      } else if (daysCount < 30) {
+        return "Experience must be more than 1 month";
       }
     return true; // Return true if the validation passes
   };
@@ -134,7 +139,7 @@ export const ExperienceForm = ({
         };
         return (
           <Box key={item.id} position="relative">
-            <SimpleGrid gridTemplateColumns="1fr" mb={4}>
+            <SimpleGrid mb={4}>
               <MultipleImageUpload
                 selectedImages={selectedImagesForExperience}
                 setSelectedImages={images => {
@@ -155,16 +160,15 @@ export const ExperienceForm = ({
                 helperText={false}
               />
             </SimpleGrid>
+
             <Grid
-              templateColumns="repeat(4,1fr)"
               gap={3}
               mb={3}
               // alignItems="flex-end"
               key={item.id}
-              w="100%"
-              position={"relative"}
+              templateColumns="repeat(4, 1fr)"
             >
-              <GridItem colSpan={isEditable ? 4 : 2}>
+              <GridItem colSpan={{ base: 4, xl: 2 }}>
                 <Controller
                   render={({ field }) => (
                     <FloatingLabelInput
@@ -183,8 +187,7 @@ export const ExperienceForm = ({
                   control={control}
                 />
               </GridItem>
-
-              <GridItem colSpan={isEditable ? 2 : 1}>
+              <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                 <Controller
                   render={({ field }) => (
                     <FloatingLabelInput
@@ -205,8 +208,9 @@ export const ExperienceForm = ({
                   control={control}
                 />
               </GridItem>
-              <GridItem colSpan={isEditable ? 2 : 1}>
-                {watch(`experience.${index}.currently_working`) !== true && (
+
+              {watch(`experience.${index}.currently_working`) !== true && (
+                <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                   <Controller
                     render={({ field }) => (
                       <FloatingLabelInput
@@ -226,60 +230,55 @@ export const ExperienceForm = ({
                     name={`experience.${index}.to_date`}
                     control={control}
                   />
-                )}
-              </GridItem>
-              <GridItem colSpan={4}>
-                <Controller
-                  render={({ field }) => (
-                    <FloatinglabelTextArea
-                      label="Description"
-                      register={register}
-                      required
-                      style={{
-                        background: colors.forminput,
-                        border: "none",
-                        padding: "17px",
-                      }}
-                      {...field}
-                      rules={{
-                        required: "Description is required.",
-                      }}
-                      error={errors?.experience?.[index]?.description?.message}
-                    />
-                  )}
-                  name={`experience.${index}.description`}
-                  control={control}
-                />
-              </GridItem>
-              <GridItem
-                display={"flex"}
-                alignItems={"center"}
-                justifyContent={"space-between"}
-                colSpan={4}
-              >
-                <Controller
-                  render={({ field: { value, ...fieldValues } }) => (
-                    <Checkbox
-                      label="Currently working here"
-                      control={control}
-                      {...fieldValues}
-                      checked={value}
-                    />
-                  )}
-                  name={`experience.${index}.currently_working`}
-                  control={control}
-                />
-
-                <Icon
-                  type="button"
-                  cursor={"pointer"}
-                  as={DeleteIcon}
-                  onClick={handleRemoveExperience}
-                  fontSize={28}
-                  color={colors.error}
-                />
-              </GridItem>
+                </GridItem>
+              )}
             </Grid>
+            <Box>
+              <Controller
+                render={({ field }) => (
+                  <FloatinglabelTextArea
+                    label="Description"
+                    register={register}
+                    required
+                    style={{
+                      background: colors.forminput,
+                      border: "none",
+                      padding: "17px",
+                    }}
+                    {...field}
+                    rules={{
+                      required: "Description is required.",
+                    }}
+                    error={errors?.experience?.[index]?.description?.message}
+                  />
+                )}
+                name={`experience.${index}.description`}
+                control={control}
+              />
+            </Box>
+            <Flex my={4} alignItems={"center"} justifyContent={"space-between"}>
+              <Controller
+                render={({ field: { value, ...fieldValues } }) => (
+                  <Checkbox
+                    label="Currently working here"
+                    control={control}
+                    {...fieldValues}
+                    checked={value}
+                  />
+                )}
+                name={`experience.${index}.currently_working`}
+                control={control}
+              />
+
+              <Icon
+                type="button"
+                cursor={"pointer"}
+                as={DeleteIcon}
+                onClick={handleRemoveExperience}
+                fontSize={28}
+                color={colors.error}
+              />
+            </Flex>
           </Box>
         );
       })}
