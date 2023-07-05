@@ -28,6 +28,18 @@ export const useSpecializationData = () =>
     select: res => res.data.data,
   });
 
+const getSpecializationRegisterData = async () => {
+  const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
+    api.specialization_register
+  );
+  return response;
+};
+
+export const useSpecializationRegisterData = () =>
+  useQuery(api.specialization, getSpecializationRegisterData, {
+    select: res => res.data.data,
+  });
+
 const saveSpecialization = async (specializationInfo: {
   id?: string | null;
   name: string;
@@ -67,7 +79,7 @@ const deleteSpecialization = async (specializationInfo: {
   id: string | null;
 }) => {
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.specialization + specializationInfo.id
+    api.specialization + specializationInfo.id + "/"
   );
   return response;
 };
