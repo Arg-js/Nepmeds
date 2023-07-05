@@ -14,15 +14,15 @@ import {
   useGetMunicipalities,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
-import { normalURL } from "@nepMeds/service/service-axios";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import React, { ChangeEvent, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { normalURL } from "@nepMeds/service/service-axios";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -43,7 +43,7 @@ const PrimaryInfo = ({
   const districtInfo = useGetDistricts(watch("province"));
   const municipalityInfo = useGetMunicipalities(watch("district"));
   const allDistrictInfo = useGetAllDistricts();
-  const { data: specialization = [] } = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationRegisterData();
 
   const provinceOptions =
     provinceInfo.data?.map(p => ({
