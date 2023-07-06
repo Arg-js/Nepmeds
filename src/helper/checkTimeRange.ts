@@ -1,4 +1,4 @@
-import { differenceInYears } from "date-fns";
+import { differenceInMinutes, differenceInYears, parse } from "date-fns";
 
 export function isTimeInRange(
   start: string,
@@ -19,8 +19,7 @@ export function getTimeInMinutes(time: string): number {
 }
 
 export function getMinutes(time: string): number {
-  const [hours, minutes] = time.split(":").map(Number);
-  console.log(hours);
+  const [, minutes] = time.split(":").map(Number);
   return minutes;
 }
 
@@ -68,4 +67,16 @@ export const calculateAge = (dob: Date): number => {
 export const getDayDifference = (date1: Date, date2: Date): number => {
   const diffInMs = Math.abs(date2.getTime() - date1.getTime());
   return Math.round(diffInMs / (1000 * 60 * 60 * 24));
+};
+
+// This function will return the difference in minutes between two time
+// which takes time in such format 'HH:mm' e.g. '10:00'
+export const getTimeDifferenceInMinutes = (
+  fromDate: string,
+  toDate: string
+) => {
+  const toTime = parse(toDate, "HH:mm", new Date());
+  const fromTime = parse(fromDate, "HH:mm", new Date());
+
+  return differenceInMinutes(toTime, fromTime);
 };

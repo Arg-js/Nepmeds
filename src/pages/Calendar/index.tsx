@@ -8,40 +8,44 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
+import { CustomButton } from "@nepMeds/components/Button/Button";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import Select from "@nepMeds/components/Form/Select";
+import ScheduleComponent from "@nepMeds/components/Schedule";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import {
+  getMinutes,
+  getTimeDifferenceInMinutes,
+} from "@nepMeds/helper/checkTimeRange";
+import {
+  IGetDoctorAvailability,
+  useCreateDoctorAvailability,
+} from "@nepMeds/service/nepmeds-doctor-availability";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { colors } from "@nepMeds/theme/colors";
+import { AppointmentType, FrequencyType } from "@nepMeds/utils/choices";
+import {
+  addMonths,
+  eachDayOfInterval,
+  endOfWeek,
+  format,
+  getDay,
+  isToday,
+  startOfWeek,
+  subMonths,
+} from "date-fns";
+import { useState } from "react";
+import Calendar from "react-calendar";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { AiOutlinePlus } from "react-icons/ai";
 import {
   IoCalendar,
   IoChevronBackCircleOutline,
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
-import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/fontFamily.css";
-import ScheduleComponent from "@nepMeds/components/Schedule";
-import { CustomButton } from "@nepMeds/components/Button/Button";
-import { AiOutlinePlus } from "react-icons/ai";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { svgs } from "@nepMeds/assets/svgs";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import Select from "@nepMeds/components/Form/Select";
-import { AppointmentType, FrequencyType } from "@nepMeds/utils/choices";
-import {
-  IGetDoctorAvailability,
-  useCreateDoctorAvailability,
-} from "@nepMeds/service/nepmeds-doctor-availability";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { AxiosError } from "axios";
-import {
-  startOfWeek,
-  endOfWeek,
-  eachDayOfInterval,
-  format,
-  isToday,
-  getDay,
-  addMonths,
-  subMonths,
-} from "date-fns";
-import { useState } from "react";
-import Calendar from "react-calendar";
 
 const CalendarView = () => {
   const currentDate = new Date();
@@ -195,7 +199,7 @@ const CalenderWeekView = ({
       {CalenderWeeklyDatas?.map((data, i) =>
         selectedBox === i ? (
           <Box
-            key={i}
+            key={data.fullDate}
             p={"18px"}
             mr={-5}
             mt={3}
@@ -254,7 +258,12 @@ const CalenderWeekView = ({
             </Text>
           </Box>
         ) : (
-          <Box display={"flex"} justifyContent={"center"} cursor={"pointer"}>
+          <Box
+            key={data.fullDate}
+            display={"flex"}
+            justifyContent={"center"}
+            cursor={"pointer"}
+          >
             <Box
               key={i}
               p={"18px"}
@@ -319,7 +328,6 @@ const CalendarDailyDetailView = ({
   const onSaveEvent = () => {
     formMethods.handleSubmit(onSubmit)();
   };
-  console.log(selectedDate);
   const onSubmit = async (data: IGetDoctorAvailability) => {
     try {
       const response = await createDoctorAvailabilityInfo.mutateAsync(data);
@@ -328,13 +336,9 @@ const CalendarDailyDetailView = ({
         onAddEventClose();
       }
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
+      const err = serverErrorResponse(error);
 
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(firstErrorMessage?.toString() || "Failed to add event!");
+      toastFail(err);
     }
   };
 
@@ -343,7 +347,10 @@ const CalendarDailyDetailView = ({
       <ModalComponent
         size="xl"
         isOpen={isAddEventOpen}
-        onClose={onAddEventClose}
+        onClose={() => {
+          onAddEventClose();
+          formMethods.reset();
+        }}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -360,6 +367,7 @@ const CalendarDailyDetailView = ({
               onClick={onSaveEvent}
               background={colors.primary}
               color={colors.white}
+              isLoading={createDoctorAvailabilityInfo.isLoading}
             >
               Save
             </Button>
@@ -422,11 +430,10 @@ const AddEvent = () => {
 
   const validateDateFormat = () => {
     const givenDate = getValues("from_time");
-    const [hours, minutes] = givenDate ? givenDate.split(":") : ["", ""];
-    const minutesNumber = parseInt(minutes);
-    console.log(hours);
+    const minute = getMinutes(givenDate ?? "");
+
     // Check if minutes is a multiple of 5
-    if (minutesNumber % 5 !== 0) {
+    if (minute % 5 !== 0) {
       return "Minutes can be only multiple of 5"; // Disable the option
     }
 
@@ -436,18 +443,26 @@ const AddEvent = () => {
   const validateToDateFormat = () => {
     const givenDate = getValues("to_time");
     const fromDate = getValues("from_time");
-    const [hours, minutes] = givenDate ? givenDate.split(":") : ["", ""];
-    const minutesNumber = parseInt(minutes);
-    console.log(hours);
+
+    const differenceInTime = getTimeDifferenceInMinutes(
+      fromDate ?? "",
+      givenDate ?? ""
+    );
+    const minute = getMinutes(givenDate ?? "");
+
     // Check if minutes is a multiple of 5
     if (givenDate) {
-      if (minutesNumber % 5 !== 0) {
+      if (minute % 5 !== 0) {
         return "Minutes can be only multiple of 5"; // Disable the option
       }
       if (fromDate) {
-        if (givenDate < fromDate) {
+        if (differenceInTime < 0) {
           return "To time cannot be less than from time";
-        } else return true;
+        } else if (differenceInTime === 0) {
+          return "To time cannot be equal to from time";
+        } else if (differenceInTime < 60) {
+          return "To time cannot be less than 1 hour";
+        }
       }
 
       return true; // Enable the option
