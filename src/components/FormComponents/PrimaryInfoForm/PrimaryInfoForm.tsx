@@ -72,7 +72,6 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-
   useEffect(() => {
     if (watch("province") !== 0) {
       reset({
@@ -267,8 +266,8 @@ const PrimaryInfo = ({
           required
           name="specialization"
           multiValue={doctorProfileData?.specialization?.map(item => ({
-            label: item,
-            value: item,
+            label: item.name,
+            value: item.id.toString(),
           }))}
           register={register}
           options={specializationOptions}
