@@ -7,6 +7,7 @@ import {
   Text,
   VStack,
   useDisclosure,
+  useOutsideClick,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { CustomButton } from "@nepMeds/components/Button/Button";
@@ -36,7 +37,7 @@ import {
   startOfWeek,
   subMonths,
 } from "date-fns";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Calendar from "react-calendar";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
@@ -108,9 +109,14 @@ const CalenderWeekView = ({
 }) => {
   const [date, setDate] = useState(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
+  const ref = useRef(null);
   const handleIconClick = () => {
     setShowCalendar(!showCalendar);
   };
+  useOutsideClick({
+    ref: ref,
+    handler: () => setShowCalendar(false),
+  });
   const handleCalendarChange = (value: any) => {
     const date = new Date(value);
     setDate(date);
@@ -187,7 +193,7 @@ const CalenderWeekView = ({
           fontSize={20}
           cursor={"pointer"}
         />
-        <Box position={"absolute"} top={12} width={300}>
+        <Box position={"absolute"} top={12} width={300} ref={ref}>
           {showCalendar && (
             <Calendar
               onChange={value => handleCalendarChange(value)}
