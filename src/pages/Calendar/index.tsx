@@ -498,6 +498,7 @@ const AddEvent = () => {
           label="Title"
           name="title"
           register={register}
+          required
           style={{
             background: colors.forminput,
             border: "none",
@@ -511,7 +512,7 @@ const AddEvent = () => {
       </GridItem>
       <GridItem colSpan={4}>
         <Select
-          label=""
+          label="Frequency"
           name="frequency_choice"
           register={register}
           options={FrequencyType}
