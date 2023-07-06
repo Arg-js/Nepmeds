@@ -14,15 +14,15 @@ import {
   useGetMunicipalities,
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import React, { ChangeEvent, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { normalURL } from "@nepMeds/service/service-axios";
 
 const PrimaryInfo = ({
   doctorProfileData,
