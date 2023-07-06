@@ -481,19 +481,18 @@ const EditAcademic = ({
                               <AiOutlineMore />
                             </MenuButton>
                             <MenuList>
-                              <MenuItem
-                                onClick={() =>
-                                  onEditAcademic(
-                                    i,
-                                    singleAcademicInfo?.id ?? 0,
-                                    singleAcademicInfo?.doctor ?? 0
-                                  )
-                                }
-                              >
+                              <MenuItem>
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
+                                  onClick={() =>
+                                    onEditAcademic(
+                                      i,
+                                      singleAcademicInfo?.id ?? 0,
+                                      singleAcademicInfo?.doctor ?? 0
+                                    )
+                                  }
                                   cursor="pointer"
                                 >
                                   <Icon
@@ -513,15 +512,14 @@ const EditAcademic = ({
                                 </Box>
                               </MenuItem>
                               <MenuDivider />
-                              <MenuItem
-                                onClick={() =>
-                                  deleteData(singleAcademicInfo?.id ?? 0)
-                                }
-                              >
+                              <MenuItem>
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
+                                  onClick={() =>
+                                    deleteData(singleAcademicInfo?.id ?? 0)
+                                  }
                                   cursor="pointer"
                                 >
                                   <Icon

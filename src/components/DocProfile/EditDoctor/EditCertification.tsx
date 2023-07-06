@@ -484,19 +484,18 @@ const EditCertification = ({
                               <AiOutlineMore />
                             </MenuButton>
                             <MenuList>
-                              <MenuItem
-                                onClick={() =>
-                                  onEditCertificate(
-                                    i,
-                                    singleCertificationInfo?.id ?? 0,
-                                    singleCertificationInfo?.doctor ?? 0
-                                  )
-                                }
-                              >
+                              <MenuItem>
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
+                                  onClick={() =>
+                                    onEditCertificate(
+                                      i,
+                                      singleCertificationInfo?.id ?? 0,
+                                      singleCertificationInfo?.doctor ?? 0
+                                    )
+                                  }
                                   cursor="pointer"
                                 >
                                   <Icon
@@ -516,15 +515,14 @@ const EditCertification = ({
                                 </Box>
                               </MenuItem>
                               <MenuDivider />
-                              <MenuItem
-                                onClick={() =>
-                                  deleteData(singleCertificationInfo?.id ?? 0)
-                                }
-                              >
+                              <MenuItem>
                                 <Box
                                   display={"flex"}
                                   alignItems={"center"}
                                   justifyContent={"center"}
+                                  onClick={() =>
+                                    deleteData(singleCertificationInfo?.id ?? 0)
+                                  }
                                   cursor="pointer"
                                 >
                                   <Icon

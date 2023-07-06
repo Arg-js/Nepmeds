@@ -40,17 +40,12 @@ export const municipality = [
 
 export const phone = [{ label: " +977", value: "+977" }];
 
-const currentYear = new Date().getFullYear();
-export const years = Array.from(
-  { length: currentYear - 1950 + 1 },
-  (_, index) => {
-    const year = currentYear - index;
-    return {
-      label: year.toString(),
-      value: year.toString(),
-    };
-  }
-);
+export const year = [
+  { label: "2019", value: "2019" },
+  { label: "2020", value: "2020" },
+  { label: "2021", value: "2021" },
+  { label: "2022", value: "2022" },
+];
 
 export const AppointmentType = [
   { label: "Follow up", value: "followup" },
