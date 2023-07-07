@@ -1,16 +1,4 @@
-<<<<<<< HEAD
-## 0.0.1 (2023-07-05)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-04)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-05)
-=======
-## 0.0.1 (2023-07-03)
->>>>>>> ad43cbe168e061cb1a6352fd744eeb1268701e97
->>>>>>> badef29318af803e80faba74422c88b3970a6d9f
->>>>>>> e697745142d0990e05439fe1d1f1b2f027afc8ee
+## 0.0.1 (2023-07-07)
 
 
 ### Bug Fixes
@@ -38,10 +26,14 @@
 * **issued:** bug list fixing ([898a584](https://gitlab.com/r2850/nepmeds/commit/898a584471df4c576c8eaf4f2ffa70a46b43a94e))
 * **issued:** bug list fixing ([ad2f596](https://gitlab.com/r2850/nepmeds/commit/ad2f5961d266abdf3e98018cbe73ef59ac2ac9fa))
 * **issued:** bug list fixing ([c1153fe](https://gitlab.com/r2850/nepmeds/commit/c1153fe0f5906dbba96092d73bd2033ddbb3686f))
+* **issues:**  dropdown fixed in municipalities ([f3a072c](https://gitlab.com/r2850/nepmeds/commit/f3a072c2ad70e9ccace1bf1d1687d19e0dc710fa))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
 * **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))
 * minor changes ([ead2752](https://gitlab.com/r2850/nepmeds/commit/ead275217351fd4126a1b29c7a08de9a759b686f))
+* minor font size changes ([06fadb7](https://gitlab.com/r2850/nepmeds/commit/06fadb76b0814a1c82b046570ededf1b630101b6))
+* more values added in passed year dropdown ([d6834e8](https://gitlab.com/r2850/nepmeds/commit/d6834e83387274cfb148adaafd1def4556d53011))
+* onclick was on text rather than whole div, so onclick was assigned to whole div ([59dcbbd](https://gitlab.com/r2850/nepmeds/commit/59dcbbd158173b455e8096410f1124e140b5efb7))
 * otp api integration ([95349a1](https://gitlab.com/r2850/nepmeds/commit/95349a1690d1ac9d8e16e8e0e7790b4e8cf9a3f5))
 * otp form api integration ([0334c28](https://gitlab.com/r2850/nepmeds/commit/0334c28fae96d5b88e43df4f4ecd203072c48a54))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
@@ -51,14 +43,14 @@
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
-<<<<<<< HEAD
-=======
 * **signup/primary:** must be atleast 18 years old ([4ee3367](https://gitlab.com/r2850/nepmeds/commit/4ee3367f2148a9c09cb0453e11468ac0e3dbbee9))
 * **signup/primary:** ward and tole default value ([0d2e397](https://gitlab.com/r2850/nepmeds/commit/0d2e397ed02bf3d3e6e9ce776562a9b0cd3b4fe8))
 * **signup:** fixed otp text alignment and removed unnecessary comment ([312cfcd](https://gitlab.com/r2850/nepmeds/commit/312cfcd40c01a3d6b0a19ca368569107fa68e3fd))
 * **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
+* **signup:** option field graduation experience change provinces ([02d4c20](https://gitlab.com/r2850/nepmeds/commit/02d4c201f9143251f16de8a4e7182088ae0cf5d9))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
->>>>>>> e697745142d0990e05439fe1d1f1b2f027afc8ee
+* **specialization:** specialization issue in register resolved ([ceedfdb](https://gitlab.com/r2850/nepmeds/commit/ceedfdba3a2e4c6465620a2f1d19207ba20581d6))
+* **specialization:** specialization issue resolved ([b93e97b](https://gitlab.com/r2850/nepmeds/commit/b93e97b97f6f5145d00f4230ad063f4bcc4daf32))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))
@@ -83,6 +75,7 @@
 * **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))
 * doctor profile slicing ([55826e8](https://gitlab.com/r2850/nepmeds/commit/55826e8bc4d0798c74960a23c912611a1d7c34f8))
 * **doctor profile:** Added doctor profile in admin ([e500cc2](https://gitlab.com/r2850/nepmeds/commit/e500cc2b4f42e5d4a1c37144acc529ce61398117))
+* **doctor:** filter design ([e99c07e](https://gitlab.com/r2850/nepmeds/commit/e99c07e754cb183977a040e47a12667e16d03c01))
 * **edit profile:** added modal in edit profile component ([961f49b](https://gitlab.com/r2850/nepmeds/commit/961f49bdc5103b65d0281c63ddb1afeecfcd71ff))
 * forgot password ([fbd5eb5](https://gitlab.com/r2850/nepmeds/commit/fbd5eb54d18db3db41b40876e8416b7594fa0f72))
 * forgot password slicing ([f6879f5](https://gitlab.com/r2850/nepmeds/commit/f6879f5ced3d03c386a2a53547a63d835a63bab4))
