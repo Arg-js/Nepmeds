@@ -11,11 +11,15 @@ import {
   Spinner,
   Text,
   useDisclosure,
+  VStack,
+  Flex,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -25,11 +29,13 @@ import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Delete, Show } from "react-iconly";
+import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 
 const ApprovedDocList = () => {
@@ -42,6 +48,11 @@ const ApprovedDocList = () => {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
   } = useDisclosure();
 
   const navigate = useNavigate();
@@ -220,7 +231,12 @@ const ApprovedDocList = () => {
   const { data, isLoading } = useApprovedDoctorList();
   const [searchFilter, setSearchFilter] = useState("");
   const [id, setId] = React.useState("");
+  const { data: specialization = [] } = useSpecializationData();
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
   if (isLoading)
     return (
       <Spinner
@@ -231,12 +247,11 @@ const ApprovedDocList = () => {
   return (
     <>
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Approved Doctors</Text>
-
+        <Text fontWeight="medium">Registered Doctors</Text>
         <HStack>
-          <InputGroup w="auto">
+          <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color="gray.300" boxSize={3} />
+              <SearchIcon color={colors.grey_dark} boxSize={4} />
             </InputLeftElement>
             <Input
               w={40}
@@ -244,6 +259,18 @@ const ApprovedDocList = () => {
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
+          <Button
+            color={colors.grey_dark}
+            bg={colors.white}
+            outlineColor={colors.grey_dark}
+            h={8}
+            onClick={() => {
+              onModalOpen();
+            }}
+          >
+            <IoFunnelOutline pointerEvents={"none"} />
+            &nbsp; Filter
+          </Button>
         </HStack>
       </HStack>
       <DataTable
@@ -348,6 +375,68 @@ const ApprovedDocList = () => {
         <FormProvider {...formMethods}>
           <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
         </FormProvider>
+      </ModalComponent>
+      <ModalComponent
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+        size={"xl"}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Filter</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w={"full"} justifyContent={"flex-end"}>
+            <Button
+              outlineColor={"#13ADE1"}
+              borderRadius={"12px"}
+              color={"#13ADE1"}
+              w={"150px"}
+            >
+              Cancel
+            </Button>
+            <Button
+              bg={"#13ADE1"}
+              color={"white"}
+              w={"150px"}
+              borderRadius={"12px"}
+              sx={{
+                "&:hover": { bg: "#13ADE1", color: "white" },
+              }}
+            >
+              Done
+            </Button>
+          </HStack>
+        }
+      >
+        <VStack h={"auto"}>
+          <FormProvider {...formMethods}>
+            <MultiSelect
+              placeholder=""
+              label="Specialization"
+              name="Specialization"
+              required
+              register={formMethods.register}
+              options={specializationList}
+              selectControl={formMethods.control}
+            />
+            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+              <FloatingLabelInput
+                label="From"
+                name="fromDate"
+                register={formMethods.register}
+                type="date"
+              />
+              <FloatingLabelInput
+                label="To"
+                name="toDate"
+                register={formMethods.register}
+                type="date"
+              />
+            </Flex>
+          </FormProvider>
+        </VStack>
       </ModalComponent>
     </>
   );
