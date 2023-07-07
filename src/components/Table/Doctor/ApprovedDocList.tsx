@@ -1,18 +1,15 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Badge,
-  Box,
   Button,
+  Flex,
   HStack,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement,
   Spinner,
   Text,
-  useDisclosure,
   VStack,
-  Flex,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -22,21 +19,17 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
+import { useFakePagination } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
-import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
 import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, ColumnDef, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
-import { Delete, Show } from "react-iconly";
+import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
-import { generatePath, useNavigate } from "react-router-dom";
 
 const ApprovedDocList = () => {
   const {
@@ -55,7 +48,7 @@ const ApprovedDocList = () => {
     onClose: onModalClose,
   } = useDisclosure();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [_isRejected, setIsRejected] = React.useState(false);
   const rejectModal = () => {
     setIsRejected(true);
@@ -89,25 +82,27 @@ const ApprovedDocList = () => {
     }
   };
   const formMethods = useForm();
-  const deleteDoctorMethod = useDeleteDoctorData();
+  // const deleteDoctorMethod = useDeleteDoctorData();
 
-  const handleDeleteDoctor = async (id: number) => {
-    const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
+  // const handleDeleteDoctor = async (id: number) => {
+  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
 
-    if (deleteDoctorResponse) {
-      toastSuccess("Academic data deleted successfully");
-    } else {
-      toastFail("Failed to delete academic information!");
-    }
-  };
-  interface CellContextSearch {
-    user: {
-      first_name: string;
-      middle_name: string;
-      last_name: string;
-    };
-  }
-  const columns = React.useMemo(
+  //   if (deleteDoctorResponse) {
+  //     toastSuccess("Academic data deleted successfully");
+  //   } else {
+  //     toastFail("Failed to delete academic information!");
+  //   }
+  // };
+  // interface CellContextSearch {
+  //   user: {
+  //     first_name: string;
+  //     middle_name: string;
+  //     last_name: string;
+  //   };
+  // }
+  const columns = React.useMemo<
+    ColumnDef<{ id: string; name: string; tagline: string }>[]
+  >(
     () => [
       {
         header: "S.N",
@@ -116,121 +111,30 @@ const ApprovedDocList = () => {
         },
       },
       {
-        header: "Doctor's Name",
-        accessorKey: "first_name",
-        accessorFn: (_cell: CellContextSearch) => {
-          return (
-            _cell?.user?.first_name +
-            " " +
-            _cell?.user?.middle_name +
-            " " +
-            _cell?.user?.last_name
-          );
-        },
+        header: "Name",
+        accessorKey: "name",
       },
       {
-        header: "Contact Number",
-        cell: ({
-          row,
-        }: CellContext<
-          {
-            user: IBasicInfo;
-          },
-          any
-        >) => {
-          const { mobile_number } = row?.original?.user ?? "";
-
-          return <p>{mobile_number}</p>;
-        },
-      },
-      {
-        header: "Specialization",
-        accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
-          const specialization = row?.original?.specialization ?? "";
-
-          return (
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              // width={"fit-content"}
-              // p={1}
-              // background={colors.grey}
-              // borderRadius={20}
-            >
-              <p>{specialization.join(", ")}</p>
-            </Box>
-          );
-        },
-      },
-      {
-        header: "Status",
-        accessorKey: "profile_status",
-        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
-          const { is_approved } = row.original;
-          return (
-            <Badge
-              colorScheme={is_approved ? "green" : "red"}
-              p={1}
-              borderRadius={20}
-              fontSize={11}
-              w={24}
-              textAlign="center"
-              textTransform="capitalize"
-            >
-              {is_approved ? "Approved" : "Not approved"}
-            </Badge>
-          );
-        },
-      },
-      {
-        header: "Actions",
-        accessorKey: "actions",
-        cell: (cell: CellContext<any, any>) => {
-          return (
-            <>
-              <Icon
-                as={Show}
-                fontSize={20}
-                cursor="pointer"
-                onClick={() => {
-                  formMethods.reset(cell.row.original);
-                  // // onDetailsModalOpen();
-                  setId(cell.row.original.id);
-                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
-                  navigate(
-                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                      id: cell.row.original.id,
-                    })
-                  );
-
-                  // navigate(`${"/doc-profile"}`)
-                }}
-              />
-
-              <Icon
-                as={Delete}
-                fontSize={20}
-                cursor="pointer"
-                color={colors.red}
-                onClick={() => {
-                  handleDeleteDoctor(cell.row.original.id);
-                  // formMethods.reset(cell.row.original);
-                  // onDetailsModalOpen();
-                  // setId(cell.row.original.id);
-                }}
-              />
-            </>
-          );
-        },
+        header: "Tag Line",
+        accessorKey: "tagline",
       },
     ],
     []
   );
 
-  const { data, isLoading } = useApprovedDoctorList();
+  // const { data, isLoading } = useApprovedDoctorList();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 1,
+    pageSize: 10,
+  });
+
+  const { data, isLoading } = useFakePagination({
+    page: pageIndex,
+    perPage: pageSize,
+  });
+
   const [searchFilter, setSearchFilter] = useState("");
-  const [id, setId] = React.useState("");
+  const [id] = React.useState("");
   const { data: specialization = [] } = useSpecializationData();
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const specializationList = specialization.map(s => ({
@@ -243,6 +147,8 @@ const ApprovedDocList = () => {
         style={{ margin: "0 auto", textAlign: "center", display: "block" }}
       />
     );
+
+  console.log("first");
 
   return (
     <>
@@ -278,12 +184,10 @@ const ApprovedDocList = () => {
         data={data || []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          // manual: true,
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
       <ModalComponent

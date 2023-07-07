@@ -22,3 +22,23 @@ export const useFetchRejectedDoctorList = () =>
   useQuery(api.rejectedDoctorList, getRejectedDoctorList, {
     select: data => data.data.data,
   });
+
+export const useFakePagination = ({
+  page,
+  perPage,
+}: {
+  page: number;
+  perPage: number;
+}) => {
+  return useQuery(
+    `https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`,
+    async () => {
+      return await HttpClient.get<any>(
+        `https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`
+      );
+    },
+    {
+      select: data => data.data,
+    }
+  );
+};

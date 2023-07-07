@@ -70,19 +70,15 @@ export function DataTable({
     }
   }, [sortingColumn]);
 
-  const totalPage = Math.ceil(
-    (pagination?.pageCount ?? 0) / (pagination?.pageParams?.pageSize ?? 20)
-  );
-
   const paginationParams = useMemo(
     () =>
       pagination?.manual
         ? {
             manualPagination: true,
-            pageCount: totalPage ?? -1,
+            pageCount: pagination?.pageCount ?? -1,
             state: {
               pagination: {
-                pageIndex: pagination.pageParams?.pageIndex ?? 0,
+                pageIndex: pagination.pageParams?.pageIndex ?? 1,
                 pageSize: pagination.pageParams?.pageSize ?? 20,
               },
             },
@@ -94,10 +90,11 @@ export function DataTable({
     [pagination]
   );
 
+  console.log(pagination?.pageParams?.pageIndex);
+
   const table = useReactTable({
     columns,
     data,
-
     state: {
       grouping,
       sorting,
