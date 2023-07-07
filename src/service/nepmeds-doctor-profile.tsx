@@ -71,6 +71,7 @@ export interface IGetDoctorProfile {
   profile_status: string;
   no_of_rejected_times: number;
   rejected_remarks: string;
+  status?: string;
 }
 
 const getDoctorProfile = async () => {

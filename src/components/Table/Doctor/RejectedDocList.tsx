@@ -10,6 +10,8 @@ import {
   useDisclosure,
   Button,
   Box,
+  VStack,
+  Flex,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { CellContext } from "@tanstack/react-table";
@@ -30,6 +32,10 @@ import { colors } from "@nepMeds/theme/colors";
 import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useFetchRejectedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
+import { IoFunnelOutline } from "react-icons/io5";
+import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -44,6 +50,11 @@ const RejectedDocList = () => {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
     onClose: onRejectModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
   } = useDisclosure();
   const [_isRejected, setIsRejected] = React.useState(false);
   const { data, isLoading } = useFetchRejectedDoctorList();
@@ -72,6 +83,11 @@ const RejectedDocList = () => {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
+  const { data: specialization = [] } = useSpecializationData();
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
 
   interface CellContextSearch {
     user: {
@@ -227,9 +243,9 @@ const RejectedDocList = () => {
         <Text fontWeight="medium">Rejected Doctors</Text>
 
         <HStack>
-          <InputGroup w="auto">
+          <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color="gray.300" boxSize={3} />
+              <SearchIcon color={colors.grey_dark} boxSize={4} />
             </InputLeftElement>
             <Input
               w={40}
@@ -237,6 +253,18 @@ const RejectedDocList = () => {
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
+          <Button
+            color={colors.grey_dark}
+            bg={colors.white}
+            outlineColor={colors.grey_dark}
+            h={8}
+            onClick={() => {
+              onModalOpen();
+            }}
+          >
+            <IoFunnelOutline pointerEvents={"none"} />
+            &nbsp; Filter
+          </Button>
         </HStack>
       </HStack>
       <DataTable
@@ -341,6 +369,68 @@ const RejectedDocList = () => {
         <FormProvider {...formMethods}>
           <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
         </FormProvider>
+      </ModalComponent>
+      <ModalComponent
+        isOpen={isModalOpen}
+        onClose={onModalClose}
+        size={"xl"}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Filter</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w={"full"} justifyContent={"flex-end"}>
+            <Button
+              outlineColor={"#13ADE1"}
+              borderRadius={"12px"}
+              color={"#13ADE1"}
+              w={"150px"}
+            >
+              Cancel
+            </Button>
+            <Button
+              bg={"#13ADE1"}
+              color={"white"}
+              w={"150px"}
+              borderRadius={"12px"}
+              sx={{
+                "&:hover": { bg: "#13ADE1", color: "white" },
+              }}
+            >
+              Done
+            </Button>
+          </HStack>
+        }
+      >
+        <VStack h={"auto"}>
+          <FormProvider {...formMethods}>
+            <MultiSelect
+              placeholder=""
+              label="Specialization"
+              name="Specialization"
+              required
+              register={formMethods.register}
+              options={specializationList}
+              selectControl={formMethods.control}
+            />
+            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+              <FloatingLabelInput
+                label="From"
+                name="fromDate"
+                register={formMethods.register}
+                type="date"
+              />
+              <FloatingLabelInput
+                label="To"
+                name="toDate"
+                register={formMethods.register}
+                type="date"
+              />
+            </Flex>
+          </FormProvider>
+        </VStack>
       </ModalComponent>
     </>
   );
