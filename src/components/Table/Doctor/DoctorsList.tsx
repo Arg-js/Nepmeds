@@ -1,6 +1,6 @@
 import {
-  Button,
-  Stack,
+  Grid,
+  GridItem,
   Tab,
   TabList,
   TabPanel,
@@ -11,32 +11,37 @@ import ApprovedDocList from "./ApprovedDocList";
 import PendingDocList from "./PendingDocList";
 import RegisteredDocList from "./RegisteredDocList";
 import RejectedDocList from "./RejectedDocList";
+import { CustomButton } from "@nepMeds/components/Button/Button";
+import { IoAdd } from "react-icons/io5";
 import { colors } from "@nepMeds/theme/colors";
 
 const DoctorsList = () => {
   return (
     <>
       <Tabs>
-        <TabList border="none" mb={4} p={4}>
-          <Tab>Registered Doctors</Tab>
-          <Tab>Pending Approval</Tab>
-          <Tab>Approved</Tab>
-          <Tab>Rejected</Tab>
-          <Stack justifyContent={"center"} ml={"48%"}>
-            <Button
-              bg={colors.primary_blue}
-              color={colors.white}
-              sx={{
-                "&:hover": {
-                  bgColor: colors.primary_blue,
-                  color: colors.white,
-                },
-              }}
-            >
-              Add Doctor
-            </Button>
-          </Stack>
-        </TabList>
+        <Grid
+          display={"flex"}
+          // templateColumns="repeat(5, 1fr)"
+          justifyContent={"space-between"}
+          alignItems={"center"}
+        >
+          <GridItem>
+            <TabList border="none" p={4}>
+              <Tab>Registered Doctors</Tab>
+              <Tab>Pending Approval</Tab>
+              <Tab>Approved</Tab>
+              <Tab>Rejected</Tab>
+            </TabList>
+          </GridItem>
+
+          <GridItem width={"15%"}>
+            <CustomButton backgroundColor={colors.primary}>
+              {" "}
+              <IoAdd /> Add Doctor
+            </CustomButton>
+          </GridItem>
+        </Grid>
+
         <TabPanels>
           <TabPanel>
             <RegisteredDocList />
