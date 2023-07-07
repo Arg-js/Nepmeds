@@ -49,6 +49,7 @@
 * **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
 * **signup:** option field graduation experience change provinces ([02d4c20](https://gitlab.com/r2850/nepmeds/commit/02d4c201f9143251f16de8a4e7182088ae0cf5d9))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
+* **specialization:** specialization and approval fixed ([72bc813](https://gitlab.com/r2850/nepmeds/commit/72bc81362de8fdeb75846f4c8b58de0aeecb8b89))
 * **specialization:** specialization issue in register resolved ([ceedfdb](https://gitlab.com/r2850/nepmeds/commit/ceedfdba3a2e4c6465620a2f1d19207ba20581d6))
 * **specialization:** specialization issue resolved ([b93e97b](https://gitlab.com/r2850/nepmeds/commit/b93e97b97f6f5145d00f4230ad063f4bcc4daf32))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))

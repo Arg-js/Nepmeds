@@ -41,11 +41,11 @@ const schema = yup.object().shape({
 type OnOpenFunction = () => void;
 
 interface SymptomsProps {
-  onClose: OnOpenFunction;
-  isOpen: boolean;
+  onCloseSymptoms: OnOpenFunction;
+  isSymptomsOpen: boolean;
 }
 
-const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
+const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
   const { data: symptomList = [] } = useGetSymptoms();
   const saveSymptomAction = useSaveSymptoms();
   const deleteSymptomAction = useDeleteSymptom();
@@ -141,7 +141,6 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
       });
-      onClose();
       onCloseEditModal();
       toastSuccess("Symptom saved successfully!");
     } catch (error) {
@@ -159,8 +158,7 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
       });
-      onClose();
-      onCloseEditModal();
+      onCloseSymptoms();
       toastSuccess("Symptom saved successfully!");
     } catch (error) {
       toastFail("Failed to save symptom!");
@@ -251,7 +249,10 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
         <ModalComponent
           size="sm"
           isOpen={isEditModalOpen}
-          onClose={onCloseEditModal}
+          onClose={() => {
+            onCloseEditModal();
+            formMethods.reset({});
+          }}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -262,7 +263,10 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
             <HStack w="100%" gap={3}>
               <Button
                 variant="outline"
-                onClick={onCloseEditModal}
+                onClick={() => {
+                  onCloseEditModal();
+                  formMethods.reset({});
+                }}
                 flex={1}
                 border="1px solid"
                 borderColor={colors.primary}
@@ -303,11 +307,11 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
 
       {/* add modal */}
 
-      {isOpen && (
+      {isSymptomsOpen && (
         <ModalComponent
           size="sm"
-          isOpen={isOpen}
-          onClose={onClose}
+          isOpen={isSymptomsOpen}
+          onClose={onCloseSymptoms}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -318,7 +322,7 @@ const Symptoms = ({ onClose, isOpen }: SymptomsProps) => {
             <HStack w="100%" gap={3}>
               <Button
                 variant="outline"
-                onClick={onClose}
+                onClick={onCloseSymptoms}
                 flex={1}
                 border="1px solid"
                 borderColor={colors.primary}

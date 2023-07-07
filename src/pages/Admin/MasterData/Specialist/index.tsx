@@ -294,7 +294,10 @@ const Specializations = ({
       <ModalComponent
         size="sm"
         isOpen={isEditModalOpen}
-        onClose={onCloseEditModal}
+        onClose={() => {
+          onCloseEditModal;
+          formMethods.reset({});
+        }}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -305,7 +308,10 @@ const Specializations = ({
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={onCloseEditModal}
+              onClick={() => {
+                onCloseEditModal;
+                formMethods.reset({});
+              }}
               flex={1}
               border="1px solid"
               borderColor={colors.primary}

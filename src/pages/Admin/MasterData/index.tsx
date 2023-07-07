@@ -14,17 +14,19 @@ import { CustomButton } from "@nepMeds/components/Button/Button";
 import { IoAdd } from "react-icons/io5";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 const MasterData = () => {
-  const { onOpen, onClose, isOpen } = useDisclosure();
+  const {
+    onOpen: onOpenSymptoms,
+    onClose: onCloseSymptoms,
+    isOpen: isSymptomsOpen,
+  } = useDisclosure();
   const {
     onOpen: onOpenSpecialization,
     onClose: onCloseSpecialization,
     isOpen: isSpecializationOpen,
   } = useDisclosure();
   const [activeTab, setActiveTab] = useState(0);
-  const formMethods = useForm();
 
   const handleTabChange = (index: number) => {
     setActiveTab(index);
@@ -48,10 +50,7 @@ const MasterData = () => {
           {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
           {activeTab === 0 ? (
             <CustomButton
-              onClick={() => {
-                formMethods.reset();
-                onOpen();
-              }}
+              onClick={onOpenSymptoms}
               backgroundColor={colors.primary}
             >
               {" "}
@@ -72,7 +71,10 @@ const MasterData = () => {
 
       <TabPanels>
         <TabPanel>
-          <Symptoms onClose={onClose} isOpen={isOpen} />
+          <Symptoms
+            onCloseSymptoms={onCloseSymptoms}
+            isSymptomsOpen={isSymptomsOpen}
+          />
         </TabPanel>
         <TabPanel>
           <Specializations
