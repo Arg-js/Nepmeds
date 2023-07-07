@@ -38,7 +38,6 @@
 * **issued:** bug list fixing ([898a584](https://gitlab.com/r2850/nepmeds/commit/898a584471df4c576c8eaf4f2ffa70a46b43a94e))
 * **issued:** bug list fixing ([ad2f596](https://gitlab.com/r2850/nepmeds/commit/ad2f5961d266abdf3e98018cbe73ef59ac2ac9fa))
 * **issued:** bug list fixing ([c1153fe](https://gitlab.com/r2850/nepmeds/commit/c1153fe0f5906dbba96092d73bd2033ddbb3686f))
-* **issues:**  dropdown fixed in municipalities ([f3a072c](https://gitlab.com/r2850/nepmeds/commit/f3a072c2ad70e9ccace1bf1d1687d19e0dc710fa))
 * lint, theme and login ([67fd7c9](https://gitlab.com/r2850/nepmeds/commit/67fd7c9d581099e7ab85211cbdcbc2ef7ec05e8e))
 * lints ([974e0dc](https://gitlab.com/r2850/nepmeds/commit/974e0dc65dfe81362677385fc4a4f8208cc378d1))
 * **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))
@@ -77,6 +76,7 @@
 
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
+* **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
 * **doctor approval:** doctor api ([cc0196e](https://gitlab.com/r2850/nepmeds/commit/cc0196e5d173c45bafdff7af173e1627b142342b))
