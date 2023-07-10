@@ -14,7 +14,7 @@ export const api = {
   experience_file: "doctor_consult/experience-files-upload/",
   doctor_profile: "/doctor_consult/doctor-profile/",
   edit_doctor_profile: "/doctor_consult/doctor-profile-update/",
-  specialization: "/core/specialization-list-auth/",
+  specialization: "/core/specialization-list-auth",
   specialization_register: "/core/specialization-list/",
   registereddoctor: "/dashboard/registered-doctor-list",
   pendingdoctor: "/dashboard/pending-doctor-list",

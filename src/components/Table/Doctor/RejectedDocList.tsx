@@ -14,7 +14,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { Delete, Show } from "react-iconly";
 import { FormProvider, useForm } from "react-hook-form";
@@ -35,7 +35,7 @@ import { useFetchRejectedDoctorList } from "@nepMeds/service/nepmeds-approved-do
 import { IoFunnelOutline } from "react-icons/io5";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -57,7 +57,13 @@ const RejectedDocList = () => {
     onClose: onModalClose,
   } = useDisclosure();
   const [_isRejected, setIsRejected] = React.useState(false);
-  const { data, isLoading } = useFetchRejectedDoctorList();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading } = useFetchRejectedDoctorList({
+    page_no: pageIndex + 1,
+  });
   console.log(data, "oooo");
 
   const [id, setId] = React.useState("");
@@ -83,7 +89,7 @@ const RejectedDocList = () => {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
-  const { data: specialization = [] } = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationRegisterData();
   const specializationList = specialization.map(s => ({
     label: s.name,
     value: s.id,
@@ -272,12 +278,10 @@ const RejectedDocList = () => {
         data={data || []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          // manual: true,
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
       <ModalComponent

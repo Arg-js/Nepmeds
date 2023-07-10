@@ -29,9 +29,9 @@ import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Delete, Show } from "react-iconly";
@@ -228,10 +228,16 @@ const ApprovedDocList = () => {
     []
   );
 
-  const { data, isLoading } = useApprovedDoctorList();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading } = useApprovedDoctorList({
+    page_no: pageIndex + 1,
+  });
   const [searchFilter, setSearchFilter] = useState("");
   const [id, setId] = React.useState("");
-  const { data: specialization = [] } = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationRegisterData();
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const specializationList = specialization.map(s => ({
     label: s.name,
@@ -278,12 +284,10 @@ const ApprovedDocList = () => {
         data={data || []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          // manual: true,
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
       <ModalComponent

@@ -30,7 +30,7 @@ import {
 } from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
@@ -52,7 +52,14 @@ const Specializations = ({
   isSpecializationOpen,
 }: SpecializationProps) => {
   const { data: symptomList = [] } = useGetSymptoms();
-  const { data: specialization = [] } = useSpecializationData();
+
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data: specialization = [] } = useSpecializationData({
+    page_no: pageIndex + 1,
+  });
   const saveSpecializationAction = useSaveSpecialization();
   const updateSpecializationAction = useUpdateSpecialization();
   // const deleteBulkSpecialization = useDeleteBulkSpecialization();
@@ -282,11 +289,10 @@ const Specializations = ({
         data={specialization}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
 
@@ -295,8 +301,11 @@ const Specializations = ({
         size="sm"
         isOpen={isEditModalOpen}
         onClose={() => {
-          onCloseEditModal;
-          formMethods.reset({});
+          onCloseEditModal();
+          formMethods.reset({
+            name: "",
+            symptom: [],
+          });
         }}
         heading={
           <HStack>
@@ -309,8 +318,11 @@ const Specializations = ({
             <Button
               variant="outline"
               onClick={() => {
-                onCloseEditModal;
-                formMethods.reset({});
+                onCloseEditModal();
+                formMethods.reset({
+                  name: "",
+                  symptom: [],
+                });
               }}
               flex={1}
               border="1px solid"
@@ -361,9 +373,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>
-              {formMethods.getValues("name") ? "Edit" : "Add"} Specialization
-            </Text>
+            <Text>Add Specialization</Text>
           </HStack>
         }
         footer={
@@ -381,11 +391,7 @@ const Specializations = ({
             </Button>
             <Button
               flex={1}
-              onClick={
-                formMethods.getValues("name")
-                  ? onEditSpecialization
-                  : onSaveSpecialization
-              }
+              onClick={onSaveSpecialization}
               background={colors.primary}
               color={colors.white}
               isLoading={saveSpecializationAction.isLoading}

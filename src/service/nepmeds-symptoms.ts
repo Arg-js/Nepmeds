@@ -86,3 +86,24 @@ export const useDeleteBulkSymptoms = () => {
     },
   });
 };
+
+const getSymptomsDataWithPagination = async (page_no: number) => {
+  const response = await HttpClient.get<NepMedsResponse<Symptom[]>>(
+    `${api.symptom}?page_no=${page_no}`
+  );
+  return response;
+};
+
+export const useSymptomsDataWithPagination = ({
+  page_no,
+}: {
+  page_no: number;
+}) => {
+  return useQuery(
+    `${api.symptom}?page_no=${page_no}`,
+    () => getSymptomsDataWithPagination(page_no),
+    {
+      select: res => res.data.data,
+    }
+  );
+};

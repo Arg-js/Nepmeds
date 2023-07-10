@@ -96,6 +96,7 @@
 * **stepper form components:** integrated apis ([66ec744](https://gitlab.com/r2850/nepmeds/commit/66ec7445c7764139c7b500fe188570bd41b20a0d))
 * **stepper form field name:** changes in form field name ([fa90159](https://gitlab.com/r2850/nepmeds/commit/fa90159f2e8de00e1ad1fcd7d797694d3126d34c))
 * **stepper forms:** created stepper forms and adjusted styles ([db8e878](https://gitlab.com/r2850/nepmeds/commit/db8e87873ff7993fdcf27f2bb2052e1f25b9f253))
+* **symptoms:** add symptoms integrated ([2227706](https://gitlab.com/r2850/nepmeds/commit/222770644b5471d88f5c0942e3ba8f37da102a9a))
 
 
 

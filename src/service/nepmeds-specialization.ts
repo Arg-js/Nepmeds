@@ -16,18 +16,22 @@ export interface Symptom {
   file?: string;
 }
 
-const getSpecializationData = async () => {
+const getSpecializationData = async (page_no: number) => {
   const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
-    api.specialization
+    `${api.specialization}/?page_no=${page_no}`
   );
   return response;
 };
 
-export const useSpecializationData = () =>
-  useQuery(api.specialization, getSpecializationData, {
-    select: res => res.data.data,
-  });
-
+export const useSpecializationData = ({ page_no }: { page_no: number }) => {
+  return useQuery(
+    `${api.specialization}/?page_no=${page_no}`,
+    () => getSpecializationData(page_no),
+    {
+      select: res => res.data.data,
+    }
+  );
+};
 const getSpecializationRegisterData = async () => {
   const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
     api.specialization_register

@@ -23,11 +23,11 @@ import {
   Symptom,
   // useDeleteBulkSymptoms,
   useDeleteSymptom,
-  useGetSymptoms,
   useSaveSymptoms,
+  useSymptomsDataWithPagination,
 } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
@@ -46,7 +46,13 @@ interface SymptomsProps {
 }
 
 const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
-  const { data: symptomList = [] } = useGetSymptoms();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data: symptomList = [] } = useSymptomsDataWithPagination({
+    page_no: pageIndex + 1,
+  });
   const saveSymptomAction = useSaveSymptoms();
   const deleteSymptomAction = useDeleteSymptom();
   // const deleteBulkSymptom = useDeleteBulkSymptoms();
@@ -236,11 +242,10 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
         data={symptomList}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
 
