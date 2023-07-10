@@ -90,8 +90,6 @@ export function DataTable({
     [pagination]
   );
 
-  console.log(pagination?.pageParams?.pageIndex);
-
   const table = useReactTable({
     columns,
     data,
@@ -248,6 +246,7 @@ export function DataTable({
                 colorScheme={"purple"}
                 value={table.getState().pagination.pageSize}
                 onChange={e => {
+                  table.setPageIndex(0);
                   table.setPageSize(Number(e.target.value));
                 }}
               >
@@ -267,10 +266,10 @@ export function DataTable({
             </FormControl>
           </HStack>
           <Pagination
-            isBackendPaginated={pagination?.manual}
+            isBackendPaginated={true}
             table={table}
             pageIndex={pagination?.pageParams?.pageIndex}
-            pageCount={pagination?.pageCount ?? data?.length}
+            pageCount={pagination?.pageCount}
           />
         </HStack>
       ) : (

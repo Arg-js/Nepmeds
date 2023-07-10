@@ -124,12 +124,12 @@ const ApprovedDocList = () => {
 
   // const { data, isLoading } = useApprovedDoctorList();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 1,
+    pageIndex: 0,
     pageSize: 10,
   });
 
   const { data, isLoading } = useFakePagination({
-    page: pageIndex,
+    page: pageIndex + 1,
     perPage: pageSize,
   });
 
@@ -147,8 +147,6 @@ const ApprovedDocList = () => {
         style={{ margin: "0 auto", textAlign: "center", display: "block" }}
       />
     );
-
-  console.log("first");
 
   return (
     <>
