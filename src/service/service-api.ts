@@ -14,7 +14,8 @@ export const api = {
   experience_file: "doctor_consult/experience-files-upload/",
   doctor_profile: "/doctor_consult/doctor-profile/",
   edit_doctor_profile: "/doctor_consult/doctor-profile-update/",
-  specialization: "/core/specialization-list-auth",
+  specialization_fetch: "/core/specialization-list-auth",
+  specialization: "/core/specialization/",
   specialization_register: "/core/specialization-list/",
   registereddoctor: "/dashboard/registered-doctor-list",
   pendingdoctor: "/dashboard/pending-doctor-list",
@@ -32,7 +33,7 @@ export const api = {
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
-  rejectedDoctorList: "/dashboard/rejected-doctor-list/",
+  rejectedDoctorList: "/dashboard/rejected-doctor-list",
 };
 
 export interface NepMedsResponse<T = any> {
