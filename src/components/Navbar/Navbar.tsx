@@ -15,14 +15,17 @@ import { Home, Notification } from "react-iconly";
 import Input from "@nepMeds/components/Form/Input";
 import { colors } from "@nepMeds/theme/colors";
 import { Link } from "react-router-dom";
+import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const Navbar = () => {
   const { register } = useForm();
+
+  const { data } = useDoctorBasicProfile();
   return (
     <>
       <Stack p={"15px 21px"} background="white">
         <HStack>
-          <Box w={"60%"}>
+          <Box w={"55%"}>
             <Text fontWeight={"500"} fontSize={"20px"} color={"#45464E"}>
               Dashboard
             </Text>
@@ -55,10 +58,19 @@ const Navbar = () => {
             />
           </Flex>
           <Flex gap={"20px"} alignItems={"center"}>
-            <Text fontSize={{ sm: "12px", xl: "18px", base: "16px" }}>
-              Rahul Maharjan
+            <Text
+              display={"flex"}
+              fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
+            >
+              {data?.user_details?.first_name} {data?.user_details?.middle_name}{" "}
+              {data?.user_details?.last_name}
             </Text>
-            <Avatar as={Link} to="/doctor-profile" size="md" />
+            <Avatar
+              src={data?.user_details?.profile_picture}
+              as={Link}
+              to="/doctor-profile"
+              size="md"
+            />
           </Flex>
         </HStack>
         <Divider mt={"14px"} />

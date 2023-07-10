@@ -1,7 +1,7 @@
+import { AxiosResponse } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
-import { AxiosResponse } from "axios";
 
 export interface IGetDoctorAvailability {
   id?: 0;

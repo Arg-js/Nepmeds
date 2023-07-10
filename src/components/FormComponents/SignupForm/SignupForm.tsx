@@ -34,7 +34,7 @@ const schema = yup.object().shape({
 });
 
 const SignupForm = () => {
-  const [otp, setOTP] = useState("");
+  const [, setOTP] = useState("");
   const [enableOTP, setEnableOTP] = useState(false);
   const {
     getValues,
@@ -56,7 +56,6 @@ const SignupForm = () => {
     email_or_mobile_number: string;
   }) => {
     try {
-      console.log(otp);
       const { data: otpInfo } = await singUpAction.mutateAsync({
         email_or_mobile_number: email_or_mobile_number,
       });
@@ -112,6 +111,7 @@ const SignupForm = () => {
           textColor={colors.white}
           type="submit"
           variant="register"
+          isLoading={singUpAction.isLoading}
         >
           Sign Up
         </Button>

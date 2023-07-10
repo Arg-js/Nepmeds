@@ -1,8 +1,12 @@
+import { Center, Spinner } from "@chakra-ui/react";
 import Layout from "@nepMeds/components/Layout";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
+import Calendar from "@nepMeds/pages/Calendar";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
 import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
+import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
+import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Register from "@nepMeds/pages/Register";
@@ -16,13 +20,9 @@ import {
   useAuthentication,
   useLoginTokenDetailQuery,
 } from "@nepMeds/service/nepmeds-auth";
+import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
-import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
-import { Suspense } from "react";
-import { Center, Spinner } from "@chakra-ui/react";
-import Calendar from "@nepMeds/pages/Calendar";
-import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 
 const routes = [
   {
@@ -171,6 +171,14 @@ const openRoutes = [
 const AppRoutes = () => {
   const { data: isAuthenticated, isLoading } = useAuthentication();
   const { data: userInfo } = useLoginTokenDetailQuery();
+  const element = useRoutes(
+    // isAuthenticated ? adminRoutes : openRoutes
+    isAuthenticated
+      ? userInfo?.is_superuser
+        ? adminRoutes
+        : routes
+      : openRoutes
+  );
 
   if (isLoading) {
     return (
@@ -180,18 +188,7 @@ const AppRoutes = () => {
     );
   }
 
-  return (
-    <Suspense fallback={<Spinner />}>
-      {useRoutes(
-        // isAuthenticated ? adminRoutes : openRoutes
-        isAuthenticated
-          ? userInfo?.is_superuser
-            ? adminRoutes
-            : routes
-          : openRoutes
-      )}
-    </Suspense>
-  );
+  return <Suspense fallback={<Spinner />}>{element}</Suspense>;
 };
 
 export default AppRoutes;

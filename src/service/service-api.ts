@@ -2,6 +2,7 @@ export const api = {
   login: "user_management/login/",
   forgotPassword: "user_management/reset-password/",
   resetPassword: "user_management/confirm-password-reset/{uidb64}/{token}/",
+  basicProfile: "/doctor_consult/doctor-basic-info/",
   signup: "user_management/otp-send/",
   otp_verify: "user_management/otp-verify/",
   register: "/doctor_consult/register/",

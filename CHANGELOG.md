@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+## 0.0.1 (2023-07-06)
+=======
+<<<<<<< HEAD
 ## 0.0.1 (2023-07-05)
 =======
 <<<<<<< HEAD
@@ -11,6 +14,7 @@
 >>>>>>> ad43cbe168e061cb1a6352fd744eeb1268701e97
 >>>>>>> badef29318af803e80faba74422c88b3970a6d9f
 >>>>>>> e697745142d0990e05439fe1d1f1b2f027afc8ee
+>>>>>>> 534f5da7e20772bf15595504c7dba27924ec4064
 
 
 ### Bug Fixes
@@ -57,6 +61,7 @@
 * **signup/primary:** ward and tole default value ([0d2e397](https://gitlab.com/r2850/nepmeds/commit/0d2e397ed02bf3d3e6e9ce776562a9b0cd3b4fe8))
 * **signup:** fixed otp text alignment and removed unnecessary comment ([312cfcd](https://gitlab.com/r2850/nepmeds/commit/312cfcd40c01a3d6b0a19ca368569107fa68e3fd))
 * **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
+* **signup:** option field graduation experience change provinces ([02d4c20](https://gitlab.com/r2850/nepmeds/commit/02d4c201f9143251f16de8a4e7182088ae0cf5d9))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
 >>>>>>> e697745142d0990e05439fe1d1f1b2f027afc8ee
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
