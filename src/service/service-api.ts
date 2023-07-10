@@ -41,3 +41,23 @@ export interface NepMedsResponse<T = any> {
   status: 0 | 1;
   message: string;
 }
+
+export interface IPaginatedRes {
+  id: number;
+  name: string;
+  symptom: {
+    id: number;
+    name: string;
+    keyword: number;
+  }[];
+
+  consultation_fees: number;
+}
+export interface PaginatedResponse<T = any> {
+  data: {
+    count: number;
+    next?: number;
+    previous?: number;
+    results: T[];
+  };
+}

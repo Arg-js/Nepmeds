@@ -57,7 +57,7 @@ const Specializations = ({
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data: specialization = [] } = useSpecializationData({
+  const { data } = useSpecializationData({
     page_no: pageIndex + 1,
   });
   const saveSpecializationAction = useSaveSpecialization();
@@ -286,7 +286,7 @@ const Specializations = ({
       </Grid>
       <DataTable
         columns={columns}
-        data={specialization}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,

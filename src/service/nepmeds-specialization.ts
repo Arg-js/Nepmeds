@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { NepMedsResponse, api } from "./service-api";
+import {
+  IPaginatedRes,
+  NepMedsResponse,
+  PaginatedResponse,
+  api,
+} from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface Specialization {
@@ -17,7 +22,7 @@ export interface Symptom {
 }
 
 const getSpecializationData = async (page_no: number) => {
-  const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
+  const response = await HttpClient.get<PaginatedResponse<IPaginatedRes[]>>(
     `${api.specialization_fetch}/?page_no=${page_no}`
   );
   return response;
