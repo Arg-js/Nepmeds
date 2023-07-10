@@ -4,8 +4,8 @@ import {
   useSignUpUser,
   useVerifySingUpOTP,
 } from "@nepMeds/service/nepmeds-register";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { AxiosError } from "axios";
 import { FormEvent, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,13 +26,8 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       toastSuccess("OTP has been verified successfully!");
       navigate("/register", { state: { mobile } });
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(firstErrorMessage?.toString() || "Failed to verify otp!");
+      const err = serverErrorResponse(error);
+      toastFail(err);
     }
   };
 
@@ -45,13 +40,9 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
 
       toastSuccess("OTP code has been sent to your mobile!");
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
+      const err = serverErrorResponse(error);
 
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(firstErrorMessage?.toString() || "Failed to send OTP!");
+      toastFail(err);
     }
   };
   return (
@@ -120,6 +111,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           textColor={colors.white}
           type="submit"
           isDisabled={otpCode.length !== 6}
+          isLoading={verifySingUpOTPAction.isLoading}
         >
           Verify
         </Button>
