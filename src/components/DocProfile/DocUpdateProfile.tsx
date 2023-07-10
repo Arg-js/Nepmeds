@@ -69,7 +69,7 @@ export const DocUpdateProfile = ({
       <EditAcademic doctorProfileData={doctorProfileData} />
       <EditCertification doctorProfileData={doctorProfileData} />
       <EditExperience doctorProfileData={doctorProfileData} />
-      {doctorProfileData?.status !== "pending" && (
+      {doctorProfileData?.status === "pending" && (
         <Flex dir="row" justifyContent={"flex-end"} mt={"25px"} p={"25px"}>
           <Button
             bg={"#CC5F5F"}

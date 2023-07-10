@@ -1,3 +1,4 @@
+import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Button,
   Divider,
@@ -14,7 +15,6 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { ReactNode } from "react";
 import { ApproveButton, RejectButton } from "../Button/Button";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 
 const ModalComponent = ({
   heading,
