@@ -76,6 +76,21 @@ export interface IGetDoctorProfile {
   rejected_remarks: string;
   status?: string;
 }
+export interface IGetDoctorBasicProfile {
+  id: number;
+  user_details: {
+    first_name: string;
+    last_name: string;
+    middle_name: string;
+    email: string;
+    mobile_number: string;
+    profile_picture: string;
+  };
+  specialization: {
+    id: number;
+    name: string;
+  }[];
+}
 
 const getDoctorProfile = async () => {
   const response = await HttpClient.get<NepMedsResponse<IGetDoctorProfile>>(
@@ -85,6 +100,19 @@ const getDoctorProfile = async () => {
 };
 export const useDoctorProfile = () => {
   return useQuery([api.doctor_profile], getDoctorProfile, {
+    select: data => data.data.data,
+  });
+};
+
+const getBasicProfile = async () => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IGetDoctorBasicProfile>
+  >(api.basicProfile);
+  return response;
+};
+
+export const useDoctorBasicProfile = () => {
+  return useQuery(api.basicProfile, getBasicProfile, {
     select: data => data.data.data,
   });
 };

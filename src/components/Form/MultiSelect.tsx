@@ -6,12 +6,11 @@ import {
   SelectProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { Controller, RegisterOptions } from "react-hook-form";
+import { useEffect } from "react";
+import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
 import { ISelectOption } from "./Select";
-import { UseFormRegister } from "react-hook-form";
-import { useEffect } from "react";
 const MultiSelect = ({
   label,
   options,
@@ -53,6 +52,7 @@ const MultiSelect = ({
                 onChange(newValue);
                 register(name, rules); // Register the value after onChange
               }}
+              menuPosition="fixed"
               onBlur={onBlur}
               value={value || multiValue}
               options={options}
