@@ -21,7 +21,7 @@ import {
   useDeleteDoctorData,
   useDoctorList,
 } from "@nepMeds/service/nepmeds-doctorlist";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { Delete, Show } from "react-iconly";
@@ -39,7 +39,7 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IoFunnelOutline } from "react-icons/io5";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks is required!"),
@@ -234,8 +234,15 @@ const RegisteredDocList = () => {
   );
   const [id, setId] = React.useState("");
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
-  const { data, isLoading } = useDoctorList();
-  const { data: specialization = [] } = useSpecializationData();
+
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading } = useDoctorList({
+    page_no: pageIndex + 1,
+  });
+  const { data: specialization = [] } = useSpecializationRegisterData();
   const [searchFilter, setSearchFilter] = useState("");
   const acceptDoctor = () => {
     onDetailsModalClose();
@@ -285,12 +292,10 @@ const RegisteredDocList = () => {
         data={data ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          // manual: true,
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
       <ModalComponent

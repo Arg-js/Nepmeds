@@ -64,7 +64,6 @@ export const useUpdateAcademicInfo = () => {
 };
 
 const deleteAcademicData = async (id: number) => {
-  console.log(id);
   const response = await HttpClient.delete(api.academic + `${id}/`);
   return response;
 };
