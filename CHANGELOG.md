@@ -1,24 +1,4 @@
-<<<<<<< HEAD
-## 0.0.1 (2023-07-07)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-06)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-05)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-04)
-=======
-<<<<<<< HEAD
-## 0.0.1 (2023-07-05)
-=======
-## 0.0.1 (2023-07-03)
->>>>>>> ad43cbe168e061cb1a6352fd744eeb1268701e97
->>>>>>> badef29318af803e80faba74422c88b3970a6d9f
->>>>>>> e697745142d0990e05439fe1d1f1b2f027afc8ee
->>>>>>> 534f5da7e20772bf15595504c7dba27924ec4064
->>>>>>> 3d045814a109a1c6d2bf909a5d5faac261772e68
+## 0.0.1 (2023-07-11)
 
 
 ### Bug Fixes
@@ -56,6 +36,7 @@
 * onclick was on text rather than whole div, so onclick was assigned to whole div ([59dcbbd](https://gitlab.com/r2850/nepmeds/commit/59dcbbd158173b455e8096410f1124e140b5efb7))
 * otp api integration ([95349a1](https://gitlab.com/r2850/nepmeds/commit/95349a1690d1ac9d8e16e8e0e7790b4e8cf9a3f5))
 * otp form api integration ([0334c28](https://gitlab.com/r2850/nepmeds/commit/0334c28fae96d5b88e43df4f4ecd203072c48a54))
+* **pagination:** pagination api fixing ([9c8a9f5](https://gitlab.com/r2850/nepmeds/commit/9c8a9f53d0d5fb279726967a58d89e3c0b4158e2))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
@@ -69,6 +50,8 @@
 * **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
 * **signup:** option field graduation experience change provinces ([02d4c20](https://gitlab.com/r2850/nepmeds/commit/02d4c201f9143251f16de8a4e7182088ae0cf5d9))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
+* **specialization:** api end point fixing ([76edacb](https://gitlab.com/r2850/nepmeds/commit/76edacb6048845ca490088ab6ffa056605abb276))
+* **specialization:** fetch data ([7518d4b](https://gitlab.com/r2850/nepmeds/commit/7518d4b9460d41e70c5211ff861f8bd49c7d10b3))
 * **specialization:** specialization and approval fixed ([72bc813](https://gitlab.com/r2850/nepmeds/commit/72bc81362de8fdeb75846f4c8b58de0aeecb8b89))
 * **specialization:** specialization issue in register resolved ([ceedfdb](https://gitlab.com/r2850/nepmeds/commit/ceedfdba3a2e4c6465620a2f1d19207ba20581d6))
 * **specialization:** specialization issue resolved ([b93e97b](https://gitlab.com/r2850/nepmeds/commit/b93e97b97f6f5145d00f4230ad063f4bcc4daf32))
@@ -108,6 +91,7 @@
 * **master data:** add,delete and edit integrated in master data ([ac9a780](https://gitlab.com/r2850/nepmeds/commit/ac9a78077fb890b57472650cd6739d311be95637))
 * **mobile number validation:** regex for mobile number added ([acc623f](https://gitlab.com/r2850/nepmeds/commit/acc623f68fe11df7eec3c717edf920e633ed12ab))
 * **modal component:** added modal component ([c7c16dc](https://gitlab.com/r2850/nepmeds/commit/c7c16dc8ce4e9650dfa18cada9634f54cdbf10a0))
+* **pagination:** pagination implemented in tables ([6c12457](https://gitlab.com/r2850/nepmeds/commit/6c12457c0e3b693adbf478dab3098ea94bb2e9fb))
 * **profile:** profile edit ([e52a6bb](https://gitlab.com/r2850/nepmeds/commit/e52a6bb66e839b02c1d48f1abe6dec5eeb0df133))
 * **registration api:** started integrating registration api ([1cd9099](https://gitlab.com/r2850/nepmeds/commit/1cd90992ef00249a18fd598b1c6e632c1bdbadef))
 * **registration:** added stepper form components for registration ([f00b3fd](https://gitlab.com/r2850/nepmeds/commit/f00b3fd93b4a8e41c082fef6d63ddca36699bd38))
@@ -116,6 +100,7 @@
 * **stepper form components:** integrated apis ([66ec744](https://gitlab.com/r2850/nepmeds/commit/66ec7445c7764139c7b500fe188570bd41b20a0d))
 * **stepper form field name:** changes in form field name ([fa90159](https://gitlab.com/r2850/nepmeds/commit/fa90159f2e8de00e1ad1fcd7d797694d3126d34c))
 * **stepper forms:** created stepper forms and adjusted styles ([db8e878](https://gitlab.com/r2850/nepmeds/commit/db8e87873ff7993fdcf27f2bb2052e1f25b9f253))
+* **symptoms:** add symptoms integrated ([93ee2ef](https://gitlab.com/r2850/nepmeds/commit/93ee2ef8b3f7ffd05dda1df05e55fb22bee8aa01))
 * **symptoms:** add symptoms integrated ([2227706](https://gitlab.com/r2850/nepmeds/commit/222770644b5471d88f5c0942e3ba8f37da102a9a))
 
 
