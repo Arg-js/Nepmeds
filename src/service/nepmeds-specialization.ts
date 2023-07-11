@@ -23,14 +23,14 @@ export interface Symptom {
 
 const getSpecializationData = async (page_no: number) => {
   const response = await HttpClient.get<PaginatedResponse<IPaginatedRes[]>>(
-    `${api.specialization_fetch}/?page_no=${page_no}`
+    `${api.specialization_fetch}/?page=${page_no}`
   );
   return response;
 };
 
 export const useSpecializationData = ({ page_no }: { page_no: number }) => {
   return useQuery(
-    `${api.specialization_fetch}/?page_no=${page_no}`,
+    `${api.specialization_fetch}/?page=${page_no}`,
     () => getSpecializationData(page_no),
     {
       select: res => res.data.data,
@@ -79,7 +79,7 @@ export const useSaveSpecialization = () => {
 
   return useMutation(saveSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page_no=1`);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };
@@ -98,7 +98,7 @@ export const useDeleteSpecialization = () => {
 
   return useMutation(deleteSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page_no=1`);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };
@@ -144,7 +144,7 @@ export const useUpdateSpecialization = () => {
 
   return useMutation(updateSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page_no=1`);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };
