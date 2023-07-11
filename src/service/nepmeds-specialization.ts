@@ -1,5 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { NepMedsResponse, api } from "./service-api";
+import {
+  IPaginatedRes,
+  NepMedsResponse,
+  PaginatedResponse,
+  api,
+} from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface Specialization {
@@ -16,18 +21,22 @@ export interface Symptom {
   file?: string;
 }
 
-const getSpecializationData = async () => {
-  const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
-    api.specialization
+const getSpecializationData = async (page_no: number) => {
+  const response = await HttpClient.get<PaginatedResponse<IPaginatedRes[]>>(
+    `${api.specialization_fetch}/?page=${page_no}`
   );
   return response;
 };
 
-export const useSpecializationData = () =>
-  useQuery(api.specialization, getSpecializationData, {
-    select: res => res.data.data,
-  });
-
+export const useSpecializationData = ({ page_no }: { page_no: number }) => {
+  return useQuery(
+    `${api.specialization_fetch}/?page=${page_no}`,
+    () => getSpecializationData(page_no),
+    {
+      select: res => res.data.data,
+    }
+  );
+};
 const getSpecializationRegisterData = async () => {
   const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
     api.specialization_register
@@ -47,7 +56,7 @@ const saveSpecialization = async (specializationInfo: {
   consultation_fees: string;
 }) => {
   if (specializationInfo.id) {
-    const response = await HttpClient.put<NepMedsResponse>(
+    const response = await HttpClient.post<NepMedsResponse>(
       api.specialization + "/" + specializationInfo.id,
       {
         name: specializationInfo.name,
@@ -70,7 +79,7 @@ export const useSaveSpecialization = () => {
 
   return useMutation(saveSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.specialization);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };
@@ -89,7 +98,7 @@ export const useDeleteSpecialization = () => {
 
   return useMutation(deleteSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.specialization);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };
@@ -112,7 +121,7 @@ export const useDeleteBulkSpecialization = () => {
 
   return useMutation(deleteBulkSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.specialization);
+      queryClient.invalidateQueries(api.specialization_fetch);
     },
   });
 };
@@ -121,7 +130,7 @@ const updateSpecialization = async (specializationInfo: {
   id: number;
   data: Specialization;
 }) => {
-  const response = await HttpClient.put<NepMedsResponse>(
+  const response = await HttpClient.post<NepMedsResponse>(
     api.specialization + specializationInfo.id + "/",
     {
       data: specializationInfo.data,
@@ -135,7 +144,7 @@ export const useUpdateSpecialization = () => {
 
   return useMutation(updateSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.specialization);
+      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
     },
   });
 };

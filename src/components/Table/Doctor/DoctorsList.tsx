@@ -14,6 +14,8 @@ import RejectedDocList from "./RejectedDocList";
 import { CustomButton } from "@nepMeds/components/Button/Button";
 import { IoAdd } from "react-icons/io5";
 import { colors } from "@nepMeds/theme/colors";
+// import { Link } from "react-router-dom";
+// import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const DoctorsList = () => {
   return (
@@ -35,10 +37,12 @@ const DoctorsList = () => {
           </GridItem>
 
           <GridItem width={"15%"}>
+            {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
             <CustomButton backgroundColor={colors.primary}>
               {" "}
               <IoAdd /> Add Doctor
             </CustomButton>
+            {/* </Link> */}
           </GridItem>
         </Grid>
 

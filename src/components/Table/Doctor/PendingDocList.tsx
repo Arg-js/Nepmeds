@@ -16,7 +16,7 @@ import {
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { usePendingDoctorList } from "@nepMeds/service/nepmeds-pending-doctor-list";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { Delete, Show } from "react-iconly";
 import { FormProvider, useForm } from "react-hook-form";
@@ -37,7 +37,7 @@ import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
 import { IoFunnelOutline } from "react-icons/io5";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
@@ -54,12 +54,18 @@ const PendingDocList = () => {
     onClose: onRejectModalClose,
   } = useDisclosure();
   const [_isRejected, setIsRejected] = React.useState(false);
-  const { data, isLoading } = usePendingDoctorList();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data, isLoading } = usePendingDoctorList({
+    page_no: pageIndex + 1,
+  });
   const [id, setId] = React.useState("");
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
-  const { data: specialization = [] } = useSpecializationData();
+  const { data: specialization = [] } = useSpecializationRegisterData();
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
@@ -278,12 +284,10 @@ const PendingDocList = () => {
         data={data || []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          // manual: true,
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
       <ModalComponent

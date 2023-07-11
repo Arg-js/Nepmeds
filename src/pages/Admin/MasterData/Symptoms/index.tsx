@@ -1,6 +1,5 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Box,
   Button,
   Grid,
   GridItem,
@@ -9,17 +8,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
-import { CustomButton } from "@nepMeds/components/Button/Button";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
@@ -27,17 +21,16 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   Symptom,
-  useDeleteBulkSymptoms,
+  // useDeleteBulkSymptoms,
   useDeleteSymptom,
-  useGetSymptoms,
   useSaveSymptoms,
+  useSymptomsDataWithPagination,
 } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { IoAdd, IoChevronDownOutline } from "react-icons/io5";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -45,13 +38,25 @@ const schema = yup.object().shape({
   keyword: yup.string().required("Symptom keyword is required"),
 });
 
-const Symptoms = () => {
-  const { data: symptomList = [] } = useGetSymptoms();
+type OnOpenFunction = () => void;
+
+interface SymptomsProps {
+  onCloseSymptoms: OnOpenFunction;
+  isSymptomsOpen: boolean;
+}
+
+const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data: symptomList = [] } = useSymptomsDataWithPagination({
+    page_no: pageIndex + 1,
+  });
   const saveSymptomAction = useSaveSymptoms();
   const deleteSymptomAction = useDeleteSymptom();
-  const deleteBulkSymptom = useDeleteBulkSymptoms();
+  // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
@@ -59,10 +64,16 @@ const Symptoms = () => {
   } = useDisclosure();
 
   const {
-    isOpen: isBulkOpen,
-    onClose: onCloseBulkModal,
-    onOpen: onOpenBulkModal,
+    isOpen: isEditModalOpen,
+    onClose: onCloseEditModal,
+    onOpen: onOpenEditModal,
   } = useDisclosure();
+
+  // const {
+  //   isOpen: isBulkOpen,
+  //   onClose: onCloseBulkModal,
+  //   onOpen: onOpenBulkModal,
+  // } = useDisclosure();
 
   const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
@@ -102,8 +113,8 @@ const Symptoms = () => {
               size="sm"
               w="auto"
               onClick={() => {
+                onOpenEditModal();
                 formMethods.reset(cell.row.original);
-                onOpen();
               }}
             >
               <AiOutlineEdit size={20} fill={colors.blue_100} />
@@ -126,7 +137,7 @@ const Symptoms = () => {
     },
   ];
 
-  const onSaveSymptom = async () => {
+  const onEditSymptom = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -136,7 +147,24 @@ const Symptoms = () => {
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
       });
-      onClose();
+      onCloseEditModal();
+      toastSuccess("Symptom saved successfully!");
+    } catch (error) {
+      toastFail("Failed to save symptom!");
+    }
+  };
+
+  const onSaveSymptom = async () => {
+    try {
+      const isValid = formMethods.trigger();
+      if (!isValid) return;
+
+      await saveSymptomAction.mutateAsync({
+        id: null,
+        name: formMethods.getValues("name"),
+        keyword: formMethods.getValues("keyword"),
+      });
+      onCloseSymptoms();
       toastSuccess("Symptom saved successfully!");
     } catch (error) {
       toastFail("Failed to save symptom!");
@@ -156,19 +184,19 @@ const Symptoms = () => {
       toastFail("Failed to delete symptom!");
     }
   };
-  const onBulkDelete = async (data: Symptom[]) => {
-    const id = data.map(data => data.id);
+  // const onBulkDelete = async (data: Symptom[]) => {
+  //   const id = data.map(data => data.id);
 
-    try {
-      await deleteBulkSymptom.mutateAsync({
-        id: id,
-      });
-      onCloseBulkModal();
-      toastSuccess("Symptoms deleted successfully!");
-    } catch (error) {
-      toastFail("Failed to delete symptom!");
-    }
-  };
+  //   try {
+  //     await deleteBulkSymptom.mutateAsync({
+  //       id: id,
+  //     });
+  //     onCloseBulkModal();
+  //     toastSuccess("Symptoms deleted successfully!");
+  //   } catch (error) {
+  //     toastFail("Failed to delete symptom!");
+  //   }
+  // };
   return (
     <Fragment>
       <Grid display={"flex"} justifyContent={"space-between"}>
@@ -187,7 +215,7 @@ const Symptoms = () => {
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
-          <Box ml={1}>
+          {/* <Box ml={1}>
             <Menu>
               <MenuButton as={Button} variant={"outline"}>
                 <Text
@@ -205,20 +233,7 @@ const Symptoms = () => {
                 <MenuItem>Bulk Delete </MenuItem>
               </MenuList>
             </Menu>
-          </Box>
-          <Box ml={1}>
-            <CustomButton
-              backgroundColor={colors.primary}
-              borderRadius={7}
-              fontWeight="light"
-              onClick={() => {
-                onOpen();
-                formMethods.reset({});
-              }}
-            >
-              <IoAdd /> Add Symptom
-            </CustomButton>
-          </Box>
+          </Box> */}
         </GridItem>
       </Grid>
 
@@ -227,53 +242,113 @@ const Symptoms = () => {
         data={symptomList}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
+          manual: true,
+          pageParams: { pageIndex, pageSize },
           pageCount: 20,
+          onChangePagination: setPagination,
         }}
       />
 
-      <ModalComponent
-        size="sm"
-        isOpen={isOpen}
-        onClose={onClose}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>
-              {formMethods.getValues("name") ? "Edit" : "Add"} Symptom
-            </Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button
-              variant="outline"
-              onClick={onClose}
-              flex={1}
-              border="1px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
-            >
-              Discard
-            </Button>
-            <Button
-              flex={1}
-              onClick={onSaveSymptom}
-              background={colors.primary}
-              color={colors.white}
-              isLoading={saveSymptomAction.isLoading}
-            >
-              Save
-            </Button>
-          </HStack>
-        }
-      >
-        <VStack>
-          <FormProvider {...formMethods}>
+      {/* edit modal */}
+      {isEditModalOpen && (
+        <ModalComponent
+          size="sm"
+          isOpen={isEditModalOpen}
+          onClose={() => {
+            onCloseEditModal();
+            formMethods.reset({});
+          }}
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Edit Symptom</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="outline"
+                onClick={() => {
+                  onCloseEditModal();
+                  formMethods.reset({});
+                }}
+                flex={1}
+                border="1px solid"
+                borderColor={colors.primary}
+                color={colors.primary}
+                fontWeight={400}
+              >
+                Discard
+              </Button>
+              <Button
+                flex={1}
+                onClick={onEditSymptom}
+                background={colors.primary}
+                color={colors.white}
+                isLoading={saveSymptomAction.isLoading}
+              >
+                Save
+              </Button>
+            </HStack>
+          }
+        >
+          <VStack>
+            <FormProvider {...formMethods}>
+              <FloatingLabelInput
+                label="Symptom"
+                name="name"
+                register={formMethods.register}
+              />
+
+              <FloatinglabelTextArea
+                label="Keywords"
+                name="keyword"
+                register={formMethods.register}
+              />
+            </FormProvider>
+          </VStack>
+        </ModalComponent>
+      )}
+
+      {/* add modal */}
+
+      {isSymptomsOpen && (
+        <ModalComponent
+          size="sm"
+          isOpen={isSymptomsOpen}
+          onClose={onCloseSymptoms}
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Add Symptom</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="outline"
+                onClick={onCloseSymptoms}
+                flex={1}
+                border="1px solid"
+                borderColor={colors.primary}
+                color={colors.primary}
+                fontWeight={400}
+              >
+                Discard
+              </Button>
+              <Button
+                flex={1}
+                onClick={onSaveSymptom}
+                background={colors.primary}
+                color={colors.white}
+                isLoading={saveSymptomAction.isLoading}
+              >
+                Save
+              </Button>
+            </HStack>
+          }
+        >
+          <VStack>
             <FloatingLabelInput
               label="Symptom"
               name="name"
@@ -285,9 +360,9 @@ const Symptoms = () => {
               name="keyword"
               register={formMethods.register}
             />
-          </FormProvider>
-        </VStack>
-      </ModalComponent>
+          </VStack>
+        </ModalComponent>
+      )}
 
       <ModalComponent
         size="sm"
@@ -327,7 +402,7 @@ const Symptoms = () => {
       </ModalComponent>
 
       {/* bulk modal */}
-      <ModalComponent
+      {/* <ModalComponent
         size="sm"
         isOpen={isBulkOpen}
         onClose={onCloseBulkModal}
@@ -356,7 +431,7 @@ const Symptoms = () => {
         }
       >
         <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent>
+      </ModalComponent> */}
     </Fragment>
   );
 };
