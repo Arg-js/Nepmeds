@@ -43,14 +43,20 @@ type OnOpenFunction = () => void;
 interface SymptomsProps {
   onCloseSymptoms: OnOpenFunction;
   isSymptomsOpen: boolean;
+  activeTab: number;
 }
 
-const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
+const Symptoms = ({
+  onCloseSymptoms,
+  isSymptomsOpen,
+  activeTab,
+}: SymptomsProps) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const { data } = useSymptomsDataWithPagination({
+    activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
     name: "",
