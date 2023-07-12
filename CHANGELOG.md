@@ -15,6 +15,7 @@
 * **calendar:** close calendar on outside click ([8ace23a](https://gitlab.com/r2850/nepmeds/commit/8ace23a7feb619a4ae77a8ccfe4b36c58f8bf063))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **common:** invalid hooks call and select dropdown outside modal ([d8c0246](https://gitlab.com/r2850/nepmeds/commit/d8c02462ed0175a63e74284242ea23fc0e56b072))
+* **common:** multiple api call fix ([f13e228](https://gitlab.com/r2850/nepmeds/commit/f13e2288ae14442136094da75ebfcbd22f59fa9d))
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
 * doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
@@ -77,7 +78,6 @@
 
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
-* **admin:** admin table data paginated and filter implemented ([c04657f](https://gitlab.com/r2850/nepmeds/commit/c04657f7ae762a519bcf1a0a66b1ba49f76a1e50))
 * **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))

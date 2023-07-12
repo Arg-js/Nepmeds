@@ -30,17 +30,10 @@ const ScheduleComponent = ({
         parseISO(event.date),
         parseISO(selectedFullDate)
       );
+
       return todayEvent;
-    } else if (event.frequency_choice === "Weekends") {
-      const isSaturday = parseISO(selectedFullDate).getDay() === 6;
-      return isSaturday;
-    } else if (event.frequency_choice === "Everyday") {
+    } else if (event.frequency === "Daily") {
       return true;
-    } else if (event.frequency_choice === "Weekdays") {
-      const isWeekday =
-        parseISO(selectedFullDate).getDay() >= 1 &&
-        parseISO(selectedFullDate).getDay() <= 5;
-      return isWeekday;
     }
 
     return false;
