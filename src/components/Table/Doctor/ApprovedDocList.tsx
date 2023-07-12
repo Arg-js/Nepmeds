@@ -22,25 +22,32 @@ import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
+import Select from "@nepMeds/components/Form/Select";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import {
-  getDoctorList,
-  useDoctorList,
-} from "@nepMeds/service/nepmeds-doctorlist";
+import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { useForm, FormProvider } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
-import { useEffect } from "react";
-import Select from "@nepMeds/components/Form/Select";
-const ApprovedDocList = () => {
+import { ISpecializationList } from "./DoctorsList";
+
+interface CellContextSearch {
+  user: {
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+  };
+}
+interface Props {
+  specializationList: ISpecializationList[];
+}
+
+const ApprovedDocList = ({ specializationList }: Props) => {
   const {
     isOpen: isDetailsModalOpen,
     // onOpen: onDetailsModalOpen,
@@ -56,6 +63,13 @@ const ApprovedDocList = () => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [filterValue, setFilterValue] = useState<any>({
+    status: "approved",
+  });
 
   const navigate = useNavigate();
   const [_isRejected, setIsRejected] = React.useState(false);
@@ -91,24 +105,7 @@ const ApprovedDocList = () => {
     }
   };
   const formMethods = useForm();
-  // const deleteDoctorMethod = useDeleteDoctorData();
 
-  // const handleDeleteDoctor = async (id: number) => {
-  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
-
-  //   if (deleteDoctorResponse) {
-  //     toastSuccess("Academic data deleted successfully");
-  //   } else {
-  //     toastFail("Failed to delete academic information!");
-  //   }
-  // };
-  interface CellContextSearch {
-    user: {
-      first_name: string;
-      middle_name: string;
-      last_name: string;
-    };
-  }
   const columns = React.useMemo(
     () => [
       {
@@ -224,42 +221,34 @@ const ApprovedDocList = () => {
     []
   );
 
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  const [filteredData, setFilteredData] = useState<
-    IGetDoctorProfile[] | undefined
-  >();
   const { data, isLoading } = useDoctorList({
+    ...filterValue,
     page_no: pageIndex + 1,
-    status: "approved",
     page_size: pageSize,
   });
-  useEffect(() => {
-    setFilteredData(data?.results);
-  }, [data]);
 
-  const handleFilter = async () => {
-    const data = await getDoctorList({
-      page_no: pageIndex + 1,
-      page_size: pageSize,
-      status: "approved",
-      from_date: formMethods.getValues("fromDate"),
-      to_date: formMethods.getValues("toDate"),
-      specialization: formMethods.getValues("Specialization"),
-    });
-    setFilteredData(data?.data?.data?.results);
+  const handleFilter = async (isReset: boolean) => {
+    if (!isReset) {
+      setFilterValue({
+        status: "approved",
+        from_date: formMethods.getValues("fromDate"),
+        to_date: formMethods.getValues("toDate"),
+        specialization: formMethods.getValues("Specialization"),
+      });
+    } else {
+      setFilterValue({
+        status: "approved",
+      });
+      formMethods.reset({});
+    }
+
     onModalClose();
   };
   const [searchFilter, setSearchFilter] = useState("");
   const [id, setId] = React.useState("");
-  const { data: specialization = [] } = useSpecializationRegisterData();
+
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
-  const specializationList = specialization.map(s => ({
-    label: s.name,
-    value: s.id,
-  }));
+
   if (isLoading)
     return (
       <Spinner
@@ -298,7 +287,7 @@ const ApprovedDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={filteredData ?? []}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
@@ -414,6 +403,16 @@ const ApprovedDocList = () => {
               borderRadius={"12px"}
               color={"#13ADE1"}
               w={"150px"}
+              mr={1}
+              onClick={() => handleFilter(true)}
+            >
+              Reset
+            </Button>
+            <Button
+              outlineColor={"#13ADE1"}
+              borderRadius={"12px"}
+              color={"#13ADE1"}
+              w={"150px"}
             >
               Cancel
             </Button>
@@ -421,7 +420,7 @@ const ApprovedDocList = () => {
               bg={"#13ADE1"}
               color={"white"}
               w={"150px"}
-              onClick={handleFilter}
+              onClick={() => handleFilter(false)}
               borderRadius={"12px"}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },
