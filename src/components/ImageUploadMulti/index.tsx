@@ -1,7 +1,7 @@
-import { Image, Box, IconButton, Flex } from "@chakra-ui/react";
-import { CloseIcon, AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const MultipleImageUpload = ({
@@ -10,39 +10,13 @@ const MultipleImageUpload = ({
   handleImageChange,
   name,
   background,
-  fieldValues,
   editMode,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
     Array(selectedImages.length).fill(false)
   );
-  const { setValue, getValues } = useFormContext();
 
-  useEffect(() => {
-    // Initialize selected images from field values when the component mounts
-    if (editMode) {
-      if (fieldValues && fieldValues.length > 0) {
-        const defaultImages = fieldValues.map((item: any) => {
-          // Extract the file path from each item in the array
-          const filePath = item?.file;
-
-          // Append the base URL with the file name
-          const imageUrl = `http://38.242.204.217:8005/media/${filePath}`;
-
-          // Create a new image object using the file URL
-          return [imageUrl];
-        });
-
-        // Set the default images as the initial selected images
-        setSelectedImages(defaultImages);
-      }
-    } else {
-      const initialValues = getValues(fieldValues);
-
-      setSelectedImages(initialValues);
-    }
-  }, [fieldValues]);
-  console.log(selectedImages);
+  const { setValue } = useFormContext();
 
   const handleRemoveImage = (index: number) => {
     const updatedImages = [...selectedImages];

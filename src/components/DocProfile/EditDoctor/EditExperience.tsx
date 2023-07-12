@@ -1,223 +1,213 @@
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+// import React from "react";
+import { EditIcon } from "@chakra-ui/icons";
 import {
+  AspectRatio,
+  Box,
+  Button,
   Card,
   CardBody,
-  Icon,
-  HStack,
-  Button,
-  VStack,
-  Text,
-  Box,
   Center,
+  // Menu,
+  // MenuButton,
+  // MenuList,
+  // MenuItem,
+  // MenuDivider,
+  Divider,
   Grid,
+  // Grid,
   GridItem,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
+  HStack,
+  Icon,
+  Image,
+  SimpleGrid,
+  Spinner,
+  Text,
+  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
+
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { ExperienceForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   IDoctorExperience,
   IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
-import { colors } from "@nepMeds/theme/colors";
-import { useForm, FormProvider } from "react-hook-form";
-import { useState } from "react";
 import {
-  useDeleteExperienceInfo,
+  ExperienceInfo,
+  getSingleExperienceInfo,
+  // useDeleteExperienceInfo,
   useExperienceFileRegister,
   useExperienceInfoRegister,
   useUpdateExperienceInfo,
 } from "@nepMeds/service/nepmeds-experience";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import EditExperienceField from "./EditExperienceField";
-import AddExperienceField from "./AddExperienceField";
-import { AiOutlineMore } from "react-icons/ai";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+// import { AiOutlineMore } from "react-icons/ai";
+
+interface handleFormUpdateProps {
+  handleFormUpdate: () => void;
+  handleCloseForm: () => void;
+  isLoading: boolean;
+}
+
+const SubmitButton: React.FC<handleFormUpdateProps> = ({
+  handleFormUpdate,
+  handleCloseForm,
+  isLoading,
+}) => {
+  return (
+    <Grid
+      borderTop={`1px solid ${colors.grey_light}`}
+      py={5}
+      px={6}
+      className="test"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <GridItem colSpan={1}>
+        <Button onClick={handleCloseForm} px={6}>
+          Cancel
+        </Button>
+      </GridItem>
+      <GridItem colSpan={1}>
+        <Button
+          px={6}
+          borderRadius="xl"
+          backgroundColor={colors.primary}
+          _hover={{ bg: colors.primary_blue }}
+          color={colors.white}
+          onClick={handleFormUpdate}
+          isLoading={isLoading}
+        >
+          Update
+        </Button>
+      </GridItem>
+    </Grid>
+  );
+};
 
 const EditExperience = ({
   doctorProfileData,
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
+  const {
+    isOpen: isDocImgOpen,
+    onClose: onDocImgClose,
+    onOpen: onDocImgOpen,
+  } = useDisclosure();
   const formMethods = useForm();
-
   const experienceFileRegister = useExperienceFileRegister();
   const updateExperienceFileRegister = useUpdateExperienceInfo();
-  const deleteExperienceFileRegister = useDeleteExperienceInfo();
   const experienceInfoRegister = useExperienceInfoRegister();
+  const [loading, setLoading] = useState(false);
+  const [experienceInfo, setExperienceInfo] = useState<
+    IDoctorExperience["experience_document"]
+  >([]);
+  const [editForm, setEditForm] = useState(false);
 
-  const [openExperienceModal, setOpenExperienceModal] = useState(false);
-
-  const [openExperienceAddModal, setOpenExperienceAddModal] = useState(false);
-
-  const [editIndex, setEditIndex] = useState<number>(-1);
-  const [editId, setEditId] = useState<number>(0);
-  const [doctorId, setDoctorId] = useState<number>(0);
-  const onEditExperience = (index: number, id: number, doctor: number) => {
-    setEditIndex(index);
-    setEditId(id);
-    setDoctorId(doctor);
-    setOpenExperienceModal(true);
+  const getExperienceInfo = async (id: number) => {
+    try {
+      const res = await getSingleExperienceInfo(id);
+      setExperienceInfo(res.certificate_document);
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      error as AxiosError;
+      toastFail(err);
+    }
   };
 
-  const onSaveExperienceInfo = async () => {
+  const handleFormUpdate = async () => {
     try {
-      const experienceData = {
-        doctor: doctorId,
-        hospital: formMethods.getValues(`experience.${editIndex}.hospital`),
-        description: formMethods.getValues(
-          `experience.${editIndex}.description`
-        ),
-        currently_working: formMethods.getValues(
-          `experience.${editIndex}.currently_working`
-        ),
-        from_date: formMethods.getValues(`experience.${editIndex}.from_date`),
-        to_date: formMethods.getValues(`experience.${editIndex}.to_date`),
-        experience_documents: formMethods.getValues(
-          `experience.${editIndex}.experience_documents`
-        ),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-      try {
-        const createExperienceFileResponse =
-          await experienceFileRegister.mutateAsync(experienceData);
+      const experienceArray = formMethods.getValues("experience");
+      const certificatePromises = experienceArray.map(
+        async (experience: ExperienceInfo) => {
+          const createExperienceFileResponse =
+            await experienceFileRegister.mutateAsync(experience);
+          const experienceInfoData = {
+            ...experience,
+            doctor: doctorProfileData.id ?? 0,
+            experience_documents: createExperienceFileResponse.data.data.map(
+              (file: string) => ({
+                file: file,
+              })
+            ),
+          };
+          if (experience.currently_working) {
+            delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
+          }
 
-        const experienceInfoData = {
-          ...experienceData,
-          experience_documents: createExperienceFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        if (experienceData.currently_working) {
-          delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
+          if (experience.id) {
+            const expeirenceInfoResponse =
+              await updateExperienceFileRegister.mutateAsync({
+                id: Number(experience.id),
+                data: experienceInfoData,
+              });
+            if (expeirenceInfoResponse) {
+              return expeirenceInfoResponse.data.data;
+            } else {
+              throw new Error("Failed to update academic information!");
+            }
+          } else {
+            const expeirenceInfoResponse =
+              await experienceInfoRegister.mutateAsync(experienceInfoData);
+            if (expeirenceInfoResponse) {
+              return expeirenceInfoResponse.data.data;
+            } else {
+              throw new Error("Failed to add Certificate information!");
+            }
+          }
         }
-        const experienceInfoResponse =
-          await updateExperienceFileRegister.mutateAsync({
-            id: editId,
-            data: experienceInfoData,
-          });
-        if (experienceInfoResponse) {
-          toastSuccess("Experience data updated successfully");
-          setOpenExperienceModal(false);
-        } else {
-          toastFail("Failed to add experience information!");
-        }
-      } catch (error) {
-        const err = error as AxiosError<{ errors: [0] }>;
+      );
 
-        const errorObject = err?.response?.data?.errors?.[0];
-        const firstErrorMessage = errorObject
-          ? Object.values(errorObject)[0]
-          : null;
-        toastFail(
-          firstErrorMessage?.toString() || "Failed to add experience files!"
-        );
+      const experienceResponseInfos = await Promise.all(certificatePromises);
+      if (experienceResponseInfos) {
+        experienceResponseInfos.forEach((certInfoRes, i) => {
+          if (certInfoRes) {
+            experienceArray[i].id = certInfoRes.id;
+            formMethods.setValue(`experience.${i}.id`, certInfoRes.id);
+          }
+          formMethods.setValue(`experience.${i}.isSubmitted`, true);
+        });
+        toastSuccess("Experience Information updated");
+      } else {
+        throw new Error("Failed to update Experience information!");
       }
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
+      const err = serverErrorResponse(error);
 
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to add experience information!"
-      );
+      toastFail(err);
     }
+    setEditForm(false);
   };
 
-  const deleteData = async (id: number) => {
-    const experienceInfoResponse =
-      await deleteExperienceFileRegister.mutateAsync(id);
-
-    if (experienceInfoResponse) {
-      toastSuccess("Experience data deleted successfully");
-    } else {
-      toastFail("Failed to delete experience information!");
-    }
+  const handleDocImg = async (id: number) => {
+    setLoading(true);
+    onDocImgOpen();
+    await getExperienceInfo(id);
+    setLoading(false);
   };
 
-  const handleSubmitExperienceData = async () => {
-    const index = formMethods.getValues("experience").length - 1;
-
-    try {
-      const experienceData = {
-        doctor: doctorProfileData.id ?? 0,
-        hospital: formMethods.getValues(`experience.${index}.hospital`),
-        description: formMethods.getValues(`experience.${index}.description`),
-        currently_working: formMethods.getValues(
-          `experience.${index}.currently_working`
-        ),
-        from_date: formMethods.getValues(`experience.${index}.from_date`),
-        to_date: formMethods.getValues(`experience.${index}.to_date`),
-        experience_documents: formMethods.getValues(
-          `experience.${index}.experience_documents`
-        ),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-      try {
-        const createExperienceFileResponse =
-          await experienceFileRegister.mutateAsync(experienceData);
-
-        const experienceInfoData = {
-          ...experienceData,
-          experience_documents: createExperienceFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        if (experienceData.currently_working) {
-          delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
-        }
-        const experienceInfoResponse = await experienceInfoRegister.mutateAsync(
-          experienceInfoData
-        );
-        if (experienceInfoResponse) {
-          toastSuccess("Experience data updated successfully");
-          setOpenExperienceAddModal(false);
-        } else {
-          toastFail("Failed to add experience information!");
-        }
-      } catch (error) {
-        const err = error as AxiosError<{ errors: [0] }>;
-
-        const errorObject = err?.response?.data?.errors?.[0];
-        const firstErrorMessage = errorObject
-          ? Object.values(errorObject)[0]
-          : null;
-        toastFail(
-          firstErrorMessage?.toString() || "Failed to add experience files!"
-        );
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to add experience information!"
-      );
-    }
+  const handleCloseForm = () => {
+    setEditForm(false);
   };
   return (
     <>
-      <Card>
-        <Box p={"20px"} display={"flex"} justifyContent={"space-between"}>
+      <Card minHeight={"77vh"} maxHeight={"100%"}>
+        <Box
+          p={"20px"}
+          display={"flex"}
+          alignItems="center"
+          justifyContent={"space-between"}
+        >
           <Text
             fontWeight={"700"}
             fontSize={"18px"}
@@ -226,277 +216,262 @@ const EditExperience = ({
           >
             Experience Info
           </Text>
-          <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            onClick={() => setOpenExperienceAddModal(true)}
-            cursor="pointer"
-          >
-            <Icon as={AddIcon} boxSize={5} color={colors?.main} mr={"8px"} />
-            <Text
-              color={colors?.main}
-              fontWeight={"400"}
-              fontSize={"16px"}
-              lineHeight={"19px"}
+          {!editForm && (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              onClick={() => setEditForm(true)}
+              cursor="pointer"
             >
-              Add
-            </Text>
-          </Box>
+              <Button
+                px={6}
+                borderRadius="xl"
+                backgroundColor={colors.primary}
+                _hover={{ bg: colors.primary_blue }}
+              >
+                <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
+                <Text
+                  color={colors?.white}
+                  fontWeight={"400"}
+                  fontSize={"16px"}
+                  lineHeight={"19px"}
+                >
+                  Edit
+                </Text>
+              </Button>
+            </Box>
+          )}
+        </Box>
+        <Box>
+          <Divider />
         </Box>
         <CardBody>
           <ModalComponent
-            size="xl"
-            isOpen={openExperienceModal}
-            onClose={() => setOpenExperienceModal(false)}
             heading={
               <HStack>
                 <svgs.logo_small />
-                <Text>Edit Experience Information</Text>
+                <Text>List of Image</Text>
               </HStack>
             }
+            isOpen={isDocImgOpen}
+            onClose={onDocImgClose}
             footer={
               <HStack w="100%" gap={3}>
                 <Button
-                  variant="outline"
-                  onClick={() => setOpenExperienceModal(false)}
                   flex={1}
-                >
-                  Discard
-                </Button>
-                <Button
-                  flex={1}
-                  onClick={onSaveExperienceInfo}
+                  onClick={onDocImgClose}
                   background={colors.primary}
                   color={colors.white}
                 >
-                  Save
+                  Done
                 </Button>
               </HStack>
             }
           >
             <VStack>
-              <FormProvider {...formMethods}>
-                <EditExperienceField
-                  doctorProfileData={doctorProfileData}
-                  index={editIndex}
-                />
-              </FormProvider>
+              {loading ? (
+                <Spinner />
+              ) : (
+                experienceInfo.map((e: any) => (
+                  <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
+                    <Image
+                      key={e?.id}
+                      objectFit="cover"
+                      src={getImageUrl(e?.file)}
+                    />
+                  </AspectRatio>
+                ))
+              )}
             </VStack>
           </ModalComponent>
-          <ModalComponent
-            size="xl"
-            isOpen={openExperienceAddModal}
-            onClose={() => setOpenExperienceAddModal(false)}
-            heading={
-              <HStack>
-                <svgs.logo_small />
-                <Text>Add Experience Information</Text>
-              </HStack>
-            }
-            footer={
-              <HStack w="100%" gap={3}>
-                <Button
-                  variant="outline"
-                  onClick={() => setOpenExperienceAddModal(false)}
-                  flex={1}
+
+          {editForm ? (
+            <FormProvider {...formMethods}>
+              <Grid>
+                <GridItem
+                  height={"60vh"}
+                  css={{
+                    "&::-webkit-scrollbar": {
+                      width: "4px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: `${colors.light_gray}`,
+                      borderRadius: "24px",
+                    },
+                    overflowY: "scroll",
+                  }}
                 >
-                  Discard
-                </Button>
-                <Button
-                  flex={1}
-                  onClick={handleSubmitExperienceData}
-                  background={colors.primary}
-                  color={colors.white}
-                >
-                  Save
-                </Button>
-              </HStack>
-            }
-          >
-            <VStack>
-              <FormProvider {...formMethods}>
-                <AddExperienceField
-                  index={formMethods.getValues("experience")?.length}
-                />
-              </FormProvider>
-            </VStack>
-          </ModalComponent>
-          <Grid
-            templateColumns={
-              doctorProfileData?.doctor_experience?.length
-                ? "repeat(8, 1fr)"
-                : ""
-            }
-          >
-            {doctorProfileData?.doctor_experience?.length ? (
-              doctorProfileData?.doctor_experience?.map(
-                (singleExperience: IDoctorExperience, i) => {
-                  return (
-                    <>
-                      <GridItem colSpan={3} mt={"30px"} w="100%">
-                        <VStack spacing={4} align="stretch">
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"180px"}
-                            >
-                              Hospital/ Clinic Name
-                            </Text>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleExperience?.hospital}
-                            </Text>
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack spacing={4} align="stretch">
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"86px"}
-                            >
-                              From
-                            </Text>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleExperience?.from_date}
-                            </Text>
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack
-                          spacing={4}
-                          align={
-                            singleExperience?.currently_working
-                              ? "end"
-                              : "stretch"
-                          }
-                        >
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"137px"}
-                            >
-                              {singleExperience?.currently_working ? (
-                                <>currently working</>
-                              ) : (
-                                <>to</>
-                              )}
-                            </Text>
-                            {singleExperience?.currently_working !== true && (
-                              <Text
-                                fontWeight={"500"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                                color={colors?.black}
-                              >
-                                :&nbsp;{singleExperience?.to_date}
-                              </Text>
+                  <ExperienceForm doctorProfileData={doctorProfileData} />
+                </GridItem>
+                <GridItem>
+                  <SubmitButton
+                    handleFormUpdate={handleFormUpdate}
+                    handleCloseForm={handleCloseForm}
+                    isLoading={
+                      updateExperienceFileRegister.isLoading ||
+                      experienceFileRegister.isLoading
+                    }
+                  />
+                </GridItem>
+              </Grid>
+            </FormProvider>
+          ) : doctorProfileData?.doctor_experience?.length ? (
+            doctorProfileData?.doctor_experience?.map(
+              (singleExperience: IDoctorExperience, i) => {
+                return (
+                  <SimpleGrid
+                    columns={
+                      doctorProfileData?.doctor_certification_info?.length
+                        ? { base: 1, md: 1, lg: 2, xl: 3 }
+                        : undefined
+                    }
+                    borderBottom={`1px solid ${colors.grey_light}`}
+                    pb={10}
+                    key={i}
+                  >
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={4} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"180px"}
+                          >
+                            Hospital/ Clinic Name
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleExperience?.hospital}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={4} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"86px"}
+                          >
+                            From
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleExperience?.from_date}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                    <GridItem
+                      // colSpan={1}
+                      colSpan={{ md: 3, lg: 3, xl: 1 }}
+                      mt={"30px"}
+                      w="100%"
+                    >
+                      <VStack
+                        spacing={4}
+                        align={
+                          singleExperience?.currently_working
+                            ? "center"
+                            : "stretch"
+                        }
+                      >
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"137px"}
+                          >
+                            {singleExperience?.currently_working ? (
+                              <Text>Currently Working</Text>
+                            ) : (
+                              <>To</>
                             )}
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <Grid mt={"30px"}>
-                        <VStack spacing={2} align="end">
-                          <Menu>
-                            <MenuButton transition="all 0.2s">
-                              <AiOutlineMore />
-                            </MenuButton>
-                            <MenuList>
-                              <MenuItem>
-                                <Box
-                                  display={"flex"}
-                                  alignItems={"center"}
-                                  justifyContent={"center"}
-                                  onClick={() =>
-                                    onEditExperience(
-                                      i,
-                                      singleExperience?.id ?? 0,
-                                      singleExperience?.doctor ?? 0
-                                    )
-                                  }
-                                  cursor="pointer"
-                                >
-                                  <Icon
-                                    as={EditIcon}
-                                    boxSize={5}
-                                    color={colors?.main}
-                                    mr={"8px"}
-                                  />
-                                  <Text
-                                    color={colors?.main}
-                                    fontWeight={"400"}
-                                    fontSize={"16px"}
-                                    lineHeight={"19px"}
-                                  >
-                                    Edit
-                                  </Text>
-                                </Box>
-                              </MenuItem>
-                              <MenuDivider />
-                              <MenuItem>
-                                <Box
-                                  display={"flex"}
-                                  alignItems={"center"}
-                                  justifyContent={"center"}
-                                  onClick={() =>
-                                    deleteData(singleExperience?.id ?? 0)
-                                  }
-                                  cursor="pointer"
-                                >
-                                  <Icon
-                                    as={EditIcon}
-                                    boxSize={5}
-                                    color={colors?.red}
-                                    mr={"8px"}
-                                  />
-                                  <Text
-                                    color={colors?.red}
-                                    fontWeight={"400"}
-                                    fontSize={"16px"}
-                                    lineHeight={"19px"}
-                                  >
-                                    Delete
-                                  </Text>
-                                </Box>
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </VStack>
-                      </Grid>
-                    </>
-                  );
-                }
-              )
-            ) : (
-              <Center>
-                <Text>No Data Found</Text>
-              </Center>
-            )}
-          </Grid>
+                          </Text>
+                          {singleExperience?.currently_working !== true && (
+                            <Text
+                              fontWeight={"500"}
+                              fontSize={"16px"}
+                              lineHeight={"19px"}
+                              color={colors?.black}
+                            >
+                              :&nbsp;{singleExperience?.to_date}
+                            </Text>
+                          )}
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={3} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Document
+                          </Text>
+                          <Text
+                            fontWeight={"600"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.main}
+                            cursor="pointer"
+                            onClick={() =>
+                              handleDocImg(singleExperience.id ?? 0)
+                            }
+                          >
+                            :&nbsp;
+                            {singleExperience?.experience_document?.length ===
+                            1 ? (
+                              <>
+                                {singleExperience?.experience_document?.length}
+                                &nbsp; Image
+                              </>
+                            ) : (
+                              <>
+                                {singleExperience?.experience_document?.length}
+                                &nbsp; Images
+                              </>
+                            )}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                  </SimpleGrid>
+                );
+              }
+            )
+          ) : (
+            <Center>
+              <Text>No Data Found</Text>
+            </Center>
+          )}
         </CardBody>
       </Card>
     </>

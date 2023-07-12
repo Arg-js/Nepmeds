@@ -12,6 +12,7 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDeleteCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
@@ -32,6 +33,11 @@ export const CertificationInfoForm = ({
     name: "certification",
   });
 
+  const mappedImageInfo =
+    doctorProfileData?.doctor_certification_info.map(e =>
+      e?.certificate_document.map((e: any) => getImageUrl(e.file))
+    ) ?? [];
+
   const deleteCertificateInfoRegister = useDeleteCertificateInfo();
 
   useEffect(() => {
@@ -41,6 +47,7 @@ export const CertificationInfoForm = ({
         certification: doctorProfileData?.doctor_certification_info.map(a => ({
           certificate_issued_date: a.certificate_issued_date,
           doctor: a.doctor,
+          id: a.id?.toString(),
           certificate_number: a.certificate_number,
           title: a.title,
           issued_by: a.issued_by,
@@ -49,12 +56,9 @@ export const CertificationInfoForm = ({
     }
   }, [doctorProfileData, getValues]);
 
-  const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
-  >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
+  const [selectedImages, setSelectedImages] =
+    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -88,8 +92,6 @@ export const CertificationInfoForm = ({
       });
     }
   };
-  console.log(selectedImages, selectedImagesFile);
-  console.log(getValues("certification"));
 
   const validateIssuedDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)

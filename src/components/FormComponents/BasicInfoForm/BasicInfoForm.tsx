@@ -54,11 +54,13 @@ export const BasicInfoForm = ({
   };
 
   return (
-    <Grid
-      templateColumns={isEditable ? "repeat(3,1fr)" : "repeat(4, 1fr)"}
-      gap={4}
-    >
-      <GridItem rowSpan={isEditable ? 3 : 2} colSpan={{ base: 4, xlg: 1 }}>
+    <Grid templateColumns={"repeat(4, 1fr)"} gap={4}>
+      <GridItem
+        // rowSpan={isEditable ? 3 : 2}
+        rowSpan={2}
+        //  colSpan={isEditable ? 3 : 1}
+        colSpan={1}
+      >
         <ImageUpload
           SelectedImage={selectedImage}
           setSelectedImage={setSelectedImage}
@@ -70,20 +72,7 @@ export const BasicInfoForm = ({
         />
       </GridItem>
 
-      {isEditable ? (
-        <GridItem colSpan={3}>
-          <FloatinglabelTextArea
-            label="Basic Information"
-            name="bio_detail"
-            register={register}
-            defaultValue={doctorProfileData?.bio_detail}
-          />
-        </GridItem>
-      ) : (
-        <></>
-      )}
-
-      <GridItem colSpan={{ base: 4, md: 2, xlg: 3 }}>
+      <GridItem colSpan={3}>
         <Select
           label="Title"
           name="title"
@@ -135,6 +124,19 @@ export const BasicInfoForm = ({
           error={errors.last_name?.message}
         />
       </GridItem>
+
+      {isEditable ? (
+        <GridItem colSpan={4}>
+          <FloatinglabelTextArea
+            label="Basic Information"
+            name="bio_detail"
+            register={register}
+            defaultValue={doctorProfileData?.bio_detail}
+          />
+        </GridItem>
+      ) : (
+        <></>
+      )}
       {hidePasswordField && (
         <>
           <GridItem colSpan={{ base: 4, md: 2, xlg: 2 }}>

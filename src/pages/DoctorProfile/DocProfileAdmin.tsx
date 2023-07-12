@@ -1,4 +1,8 @@
 import {
+  Button,
+  Flex,
+  HStack,
+  Icon,
   Spinner,
   Tab,
   TabIndicator,
@@ -6,12 +10,24 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  Text,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
+
 import { FormProvider, useForm } from "react-hook-form";
 import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
+import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { colors } from "@nepMeds/theme/colors";
+import { RejectionForm } from "@nepMeds/components/FormComponents";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const DocProfileAdmin = () => {
   const formMethods = useForm();
@@ -19,6 +35,39 @@ const DocProfileAdmin = () => {
   const { data: doctorProfileData, isLoading } = fetchDoctorProfileById(
     id ?? "0"
   );
+
+  const {
+    isOpen: isRejectModalOpen,
+    onOpen: onRejectModalOpen,
+    onClose: onRejectModalClose,
+  } = useDisclosure();
+
+  const approvePendingDoc = useApproveDoc();
+  const rejectPendingDoc = useRejectDoc();
+  const navigate = useNavigate();
+
+  const onSubmitForm = async () => {
+    try {
+      const isValid = await formMethods.trigger("remarks");
+      if (!isValid) return;
+
+      const val = formMethods.getValues("remarks");
+      await rejectPendingDoc.mutateAsync({
+        id: doctorProfileData?.data?.id?.toString() ?? "",
+        remarks: val,
+      });
+      onRejectModalClose();
+      toastSuccess("Doctor Rejected!");
+      formMethods.reset();
+    } catch (error) {
+      toastFail("Doctor cannot be rejected. Try Again!!");
+    }
+  };
+
+  const RejectDoctor = () => {
+    onRejectModalClose();
+  };
+
   if (isLoading)
     return (
       <Spinner
@@ -32,6 +81,7 @@ const DocProfileAdmin = () => {
         }}
       />
     );
+
   return (
     <VStack align={"stretch"} p={4}>
       <Tabs position="relative" variant="unstyled">
@@ -46,217 +96,107 @@ const DocProfileAdmin = () => {
                 doctorProfileData={doctorProfileData?.data ?? ({} as any)}
               />
             </TabPanel>
+
+            {doctorProfileData?.data?.status === "pending" && (
+              <Flex dir="row" justifyContent={"flex-end"}>
+                <Button
+                  bg={"#CC5F5F"}
+                  color={"white"}
+                  m={"10px"}
+                  onClick={() => {
+                    onRejectModalOpen();
+                  }}
+                  sx={{ "&:hover": { bg: "#CC5F5F", color: "white" } }}
+                >
+                  ON HOLD &nbsp;
+                  <Icon as={WarningIcon} />
+                </Button>
+                <Button
+                  bg={"#519C66"}
+                  color={"white"}
+                  m={"10px"}
+                  onClick={() => {
+                    approvePendingDoc.mutateAsync(
+                      doctorProfileData?.data?.id?.toString() ?? ""
+                    );
+                    toastSuccess("Doctor Approved");
+                    navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
+                  }}
+                  sx={{ "&:hover": { bg: "#519C66", color: "white" } }}
+                >
+                  VERIFY &nbsp;
+                  <Icon as={CheckIcon} />
+                </Button>
+              </Flex>
+            )}
           </FormProvider>
         </TabPanels>
       </Tabs>
+
+      <ModalComponent
+        isOpen={isRejectModalOpen}
+        onClose={onRejectModalClose}
+        approve
+        reject
+        size="xl"
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Remarks for rejection</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button
+              variant="outline"
+              onClick={RejectDoctor}
+              flex={1}
+              border="2px solid"
+              borderColor={colors.primary}
+              color={colors.primary}
+              fontWeight={400}
+            >
+              Cancel
+            </Button>
+            <Button
+              flex={1}
+              onClick={async () => {
+                try {
+                  const isValid = await formMethods.trigger("remarks");
+                  if (!isValid) return;
+
+                  const val = formMethods.getValues("remarks");
+                  await rejectPendingDoc.mutateAsync({
+                    id: doctorProfileData?.data?.id?.toString() ?? "",
+                    remarks: val,
+                  });
+                  onRejectModalClose();
+                  navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
+
+                  toastSuccess("Doctor Rejected!");
+
+                  formMethods.reset();
+                } catch (error) {
+                  toastFail("Doctor cannot be rejected. Try Again!!");
+                }
+              }}
+              background={colors.primary}
+              color={colors.white}
+            >
+              Done
+            </Button>
+          </HStack>
+        }
+        primaryText="Done"
+        secondaryText="Cancel"
+        otherAction={onRejectModalClose}
+      >
+        <FormProvider {...formMethods}>
+          <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
+        </FormProvider>
+      </ModalComponent>
     </VStack>
   );
 };
 
 export default DocProfileAdmin;
-
-{
-  /* <Tabs position="relative" variant="unstyled">
-    <TabList>
-      <Tab>Profile</Tab>
-      <Tab>Primary Info</Tab>
-      <Tab>Academic Info</Tab>
-      <Tab>Certification Info</Tab>
-      <Tab>Experience</Tab>
-    </TabList>
-    <TabIndicator mt="-1.5px" height="2px" bg="blue.500" borderRadius="1px" />
-    <TabPanels>
-      <TabPanel>
-        <Icon as={Edit} onClick={onOpen} cursor="pointer" />
-        <ModalComponent
-          size="xl"
-          isOpen={isOpen}
-          onClose={onClose}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Edit Personal Information</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onClose} flex={1}>
-                Discard
-              </Button>
-              <Button
-                flex={1}
-                onClick={onSavePersonalInfo}
-                background={colors.primary}
-                color={colors.white}
-              >
-                Save
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <BasicInfoForm
-                hidePasswordField={false}
-                doctorProfileData={doctorProfileData}
-                isEditable={true}
-              />
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      </TabPanel>
-      <TabPanel>
-        <Icon as={Edit} onClick={onPrimaryOpen} cursor="pointer" />
-        <ModalComponent
-          size="xl"
-          isOpen={isPrimaryOpen}
-          onClose={onPrimaryClose}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Edit Primary Information</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onPrimaryClose} flex={1}>
-                Discard
-              </Button>
-              <Button
-                flex={1}
-                onClick={onSavePersonalInfo}
-                background={colors.primary}
-                color={colors.white}
-              >
-                Save
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <PrimaryInfoForm
-                doctorProfileData={doctorProfileData}
-                isEditable={true}
-              />
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      </TabPanel>
-      <TabPanel>
-        <Icon as={Edit} onClick={onAcademicOpen} cursor="pointer" />
-        <ModalComponent
-          size="xl"
-          isOpen={isAcademicOpen}
-          onClose={onAcademicClose}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Edit Academic Information</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onAcademicClose} flex={1}>
-                Discard
-              </Button>
-              <Button
-                flex={1}
-                onClick={onSavePersonalInfo}
-                background={colors.primary}
-                color={colors.white}
-              >
-                Save
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <AcademicInfoForm
-                // doctorProfileData={doctorProfileData}
-                isEditable={true}
-              />
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      </TabPanel>
-      <TabPanel>
-        <Icon as={Edit} onClick={onCertificateOpen} cursor="pointer" />
-        <ModalComponent
-          size="xl"
-          isOpen={isCertificateOpen}
-          onClose={onCertificateClose}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Edit Certificate Information</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onCertificateClose} flex={1}>
-                Discard
-              </Button>
-              <Button
-                flex={1}
-                onClick={onSavePersonalInfo}
-                background={colors.primary}
-                color={colors.white}
-              >
-                Save
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <CertificationInfoForm
-                // doctorProfileData={doctorProfileData}
-                isEditable={true}
-              />
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      </TabPanel>
-      <TabPanel>
-        <Icon as={Edit} onClick={onExperienceOpen} cursor="pointer" />
-        <ModalComponent
-          size="xl"
-          isOpen={isExperienceOpen}
-          onClose={onExperienceClose}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Edit Academic Information</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onExperienceClose} flex={1}>
-                Discard
-              </Button>
-              <Button
-                flex={1}
-                onClick={onSavePersonalInfo}
-                background={colors.primary}
-                color={colors.white}
-              >
-                Save
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <ExperienceForm
-                // doctorProfileData={doctorProfileData}
-                isEditable={true}
-              />
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      </TabPanel>
-    </TabPanels>
-  </Tabs>; */
-}

@@ -11,12 +11,11 @@ import {
   Button,
   Box,
   VStack,
-  Flex,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
-import { Delete, Show } from "react-iconly";
+import { Show } from "react-iconly";
 import { FormProvider, useForm } from "react-hook-form";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -31,12 +30,16 @@ import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import { colors } from "@nepMeds/theme/colors";
 import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useFetchRejectedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { IoFunnelOutline } from "react-icons/io5";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-
+import {
+  getDoctorList,
+  useDoctorList,
+} from "@nepMeds/service/nepmeds-doctorlist";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useEffect } from "react";
+import Select from "@nepMeds/components/Form/Select";
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
 });
@@ -61,11 +64,31 @@ const RejectedDocList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useFetchRejectedDoctorList({
-    page_no: pageIndex + 1,
-  });
-  console.log(data, "oooo");
 
+  const [filteredData, setFilteredData] = useState<
+    IGetDoctorProfile[] | undefined
+  >();
+  const { data, isLoading } = useDoctorList({
+    page_no: pageIndex + 1,
+    status: "rejected",
+    page_size: pageSize,
+  });
+  useEffect(() => {
+    setFilteredData(data?.results);
+  }, [data]);
+
+  const handleFilter = async () => {
+    const data = await getDoctorList({
+      page_no: pageIndex + 1,
+      page_size: pageSize,
+      status: "rejected",
+      from_date: formMethods.getValues("fromDate"),
+      to_date: formMethods.getValues("toDate"),
+      specialization: formMethods.getValues("Specialization"),
+    });
+    setFilteredData(data?.data?.data?.results);
+    onModalClose();
+  };
   const [id, setId] = React.useState("");
 
   const approvePendingDoc = useApproveDoc();
@@ -115,13 +138,7 @@ const RejectedDocList = () => {
         header: "Doctor's Name",
         accessorKey: "first_name",
         accessorFn: (_cell: CellContextSearch) => {
-          return (
-            _cell?.user?.first_name +
-            " " +
-            _cell?.user?.middle_name +
-            " " +
-            _cell?.user?.last_name
-          );
+          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
         },
       },
       {
@@ -203,7 +220,7 @@ const RejectedDocList = () => {
                 }}
               />
 
-              <Icon
+              {/* <Icon
                 as={Delete}
                 fontSize={20}
                 cursor="pointer"
@@ -214,7 +231,7 @@ const RejectedDocList = () => {
                   // onDetailsModalOpen();
                   // setId(cell.row.original.id);
                 }}
-              />
+              /> */}
             </HStack>
           );
         },
@@ -275,12 +292,12 @@ const RejectedDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data || []}
+        data={filteredData ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
@@ -398,6 +415,7 @@ const RejectedDocList = () => {
               bg={"#13ADE1"}
               color={"white"}
               w={"150px"}
+              onClick={handleFilter}
               borderRadius={"12px"}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },
@@ -410,29 +428,30 @@ const RejectedDocList = () => {
       >
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
-            <MultiSelect
-              placeholder=""
+            <Select
+              placeholder="select specialization"
               label="Specialization"
               name="Specialization"
               required
               register={formMethods.register}
               options={specializationList}
-              selectControl={formMethods.control}
             />
-            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+            <Box display={"flex"} width={"100%"}>
               <FloatingLabelInput
                 label="From"
                 name="fromDate"
                 register={formMethods.register}
                 type="date"
               />
-              <FloatingLabelInput
-                label="To"
-                name="toDate"
-                register={formMethods.register}
-                type="date"
-              />
-            </Flex>
+              <Box ml={1}>
+                <FloatingLabelInput
+                  label="To"
+                  name="toDate"
+                  register={formMethods.register}
+                  type="date"
+                />
+              </Box>
+            </Box>
           </FormProvider>
         </VStack>
       </ModalComponent>

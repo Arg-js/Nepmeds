@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-11)
+## 0.0.1 (2023-07-12)
 
 
 ### Bug Fixes
@@ -11,7 +11,10 @@
 * badge css verified ([99a1311](https://gitlab.com/r2850/nepmeds/commit/99a131102367fcca67aaf0c07e9da39fd178c25e))
 * **bug fixes:** fixed build issues ([ec4d743](https://gitlab.com/r2850/nepmeds/commit/ec4d7438ca0e887bd4d3a6f48f6c919bfc155c65))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
+* **calendar:** calendar date validation and added global error response function ([2d51cc6](https://gitlab.com/r2850/nepmeds/commit/2d51cc60d3b191ec8dd412639450db54a3212104))
+* **calendar:** close calendar on outside click ([8ace23a](https://gitlab.com/r2850/nepmeds/commit/8ace23a7feb619a4ae77a8ccfe4b36c58f8bf063))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
+* **common:** invalid hooks call and select dropdown outside modal ([d8c0246](https://gitlab.com/r2850/nepmeds/commit/d8c02462ed0175a63e74284242ea23fc0e56b072))
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
 * doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
@@ -47,9 +50,11 @@
 * **signup/primary:** must be atleast 18 years old ([4ee3367](https://gitlab.com/r2850/nepmeds/commit/4ee3367f2148a9c09cb0453e11468ac0e3dbbee9))
 * **signup/primary:** ward and tole default value ([0d2e397](https://gitlab.com/r2850/nepmeds/commit/0d2e397ed02bf3d3e6e9ce776562a9b0cd3b4fe8))
 * **signup:** fixed otp text alignment and removed unnecessary comment ([312cfcd](https://gitlab.com/r2850/nepmeds/commit/312cfcd40c01a3d6b0a19ca368569107fa68e3fd))
+* **signup:** form loading ([512faff](https://gitlab.com/r2850/nepmeds/commit/512faff007611d51aab226306af6b3a13addbcb6))
 * **signup:** graduation year default value ([165ca01](https://gitlab.com/r2850/nepmeds/commit/165ca0168908b8e53deeca26758913f7d6b1f4d5))
 * **signup:** option field graduation experience change provinces ([02d4c20](https://gitlab.com/r2850/nepmeds/commit/02d4c201f9143251f16de8a4e7182088ae0cf5d9))
 * **signup:** UI issues and validation issue ([3b2e29a](https://gitlab.com/r2850/nepmeds/commit/3b2e29afc9eed673ae5008773408a683487d3db7))
+* **specialization issue:** specialization issue resolved: ([22f2f8f](https://gitlab.com/r2850/nepmeds/commit/22f2f8f0b6c092a6146a7f1121d22a5725ccddb1))
 * **specialization:** api end point fixing ([76edacb](https://gitlab.com/r2850/nepmeds/commit/76edacb6048845ca490088ab6ffa056605abb276))
 * **specialization:** fetch data ([7518d4b](https://gitlab.com/r2850/nepmeds/commit/7518d4b9460d41e70c5211ff861f8bd49c7d10b3))
 * **specialization:** specialization and approval fixed ([72bc813](https://gitlab.com/r2850/nepmeds/commit/72bc81362de8fdeb75846f4c8b58de0aeecb8b89))
@@ -72,6 +77,7 @@
 
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
+* **admin:** admin table data paginated and filter implemented ([c04657f](https://gitlab.com/r2850/nepmeds/commit/c04657f7ae762a519bcf1a0a66b1ba49f76a1e50))
 * **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
@@ -83,6 +89,7 @@
 * **edit profile:** added modal in edit profile component ([961f49b](https://gitlab.com/r2850/nepmeds/commit/961f49bdc5103b65d0281c63ddb1afeecfcd71ff))
 * forgot password ([fbd5eb5](https://gitlab.com/r2850/nepmeds/commit/fbd5eb54d18db3db41b40876e8416b7594fa0f72))
 * forgot password slicing ([f6879f5](https://gitlab.com/r2850/nepmeds/commit/f6879f5ced3d03c386a2a53547a63d835a63bab4))
+* **init:** init api integrated in navbar ([d8f6182](https://gitlab.com/r2850/nepmeds/commit/d8f618231a2b8738cabb9f025e3965a44ae35de1))
 * **login component:** slicing started for login component ([f8d1632](https://gitlab.com/r2850/nepmeds/commit/f8d163273265dc1dada652904f7cf85a60c8c16e))
 * **login, signup and otp component:** modified login, added signup and otp (wip) ([9fcb4b3](https://gitlab.com/r2850/nepmeds/commit/9fcb4b32b0c646f71ab088749a63b887740c16f3))
 * master data ([4a76f43](https://gitlab.com/r2850/nepmeds/commit/4a76f43b2c29144c0ce55322f9c9999163c982c2))

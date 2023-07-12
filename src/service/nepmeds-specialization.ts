@@ -1,15 +1,10 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import {
-  IPaginatedRes,
-  NepMedsResponse,
-  PaginatedResponse,
-  api,
-} from "./service-api";
+import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface Specialization {
   id: number;
-  symptom: Symptom[];
+  symptom_list: Symptom[];
   name: string;
   consultation_fees: number;
 }
@@ -17,21 +12,33 @@ export interface Specialization {
 export interface Symptom {
   id: number;
   name: string;
-  keyword: string;
+  keyword?: string;
   file?: string;
 }
 
-const getSpecializationData = async (page_no: number) => {
-  const response = await HttpClient.get<PaginatedResponse<IPaginatedRes[]>>(
-    `${api.specialization_fetch}/?page=${page_no}`
+const getSpecializationData = async (
+  page_no: number,
+  pageSize: number,
+  name: string
+) => {
+  const response = await HttpClient.get<PaginatedResponse<Specialization[]>>(
+    `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
   );
   return response;
 };
 
-export const useSpecializationData = ({ page_no }: { page_no: number }) => {
+export const useSpecializationData = ({
+  page_no,
+  pageSize,
+  name,
+}: {
+  page_no: number;
+  pageSize: number;
+  name: string;
+}) => {
   return useQuery(
-    `${api.specialization_fetch}/?page=${page_no}`,
-    () => getSpecializationData(page_no),
+    `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
+    () => getSpecializationData(page_no, pageSize, name),
     {
       select: res => res.data.data,
     }
@@ -52,7 +59,7 @@ export const useSpecializationRegisterData = () =>
 const saveSpecialization = async (specializationInfo: {
   id?: string | null;
   name: string;
-  symptom: Symptom[];
+  symptom: string[];
   consultation_fees: string;
 }) => {
   if (specializationInfo.id) {
@@ -74,12 +81,18 @@ const saveSpecialization = async (specializationInfo: {
   }
 };
 
-export const useSaveSpecialization = () => {
+export const useSaveSpecialization = (
+  page_no: number,
+  pageSize: number,
+  name: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(saveSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
+      queryClient.invalidateQueries(
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
+      );
     },
   });
 };
@@ -93,12 +106,18 @@ const deleteSpecialization = async (specializationInfo: {
   return response;
 };
 
-export const useDeleteSpecialization = () => {
+export const useDeleteSpecialization = (
+  page_no: number,
+  pageSize: number,
+  name: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
+      queryClient.invalidateQueries(
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
+      );
     },
   });
 };
@@ -121,30 +140,40 @@ export const useDeleteBulkSpecialization = () => {
 
   return useMutation(deleteBulkSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.specialization_fetch);
+      queryClient.invalidateQueries(api.specialization);
     },
   });
 };
 
 const updateSpecialization = async (specializationInfo: {
-  id: number;
-  data: Specialization;
+  id?: number | null;
+  name: string;
+  symptom: string[];
+  consultation_fees: number;
 }) => {
-  const response = await HttpClient.post<NepMedsResponse>(
+  const response = await HttpClient.patch<NepMedsResponse>(
     api.specialization + specializationInfo.id + "/",
     {
-      data: specializationInfo.data,
+      name: specializationInfo.name,
+      symptom: specializationInfo.symptom,
+      consultation_fees: specializationInfo.consultation_fees,
     }
   );
   return response;
 };
 
-export const useUpdateSpecialization = () => {
+export const useUpdateSpecialization = (
+  page_no: number,
+  pageSize: number,
+  name: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(updateSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(`${api.specialization_fetch}/?page=1`);
+      queryClient.invalidateQueries(
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
+      );
     },
   });
 };

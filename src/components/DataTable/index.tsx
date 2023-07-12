@@ -70,9 +70,7 @@ export function DataTable({
     }
   }, [sortingColumn]);
 
-  const totalPage = Math.ceil(
-    (pagination?.pageCount ?? 0) / (pagination?.pageParams?.pageSize ?? 20)
-  );
+  const totalPage = Math.ceil(pagination?.pageCount ?? 0);
 
   const paginationParams = useMemo(
     () =>

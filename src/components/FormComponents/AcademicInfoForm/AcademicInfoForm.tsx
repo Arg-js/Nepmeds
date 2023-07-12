@@ -9,6 +9,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
@@ -28,6 +29,11 @@ export const AcademicInfoForm = ({
     formState: { errors },
   } = useFormContext<IRegisterFields>();
 
+  const mappedImageInfo =
+    doctorProfileData?.doctor_academic_info.map(e =>
+      e?.academic_document.map((e: any) => getImageUrl(e.file))
+    ) ?? [];
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
@@ -43,19 +49,16 @@ export const AcademicInfoForm = ({
           doctor: a.doctor,
           major: a.major,
           university: a.university,
+          id: a.id?.toString(),
           graduation_year: a.graduation_year?.toString(),
         })),
       });
     }
   }, [doctorProfileData, reset]);
 
-  const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
-  >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
-  console.log(selectedImagesFile);
+  const [selectedImages, setSelectedImages] =
+    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -149,6 +152,7 @@ export const AcademicInfoForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
+                editMode={true}
               />
             </Box>
             <SimpleGrid
