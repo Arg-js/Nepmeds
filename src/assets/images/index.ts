@@ -5,6 +5,8 @@ import dashboard3 from "../images/dashboard3.png";
 import dashboard4 from "../images/dashboard4..png";
 import verified from "../images/verified.png";
 import NepalFlag from "../images/flag-nepal.png";
+import profileUser from "../images/profileUser.png";
+import citizenship from "./citizenship.jpg";
 export const images = {
   logo,
   dashboard1,
@@ -13,4 +15,6 @@ export const images = {
   dashboard4,
   verified,
   NepalFlag,
+  profileUser,
+  citizenship,
 };

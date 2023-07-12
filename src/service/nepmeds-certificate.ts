@@ -1,8 +1,9 @@
-import { useMutation, useQueryClient } from "react-query";
-import { api } from "./service-api";
-import { HttpClient } from "./service-axios";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { AxiosResponse } from "axios";
+import { useMutation, useQueryClient } from "react-query";
+import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
+import { NepMedsResponse, api } from "./service-api";
+import { HttpClient } from "./service-axios";
 
 export type CertificateInfo = IRegisterFields["certification"][number];
 
@@ -45,7 +46,6 @@ export const useCertificateFileRegister = () =>
   useMutation(createCertificateFile);
 
 const updateCertificateData = async (id: number, data: CertificateInfo) => {
-  console.log(id);
   const response = await HttpClient.patch(api.certificate + `${id}/`, data);
   return response;
 };
@@ -85,4 +85,12 @@ export const useDeleteCertificateInfo = () => {
   );
 
   return mutation;
+};
+
+//Get Single Certificate Info
+export const getSingleCertificateInfo = async (id: number) => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IDoctorCertificationInfo>
+  >(api.certificate + `${id}/`);
+  return response.data.data;
 };

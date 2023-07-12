@@ -1,202 +1,149 @@
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import {
+  AspectRatio,
+  Box,
+  Button,
   Card,
   CardBody,
-  Icon,
-  HStack,
-  Button,
-  VStack,
-  Text,
-  Box,
-  GridItem,
-  Grid,
   Center,
-  Menu,
-  MenuButton,
-  MenuList,
-  MenuItem,
-  MenuDivider,
+  Divider,
+  Grid,
+  GridItem,
+  HStack,
+  Icon,
+  Image,
+  SimpleGrid,
+  Spinner,
+  Text,
+  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { AcademicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import {
+  AcademicInfo,
+  getSingleAcademicInfo,
+  useAcademicFileRegister,
+  useAcademicInfoRegister,
+  useUpdateAcademicInfo,
+} from "@nepMeds/service/nepmeds-academic";
 import {
   IDoctorAcademicInfo,
   IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { useForm, FormProvider } from "react-hook-form";
-import { useState } from "react";
-import EditAcademicField from "./EditAcademicField";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import {
-  useAcademicFileRegister,
-  useAcademicInfoRegister,
-  useDeleteAcademicInfo,
-  useUpdateAcademicInfo,
-} from "@nepMeds/service/nepmeds-academic";
-import AddAcademicField from "./AddAcademicField";
-import { AiOutlineMore } from "react-icons/ai";
+import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+
+interface handleFormUpdateProps {
+  handleFormUpdate: () => void;
+  handleCloseForm: () => void;
+  isLoading: boolean;
+}
 
 const EditAcademic = ({
   doctorProfileData,
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
-  // Define openAcademicModal as a boolean state variable
-  const [openAcademicModal, setOpenAcademicModal] = useState(false);
+  const {
+    isOpen: isDocImgOpen,
+    onClose: onDocImgClose,
+    onOpen: onDocImgOpen,
+  } = useDisclosure();
+  const [academicInfo, setAcademicInfo] = useState<
+    IDoctorAcademicInfo["academic_document"]
+  >([]);
 
-  // Define openAddAcademicModal as a boolean state variable
-  const [openAcademicAddModal, setOpenAcademicAddModal] = useState(false);
+  const getAcademicInfo = async (id: number) => {
+    try {
+      const res = await getSingleAcademicInfo(id);
+      setAcademicInfo(res.academic_document);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+  };
+
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const handleEditMode = () => {
+    setShowEditForm(true);
+  };
+
+  const handleCloseForm = () => {
+    setShowEditForm(false);
+  };
 
   const formMethods = useForm();
   const academicFileRegister = useAcademicFileRegister();
   const updateAcademicInfoRegister = useUpdateAcademicInfo();
-  const deleteAcademicInfoRegister = useDeleteAcademicInfo();
   const academicInfoRegister = useAcademicInfoRegister();
-
-  const [editIndex, setEditIndex] = useState<number>(-1);
-  const [editId, setEditId] = useState<number>(0);
-  const [doctorId, setDoctorId] = useState<number>(0);
-  const onEditAcademic = (index: number, id: number, doctor: number) => {
-    setEditIndex(index);
-    setEditId(id);
-    setDoctorId(doctor);
-    setOpenAcademicModal(true);
-  };
-
-  const onSaveAcademicInfo = async () => {
+  const handleFormUpdate = async () => {
     try {
-      const academicData = {
-        degree_program: formMethods.getValues(
-          `academic.${editIndex}.degree_program`
-        ),
-        graduation_year: formMethods.getValues(
-          `academic.${editIndex}.graduation_year`
-        ),
-        university: formMethods.getValues(`academic.${editIndex}.university`),
-        major: formMethods.getValues(`academic.${editIndex}.major`),
-        doctor: doctorId,
-        academic_documents: formMethods.getValues(
-          `academic.${editIndex}.academic_documents`
-        ),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-      try {
-        const createAcademicFileResponse =
-          await academicFileRegister.mutateAsync(academicData);
+      const academicArray = formMethods.getValues("academic");
+      const academicPromises = academicArray.map(
+        async (academicData: AcademicInfo) => {
+          const createAcademicFileResponse =
+            await academicFileRegister.mutateAsync(academicData);
 
-        const academicInfoData = {
-          ...academicData,
-          academic_documents: createAcademicFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        const academicInfoResponse =
-          await updateAcademicInfoRegister.mutateAsync({
-            id: editId,
-            data: academicInfoData,
-          });
+          const academicInfoData = {
+            ...academicData,
+            doctor: doctorProfileData?.id ?? 0,
+            academic_documents: createAcademicFileResponse.data.data.map(
+              (file: string) => ({
+                file: file,
+              })
+            ),
+          };
+          if (academicData.id) {
+            const academicInfoResponse =
+              await updateAcademicInfoRegister.mutateAsync({
+                id: parseInt(academicData.id),
+                data: academicInfoData,
+              });
 
-        if (academicInfoResponse) {
-          toastSuccess("Academic Information updated");
-          setOpenAcademicModal(false);
-        } else {
-          toastFail("Failed to add academic information!");
+            if (academicInfoResponse) {
+              return academicInfoResponse.data.data;
+            } else {
+              throw new Error("Failed to update academic information!");
+            }
+          } else {
+            const academicInfoResponse = await academicInfoRegister.mutateAsync(
+              academicInfoData
+            );
+            if (academicInfoResponse) {
+              return academicInfoResponse.data.data;
+            } else {
+              throw new Error("Failed to add academic information!");
+            }
+          }
         }
-      } catch (error) {
-        const err = error as AxiosError<{ errors: [0] }>;
-
-        const errorObject = err?.response?.data?.errors?.[0];
-        const firstErrorMessage = errorObject
-          ? Object.values(errorObject)[0]
-          : null;
-        toastFail(
-          firstErrorMessage?.toString() || "Failed to add academic files!"
-        );
-      }
-    } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to add academic files!"
       );
-    }
-  };
-  const deleteData = async (id: number) => {
-    const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
-      id
-    );
 
-    if (academicInfoResponse) {
-      toastSuccess("Academic data deleted successfully");
-    } else {
-      toastFail("Failed to delete academic information!");
-    }
-  };
-  const handleSendAcademic = async () => {
-    try {
-      const lastValue = formMethods.getValues("academic").length - 1;
+      const academicInfoResponses = await Promise.all(academicPromises);
 
-      const academicData = {
-        degree_program: formMethods.getValues(
-          `academic.${lastValue}.degree_program`
-        ),
-        graduation_year: formMethods.getValues(
-          `academic.${lastValue}.graduation_year`
-        ),
-        university: formMethods.getValues(`academic.${lastValue}.university`),
-        major: formMethods.getValues(`academic.${lastValue}.major`),
-        doctor: doctorProfileData.id ?? 0,
-        academic_documents: formMethods.getValues(
-          `academic.${lastValue}.academic_documents`
-        ),
-        id: "",
-        editMode: false,
-        submitMode: false,
-        isSubmitted: false,
-      };
-      try {
-        const createAcademicFileResponse =
-          await academicFileRegister.mutateAsync(academicData);
+      if (academicInfoResponses) {
+        // Process the responses or perform any required actions
+        academicInfoResponses.forEach((academicInfoResponse, index) => {
+          if (academicInfoResponse) {
+            const lastValue = index;
+            formMethods.setValue(
+              `academic.${lastValue}.id`,
+              academicInfoResponse.id
+            );
+            formMethods.setValue(`academic.${lastValue}.isSubmitted`, true);
+          }
+        });
 
-        const academicInfoData = {
-          ...academicData,
-          academic_documents: createAcademicFileResponse.data.data.map(
-            (file: string) => ({
-              file: file,
-            })
-          ),
-        };
-        const academicInfoResponse = await academicInfoRegister.mutateAsync(
-          academicInfoData
-        );
-
-        if (academicInfoResponse) {
-          toastSuccess("Academic Information updated");
-          setOpenAcademicAddModal(false);
-        } else {
-          toastFail("Failed to add academic information!");
-        }
-      } catch (error) {
-        const err = error as AxiosError<{ errors: [0] }>;
-
-        const errorObject = err?.response?.data?.errors?.[0];
-        const firstErrorMessage = errorObject
-          ? Object.values(errorObject)[0]
-          : null;
-        toastFail(
-          firstErrorMessage?.toString() || "Failed to update academic files!"
-        );
+        toastSuccess("Academic Information updated");
+      } else {
+        throw new Error("Failed to update academic information!");
       }
     } catch (error) {
       const err = error as AxiosError<{ errors: [0] }>;
@@ -205,16 +152,31 @@ const EditAcademic = ({
       const firstErrorMessage = errorObject
         ? Object.values(errorObject)[0]
         : null;
+
       toastFail(
         firstErrorMessage?.toString() ||
           "Failed to update academic information!"
       );
     }
+    setShowEditForm(false);
   };
+
+  const handleDocImg = async (id: number) => {
+    setLoading(true);
+    onDocImgOpen();
+    await getAcademicInfo(id);
+    setLoading(false);
+  };
+
   return (
     <>
-      <Card mb={"18px"}>
-        <Box p={"20px"} display={"flex"} justifyContent={"space-between"}>
+      <Card mb={"18px"} minHeight={"77vh"} maxHeight={"100%"}>
+        <Box
+          p={"20px"}
+          display={"flex"}
+          alignItems="center"
+          justifyContent={"space-between"}
+        >
           <Text
             fontWeight={"700"}
             fontSize={"18px"}
@@ -223,339 +185,322 @@ const EditAcademic = ({
           >
             Academic Info
           </Text>
-          <Box
-            display={"flex"}
-            alignItems={"center"}
-            justifyContent={"center"}
-            onClick={() => setOpenAcademicAddModal(true)}
-            cursor="pointer"
-          >
-            <Icon as={AddIcon} boxSize={5} color={colors?.main} mr={"8px"} />
-            <Text
-              color={colors?.main}
-              fontWeight={"400"}
-              fontSize={"16px"}
-              lineHeight={"19px"}
+          {!showEditForm && (
+            <Box
+              display={"flex"}
+              alignItems={"center"}
+              justifyContent={"center"}
+              onClick={handleEditMode}
+              cursor="pointer"
             >
-              Add
-            </Text>
-          </Box>
+              <Button
+                px={6}
+                borderRadius="xl"
+                backgroundColor={colors.primary}
+                _hover={{ bg: colors.primary_blue }}
+              >
+                <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
+                <Text
+                  color={colors?.white}
+                  fontWeight={"400"}
+                  fontSize={"16px"}
+                  lineHeight={"19px"}
+                >
+                  Edit
+                </Text>
+              </Button>
+            </Box>
+          )}
+        </Box>
+        <Box>
+          <Divider />
         </Box>
         <CardBody>
           <ModalComponent
-            size="xl"
-            isOpen={openAcademicModal}
-            onClose={() => setOpenAcademicModal(false)}
             heading={
               <HStack>
                 <svgs.logo_small />
-                <Text>Edit Academic Information</Text>
+                <Text>List of Image</Text>
               </HStack>
             }
+            isOpen={isDocImgOpen}
+            onClose={onDocImgClose}
             footer={
               <HStack w="100%" gap={3}>
                 <Button
-                  variant="outline"
-                  onClick={() => setOpenAcademicModal(false)}
                   flex={1}
-                >
-                  Discard
-                </Button>
-                <Button
-                  flex={1}
-                  onClick={onSaveAcademicInfo}
+                  onClick={onDocImgClose}
                   background={colors.primary}
                   color={colors.white}
                 >
-                  Save
+                  Done
                 </Button>
               </HStack>
             }
           >
             <VStack>
-              <FormProvider {...formMethods}>
-                <EditAcademicField
-                  index={editIndex}
-                  doctorProfileData={doctorProfileData}
-                />
-              </FormProvider>
+              {loading ? (
+                <Spinner />
+              ) : (
+                academicInfo.map((e: any) => (
+                  <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
+                    <Image
+                      key={e?.id}
+                      objectFit="cover"
+                      src={getImageUrl(e?.file)}
+                    />
+                  </AspectRatio>
+                ))
+              )}
             </VStack>
           </ModalComponent>
-          <ModalComponent
-            size="xl"
-            isOpen={openAcademicAddModal}
-            onClose={() => setOpenAcademicAddModal(false)}
-            heading={
-              <HStack>
-                <svgs.logo_small />
-                <Text>Add Academic Information</Text>
-              </HStack>
-            }
-            footer={
-              <HStack w="100%" gap={3}>
-                <Button
-                  variant="outline"
-                  onClick={() => setOpenAcademicAddModal(false)}
-                  flex={1}
+
+          {showEditForm ? (
+            <FormProvider {...formMethods}>
+              <Grid>
+                <GridItem
+                  height={"60vh"}
+                  css={{
+                    "&::-webkit-scrollbar": {
+                      width: "4px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      background: `${colors.light_gray}`,
+                      borderRadius: "24px",
+                    },
+                    overflowY: "scroll",
+                  }}
                 >
-                  Discard
-                </Button>
-                <Button
-                  flex={1}
-                  onClick={handleSendAcademic}
-                  background={colors.primary}
-                  color={colors.white}
-                >
-                  Save
-                </Button>
-              </HStack>
-            }
-          >
-            <VStack>
-              <FormProvider {...formMethods}>
-                <AddAcademicField
-                  index={formMethods.getValues("academic")?.length}
-                />
-              </FormProvider>
-            </VStack>
-          </ModalComponent>
-          <Grid
-            templateColumns={
-              doctorProfileData?.doctor_academic_info?.length
-                ? "repeat(9, 1fr)"
-                : ""
-            }
-          >
-            {doctorProfileData?.doctor_academic_info?.length ? (
-              doctorProfileData?.doctor_academic_info?.map(
-                (singleAcademicInfo: IDoctorAcademicInfo, i) => {
-                  // const fileURL = singleAcademicInfo?.academic_document
-                  //   ? `${normalURL}${singleAcademicInfo?.academic_document}`
-                  //   : "";
-                  return (
-                    <>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack spacing={3} align="stretch">
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"94px"}
-                            >
-                              Degree
-                            </Text>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleAcademicInfo?.degree_program}
-                            </Text>
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack spacing={3} align="stretch">
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"94px"}
-                            >
-                              Passed Year
-                            </Text>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleAcademicInfo?.graduation_year}
-                            </Text>
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack spacing={3} align="stretch">
-                          <Box display={"flex"} alignItems={"center"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"94px"}
-                            >
-                              College/ Uni
-                            </Text>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"16px"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
-                            >
-                              :&nbsp;{singleAcademicInfo?.university}
-                            </Text>
-                          </Box>
-                          {/* <Box display={"flex"} gap={3}>
-                            <Text
-                              fontWeight={"500"}
-                              fontSize={"14px"}
-                              lineHeight={"16px"}
-                              letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
-                              w={"137px"}
-                            >
-                              Document
-                            </Text>
-                            <Box>
-                              <Text
-                                fontWeight={"400"}
-                                fontSize={"14px"}
-                                lineHeight={"23px"}
-                                color={colors?.gray_700}
-                                mr={"8px"}
-                                display="flex"
-                              >
-                                <a
-                                  href={fileURL}
-                                  target="_blank"
-                                  rel="noreferrer"
-                                  style={{
-                                    color: colors.primary,
-                                    display: "flex",
-                                    gap: 4,
-                                    alignItems: "center",
-                                  }}
-                                  download
-                                >
-                                  {singleAcademicInfo?.file?.split("/").pop()}
-                                  <Download
-                                    set="light"
-                                    primaryColor={colors?.main}
-                                    size={20}
-                                  />
-                                </a>
-                              </Text>
-                            </Box>
-                          </Box> */}
-                        </VStack>
-                      </GridItem>
-                      <GridItem colSpan={2} mt={"30px"} w="100%">
-                        <VStack spacing={2} align="stretch">
-                          <Box>
-                            <Box display={"flex"} alignItems={"center"} gap={2}>
-                              <Text
-                                fontWeight={"500"}
-                                fontSize={"14px"}
-                                lineHeight={"16px"}
-                                letterSpacing={"0.4px"}
-                                color={"#4D4D4D"}
-                                w={"137px"}
-                              >
-                                Major
-                              </Text>
-                              <Text
-                                fontWeight={"500"}
-                                fontSize={"16px"}
-                                lineHeight={"19px"}
-                                color={colors?.black}
-                              >
-                                :&nbsp;{singleAcademicInfo?.major}
-                              </Text>
-                            </Box>
-                          </Box>
-                        </VStack>
-                      </GridItem>
-                      <Grid mt={"30px"}>
-                        <VStack spacing={2} align="end">
-                          <Menu>
-                            <MenuButton transition="all 0.2s">
-                              <AiOutlineMore />
-                            </MenuButton>
-                            <MenuList>
-                              <MenuItem>
-                                <Box
-                                  display={"flex"}
-                                  alignItems={"center"}
-                                  justifyContent={"center"}
-                                  onClick={() =>
-                                    onEditAcademic(
-                                      i,
-                                      singleAcademicInfo?.id ?? 0,
-                                      singleAcademicInfo?.doctor ?? 0
-                                    )
-                                  }
-                                  cursor="pointer"
-                                >
-                                  <Icon
-                                    as={EditIcon}
-                                    boxSize={5}
-                                    color={colors?.main}
-                                    mr={"8px"}
-                                  />
-                                  <Text
-                                    color={colors?.main}
-                                    fontWeight={"400"}
-                                    fontSize={"16px"}
-                                    lineHeight={"19px"}
-                                  >
-                                    Edit
-                                  </Text>
-                                </Box>
-                              </MenuItem>
-                              <MenuDivider />
-                              <MenuItem>
-                                <Box
-                                  display={"flex"}
-                                  alignItems={"center"}
-                                  justifyContent={"center"}
-                                  onClick={() =>
-                                    deleteData(singleAcademicInfo?.id ?? 0)
-                                  }
-                                  cursor="pointer"
-                                >
-                                  <Icon
-                                    as={EditIcon}
-                                    boxSize={5}
-                                    color={colors?.red}
-                                    mr={"8px"}
-                                  />
-                                  <Text
-                                    color={colors?.red}
-                                    fontWeight={"400"}
-                                    fontSize={"16px"}
-                                    lineHeight={"19px"}
-                                  >
-                                    Delete
-                                  </Text>
-                                </Box>
-                              </MenuItem>
-                            </MenuList>
-                          </Menu>
-                        </VStack>
-                      </Grid>
-                    </>
-                  );
-                }
-              )
-            ) : (
-              <Center>
-                <Text>No Data Found</Text>
-              </Center>
-            )}
-          </Grid>
+                  <AcademicInfoForm doctorProfileData={doctorProfileData} />
+                </GridItem>
+                <GridItem>
+                  <SubmitButton
+                    handleFormUpdate={handleFormUpdate}
+                    handleCloseForm={handleCloseForm}
+                    isLoading={
+                      updateAcademicInfoRegister.isLoading ||
+                      academicFileRegister.isLoading
+                    }
+                  />
+                </GridItem>
+              </Grid>
+            </FormProvider>
+          ) : doctorProfileData?.doctor_academic_info?.length ? (
+            doctorProfileData?.doctor_academic_info?.map(
+              (singleAcademicInfo: IDoctorAcademicInfo, i) => {
+                return (
+                  <SimpleGrid
+                    columns={
+                      // doctorProfileData?.doctor_certification_info?.length
+                      // ?
+                      { base: 1, md: 1, lg: 2, xl: 3 }
+                      // : undefined
+                    }
+                    borderBottom={`1px solid ${colors.grey_light}`}
+                    pb={10}
+                    key={i}
+                  >
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={3} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Degree
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleAcademicInfo?.degree_program}
+                          </Text>
+                        </Box>
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Passed Year
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleAcademicInfo?.graduation_year}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={3} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            College/ Uni
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleAcademicInfo?.university}
+                          </Text>
+                        </Box>
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Tole
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleAcademicInfo?.degree_program}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                    <GridItem colSpan={1} mt={"30px"} w="100%">
+                      <VStack spacing={3} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Major
+                          </Text>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.black}
+                          >
+                            :&nbsp;{singleAcademicInfo?.major}
+                          </Text>
+                        </Box>
+                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                          <Text
+                            fontWeight={"500"}
+                            fontSize={"14px"}
+                            lineHeight={"16px"}
+                            letterSpacing={"0.4px"}
+                            color={"#4D4D4D"}
+                            w={"94px"}
+                          >
+                            Document
+                          </Text>
+                          <Text
+                            fontWeight={"600"}
+                            fontSize={"16px"}
+                            lineHeight={"19px"}
+                            color={colors?.main}
+                            cursor="pointer"
+                            onClick={() =>
+                              handleDocImg(singleAcademicInfo.id ?? 0)
+                            }
+                          >
+                            :&nbsp;
+                            {singleAcademicInfo?.academic_document?.length ===
+                            1 ? (
+                              <>
+                                {singleAcademicInfo?.academic_document?.length}
+                                &nbsp; Image
+                              </>
+                            ) : (
+                              <>
+                                {singleAcademicInfo?.academic_document?.length}
+                                &nbsp; Images
+                              </>
+                            )}
+                          </Text>
+                        </Box>
+                      </VStack>
+                    </GridItem>
+                  </SimpleGrid>
+                );
+              }
+            )
+          ) : (
+            <Center>
+              <Text>No Data Found</Text>
+            </Center>
+          )}
         </CardBody>
       </Card>
     </>
   );
 };
 
+const SubmitButton: React.FC<handleFormUpdateProps> = ({
+  handleFormUpdate,
+  handleCloseForm,
+  isLoading,
+}) => {
+  return (
+    <Grid
+      borderTop={`1px solid ${colors.grey_light}`}
+      py={5}
+      px={6}
+      className="test"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <GridItem colSpan={1}>
+        <Button onClick={handleCloseForm} px={6}>
+          Cancel
+        </Button>
+      </GridItem>
+      <GridItem colSpan={1}>
+        <Button
+          px={6}
+          borderRadius="xl"
+          backgroundColor={colors.primary}
+          _hover={{ bg: colors.primary_blue }}
+          color={colors.white}
+          onClick={handleFormUpdate}
+          isLoading={isLoading}
+        >
+          Update
+        </Button>
+      </GridItem>
+    </Grid>
+  );
+};
 export default EditAcademic;

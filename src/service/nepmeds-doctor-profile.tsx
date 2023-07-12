@@ -67,6 +67,7 @@ export interface IGetDoctorProfile {
   id_back_image: File;
   id_number: string;
   id_issued_district: number;
+  id_type: string;
   id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | [];

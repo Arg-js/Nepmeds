@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-type PrimaryInfo = Pick<
+export type PrimaryInfo = Pick<
   IRegisterFields,
   | "title"
   | "bio_detail"

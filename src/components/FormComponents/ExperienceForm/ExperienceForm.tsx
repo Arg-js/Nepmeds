@@ -12,6 +12,7 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
@@ -33,6 +34,11 @@ export const ExperienceForm = ({
     name: "experience",
   });
 
+  const mappedImageInfo =
+    doctorProfileData?.doctor_experience.map(e =>
+      e?.experience_document.map((e: any) => getImageUrl(e.file))
+    ) ?? [];
+
   useEffect(() => {
     if (doctorProfileData?.doctor_experience?.length) {
       reset({
@@ -43,18 +49,16 @@ export const ExperienceForm = ({
           description: a.description,
           from_date: a.from_date,
           to_date: a.to_date,
+          id: a.id?.toString(),
           currently_working: a.currently_working,
         })),
       });
     }
   }, [doctorProfileData]);
 
-  const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
-  >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
+  const [selectedImages, setSelectedImages] =
+    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -88,8 +92,6 @@ export const ExperienceForm = ({
       });
     }
   };
-  console.log(selectedImages, selectedImagesFile);
-  console.log(getValues("experience"));
 
   const validateFromDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)

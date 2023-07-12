@@ -3,7 +3,6 @@ import {
   Badge,
   Box,
   Button,
-  Flex,
   HStack,
   Icon,
   Input,
@@ -18,13 +17,13 @@ import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import {
-  useDeleteDoctorData,
+  getDoctorList,
   useDoctorList,
 } from "@nepMeds/service/nepmeds-doctorlist";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { Delete, Show } from "react-iconly";
+import { Show } from "react-iconly";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
@@ -38,8 +37,10 @@ import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IoFunnelOutline } from "react-icons/io5";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import Select from "@nepMeds/components/Form/Select";
+import { useEffect } from "react";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks is required!"),
@@ -104,17 +105,17 @@ const RegisteredDocList = () => {
       last_name: string;
     };
   }
-  const deleteDoctorMethod = useDeleteDoctorData();
+  // const deleteDoctorMethod = useDeleteDoctorData();
 
-  const handleDeleteDoctor = async (id: number) => {
-    const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
+  // const handleDeleteDoctor = async (id: number) => {
+  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
 
-    if (deleteDoctorResponse) {
-      toastSuccess("Academic data deleted successfully");
-    } else {
-      toastFail("Failed to delete academic information!");
-    }
-  };
+  //   if (deleteDoctorResponse) {
+  //     toastSuccess("Academic data deleted successfully");
+  //   } else {
+  //     toastFail("Failed to delete academic information!");
+  //   }
+  // };
 
   const columns = React.useMemo(
     () => [
@@ -128,13 +129,7 @@ const RegisteredDocList = () => {
         header: "Doctor's Name",
         accessorKey: "first_name",
         accessorFn: (_cell: CellContextSearch) => {
-          return (
-            _cell?.user?.first_name +
-            " " +
-            _cell?.user?.middle_name +
-            " " +
-            _cell?.user?.last_name
-          );
+          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
         },
       },
       {
@@ -213,7 +208,7 @@ const RegisteredDocList = () => {
                   );
                 }}
               />
-              <Icon
+              {/* <Icon
                 as={Delete}
                 fontSize={20}
                 cursor="pointer"
@@ -224,7 +219,7 @@ const RegisteredDocList = () => {
                   // onDetailsModalOpen();
                   // setId(cell.row.original.id);
                 }}
-              />
+              /> */}
             </HStack>
           );
         },
@@ -239,9 +234,30 @@ const RegisteredDocList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [filteredData, setFilteredData] = useState<
+    IGetDoctorProfile[] | undefined
+  >();
+
   const { data, isLoading } = useDoctorList({
     page_no: pageIndex + 1,
+    page_size: pageSize,
   });
+  useEffect(() => {
+    setFilteredData(data?.results);
+  }, [data]);
+
+  const handleFilterData = async () => {
+    const data = await getDoctorList({
+      page_no: pageIndex + 1,
+      page_size: pageSize,
+      from_date: formMethods.getValues("fromDate"),
+      to_date: formMethods.getValues("toDate"),
+      specialization: formMethods.getValues("Specialization"),
+    });
+    setFilteredData(data?.data?.data?.results);
+    onModalClose();
+  };
   const { data: specialization = [] } = useSpecializationRegisterData();
   const [searchFilter, setSearchFilter] = useState("");
   const acceptDoctor = () => {
@@ -289,12 +305,12 @@ const RegisteredDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data ?? []}
+        data={filteredData ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
@@ -413,6 +429,7 @@ const RegisteredDocList = () => {
               color={"white"}
               w={"150px"}
               borderRadius={"12px"}
+              onClick={handleFilterData}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },
               }}
@@ -424,29 +441,30 @@ const RegisteredDocList = () => {
       >
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
-            <MultiSelect
-              placeholder=""
+            <Select
+              placeholder="select specialization"
               label="Specialization"
               name="Specialization"
               required
               register={formMethods.register}
               options={specializationList}
-              selectControl={formMethods.control}
             />
-            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+            <Box display={"flex"} width={"100%"}>
               <FloatingLabelInput
                 label="From"
                 name="fromDate"
                 register={formMethods.register}
                 type="date"
               />
-              <FloatingLabelInput
-                label="To"
-                name="toDate"
-                register={formMethods.register}
-                type="date"
-              />
-            </Flex>
+              <Box ml={1}>
+                <FloatingLabelInput
+                  label="To"
+                  name="toDate"
+                  register={formMethods.register}
+                  type="date"
+                />
+              </Box>
+            </Box>
           </FormProvider>
         </VStack>
       </ModalComponent>

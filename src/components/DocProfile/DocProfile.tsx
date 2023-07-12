@@ -1,10 +1,10 @@
 import {
-  Tab,
-  TabIndicator,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
+  // Tab,
+  // TabIndicator,
+  // TabList,
+  // TabPanel,
+  // TabPanels,
+  // Tabs,
   VStack,
 } from "@chakra-ui/react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -13,9 +13,9 @@ import {
   useDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import DocUpdateProfile from "./DocUpdateProfile";
-import DocAppointments from "./DocAppointments";
-import DocPayments from "./DocPayments";
-import DocRatingAndFeedbacks from "./DocRatingAndFeedbacks";
+// import DocAppointments from "./DocAppointments";
+// import DocPayments from "./DocPayments";
+// import DocRatingAndFeedbacks from "./DocRatingAndFeedbacks";
 
 const DocProfile = () => {
   const { data: doctorProfileData } = useDoctorProfile();
@@ -23,25 +23,23 @@ const DocProfile = () => {
   console.log(doctorProfileData);
   return (
     <VStack align={"stretch"} p={4}>
-      <Tabs position="relative" variant="unstyled">
-        <TabList bg="white" px={6} pt={5} pb={6} borderRadius={"xl"}>
+      {/* <Tabs position="relative" variant="unstyled"> */}
+      {/* <TabList bg="white" px={6} pt={5} pb={6} borderRadius={"xl"}>
           <Tab>Update Profile</Tab>
           <Tab>Appointments</Tab>
           <Tab>Payments</Tab>
           <Tab>Rating & Feedbacks</Tab>
-        </TabList>
-        <TabIndicator mt="-20px" height="4px" bg="blue.500" />
-        <TabPanels sx={{ "&>div": { px: "0px" } }}>
-          <FormProvider {...formMethods}>
-            <TabPanel>
-              <DocUpdateProfile
-                doctorProfileData={
-                  doctorProfileData ?? ({} as IGetDoctorProfile)
-                }
-              />
-            </TabPanel>
-          </FormProvider>
-          <FormProvider {...formMethods}>
+        </TabList> */}
+      {/* <TabIndicator mt="-20px" height="4px" bg="blue.500" /> */}
+      {/* <TabPanels sx={{ "&>div": { px: "0px" } }}> */}
+      <FormProvider {...formMethods}>
+        {/* <TabPanel> */}
+        <DocUpdateProfile
+          doctorProfileData={doctorProfileData ?? ({} as IGetDoctorProfile)}
+        />
+        {/* </TabPanel> */}
+      </FormProvider>
+      {/*<FormProvider {...formMethods}>
             <TabPanel>
               <DocAppointments />
             </TabPanel>
@@ -55,9 +53,9 @@ const DocProfile = () => {
             <TabPanel>
               <DocRatingAndFeedbacks />
             </TabPanel>
-          </FormProvider>
-        </TabPanels>
-      </Tabs>
+          </FormProvider> */}
+      {/* </TabPanels> */}
+      {/* </Tabs> */}
     </VStack>
   );
 };

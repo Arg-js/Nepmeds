@@ -59,11 +59,25 @@ const Specializations = ({
   });
   const { data } = useSpecializationData({
     page_no: pageIndex + 1,
+    pageSize: pageSize,
+    name: "",
   });
-  const saveSpecializationAction = useSaveSpecialization();
-  const updateSpecializationAction = useUpdateSpecialization();
+  const saveSpecializationAction = useSaveSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
+  const updateSpecializationAction = useUpdateSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
   // const deleteBulkSpecialization = useDeleteBulkSpecialization();
-  const deleteSpecializationAction = useDeleteSpecialization();
+  const deleteSpecializationAction = useDeleteSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
 
   // const {
   //   isOpen: isBulkOpen,
@@ -85,7 +99,7 @@ const Specializations = ({
   const [deleteSpecialization, setDeleteSpecialization] =
     useState<Specialization | null>(null);
 
-  const symptomsOptions = symptomList.map(s => ({
+  const symptomsOptions = symptomList?.map(s => ({
     label: s.name,
     value: s.id,
   }));
@@ -115,7 +129,7 @@ const Specializations = ({
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack>
-            {cell.row.original.symptom.map(s => (
+            {cell.row.original.symptom_list?.map(s => (
               <Badge key={s.keyword} textTransform="initial" fontWeight="light">
                 {s.name}
               </Badge>
@@ -137,7 +151,7 @@ const Specializations = ({
               onClick={() => {
                 formMethods.reset({
                   ...cell.row.original,
-                  symptom: cell.row.original.symptom.map(s => ({
+                  symptom: cell.row.original.symptom_list.map(s => ({
                     label: s.name,
                     value: s.id.toString(),
                   })),
@@ -170,24 +184,20 @@ const Specializations = ({
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(
-        (symptom: { label: string; value: string }) => ({
-          id: parseInt(symptom.value),
-          name: symptom.label,
-          keyword: symptom.value,
-        })
-      );
+      const symptoms = symptomValues.map(symptom => symptom.value);
       await updateSpecializationAction.mutateAsync({
         id: formMethods.getValues("id") ?? 0,
-        data: {
-          id: formMethods.getValues("id") ?? 0,
-          name: formMethods.getValues("name"),
-          consultation_fees: 3213123,
-          symptom: symptoms,
-        },
+
+        name: formMethods.getValues("name"),
+        consultation_fees: 3213123,
+        symptom: symptoms,
       });
       onCloseEditModal();
       toastSuccess("Specialization updated successfully!");
+      formMethods.reset({
+        name: "",
+        symptom: [],
+      });
     } catch (error) {
       toastFail("Failed to update Specialization!");
     }
@@ -198,13 +208,7 @@ const Specializations = ({
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(
-        (symptom: { label: string; value: string }) => ({
-          id: parseInt(symptom.value),
-          name: symptom.label,
-          keyword: symptom.value,
-        })
-      );
+      const symptoms = symptomValues.map(symptom => symptom.value);
       await saveSpecializationAction.mutateAsync({
         name: formMethods.getValues("name"),
         consultation_fees: "3213123",
@@ -212,6 +216,10 @@ const Specializations = ({
       });
       onCloseSpecialization();
       toastSuccess("Specialization saved successfully!");
+      formMethods.reset({
+        name: "",
+        symptom: [],
+      });
     } catch (error) {
       toastFail("Failed to save Specialization!");
     }
@@ -291,7 +299,7 @@ const Specializations = ({
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
