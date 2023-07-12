@@ -5,17 +5,16 @@ import {
   CardBody,
   Flex,
   Icon,
-  HStack,
   Button,
-  VStack,
-  useDisclosure,
   Text,
   Box,
   Image,
+  Divider,
+  Grid,
+  GridItem,
 } from "@chakra-ui/react";
 import { images } from "@nepMeds/assets/images";
-import { svgs } from "@nepMeds/assets/svgs";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+
 import { BasicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
@@ -28,21 +27,35 @@ import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { useForm, FormProvider } from "react-hook-form";
 import { AxiosError } from "axios";
 import { normalURL } from "@nepMeds/service/service-axios";
+import { extendTheme } from "@chakra-ui/react";
 
 const EditBasic = ({
   doctorProfileData,
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
-  const formMethods = useForm();
   const updatePersonalInfo = useUpdatePersonalInfoRegister();
+  const formMethods = useForm();
+  const [imageDataUrl, setImageDataUrl] = React.useState<string | null>(null);
+  const [editBasicFormToggle, setEditBasicFormToggle] = React.useState(false);
 
-  const onSavePersonalInfo = async () => {
+  const theme = extendTheme({
+    components: {
+      Card: {
+        baseStyle: {
+          _focus: {
+            boxShadow: "none",
+          },
+        },
+      },
+    },
+  });
+
+  const handleFormUpdate = async () => {
     try {
-      const isValid = formMethods.trigger();
-      if (!isValid) return;
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
+      console.log(profilePicture);
+      console.log(formMethods.getValues("first_name"));
       const user = {
         first_name: formMethods.getValues("first_name"),
         middle_name: formMethods.getValues("middle_name"),
@@ -70,8 +83,8 @@ const EditBasic = ({
         id_back_image: formMethods.getValues("id_back_image"),
         id_front_image: formMethods.getValues("id_front_image"),
       });
-      onClose();
       toastSuccess("Personal information updated successfully!");
+      setEditBasicFormToggle(false);
     } catch (error) {
       const err = error as AxiosError<{ errors: [0] }>;
 
@@ -85,7 +98,9 @@ const EditBasic = ({
     }
   };
 
-  const [imageDataUrl, setImageDataUrl] = React.useState<string | null>(null);
+  const handleCloseForm = () => {
+    setEditBasicFormToggle(false);
+  };
 
   React.useEffect(() => {
     if (doctorProfileData?.user?.profile_picture) {
@@ -104,120 +119,189 @@ const EditBasic = ({
       }
     }
   }, [doctorProfileData]);
+
   return (
-    <>
-      <Card
-        direction={{ base: "column", sm: "row" }}
-        variant="outline"
-        mb={"18px"}
-        p={4}
-      >
-        {imageDataUrl && (
-          <Image
-            w={"159px"}
-            h={"159px"}
-            // src={doctorProfileData?.user?.profile_picture}
-            src={`${normalURL}/media/${imageDataUrl}`}
-          />
-        )}
-        <CardBody w={"100%"}>
-          <Box display={"flex"} justifyContent={"space-between"}>
-            <Text
-              fontWeight={"700"}
-              fontSize={"26.8085px"}
-              lineHeight={"32px"}
-              color={colors?.dark_1}
-              mb={"4px"}
+    <Card>
+      <Flex alignItems={"center"} justifyContent={"space-between"} p={5}>
+        <Text fontWeight={600} fontSize="20px">
+          Registration
+        </Text>
+
+        <Flex
+          alignItems={"center"}
+          justifyContent={"center"}
+          onClick={() => setEditBasicFormToggle(true)}
+          cursor="pointer"
+        >
+          {!editBasicFormToggle ? (
+            <Button
+              px={6}
+              borderRadius="xl"
+              backgroundColor={colors.primary}
+              _hover={{ bg: colors.primary_blue }}
             >
-              {doctorProfileData?.user?.first_name}&nbsp;
-              {doctorProfileData?.user?.middle_name}&nbsp;
-              {doctorProfileData?.user?.last_name}&nbsp;
-              {doctorProfileData?.specialization?.length
-                ? `(${doctorProfileData?.specialization?.[0]})`
-                : ""}
-              {doctorProfileData?.profile_status === "approved" && (
-                <Image
-                  display={"inline-block"}
-                  ml={"9px"}
-                  src={images?.verified}
-                  alt="verified"
-                  fontSize={"sm"}
-                  fontWeight={"normal"}
-                  whiteSpace={"nowrap"}
-                />
-              )}
-            </Text>
-            <Flex
-              alignItems={"center"}
-              justifyContent={"center"}
-              onClick={onOpen}
-              cursor="pointer"
-            >
-              <Icon as={EditIcon} boxSize={5} color={colors?.main} mr={"8px"} />
+              <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
               <Text
-                color={colors?.main}
+                color={colors?.white}
                 fontWeight={"400"}
                 fontSize={"16px"}
                 lineHeight={"19px"}
               >
                 Edit
               </Text>
-            </Flex>
-          </Box>
+            </Button>
+          ) : null}
+        </Flex>
+      </Flex>
+      <Box>
+        <Divider />
+      </Box>
 
-          <Text
-            fontWeight={"400"}
-            fontSize={"16px"}
-            lineHeight={"28px"}
-            color={"#5B5B5B"}
-          >
-            {/* Dentists are highly trained individuals who work with patients to
-              ensure that their teeth, gums, and mouth are healthy. Dentists are
-              highly trained individuals who work with patients to ensure that
-              their teeth, gums, and mouth are healthy.Dentists are highly
-              trained individuals who work with patients to ensure that their
-              teeth, gums, and mouth are healthy. */}
-            {doctorProfileData?.bio_detail}
-          </Text>
-          <ModalComponent
-            size="xl"
-            isOpen={isOpen}
-            onClose={onClose}
-            heading={
-              <HStack>
-                <svgs.logo_small />
-                <Text>Edit Personal Information</Text>
-              </HStack>
-            }
-            footer={
-              <HStack w="100%" gap={3}>
-                <Button variant="outline" onClick={onClose} flex={1}>
-                  Discard
-                </Button>
-                <Button
-                  flex={1}
-                  onClick={onSavePersonalInfo}
-                  background={colors.primary}
-                  color={colors.white}
-                >
-                  Save
-                </Button>
-              </HStack>
-            }
-          >
-            <VStack>
-              <FormProvider {...formMethods}>
-                <BasicInfoForm
-                  hidePasswordField={false}
-                  doctorProfileData={doctorProfileData}
-                  isEditable={true}
-                />
-              </FormProvider>
-            </VStack>
-          </ModalComponent>
-        </CardBody>
-      </Card>
+      {editBasicFormToggle ? (
+        <FormProvider {...formMethods}>
+          <Grid>
+            <GridItem
+              height={"60vh"}
+              css={{
+                "&::-webkit-scrollbar": {
+                  width: "4px",
+                },
+                "&::-webkit-scrollbar-track": {
+                  width: "6px",
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  // background: scrollbarColor,
+                  background: `${colors.light_gray}`,
+                  borderRadius: "24px",
+                },
+              }}
+              overflow="scroll"
+            >
+              <EditBasicForm doctorProfileData={doctorProfileData} />
+            </GridItem>
+            <GridItem>
+              <SubmitButton
+                handleFormUpdate={handleFormUpdate}
+                handleCloseForm={handleCloseForm}
+              />
+            </GridItem>
+          </Grid>
+        </FormProvider>
+      ) : (
+        <Card
+          direction={{ base: "column", sm: "row" }}
+          mb={"18px"}
+          p={4}
+          boxShadow={theme}
+        >
+          {imageDataUrl && (
+            <Image
+              w={"159px"}
+              h={"159px"}
+              src={`${normalURL}/media/${imageDataUrl}`}
+              objectFit="cover"
+            />
+          )}
+          <CardBody w={"100%"}>
+            <Box display={"flex"} justifyContent={"space-between"}>
+              <Text
+                fontWeight={"700"}
+                fontSize={"26.8085px"}
+                lineHeight={"32px"}
+                color={colors?.dark_1}
+                mb={"4px"}
+              >
+                {doctorProfileData?.user?.first_name}&nbsp;
+                {doctorProfileData?.user?.middle_name}&nbsp;
+                {doctorProfileData?.user?.last_name}&nbsp;
+                {doctorProfileData?.specialization?.length
+                  ? `(${doctorProfileData?.specialization?.[0]})`
+                  : ""}
+                {doctorProfileData?.status === "approved" && (
+                  <Image
+                    display={"inline-block"}
+                    ml={"9px"}
+                    src={images?.verified}
+                    alt="verified"
+                    fontSize={"sm"}
+                    fontWeight={"normal"}
+                    whiteSpace={"nowrap"}
+                  />
+                )}
+              </Text>
+            </Box>
+
+            <Text
+              fontWeight={"400"}
+              fontSize={"16px"}
+              lineHeight={"28px"}
+              color={"#5B5B5B"}
+            >
+              {doctorProfileData?.bio_detail}
+            </Text>
+          </CardBody>
+        </Card>
+      )}
+    </Card>
+  );
+};
+
+const EditBasicForm = ({
+  doctorProfileData,
+}: {
+  doctorProfileData: IGetDoctorProfile;
+}) => {
+  return (
+    <>
+      <Box p={5}>
+        <BasicInfoForm
+          hidePasswordField={false}
+          doctorProfileData={doctorProfileData}
+          isEditable={true}
+        />
+      </Box>
     </>
+  );
+};
+
+interface handleFormUpdateProps {
+  handleFormUpdate: () => void;
+  handleCloseForm: () => void;
+}
+
+const SubmitButton: React.FC<handleFormUpdateProps> = ({
+  handleFormUpdate,
+  handleCloseForm,
+}) => {
+  return (
+    <Grid
+      borderTop={`1px solid ${colors.grey_light}`}
+      py={5}
+      px={6}
+      className="test"
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+      }}
+    >
+      <GridItem colSpan={1}>
+        <Button onClick={handleCloseForm} px={6}>
+          Cancel
+        </Button>
+      </GridItem>
+      <GridItem colSpan={1}>
+        <Button
+          px={6}
+          borderRadius="xl"
+          backgroundColor={colors.primary}
+          _hover={{ bg: colors.primary_blue }}
+          color={colors.white}
+          onClick={handleFormUpdate}
+        >
+          Update
+        </Button>
+      </GridItem>
+    </Grid>
   );
 };
 

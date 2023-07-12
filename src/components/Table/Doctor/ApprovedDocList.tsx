@@ -12,32 +12,34 @@ import {
   Text,
   useDisclosure,
   VStack,
-  Flex,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useApprovedDoctorList } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
-import { useDeleteDoctorData } from "@nepMeds/service/nepmeds-doctorlist";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import {
+  getDoctorList,
+  useDoctorList,
+} from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import { Delete, Show } from "react-iconly";
+import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
-
+import { useEffect } from "react";
+import Select from "@nepMeds/components/Form/Select";
 const ApprovedDocList = () => {
   const {
     isOpen: isDetailsModalOpen,
@@ -89,17 +91,17 @@ const ApprovedDocList = () => {
     }
   };
   const formMethods = useForm();
-  const deleteDoctorMethod = useDeleteDoctorData();
+  // const deleteDoctorMethod = useDeleteDoctorData();
 
-  const handleDeleteDoctor = async (id: number) => {
-    const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
+  // const handleDeleteDoctor = async (id: number) => {
+  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
 
-    if (deleteDoctorResponse) {
-      toastSuccess("Academic data deleted successfully");
-    } else {
-      toastFail("Failed to delete academic information!");
-    }
-  };
+  //   if (deleteDoctorResponse) {
+  //     toastSuccess("Academic data deleted successfully");
+  //   } else {
+  //     toastFail("Failed to delete academic information!");
+  //   }
+  // };
   interface CellContextSearch {
     user: {
       first_name: string;
@@ -119,13 +121,7 @@ const ApprovedDocList = () => {
         header: "Doctor's Name",
         accessorKey: "first_name",
         accessorFn: (_cell: CellContextSearch) => {
-          return (
-            _cell?.user?.first_name +
-            " " +
-            _cell?.user?.middle_name +
-            " " +
-            _cell?.user?.last_name
-          );
+          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
         },
       },
       {
@@ -208,7 +204,7 @@ const ApprovedDocList = () => {
                 }}
               />
 
-              <Icon
+              {/* <Icon
                 as={Delete}
                 fontSize={20}
                 cursor="pointer"
@@ -219,7 +215,7 @@ const ApprovedDocList = () => {
                   // onDetailsModalOpen();
                   // setId(cell.row.original.id);
                 }}
-              />
+              /> */}
             </>
           );
         },
@@ -232,9 +228,30 @@ const ApprovedDocList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data, isLoading } = useApprovedDoctorList({
+  const [filteredData, setFilteredData] = useState<
+    IGetDoctorProfile[] | undefined
+  >();
+  const { data, isLoading } = useDoctorList({
     page_no: pageIndex + 1,
+    status: "approved",
+    page_size: pageSize,
   });
+  useEffect(() => {
+    setFilteredData(data?.results);
+  }, [data]);
+
+  const handleFilter = async () => {
+    const data = await getDoctorList({
+      page_no: pageIndex + 1,
+      page_size: pageSize,
+      status: "approved",
+      from_date: formMethods.getValues("fromDate"),
+      to_date: formMethods.getValues("toDate"),
+      specialization: formMethods.getValues("Specialization"),
+    });
+    setFilteredData(data?.data?.data?.results);
+    onModalClose();
+  };
   const [searchFilter, setSearchFilter] = useState("");
   const [id, setId] = React.useState("");
   const { data: specialization = [] } = useSpecializationRegisterData();
@@ -281,12 +298,12 @@ const ApprovedDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data || []}
+        data={filteredData ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
@@ -404,6 +421,7 @@ const ApprovedDocList = () => {
               bg={"#13ADE1"}
               color={"white"}
               w={"150px"}
+              onClick={handleFilter}
               borderRadius={"12px"}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },
@@ -416,29 +434,30 @@ const ApprovedDocList = () => {
       >
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
-            <MultiSelect
-              placeholder=""
+            <Select
+              placeholder="select specialization"
               label="Specialization"
               name="Specialization"
               required
               register={formMethods.register}
               options={specializationList}
-              selectControl={formMethods.control}
             />
-            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+            <Box display={"flex"} width={"100%"}>
               <FloatingLabelInput
                 label="From"
                 name="fromDate"
                 register={formMethods.register}
                 type="date"
               />
-              <FloatingLabelInput
-                label="To"
-                name="toDate"
-                register={formMethods.register}
-                type="date"
-              />
-            </Flex>
+              <Box ml={1}>
+                <FloatingLabelInput
+                  label="To"
+                  name="toDate"
+                  register={formMethods.register}
+                  type="date"
+                />
+              </Box>
+            </Box>
           </FormProvider>
         </VStack>
       </ModalComponent>

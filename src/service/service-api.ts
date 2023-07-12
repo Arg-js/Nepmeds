@@ -6,7 +6,8 @@ export const api = {
   signup: "user_management/otp-send/",
   otp_verify: "user_management/otp-verify/",
   register: "/doctor_consult/register/",
-  symptom: "core/symptoms-list/",
+  symptom: "core/symptom/",
+  symptom_list: "/core/symptom-list/",
   academic: "/doctor_consult/academic-info/",
   certificate: "/doctor_consult/certificate-info/",
   experience: "/doctor_consult/experience-info/",
@@ -18,7 +19,7 @@ export const api = {
   specialization_fetch: "/core/specialization-list-auth",
   specialization: "/core/specialization/",
   specialization_register: "/core/specialization-list/",
-  registereddoctor: "/dashboard/registered-doctor-list",
+  registereddoctor: "/dashboard/doctor-list",
   pendingdoctor: "/dashboard/pending-doctor-list",
   approveddoctor: "/dashboard/approved-doctor-list",
   approvesingledoctor: "/dashboard/approve-doctor/{id}/",
@@ -43,20 +44,10 @@ export interface NepMedsResponse<T = any> {
   message: string;
 }
 
-export interface IPaginatedRes {
-  id: number;
-  name: string;
-  symptom: {
-    id: number;
-    name: string;
-    keyword: number;
-  }[];
-
-  consultation_fees: number;
-}
 export interface PaginatedResponse<T = any> {
   data: {
     count: number;
+    page_count?: number;
     next?: number;
     previous?: number;
     results: T[];

@@ -50,11 +50,13 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data: symptomList = [] } = useSymptomsDataWithPagination({
+  const { data } = useSymptomsDataWithPagination({
     page_no: pageIndex + 1,
+    page_size: pageSize,
+    name: "",
   });
-  const saveSymptomAction = useSaveSymptoms();
-  const deleteSymptomAction = useDeleteSymptom();
+  const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
+  const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
   // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const {
@@ -149,6 +151,7 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
       });
       onCloseEditModal();
       toastSuccess("Symptom saved successfully!");
+      formMethods.reset({});
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
@@ -166,6 +169,7 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
       });
       onCloseSymptoms();
       toastSuccess("Symptom saved successfully!");
+      formMethods.reset({});
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
@@ -239,12 +243,12 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
 
       <DataTable
         columns={columns}
-        data={symptomList}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
@@ -320,7 +324,7 @@ const Symptoms = ({ onCloseSymptoms, isSymptomsOpen }: SymptomsProps) => {
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Add Symptom</Text>
+              <Text>Add symptom</Text>
             </HStack>
           }
           footer={
