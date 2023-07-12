@@ -31,16 +31,19 @@ export const useSpecializationData = ({
   page_no,
   pageSize,
   name,
+  activeTab,
 }: {
   page_no: number;
   pageSize: number;
   name: string;
+  activeTab: number;
 }) => {
   return useQuery(
     `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
     () => getSpecializationData(page_no, pageSize, name),
     {
       select: res => res.data.data,
+      enabled: activeTab === 1,
     }
   );
 };

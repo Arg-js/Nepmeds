@@ -7,20 +7,22 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
+import { CustomButton } from "@nepMeds/components/Button/Button";
+import { colors } from "@nepMeds/theme/colors";
+import { useState } from "react";
+import { IoAdd } from "react-icons/io5";
 import ApprovedDocList from "./ApprovedDocList";
 import PendingDocList from "./PendingDocList";
 import RegisteredDocList from "./RegisteredDocList";
 import RejectedDocList from "./RejectedDocList";
-import { CustomButton } from "@nepMeds/components/Button/Button";
-import { IoAdd } from "react-icons/io5";
-import { colors } from "@nepMeds/theme/colors";
 // import { Link } from "react-router-dom";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const DoctorsList = () => {
+  const [tabIndex, setTabIndex] = useState<number>(0);
   return (
     <>
-      <Tabs>
+      <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
         <Grid
           display={"flex"}
           // templateColumns="repeat(5, 1fr)"
@@ -47,18 +49,10 @@ const DoctorsList = () => {
         </Grid>
 
         <TabPanels>
-          <TabPanel>
-            <RegisteredDocList />
-          </TabPanel>
-          <TabPanel>
-            <PendingDocList />
-          </TabPanel>
-          <TabPanel>
-            <ApprovedDocList />
-          </TabPanel>
-          <TabPanel>
-            <RejectedDocList />
-          </TabPanel>
+          <TabPanel>{tabIndex === 0 && <RegisteredDocList />}</TabPanel>
+          <TabPanel>{tabIndex === 1 && <PendingDocList />}</TabPanel>
+          <TabPanel>{tabIndex === 2 && <ApprovedDocList />}</TabPanel>
+          <TabPanel>{tabIndex === 3 && <RejectedDocList />}</TabPanel>
         </TabPanels>
       </Tabs>
     </>

@@ -46,10 +46,12 @@ type OnOpenFunction = () => void;
 interface SpecializationProps {
   onCloseSpecialization: OnOpenFunction;
   isSpecializationOpen: boolean;
+  activeTab: number;
 }
 const Specializations = ({
   onCloseSpecialization,
   isSpecializationOpen,
+  activeTab,
 }: SpecializationProps) => {
   const { data: symptomList = [] } = useGetSymptoms();
 
@@ -58,6 +60,7 @@ const Specializations = ({
     pageSize: 10,
   });
   const { data } = useSpecializationData({
+    activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
     name: "",
