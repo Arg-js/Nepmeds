@@ -1,8 +1,8 @@
+import { AxiosResponse } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
-import { AxiosResponse } from "axios";
-import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 
 export const getDoctorList = async ({
   page_no,

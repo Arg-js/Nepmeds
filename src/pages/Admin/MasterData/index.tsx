@@ -8,12 +8,12 @@ import {
   Tabs,
   useDisclosure,
 } from "@chakra-ui/react";
-import Specializations from "./Specialist";
-import Symptoms from "./Symptoms";
 import { CustomButton } from "@nepMeds/components/Button/Button";
-import { IoAdd } from "react-icons/io5";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
+import { IoAdd } from "react-icons/io5";
+import Specializations from "./Specialist";
+import Symptoms from "./Symptoms";
 
 const MasterData = () => {
   const {
@@ -74,12 +74,14 @@ const MasterData = () => {
           <Symptoms
             onCloseSymptoms={onCloseSymptoms}
             isSymptomsOpen={isSymptomsOpen}
+            activeTab={activeTab}
           />
         </TabPanel>
         <TabPanel>
           <Specializations
             onCloseSpecialization={onCloseSpecialization}
             isSpecializationOpen={isSpecializationOpen}
+            activeTab={activeTab}
           />
         </TabPanel>
       </TabPanels>
