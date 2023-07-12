@@ -52,9 +52,12 @@ const CalendarView = () => {
   const currentDate = new Date();
   const formattedDate = format(currentDate, "do MMMM");
   const dayOfWeek = format(currentDate, "EEEE");
+
   const [selectedBox, setSelectedBox] = useState<number>(getDay(currentDate));
   const [selectedDay, setSelectedDay] = useState(dayOfWeek);
-  const [selectedFullDate, setSelectedFullDate] = useState("");
+  const [selectedFullDate, setSelectedFullDate] = useState(
+    format(currentDate, "yyyy-MM-dd")
+  );
 
   const [selectedDate, setSelectedDate] = useState(formattedDate);
   const handleDateSelection = (
@@ -513,7 +516,7 @@ const AddEvent = () => {
       <GridItem colSpan={4}>
         <Select
           label="Frequency"
-          name="frequency_choice"
+          name="frequency"
           register={register}
           options={FrequencyType}
           style={{
@@ -523,7 +526,7 @@ const AddEvent = () => {
           }}
         />
       </GridItem>
-      {watch("frequency_choice") === "Weekday" && (
+      {watch("frequency") === "Do Not Repeat" && (
         <GridItem colSpan={4}>
           <FloatingLabelInput
             label="Date"

@@ -11,7 +11,7 @@ export interface IGetDoctorAvailability {
   date?: string;
   from_time?: string;
   to_time?: string;
-  frequency_choice?: string;
+  frequency?: string;
 }
 
 const getDoctorAvailability = async () => {
