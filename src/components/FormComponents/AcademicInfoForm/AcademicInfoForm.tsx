@@ -50,6 +50,8 @@ export const AcademicInfoForm = ({
           major: a.major,
           university: a.university,
           id: a.id?.toString(),
+          academic_documents: a.academic_document,
+          isSubmitted: true,
           graduation_year: a.graduation_year?.toString(),
         })),
       });
@@ -59,7 +61,6 @@ export const AcademicInfoForm = ({
   const [selectedImages, setSelectedImages] =
     useState<Array<Array<File | string | null>>>(mappedImageInfo);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
     imageIndex: number,
@@ -68,12 +69,15 @@ export const AcademicInfoForm = ({
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
       const imageUrl = URL.createObjectURL(selectedFiles[0]);
+
       setSelectedImages(prevImages => {
         const updatedImages = [...prevImages];
         updatedImages[academicIndex] = [
           ...(updatedImages[academicIndex] || []),
         ];
         updatedImages[academicIndex][imageIndex] = imageUrl;
+        // setValue(`academic.${academicIndex}.academic_documents`,selectedFiles[0])
+
         return updatedImages;
       });
 
@@ -128,6 +132,12 @@ export const AcademicInfoForm = ({
       updatedImages.splice(academicIndex, 1);
       return updatedImages;
     });
+
+    setSelectedImages(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(academicIndex, 1);
+      return updatedImages;
+    });
   };
 
   return (
@@ -154,7 +164,7 @@ export const AcademicInfoForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
-                editMode={false}
+                editMode={true}
               />
             </Box>
             <SimpleGrid

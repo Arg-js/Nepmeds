@@ -20,15 +20,18 @@ const MultipleImageUpload = ({
   const { setValue, getValues } = useFormContext();
 
   useEffect(() => {
+    const fieldValue = getValues(fieldValues);
     // Initialize selected images from field values when the component mounts
     if (editMode) {
-      if (fieldValues && fieldValues.length > 0) {
-        const defaultImages = getValues(fieldValues)?.map((item: any) => {
+      if (fieldValue && fieldValue.length > 0) {
+        const defaultImages = fieldValue?.map((item: any) => {
           // Extract the file path from each item in the array
           const filePath = item?.file;
 
           // Append the base URL with the file name
-          const imageUrl = `http://38.242.204.217:8005/media/${filePath}`;
+          const imageUrl = filePath
+            ? `http://38.242.204.217:8005/media/${filePath}`
+            : URL.createObjectURL(item);
 
           // Create a new image object using the file URL
           return [imageUrl];
@@ -38,9 +41,7 @@ const MultipleImageUpload = ({
         setSelectedImages(defaultImages);
       }
     } else {
-      const initialValues = getValues(fieldValues);
-
-      setSelectedImages(initialValues);
+      setSelectedImages(fieldValue);
     }
   }, [fieldValues]);
 
@@ -52,8 +53,6 @@ const MultipleImageUpload = ({
     const updatedShowAddImageBox = [...showAddImageBox];
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
-
-    setValue(`${name}.${index}`, null);
   };
 
   return (
