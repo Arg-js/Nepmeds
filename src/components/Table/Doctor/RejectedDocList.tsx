@@ -35,6 +35,7 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 
 interface CellContextSearch {
   user: {
@@ -75,10 +76,14 @@ const RejectedDocList = ({ specializationList }: Props) => {
     status: "rejected",
   });
 
-  const { data, isLoading } = useDoctorList({
+  const [searchFilter, setSearchFilter] = useState("");
+  const debouncedInputValue = useDebounce(searchFilter, 500);
+
+  const { data } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
+    name: debouncedInputValue,
   });
 
   const handleFilter = async (isReset: boolean) => {
@@ -247,15 +252,6 @@ const RejectedDocList = ({ specializationList }: Props) => {
   const RejectDoctor = () => {
     onRejectModalClose();
   };
-
-  const [searchFilter, setSearchFilter] = useState("");
-
-  if (isLoading)
-    return (
-      <Spinner
-        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
-      />
-    );
 
   return (
     <>

@@ -11,6 +11,7 @@ export const getDoctorList = async ({
   to_date,
   specialization,
   page_size,
+  name,
 }: {
   page_no: number;
   page_size: number;
@@ -18,6 +19,7 @@ export const getDoctorList = async ({
   from_date?: string;
   to_date?: string;
   specialization?: string;
+  name?: string;
 }) => {
   let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
   if (specialization) {
@@ -32,6 +34,9 @@ export const getDoctorList = async ({
   if (to_date) {
     apiUrl += `&created_at__date__lte=${to_date}`;
   }
+  if (name) {
+    apiUrl += `?user__name_icontains=${name}`;
+  }
   const response = await HttpClient.get<PaginatedResponse<IGetDoctorProfile>>(
     apiUrl
   );
@@ -45,6 +50,7 @@ export const useDoctorList = ({
   to_date,
   specialization,
   page_size,
+  name,
 }: {
   page_no: number;
   status?: string;
@@ -52,15 +58,17 @@ export const useDoctorList = ({
   to_date?: string;
   page_size?: number;
   specialization?: string;
+  name?: string;
 }) => {
   return useQuery(
-    `${api.registereddoctor}/?status=${status}&page=${page_no}&created_at__date__gte=${from_date}&created_at__date__lte=${to_date}&specialization=${specialization}&pageSize=${page_size}`,
+    `${api.registereddoctor}/?status=${status}&page=${page_no}&created_at__date__gte=${from_date}&created_at__date__lte=${to_date}&specialization=${specialization}&pageSize=${page_size}&user__name_icontains=${name}`,
     () =>
       getDoctorList({
         page_no: page_no,
         status: status,
         from_date: from_date,
         to_date: to_date,
+        name: name,
         specialization: specialization,
         page_size: page_size ?? 10,
       }),

@@ -20,6 +20,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
   Specialization,
   // useDeleteBulkSpecialization,
@@ -59,11 +60,17 @@ const Specializations = ({
     pageIndex: 0,
     pageSize: 10,
   });
+
+  const [searchFilter, setSearchFilter] = useState("");
+  const [deleteSpecialization, setDeleteSpecialization] =
+    useState<Specialization | null>(null);
+  const debouncedInputValue = useDebounce(searchFilter, 500);
+
   const { data } = useSpecializationData({
     activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
-    name: "",
+    name: debouncedInputValue,
   });
   const saveSpecializationAction = useSaveSpecialization(
     pageIndex + 1,
@@ -98,9 +105,6 @@ const Specializations = ({
     onClose: onCloseEditModal,
     onOpen: onOpenEditModal,
   } = useDisclosure();
-  const [searchFilter, setSearchFilter] = useState("");
-  const [deleteSpecialization, setDeleteSpecialization] =
-    useState<Specialization | null>(null);
 
   const symptomsOptions = symptomList?.map(s => ({
     label: s.name,
@@ -298,7 +302,6 @@ const Specializations = ({
       <DataTable
         columns={columns}
         data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
