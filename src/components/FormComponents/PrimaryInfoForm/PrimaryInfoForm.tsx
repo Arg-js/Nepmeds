@@ -4,6 +4,7 @@ import NepalFlag from "@nepMeds/assets/images/flag-nepal.png";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import Input from "@nepMeds/components/Form/Input";
+import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
@@ -14,6 +15,7 @@ import {
   useGetProvince,
 } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
@@ -21,8 +23,6 @@ import { fileToString } from "@nepMeds/utils/fileToString";
 import React, { ChangeEvent, useEffect } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -266,8 +266,8 @@ const PrimaryInfo = ({
           required
           name="specialization"
           multiValue={doctorProfileData?.specialization?.map(item => ({
-            label: item.name,
-            value: item.id.toString(),
+            label: item?.name,
+            value: item?.id?.toString(),
           }))}
           register={register}
           options={specializationOptions}

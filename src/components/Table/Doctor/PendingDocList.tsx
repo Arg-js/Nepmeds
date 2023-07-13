@@ -1,50 +1,58 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Box,
+  Button,
   HStack,
-  Text,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
   Spinner,
-  useDisclosure,
-  Button,
-  Box,
+  Text,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { DataTable } from "@nepMeds/components/DataTable";
-import { CellContext, PaginationState } from "@tanstack/react-table";
-import React, { useState } from "react";
-import { Show } from "react-iconly";
-import { FormProvider, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
+import { DataTable } from "@nepMeds/components/DataTable";
+import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import Select from "@nepMeds/components/Form/Select";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
-import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
-import { colors } from "@nepMeds/theme/colors";
-import { generatePath, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import {
-  getDoctorList,
-  useDoctorList,
-} from "@nepMeds/service/nepmeds-doctorlist";
+import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
+import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
+import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
+import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import { colors } from "@nepMeds/theme/colors";
+import { CellContext, PaginationState } from "@tanstack/react-table";
+import React, { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import Select from "@nepMeds/components/Form/Select";
-import { useEffect } from "react";
+import { generatePath, useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { ISpecializationList } from "./DoctorsList";
+
+interface CellContextSearch {
+  user: {
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+  };
+}
+interface Props {
+  specializationList: ISpecializationList[];
+}
+
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
 });
-const PendingDocList = () => {
+
+const PendingDocList = ({ specializationList }: Props) => {
   const {
     isOpen: isDetailsModalOpen,
     // onOpen: onDetailsModalOpen,
@@ -60,29 +68,30 @@ const PendingDocList = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-
-  const [filteredData, setFilteredData] = useState<
-    IGetDoctorProfile[] | undefined
-  >();
-  const { data, isLoading } = useDoctorList({
-    page_no: pageIndex + 1,
+  const [filterValue, setFilterValue] = useState<any>({
     status: "pending",
+  });
+
+  const { data, isLoading } = useDoctorList({
+    ...filterValue,
+    page_no: pageIndex + 1,
     page_size: pageSize,
   });
-  useEffect(() => {
-    setFilteredData(data?.results);
-  }, [data]);
 
-  const handleFilter = async () => {
-    const data = await getDoctorList({
-      page_no: pageIndex + 1,
-      page_size: pageSize,
-      status: "pending",
-      from_date: formMethods.getValues("fromDate"),
-      to_date: formMethods.getValues("toDate"),
-      specialization: formMethods.getValues("Specialization"),
-    });
-    setFilteredData(data?.data?.data?.results);
+  const handleFilter = async (isReset: boolean) => {
+    if (!isReset) {
+      setFilterValue({
+        from_date: formMethods.getValues("fromDate"),
+        to_date: formMethods.getValues("toDate"),
+        specialization: formMethods.getValues("Specialization"),
+      });
+    } else {
+      setFilterValue({
+        status: "pending",
+      });
+      formMethods.reset({});
+    }
+
     onModalClose();
   };
 
@@ -90,7 +99,6 @@ const PendingDocList = () => {
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
-  const { data: specialization = [] } = useSpecializationRegisterData();
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
   const onSubmitForm = async () => {
@@ -121,17 +129,7 @@ const PendingDocList = () => {
   //     toastFail("Failed to delete academic information!");
   //   }
   // };
-  interface CellContextSearch {
-    user: {
-      first_name: string;
-      middle_name: string;
-      last_name: string;
-    };
-  }
-  const specializationList = specialization.map(s => ({
-    label: s.name,
-    value: s.id,
-  }));
+
   const navigate = useNavigate();
   const columns = React.useMemo(
     () => [
@@ -300,7 +298,7 @@ const PendingDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={filteredData ?? []}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
@@ -416,6 +414,16 @@ const PendingDocList = () => {
               borderRadius={"12px"}
               color={"#13ADE1"}
               w={"150px"}
+              mr={1}
+              onClick={() => handleFilter(true)}
+            >
+              Reset
+            </Button>
+            <Button
+              outlineColor={"#13ADE1"}
+              borderRadius={"12px"}
+              color={"#13ADE1"}
+              w={"150px"}
             >
               Cancel
             </Button>
@@ -423,7 +431,7 @@ const PendingDocList = () => {
               bg={"#13ADE1"}
               color={"white"}
               w={"150px"}
-              onClick={handleFilter}
+              onClick={() => handleFilter(false)}
               borderRadius={"12px"}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },

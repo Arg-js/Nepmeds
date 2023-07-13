@@ -8,6 +8,7 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import { CustomButton } from "@nepMeds/components/Button/Button";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { IoAdd } from "react-icons/io5";
@@ -18,8 +19,19 @@ import RejectedDocList from "./RejectedDocList";
 // import { Link } from "react-router-dom";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
+export interface ISpecializationList {
+  label: string;
+  value: number;
+}
+
 const DoctorsList = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const { data: specialization = [] } = useSpecializationRegisterData();
+
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
   return (
     <>
       <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
@@ -49,10 +61,26 @@ const DoctorsList = () => {
         </Grid>
 
         <TabPanels>
-          <TabPanel>{tabIndex === 0 && <RegisteredDocList />}</TabPanel>
-          <TabPanel>{tabIndex === 1 && <PendingDocList />}</TabPanel>
-          <TabPanel>{tabIndex === 2 && <ApprovedDocList />}</TabPanel>
-          <TabPanel>{tabIndex === 3 && <RejectedDocList />}</TabPanel>
+          <TabPanel>
+            {tabIndex === 0 && (
+              <RegisteredDocList specializationList={specializationList} />
+            )}
+          </TabPanel>
+          <TabPanel>
+            {tabIndex === 1 && (
+              <PendingDocList specializationList={specializationList} />
+            )}
+          </TabPanel>
+          <TabPanel>
+            {tabIndex === 2 && (
+              <ApprovedDocList specializationList={specializationList} />
+            )}
+          </TabPanel>
+          <TabPanel>
+            {tabIndex === 3 && (
+              <RejectedDocList specializationList={specializationList} />
+            )}
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </>
