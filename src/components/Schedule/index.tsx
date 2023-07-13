@@ -1,12 +1,18 @@
 import {
   Box,
+  Button,
   Divider,
   Grid,
   GridItem,
+  HStack,
   List,
   ListItem,
   Text,
+  VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
+
 import { colors } from "@nepMeds/theme/colors";
 import {
   addOneHour,
@@ -14,9 +20,22 @@ import {
   getMinutesDifference,
   isTimeInRange,
 } from "@nepMeds/helper/checkTimeRange";
-import { useDoctorAvailability } from "@nepMeds/service/nepmeds-doctor-availability";
+import {
+  IGetDoctorAvailability,
+  getSingleAvailability,
+  useDeleteAvailability,
+  useDoctorAvailability,
+  useUpdateDoctorAvailability,
+} from "@nepMeds/service/nepmeds-doctor-availability";
 import { parseISO, isSameDay } from "date-fns";
-
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import ModalComponent from "../Form/ModalComponent";
+import { AddEvent } from "@nepMeds/pages/Calendar";
+import { toastFail, toastSuccess } from "../Toast";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { FormProvider, useForm } from "react-hook-form";
+import { AxiosError } from "axios";
+import { useState } from "react";
 const ScheduleComponent = ({
   selectedFullDate,
 }: {
@@ -38,6 +57,79 @@ const ScheduleComponent = ({
 
     return false;
   });
+
+  const {
+    isOpen: isEditModalOpen,
+    onClose: onEditModalClose,
+    onOpen: onEditModalOpen,
+  } = useDisclosure();
+
+  const {
+    isOpen: isDeleteModalOpen,
+    onClose: onCloseDeleteModal,
+    onOpen: onOpenDeleteModal,
+  } = useDisclosure();
+
+  const deleteDoctorAvailability = useDeleteAvailability();
+  const updateDoctorAvailability = useUpdateDoctorAvailability();
+  const formMethods = useForm();
+
+  const onSaveEvent = () => {
+    formMethods.handleSubmit(onSubmit)();
+    formMethods.reset();
+  };
+
+  const [availabilityId, setAvailabilityId] = useState(0);
+  const onSubmit = async (data: IGetDoctorAvailability) => {
+    try {
+      const response = await updateDoctorAvailability.mutateAsync({
+        id: availabilityId,
+        data: data,
+      });
+      if (response) {
+        toastSuccess("Event has been added successfully");
+        onEditModalClose();
+      }
+    } catch (error) {
+      const err = serverErrorResponse(error);
+
+      toastFail(err);
+    }
+  };
+  const [doctorAvailabilityData, setDoctorAvailabilityData] =
+    useState<IGetDoctorAvailability>();
+  const handleEdit = async (id: number) => {
+    try {
+      const res = await getSingleAvailability(id);
+      setDoctorAvailabilityData(res);
+      setAvailabilityId(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+    onEditModalOpen();
+  };
+
+  const handleDeleteModal = (id: number) => {
+    setAvailabilityId(id);
+    onOpenDeleteModal();
+  };
+  const onDeleteSymptom = async () => {
+    console.log(availabilityId);
+    try {
+      if (!availabilityId) return;
+
+      await deleteDoctorAvailability.mutateAsync({
+        id: availabilityId,
+      });
+
+      onCloseDeleteModal();
+      toastSuccess("Availability deleted successfully!");
+    } catch (error) {
+      toastFail("Failed to delete availability!");
+    }
+  };
+
   return (
     <Box>
       {timeData?.map((data, i) => (
@@ -119,6 +211,20 @@ const ScheduleComponent = ({
                         {eventData.from_time}........{eventData.to_time}
                       </Text>
                     </>
+                    <Box position={"absolute"} top={2} right={2}>
+                      <EditIcon
+                        color={colors.green_button}
+                        cursor={"pointer"}
+                        onClick={() => handleEdit(eventData.id ?? 0)}
+                      />
+
+                      <DeleteIcon
+                        cursor={"pointer"}
+                        color={colors?.red}
+                        marginLeft={2}
+                        onClick={() => handleDeleteModal(eventData.id ?? 0)}
+                      />
+                    </Box>
                   </Box>
                 </Box>
               ) : (
@@ -145,6 +251,88 @@ const ScheduleComponent = ({
           </GridItem>
         </Grid>
       ))}
+      {/* edit availability */}
+      <ModalComponent
+        size="xl"
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          onEditModalClose();
+          formMethods.reset();
+        }}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Edit Availability</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button
+              variant="outline"
+              onClick={() => {
+                onEditModalClose;
+                formMethods.reset();
+              }}
+              flex={1}
+            >
+              Discard
+            </Button>
+            <Button
+              flex={1}
+              onClick={onSaveEvent}
+              background={colors.primary}
+              color={colors.white}
+              isLoading={updateDoctorAvailability.isLoading}
+            >
+              Save
+            </Button>
+          </HStack>
+        }
+      >
+        <VStack>
+          <FormProvider {...formMethods}>
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+              style={{ width: "100%" }}
+            >
+              <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+            </form>
+          </FormProvider>
+        </VStack>
+      </ModalComponent>
+
+      {/* delete availability */}
+
+      <ModalComponent
+        size="sm"
+        isOpen={isDeleteModalOpen}
+        onClose={onCloseDeleteModal}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Delete Availability</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+              Cancel
+            </Button>
+            <Button
+              flex={1}
+              onClick={onDeleteSymptom}
+              borderColor={colors.red}
+              color={colors.red}
+              isLoading={deleteDoctorAvailability.isLoading}
+              variant="outline"
+            >
+              Delete
+            </Button>
+          </HStack>
+        }
+      >
+        <Text>Are you sure you want to this availability ?</Text>
+      </ModalComponent>
     </Box>
   );
 };

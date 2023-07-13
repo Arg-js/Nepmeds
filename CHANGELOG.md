@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-12)
+## 0.0.1 (2023-07-13)
 
 
 ### Bug Fixes
@@ -12,6 +12,7 @@
 * **bug fixes:** fixed build issues ([ec4d743](https://gitlab.com/r2850/nepmeds/commit/ec4d7438ca0e887bd4d3a6f48f6c919bfc155c65))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * **calendar:** calendar date validation and added global error response function ([2d51cc6](https://gitlab.com/r2850/nepmeds/commit/2d51cc60d3b191ec8dd412639450db54a3212104))
+* **calendar:** calendar new api changes fixing ([e38a980](https://gitlab.com/r2850/nepmeds/commit/e38a980eb772eedf93cd64bc1e63cf4710c85bc4))
 * **calendar:** close calendar on outside click ([8ace23a](https://gitlab.com/r2850/nepmeds/commit/8ace23a7feb619a4ae77a8ccfe4b36c58f8bf063))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **common:** invalid hooks call and select dropdown outside modal ([d8c0246](https://gitlab.com/r2850/nepmeds/commit/d8c02462ed0175a63e74284242ea23fc0e56b072))
@@ -80,6 +81,7 @@
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
 * **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
+* **calendar:** calendar delete and updated implementation ([233dc6a](https://gitlab.com/r2850/nepmeds/commit/233dc6a0251a1bf699aa06178be62aa409b06f32))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))
 * **doctor approval:** doctor api ([cc0196e](https://gitlab.com/r2850/nepmeds/commit/cc0196e5d173c45bafdff7af173e1627b142342b))
 * **doctor detail:** doctor detail ([92c171d](https://gitlab.com/r2850/nepmeds/commit/92c171d6f4e83aa9139872850b4e20ca764ffb24))

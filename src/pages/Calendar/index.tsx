@@ -338,6 +338,7 @@ const CalendarDailyDetailView = ({
     formMethods.handleSubmit(onSubmit)();
   };
   const onSubmit = async (data: IGetDoctorAvailability) => {
+    console.log(data);
     try {
       const response = await createDoctorAvailabilityInfo.mutateAsync(data);
       if (response) {
@@ -429,7 +430,11 @@ const CalendarDailyDetailView = ({
   );
 };
 
-const AddEvent = () => {
+export const AddEvent = ({
+  doctorAvailabilityData,
+}: {
+  doctorAvailabilityData?: IGetDoctorAvailability;
+}) => {
   const {
     register,
     getValues,
@@ -501,6 +506,7 @@ const AddEvent = () => {
           label="Title"
           name="title"
           register={register}
+          defaultValue={doctorAvailabilityData?.title}
           required
           style={{
             background: colors.forminput,
@@ -513,19 +519,22 @@ const AddEvent = () => {
           error={errors.title?.message}
         />
       </GridItem>
-      <GridItem colSpan={4}>
-        <Select
-          label="Frequency"
-          name="frequency"
-          register={register}
-          options={FrequencyType}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-        />
-      </GridItem>
+      {doctorAvailabilityData?.frequency ? null : (
+        <GridItem colSpan={4}>
+          <Select
+            label="Frequency"
+            name="frequency"
+            register={register}
+            defaultValue={doctorAvailabilityData?.frequency}
+            options={FrequencyType}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+          />
+        </GridItem>
+      )}
       {watch("frequency") === "Do Not Repeat" && (
         <GridItem colSpan={4}>
           <FloatingLabelInput
@@ -533,6 +542,7 @@ const AddEvent = () => {
             name="date"
             type="date"
             register={register}
+            defaultValue={doctorAvailabilityData?.date}
             style={{
               background: colors.forminput,
               border: "none",
@@ -550,6 +560,7 @@ const AddEvent = () => {
           label="From"
           name="from_time"
           type="time"
+          defaultValue={doctorAvailabilityData?.from_time}
           register={register}
           style={{
             background: colors.forminput,
@@ -569,6 +580,7 @@ const AddEvent = () => {
           name="to_time"
           type="time"
           register={register}
+          defaultValue={doctorAvailabilityData?.to_time}
           style={{
             background: colors.forminput,
             border: "none",
