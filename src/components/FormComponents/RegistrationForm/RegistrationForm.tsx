@@ -179,9 +179,6 @@ const RegistrationForm = () => {
   > = async () => {
     try {
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
-      console.log(profilePicture);
-      // const idFontImage = values.id_front_image?.[0];
-      // const idBackImage = values.id_back_image?.[0];
 
       const specializationValues = formMethods.getValues("specialization");
       const specializationArray = specializationValues.map(
@@ -218,8 +215,6 @@ const RegistrationForm = () => {
         id_type: formMethods.getValues("id_type"),
         id_issued_district: formMethods.getValues("id_issued_district"),
         id_issued_date: formMethods.getValues("id_issued_date"),
-        // id_back_image: idBackImage ? await base64(idBackImage) : "",
-        // id_front_image: idFontImage ? await base64(idFontImage) : "",
       };
       await editPrimaryInfoRegister
         .mutateAsync({ id: doctor, data: doctorData })
@@ -334,7 +329,6 @@ const RegistrationForm = () => {
                 })
               ),
             };
-
             if (academicData.id) {
               const academicInfoResponse =
                 await updateAcademicInfoRegister.mutateAsync({

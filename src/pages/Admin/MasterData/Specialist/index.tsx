@@ -1,7 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Box,
   Button,
   Grid,
   GridItem,
@@ -10,17 +9,12 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
-import { CustomButton } from "@nepMeds/components/Button/Button";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -28,7 +22,7 @@ import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   Specialization,
-  useDeleteBulkSpecialization,
+  // useDeleteBulkSpecialization,
   useDeleteSpecialization,
   useSaveSpecialization,
   useSpecializationData,
@@ -36,11 +30,10 @@ import {
 } from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
-import { IoAdd, IoChevronDownOutline } from "react-icons/io5";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
@@ -48,30 +41,68 @@ const schema = yup.object().shape({
   keyword: yup.string().required("Symptom keyword is required"),
 });
 
-const Specializations = () => {
-  const { data: symptomList = [] } = useGetSymptoms();
-  const { data: specialization = [] } = useSpecializationData();
-  const saveSpecializationAction = useSaveSpecialization();
-  const updateSpecializationAction = useUpdateSpecialization();
-  const deleteBulkSpecialization = useDeleteBulkSpecialization();
-  const deleteSpecializationAction = useDeleteSpecialization();
-  const { isOpen, onClose, onOpen } = useDisclosure();
+type OnOpenFunction = () => void;
 
-  const {
-    isOpen: isBulkOpen,
-    onClose: onCloseBulkModal,
-    onOpen: onOpenBulkModal,
-  } = useDisclosure();
+interface SpecializationProps {
+  onCloseSpecialization: OnOpenFunction;
+  isSpecializationOpen: boolean;
+  activeTab: number;
+}
+const Specializations = ({
+  onCloseSpecialization,
+  isSpecializationOpen,
+  activeTab,
+}: SpecializationProps) => {
+  const { data: symptomList = [] } = useGetSymptoms();
+
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const { data } = useSpecializationData({
+    activeTab,
+    page_no: pageIndex + 1,
+    pageSize: pageSize,
+    name: "",
+  });
+  const saveSpecializationAction = useSaveSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
+  const updateSpecializationAction = useUpdateSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
+  // const deleteBulkSpecialization = useDeleteBulkSpecialization();
+  const deleteSpecializationAction = useDeleteSpecialization(
+    pageIndex + 1,
+    pageSize,
+    ""
+  );
+
+  // const {
+  //   isOpen: isBulkOpen,
+  //   onClose: onCloseBulkModal,
+  //   onOpen: onOpenBulkModal,
+  // } = useDisclosure();
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
     onOpen: onOpenDeleteModal,
   } = useDisclosure();
+
+  const {
+    isOpen: isEditModalOpen,
+    onClose: onCloseEditModal,
+    onOpen: onOpenEditModal,
+  } = useDisclosure();
   const [searchFilter, setSearchFilter] = useState("");
   const [deleteSpecialization, setDeleteSpecialization] =
     useState<Specialization | null>(null);
 
-  const symptomsOptions = symptomList.map(s => ({
+  const symptomsOptions = symptomList?.map(s => ({
     label: s.name,
     value: s.id,
   }));
@@ -101,7 +132,7 @@ const Specializations = () => {
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack>
-            {cell.row.original.symptom.map(s => (
+            {cell.row.original.symptom_list?.map(s => (
               <Badge key={s.keyword} textTransform="initial" fontWeight="light">
                 {s.name}
               </Badge>
@@ -123,12 +154,12 @@ const Specializations = () => {
               onClick={() => {
                 formMethods.reset({
                   ...cell.row.original,
-                  symptom: cell.row.original.symptom.map(s => ({
+                  symptom: cell.row.original.symptom_list.map(s => ({
                     label: s.name,
                     value: s.id.toString(),
                   })),
                 });
-                onOpen();
+                onOpenEditModal();
               }}
             >
               <AiOutlineEdit size={20} fill={colors.blue_100} />
@@ -156,24 +187,20 @@ const Specializations = () => {
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(
-        (symptom: { label: string; value: string }) => ({
-          id: parseInt(symptom.value),
-          name: symptom.label,
-          keyword: symptom.value,
-        })
-      );
+      const symptoms = symptomValues.map(symptom => symptom.value);
       await updateSpecializationAction.mutateAsync({
         id: formMethods.getValues("id") ?? 0,
-        data: {
-          id: formMethods.getValues("id") ?? 0,
-          name: formMethods.getValues("name"),
-          consultation_fees: 3213123,
-          symptom: symptoms,
-        },
+
+        name: formMethods.getValues("name"),
+        consultation_fees: 3213123,
+        symptom: symptoms,
       });
-      onClose();
+      onCloseEditModal();
       toastSuccess("Specialization updated successfully!");
+      formMethods.reset({
+        name: "",
+        symptom: [],
+      });
     } catch (error) {
       toastFail("Failed to update Specialization!");
     }
@@ -184,20 +211,18 @@ const Specializations = () => {
       const isValid = formMethods.trigger();
       if (!isValid) return;
       const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(
-        (symptom: { label: string; value: string }) => ({
-          id: parseInt(symptom.value),
-          name: symptom.label,
-          keyword: symptom.value,
-        })
-      );
+      const symptoms = symptomValues.map(symptom => symptom.value);
       await saveSpecializationAction.mutateAsync({
         name: formMethods.getValues("name"),
         consultation_fees: "3213123",
         symptom: symptoms,
       });
-      onClose();
+      onCloseSpecialization();
       toastSuccess("Specialization saved successfully!");
+      formMethods.reset({
+        name: "",
+        symptom: [],
+      });
     } catch (error) {
       toastFail("Failed to save Specialization!");
     }
@@ -216,19 +241,19 @@ const Specializations = () => {
       toastFail("Failed to delete symptom!");
     }
   };
-  const onBulkDelete = async (data: Specialization[]) => {
-    const id = data.map(data => data.id);
+  // const onBulkDelete = async (data: Specialization[]) => {
+  //   const id = data.map(data => data.id);
 
-    try {
-      await deleteBulkSpecialization.mutateAsync({
-        id: id,
-      });
-      onCloseBulkModal();
-      toastSuccess("Specializations deleted successfully!");
-    } catch (error) {
-      toastFail("Failed to delete specialization!");
-    }
-  };
+  //   try {
+  //     await deleteBulkSpecialization.mutateAsync({
+  //       id: id,
+  //     });
+  //     onCloseBulkModal();
+  //     toastSuccess("Specializations deleted successfully!");
+  //   } catch (error) {
+  //     toastFail("Failed to delete specialization!");
+  //   }
+  // };
 
   return (
     <Fragment>
@@ -249,7 +274,7 @@ const Specializations = () => {
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
-          <Box ml={1}>
+          {/* <Box ml={1}>
             <Menu>
               <MenuButton as={Button} variant={"outline"}>
                 <Text
@@ -267,52 +292,49 @@ const Specializations = () => {
                 <MenuItem>Bulk Delete </MenuItem>
               </MenuList>
             </Menu>
-          </Box>
-          <Box ml={1}>
-            <CustomButton
-              backgroundColor={colors.primary}
-              fontWeight="light"
-              borderRadius={7}
-              onClick={() => {
-                onOpen();
-                formMethods.reset({});
-              }}
-            >
-              <IoAdd /> Add Specialization
-            </CustomButton>
-          </Box>
+          </Box> */}
         </GridItem>
       </Grid>
       <DataTable
         columns={columns}
-        data={specialization}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
-          pageParams: {
-            pageIndex: 1,
-            pageSize: 5,
-          },
-          pageCount: 20,
+          manual: true,
+          pageParams: { pageIndex, pageSize },
+          pageCount: data?.page_count,
+          onChangePagination: setPagination,
         }}
       />
 
+      {/* edit modal */}
       <ModalComponent
         size="sm"
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isEditModalOpen}
+        onClose={() => {
+          onCloseEditModal();
+          formMethods.reset({
+            name: "",
+            symptom: [],
+          });
+        }}
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>
-              {formMethods.getValues("name") ? "Edit" : "Add"} Specialization
-            </Text>
+            <Text>Edit Specialization</Text>
           </HStack>
         }
         footer={
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={onClose}
+              onClick={() => {
+                onCloseEditModal();
+                formMethods.reset({
+                  name: "",
+                  symptom: [],
+                });
+              }}
               flex={1}
               border="1px solid"
               borderColor={colors.primary}
@@ -323,11 +345,64 @@ const Specializations = () => {
             </Button>
             <Button
               flex={1}
-              onClick={
-                formMethods.getValues("name")
-                  ? onEditSpecialization
-                  : onSaveSpecialization
-              }
+              onClick={onEditSpecialization}
+              background={colors.primary}
+              color={colors.white}
+              isLoading={saveSpecializationAction.isLoading}
+            >
+              Save
+            </Button>
+          </HStack>
+        }
+      >
+        <VStack>
+          <FormProvider {...formMethods}>
+            <FloatingLabelInput
+              label="Specialization"
+              name="name"
+              register={formMethods.register}
+            />
+
+            <MultiSelect
+              placeholder=""
+              label="Symptoms"
+              name="symptom"
+              required
+              register={formMethods.register}
+              options={symptomsOptions}
+              selectControl={formMethods.control}
+            />
+          </FormProvider>
+        </VStack>
+      </ModalComponent>
+
+      {/* add modal */}
+      <ModalComponent
+        size="sm"
+        isOpen={isSpecializationOpen}
+        onClose={onCloseSpecialization}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Add Specialization</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button
+              variant="outline"
+              onClick={onCloseSpecialization}
+              flex={1}
+              border="1px solid"
+              borderColor={colors.primary}
+              color={colors.primary}
+              fontWeight={400}
+            >
+              Discard
+            </Button>
+            <Button
+              flex={1}
+              onClick={onSaveSpecialization}
               background={colors.primary}
               color={colors.white}
               isLoading={saveSpecializationAction.isLoading}
@@ -398,7 +473,7 @@ const Specializations = () => {
       </ModalComponent>
 
       {/* bulk delete modal */}
-      <ModalComponent
+      {/* <ModalComponent
         size="sm"
         isOpen={isBulkOpen}
         onClose={onCloseBulkModal}
@@ -427,7 +502,7 @@ const Specializations = () => {
         }
       >
         <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent>
+      </ModalComponent> */}
     </Fragment>
   );
 };

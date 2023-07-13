@@ -1,7 +1,7 @@
-import { Image, Box, IconButton, Flex } from "@chakra-ui/react";
-import { CloseIcon, AddIcon } from "@chakra-ui/icons";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 
-import { ChangeEvent, useState, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
 const MultipleImageUpload = ({
@@ -10,19 +10,20 @@ const MultipleImageUpload = ({
   handleImageChange,
   name,
   background,
-  fieldValues,
   editMode,
+  fieldValues,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
     Array(selectedImages.length).fill(false)
   );
+
   const { setValue, getValues } = useFormContext();
 
   useEffect(() => {
     // Initialize selected images from field values when the component mounts
     if (editMode) {
       if (fieldValues && fieldValues.length > 0) {
-        const defaultImages = fieldValues.map((item: any) => {
+        const defaultImages = getValues(fieldValues)?.map((item: any) => {
           // Extract the file path from each item in the array
           const filePath = item?.file;
 
@@ -42,7 +43,6 @@ const MultipleImageUpload = ({
       setSelectedImages(initialValues);
     }
   }, [fieldValues]);
-  console.log(selectedImages);
 
   const handleRemoveImage = (index: number) => {
     const updatedImages = [...selectedImages];

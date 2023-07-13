@@ -1,8 +1,10 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+  Badge,
+  Box,
   Button,
-  Flex,
   HStack,
+  Icon,
   Input,
   InputGroup,
   InputLeftElement,
@@ -16,22 +18,37 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
+import Select from "@nepMeds/components/Form/Select";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useFakePagination } from "@nepMeds/service/nepmeds-approved-doctor-list";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
+import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import { useSpecializationData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext, ColumnDef, PaginationState } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
+import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
+import { generatePath, useNavigate } from "react-router-dom";
+import { ISpecializationList } from "./DoctorsList";
 
-const ApprovedDocList = () => {
+interface CellContextSearch {
+  user: {
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+  };
+}
+interface Props {
+  specializationList: ISpecializationList[];
+}
+
+const ApprovedDocList = ({ specializationList }: Props) => {
+  const navigate = useNavigate();
   const {
     isOpen: isDetailsModalOpen,
     // onOpen: onDetailsModalOpen,
@@ -47,6 +64,13 @@ const ApprovedDocList = () => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [filterValue, setFilterValue] = useState<any>({
+    status: "approved",
+  });
 
   // const navigate = useNavigate();
   const [_isRejected, setIsRejected] = React.useState(false);
@@ -82,27 +106,8 @@ const ApprovedDocList = () => {
     }
   };
   const formMethods = useForm();
-  // const deleteDoctorMethod = useDeleteDoctorData();
 
-  // const handleDeleteDoctor = async (id: number) => {
-  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
-
-  //   if (deleteDoctorResponse) {
-  //     toastSuccess("Academic data deleted successfully");
-  //   } else {
-  //     toastFail("Failed to delete academic information!");
-  //   }
-  // };
-  // interface CellContextSearch {
-  //   user: {
-  //     first_name: string;
-  //     middle_name: string;
-  //     last_name: string;
-  //   };
-  // }
-  const columns = React.useMemo<
-    ColumnDef<{ id: string; name: string; tagline: string }>[]
-  >(
+  const columns = React.useMemo(
     () => [
       {
         header: "S.N",
@@ -111,36 +116,140 @@ const ApprovedDocList = () => {
         },
       },
       {
-        header: "Name",
-        accessorKey: "name",
+        header: "Doctor's Name",
+        accessorKey: "first_name",
+        accessorFn: (_cell: CellContextSearch) => {
+          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+        },
       },
       {
-        header: "Tag Line",
-        accessorKey: "tagline",
+        header: "Contact Number",
+        cell: ({
+          row,
+        }: CellContext<
+          {
+            user: IBasicInfo;
+          },
+          any
+        >) => {
+          const { mobile_number } = row?.original?.user ?? "";
+
+          return <p>{mobile_number}</p>;
+        },
+      },
+      {
+        header: "Specialization",
+        accessorKey: "specialization",
+        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
+          const specialization = row?.original?.specialization ?? "";
+
+          return (
+            <Box
+              display={"flex"}
+              flexWrap={"wrap"}
+              // width={"fit-content"}
+              // p={1}
+              // background={colors.grey}
+              // borderRadius={20}
+            >
+              <p>{specialization.join(", ")}</p>
+            </Box>
+          );
+        },
+      },
+      {
+        header: "Status",
+        accessorKey: "profile_status",
+        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
+          const { is_approved } = row.original;
+          return (
+            <Badge
+              colorScheme={is_approved ? "green" : "red"}
+              p={1}
+              borderRadius={20}
+              fontSize={11}
+              w={24}
+              textAlign="center"
+              textTransform="capitalize"
+            >
+              {is_approved ? "Approved" : "Not approved"}
+            </Badge>
+          );
+        },
+      },
+      {
+        header: "Actions",
+        accessorKey: "actions",
+        cell: (cell: CellContext<any, any>) => {
+          return (
+            <>
+              <Icon
+                as={Show}
+                fontSize={20}
+                cursor="pointer"
+                onClick={() => {
+                  formMethods.reset(cell.row.original);
+                  // // onDetailsModalOpen();
+                  setId(cell.row.original.id);
+                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
+                  navigate(
+                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                      id: cell.row.original.id,
+                    })
+                  );
+
+                  // navigate(`${"/doc-profile"}`)
+                }}
+              />
+
+              {/* <Icon
+                as={Delete}
+                fontSize={20}
+                cursor="pointer"
+                color={colors.red}
+                onClick={() => {
+                  handleDeleteDoctor(cell.row.original.id);
+                  // formMethods.reset(cell.row.original);
+                  // onDetailsModalOpen();
+                  // setId(cell.row.original.id);
+                }}
+              /> */}
+            </>
+          );
+        },
       },
     ],
     []
   );
 
-  // const { data, isLoading } = useApprovedDoctorList();
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
-    pageSize: 10,
+  const { data, isLoading } = useDoctorList({
+    ...filterValue,
+    page_no: pageIndex + 1,
+    page_size: pageSize,
   });
 
-  const { data, isLoading } = useFakePagination({
-    page: pageIndex + 1,
-    perPage: pageSize,
-  });
+  const handleFilter = async (isReset: boolean) => {
+    if (!isReset) {
+      setFilterValue({
+        status: "approved",
+        from_date: formMethods.getValues("fromDate"),
+        to_date: formMethods.getValues("toDate"),
+        specialization: formMethods.getValues("Specialization"),
+      });
+    } else {
+      setFilterValue({
+        status: "approved",
+      });
+      formMethods.reset({});
+    }
 
+    onModalClose();
+  };
   const [searchFilter, setSearchFilter] = useState("");
-  const [id] = React.useState("");
-  const { data: specialization = [] } = useSpecializationData();
+  const [id, setId] = React.useState("");
+
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
-  const specializationList = specialization.map(s => ({
-    label: s.name,
-    value: s.id,
-  }));
+
   if (isLoading)
     return (
       <Spinner
@@ -179,12 +288,12 @@ const ApprovedDocList = () => {
       </HStack>
       <DataTable
         columns={columns}
-        data={data || []}
+        data={data?.results ?? []}
         filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
-          pageCount: 20,
+          pageCount: data?.page_count,
           onChangePagination: setPagination,
         }}
       />
@@ -295,6 +404,16 @@ const ApprovedDocList = () => {
               borderRadius={"12px"}
               color={"#13ADE1"}
               w={"150px"}
+              mr={1}
+              onClick={() => handleFilter(true)}
+            >
+              Reset
+            </Button>
+            <Button
+              outlineColor={"#13ADE1"}
+              borderRadius={"12px"}
+              color={"#13ADE1"}
+              w={"150px"}
             >
               Cancel
             </Button>
@@ -302,6 +421,7 @@ const ApprovedDocList = () => {
               bg={"#13ADE1"}
               color={"white"}
               w={"150px"}
+              onClick={() => handleFilter(false)}
               borderRadius={"12px"}
               sx={{
                 "&:hover": { bg: "#13ADE1", color: "white" },
@@ -314,29 +434,30 @@ const ApprovedDocList = () => {
       >
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
-            <MultiSelect
-              placeholder=""
+            <Select
+              placeholder="select specialization"
               label="Specialization"
               name="Specialization"
               required
               register={formMethods.register}
               options={specializationList}
-              selectControl={formMethods.control}
             />
-            <Flex width={"100%"} pt={"25px"} pb={"25px"}>
+            <Box display={"flex"} width={"100%"}>
               <FloatingLabelInput
                 label="From"
                 name="fromDate"
                 register={formMethods.register}
                 type="date"
               />
-              <FloatingLabelInput
-                label="To"
-                name="toDate"
-                register={formMethods.register}
-                type="date"
-              />
-            </Flex>
+              <Box ml={1}>
+                <FloatingLabelInput
+                  label="To"
+                  name="toDate"
+                  register={formMethods.register}
+                  type="date"
+                />
+              </Box>
+            </Box>
           </FormProvider>
         </VStack>
       </ModalComponent>

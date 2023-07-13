@@ -14,6 +14,8 @@ export const colors = {
   grey_50: "#808080",
   /** grey_dark */
   grey_dark: "#999999",
+  /* grey_light */
+  grey_light: "#eef1f6",
   /**grey_90*/
   grey_90: "#E6E6E6",
   /**error color*/

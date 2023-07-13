@@ -9,6 +9,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
@@ -28,6 +29,11 @@ export const AcademicInfoForm = ({
     formState: { errors },
   } = useFormContext<IRegisterFields>();
 
+  const mappedImageInfo =
+    doctorProfileData?.doctor_academic_info.map(e =>
+      e?.academic_document.map((e: any) => getImageUrl(e.file))
+    ) ?? [];
+
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
@@ -43,19 +49,16 @@ export const AcademicInfoForm = ({
           doctor: a.doctor,
           major: a.major,
           university: a.university,
+          id: a.id?.toString(),
           graduation_year: a.graduation_year?.toString(),
         })),
       });
     }
   }, [doctorProfileData, reset]);
 
-  const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
-  >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
-  console.log(selectedImagesFile);
+  const [selectedImages, setSelectedImages] =
+    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -100,43 +103,45 @@ export const AcademicInfoForm = ({
     };
   });
 
+  const handleRemoveAcademic = async (index: number) => {
+    const academicIndex = index;
+    console.log({ index });
+    if (watch(`academic.${index}.isSubmitted`)) {
+      const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
+        parseInt(getValues(`academic.${index}.id`))
+      );
+
+      if (academicInfoResponse) {
+        toastSuccess("Academic data deleted successfully");
+        remove(index);
+      } else {
+        toastFail("Failed to delete academic information!");
+      }
+    } else {
+      console.log(index);
+      remove(index);
+    }
+
+    // Remove corresponding files from selectedImagesFile state
+    setSelectedImagesFile(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(academicIndex, 1);
+      return updatedImages;
+    });
+  };
+
   return (
     <>
       {fields.map((item, index) => {
-        const academicIndex = index;
-        const selectedImagesForAcademic = selectedImages[academicIndex] || [];
-
-        const handleRemoveAcademic = async () => {
-          if (watch(`academic.${index}.isSubmitted`)) {
-            const academicInfoResponse =
-              await deleteAcademicInfoRegister.mutateAsync(
-                parseInt(getValues(`academic.${index}.id`))
-              );
-
-            if (academicInfoResponse) {
-              toastSuccess("Academic data deleted successfully");
-              remove(index);
-            } else {
-              toastFail("Failed to delete academic information!");
-            }
-          } else remove(index);
-
-          // Remove corresponding files from selectedImagesFile state
-          setSelectedImagesFile(prevImages => {
-            const updatedImages = [...prevImages];
-            updatedImages.splice(academicIndex, 1);
-            return updatedImages;
-          });
-        };
         return (
           <Box key={item.id} position="relative">
             <Box mb={4}>
               <MultipleImageUpload
-                selectedImages={selectedImagesForAcademic}
+                selectedImages={selectedImages[index] ?? []}
                 setSelectedImages={images => {
                   setSelectedImages(prevImages => {
                     const updatedImages = [...prevImages];
-                    updatedImages[academicIndex] = images;
+                    updatedImages[index] = images;
                     return updatedImages;
                   });
                 }}
@@ -149,6 +154,7 @@ export const AcademicInfoForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
+                editMode={false}
               />
             </Box>
             <SimpleGrid
@@ -240,7 +246,7 @@ export const AcademicInfoForm = ({
                 top="150px"
                 variant={"ghost"}
                 _hover={{ background: "transparent" }}
-                onClick={handleRemoveAcademic}
+                onClick={() => handleRemoveAcademic(index)}
               >
                 <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
               </Button>

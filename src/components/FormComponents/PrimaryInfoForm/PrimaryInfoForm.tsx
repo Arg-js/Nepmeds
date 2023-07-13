@@ -33,10 +33,10 @@ const PrimaryInfo = ({
 }) => {
   const {
     register,
-    control,
     watch,
     reset,
     getValues,
+    control,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const provinceInfo = useGetProvince();
@@ -91,10 +91,10 @@ const PrimaryInfo = ({
           p => p.value === doctorProfileData.id_issued_district
         )?.value,
         province: provinceOptions.find(
-          p => p.value === doctorProfileData.user.province
+          p => p.value === doctorProfileData?.user?.province
         )?.value,
         district: districtOptions.find(
-          p => p.value === doctorProfileData.user.district
+          p => p.value === doctorProfileData?.user?.district
         )?.value,
       });
     }
@@ -188,7 +188,7 @@ const PrimaryInfo = ({
           error={errors.phone?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 2, lg: 3, xl: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           label="Mobile No."
           name="mobile_number"
@@ -207,7 +207,7 @@ const PrimaryInfo = ({
           error={errors.mobile_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, xl: 2 }}>
+      <GridItem colSpan={isEditable ? 2 : 2}>
         <FloatingLabelInput
           type="email"
           label="Email"
@@ -260,14 +260,14 @@ const PrimaryInfo = ({
           error={errors.date_of_birth?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, xl: 2 }}>
+      <GridItem colSpan={isEditable ? 2 : 2}>
         <MultiSelect
           label="Specialization"
           required
           name="specialization"
           multiValue={doctorProfileData?.specialization?.map(item => ({
-            label: item.name,
-            value: item.id.toString(),
+            label: item?.name,
+            value: item?.id?.toString(),
           }))}
           register={register}
           options={specializationOptions}
@@ -283,7 +283,7 @@ const PrimaryInfo = ({
           error={errors.specialization?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
@@ -308,7 +308,7 @@ const PrimaryInfo = ({
           error={errors.pan_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
           placeholder=""
           label="ID Type"
@@ -331,57 +331,7 @@ const PrimaryInfo = ({
           {IdType(watchIdType)} Detail
         </Text>
       </GridItem>
-      <GridItem colSpan={{ base: 4, xl: 2 }}>
-        <FloatingLabelInput
-          label="ID Number"
-          name="id_number"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.id_number}
-          style={{ background: colors.forminput, border: "none" }}
-          rules={{
-            required: "ID no is required.",
-          }}
-          error={errors.id_number?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
-        <Select
-          placeholder=""
-          label="Issued District"
-          name="id_issued_district"
-          required
-          register={register}
-          options={allDistrictOptions}
-          defaultValue={doctorProfileData?.id_issued_district}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "ID issued district is required.",
-          }}
-          error={errors.id_issued_district?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
-        <FloatingLabelInput
-          name="id_issued_date"
-          label="Issued Date"
-          register={register}
-          defaultValue={doctorProfileData?.id_issued_date}
-          type="date"
-          required
-          style={{ background: colors.forminput, border: "none" }}
-          rules={{
-            required: "ID issued date is required.",
-            validate: validateDateOfCardIssued,
-          }}
-          error={errors.id_issued_date?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={{ base: 4, lg: 2 }}>
+      <GridItem colSpan={2}>
         <ImageUpload
           SelectedImage={selectedFrontImage}
           setSelectedImage={setSelectedFrontImage}
@@ -409,12 +359,62 @@ const PrimaryInfo = ({
           }}
         />
       </GridItem>
+      <GridItem colSpan={2}>
+        <FloatingLabelInput
+          label="ID Number"
+          name="id_number"
+          required
+          register={register}
+          defaultValue={doctorProfileData?.id_number}
+          style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "ID no is required.",
+          }}
+          error={errors.id_number?.message}
+        />
+      </GridItem>
+      <GridItem colSpan={isEditable ? 1 : 1}>
+        <Select
+          placeholder=""
+          label="Issued District"
+          name="id_issued_district"
+          required
+          register={register}
+          options={allDistrictOptions}
+          defaultValue={doctorProfileData?.id_issued_district}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
+          rules={{
+            required: "ID issued district is required.",
+          }}
+          error={errors.id_issued_district?.message}
+        />
+      </GridItem>
+      <GridItem colSpan={isEditable ? 1 : 1}>
+        <FloatingLabelInput
+          name="id_issued_date"
+          label="Issued Date"
+          register={register}
+          defaultValue={doctorProfileData?.id_issued_date}
+          type="date"
+          required
+          style={{ background: colors.forminput, border: "none" }}
+          rules={{
+            required: "ID issued date is required.",
+            validate: validateDateOfCardIssued,
+          }}
+          error={errors.id_issued_date?.message}
+        />
+      </GridItem>
       <GridItem colSpan={4}>
         <Text fontWeight={100} fontSize={"20px"}>
           Address Details
         </Text>
       </GridItem>
-      <GridItem colSpan={{ base: 4, md: 2 }}>
+      <GridItem colSpan={1}>
         <Select
           placeholder="Select Province"
           label="Province"
@@ -434,7 +434,7 @@ const PrimaryInfo = ({
           error={errors.province?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
           placeholder="Select District"
           label="District"
@@ -454,7 +454,7 @@ const PrimaryInfo = ({
           error={errors.district?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 4, md: 2, xl: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
           placeholder="Select Municipality/Vdc"
           label="Municipality/Vdc"
@@ -474,7 +474,7 @@ const PrimaryInfo = ({
           error={errors.municipality?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 2, md: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Ward"
@@ -489,7 +489,7 @@ const PrimaryInfo = ({
           error={errors.ward?.message}
         />
       </GridItem>
-      <GridItem colSpan={{ base: 2, md: 1 }}>
+      <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           placeholder=""
           label="Tole"

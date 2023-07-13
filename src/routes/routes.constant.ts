@@ -20,7 +20,7 @@ export const NAVIGATION_ROUTES = {
   USER_ROLE: "user-role",
   CONSULT_REQUEST: "/consult-request",
 
-  DOCTOR_LIST: "doctor-list",
+  DOCTOR_LIST: "/doctor-list",
   DOCTOR_PROFILE: "/doctor-profile",
   APPOINTMENTS: "appointments",
   FOLLOWUP: "followup",

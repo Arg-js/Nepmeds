@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { NepMedsResponse, api } from "./service-api";
+import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface Symptom {
@@ -11,13 +11,13 @@ export interface Symptom {
 
 const getSymptoms = async () => {
   const response = await HttpClient.get<NepMedsResponse<Symptom[]>>(
-    api.symptom
+    api.symptom_list
   );
   return response;
 };
 
 export const useGetSymptoms = () =>
-  useQuery(api.symptom, getSymptoms, { select: res => res.data.data });
+  useQuery(api.symptom_list, getSymptoms, { select: res => res.data.data });
 
 const saveSymptoms = async (symptomInfo: {
   id: string | null;
@@ -25,7 +25,7 @@ const saveSymptoms = async (symptomInfo: {
   keyword: string;
 }) => {
   if (symptomInfo.id) {
-    const response = await HttpClient.put<NepMedsResponse>(
+    const response = await HttpClient.patch<NepMedsResponse>(
       api.symptom + symptomInfo.id + "/",
       {
         name: symptomInfo.name,
@@ -42,12 +42,18 @@ const saveSymptoms = async (symptomInfo: {
   }
 };
 
-export const useSaveSymptoms = () => {
+export const useSaveSymptoms = (
+  page_no: number,
+  page_size: number,
+  name: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(saveSymptoms, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.symptom);
+      queryClient.invalidateQueries(
+        `${api.symptom}/?page=${page_no}&page_size=${page_size}&name=${name}`
+      );
     },
   });
 };
@@ -59,12 +65,18 @@ const deleteSymptom = async (symptomInfo: { id: string | null }) => {
   return response;
 };
 
-export const useDeleteSymptom = () => {
+export const useDeleteSymptom = (
+  page_no: number,
+  page_size: number,
+  name: string
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSymptom, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.symptom);
+      queryClient.invalidateQueries(
+        `${api.symptom}/?page=${page_no}&page_size=${page_size}&name=${name}`
+      );
     },
   });
 };
@@ -85,4 +97,33 @@ export const useDeleteBulkSymptoms = () => {
       queryClient.invalidateQueries(api.symptom);
     },
   });
+};
+
+const getSymptomsDataWithPagination = async (
+  page_no: number,
+  page_size: number,
+  name: string
+) => {
+  const response = await HttpClient.get<PaginatedResponse<Symptom[]>>(
+    `${api.symptom}?page=${page_no}&page_size=${page_size}&name=${name}`
+  );
+  return response;
+};
+
+export const useSymptomsDataWithPagination = ({
+  page_no,
+  page_size,
+  name,
+  activeTab,
+}: {
+  page_no: number;
+  page_size: number;
+  name: string;
+  activeTab: number;
+}) => {
+  return useQuery(
+    `${api.symptom}/?page=${page_no}&page_size=${page_size}&name=${name}`,
+    () => getSymptomsDataWithPagination(page_no, page_size, name),
+    { select: res => res.data.data, enabled: activeTab === 0 }
+  );
 };

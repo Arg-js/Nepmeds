@@ -67,6 +67,7 @@ export interface IGetDoctorProfile {
   id_back_image: File;
   id_number: string;
   id_issued_district: number;
+  id_type: string;
   id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | [];
@@ -75,6 +76,21 @@ export interface IGetDoctorProfile {
   no_of_rejected_times: number;
   rejected_remarks: string;
   status?: string;
+}
+export interface IGetDoctorBasicProfile {
+  id: number;
+  user_details: {
+    first_name: string;
+    last_name: string;
+    middle_name: string;
+    email: string;
+    mobile_number: string;
+    profile_picture: string;
+  };
+  specialization: {
+    id: number;
+    name: string;
+  }[];
 }
 
 const getDoctorProfile = async () => {
@@ -85,6 +101,19 @@ const getDoctorProfile = async () => {
 };
 export const useDoctorProfile = () => {
   return useQuery([api.doctor_profile], getDoctorProfile, {
+    select: data => data.data.data,
+  });
+};
+
+const getBasicProfile = async () => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IGetDoctorBasicProfile>
+  >(api.basicProfile);
+  return response;
+};
+
+export const useDoctorBasicProfile = () => {
+  return useQuery(api.basicProfile, getBasicProfile, {
     select: data => data.data.data,
   });
 };

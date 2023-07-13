@@ -30,7 +30,9 @@ const Layout = () => {
       </GridItem>
       <GridItem bg={colors.bg} area={"nav"}>
         <Navbar />
-        <Box m={5}>
+        <Box
+        //  m={2}
+        >
           <Outlet />
         </Box>
       </GridItem>

@@ -2,43 +2,33 @@ import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-const getApprovedDoctorList = async () => {
-  const response = await HttpClient.get<NepMedsResponse>(api.approveddoctor);
-  return response;
-};
-
-export const useApprovedDoctorList = () =>
-  useQuery(api.approveddoctor, getApprovedDoctorList, {
-    select: data => data.data.data,
-  });
-
-const getRejectedDoctorList = async () => {
+const getApprovedDoctorList = async (page_no: number) => {
   const response = await HttpClient.get<NepMedsResponse>(
-    api.rejectedDoctorList
+    `${api.approveddoctor}/?page_no=${page_no}`
   );
   return response;
 };
-export const useFetchRejectedDoctorList = () =>
-  useQuery(api.rejectedDoctorList, getRejectedDoctorList, {
-    select: data => data.data.data,
-  });
 
-export const useFakePagination = ({
-  page,
-  perPage,
-}: {
-  page: number;
-  perPage: number;
-}) => {
-  return useQuery(
-    `https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`,
-    async () => {
-      return await HttpClient.get<any>(
-        `https://api.punkapi.com/v2/beers?page=${page}&per_page=${perPage}`
-      );
-    },
+export const useApprovedDoctorList = ({ page_no }: { page_no: number }) =>
+  useQuery(
+    `${api.approveddoctor}/?page_np=${page_no}`,
+    () => getApprovedDoctorList(page_no),
     {
-      select: data => data.data,
+      select: data => data.data.data,
     }
   );
+
+const getRejectedDoctorList = async (page_no: number) => {
+  const response = await HttpClient.get<NepMedsResponse>(
+    `${api.rejectedDoctorList}/?page_no=${page_no}`
+  );
+  return response;
 };
+export const useFetchRejectedDoctorList = ({ page_no }: { page_no: number }) =>
+  useQuery(
+    `${api.rejectedDoctorList}/?page_no=${page_no}`,
+    () => getRejectedDoctorList(page_no),
+    {
+      select: data => data.data.data,
+    }
+  );
