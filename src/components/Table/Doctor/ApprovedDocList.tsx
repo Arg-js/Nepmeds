@@ -10,8 +10,8 @@ import {
   InputLeftElement,
   Spinner,
   Text,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -20,9 +20,9 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 import Select from "@nepMeds/components/Form/Select";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
@@ -50,6 +50,7 @@ interface Props {
 }
 
 const ApprovedDocList = ({ specializationList }: Props) => {
+  const navigate = useNavigate();
   const {
     isOpen: isDetailsModalOpen,
     // onOpen: onDetailsModalOpen,
@@ -73,7 +74,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
     status: "approved",
   });
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const [_isRejected, setIsRejected] = React.useState(false);
   const rejectModal = () => {
     setIsRejected(true);

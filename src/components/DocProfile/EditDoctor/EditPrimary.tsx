@@ -1,23 +1,22 @@
-import React from "react";
 import { EditIcon } from "@chakra-ui/icons";
 import {
+  AspectRatio,
+  Box,
+  Button,
   Card,
   CardBody,
-  Icon,
+  Divider,
+  Flex,
+  Grid,
+  GridItem,
   HStack,
-  Button,
+  Icon,
+  Image,
+  SimpleGrid,
+  Tag,
+  Text,
   VStack,
   useDisclosure,
-  Text,
-  Box,
-  GridItem,
-  Grid,
-  Tag,
-  Image,
-  Divider,
-  SimpleGrid,
-  AspectRatio,
-  Flex,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -35,11 +34,12 @@ import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { AxiosError } from "axios";
+import React from "react";
 import {
-  useForm,
+  FieldValues,
   FormProvider,
   UseFormReturn,
-  FieldValues,
+  useForm,
 } from "react-hook-form";
 
 const EditPrimaryForm = ({
@@ -145,7 +145,9 @@ const EditPrimary = ({
 
       const doctorProfile = {
         user: user,
-        specialization: getValues("specialization"),
+        specialization: getValues("specialization").map(
+          (e: { id: string; value: string }) => Number(e.value)
+        ),
         pan_number: getValues("pan_number"),
         id_type: getValues("id_type"),
         id_number: getValues("id_number"),
@@ -467,7 +469,7 @@ const EditPrimary = ({
               >
                 : &nbsp;
                 {doctorProfileData &&
-                  doctorProfileData?.specialization?.map(s => {
+                  doctorProfileData?.specialization_names?.map(s => {
                     return (
                       <Tag
                         key={s.id ?? s}

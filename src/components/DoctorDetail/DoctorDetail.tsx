@@ -7,12 +7,12 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { normalURL } from "@nepMeds/service/service-axios";
-import { colors } from "@nepMeds/theme/colors";
 import NepmedsLogoIcon from "@nepMeds/assets/images/logo1.png";
 import { AcademicInfo } from "@nepMeds/service/nepmeds-academic";
 import { CertificateInfo } from "@nepMeds/service/nepmeds-certificate";
 import { ExperienceInfo } from "@nepMeds/service/nepmeds-experience";
+import { normalURL } from "@nepMeds/service/service-axios";
+import { colors } from "@nepMeds/theme/colors";
 
 interface IUser {
   first_name: string;
