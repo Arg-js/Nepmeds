@@ -65,6 +65,8 @@ export interface IGetDoctorProfile {
   pan_number: string;
   id?: number;
   specialization_names: IResponseSpecialization[];
+  specialization: IResponseSpecialization[];
+
   id_front_image: File;
   id_back_image: File;
   id_number: string;

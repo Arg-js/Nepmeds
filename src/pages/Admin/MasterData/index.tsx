@@ -38,15 +38,16 @@ const MasterData = () => {
         // templateColumns="repeat(5, 1fr)"
         justifyContent={"space-between"}
         alignItems={"center"}
+        p={4}
       >
         <GridItem>
-          <TabList border="none" p={4}>
+          <TabList border="none">
             <Tab>Symptoms</Tab>
             <Tab>Specialist</Tab>
           </TabList>
         </GridItem>
 
-        <GridItem width={"15%"}>
+        <GridItem>
           {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
           {activeTab === 0 ? (
             <CustomButton
