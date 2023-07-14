@@ -215,7 +215,7 @@ const EditBasic = ({
                 {doctorProfileData?.user?.middle_name}&nbsp;
                 {doctorProfileData?.user?.last_name}&nbsp;
                 {doctorProfileData?.specialization_names?.length
-                  ? `(${doctorProfileData?.specialization_names?.[0]})`
+                  ? `(${doctorProfileData?.specialization_names?.[0]?.name})`
                   : ""}
                 {doctorProfileData?.status === "approved" && (
                   <Image
