@@ -70,17 +70,17 @@ export function DataTable({
     }
   }, [sortingColumn]);
 
-  const totalPage = Math.ceil(pagination?.pageCount ?? 0);
+  // const totalPage = Math.ceil(pagination?.pageCount ?? 0);
 
   const paginationParams = useMemo(
     () =>
       pagination?.manual
         ? {
             manualPagination: true,
-            pageCount: totalPage ?? -1,
+            pageCount: pagination?.pageCount ?? -1,
             state: {
               pagination: {
-                pageIndex: pagination.pageParams?.pageIndex ?? 0,
+                pageIndex: pagination.pageParams?.pageIndex ?? 1,
                 pageSize: pagination.pageParams?.pageSize ?? 20,
               },
             },
@@ -95,7 +95,6 @@ export function DataTable({
   const table = useReactTable({
     columns,
     data,
-
     state: {
       grouping,
       sorting,
@@ -249,6 +248,7 @@ export function DataTable({
                 colorScheme={"purple"}
                 value={table.getState().pagination.pageSize}
                 onChange={e => {
+                  table.setPageIndex(0);
                   table.setPageSize(Number(e.target.value));
                 }}
               >
@@ -268,10 +268,10 @@ export function DataTable({
             </FormControl>
           </HStack>
           <Pagination
-            isBackendPaginated={pagination?.manual}
+            isBackendPaginated={true}
             table={table}
             pageIndex={pagination?.pageParams?.pageIndex}
-            pageCount={pagination?.pageCount ?? data?.length}
+            pageCount={pagination?.pageCount}
           />
         </HStack>
       ) : (

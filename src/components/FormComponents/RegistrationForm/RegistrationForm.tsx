@@ -181,8 +181,8 @@ const RegistrationForm = () => {
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
 
       const specializationValues = formMethods.getValues("specialization");
-      const specializationArray = specializationValues.map(
-        specialization => specialization.value
+      const specializationArray = specializationValues.map(specialization =>
+        Number(specialization.value)
       );
       const doctorData = {
         user: {
@@ -277,7 +277,7 @@ const RegistrationForm = () => {
               title: values.title,
 
               bio_detail: values.bio_detail,
-              specialization: values.specialization.map(s => s.value),
+              specialization: values.specialization.map(s => Number(s.value)),
               age: 20,
               medical_degree: "test",
               designation: "Test",

@@ -163,6 +163,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
+
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
       {!isEditable && (
@@ -265,7 +266,7 @@ const PrimaryInfo = ({
           label="Specialization"
           required
           name="specialization"
-          multiValue={doctorProfileData?.specialization?.map(item => ({
+          multiValue={doctorProfileData?.specialization_names?.map(item => ({
             label: item?.name,
             value: item?.id?.toString(),
           }))}
