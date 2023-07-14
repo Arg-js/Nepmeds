@@ -17,7 +17,7 @@ export type PrimaryInfo = Pick<
   | "id_issued_district"
   | "pan_number"
 > & {
-  specialization?: string[];
+  specialization?: number[];
   id_front_image?: File | string;
   id_back_image?: File | string;
   user: {

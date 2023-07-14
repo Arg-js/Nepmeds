@@ -17,7 +17,7 @@ const MultipleImageUpload = ({
     Array(selectedImages.length).fill(false)
   );
 
-  const { setValue, getValues } = useFormContext();
+  const { getValues } = useFormContext();
 
   useEffect(() => {
     const fieldValue = getValues(fieldValues);
