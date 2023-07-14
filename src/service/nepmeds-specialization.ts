@@ -4,9 +4,9 @@ import { HttpClient } from "./service-axios";
 
 export interface Specialization {
   id: number;
-  symptom_list: Symptom[];
+  symptom_list?: Symptom[];
   name: string;
-  consultation_fees: number;
+  consultation_fees?: number;
 }
 
 export interface Symptom {

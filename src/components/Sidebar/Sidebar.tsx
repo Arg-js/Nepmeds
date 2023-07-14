@@ -129,7 +129,6 @@ const Sidebar = () => {
     logoutAction.mutate();
   };
   const { data: userInfo } = useLoginTokenDetailQuery();
-  console.log(userInfo, "????");
 
   const menuOptions =
     (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];

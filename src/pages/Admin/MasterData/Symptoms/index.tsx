@@ -19,6 +19,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
   Symptom,
   // useDeleteBulkSymptoms,
@@ -55,11 +56,14 @@ const Symptoms = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
+  const [searchFilter, setSearchFilter] = useState("");
+  const debouncedInputValue = useDebounce(searchFilter, 500);
   const { data } = useSymptomsDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
-    name: "",
+    name: debouncedInputValue,
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
@@ -82,9 +86,6 @@ const Symptoms = ({
   //   onClose: onCloseBulkModal,
   //   onOpen: onOpenBulkModal,
   // } = useDisclosure();
-
-  const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
-  const [searchFilter, setSearchFilter] = useState("");
 
   const formMethods = useForm({
     defaultValues: {
@@ -250,7 +251,6 @@ const Symptoms = ({
       <DataTable
         columns={columns}
         data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },

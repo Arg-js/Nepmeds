@@ -36,6 +36,8 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -144,19 +146,22 @@ const RegisteredDocList = ({ specializationList }: Props) => {
       {
         header: "Specialization",
         accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
-          const specialization = row?.original?.specialization ?? "";
-
+        cell: ({
+          row,
+        }: CellContext<{ specialization_names: Specialization[] }, any>) => {
+          const specialization = row?.original?.specialization_names?.map(
+            data => data.name
+          );
           return (
             <Box
               display={"flex"}
               flexWrap={"wrap"}
-              // width={"fit-content"}
-              // p={1}
+              width={"fit-content"}
+              p={1}
               // background={colors.grey}
               // borderRadius={20}
             >
-              <p>{specialization.join(", ")}</p>
+              <p>{specialization}</p>
             </Box>
           );
         },
@@ -224,10 +229,15 @@ const RegisteredDocList = ({ specializationList }: Props) => {
   const [id, setId] = React.useState("");
   const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
 
-  const { data, isLoading } = useDoctorList({
+  const [searchFilter, setSearchFilter] = useState("");
+
+  const debouncedInputValue = useDebounce(searchFilter, 500);
+
+  const { data } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
+    name: debouncedInputValue,
   });
 
   const handleFilterData = (isReset: boolean) => {
@@ -244,17 +254,10 @@ const RegisteredDocList = ({ specializationList }: Props) => {
 
     onModalClose();
   };
-  const [searchFilter, setSearchFilter] = useState("");
   const acceptDoctor = () => {
     onDetailsModalClose();
   };
 
-  if (isLoading)
-    return (
-      <Spinner
-        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
-      />
-    );
   return (
     <>
       <HStack justifyContent="space-between">
@@ -287,7 +290,6 @@ const RegisteredDocList = ({ specializationList }: Props) => {
       <DataTable
         columns={columns}
         data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
