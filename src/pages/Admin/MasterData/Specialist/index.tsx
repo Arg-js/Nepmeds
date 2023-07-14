@@ -158,10 +158,12 @@ const Specializations = ({
               onClick={() => {
                 formMethods.reset({
                   ...cell.row.original,
-                  symptom: cell.row.original.symptom_list.map(s => ({
-                    label: s.name,
-                    value: s.id.toString(),
-                  })),
+                  symptom:
+                    cell?.row?.original?.symptom_list &&
+                    cell?.row?.original?.symptom_list.map(s => ({
+                      label: s.name,
+                      value: s.id.toString(),
+                    })),
                 });
                 onOpenEditModal();
               }}

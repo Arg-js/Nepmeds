@@ -37,6 +37,7 @@ import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -145,19 +146,22 @@ const RegisteredDocList = ({ specializationList }: Props) => {
       {
         header: "Specialization",
         accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
-          const specialization = row?.original?.specialization ?? "";
-
+        cell: ({
+          row,
+        }: CellContext<{ specialization_names: Specialization[] }, any>) => {
+          const specialization = row?.original?.specialization_names?.map(
+            data => data.name
+          );
           return (
             <Box
               display={"flex"}
               flexWrap={"wrap"}
-              // width={"fit-content"}
-              // p={1}
+              width={"fit-content"}
+              p={1}
               // background={colors.grey}
               // borderRadius={20}
             >
-              <p>{specialization.join(", ")}</p>
+              <p>{specialization}</p>
             </Box>
           );
         },

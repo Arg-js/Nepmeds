@@ -10,14 +10,18 @@ const rejectDoc = async (data: { id: string; remarks: string }) => {
   return response;
 };
 
-export const useRejectDoc = () => {
+export const useRejectDoc = (
+  page_no?: number,
+
+  page_size?: number
+) => {
   const queryClient = useQueryClient();
 
   return useMutation(rejectDoc, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.pendingdoctor);
-      queryClient.invalidateQueries(api.registereddoctor);
-      queryClient.invalidateQueries(api.approveddoctor);
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&pageSize=${page_size}`
+      );
     },
   });
 };

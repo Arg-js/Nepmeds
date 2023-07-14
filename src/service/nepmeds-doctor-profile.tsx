@@ -59,6 +59,10 @@ export interface IGetDoctorProfile {
   age: number;
   pan_number: string;
   id?: number;
+  specialization_names?: {
+    id?: number;
+    name?: string;
+  }[];
   specialization: {
     id: number;
     name: string;
@@ -87,7 +91,7 @@ export interface IGetDoctorBasicProfile {
     mobile_number: string;
     profile_picture: string;
   };
-  specialization: {
+  specialization_names: {
     id: number;
     name: string;
   }[];

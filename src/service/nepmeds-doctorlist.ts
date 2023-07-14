@@ -35,7 +35,7 @@ export const getDoctorList = async ({
     apiUrl += `&created_at__date__lte=${to_date}`;
   }
   if (name) {
-    apiUrl += `?user__name_icontains=${name}`;
+    apiUrl += `?user__name__icontains=${name}`;
   }
   const response = await HttpClient.get<PaginatedResponse<IGetDoctorProfile>>(
     apiUrl
@@ -60,8 +60,24 @@ export const useDoctorList = ({
   specialization?: string;
   name?: string;
 }) => {
+  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
+  if (specialization) {
+    apiUrl += `&specialization=${specialization}`;
+  }
+  if (status) {
+    apiUrl += `&status=${status}`;
+  }
+  if (from_date) {
+    apiUrl += `&created_at__date__gte=${from_date}`;
+  }
+  if (to_date) {
+    apiUrl += `&created_at__date__lte=${to_date}`;
+  }
+  if (name) {
+    apiUrl += `?user__name__icontains=${name}`;
+  }
   return useQuery(
-    `${api.registereddoctor}/?status=${status}&page=${page_no}&created_at__date__gte=${from_date}&created_at__date__lte=${to_date}&specialization=${specialization}&pageSize=${page_size}&user__name_icontains=${name}`,
+    apiUrl,
     () =>
       getDoctorList({
         page_no: page_no,
