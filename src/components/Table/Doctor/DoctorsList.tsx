@@ -7,11 +7,8 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import { CustomButton } from "@nepMeds/components/Button/Button";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { IoAdd } from "react-icons/io5";
 import ApprovedDocList from "./ApprovedDocList";
 import PendingDocList from "./PendingDocList";
 import RegisteredDocList from "./RegisteredDocList";
@@ -50,14 +47,12 @@ const DoctorsList = () => {
             </TabList>
           </GridItem>
 
-          <GridItem width={"15%"}>
-            {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
+          {/* <GridItem width={"15%"}>
             <CustomButton backgroundColor={colors.primary}>
               {" "}
               <IoAdd /> Add Doctor
             </CustomButton>
-            {/* </Link> */}
-          </GridItem>
+          </GridItem> */}
         </Grid>
 
         <TabPanels>
