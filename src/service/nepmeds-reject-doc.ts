@@ -13,14 +13,24 @@ const rejectDoc = async (data: { id: string; remarks: string }) => {
 export const useRejectDoc = (
   page_no?: number,
 
-  page_size?: number
+  page_size?: number,
+  status?: string
 ) => {
+  console.log(
+    `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=${status}`
+  );
   const queryClient = useQueryClient();
 
   return useMutation(rejectDoc, {
     onSuccess: () => {
       queryClient.invalidateQueries(
-        `${api.registereddoctor}/?page=${page_no}&pageSize=${page_size}`
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`
+      );
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=pending`
+      );
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=rejected`
       );
     },
   });
