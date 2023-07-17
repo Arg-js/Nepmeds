@@ -15,24 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 
-// export const DocUpdateProfile = ({
-//   doctorProfileData,
-// }: {
-//   doctorProfileData: IGetDoctorProfile;
-// }) => {
-//   return (
-//     <>
-//       <EditBasic doctorProfileData={doctorProfileData} />
-//       <EditPrimary doctorProfileData={doctorProfileData} />
-//       <EditAcademic doctorProfileData={doctorProfileData} />
-//       <EditCertification doctorProfileData={doctorProfileData} />
-//       <EditExperience doctorProfileData={doctorProfmergeileData} />
-//     </>
-//   );
-// };
-
-// export default DocUpdateProfile;
-
 export const DocUpdateProfile = ({
   doctorProfileData,
 }: {

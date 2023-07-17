@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-13)
+## 0.0.1 (2023-07-14)
 
 ### Bug Fixes
 
@@ -235,11 +235,14 @@
 * **confirm password:** fixed url and token issue ([fe7717c](https://gitlab.com/r2850/nepmeds/commit/fe7717c0feb01b8f652f402a2ac5dae25c985c24))
 * doctor profile new design and api integration ([3f1b8f2](https://gitlab.com/r2850/nepmeds/commit/3f1b8f231993cc068549ad4d482d87e7964d2d99))
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
+* **doctor:** bug fixing in doctor table ([77c15a1](https://gitlab.com/r2850/nepmeds/commit/77c15a14e5d12059d1225ace75223b0bbad668d2))
 * **doctor:** fix proper api call and pagination ([9f5dd9d](https://gitlab.com/r2850/nepmeds/commit/9f5dd9d9dd870b8fdcf0235a8720bb9cecf1f717))
+* **doctortable:** doctor table approve and pending fixed ([43da358](https://gitlab.com/r2850/nepmeds/commit/43da3584f4d1ebf7a359430208c15c716b87cdc5))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
 * few styling ([25bbbd1](https://gitlab.com/r2850/nepmeds/commit/25bbbd174b41bdb92a600cec2e80d2fd383ccf8b))
+* **filter:** filter by name implementation ([e087423](https://gitlab.com/r2850/nepmeds/commit/e087423426540d9e3452447006ee2d431c03704f))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
 * image layout ([288726f](https://gitlab.com/r2850/nepmeds/commit/288726f426bd5c2f393d04fef3cfdd811731c3e9))
 * input fields ([357d009](https://gitlab.com/r2850/nepmeds/commit/357d00981cec4a43262cddbef6d8a0de399f449d))
