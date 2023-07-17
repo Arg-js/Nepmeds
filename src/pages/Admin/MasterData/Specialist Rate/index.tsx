@@ -9,6 +9,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Stack,
   Text,
   VStack,
   useDisclosure,
@@ -16,22 +17,25 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import Checkbox from "@nepMeds/components/Form/Checkbox";
+
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+
+import Select, { ISelectOption } from "@nepMeds/components/Form/Select";
+
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
-  Specialization,
-  // useDeleteBulkSpecialization,
-  useDeleteSpecialization,
-  useSaveSpecialization,
-  useSpecializationData,
-  useUpdateSpecialization,
-} from "@nepMeds/service/nepmeds-specialization";
-import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+  SpecialistRate,
+  useDeleteSpecialistRate,
+  useSaveSpecialistRate,
+  useSpecialistRateDataWithPagination,
+  useUpdateSpecialistRate,
+} from "@nepMeds/service/nepmeds-specialistRate";
+
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
@@ -43,41 +47,35 @@ const schema = yup.object().shape({
 
 type OnOpenFunction = () => void;
 
-interface SpecializationProps {
-  onCloseSpecialization: OnOpenFunction;
-  isSpecializationOpen: boolean;
+interface SpecialistRateProps {
+  onCloseSpecialistRate: OnOpenFunction;
+  isOpenSpecialistRate: boolean;
   activeTab: number;
 }
-const Specializations = ({
-  onCloseSpecialization,
-  isSpecializationOpen,
+const SpecialistRates = ({
+  onCloseSpecialistRate,
+  isOpenSpecialistRate,
   activeTab,
-}: SpecializationProps) => {
-  const { data: symptomList = [] } = useGetSymptoms();
-
+}: SpecialistRateProps) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-
-  const { data } = useSpecializationData({
+  const [doctorName, setDoctorName] = useState<ISelectOption[]>([]);
+  const { data } = useSpecialistRateDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
-    pageSize: pageSize,
-    name: "",
+    page_size: pageSize,
   });
-  const saveSpecializationAction = useSaveSpecialization(
+
+  const saveSpecialistRate = useSaveSpecialistRate(pageIndex + 1, pageSize, "");
+  const updateSpecializationAction = useUpdateSpecialistRate(
     pageIndex + 1,
     pageSize,
     ""
   );
-  const updateSpecializationAction = useUpdateSpecialization(
-    pageIndex + 1,
-    pageSize,
-    ""
-  );
-  // const deleteBulkSpecialization = useDeleteBulkSpecialization();
-  const deleteSpecializationAction = useDeleteSpecialization(
+  // // const deleteBulkSpecialization = useDeleteBulkSpecialization();
+  const deleteSpecializationAction = useDeleteSpecialistRate(
     pageIndex + 1,
     pageSize,
     ""
@@ -100,19 +98,38 @@ const Specializations = ({
     onOpen: onOpenEditModal,
   } = useDisclosure();
   const [searchFilter, setSearchFilter] = useState("");
-  const [deleteSpecialization, setDeleteSpecialization] =
-    useState<Specialization | null>(null);
+  // const [idDoctor, setIdDoctor] = useState<number>(0);
 
-  const symptomsOptions = symptomList?.map(s => ({
-    label: s.name,
-    value: s.id,
-  }));
+  const [deleteSpecialization, setDeleteSpecialization] = useState<any>(null);
+
+  // const specializationList = specialization.map(s => ({
+  //   label: s.name,
+  //   value: s.id,
+  // }));
+  // const doctorName = data?.results?.map(x => setDoctorName(x.specialist_name));
+  useEffect(() => {
+    if (data?.results) {
+      const result = data.results
+        .map(x => {
+          if (x.specialist_name !== undefined) {
+            return { label: x.specialist_name, value: x.id };
+          } else {
+            return undefined;
+          }
+        })
+        .filter(x => x !== undefined);
+      setDoctorName(result as ISelectOption[]);
+    }
+  }, [data]);
 
   const formMethods = useForm({
     defaultValues: {
       id: null as number | null,
-      name: "",
-      symptom: [] as { label: string; value: string }[],
+
+      doctorprofile: { label: "", value: 0 },
+      rate: 0,
+      specializations: [],
+      is_general_rate: false,
     },
     resolver: yupResolver(schema),
   });
@@ -125,16 +142,17 @@ const Specializations = ({
       },
     },
     {
-      header: "Specialization Name",
-      accessorKey: "name",
+      header: "Specialist Name",
+      accessorKey: "specialist_name",
     },
+
     {
-      header: "Symptom",
-      cell: (cell: CellContext<Specialization, any>) => {
+      header: "Specialization",
+      cell: (cell: CellContext<SpecialistRate, any>) => {
         return (
           <HStack>
-            {cell.row.original.symptom_list?.map(s => (
-              <Badge key={s.keyword} textTransform="initial" fontWeight="light">
+            {cell.row.original?.specialization?.map(s => (
+              <Badge key={s.id} textTransform="initial" fontWeight="light">
                 {s.name}
               </Badge>
             ))}
@@ -143,8 +161,32 @@ const Specializations = ({
       },
     },
     {
+      header: "Experience",
+      accessorKey: "experience",
+    },
+    {
+      header: "General Rate",
+      accessorKey: "profile_status",
+      cell: ({ row }: CellContext<{ is_general_rate: boolean }, any>) => {
+        const { is_general_rate } = row.original;
+        return (
+          <Badge
+            colorScheme={is_general_rate ? "green" : "red"}
+            p={1}
+            borderRadius={20}
+            fontSize={11}
+            w={24}
+            textAlign="center"
+            textTransform="capitalize"
+          >
+            {is_general_rate ? "Yes" : "No"}
+          </Badge>
+        );
+      },
+    },
+    {
       header: "Actions",
-      cell: (cell: CellContext<Specialization, any>) => {
+      cell: (cell: CellContext<SpecialistRate, any>) => {
         return (
           <HStack justifyContent="center">
             <IconButton
@@ -153,13 +195,15 @@ const Specializations = ({
               size="sm"
               w="auto"
               onClick={() => {
-                formMethods.reset({
-                  ...cell.row.original,
-                  symptom: cell.row.original.symptom_list.map(s => ({
-                    label: s.name,
-                    value: s.id.toString(),
-                  })),
-                });
+                // formMethods.reset({
+                //   ...cell.row.original,
+                // specializations: cell.row.original.specialization?.map(s => ({
+                //     label: s.name,
+                //     value: s.id.toString(),
+                //   })),
+                // });
+                // setIdDoctor(cell.row.original?.id || 0);
+
                 onOpenEditModal();
               }}
             >
@@ -171,7 +215,7 @@ const Specializations = ({
               size="sm"
               w="auto"
               onClick={() => {
-                setDeleteSpecialization(cell.row.original);
+                setDeleteSpecialization(cell.row.original || "");
                 onOpenDeleteModal();
               }}
             >
@@ -185,56 +229,61 @@ const Specializations = ({
 
   const onEditSpecialization = async () => {
     try {
-      const isValid = formMethods.trigger();
-      if (!isValid) return;
-      const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(symptom => symptom.value);
-      await updateSpecializationAction.mutateAsync({
-        id: formMethods.getValues("id") ?? 0,
+      // const isValid = formMethods.trigger();
+      // if (!isValid) return;
+      // const doctorprofileValues = formMethods.getValues("doctorprofile");
 
-        name: formMethods.getValues("name"),
-        consultation_fees: 3213123,
-        symptom: symptoms,
+      // const doctorprofile = doctorprofileValues.value;
+      await updateSpecializationAction.mutateAsync({
+        doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
+        rate: formMethods.getValues("rate"),
+        is_general_rate: formMethods.getValues("is_general_rate"),
       });
       onCloseEditModal();
-      toastSuccess("Specialization updated successfully!");
+      toastSuccess("Specialist Rate updated successfully!");
       formMethods.reset({
-        name: "",
-        symptom: [],
+        is_general_rate: false,
+        rate: 0,
       });
     } catch (error) {
       toastFail("Failed to update Specialization!");
     }
   };
 
-  const onSaveSpecialization = async () => {
+  const onSaveSpecialistRate = async () => {
     try {
-      const isValid = formMethods.trigger();
-      if (!isValid) return;
-      const symptomValues = formMethods.getValues("symptom");
-      const symptoms = symptomValues.map(symptom => symptom.value);
-      await saveSpecializationAction.mutateAsync({
-        name: formMethods.getValues("name"),
-        consultation_fees: "3213123",
-        symptom: symptoms,
+      // const isValid = formMethods.trigger();
+      // if (!isValid) return;
+
+      // console.log(
+      //   formMethods.getValues("doctorprofile"),
+      //   formMethods.getValues("rate"),
+      //   "kkkk"
+      // );
+      // const doctorprofileValues = formMethods.getValues("doctorprofile");
+
+      await saveSpecialistRate.mutateAsync({
+        doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
+
+        rate: formMethods.getValues("rate"),
+
+        is_general_rate: formMethods.getValues("is_general_rate") || false,
       });
-      onCloseSpecialization();
-      toastSuccess("Specialization saved successfully!");
+      onCloseSpecialistRate();
+      toastSuccess("Specialist Rate  saved successfully!");
       formMethods.reset({
-        name: "",
-        symptom: [],
+        is_general_rate: false,
+        rate: 0,
       });
     } catch (error) {
-      toastFail("Failed to save Specialization!");
+      toastFail("Failed to save Specialist Rate!");
     }
   };
 
   const ondeleteSpecialization = async () => {
     try {
-      if (!deleteSpecialization?.id) return;
-
       await deleteSpecializationAction.mutateAsync({
-        id: deleteSpecialization.id.toString(),
+        doctorprofile: deleteSpecialization?.id || "",
       });
       onCloseDeleteModal();
       toastSuccess("Specialization deleted successfully!");
@@ -242,26 +291,13 @@ const Specializations = ({
       toastFail("Failed to delete symptom!");
     }
   };
-  // const onBulkDelete = async (data: Specialization[]) => {
-  //   const id = data.map(data => data.id);
-
-  //   try {
-  //     await deleteBulkSpecialization.mutateAsync({
-  //       id: id,
-  //     });
-  //     onCloseBulkModal();
-  //     toastSuccess("Specializations deleted successfully!");
-  //   } catch (error) {
-  //     toastFail("Failed to delete specialization!");
-  //   }
-  // };
 
   return (
     <Fragment>
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist
+            Specialist Rate
           </Text>
         </GridItem>
 
@@ -275,25 +311,6 @@ const Specializations = ({
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
-          {/* <Box ml={1}>
-            <Menu>
-              <MenuButton as={Button} variant={"outline"}>
-                <Text
-                  display={"flex"}
-                  alignItems={"center"}
-                  fontWeight={400}
-                  color={colors.light_gray}
-                >
-                  {" "}
-                  Bulk Action{" "}
-                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
-                </Text>
-              </MenuButton>
-              <MenuList onClick={onOpenBulkModal}>
-                <MenuItem>Bulk Delete </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
         </GridItem>
       </Grid>
       <DataTable
@@ -307,22 +324,23 @@ const Specializations = ({
           onChangePagination: setPagination,
         }}
       />
-
       {/* edit modal */}
       <ModalComponent
         size="sm"
         isOpen={isEditModalOpen}
         onClose={() => {
           onCloseEditModal();
-          formMethods.reset({
-            name: "",
-            symptom: [],
-          });
+          // formMethods.reset({
+          //   doctorprofile: 0,
+          //   rate: 0,
+          //   is_general_rate: false,
+          // });
+          formMethods.reset();
         }}
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Edit Specialization</Text>
+            <Text>Edit Specialist Rate</Text>
           </HStack>
         }
         footer={
@@ -331,10 +349,12 @@ const Specializations = ({
               variant="outline"
               onClick={() => {
                 onCloseEditModal();
-                formMethods.reset({
-                  name: "",
-                  symptom: [],
-                });
+                // formMethods.reset({
+                //   name: "",
+                //   symptom: [],
+                // });
+
+                formMethods.reset({});
               }}
               flex={1}
               border="1px solid"
@@ -349,50 +369,68 @@ const Specializations = ({
               onClick={onEditSpecialization}
               background={colors.primary}
               color={colors.white}
-              isLoading={saveSpecializationAction.isLoading}
+              // isLoading={saveSpecializationAction.isLoading}
             >
               Save
             </Button>
           </HStack>
         }
       >
-        <VStack>
+        <VStack alignItems={"end"}>
           <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
-
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
+            <Select
+              placeholder="Select Specialist"
+              label="Select Specialist"
+              name="doctorprofile"
               required
               register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
+              options={[...doctorName, { label: "hi", value: 2 }]}
+              // selectControl={formMethods.control}
+              isDisabled
             />
+            <FloatingLabelInput
+              label="Rate"
+              name="rate"
+              register={formMethods.register}
+            />
+            <Stack
+              display={"flex"}
+              flexDir={"row"}
+              alignItems={"center"}
+              h={"auto"}
+            >
+              <Text flexShrink={"0"} p={"10px"}>
+                General Rate?
+              </Text>
+
+              <Checkbox
+                // label="general Rate"
+                name={"is_general_rate"}
+                control={formMethods.control}
+                justifyContent={"center"}
+                alignItems={"center"}
+              />
+            </Stack>
           </FormProvider>
         </VStack>
       </ModalComponent>
-
+      {/* // isRequired marginLeft={"80%"} // isRequired marginLeft={"80%"} */}
       {/* add modal */}
       <ModalComponent
         size="sm"
-        isOpen={isSpecializationOpen}
-        onClose={onCloseSpecialization}
+        isOpen={isOpenSpecialistRate}
+        onClose={onCloseSpecialistRate}
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Add Specialization</Text>
+            <Text>Add Specialist Rate</Text>
           </HStack>
         }
         footer={
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={onCloseSpecialization}
+              onClick={onCloseSpecialistRate}
               flex={1}
               border="1px solid"
               borderColor={colors.primary}
@@ -403,39 +441,58 @@ const Specializations = ({
             </Button>
             <Button
               flex={1}
-              onClick={onSaveSpecialization}
+              onClick={() => {
+                onSaveSpecialistRate();
+                onCloseSpecialistRate();
+              }}
               background={colors.primary}
               color={colors.white}
-              isLoading={saveSpecializationAction.isLoading}
+              // isLoading={saveSpecializationAction.isLoading}
             >
               Save
             </Button>
           </HStack>
         }
       >
-        <VStack>
+        <VStack alignItems={"end"}>
           <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
-
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
+            <Select
+              placeholder="Select Specialist"
+              label="Select Specialist"
+              name="doctorprofile"
               required
               register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
+              options={doctorName}
+              // selectControl={formMethods.control}
+              // isDisabled
             />
+            <FloatingLabelInput
+              label="Rate"
+              name="rate"
+              register={formMethods.register}
+            />
+            <Stack
+              display={"flex"}
+              flexDir={"row"}
+              alignItems={"center"}
+              h={"auto"}
+            >
+              <Text flexShrink={"0"} p={"10px"}>
+                General Rate?
+              </Text>
+
+              <Checkbox
+                // label="general Rate"
+                name={"is_general_rate"}
+                control={formMethods.control}
+                justifyContent={"center"}
+                alignItems={"center"}
+              />
+            </Stack>
           </FormProvider>
         </VStack>
       </ModalComponent>
-
       {/* delete modal */}
-
       <ModalComponent
         size="sm"
         isOpen={isDeleteModalOpen}
@@ -443,7 +500,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Specialist</Text>
+            <Text>Delete Symptom</Text>
           </HStack>
         }
         footer={
@@ -456,7 +513,7 @@ const Specializations = ({
               onClick={ondeleteSpecialization}
               borderColor={colors.red}
               color={colors.red}
-              isLoading={deleteSpecializationAction.isLoading}
+              // isLoading={deleteSpecializationAction.isLoading}
               variant="outline"
             >
               Delete
@@ -476,4 +533,4 @@ const Specializations = ({
   );
 };
 
-export default Specializations;
+export default SpecialistRates;
