@@ -117,7 +117,7 @@ const EditExperience = ({
   const getExperienceInfo = async (id: number) => {
     try {
       const res = await getSingleExperienceInfo(id);
-      setExperienceInfo(res.certificate_document);
+      setExperienceInfo(res.experience_document);
     } catch (error) {
       const err = serverErrorResponse(error);
       error as AxiosError;

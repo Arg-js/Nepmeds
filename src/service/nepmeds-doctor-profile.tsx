@@ -10,10 +10,12 @@ export interface IUser {
   mobile_number: string;
   profile_picture: File | string;
   district: number;
+  district_id: number;
   ward: number;
   tole: number;
   municipality: number;
   province: number;
+  province_id: number;
   gender: string;
   date_of_birth: string;
   email: string;

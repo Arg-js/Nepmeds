@@ -29,6 +29,7 @@ const MultiSelect = ({
 
   useEffect(() => {
     if (name) {
+      console.log("name", name);
       register(name, rules); // Register the field with the validation rules when the component mounts
     }
   }, [name, register, rules]);

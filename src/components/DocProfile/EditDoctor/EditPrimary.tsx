@@ -30,10 +30,10 @@ import {
   PrimaryInfo,
   useUpdatePersonalInfoRegister,
 } from "@nepMeds/service/nepmeds-register";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
-import { AxiosError } from "axios";
 import React from "react";
 import {
   FieldValues,
@@ -49,6 +49,7 @@ const EditPrimaryForm = ({
   formMethods: UseFormReturn<FieldValues, any>;
   doctorProfileData: IGetDoctorProfile;
 }) => {
+  console.log(doctorProfileData);
   return (
     <>
       <VStack p={5}>
@@ -128,6 +129,7 @@ const EditPrimary = ({
 
   const onSavePrimaryInfo = async () => {
     const { getValues } = formMethods;
+    console.log(getValues());
     try {
       const frontImage = getValues("id_front_image")?.[0];
       const backImage = getValues("id_back_image")?.[0];
@@ -142,6 +144,8 @@ const EditPrimary = ({
         ward: getValues("ward"),
         tole: getValues("tole"),
       } as IUser;
+
+      console.log(getValues());
 
       const doctorProfile = {
         user: user,
@@ -171,14 +175,10 @@ const EditPrimary = ({
       toastSuccess("Personal information updated successfully!");
       setEditPrimaryFormToggle(false);
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to edit basic information!"
-      );
+      console.log(error);
+      const err = serverErrorResponse(error);
+
+      toastFail(err);
     }
   };
 
@@ -662,7 +662,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.id_issued_district}
+                      :&nbsp;{doctorProfileData?.id_issued_date}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>

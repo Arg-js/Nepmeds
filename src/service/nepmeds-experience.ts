@@ -1,7 +1,7 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
+import { IDoctorExperience } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
@@ -89,8 +89,8 @@ export const useDeleteExperienceInfo = () => {
 
 //Get Single Certificate Info
 export const getSingleExperienceInfo = async (id: number) => {
-  const response = await HttpClient.get<
-    NepMedsResponse<IDoctorCertificationInfo>
-  >(api.experience + `${id}/`);
+  const response = await HttpClient.get<NepMedsResponse<IDoctorExperience>>(
+    api.experience + `${id}/`
+  );
   return response.data.data;
 };
