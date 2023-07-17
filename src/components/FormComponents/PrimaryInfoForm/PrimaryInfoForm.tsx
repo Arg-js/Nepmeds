@@ -45,8 +45,6 @@ const PrimaryInfo = ({
   const allDistrictInfo = useGetAllDistricts();
   const { data: specialization = [] } = useSpecializationRegisterData();
 
-  console.log(doctorProfileData);
-
   const provinceOptions =
     provinceInfo.data?.map(p => ({
       label: p.name,
@@ -74,15 +72,15 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-  useEffect(() => {
-    if (watch("province") !== 0) {
-      reset({
-        ...getValues(),
-        district: 0,
-        municipality: 0,
-      });
-    }
-  }, [watch("province")]);
+  // useEffect(() => {
+  //   if (watch("province") !== 0) {
+  //     reset({
+  //       ...getValues(),
+  //       district: 0,
+  //       municipality: 0,
+  //     });
+  //   }
+  // }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
@@ -90,13 +88,13 @@ const PrimaryInfo = ({
         ...getValues(),
         // phone: doctorProfileData.
         id_issued_district: allDistrictOptions.find(
-          p => p.value === doctorProfileData.id_issued_district
+          p => p.value === doctorProfileData.issued_district_name
         )?.value,
         province: provinceOptions.find(
-          p => p.value === doctorProfileData?.user?.province
+          p => p.value === doctorProfileData?.user?.province_data?.id
         )?.value,
         district: districtOptions.find(
-          p => p.value === doctorProfileData?.user?.district
+          p => p.value === doctorProfileData?.user?.district_data?.id
         )?.value,
       });
     }
@@ -385,7 +383,7 @@ const PrimaryInfo = ({
           required
           register={register}
           options={allDistrictOptions}
-          defaultValue={doctorProfileData?.id_issued_district}
+          defaultValue={doctorProfileData?.issued_district_name}
           style={{
             background: colors.forminput,
             border: "none",
@@ -426,7 +424,7 @@ const PrimaryInfo = ({
             name="province"
             required
             register={register}
-            defaultValue={doctorProfileData?.user?.province_id}
+            defaultValue={doctorProfileData?.user?.province_data?.id}
             options={provinceOptions}
             style={{
               background: colors.forminput,
@@ -448,7 +446,7 @@ const PrimaryInfo = ({
             name="district"
             required
             register={register}
-            defaultValue={doctorProfileData?.user?.district_id}
+            defaultValue={doctorProfileData?.user?.district_data?.id}
             options={districtOptions}
             style={{
               background: colors.forminput,
@@ -470,7 +468,7 @@ const PrimaryInfo = ({
             name="municipality"
             required
             register={register}
-            defaultValue={doctorProfileData?.user?.municipality}
+            defaultValue={doctorProfileData?.user?.municipality_data?.id}
             options={municipalityOptions}
             style={{
               background: colors.forminput,

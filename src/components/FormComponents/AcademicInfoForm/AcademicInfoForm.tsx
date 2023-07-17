@@ -16,8 +16,10 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
+  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  editMode?: boolean;
 }) => {
   const {
     control,
@@ -33,6 +35,8 @@ export const AcademicInfoForm = ({
     doctorProfileData?.doctor_academic_info.map(e =>
       e?.academic_document.map((e: any) => getImageUrl(e.file))
     ) ?? [];
+
+  console.log(mappedImageInfo);
 
   const { fields, append, remove } = useFieldArray({
     control,
@@ -108,8 +112,6 @@ export const AcademicInfoForm = ({
   });
 
   const handleRemoveAcademic = async (index: number) => {
-    const academicIndex = index;
-    console.log({ index });
     if (watch(`academic.${index}.isSubmitted`)) {
       const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
         parseInt(getValues(`academic.${index}.id`))
@@ -129,13 +131,13 @@ export const AcademicInfoForm = ({
     // Remove corresponding files from selectedImagesFile state
     setSelectedImagesFile(prevImages => {
       const updatedImages = [...prevImages];
-      updatedImages.splice(academicIndex, 1);
+      updatedImages.splice(index, 1);
       return updatedImages;
     });
 
     setSelectedImages(prevImages => {
       const updatedImages = [...prevImages];
-      updatedImages.splice(academicIndex, 1);
+      updatedImages.splice(index, 1);
       return updatedImages;
     });
   };
@@ -164,7 +166,7 @@ export const AcademicInfoForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
-                editMode={true}
+                editMode={editMode ?? false}
               />
             </Box>
             <SimpleGrid

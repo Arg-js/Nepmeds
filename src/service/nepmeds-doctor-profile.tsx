@@ -9,13 +9,12 @@ export interface IUser {
   last_name: string;
   mobile_number: string;
   profile_picture: File | string;
-  district: number;
-  district_id: number;
+
+  district_data: { id: number; name: string; province: number };
   ward: number;
   tole: number;
-  municipality: number;
-  province: number;
-  province_id: number;
+  municipality_data: { id: number; name: string; district: number };
+  province_data: { id: number; name: string };
   gender: string;
   date_of_birth: string;
   email: string;
@@ -72,7 +71,7 @@ export interface IGetDoctorProfile {
   id_front_image: File;
   id_back_image: File;
   id_number: string;
-  id_issued_district: number;
+  issued_district_name: number;
   id_type: string;
   id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];

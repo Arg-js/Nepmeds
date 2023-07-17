@@ -87,6 +87,7 @@ const EditAcademic = ({
   const handleFormUpdate = async () => {
     try {
       const academicArray = formMethods.getValues("academic");
+      console.log(academicArray);
       const academicPromises = academicArray.map(
         async (academicData: AcademicInfo) => {
           const createAcademicFileResponse =
@@ -274,7 +275,10 @@ const EditAcademic = ({
                     overflowY: "scroll",
                   }}
                 >
-                  <AcademicInfoForm doctorProfileData={doctorProfileData} />
+                  <AcademicInfoForm
+                    doctorProfileData={doctorProfileData}
+                    editMode={true}
+                  />
                 </GridItem>
                 <GridItem>
                   <SubmitButton

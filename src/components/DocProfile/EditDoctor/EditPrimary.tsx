@@ -22,10 +22,7 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { PrimaryInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import {
-  IGetDoctorProfile,
-  IUser,
-} from "@nepMeds/service/nepmeds-doctor-profile";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
   PrimaryInfo,
   useUpdatePersonalInfoRegister,
@@ -129,7 +126,7 @@ const EditPrimary = ({
 
   const onSavePrimaryInfo = async () => {
     const { getValues } = formMethods;
-    console.log(getValues());
+
     try {
       const frontImage = getValues("id_front_image")?.[0];
       const backImage = getValues("id_back_image")?.[0];
@@ -143,9 +140,7 @@ const EditPrimary = ({
         municipality: getValues("municipality"),
         ward: getValues("ward"),
         tole: getValues("tole"),
-      } as IUser;
-
-      console.log(getValues());
+      };
 
       const doctorProfile = {
         user: user,
@@ -556,7 +551,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.province}
+                      :&nbsp;{doctorProfileData?.user?.province_data?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -600,7 +595,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.id_issued_district}
+                      :&nbsp;{doctorProfileData?.issued_district_name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -619,7 +614,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.district}
+                      :&nbsp;{doctorProfileData?.user?.district_data?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -681,7 +676,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.municipality}
+                      :&nbsp;{doctorProfileData?.user?.municipality_data?.name}
                     </Text>
                   </Box>
                 </VStack>

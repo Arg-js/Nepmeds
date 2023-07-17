@@ -30,11 +30,12 @@ export const useExperienceInfoRegister = () => {
 const createExperienceFile = async (data: ExperienceInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
-  console.log(data);
+
   if (data.experience_documents) {
     // Append multiple files to formData
     data.experience_documents.forEach((file, index) => {
-      if (file !== null) formData.append(`files[${index}]`, file);
+      if (file !== null && file instanceof File)
+        formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.experience_file, formData);

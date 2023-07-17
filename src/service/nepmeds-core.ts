@@ -41,7 +41,6 @@ const getDistrict = (provinceId: number) => async () => {
 export const useGetDistricts = (provinceId: number) => {
   return useQuery([api.district, provinceId], getDistrict(provinceId), {
     select: res => res.data.data,
-    enabled: !!provinceId,
   });
 };
 
@@ -70,5 +69,4 @@ const getMunicipalities = (districtId: number) => async () => {
 export const useGetMunicipalities = (districtId: number) =>
   useQuery([api.municipality, districtId], getMunicipalities(districtId), {
     select: res => res.data.data,
-    enabled: !!districtId,
   });

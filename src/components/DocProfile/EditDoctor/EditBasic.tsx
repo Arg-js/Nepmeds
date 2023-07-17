@@ -54,8 +54,6 @@ const EditBasic = ({
   const handleFormUpdate = async () => {
     try {
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
-      console.log(profilePicture);
-      console.log(formMethods.getValues("first_name"));
       const user = {
         first_name: formMethods.getValues("first_name"),
         middle_name: formMethods.getValues("middle_name"),
@@ -183,6 +181,7 @@ const EditBasic = ({
               <SubmitButton
                 handleFormUpdate={handleFormUpdate}
                 handleCloseForm={handleCloseForm}
+                isLoading={updatePersonalInfo.isLoading}
               />
             </GridItem>
           </Grid>
@@ -267,11 +266,13 @@ const EditBasicForm = ({
 interface handleFormUpdateProps {
   handleFormUpdate: () => void;
   handleCloseForm: () => void;
+  isLoading: boolean;
 }
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
   handleFormUpdate,
   handleCloseForm,
+  isLoading,
 }) => {
   return (
     <Grid
@@ -297,6 +298,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
           onClick={handleFormUpdate}
+          isLoading={isLoading}
         >
           Update
         </Button>
