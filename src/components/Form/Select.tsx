@@ -55,7 +55,6 @@ const Select = ({
         sx={{ background: colors.forminput }}
         {...register(name, rules)}
         id={name}
-        placeholder="select"
         h={14}
         {...rest}
 

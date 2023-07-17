@@ -66,12 +66,11 @@ export interface IGetDoctorProfile {
   pan_number: string;
   id?: number;
   specialization_names: IResponseSpecialization[];
-  specialization: IResponseSpecialization[];
 
   id_front_image: File;
   id_back_image: File;
   id_number: string;
-  issued_district_name: number;
+  issued_district: { id: number; name: string; province: number };
   id_type: string;
   id_issued_date: string;
   doctor_academic_info: IDoctorAcademicInfo[] | [];

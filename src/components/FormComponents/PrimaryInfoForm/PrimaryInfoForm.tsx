@@ -45,6 +45,8 @@ const PrimaryInfo = ({
   const allDistrictInfo = useGetAllDistricts();
   const { data: specialization = [] } = useSpecializationRegisterData();
 
+  console.log(getValues("specialization_names"));
+
   const provinceOptions =
     provinceInfo.data?.map(p => ({
       label: p.name,
@@ -72,6 +74,7 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
+
   // useEffect(() => {
   //   if (watch("province") !== 0) {
   //     reset({
@@ -88,7 +91,7 @@ const PrimaryInfo = ({
         ...getValues(),
         // phone: doctorProfileData.
         id_issued_district: allDistrictOptions.find(
-          p => p.value === doctorProfileData.issued_district_name
+          p => p.value === doctorProfileData.issued_district?.id
         )?.value,
         province: provinceOptions.find(
           p => p.value === doctorProfileData?.user?.province_data?.id
@@ -265,7 +268,7 @@ const PrimaryInfo = ({
         <MultiSelect
           label="Specialization"
           required
-          name="specialization"
+          name="specialization_names"
           multiValue={doctorProfileData?.specialization_names?.map(item => ({
             label: item?.name,
             value: item?.id?.toString(),
@@ -281,7 +284,7 @@ const PrimaryInfo = ({
           rules={{
             required: "Specialization is required.",
           }}
-          error={errors.specialization?.message}
+          error={errors.specialization_names?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 1 : 1}>
@@ -383,7 +386,7 @@ const PrimaryInfo = ({
           required
           register={register}
           options={allDistrictOptions}
-          defaultValue={doctorProfileData?.issued_district_name}
+          defaultValue={doctorProfileData?.issued_district?.id}
           style={{
             background: colors.forminput,
             border: "none",

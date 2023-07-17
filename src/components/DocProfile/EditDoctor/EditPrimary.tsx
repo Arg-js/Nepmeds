@@ -123,7 +123,7 @@ const EditPrimary = ({
 
   const [editPrimaryFormToggle, setEditPrimaryFormToggle] =
     React.useState(false);
-
+  console.log(formMethods.getValues());
   const onSavePrimaryInfo = async () => {
     const { getValues } = formMethods;
 
@@ -141,10 +141,11 @@ const EditPrimary = ({
         ward: getValues("ward"),
         tole: getValues("tole"),
       };
+      console.log(getValues());
 
       const doctorProfile = {
         user: user,
-        specialization: getValues("specialization").map(
+        specialization: getValues("specialization_names").map(
           (e: { id: string; value: string }) => Number(e.value)
         ),
         pan_number: getValues("pan_number"),
@@ -595,7 +596,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.issued_district_name}
+                      :&nbsp;{doctorProfileData?.issued_district?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
