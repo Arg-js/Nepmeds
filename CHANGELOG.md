@@ -22,6 +22,7 @@
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
 * **doctor:** bug fixing in doctor table ([77c15a1](https://gitlab.com/r2850/nepmeds/commit/77c15a14e5d12059d1225ace75223b0bbad668d2))
 * **doctor:** fix proper api call and pagination ([9f5dd9d](https://gitlab.com/r2850/nepmeds/commit/9f5dd9d9dd870b8fdcf0235a8720bb9cecf1f717))
+* **doctortable:** doctor table approve and pending fixed ([43da358](https://gitlab.com/r2850/nepmeds/commit/43da3584f4d1ebf7a359430208c15c716b87cdc5))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
