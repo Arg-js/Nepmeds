@@ -33,7 +33,8 @@ const createAcademicFile = async (data: AcademicInfo) => {
   if (data.academic_documents) {
     // Append multiple files to formData
     data.academic_documents.forEach((file, index) => {
-      if (file !== null) formData.append(`files[${index}]`, file);
+      if (file !== null && file instanceof File)
+        formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.academic_file, formData);

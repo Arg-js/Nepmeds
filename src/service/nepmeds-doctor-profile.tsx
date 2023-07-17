@@ -52,6 +52,11 @@ export interface IDoctorExperience {
   doctor: number;
   id?: number;
 }
+
+interface IResponseSpecialization {
+  id: number;
+  name: string;
+}
 export interface IGetDoctorProfile {
   user: IUser;
   title: string;
@@ -59,14 +64,9 @@ export interface IGetDoctorProfile {
   age: number;
   pan_number: string;
   id?: number;
-  specialization_names?: {
-    id?: number;
-    name?: string;
-  }[];
-  specialization: {
-    id: number;
-    name: string;
-  }[];
+  specialization_names: IResponseSpecialization[];
+  specialization: IResponseSpecialization[];
+
   id_front_image: File;
   id_back_image: File;
   id_number: string;
@@ -91,10 +91,7 @@ export interface IGetDoctorBasicProfile {
     mobile_number: string;
     profile_picture: string;
   };
-  specialization_names: {
-    id: number;
-    name: string;
-  }[];
+  specialization: IResponseSpecialization[];
 }
 
 const getDoctorProfile = async () => {
@@ -142,7 +139,6 @@ export const fetchDoctorProfileById = (DoctorId: string) => {
     {
       enabled: !!DoctorId,
       select: ({ data }) => data,
-      onError: () => {},
     }
   );
 };

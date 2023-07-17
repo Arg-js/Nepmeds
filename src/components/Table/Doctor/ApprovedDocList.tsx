@@ -9,8 +9,8 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  useDisclosure,
   VStack,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -44,6 +44,7 @@ interface Props {
 }
 
 const ApprovedDocList = ({ specializationList }: Props) => {
+  const navigate = useNavigate();
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
@@ -56,8 +57,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
   const [filterValue, setFilterValue] = useState<any>({
     status: "approved",
   });
-
-  const navigate = useNavigate();
 
   const formMethods = useForm();
 
