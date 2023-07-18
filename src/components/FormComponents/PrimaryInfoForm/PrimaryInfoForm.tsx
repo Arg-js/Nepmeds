@@ -377,13 +377,14 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
-          placeholder=""
+          placeholder=" "
           label="Issued District"
           name="id_issued_district"
           required
           register={register}
           options={allDistrictOptions}
           defaultValue={doctorProfileData?.id_issued_district}
+          // value={0}
           style={{
             background: colors.forminput,
             border: "none",
@@ -418,10 +419,11 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={1}>
         <Select
-          placeholder=""
+          placeholder=" "
           label="Province"
           name="province"
           required
+          // value={0}
           register={register}
           defaultValue={doctorProfileData?.user?.province}
           options={provinceOptions}

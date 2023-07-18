@@ -56,6 +56,7 @@ const Select = ({
         {...register(name, rules)}
         {...rest}
         id={name}
+        // placeholder="select"
         h={14}
         // value={defaultValue}
 

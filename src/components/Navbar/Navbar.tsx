@@ -31,6 +31,7 @@ const Navbar = () => {
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
+  // console.log(data,"55")
   return (
     <>
       <Stack p={"15px 21px"} background="white">
