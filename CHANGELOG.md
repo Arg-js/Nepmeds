@@ -11,6 +11,7 @@
 * badge css verified ([99a1311](https://gitlab.com/r2850/nepmeds/commit/99a131102367fcca67aaf0c07e9da39fd178c25e))
 * **bio:** specialization name ([d705a67](https://gitlab.com/r2850/nepmeds/commit/d705a67bbfd90eabc1b6e5ba7e662a2a2fd89e11))
 * **bug fixes:** fixed build issues ([ec4d743](https://gitlab.com/r2850/nepmeds/commit/ec4d7438ca0e887bd4d3a6f48f6c919bfc155c65))
+* **bug:** bugs on registration flow ([a249423](https://gitlab.com/r2850/nepmeds/commit/a249423f7379ec2a6418a418f70c4f0158f4ef05))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * **calendar:** calendar date validation and added global error response function ([2d51cc6](https://gitlab.com/r2850/nepmeds/commit/2d51cc60d3b191ec8dd412639450db54a3212104))
 * **calendar:** calendar new api changes fixing ([e38a980](https://gitlab.com/r2850/nepmeds/commit/e38a980eb772eedf93cd64bc1e63cf4710c85bc4))
