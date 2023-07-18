@@ -16,10 +16,7 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
 import ScheduleComponent from "@nepMeds/components/Schedule";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import {
-  getMinutes,
-  getTimeDifferenceInMinutes,
-} from "@nepMeds/helper/checkTimeRange";
+
 import {
   IGetDoctorAvailability,
   useCreateDoctorAvailability,
@@ -34,6 +31,7 @@ import {
   format,
   getDay,
   isToday,
+  // setDate,
   startOfWeek,
   subMonths,
 } from "date-fns";
@@ -47,6 +45,105 @@ import {
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
 import "../../assets/styles/fontFamily.css";
+import { BiTime } from "react-icons/bi";
+const options = [
+  { label: "1:00 AM", value: "1:00 AM" },
+  { label: "1:15 AM", value: "1:15 AM" },
+  { label: "1:30 AM", value: "1:30 AM" },
+  { label: "1:45 AM", value: "1:45 AM" },
+  { label: "2:00 AM", value: "2:00 AM" },
+  { label: "2:15 AM", value: "2:15 AM" },
+  { label: "2:30 AM", value: "2:30 AM" },
+  { label: "2:45 AM", value: "2:45 AM" },
+  { label: "3:00 AM", value: "3:00 AM" },
+  { label: "3:15 AM", value: "3:15 AM" },
+  { label: "3:30 AM", value: "3:30 AM" },
+  { label: "3:45 AM", value: "3:45 AM" },
+  { label: "4:00 AM", value: "4:00 AM" },
+  { label: "4:15 AM", value: "4:15 AM" },
+  { label: "4:30 AM", value: "4:30 AM" },
+  { label: "4:45 AM", value: "4:45 AM" },
+  { label: "5:00 AM", value: "5:00 AM" },
+  { label: "5:15 AM", value: "5:15 AM" },
+  { label: "5:30 AM", value: "5:30 AM" },
+  { label: "5:45 AM", value: "5:45 AM" },
+  { label: "6:00 AM", value: "6:00 AM" },
+  { label: "6:15 AM", value: "6:15 AM" },
+  { label: "6:30 AM", value: "6:30 AM" },
+  { label: "6:45 AM", value: "6:45 AM" },
+  { label: "7:00 AM", value: "7:00 AM" },
+  { label: "7:15 AM", value: "7:15 AM" },
+  { label: "7:30 AM", value: "7:30 AM" },
+  { label: "7:45 AM", value: "7:45 AM" },
+  { label: "8:00 AM", value: "8:00 AM" },
+  { label: "8:15 AM", value: "8:15 AM" },
+  { label: "8:30 AM", value: "8:30 AM" },
+  { label: "8:45 AM", value: "8:45 AM" },
+  { label: "9:00 AM", value: "9:00 AM" },
+  { label: "9:15 AM", value: "9:15 AM" },
+  { label: "9:30 AM", value: "9:30 AM" },
+  { label: "9:45 AM", value: "9:45 AM" },
+  { label: "10:00 AM", value: "10:00 AM" },
+  { label: "10:15 AM", value: "10:15 AM" },
+  { label: "10:30 AM", value: "10:30 AM" },
+  { label: "10:45 AM", value: "10:45 AM" },
+  { label: "11:00 AM", value: "11:00 AM" },
+  { label: "11:15 AM", value: "11:15 AM" },
+  { label: "11:30 AM", value: "11:30 AM" },
+  { label: "11:45 AM", value: "11:45 AM" },
+  { label: "12:00 AM", value: "12:00 AM" },
+  { label: "12:15 AM", value: "12:15 AM" },
+  { label: "12:30 AM", value: "12:30 AM" },
+  { label: "12:45 AM", value: "12:45 AM" },
+  { label: "1:00 PM", value: "1:00 PM" },
+  { label: "1:15 PM", value: "1:15 PM" },
+  { label: "1:30 PM", value: "1:30 PM" },
+  { label: "1:45 PM", value: "1:45 PM" },
+  { label: "2:00 PM", value: "2:00 AM" },
+  { label: "2:15 PM", value: "2:15 AM" },
+  { label: "2:30 PM", value: "2:30 AM" },
+  { label: "2:45 PM", value: "2:45 AM" },
+  { label: "3:00 PM", value: "3:00 AM" },
+  { label: "3:15 PM", value: "3:15 AM" },
+  { label: "3:30 PM", value: "3:30 AM" },
+  { label: "3:45 PM", value: "3:45 AM" },
+  { label: "4:00 PM", value: "4:00 AM" },
+  { label: "4:15 PM", value: "4:15 AM" },
+  { label: "4:30 PM", value: "4:30 AM" },
+  { label: "4:45 PM", value: "4:45 AM" },
+  { label: "5:00 PM", value: "5:00 PM" },
+  { label: "5:15 PM", value: "5:15 PM" },
+  { label: "5:30 PM", value: "5:30 PM" },
+  { label: "5:45 PM", value: "5:45 PM" },
+  { label: "6:00 PM", value: "6:00 PM" },
+  { label: "6:15 PM", value: "6:15 PM" },
+  { label: "6:30 PM", value: "6:30 PM" },
+  { label: "6:45 PM", value: "6:45 PM" },
+  { label: "7:00 PM", value: "7:00 PM" },
+  { label: "7:15 PM", value: "7:15 PM" },
+  { label: "7:30 PM", value: "7:30 PM" },
+  { label: "7:45 PM", value: "7:45 PM" },
+  { label: "8:00 PM", value: "8:00 PM" },
+  { label: "8:15 PM", value: "8:15 PM" },
+  { label: "8:30 PM", value: "8:30 PM" },
+  { label: "8:45 PM", value: "8:45 PM" },
+  { label: "9:00 PM", value: "9:00 PM" },
+  { label: "9:15 PM", value: "9:15 PM" },
+  { label: "9:30 PM", value: "9:30 PM" },
+  { label: "9:45 PM", value: "9:45 PM" },
+  { label: "10:00 PM", value: "10:00 PM" },
+  { label: "10:15 PM", value: "10:15 PM" },
+  { label: "10:30 PM", value: "10:30 PM" },
+  { label: "10:45 PM", value: "10:45 PM" },
+  { label: "11:00 PM", value: "11:00 PM" },
+  { label: "11:15 PM", value: "11:15 PM" },
+  { label: "11:30 PM", value: "11:30 PM" },
+  { label: "11:45 PM", value: "11:45 PM" },
+  { label: "12:00 PM", value: "12:00 PM" },
+  { label: "12:15 PM", value: "12:15 PM" },
+  { label: "12:30 PM", value: "12:30 PM" },
+  { label: "12:45 PM", value: "12:45 AM" },
+];
 
 const CalendarView = () => {
   const currentDate = new Date();
@@ -60,6 +157,7 @@ const CalendarView = () => {
   );
 
   const [selectedDate, setSelectedDate] = useState(formattedDate);
+
   const handleDateSelection = (
     date: string,
     day: string,
@@ -437,51 +535,54 @@ export const AddEvent = ({
 }) => {
   const {
     register,
-    getValues,
+    // getValues,
     watch,
     formState: { errors },
   } = useFormContext<IGetDoctorAvailability>();
 
-  const validateDateFormat = () => {
-    const givenDate = getValues("from_time");
-    const minute = getMinutes(givenDate ?? "");
+  // const validateDateFormat = () => {
+  //   const givenDate = getValues("from_time");
+  //   const minute = getMinutes(givenDate ?? "");
 
-    // Check if minutes is a multiple of 5
-    if (minute % 5 !== 0) {
-      return "Minutes can be only multiple of 5"; // Disable the option
-    }
+  //   // Check if minutes is a multiple of 5
+  //   if (minute % 5 !== 0) {
+  //     return "Minutes can be only multiple of 5"; // Disable the option
+  //   }
 
-    return true; // Enable the option
-  };
+  //   return true; // Enable the option
+  // };
 
-  const validateToDateFormat = () => {
-    const givenDate = getValues("to_time");
-    const fromDate = getValues("from_time");
+  // const validateToDateFormat = () => {
+  //   const givenDate = getValues("to_time");
+  //   const fromDate = getValues("from_time");
 
-    const differenceInTime = getTimeDifferenceInMinutes(
-      fromDate ?? "",
-      givenDate ?? ""
-    );
-    const minute = getMinutes(givenDate ?? "");
+  //   const differenceInTime = getTimeDifferenceInMinutes(
+  //     fromDate ?? "",
+  //     givenDate ?? ""
+  //   );
+  //   const minute = getMinutes(givenDate ?? "");
 
-    // Check if minutes is a multiple of 5
-    if (givenDate) {
-      if (minute % 5 !== 0) {
-        return "Minutes can be only multiple of 5"; // Disable the option
-      }
-      if (fromDate) {
-        if (differenceInTime < 0) {
-          return "To time cannot be less than from time";
-        } else if (differenceInTime === 0) {
-          return "To time cannot be equal to from time";
-        } else if (differenceInTime < 60) {
-          return "To time cannot be less than 1 hour";
-        }
-      }
+  //   // Check if minutes is a multiple of 5
+  //   if (givenDate) {
+  //     if (minute % 5 !== 0) {
+  //       return "Minutes can be only multiple of 5"; // Disable the option
+  //     }
+  //     if (fromDate) {
+  //       if (differenceInTime < 0) {
+  //         return "To time cannot be less than from time";
+  //       } else if (differenceInTime === 0) {
+  //         return "To time cannot be equal to from time";
+  //       } else if (differenceInTime < 60) {
+  //         return "To time cannot be less than 1 hour";
+  //       }
+  //     }
 
-      return true; // Enable the option
-    }
-  };
+  //     return true; // Enable the option
+  //   }
+  // };
+  // const [time, setTime] = useState<string>("");
+  const [opt2, setOpt2] = useState<any>([]);
+
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
       <GridItem colSpan={4}>
@@ -555,7 +656,7 @@ export const AddEvent = ({
           />
         </GridItem>
       )}
-      <GridItem colSpan={2}>
+      {/* <GridItem colSpan={2}>
         <FloatingLabelInput
           label="From"
           name="from_time"
@@ -592,6 +693,35 @@ export const AddEvent = ({
           }}
           error={errors.to_time?.message}
         />
+      </GridItem> */}
+      <GridItem colSpan={2}>
+        <Select
+          name="from_time"
+          register={register}
+          label="from"
+          placeholder="--:-- --"
+          options={options}
+          onChange={(e: any) => {
+            // setTime(e.target.value);
+            const first = options.slice(
+              options.findIndex(obj => obj.label === e.target.value) + 1,
+              options.length
+            );
+            setOpt2(first);
+            // console.log(first, "anish");
+          }}
+          icon={<BiTime />}
+        ></Select>
+      </GridItem>
+      <GridItem colSpan={2}>
+        <Select
+          name="to_time"
+          register={register}
+          label="to"
+          placeholder="--:-- --"
+          options={opt2}
+          icon={<BiTime />}
+        ></Select>
       </GridItem>
     </Grid>
   );
