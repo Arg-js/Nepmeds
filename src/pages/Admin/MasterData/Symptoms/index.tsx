@@ -19,6 +19,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
   Symptom,
   // useDeleteBulkSymptoms,
@@ -34,7 +35,10 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Symptom name is required!"),
+  name: yup
+    .string()
+    .required("Symptom name is required!")
+    .max(30, "Symptom name can be 30 characters long"),
   keyword: yup.string().required("Symptom keyword is required"),
 });
 
@@ -55,11 +59,14 @@ const Symptoms = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
+  const [searchFilter, setSearchFilter] = useState("");
+  const debouncedInputValue = useDebounce(searchFilter, 500);
   const { data } = useSymptomsDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
-    name: "",
+    name: debouncedInputValue,
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
@@ -83,17 +90,19 @@ const Symptoms = ({
   //   onOpen: onOpenBulkModal,
   // } = useDisclosure();
 
-  const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
-  const [searchFilter, setSearchFilter] = useState("");
-
   const formMethods = useForm({
     defaultValues: {
       id: null as number | null,
       name: "",
       keyword: "",
     },
+
     resolver: yupResolver(schema),
   });
+  const {
+    formState: { errors },
+    register,
+  } = formMethods;
 
   const columns = [
     {
@@ -145,7 +154,7 @@ const Symptoms = ({
     },
   ];
 
-  const onEditSymptom = async () => {
+  const onEditForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -163,7 +172,7 @@ const Symptoms = ({
     }
   };
 
-  const onSaveSymptom = async () => {
+  const onSubmitForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -179,6 +188,13 @@ const Symptoms = ({
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
+  };
+  const onSaveSymptom = () => {
+    formMethods.handleSubmit(onSubmitForm)();
+  };
+
+  const onEditHandle = () => {
+    formMethods.handleSubmit(onEditForm)();
   };
 
   const onDeleteSymptom = async () => {
@@ -250,7 +266,6 @@ const Symptoms = ({
       <DataTable
         columns={columns}
         data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
@@ -292,7 +307,7 @@ const Symptoms = ({
               </Button>
               <Button
                 flex={1}
-                onClick={onEditSymptom}
+                onClick={onEditHandle}
                 background={colors.primary}
                 color={colors.white}
                 isLoading={saveSymptomAction.isLoading}
@@ -302,21 +317,25 @@ const Symptoms = ({
             </HStack>
           }
         >
-          <VStack>
-            <FormProvider {...formMethods}>
-              <FloatingLabelInput
-                label="Symptom"
-                name="name"
-                register={formMethods.register}
-              />
+          <FormProvider {...formMethods}>
+            <form onSubmit={formMethods.handleSubmit(onEditForm)}>
+              <VStack>
+                <FloatingLabelInput
+                  label="Symptom"
+                  name="name"
+                  register={register}
+                  error={errors.name?.message}
+                />
 
-              <FloatinglabelTextArea
-                label="Keywords"
-                name="keyword"
-                register={formMethods.register}
-              />
-            </FormProvider>
-          </VStack>
+                <FloatinglabelTextArea
+                  label="Keywords"
+                  name="keyword"
+                  register={register}
+                  error={errors.keyword?.message}
+                />
+              </VStack>
+            </form>
+          </FormProvider>
         </ModalComponent>
       )}
 
@@ -350,6 +369,7 @@ const Symptoms = ({
                 flex={1}
                 onClick={onSaveSymptom}
                 background={colors.primary}
+                type="submit"
                 color={colors.white}
                 isLoading={saveSymptomAction.isLoading}
               >
@@ -358,19 +378,25 @@ const Symptoms = ({
             </HStack>
           }
         >
-          <VStack>
-            <FloatingLabelInput
-              label="Symptom"
-              name="name"
-              register={formMethods.register}
-            />
+          <FormProvider {...formMethods}>
+            <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
+              <VStack>
+                <FloatingLabelInput
+                  label="Symptom"
+                  name="name"
+                  register={formMethods.register}
+                  error={errors.name?.message}
+                />
 
-            <FloatinglabelTextArea
-              label="Keywords"
-              name="keyword"
-              register={formMethods.register}
-            />
-          </VStack>
+                <FloatinglabelTextArea
+                  label="Keywords"
+                  name="keyword"
+                  register={register}
+                  error={errors.keyword?.message}
+                />
+              </VStack>
+            </form>
+          </FormProvider>
         </ModalComponent>
       )}
 

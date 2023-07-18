@@ -1,20 +1,21 @@
 import { EditIcon } from "@chakra-ui/icons";
-import React from "react";
 import {
+  Box,
+  Button,
   Card,
   CardBody,
-  Flex,
-  Icon,
-  Button,
-  Text,
-  Box,
-  Image,
   Divider,
+  Flex,
   Grid,
   GridItem,
+  Icon,
+  Image,
+  Text,
 } from "@chakra-ui/react";
 import { images } from "@nepMeds/assets/images";
+import React from "react";
 
+import { extendTheme } from "@chakra-ui/react";
 import { BasicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
@@ -22,12 +23,11 @@ import {
   IUser,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
+import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
-import { useForm, FormProvider } from "react-hook-form";
 import { AxiosError } from "axios";
-import { normalURL } from "@nepMeds/service/service-axios";
-import { extendTheme } from "@chakra-ui/react";
+import { FormProvider, useForm } from "react-hook-form";
 
 const EditBasic = ({
   doctorProfileData,
@@ -214,8 +214,8 @@ const EditBasic = ({
                 {doctorProfileData?.user?.first_name}&nbsp;
                 {doctorProfileData?.user?.middle_name}&nbsp;
                 {doctorProfileData?.user?.last_name}&nbsp;
-                {doctorProfileData?.specialization?.length
-                  ? `(${doctorProfileData?.specialization?.[0]})`
+                {doctorProfileData?.specialization_names?.length
+                  ? `(${doctorProfileData?.specialization_names?.[0]?.name})`
                   : ""}
                 {doctorProfileData?.status === "approved" && (
                   <Image

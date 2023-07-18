@@ -1,6 +1,6 @@
 export const api = {
   login: "user_management/login/",
-  forgotPassword: "user_management/reset-password/",
+  forgotPassword: "user_management/request-reset-password/",
   resetPassword: "user_management/confirm-password-reset/{uidb64}/{token}/",
   basicProfile: "/doctor_consult/doctor-basic-info/",
   signup: "user_management/otp-send/",

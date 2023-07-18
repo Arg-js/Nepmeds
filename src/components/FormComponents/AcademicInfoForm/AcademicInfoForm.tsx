@@ -50,6 +50,8 @@ export const AcademicInfoForm = ({
           major: a.major,
           university: a.university,
           id: a.id?.toString(),
+          academic_documents: a.academic_document,
+          isSubmitted: true,
           graduation_year: a.graduation_year?.toString(),
         })),
       });
@@ -59,7 +61,6 @@ export const AcademicInfoForm = ({
   const [selectedImages, setSelectedImages] =
     useState<Array<Array<File | string | null>>>(mappedImageInfo);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
     imageIndex: number,
@@ -68,12 +69,15 @@ export const AcademicInfoForm = ({
     const selectedFiles = e.target.files;
     if (selectedFiles && selectedFiles.length > 0) {
       const imageUrl = URL.createObjectURL(selectedFiles[0]);
+
       setSelectedImages(prevImages => {
         const updatedImages = [...prevImages];
         updatedImages[academicIndex] = [
           ...(updatedImages[academicIndex] || []),
         ];
         updatedImages[academicIndex][imageIndex] = imageUrl;
+        // setValue(`academic.${academicIndex}.academic_documents`,selectedFiles[0])
+
         return updatedImages;
       });
 
@@ -103,43 +107,51 @@ export const AcademicInfoForm = ({
     };
   });
 
+  const handleRemoveAcademic = async (index: number) => {
+    const academicIndex = index;
+    console.log({ index });
+    if (watch(`academic.${index}.isSubmitted`)) {
+      const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
+        parseInt(getValues(`academic.${index}.id`))
+      );
+
+      if (academicInfoResponse) {
+        toastSuccess("Academic data deleted successfully");
+        remove(index);
+      } else {
+        toastFail("Failed to delete academic information!");
+      }
+    } else {
+      console.log(index);
+      remove(index);
+    }
+
+    // Remove corresponding files from selectedImagesFile state
+    setSelectedImagesFile(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(academicIndex, 1);
+      return updatedImages;
+    });
+
+    setSelectedImages(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(academicIndex, 1);
+      return updatedImages;
+    });
+  };
+
   return (
     <>
       {fields.map((item, index) => {
-        const academicIndex = index;
-        const selectedImagesForAcademic = selectedImages[academicIndex] || [];
-
-        const handleRemoveAcademic = async () => {
-          if (watch(`academic.${index}.isSubmitted`)) {
-            const academicInfoResponse =
-              await deleteAcademicInfoRegister.mutateAsync(
-                parseInt(getValues(`academic.${index}.id`))
-              );
-
-            if (academicInfoResponse) {
-              toastSuccess("Academic data deleted successfully");
-              remove(index);
-            } else {
-              toastFail("Failed to delete academic information!");
-            }
-          } else remove(index);
-
-          // Remove corresponding files from selectedImagesFile state
-          setSelectedImagesFile(prevImages => {
-            const updatedImages = [...prevImages];
-            updatedImages.splice(academicIndex, 1);
-            return updatedImages;
-          });
-        };
         return (
           <Box key={item.id} position="relative">
             <Box mb={4}>
               <MultipleImageUpload
-                selectedImages={selectedImagesForAcademic}
+                selectedImages={selectedImages[index] ?? []}
                 setSelectedImages={images => {
                   setSelectedImages(prevImages => {
                     const updatedImages = [...prevImages];
-                    updatedImages[academicIndex] = images;
+                    updatedImages[index] = images;
                     return updatedImages;
                   });
                 }}
@@ -244,7 +256,7 @@ export const AcademicInfoForm = ({
                 top="150px"
                 variant={"ghost"}
                 _hover={{ background: "transparent" }}
-                onClick={handleRemoveAcademic}
+                onClick={() => handleRemoveAcademic(index)}
               >
                 <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
               </Button>

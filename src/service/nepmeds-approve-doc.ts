@@ -9,14 +9,28 @@ const approveDoc = async (id: string) => {
   return response;
 };
 
-export const useApproveDoc = () => {
+export const useApproveDoc = (
+  page_no?: number,
+  page_size?: number,
+  status?: string
+) => {
   const queryClient = useQueryClient();
+
+  console.log(
+    `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=${status}`
+  );
 
   return useMutation(approveDoc, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.pendingdoctor);
-      queryClient.invalidateQueries(api.registereddoctor);
-      queryClient.invalidateQueries(api.approveddoctor);
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`
+      );
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=approved`
+      );
+      queryClient.invalidateQueries(
+        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=pending`
+      );
     },
   });
 };

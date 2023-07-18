@@ -28,7 +28,6 @@ const ImageUpload = ({
   };
 
   const { register } = useFormContext();
-  console.log(error);
 
   return (
     <>

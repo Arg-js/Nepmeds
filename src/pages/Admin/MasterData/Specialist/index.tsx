@@ -20,6 +20,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
   Specialization,
   // useDeleteBulkSpecialization,
@@ -37,8 +38,15 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Symptom name is required!"),
-  keyword: yup.string().required("Symptom keyword is required"),
+  name: yup
+    .string()
+    .required("Specialist name is required!")
+
+    .max(30, "Specialist name can be 30 characters long"),
+  symptom: yup
+    .array()
+    .min(1, "Symptom keyword is required")
+    .of(yup.string().required("Symptom keyword is required")),
 });
 
 type OnOpenFunction = () => void;
@@ -60,11 +68,16 @@ const Specializations = ({
     pageSize: 10,
   });
 
+  const [searchFilter, setSearchFilter] = useState("");
+  const [deleteSpecialization, setDeleteSpecialization] =
+    useState<Specialization | null>(null);
+  const debouncedInputValue = useDebounce(searchFilter, 500);
+
   const { data } = useSpecializationData({
     activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
-    name: "",
+    name: debouncedInputValue,
   });
   const saveSpecializationAction = useSaveSpecialization(
     pageIndex + 1,
@@ -99,9 +112,6 @@ const Specializations = ({
     onClose: onCloseEditModal,
     onOpen: onOpenEditModal,
   } = useDisclosure();
-  const [searchFilter, setSearchFilter] = useState("");
-  const [deleteSpecialization, setDeleteSpecialization] =
-    useState<Specialization | null>(null);
 
   const symptomsOptions = symptomList?.map(s => ({
     label: s.name,
@@ -117,6 +127,9 @@ const Specializations = ({
     resolver: yupResolver(schema),
   });
 
+  const {
+    formState: { errors },
+  } = formMethods;
   const columns = [
     {
       header: "S.N.",
@@ -155,10 +168,12 @@ const Specializations = ({
               onClick={() => {
                 formMethods.reset({
                   ...cell.row.original,
-                  symptom: cell.row.original.symptom_list.map(s => ({
-                    label: s.name,
-                    value: s.id.toString(),
-                  })),
+                  symptom:
+                    cell?.row?.original?.symptom_list &&
+                    cell?.row?.original?.symptom_list.map(s => ({
+                      label: s.name,
+                      value: s.id.toString(),
+                    })),
                 });
                 onOpenEditModal();
               }}
@@ -183,7 +198,7 @@ const Specializations = ({
     },
   ];
 
-  const onEditSpecialization = async () => {
+  const onEditForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -207,7 +222,7 @@ const Specializations = ({
     }
   };
 
-  const onSaveSpecialization = async () => {
+  const onSubmitForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -227,6 +242,12 @@ const Specializations = ({
     } catch (error) {
       toastFail("Failed to save Specialization!");
     }
+  };
+  const onSaveSpecialization = () => {
+    formMethods.handleSubmit(onSubmitForm)();
+  };
+  const onEditSpecialization = () => {
+    formMethods.handleSubmit(onEditForm)();
   };
 
   const ondeleteSpecialization = async () => {
@@ -299,7 +320,6 @@ const Specializations = ({
       <DataTable
         columns={columns}
         data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
         pagination={{
           manual: true,
           pageParams: { pageIndex, pageSize },
@@ -356,25 +376,27 @@ const Specializations = ({
           </HStack>
         }
       >
-        <VStack>
-          <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onEditForm)}>
+            <VStack>
+              <FloatingLabelInput
+                label="Specialization"
+                name="name"
+                register={formMethods.register}
+              />
 
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
-              required
-              register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
-            />
-          </FormProvider>
-        </VStack>
+              <MultiSelect
+                placeholder=""
+                label="Symptoms"
+                name="symptom"
+                required
+                register={formMethods.register}
+                options={symptomsOptions}
+                selectControl={formMethods.control}
+              />
+            </VStack>
+          </form>
+        </FormProvider>
       </ModalComponent>
 
       {/* add modal */}
@@ -413,25 +435,29 @@ const Specializations = ({
           </HStack>
         }
       >
-        <VStack>
-          <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
+            <VStack>
+              <FloatingLabelInput
+                label="Specialization"
+                name="name"
+                register={formMethods.register}
+                error={errors.name?.message}
+              />
 
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
-              required
-              register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
-            />
-          </FormProvider>
-        </VStack>
+              <MultiSelect
+                placeholder=""
+                label="Symptoms"
+                name="symptom"
+                required
+                register={formMethods.register}
+                error={errors.symptom?.message}
+                options={symptomsOptions}
+                selectControl={formMethods.control}
+              />
+            </VStack>
+          </form>
+        </FormProvider>
       </ModalComponent>
 
       {/* delete modal */}

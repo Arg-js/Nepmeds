@@ -8,7 +8,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -16,17 +15,11 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import DoctorDetail from "@nepMeds/components/DoctorDetail/DoctorDetail";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
-import { RejectionForm } from "@nepMeds/components/FormComponents";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useDoctorDetail } from "@nepMeds/service/nepmeds-doctor-detail";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -36,6 +29,8 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -53,17 +48,6 @@ const schema = yup.object().shape({
 });
 
 const PendingDocList = ({ specializationList }: Props) => {
-  const {
-    isOpen: isDetailsModalOpen,
-    // onOpen: onDetailsModalOpen,
-    onClose: onDetailsModalClose,
-  } = useDisclosure();
-  const {
-    isOpen: isRejectModalOpen,
-    onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose,
-  } = useDisclosure();
-  const [_isRejected, setIsRejected] = React.useState(false);
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -72,10 +56,15 @@ const PendingDocList = ({ specializationList }: Props) => {
     status: "pending",
   });
 
-  const { data, isLoading } = useDoctorList({
+  const [searchFilter, setSearchFilter] = useState("");
+
+  const debouncedInputValue = useDebounce(searchFilter, 500);
+
+  const { data } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
+    name: debouncedInputValue,
   });
 
   const handleFilter = async (isReset: boolean) => {
@@ -95,40 +84,7 @@ const PendingDocList = ({ specializationList }: Props) => {
     onModalClose();
   };
 
-  const [id, setId] = React.useState("");
-
-  const approvePendingDoc = useApproveDoc();
-  const rejectPendingDoc = useRejectDoc();
-  const { data: detail, isLoading: isFetching } = useDoctorDetail(id);
   const formMethods = useForm({ resolver: yupResolver(schema) });
-  const onSubmitForm = async () => {
-    try {
-      const isValid = await formMethods.trigger("remarks");
-      if (!isValid) return;
-
-      const val = formMethods.getValues("remarks");
-      await rejectPendingDoc.mutateAsync({
-        id: id ?? "",
-        remarks: val,
-      });
-      onRejectModalClose();
-      toastSuccess("Doctor Rejected!");
-      formMethods.reset();
-    } catch (error) {
-      toastFail("Doctor cannot be rejected. Try Again!!");
-    }
-  };
-  // const deleteDoctorMethod = useDeleteDoctorData();
-
-  // const handleDeleteDoctor = async (id: number) => {
-  //   const deleteDoctorResponse = await deleteDoctorMethod.mutateAsync(id);
-
-  //   if (deleteDoctorResponse) {
-  //     toastSuccess("Academic data deleted successfully");
-  //   } else {
-  //     toastFail("Failed to delete academic information!");
-  //   }
-  // };
 
   const navigate = useNavigate();
   const columns = React.useMemo(
@@ -164,19 +120,22 @@ const PendingDocList = ({ specializationList }: Props) => {
       {
         header: "Specialization",
         accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ specialization: [] }, any>) => {
-          const specialization = row?.original?.specialization ?? "";
-
+        cell: ({
+          row,
+        }: CellContext<{ specialization_names: Specialization[] }, any>) => {
+          const specialization = row?.original?.specialization_names?.map(
+            data => data.name
+          );
           return (
             <Box
               display={"flex"}
               flexWrap={"wrap"}
-              // width={"fit-content"}
-              // p={1}
+              width={"fit-content"}
+              p={1}
               // background={colors.grey}
               // borderRadius={20}
             >
-              <p>{specialization.join(", ")}</p>
+              <p>{specialization}</p>
             </Box>
           );
         },
@@ -214,7 +173,6 @@ const PendingDocList = ({ specializationList }: Props) => {
                 onClick={() => {
                   formMethods.reset(cell.row.original);
                   // onDetailsModalOpen();
-                  setId(cell.row.original.id);
                   navigate(
                     generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
                       id: cell.row.original.id,
@@ -241,30 +199,12 @@ const PendingDocList = ({ specializationList }: Props) => {
     ],
     []
   );
-  const rejectModal = () => {
-    setIsRejected(true);
-    onDetailsModalClose();
-    onRejectModalOpen();
-  };
-  const acceptDoctor = () => {
-    onDetailsModalClose();
-  };
-  const RejectDoctor = () => {
-    onRejectModalClose();
-  };
+
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
-  const [searchFilter, setSearchFilter] = useState("");
-
-  if (isLoading)
-    return (
-      <Spinner
-        style={{ margin: "0 auto", textAlign: "center", display: "block" }}
-      />
-    );
 
   return (
     <>
@@ -307,96 +247,7 @@ const PendingDocList = ({ specializationList }: Props) => {
           onChangePagination: setPagination,
         }}
       />
-      <ModalComponent
-        alignment="left"
-        size="2xl"
-        approve
-        reject
-        isOpen={isDetailsModalOpen}
-        onClose={acceptDoctor}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Doctor Info</Text>
-          </HStack>
-        }
-        primaryText="Verify"
-        secondaryText="On Hold"
-        otherAction={rejectModal}
-        onApiCall={() => {
-          onDetailsModalClose();
-          approvePendingDoc.mutateAsync(id ?? "");
-          toastSuccess("Doctor Approved");
-        }}
-      >
-        {isFetching ? (
-          <Spinner
-            style={{ margin: "0 auto", textAlign: "center", display: "block" }}
-          />
-        ) : (
-          <DoctorDetail {...detail} />
-        )}
-      </ModalComponent>
 
-      <ModalComponent
-        isOpen={isRejectModalOpen}
-        onClose={RejectDoctor}
-        approve
-        reject
-        size="xl"
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Remarks for rejection</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button
-              variant="outline"
-              onClick={RejectDoctor}
-              flex={1}
-              border="2px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
-            >
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={async () => {
-                try {
-                  const isValid = await formMethods.trigger("remarks");
-                  if (!isValid) return;
-
-                  const val = formMethods.getValues("remarks");
-                  await rejectPendingDoc.mutateAsync({
-                    id: id ?? "",
-                    remarks: val,
-                  });
-                  onRejectModalClose();
-                  toastSuccess("Doctor Rejected!");
-                  formMethods.reset();
-                } catch (error) {
-                  toastFail("Doctor cannot be rejected. Try Again!!");
-                }
-              }}
-              background={colors.primary}
-              color={colors.white}
-            >
-              Done
-            </Button>
-          </HStack>
-        }
-        primaryText="Done"
-        secondaryText="Cancel"
-        otherAction={onRejectModalClose}
-      >
-        <FormProvider {...formMethods}>
-          <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
-        </FormProvider>
-      </ModalComponent>
       <ModalComponent
         isOpen={isModalOpen}
         onClose={onModalClose}
