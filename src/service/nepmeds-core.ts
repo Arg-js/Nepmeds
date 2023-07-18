@@ -59,7 +59,7 @@ export const useGetAllDistricts = () =>
 
 const getMunicipalities = (districtId: number) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
-    api.municipality,
+    api.municipality + "/",
     {
       params: { district_id: districtId },
     }

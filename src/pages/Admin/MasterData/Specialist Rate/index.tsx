@@ -22,7 +22,7 @@ import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 
-import Select, { ISelectOption } from "@nepMeds/components/Form/Select";
+import Select from "@nepMeds/components/Form/Select";
 
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
@@ -37,14 +37,14 @@ import {
 
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Symptom name is required!"),
-  keyword: yup.string().required("Symptom keyword is required"),
+  doctorprofile: yup.string().trim().required("Doctor is required!"),
+  rate: yup.mixed().required("Rate is required"),
 });
 
 type OnOpenFunction = () => void;
@@ -63,7 +63,7 @@ const SpecialistRates = ({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [doctorName, setDoctorName] = useState<ISelectOption[]>([]);
+  // const [doctorName, setDoctorName] = useState<ISelectOption[]>([]);
   const { data } = useSpecialistRateDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
@@ -117,22 +117,21 @@ const SpecialistRates = ({
       value: s.id ?? 0,
     })) || [];
   // const doctorName = data?.results?.map(x => setDoctorName(x.specialist_name));
-  useEffect(() => {
-    if (data?.results) {
-      const result = data.results
-        .map(x => {
-          if (x.specialist_name !== undefined) {
-            return { label: x.specialist_name, value: x.id };
-          } else {
-            return undefined;
-          }
-        })
-        .filter(x => x !== undefined);
-      setDoctorName(result as ISelectOption[]);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data?.results) {
+  //     const result = data.results
+  //       .map(x => {
+  //         if (x.specialist_name !== undefined) {
+  //           return { label: x.specialist_name, value: x.id };
+  //         } else {
+  //           return undefined;
+  //         }
+  //       })
+  //       .filter(x => x !== undefined);
+  //     // setDoctorName(result as ISelectOption[]);
 
-  console.log(doctorName);
+  //   }
+  // }, [data]);
 
   const columns = [
     {
@@ -227,18 +226,24 @@ const SpecialistRates = ({
       },
     },
   ];
-  const { data: docName } = useFetchSpecialistRateById(idDoctor.toString());
+  const { data: docName, refetch } = useFetchSpecialistRateById(
+    idDoctor.toString()
+  );
   const formMethods = useForm({
     defaultValues: {
       id: null as number | null,
 
-      doctorprofile: { label: "", value: 0 },
-      rate: docName?.rate || 0,
+      doctorprofile: "",
+      rate: "",
       specializations: [],
-      is_general_rate: docName?.is_general_rate || false,
+      is_general_rate: false,
     },
     resolver: yupResolver(schema),
   });
+  const {
+    formState: { errors },
+  } = formMethods;
+  // console.log(formMethods.formState.errors.doctorprofile);
   const onEditSpecialization = async () => {
     try {
       // const isValid = formMethods.trigger();
@@ -248,49 +253,50 @@ const SpecialistRates = ({
       // const doctorprofile = doctorprofileValues.value;
       await updateSpecializationAction.mutateAsync({
         doctorprofile: idDoctor,
-        rate: formMethods.getValues("rate"),
+        rate: formMethods.getValues("rate").toString(),
         is_general_rate: formMethods.getValues("is_general_rate"),
       });
       onCloseEditModal();
       toastSuccess("Specialist Rate updated successfully!");
       formMethods.reset({
         is_general_rate: false,
-        rate: 0,
+        rate: " ",
       });
     } catch (error) {
       toastFail("Failed to update Specialization!");
     }
   };
 
-  const onSaveSpecialistRate = async () => {
-    try {
-      // const isValid = formMethods.trigger();
-      // if (!isValid) return;
+  // const onSaveSpecialistRate = async () => {
+  //   console.log({ errors: formMethods });
+  //   try {
+  //     // const isValid = formMethods.trigger();
+  //     // if (!isValid) return;
 
-      // console.log(
-      //   formMethods.getValues("doctorprofile"),
-      //   formMethods.getValues("rate"),
-      //   "kkkk"
-      // );
-      // const doctorprofileValues = formMethods.getValues("doctorprofile");
+  //     // console.log(
+  //     //   formMethods.getValues("doctorprofile"),
+  //     //   formMethods.getValues("rate"),
+  //     //   "kkkk"
+  //     // );
+  //     // const doctorprofileValues = formMethods.getValues("doctorprofile");
 
-      await saveSpecialistRate.mutateAsync({
-        doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
+  //     await saveSpecialistRate.mutateAsync({
+  //       doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
 
-        rate: formMethods.getValues("rate"),
+  //       rate: formMethods.getValues("rate"),
 
-        is_general_rate: formMethods.getValues("is_general_rate") || false,
-      });
-      onCloseSpecialistRate();
-      toastSuccess("Specialist Rate  saved successfully!");
-      formMethods.reset({
-        is_general_rate: false,
-        rate: 0,
-      });
-    } catch (error) {
-      toastFail("Failed to save Specialist Rate!");
-    }
-  };
+  //       is_general_rate: formMethods.getValues("is_general_rate") || false,
+  //     });
+  //     onCloseSpecialistRate();
+  //     toastSuccess("Specialist Rate  saved successfully!");
+  //     formMethods.reset({
+  //       is_general_rate: false,
+  //       rate: 0,
+  //     });
+  //   } catch (error) {
+  //     toastFail("Failed to save Specialist Rate!");
+  //   }
+  // };
 
   const ondeleteSpecialization = async () => {
     try {
@@ -304,6 +310,27 @@ const SpecialistRates = ({
     }
   };
 
+  const onSubmitFrom = async () => {
+    try {
+      await saveSpecialistRate.mutateAsync({
+        doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
+        rate: formMethods.getValues("rate"),
+        is_general_rate: formMethods.getValues("is_general_rate"),
+      });
+      onCloseSpecialistRate();
+      toastSuccess("Specialist Rate  saved successfull");
+      formMethods.reset({
+        is_general_rate: false,
+        rate: "",
+      });
+    } catch (error) {
+      toastFail("Failed to save Specialist Rate!");
+    }
+  };
+  const onSaveSpecialistRate = () => {
+    formMethods.handleSubmit(onSubmitFrom)();
+  };
+  console.log(errors.doctorprofile?.message, "hhhh");
   return (
     <Fragment>
       <Grid display={"flex"} justifyContent={"space-between"}>
@@ -378,7 +405,10 @@ const SpecialistRates = ({
             </Button>
             <Button
               flex={1}
-              onClick={onEditSpecialization}
+              onClick={() => {
+                onEditSpecialization();
+                refetch();
+              }}
               background={colors.primary}
               color={colors.white}
               // isLoading={onSaveSpecialistRate.isLoading}
@@ -413,6 +443,7 @@ const SpecialistRates = ({
               name="rate"
               register={formMethods.register}
               value={docName?.rate}
+              required
             />
             <Stack
               display={"flex"}
@@ -468,11 +499,12 @@ const SpecialistRates = ({
               flex={1}
               onClick={() => {
                 onSaveSpecialistRate();
-                onCloseSpecialistRate();
+                // onCloseSpecialistRate();
+                refetch();
               }}
               background={colors.primary}
               color={colors.white}
-              // isLoading={saveSpecializationAction.isLoading}
+              isLoading={saveSpecialistRate.isLoading}
             >
               Save
             </Button>
@@ -481,39 +513,43 @@ const SpecialistRates = ({
       >
         <VStack alignItems={"end"}>
           <FormProvider {...formMethods}>
-            <Select
-              placeholder="Select Specialist"
-              label="Select Specialist"
-              name="doctorprofile"
-              required
-              register={formMethods.register}
-              options={doctorNames}
-              // selectControl={formMethods.control}
-              // isDisabled
-            />
-            <FloatingLabelInput
-              label="Rate"
-              name="rate"
-              register={formMethods.register}
-            />
-            <Stack
-              display={"flex"}
-              flexDir={"row"}
-              alignItems={"center"}
-              h={"auto"}
-            >
-              <Text flexShrink={"0"} p={"10px"}>
-                General Rate?
-              </Text>
-
-              <Checkbox
-                // label="general Rate"
-                name={"is_general_rate"}
-                control={formMethods.control}
-                justifyContent={"center"}
-                alignItems={"center"}
+            <form onSubmit={formMethods.handleSubmit(onSubmitFrom)}>
+              <Select
+                placeholder="Select Specialist"
+                label="Select Specialist"
+                name="doctorprofile"
+                required
+                register={formMethods.register}
+                options={doctorNames}
+                error={errors.doctorprofile?.message}
               />
-            </Stack>
+              <FloatingLabelInput
+                label="Rate"
+                name="rate"
+                register={formMethods.register}
+                required
+                type="number"
+                error={errors.rate?.message}
+              />
+              <Stack
+                display={"flex"}
+                flexDir={"row"}
+                alignItems={"center"}
+                h={"auto"}
+              >
+                <Text flexShrink={"0"} p={"10px"}>
+                  General Rate?
+                </Text>
+
+                <Checkbox
+                  // label="general Rate"
+                  name={"is_general_rate"}
+                  control={formMethods.control}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                />
+              </Stack>
+            </form>
           </FormProvider>
         </VStack>
       </ModalComponent>
