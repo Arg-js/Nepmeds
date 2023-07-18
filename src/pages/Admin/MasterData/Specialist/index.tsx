@@ -282,7 +282,7 @@ const Specializations = ({
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specializations
+            Specialist
           </Text>
         </GridItem>
 
@@ -469,7 +469,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Symptom</Text>
+            <Text>Delete Specialist</Text>
           </HStack>
         }
         footer={
@@ -498,38 +498,6 @@ const Specializations = ({
           ?
         </Text>
       </ModalComponent>
-
-      {/* bulk delete modal */}
-      {/* <ModalComponent
-        size="sm"
-        isOpen={isBulkOpen}
-        onClose={onCloseBulkModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Bulk Delete Symptoms</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => onBulkDelete(specialization)}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteBulkSpecialization.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent> */}
     </Fragment>
   );
 };
