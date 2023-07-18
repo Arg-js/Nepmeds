@@ -12,9 +12,20 @@ export interface ISpecialistRate {
   id?: number;
   experience?: number;
   is_general_rate?: boolean;
-  rate?: number;
   specialist_name?: string;
   specialization?: Specialization[];
+
+  rate?: number;
+  result?: {
+    experience?: number;
+    id?: number;
+    is_general_rate?: boolean;
+    specialization?: Specialization[];
+  }[];
+}
+export interface IDoctorList {
+  id?: number;
+  name?: string;
 }
 
 const getSpecialistRate = async () => {
@@ -28,6 +39,35 @@ export const fetchSpecialistRate = () => {
     select: res => res.data.data,
   });
 };
+const getDoctorList = async () => {
+  const response = await HttpClient.get<NepMedsResponse<IDoctorList[]>>(
+    api.doctorList
+  );
+  return response;
+};
+
+export const fetchDoctorList = () => {
+  return useQuery(api.doctorList, getDoctorList, {
+    select: res => res.data.data,
+  });
+};
+
+const getSpecialistRateById = async (id: string) => {
+  const response = await HttpClient.get<NepMedsResponse<ISpecialistRate>>(
+    api.specialistRate.fetchAll + "/" + id + "/"
+  );
+  return response;
+};
+export const useFetchSpecialistRateById = (id: string) => {
+  return useQuery(
+    api.specialistRate.fetchAll + "/" + id + "/",
+    () => getSpecialistRateById(id),
+    {
+      select: res => res.data.data,
+    }
+  );
+};
+
 const saveSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: number;
 
@@ -133,7 +173,7 @@ const updateSpecialistRate = async (specializationInfo: {
   const response = await HttpClient.patch<NepMedsResponse>(
     api.specialistRate.patch.replace(
       "{id}",
-      specializationInfo.doctorprofile?.toString()
+      specializationInfo.doctorprofile?.toString() + "/ "
     ),
     {
       is_general_rate: specializationInfo.is_general_rate,

@@ -27,7 +27,9 @@ import Select, { ISelectOption } from "@nepMeds/components/Form/Select";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   SpecialistRate,
+  fetchDoctorList,
   useDeleteSpecialistRate,
+  useFetchSpecialistRateById,
   useSaveSpecialistRate,
   useSpecialistRateDataWithPagination,
   useUpdateSpecialistRate,
@@ -81,6 +83,8 @@ const SpecialistRates = ({
     ""
   );
 
+  const { data: doctorList } = fetchDoctorList();
+
   // const {
   //   isOpen: isBulkOpen,
   //   onClose: onCloseBulkModal,
@@ -98,7 +102,7 @@ const SpecialistRates = ({
     onOpen: onOpenEditModal,
   } = useDisclosure();
   const [searchFilter, setSearchFilter] = useState("");
-  // const [idDoctor, setIdDoctor] = useState<number>(0);
+  const [idDoctor, setIdDoctor] = useState<number>(0);
 
   const [deleteSpecialization, setDeleteSpecialization] = useState<any>(null);
 
@@ -106,6 +110,12 @@ const SpecialistRates = ({
   //   label: s.name,
   //   value: s.id,
   // }));
+
+  const doctorNames =
+    doctorList?.map(s => ({
+      label: s.name ?? "",
+      value: s.id ?? 0,
+    })) || [];
   // const doctorName = data?.results?.map(x => setDoctorName(x.specialist_name));
   useEffect(() => {
     if (data?.results) {
@@ -122,17 +132,7 @@ const SpecialistRates = ({
     }
   }, [data]);
 
-  const formMethods = useForm({
-    defaultValues: {
-      id: null as number | null,
-
-      doctorprofile: { label: "", value: 0 },
-      rate: 0,
-      specializations: [],
-      is_general_rate: false,
-    },
-    resolver: yupResolver(schema),
-  });
+  console.log(doctorName);
 
   const columns = [
     {
@@ -202,7 +202,8 @@ const SpecialistRates = ({
                 //     value: s.id.toString(),
                 //   })),
                 // });
-                // setIdDoctor(cell.row.original?.id || 0);
+                setIdDoctor(cell.row.original?.id || 0);
+                setDeleteSpecialization(cell.row.original || "");
 
                 onOpenEditModal();
               }}
@@ -226,7 +227,18 @@ const SpecialistRates = ({
       },
     },
   ];
+  const { data: docName } = useFetchSpecialistRateById(idDoctor.toString());
+  const formMethods = useForm({
+    defaultValues: {
+      id: null as number | null,
 
+      doctorprofile: { label: "", value: 0 },
+      rate: docName?.rate || 0,
+      specializations: [],
+      is_general_rate: docName?.is_general_rate || false,
+    },
+    resolver: yupResolver(schema),
+  });
   const onEditSpecialization = async () => {
     try {
       // const isValid = formMethods.trigger();
@@ -235,7 +247,7 @@ const SpecialistRates = ({
 
       // const doctorprofile = doctorprofileValues.value;
       await updateSpecializationAction.mutateAsync({
-        doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
+        doctorprofile: idDoctor,
         rate: formMethods.getValues("rate"),
         is_general_rate: formMethods.getValues("is_general_rate"),
       });
@@ -369,7 +381,7 @@ const SpecialistRates = ({
               onClick={onEditSpecialization}
               background={colors.primary}
               color={colors.white}
-              // isLoading={saveSpecializationAction.isLoading}
+              // isLoading={onSaveSpecialistRate.isLoading}
             >
               Save
             </Button>
@@ -378,20 +390,29 @@ const SpecialistRates = ({
       >
         <VStack alignItems={"end"}>
           <FormProvider {...formMethods}>
-            <Select
+            {/* <Select
               placeholder="Select Specialist"
               label="Select Specialist"
               name="doctorprofile"
               required
               register={formMethods.register}
-              options={[...doctorName, { label: "hi", value: 2 }]}
+              options={doctorNames}
               // selectControl={formMethods.control}
               isDisabled
+              defaultValue={docName?.specialist_name}
+            /> */}
+            <Input
+              defaultValue={docName?.specialist_name}
+              isDisabled
+              variant="filled"
+              h="55px"
             />
             <FloatingLabelInput
+              // defaultValues={data?.results[idDoctor].rate}
               label="Rate"
               name="rate"
               register={formMethods.register}
+              value={docName?.rate}
             />
             <Stack
               display={"flex"}
@@ -409,6 +430,10 @@ const SpecialistRates = ({
                 control={formMethods.control}
                 justifyContent={"center"}
                 alignItems={"center"}
+                checked={docName?.is_general_rate}
+                // value={data?.results[idDoctor].is_general_rate}
+
+                // defaultValue={data?.results[idDoctor].is_general_rate}
               />
             </Stack>
           </FormProvider>
@@ -462,7 +487,7 @@ const SpecialistRates = ({
               name="doctorprofile"
               required
               register={formMethods.register}
-              options={doctorName}
+              options={doctorNames}
               // selectControl={formMethods.control}
               // isDisabled
             />

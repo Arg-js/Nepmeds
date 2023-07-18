@@ -43,6 +43,7 @@ export const api = {
     patch: "/core/specialist-rate/{id}",
     delete: "/core/specialist-rate/{id}",
   },
+  doctorList: "/doctor_consult/doctor-list/",
 };
 
 export interface NepMedsResponse<T = any> {
