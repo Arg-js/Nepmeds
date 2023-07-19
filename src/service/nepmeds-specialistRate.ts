@@ -1,3 +1,4 @@
+import queryStringGenerator from "@nepMeds/utils/queryStringGenerator";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Specialization } from "./nepmeds-specialization";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
@@ -64,6 +65,7 @@ export const useFetchSpecialistRateById = (id: string) => {
     () => getSpecialistRateById(id),
     {
       select: res => res.data.data,
+      enabled: id !== "0",
     }
   );
 };
@@ -74,23 +76,15 @@ const saveSpecialistRate = async (SpecialistRateInfo: {
   is_general_rate: boolean;
   rate: string;
 }) => {
-  if (SpecialistRateInfo.doctorprofile) {
-    const response = await HttpClient.post<NepMedsResponse>(
-      api.specialistRate.fetchAll + "/",
-      {
-        is_general_rate: SpecialistRateInfo.is_general_rate,
-        rate: SpecialistRateInfo.rate,
-        doctorprofile: SpecialistRateInfo.doctorprofile,
-      }
-    );
-    return response;
-  } else {
-    const response = await HttpClient.post<NepMedsResponse>(
-      api.specialistRate.fetchAll,
-      SpecialistRateInfo
-    );
-    return response;
-  }
+  const response = await HttpClient.post<NepMedsResponse>(
+    api.specialistRate.fetchAll + "/",
+    {
+      is_general_rate: SpecialistRateInfo.is_general_rate,
+      rate: SpecialistRateInfo.rate,
+      doctorprofile: SpecialistRateInfo.doctorprofile,
+    }
+  );
+  return response;
 };
 
 export const useSaveSpecialistRate = (
@@ -100,13 +94,17 @@ export const useSaveSpecialistRate = (
 ) => {
   const queryClient = useQueryClient();
 
-  return useMutation(saveSpecialistRate, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialistRate.fetchAll}/?page=${page_no}&page_size=${page_size}&name=${name}`
-      );
-    },
-  });
+  const qs = queryStringGenerator({ page_no, page_size, name });
+
+  return useMutation(
+    ["post" + api.specialistRate.fetchAll + "/"],
+    saveSpecialistRate,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
+      },
+    }
+  );
 };
 const deleteSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: string | null;
@@ -123,23 +121,18 @@ export const useDeleteSpecialistRate = (
   name?: string
 ) => {
   const queryClient = useQueryClient();
+  const qs = queryStringGenerator({ page_no, page_size, name });
 
   return useMutation(deleteSpecialistRate, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialistRate.fetchAll}/?page=${page_no}&page_size=${page_size}&name=${name}`
-        // api.specialistRate.fetchAll
-      );
+      queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
     },
   });
 };
 
-const getSpecialistRateDataWithPagination = async (
-  page_no: number,
-  page_size: number
-) => {
+const getSpecialistRateDataWithPagination = async (qs: string) => {
   const response = await HttpClient.get<PaginatedResponse<ISpecialistRate>>(
-    `${api.specialistRate.fetchAll}/?page=${page_no}&page_size=${page_size}`
+    `${api.specialistRate.fetchAll}/?${qs}`
   );
   return response;
 };
@@ -148,14 +141,18 @@ export const useSpecialistRateDataWithPagination = ({
   page_no,
   page_size,
   activeTab,
+  name,
 }: {
   page_no: number;
   page_size: number;
   activeTab: number;
+  name?: string;
 }) => {
+  const qs = queryStringGenerator({ page_no, page_size, name });
+
   return useQuery(
-    `${api.specialistRate.fetchAll}/?page=${page_no}&page_size=${page_size}`,
-    () => getSpecialistRateDataWithPagination(page_no, page_size),
+    `${api.specialistRate.fetchAll}/?${qs}`,
+    () => getSpecialistRateDataWithPagination(qs),
 
     { select: response => response.data.data, enabled: activeTab === 2 }
   );
@@ -185,12 +182,18 @@ export const useUpdateSpecialistRate = (
   name: string
 ) => {
   const queryClient = useQueryClient();
+  const qs = queryStringGenerator({ page_no, page_size: pageSize, name });
 
-  return useMutation(updateSpecialistRate, {
-    onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialistRate.fetchAll}?page=${page_no}&page_size=${pageSize}&name=${name}`
-      );
-    },
-  });
+  return useMutation(
+    ["patch" + api.specialistRate.fetchAll + "/"],
+    updateSpecialistRate,
+    {
+      onSuccess: (body: any) => {
+        queryClient.invalidateQueries(
+          api.specialistRate.fetchAll + "/" + body?.data?.data?.id + "/"
+        );
+        queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
+      },
+    }
+  );
 };

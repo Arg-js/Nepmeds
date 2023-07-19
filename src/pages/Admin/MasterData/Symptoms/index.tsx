@@ -409,25 +409,6 @@ const Symptoms = ({
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
-          {/* <Box ml={1}>
-            <Menu>
-              <MenuButton as={Button} variant={"outline"}>
-                <Text
-                  display={"flex"}
-                  alignItems={"center"}
-                  fontWeight={400}
-                  color={colors.light_gray}
-                >
-                  {" "}
-                  Bulk Action{" "}
-                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
-                </Text>
-              </MenuButton>
-              <MenuList onClick={onOpenBulkModal}>
-                <MenuItem>Bulk Delete </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
         </GridItem>
       </Grid>
 
@@ -450,38 +431,6 @@ const Symptoms = ({
         </Center>
       )}
       {data?.count === 0 && <Box>No Result Found!</Box>}
-
-      {/* bulk modal */}
-      {/* <ModalComponent
-        size="sm"
-        isOpen={isBulkOpen}
-        onClose={onCloseBulkModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Bulk Delete Symptoms</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => onBulkDelete(symptomList)}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteBulkSymptom.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent> */}
     </Fragment>
   );
 };

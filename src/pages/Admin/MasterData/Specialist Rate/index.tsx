@@ -26,7 +26,6 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 
 import Select from "@nepMeds/components/Form/Select";
-
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   SpecialistRate,
@@ -37,7 +36,10 @@ import {
   useSpecialistRateDataWithPagination,
   useUpdateSpecialistRate,
 } from "@nepMeds/service/nepmeds-specialistRate";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { useEffect } from "react";
 
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
@@ -57,20 +59,162 @@ interface SpecialistRateProps {
   isOpenSpecialistRate: boolean;
   activeTab: number;
 }
+
+const EditModalComponent = ({
+  doctorId,
+  disclosure,
+  updateQuery,
+}: {
+  doctorId: string;
+  disclosure: any;
+  updateQuery: any;
+}) => {
+  const form = useForm({
+    defaultValues: {
+      doctorprofile: "",
+      rate: "",
+      is_general_rate: false,
+    },
+  });
+
+  const { data, isLoading } = useFetchSpecialistRateById(doctorId);
+
+  useEffect(() => {
+    if (data && !isLoading) {
+      form.setValue("doctorprofile", String(data?.id));
+      form.setValue("rate", String(data?.rate));
+      form.setValue(
+        "is_general_rate",
+        String(data?.is_general_rate) === "true"
+      );
+    }
+  }, [data, isLoading]);
+
+  const onEditSpecialization = async () => {
+    try {
+      await updateQuery.mutateAsync({
+        doctorprofile: doctorId,
+        rate: form.getValues("rate").toString(),
+        is_general_rate: form.getValues("is_general_rate"),
+      });
+      disclosure?.onClose();
+      toastSuccess("Specialist Rate updated successfully!");
+      form.reset({});
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      toastFail(err);
+    }
+  };
+
+  return (
+    <ModalComponent
+      size="sm"
+      isOpen={disclosure?.isOpen}
+      onClose={() => {
+        disclosure?.onClose();
+
+        form.reset({});
+      }}
+      heading={
+        <HStack>
+          <svgs.logo_small />
+          <Text>Edit Specialist Rate</Text>
+        </HStack>
+      }
+      footer={
+        <HStack w="100%" gap={3}>
+          <Button
+            variant="outline"
+            onClick={() => {
+              disclosure?.onClose();
+
+              form.reset({});
+            }}
+            flex={1}
+            border="1px solid"
+            borderColor={colors.primary}
+            color={colors.primary}
+            fontWeight={400}
+          >
+            Discard
+          </Button>
+          <Button
+            flex={1}
+            onClick={onEditSpecialization}
+            background={colors.primary}
+            color={colors.white}
+            // isLoading={onSaveSpecialistRate.isLoading}
+          >
+            Save
+          </Button>
+        </HStack>
+      }
+    >
+      <VStack alignItems={"end"}>
+        <FloatingLabelInput
+          name="specialist"
+          register={form.register}
+          value={data?.specialist_name}
+          isDisabled
+          label="Specialist"
+          required
+        />
+
+        <FloatingLabelInput
+          name="rate"
+          register={form.register}
+          defaultValue={data?.rate?.toString()}
+          onChange={e => form.setValue("rate", e.target.value)}
+          label="Rate"
+        />
+
+        <Stack
+          display={"flex"}
+          flexDir={"row"}
+          alignItems={"center"}
+          h={"auto"}
+        >
+          <Text flexShrink={"0"} p={"10px"}>
+            General Rate?
+          </Text>
+
+          <Checkbox
+            // label="general Rate"
+            name={"is_general_rate"}
+            control={form.control}
+            justifyContent={"center"}
+            alignItems={"center"}
+            defaultChecked={String(data?.is_general_rate) === "true"}
+
+            // value={data?.results[idDoctor].is_general_rate}
+
+            // defaultValue={data?.results[idDoctor].is_general_rate}
+          />
+        </Stack>
+      </VStack>
+    </ModalComponent>
+  );
+};
+
 const SpecialistRates = ({
   onCloseSpecialistRate,
   isOpenSpecialistRate,
   activeTab,
 }: SpecialistRateProps) => {
+  const editDisclosure = useDisclosure();
+
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
-  // const [doctorName, setDoctorName] = useState<ISelectOption[]>([]);
+
+  const [searchFilter, setSearchFilter] = useState("");
+  const debouncedInputValue = useDebounce(searchFilter, 500);
   const { data, isLoading, isSuccess } = useSpecialistRateDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
+    name: debouncedInputValue,
   });
 
   const saveSpecialistRate = useSaveSpecialistRate(pageIndex + 1, pageSize, "");
@@ -88,53 +232,21 @@ const SpecialistRates = ({
 
   const { data: doctorList } = fetchDoctorList();
 
-  // const {
-  //   isOpen: isBulkOpen,
-  //   onClose: onCloseBulkModal,
-  //   onOpen: onOpenBulkModal,
-  // } = useDisclosure();
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
     onOpen: onOpenDeleteModal,
   } = useDisclosure();
 
-  const {
-    isOpen: isEditModalOpen,
-    onClose: onCloseEditModal,
-    onOpen: onOpenEditModal,
-  } = useDisclosure();
-  const [searchFilter, setSearchFilter] = useState("");
   const [idDoctor, setIdDoctor] = useState<number>(0);
 
   const [deleteSpecialization, setDeleteSpecialization] = useState<any>(null);
-
-  // const specializationList = specialization.map(s => ({
-  //   label: s.name,
-  //   value: s.id,
-  // }));
 
   const doctorNames =
     doctorList?.map(s => ({
       label: s.name ?? "",
       value: s.id ?? 0,
     })) || [];
-  // const doctorName = data?.results?.map(x => setDoctorName(x.specialist_name));
-  // useEffect(() => {
-  //   if (data?.results) {
-  //     const result = data.results
-  //       .map(x => {
-  //         if (x.specialist_name !== undefined) {
-  //           return { label: x.specialist_name, value: x.id };
-  //         } else {
-  //           return undefined;
-  //         }
-  //       })
-  //       .filter(x => x !== undefined);
-  //     // setDoctorName(result as ISelectOption[]);
-
-  //   }
-  // }, [data]);
 
   const columns = [
     {
@@ -207,7 +319,7 @@ const SpecialistRates = ({
                 setIdDoctor(cell.row.original?.id || 0);
                 setDeleteSpecialization(cell.row.original || "");
 
-                onOpenEditModal();
+                editDisclosure.onOpen();
               }}
             >
               <AiOutlineEdit size={20} fill={colors.blue_100} />
@@ -229,9 +341,7 @@ const SpecialistRates = ({
       },
     },
   ];
-  const { data: docName, refetch } = useFetchSpecialistRateById(
-    idDoctor.toString()
-  );
+
   const formMethods = useForm({
     defaultValues: {
       id: null as number | null,
@@ -246,53 +356,6 @@ const SpecialistRates = ({
   const {
     formState: { errors },
   } = formMethods;
-  const onEditSpecialization = async () => {
-    try {
-      // const isValid = formMethods.trigger();
-      // if (!isValid) return;
-      // const doctorprofileValues = formMethods.getValues("doctorprofile");
-
-      // const doctorprofile = doctorprofileValues.value;
-      await updateSpecializationAction.mutateAsync({
-        doctorprofile: idDoctor,
-        rate: formMethods.getValues("rate").toString(),
-        is_general_rate: formMethods.getValues("is_general_rate"),
-      });
-      onCloseEditModal();
-      toastSuccess("Specialist Rate updated successfully!");
-      formMethods.reset({
-        is_general_rate: false,
-        rate: " ",
-      });
-    } catch (error) {
-      toastFail("Failed to update Specialization!");
-    }
-  };
-
-  // const onSaveSpecialistRate = async () => {
-  //   try {
-  //     // const isValid = formMethods.trigger();
-  //     // if (!isValid) return;
-
-  //     // const doctorprofileValues = formMethods.getValues("doctorprofile");
-
-  //     await saveSpecialistRate.mutateAsync({
-  //       doctorprofile: Number(formMethods.getValues("doctorprofile")) ?? 0,
-
-  //       rate: formMethods.getValues("rate"),
-
-  //       is_general_rate: formMethods.getValues("is_general_rate") || false,
-  //     });
-  //     onCloseSpecialistRate();
-  //     toastSuccess("Specialist Rate  saved successfully!");
-  //     formMethods.reset({
-  //       is_general_rate: false,
-  //       rate: 0,
-  //     });
-  //   } catch (error) {
-  //     toastFail("Failed to save Specialist Rate!");
-  //   }
-  // };
 
   const ondeleteSpecialization = async () => {
     try {
@@ -315,76 +378,32 @@ const SpecialistRates = ({
       });
       onCloseSpecialistRate();
       toastSuccess("Specialist Rate  saved successfull");
-      formMethods.reset({
-        is_general_rate: false,
-        rate: "",
-      });
+      formMethods.reset({});
     } catch (error) {
-      toastFail("Failed to save Specialist Rate!");
+      const err = serverErrorResponse(error);
+      toastFail(err);
     }
   };
-  const onSaveSpecialistRate = () => {
-    formMethods.handleSubmit(onSubmitFrom)();
-  };
+
   return (
     <Fragment>
-      <Grid display={"flex"} justifyContent={"space-between"}>
-        <GridItem alignSelf={"end"}>
-          <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist Rate
-          </Text>
-        </GridItem>
-
-        <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-        </GridItem>
-      </Grid>
-      {isSuccess && (
-        <DataTable
-          columns={columns}
-          data={data?.results ?? []}
-          filter={{ globalFilter: searchFilter }}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
-
-      {isLoading && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
-      {data?.count === 0 && <Box>No Result Found!</Box>}
-
-      {/* edit modal */}
+      <EditModalComponent
+        disclosure={editDisclosure}
+        doctorId={idDoctor.toString()}
+        updateQuery={updateSpecializationAction}
+      />
+      {/* Add Modal */}
       <ModalComponent
         size="sm"
-        isOpen={isEditModalOpen}
+        isOpen={isOpenSpecialistRate}
         onClose={() => {
-          onCloseEditModal();
-          // formMethods.reset({
-          //   doctorprofile: 0,
-          //   rate: 0,
-          //   is_general_rate: false,
-          // });
-          formMethods.reset();
+          onCloseSpecialistRate();
+          formMethods.reset({});
         }}
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Edit Specialist Rate</Text>
+            <Text>Add Specialist Rate</Text>
           </HStack>
         }
         footer={
@@ -392,12 +411,7 @@ const SpecialistRates = ({
             <Button
               variant="outline"
               onClick={() => {
-                onCloseEditModal();
-                // formMethods.reset({
-                //   name: "",
-                //   symptom: [],
-                // });
-
+                onCloseSpecialistRate();
                 formMethods.reset({});
               }}
               flex={1}
@@ -410,103 +424,7 @@ const SpecialistRates = ({
             </Button>
             <Button
               flex={1}
-              onClick={() => {
-                onEditSpecialization();
-                refetch();
-              }}
-              background={colors.primary}
-              color={colors.white}
-              // isLoading={onSaveSpecialistRate.isLoading}
-            >
-              Save
-            </Button>
-          </HStack>
-        }
-      >
-        <VStack alignItems={"end"}>
-          <FormProvider {...formMethods}>
-            {/* <Select
-              placeholder="Select Specialist"
-              label="Select Specialist"
-              name="doctorprofile"
-              required
-              register={formMethods.register}
-              options={doctorNames}
-              // selectControl={formMethods.control}
-              isDisabled
-              defaultValue={docName?.specialist_name}
-            /> */}
-            <Input
-              defaultValue={docName?.specialist_name}
-              isDisabled
-              variant="filled"
-              h="55px"
-            />
-            <FloatingLabelInput
-              // defaultValues={data?.results[idDoctor].rate}
-              label="Rate"
-              name="rate"
-              register={formMethods.register}
-              value={docName?.rate}
-              required
-            />
-            <Stack
-              display={"flex"}
-              flexDir={"row"}
-              alignItems={"center"}
-              h={"auto"}
-            >
-              <Text flexShrink={"0"} p={"10px"}>
-                General Rate?
-              </Text>
-
-              <Checkbox
-                // label="general Rate"
-                name={"is_general_rate"}
-                control={formMethods.control}
-                justifyContent={"center"}
-                alignItems={"center"}
-                checked={docName?.is_general_rate}
-                // value={data?.results[idDoctor].is_general_rate}
-
-                // defaultValue={data?.results[idDoctor].is_general_rate}
-              />
-            </Stack>
-          </FormProvider>
-        </VStack>
-      </ModalComponent>
-      {/* // isRequired marginLeft={"80%"} // isRequired marginLeft={"80%"} */}
-      {/* add modal */}
-      <ModalComponent
-        size="sm"
-        isOpen={isOpenSpecialistRate}
-        onClose={onCloseSpecialistRate}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Add Specialist Rate</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button
-              variant="outline"
-              onClick={onCloseSpecialistRate}
-              flex={1}
-              border="1px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
-            >
-              Discard
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => {
-                onSaveSpecialistRate();
-                // onCloseSpecialistRate();
-                refetch();
-              }}
+              onClick={formMethods.handleSubmit(onSubmitFrom)}
               background={colors.primary}
               color={colors.white}
               isLoading={saveSpecialistRate.isLoading}
@@ -518,7 +436,10 @@ const SpecialistRates = ({
       >
         <VStack alignItems={"end"}>
           <FormProvider {...formMethods}>
-            <form onSubmit={formMethods.handleSubmit(onSubmitFrom)}>
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmitFrom)}
+              style={{ width: "100%" }}
+            >
               <Select
                 placeholder="Select Specialist"
                 label="Select Specialist"
@@ -527,6 +448,7 @@ const SpecialistRates = ({
                 register={formMethods.register}
                 options={doctorNames}
                 error={errors.doctorprofile?.message}
+                mb={3}
               />
               <FloatingLabelInput
                 label="Rate"
@@ -536,12 +458,7 @@ const SpecialistRates = ({
                 type="number"
                 error={errors.rate?.message}
               />
-              <Stack
-                display={"flex"}
-                flexDir={"row"}
-                alignItems={"center"}
-                h={"auto"}
-              >
+              <HStack h={"auto"} justifyContent={"end"}>
                 <Text flexShrink={"0"} p={"10px"}>
                   General Rate?
                 </Text>
@@ -553,12 +470,12 @@ const SpecialistRates = ({
                   justifyContent={"center"}
                   alignItems={"center"}
                 />
-              </Stack>
+              </HStack>
             </form>
           </FormProvider>
         </VStack>
       </ModalComponent>
-      {/* delete modal */}
+      {/* Delete Modal */}
       <ModalComponent
         size="sm"
         isOpen={isDeleteModalOpen}
@@ -579,7 +496,7 @@ const SpecialistRates = ({
               onClick={ondeleteSpecialization}
               borderColor={colors.red}
               color={colors.red}
-              // isLoading={deleteSpecializationAction.isLoading}
+              isLoading={deleteSpecializationAction.isLoading}
               variant="outline"
             >
               Delete
@@ -595,6 +512,45 @@ const SpecialistRates = ({
           ?
         </Text>
       </ModalComponent>
+
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Specialist Rate
+          </Text>
+        </GridItem>
+
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="Search"
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+        </GridItem>
+      </Grid>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </Fragment>
   );
 };
