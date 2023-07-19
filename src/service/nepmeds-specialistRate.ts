@@ -72,7 +72,7 @@ const saveSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: number;
 
   is_general_rate: boolean;
-  rate: number;
+  rate: string;
 }) => {
   if (SpecialistRateInfo.doctorprofile) {
     const response = await HttpClient.post<NepMedsResponse>(
@@ -111,12 +111,8 @@ export const useSaveSpecialistRate = (
 const deleteSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: string | null;
 }) => {
-  console.log(
-    api.specialistRate.fetchAll + SpecialistRateInfo.doctorprofile + "/"
-  );
-
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.specialistRate.fetchAll + "/" + SpecialistRateInfo.doctorprofile
+    api.specialistRate.fetchAll + "/" + SpecialistRateInfo.doctorprofile + "/"
   );
   return response;
 };
@@ -168,7 +164,7 @@ const updateSpecialistRate = async (specializationInfo: {
   doctorprofile: number;
 
   is_general_rate: boolean;
-  rate: number;
+  rate: string;
 }) => {
   const response = await HttpClient.patch<NepMedsResponse>(
     api.specialistRate.patch.replace(

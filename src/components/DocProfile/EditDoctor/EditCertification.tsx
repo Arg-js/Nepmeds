@@ -137,9 +137,10 @@ const EditCertification = ({
         async (certificate: CertificateInfo) => {
           const createCertificateFileResponse =
             await certificateFileRegister.mutateAsync(certificate);
+
           const certificateInfoData = {
             ...certificate,
-            doctor: doctorProfileData.id ?? 0,
+            doctor: doctorProfileData?.id ?? 0,
             certificate_documents: createCertificateFileResponse.data.data.map(
               (file: string) => ({
                 file: file,
@@ -310,6 +311,7 @@ const EditCertification = ({
                   }}
                 >
                   <CertificationInfoForm
+                    editMode={true}
                     doctorProfileData={doctorProfileData}
                   />
                 </GridItem>

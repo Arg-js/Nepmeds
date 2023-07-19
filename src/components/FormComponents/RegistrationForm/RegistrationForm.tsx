@@ -70,7 +70,7 @@ const registerDefaultValues = {
   confirm_password: "",
   bio_detail: "",
   phone: "+977",
-  specialization: [] as { label: string; value: string }[],
+  specialization_names: [] as { label: string; value: string }[],
   pan_number: "",
   id_type: "Citizenship",
   id_number: "",
@@ -180,7 +180,9 @@ const RegistrationForm = () => {
     try {
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
 
-      const specializationValues = formMethods.getValues("specialization");
+      const specializationValues = formMethods.getValues(
+        "specialization_names"
+      );
       const specializationArray = specializationValues.map(specialization =>
         Number(specialization.value)
       );
@@ -277,7 +279,9 @@ const RegistrationForm = () => {
               title: values.title,
 
               bio_detail: values.bio_detail,
-              specialization: values.specialization.map(s => Number(s.value)),
+              specialization: values.specialization_names.map(s =>
+                Number(s.value)
+              ),
               age: 20,
               medical_degree: "test",
               designation: "Test",
