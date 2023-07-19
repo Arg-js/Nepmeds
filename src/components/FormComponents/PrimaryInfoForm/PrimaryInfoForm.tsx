@@ -72,15 +72,15 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-  // useEffect(() => {
-  //   if (watch("province") !== 0) {
-  //     reset({
-  //       ...getValues(),
-  //       district: 0,
-  //       municipality: 0,
-  //     });
-  //   }
-  // }, [watch("province")]);
+  useEffect(() => {
+    if (watch("province") !== 0) {
+      reset({
+        ...getValues(),
+        district: (0 as number) || null,
+        municipality: (0 as number) || null,
+      });
+    }
+  }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
