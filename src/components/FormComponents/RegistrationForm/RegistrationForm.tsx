@@ -155,9 +155,9 @@ const RegistrationForm = () => {
     defaultValues: registerDefaultValues,
   });
 
-  const onClickHandler = (index: number) => {
-    setActiveStep(index);
-  };
+  // const onClickHandler = (index: number) => {
+  //   setActiveStep(index);
+  // };
 
   const base64 = async (image: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -675,7 +675,7 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "pointer",
                       }}
-                      onClick={() => onClickHandler(index)}
+                      // onClick={() => onClickHandler(index)}
                     >
                       {step?.title}
                     </StepTitle>
