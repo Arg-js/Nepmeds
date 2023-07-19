@@ -123,9 +123,10 @@ const EditPrimary = ({
 
   const [editPrimaryFormToggle, setEditPrimaryFormToggle] =
     React.useState(false);
-  console.log(formMethods.getValues());
   const onSavePrimaryInfo = async () => {
     const { getValues } = formMethods;
+    const editSpecializationData =
+      doctorProfileData?.specialization_names ?? [];
 
     try {
       const frontImage = getValues("id_front_image")?.[0];
@@ -141,12 +142,15 @@ const EditPrimary = ({
         ward: getValues("ward"),
         tole: getValues("tole"),
       };
-      console.log(getValues());
 
       const doctorProfile = {
         user: user,
-        specialization: getValues("specialization_names").map(
-          (e: { id: string; value: string }) => Number(e.value)
+        specialization: (getValues("specialization_names")
+          ? getValues("specialization_names")
+          : editSpecializationData
+        ).map(
+          (e: { label: string; value: string; id?: number }) =>
+            Number(e.value) || Number(e.id)
         ),
         pan_number: getValues("pan_number"),
         id_type: getValues("id_type"),

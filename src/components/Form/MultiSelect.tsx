@@ -71,7 +71,8 @@ const MultiSelect = ({
               isMulti
               onChange={newValue => {
                 onChange(newValue);
-                register(name, rules); // Register the value after onChange
+                // register(name, rules);
+                // Register the value after onChange
               }}
               menuPosition="fixed"
               onBlur={onBlur}
