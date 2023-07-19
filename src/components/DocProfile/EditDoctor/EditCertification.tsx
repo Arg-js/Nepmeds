@@ -133,13 +133,11 @@ const EditCertification = ({
   const handleFormUpdate = async () => {
     try {
       const certificateArray = formMethods.getValues("certification");
-      console.log(certificateArray);
       const certificatePromises = certificateArray.map(
         async (certificate: CertificateInfo) => {
           const createCertificateFileResponse =
             await certificateFileRegister.mutateAsync(certificate);
 
-          console.log(createCertificateFileResponse);
           const certificateInfoData = {
             ...certificate,
             doctor: doctorProfileData?.id ?? 0,

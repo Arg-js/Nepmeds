@@ -26,10 +26,7 @@ const EditAcademicField = ({
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | string | null>>
   >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
-  console.log(selectedImagesFile);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -65,7 +62,6 @@ const EditAcademicField = ({
   };
   const academicIndex = index !== undefined ? index : 0;
   const selectedImagesForAcademic = selectedImages[academicIndex] || [];
-  console.log(doctorProfileData?.doctor_academic_info[academicIndex]);
 
   return (
     <Box position="relative">

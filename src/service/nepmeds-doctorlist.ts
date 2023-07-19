@@ -95,7 +95,6 @@ export const useDoctorList = ({
 };
 
 const deleteDoctorList = async (id: number) => {
-  console.log(id);
   const response = await HttpClient.delete(api.registereddoctor + `${id}/`);
   return response;
 };

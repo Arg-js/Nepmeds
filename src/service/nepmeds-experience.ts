@@ -46,7 +46,6 @@ export const useExperienceFileRegister = () =>
   useMutation(createExperienceFile);
 
 const updateExperienceData = async (id: number, data: ExperienceInfo) => {
-  console.log(id);
   const response = await HttpClient.patch(api.experience + `${id}/`, data);
   return response;
 };

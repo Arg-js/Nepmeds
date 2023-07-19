@@ -46,7 +46,6 @@ const EditPrimaryForm = ({
   formMethods: UseFormReturn<FieldValues, any>;
   doctorProfileData: IGetDoctorProfile;
 }) => {
-  console.log(doctorProfileData);
   return (
     <>
       <VStack p={5}>
@@ -175,7 +174,6 @@ const EditPrimary = ({
       toastSuccess("Personal information updated successfully!");
       setEditPrimaryFormToggle(false);
     } catch (error) {
-      console.log(error);
       const err = serverErrorResponse(error);
 
       toastFail(err);

@@ -20,10 +20,7 @@ const AddExperienceField = ({ index }: { index?: number }) => {
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | string | null>>
   >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
-  console.log(selectedImagesFile);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -59,7 +56,6 @@ const AddExperienceField = ({ index }: { index?: number }) => {
   };
   const experienceIndex = index !== undefined ? index : 0;
   const selectedImagesForExperience = selectedImages[experienceIndex] || [];
-  console.log(experienceIndex);
   return (
     <Box position="relative">
       <SimpleGrid gridTemplateColumns="1fr" mb={4}>

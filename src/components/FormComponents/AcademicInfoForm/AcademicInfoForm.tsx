@@ -36,8 +36,6 @@ export const AcademicInfoForm = ({
       e?.academic_document.map((e: any) => getImageUrl(e.file))
     ) ?? [];
 
-  console.log(mappedImageInfo);
-
   const { fields, append, remove } = useFieldArray({
     control,
     name: "academic",
@@ -124,7 +122,6 @@ export const AcademicInfoForm = ({
         toastFail("Failed to delete academic information!");
       }
     } else {
-      console.log(index);
       remove(index);
     }
 

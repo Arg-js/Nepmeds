@@ -17,11 +17,11 @@ import { useForm } from "react-hook-form";
 import { Home, Notification } from "react-iconly";
 
 import Input from "@nepMeds/components/Form/Input";
-import { colors } from "@nepMeds/theme/colors";
-import { Link } from "react-router-dom";
-import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
+import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { colors } from "@nepMeds/theme/colors";
 import { RiArrowDropDownLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const logoutAction = useLogoutMutation();
@@ -31,7 +31,6 @@ const Navbar = () => {
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
-  // console.log(data,"55")
   return (
     <>
       <Stack p={"15px 21px"} background="white">

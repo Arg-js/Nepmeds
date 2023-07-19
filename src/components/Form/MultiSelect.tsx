@@ -45,8 +45,6 @@ const MultiSelect = ({
 }: IMultiSelect) => {
   const { t } = useTranslation();
 
-  console.log(multiValue);
-
   useEffect(() => {
     if (name) {
       register(name, rules); // Register the field with the validation rules when the component mounts

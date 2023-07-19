@@ -16,18 +16,18 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 
-import { FormProvider, useForm } from "react-hook-form";
-import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
-import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
-import { useNavigate, useParams } from "react-router-dom";
 import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
-import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { colors } from "@nepMeds/theme/colors";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
+import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import { colors } from "@nepMeds/theme/colors";
+import { FormProvider, useForm } from "react-hook-form";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DocProfileAdmin = () => {
   const formMethods = useForm();
@@ -42,8 +42,8 @@ const DocProfileAdmin = () => {
     onClose: onRejectModalClose,
   } = useDisclosure();
 
-  const approvePendingDoc = useApproveDoc(1, 10, "approved");
-  const rejectPendingDoc = useRejectDoc(1, 10, "pending");
+  const approvePendingDoc = useApproveDoc(1, 10);
+  const rejectPendingDoc = useRejectDoc(1, 10);
   const navigate = useNavigate();
 
   const onSubmitForm = async () => {

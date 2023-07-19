@@ -45,8 +45,6 @@ const PrimaryInfo = ({
   const allDistrictInfo = useGetAllDistricts();
   const { data: specialization = [] } = useSpecializationRegisterData();
 
-  console.log(getValues("specialization_names"));
-
   const provinceOptions =
     provinceInfo.data?.map(p => ({
       label: p.name,
@@ -165,7 +163,6 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
-  console.log(isEditable, "777");
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
