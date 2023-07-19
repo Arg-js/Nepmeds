@@ -163,7 +163,6 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
-  console.log(getValues("id_issued_district"), "llll");
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>

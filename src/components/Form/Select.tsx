@@ -29,7 +29,6 @@ const Select = ({
   endIcons,
   ...rest
 }: ISelect) => {
-  console.log(rules);
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
       {startIcon ? (
