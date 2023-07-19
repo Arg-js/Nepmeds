@@ -3,11 +3,13 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   HStack,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -20,7 +22,9 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 import Select from "@nepMeds/components/Form/Select";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -29,8 +33,6 @@ import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import { ISpecializationList } from "./DoctorsList";
-import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -182,7 +184,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data } = useDoctorList({
+  const { data, isSuccess, isLoading } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -209,45 +211,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
 
   return (
     <>
-      <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Registered Doctors</Text>
-        <HStack>
-          <InputGroup w="190px" borderColor={colors.grey_dark}>
-            <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color={colors.grey_dark} boxSize={4} />
-            </InputLeftElement>
-            <Input
-              w={40}
-              h={8}
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-          <Button
-            color={colors.grey_dark}
-            bg={colors.white}
-            outlineColor={colors.grey_dark}
-            h={8}
-            onClick={() => {
-              onModalOpen();
-            }}
-          >
-            <IoFunnelOutline pointerEvents={"none"} />
-            &nbsp; Filter
-          </Button>
-        </HStack>
-      </HStack>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
       <ModalComponent
         isOpen={isModalOpen}
         onClose={onModalClose}
@@ -322,6 +285,54 @@ const ApprovedDocList = ({ specializationList }: Props) => {
           </FormProvider>
         </VStack>
       </ModalComponent>
+
+      <HStack justifyContent="space-between">
+        <Text fontWeight="medium">Registered Doctors</Text>
+        <HStack>
+          <InputGroup w="190px" borderColor={colors.grey_dark}>
+            <InputLeftElement pointerEvents="none" h={8}>
+              <SearchIcon color={colors.grey_dark} boxSize={4} />
+            </InputLeftElement>
+            <Input
+              w={40}
+              h={8}
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+          <Button
+            color={colors.grey_dark}
+            bg={colors.white}
+            outlineColor={colors.grey_dark}
+            h={8}
+            onClick={() => {
+              onModalOpen();
+            }}
+          >
+            <IoFunnelOutline pointerEvents={"none"} />
+            &nbsp; Filter
+          </Button>
+        </HStack>
+      </HStack>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          filter={{ globalFilter: searchFilter }}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </>
   );
 };

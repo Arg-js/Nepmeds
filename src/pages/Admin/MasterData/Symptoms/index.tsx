@@ -1,6 +1,8 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
+  Box,
   Button,
+  Center,
   Grid,
   GridItem,
   HStack,
@@ -8,6 +10,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -62,7 +65,7 @@ const Symptoms = ({
   const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
   const debouncedInputValue = useDebounce(searchFilter, 500);
-  const { data } = useSymptomsDataWithPagination({
+  const { data, isLoading, isSuccess } = useSymptomsDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -225,55 +228,6 @@ const Symptoms = ({
   // };
   return (
     <Fragment>
-      <Grid display={"flex"} justifyContent={"space-between"}>
-        <GridItem alignSelf={"end"}>
-          <Text fontWeight="medium" fontSize={"2xl"}>
-            Symptoms
-          </Text>
-        </GridItem>
-        <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color={colors.black} boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-          {/* <Box ml={1}>
-            <Menu>
-              <MenuButton as={Button} variant={"outline"}>
-                <Text
-                  display={"flex"}
-                  alignItems={"center"}
-                  fontWeight={400}
-                  color={colors.light_gray}
-                >
-                  {" "}
-                  Bulk Action{" "}
-                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
-                </Text>
-              </MenuButton>
-              <MenuList onClick={onOpenBulkModal}>
-                <MenuItem>Bulk Delete </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
-        </GridItem>
-      </Grid>
-
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
       {/* edit modal */}
       {isEditModalOpen && (
         <ModalComponent
@@ -400,74 +354,83 @@ const Symptoms = ({
         </ModalComponent>
       )}
 
-      <ModalComponent
-        size="sm"
-        isOpen={isDeleteModalOpen}
-        onClose={onCloseDeleteModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Delete Symptom</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={onDeleteSymptom}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteSymptomAction.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>
-          Are you sure you want to delete symptom{" "}
-          <Text fontWeight="bold" display="inline">
-            {deleteSymptom?.name}
-          </Text>
-          ?
-        </Text>
-      </ModalComponent>
+      {isDeleteModalOpen && (
+        <ModalComponent
+          size="sm"
+          isOpen={isDeleteModalOpen}
+          onClose={onCloseDeleteModal}
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Delete Symptom</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+                Cancel
+              </Button>
+              <Button
+                flex={1}
+                onClick={onDeleteSymptom}
+                borderColor={colors.red}
+                color={colors.red}
+                isLoading={deleteSymptomAction.isLoading}
+                variant="outline"
+              >
+                Delete
+              </Button>
+            </HStack>
+          }
+        >
+          <Box>
+            Are you sure you want to delete symptom{" "}
+            <Text fontWeight="bold" display="inline">
+              {deleteSymptom?.name}
+            </Text>
+            ?
+          </Box>
+        </ModalComponent>
+      )}
 
-      {/* bulk modal */}
-      {/* <ModalComponent
-        size="sm"
-        isOpen={isBulkOpen}
-        onClose={onCloseBulkModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Bulk Delete Symptoms</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => onBulkDelete(symptomList)}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteBulkSymptom.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent> */}
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Symptoms
+          </Text>
+        </GridItem>
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color={colors.black} boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="search"
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+        </GridItem>
+      </Grid>
+
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </Fragment>
   );
 };
