@@ -70,9 +70,13 @@ export interface IGetDoctorProfile {
   id_front_image: File;
   id_back_image: File;
   id_number: string;
-  issued_district: { id: number; name: string; province: number };
+  issued_district: {
+    id: number | string;
+    name: string;
+    province: number | string;
+  };
   id_type: string;
-  id_issued_date: string;
+  id_issued_date: string | null;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | [];
   doctor_experience: IDoctorExperience[] | [];

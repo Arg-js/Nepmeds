@@ -163,6 +163,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
+  console.log(getValues("id_issued_district"), "llll");
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -383,7 +384,9 @@ const PrimaryInfo = ({
           required
           register={register}
           options={allDistrictOptions}
+          // value={0}
           defaultValue={doctorProfileData?.issued_district?.id}
+          // defaultValue={""}
           style={{
             background: colors.forminput,
             border: "none",
@@ -400,7 +403,7 @@ const PrimaryInfo = ({
           name="id_issued_date"
           label="Issued Date"
           register={register}
-          defaultValue={doctorProfileData?.id_issued_date}
+          defaultValue={doctorProfileData?.id_issued_date?.toString()}
           type="date"
           required
           style={{ background: colors.forminput, border: "none" }}
@@ -424,7 +427,7 @@ const PrimaryInfo = ({
             name="province"
             required
             register={register}
-            defaultValue={doctorProfileData?.user?.province_data?.id}
+            defaultValue={doctorProfileData?.user?.province_data?.id || 0}
             options={provinceOptions}
             style={{
               background: colors.forminput,

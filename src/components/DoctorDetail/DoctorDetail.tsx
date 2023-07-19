@@ -34,9 +34,9 @@ interface IDoctorDetails {
   gender: string;
   id_number: string;
   id_issued_date: string;
-  id_issued_district: string;
-  province: string;
-  district: string;
+  id_issued_district: string | number;
+  province: string | number;
+  district: string | number;
   profile_status: string;
   no_of_rejected_times: number;
   rejected_remarks: string;

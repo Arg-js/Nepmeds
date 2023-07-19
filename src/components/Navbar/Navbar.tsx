@@ -75,11 +75,13 @@ const Navbar = () => {
               {data?.user_details?.first_name} {data?.user_details?.middle_name}{" "}
               {data?.user_details?.last_name}
             </Text>
+
             <Avatar
               src={data?.user_details?.profile_picture}
               // as={Link}
               // to="/doctor-profile"
               size="md"
+              // mr={"-100%"}
             />
             <Menu>
               <MenuButton>
@@ -87,7 +89,8 @@ const Navbar = () => {
                   display={"flex"}
                   flexDir={"row"}
                   justifyContent={"center"}
-                  ml={"-25px"}
+                  alignItems={"end"}
+                  ml={"-100%"}
                 >
                   <RiArrowDropDownLine
                     fontSize={"45px"}
@@ -95,7 +98,7 @@ const Navbar = () => {
                   />
                 </Box>
               </MenuButton>
-              <MenuList mr={"-50px"}>
+              <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>
                   Profile
                 </MenuItem>
