@@ -121,7 +121,7 @@ export const useDoctorBasicProfile = () => {
 
 const getDoctorProfileById = (DoctorId: string) => () => {
   return HttpClient.get<NepMedsResponse<IGetDoctorProfile>>(
-    api.doctorProfileById.replace("{id}", DoctorId)
+    api.doctorProfileById.replace("{id}", DoctorId) + "/"
   );
 };
 

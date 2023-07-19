@@ -74,7 +74,6 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-
   // useEffect(() => {
   //   if (watch("province") !== 0) {
   //     reset({
@@ -166,6 +165,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
+  console.log(isEditable, "777");
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -380,7 +380,7 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={isEditable ? 1 : 1}>
         <Select
-          placeholder=""
+          placeholder=" "
           label="Issued District"
           name="id_issued_district"
           required

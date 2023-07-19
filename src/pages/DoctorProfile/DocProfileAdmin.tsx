@@ -42,8 +42,8 @@ const DocProfileAdmin = () => {
     onClose: onRejectModalClose,
   } = useDisclosure();
 
-  const approvePendingDoc = useApproveDoc(1, 10);
-  const rejectPendingDoc = useRejectDoc(1, 10);
+  const approvePendingDoc = useApproveDoc(1, 10, "approved");
+  const rejectPendingDoc = useRejectDoc(1, 10, "pending");
   const navigate = useNavigate();
 
   const onSubmitForm = async () => {

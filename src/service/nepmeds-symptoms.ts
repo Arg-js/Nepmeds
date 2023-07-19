@@ -58,7 +58,7 @@ export const useSaveSymptoms = (
   });
 };
 
-const deleteSymptom = async (symptomInfo: { id: string | null }) => {
+const deleteSymptom = async (symptomInfo: { id: string }) => {
   const response = await HttpClient.delete<NepMedsResponse>(
     api.symptom + symptomInfo.id + "/"
   );

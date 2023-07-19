@@ -6,6 +6,10 @@ import {
   Flex,
   HStack,
   Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -16,11 +20,18 @@ import Input from "@nepMeds/components/Form/Input";
 import { colors } from "@nepMeds/theme/colors";
 import { Link } from "react-router-dom";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
+import { RiArrowDropDownLine } from "react-icons/ri";
 
 const Navbar = () => {
+  const logoutAction = useLogoutMutation();
+  const logout = () => {
+    logoutAction.mutate();
+  };
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
+  // console.log(data,"55")
   return (
     <>
       <Stack p={"15px 21px"} background="white">
@@ -67,10 +78,31 @@ const Navbar = () => {
             </Text>
             <Avatar
               src={data?.user_details?.profile_picture}
-              as={Link}
-              to="/doctor-profile"
+              // as={Link}
+              // to="/doctor-profile"
               size="md"
             />
+            <Menu>
+              <MenuButton>
+                <Box
+                  display={"flex"}
+                  flexDir={"row"}
+                  justifyContent={"center"}
+                  ml={"-25px"}
+                >
+                  <RiArrowDropDownLine
+                    fontSize={"45px"}
+                    color={colors.primary}
+                  />
+                </Box>
+              </MenuButton>
+              <MenuList mr={"-50px"}>
+                <MenuItem as={Link} to={"/doctor-profile"}>
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={logout}>LogOut</MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
         </HStack>
         <Divider mt={"14px"} />

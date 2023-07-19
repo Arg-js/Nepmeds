@@ -38,8 +38,15 @@ import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
 const schema = yup.object().shape({
-  name: yup.string().required("Symptom name is required!"),
-  keyword: yup.string().required("Symptom keyword is required"),
+  name: yup
+    .string()
+    .required("Specialist name is required!")
+
+    .max(30, "Specialist name can be 30 characters long"),
+  symptom: yup
+    .array()
+    .min(1, "Symptom keyword is required")
+    .of(yup.string().required("Symptom keyword is required")),
 });
 
 type OnOpenFunction = () => void;
@@ -120,6 +127,9 @@ const Specializations = ({
     resolver: yupResolver(schema),
   });
 
+  const {
+    formState: { errors },
+  } = formMethods;
   const columns = [
     {
       header: "S.N.",
@@ -188,7 +198,7 @@ const Specializations = ({
     },
   ];
 
-  const onEditSpecialization = async () => {
+  const onEditForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -212,7 +222,7 @@ const Specializations = ({
     }
   };
 
-  const onSaveSpecialization = async () => {
+  const onSubmitForm = async () => {
     try {
       const isValid = formMethods.trigger();
       if (!isValid) return;
@@ -232,6 +242,12 @@ const Specializations = ({
     } catch (error) {
       toastFail("Failed to save Specialization!");
     }
+  };
+  const onSaveSpecialization = () => {
+    formMethods.handleSubmit(onSubmitForm)();
+  };
+  const onEditSpecialization = () => {
+    formMethods.handleSubmit(onEditForm)();
   };
 
   const ondeleteSpecialization = async () => {
@@ -266,7 +282,7 @@ const Specializations = ({
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specializations
+            Specialist
           </Text>
         </GridItem>
 
@@ -360,25 +376,27 @@ const Specializations = ({
           </HStack>
         }
       >
-        <VStack>
-          <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onEditForm)}>
+            <VStack>
+              <FloatingLabelInput
+                label="Specialization"
+                name="name"
+                register={formMethods.register}
+              />
 
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
-              required
-              register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
-            />
-          </FormProvider>
-        </VStack>
+              <MultiSelect
+                placeholder=""
+                label="Symptoms"
+                name="symptom"
+                required
+                register={formMethods.register}
+                options={symptomsOptions}
+                selectControl={formMethods.control}
+              />
+            </VStack>
+          </form>
+        </FormProvider>
       </ModalComponent>
 
       {/* add modal */}
@@ -417,25 +435,29 @@ const Specializations = ({
           </HStack>
         }
       >
-        <VStack>
-          <FormProvider {...formMethods}>
-            <FloatingLabelInput
-              label="Specialization"
-              name="name"
-              register={formMethods.register}
-            />
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
+            <VStack>
+              <FloatingLabelInput
+                label="Specialization"
+                name="name"
+                register={formMethods.register}
+                error={errors.name?.message}
+              />
 
-            <MultiSelect
-              placeholder=""
-              label="Symptoms"
-              name="symptom"
-              required
-              register={formMethods.register}
-              options={symptomsOptions}
-              selectControl={formMethods.control}
-            />
-          </FormProvider>
-        </VStack>
+              <MultiSelect
+                placeholder=""
+                label="Symptoms"
+                name="symptom"
+                required
+                register={formMethods.register}
+                error={errors.symptom?.message}
+                options={symptomsOptions}
+                selectControl={formMethods.control}
+              />
+            </VStack>
+          </form>
+        </FormProvider>
       </ModalComponent>
 
       {/* delete modal */}
@@ -447,7 +469,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Symptom</Text>
+            <Text>Delete Specialist</Text>
           </HStack>
         }
         footer={
@@ -476,38 +498,6 @@ const Specializations = ({
           ?
         </Text>
       </ModalComponent>
-
-      {/* bulk delete modal */}
-      {/* <ModalComponent
-        size="sm"
-        isOpen={isBulkOpen}
-        onClose={onCloseBulkModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Bulk Delete Symptoms</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => onBulkDelete(specialization)}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteBulkSpecialization.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent> */}
     </Fragment>
   );
 };

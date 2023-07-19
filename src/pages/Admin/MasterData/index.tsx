@@ -15,12 +15,20 @@ import { IoAdd } from "react-icons/io5";
 import Specializations from "./Specialist";
 import Symptoms from "./Symptoms";
 
+import SpecialistRates from "./Specialist Rate";
+
 const MasterData = () => {
   const {
     onOpen: onOpenSymptoms,
     onClose: onCloseSymptoms,
     isOpen: isSymptomsOpen,
   } = useDisclosure();
+  const {
+    onOpen: onOpenSpecialistRate,
+    onClose: onCloseSpecialistRate,
+    isOpen: isOpenSpecialistRate,
+  } = useDisclosure();
+
   const {
     onOpen: onOpenSpecialization,
     onClose: onCloseSpecialization,
@@ -44,26 +52,43 @@ const MasterData = () => {
           <TabList border="none">
             <Tab>Symptoms</Tab>
             <Tab>Specialist</Tab>
+            <Tab>Specialist Rate</Tab>
           </TabList>
         </GridItem>
 
         <GridItem>
           {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
-          {activeTab === 0 ? (
+          {activeTab === 0 && (
             <CustomButton
-              onClick={onOpenSymptoms}
+              onClick={() => {
+                onOpenSymptoms();
+              }}
               backgroundColor={colors.primary}
             >
               {" "}
               <IoAdd /> Add Symptoms
             </CustomButton>
-          ) : (
+          )}{" "}
+          {activeTab === 1 && (
             <CustomButton
-              onClick={onOpenSpecialization}
+              onClick={() => {
+                onOpenSpecialization();
+              }}
               backgroundColor={colors.primary}
             >
               {" "}
               <IoAdd /> Add Speciazliation
+            </CustomButton>
+          )}
+          {activeTab === 2 && (
+            <CustomButton
+              onClick={() => {
+                onOpenSpecialistRate();
+              }}
+              backgroundColor={colors.primary}
+            >
+              <IoAdd />
+              Specialist Rate
             </CustomButton>
           )}
           {/* </Link> */}
@@ -72,18 +97,31 @@ const MasterData = () => {
 
       <TabPanels>
         <TabPanel>
-          <Symptoms
-            onCloseSymptoms={onCloseSymptoms}
-            isSymptomsOpen={isSymptomsOpen}
-            activeTab={activeTab}
-          />
+          {activeTab === 0 && (
+            <Symptoms
+              onCloseSymptoms={onCloseSymptoms}
+              isSymptomsOpen={isSymptomsOpen}
+              activeTab={activeTab}
+            />
+          )}
         </TabPanel>
         <TabPanel>
-          <Specializations
-            onCloseSpecialization={onCloseSpecialization}
-            isSpecializationOpen={isSpecializationOpen}
-            activeTab={activeTab}
-          />
+          {activeTab === 1 && (
+            <Specializations
+              onCloseSpecialization={onCloseSpecialization}
+              isSpecializationOpen={isSpecializationOpen}
+              activeTab={activeTab}
+            />
+          )}
+        </TabPanel>
+        <TabPanel>
+          {activeTab === 2 && (
+            <SpecialistRates
+              onCloseSpecialistRate={onCloseSpecialistRate}
+              isOpenSpecialistRate={isOpenSpecialistRate}
+              activeTab={activeTab}
+            />
+          )}
         </TabPanel>
       </TabPanels>
     </Tabs>
