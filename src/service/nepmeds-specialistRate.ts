@@ -139,7 +139,7 @@ const getSpecialistRateDataWithPagination = async (
   page_size: number
 ) => {
   const response = await HttpClient.get<PaginatedResponse<ISpecialistRate>>(
-    `${api.specialistRate.fetchAll}?page=${page_no}&page_size=${page_size}`
+    `${api.specialistRate.fetchAll}/?page=${page_no}&page_size=${page_size}`
   );
   return response;
 };

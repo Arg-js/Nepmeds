@@ -1,7 +1,9 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Box,
   Button,
+  Center,
   Grid,
   GridItem,
   HStack,
@@ -9,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Stack,
   Text,
   VStack,
@@ -64,7 +67,7 @@ const SpecialistRates = ({
     pageSize: 10,
   });
   // const [doctorName, setDoctorName] = useState<ISelectOption[]>([]);
-  const { data } = useSpecialistRateDataWithPagination({
+  const { data, isLoading, isSuccess } = useSpecialistRateDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -344,17 +347,27 @@ const SpecialistRates = ({
           </InputGroup>
         </GridItem>
       </Grid>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          filter={{ globalFilter: searchFilter }}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
+
       {/* edit modal */}
       <ModalComponent
         size="sm"
