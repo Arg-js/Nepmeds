@@ -11,6 +11,24 @@ import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
 import { ISelectOption } from "./Select";
+
+interface IMultiSelect extends SelectProps {
+  placeholder?: string;
+  options: ISelectOption[];
+  label?: string;
+  name?: string;
+  value?: string;
+  error?: string;
+  rules?: RegisterOptions;
+  helperText?: string;
+  isRequired?: boolean;
+  selectControl?: any;
+  style?: Record<string, string>;
+  required?: boolean;
+  multiValue?: { label: string; value: string }[];
+  register: UseFormRegister<any>;
+}
+
 const MultiSelect = ({
   label,
   options,
@@ -37,6 +55,7 @@ const MultiSelect = ({
     <Controller
       control={selectControl}
       name={name ?? ""}
+      rules={rules}
       render={({ field, fieldState }) => {
         const { onChange, onBlur, value, name, ref } = field;
 
@@ -50,7 +69,8 @@ const MultiSelect = ({
               isMulti
               onChange={newValue => {
                 onChange(newValue);
-                register(name, rules); // Register the value after onChange
+                // register(name, rules);
+                // Register the value after onChange
               }}
               menuPosition="fixed"
               onBlur={onBlur}
@@ -90,22 +110,5 @@ const MultiSelect = ({
     />
   );
 };
-
-interface IMultiSelect extends SelectProps {
-  placeholder?: string;
-  options: ISelectOption[];
-  label?: string;
-  name?: string;
-  value?: string;
-  error?: string;
-  rules?: RegisterOptions;
-  helperText?: string;
-  isRequired?: boolean;
-  selectControl?: any;
-  style?: Record<string, string>;
-  required?: boolean;
-  multiValue?: { label: string; value: string }[];
-  register: UseFormRegister<any>;
-}
 
 export default MultiSelect;

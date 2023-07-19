@@ -54,11 +54,9 @@ const Select = ({
       <ChakraSelect
         sx={{ background: colors.forminput }}
         {...register(name, rules)}
-        {...rest}
         id={name}
-        // placeholder="select"
         h={14}
-        // value={defaultValue}
+        {...rest}
 
         // pr={8}
       >

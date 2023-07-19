@@ -27,10 +27,7 @@ const EditExperienceField = ({
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | string | null>>
   >([]);
-  const [selectedImagesFile, setSelectedImagesFile] = useState<
-    Array<Array<File | null>>
-  >([]);
-  console.log(selectedImagesFile);
+  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,

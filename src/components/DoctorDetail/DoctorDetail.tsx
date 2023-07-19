@@ -65,7 +65,6 @@ const DoctorDetail = ({
   doctor_certification_info,
   doctor_experience,
 }: IDoctorDetails) => {
-  console.log(user);
   const imageSrc = image ? `${normalURL}${image}` : NepmedsLogoIcon;
   return (
     <>

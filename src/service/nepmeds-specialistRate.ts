@@ -111,10 +111,6 @@ export const useSaveSpecialistRate = (
 const deleteSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: string | null;
 }) => {
-  console.log(
-    api.specialistRate.fetchAll + SpecialistRateInfo.doctorprofile + "/"
-  );
-
   const response = await HttpClient.delete<NepMedsResponse>(
     api.specialistRate.fetchAll + "/" + SpecialistRateInfo.doctorprofile + "/"
   );

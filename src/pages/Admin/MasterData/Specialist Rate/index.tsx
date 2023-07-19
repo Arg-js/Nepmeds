@@ -243,7 +243,6 @@ const SpecialistRates = ({
   const {
     formState: { errors },
   } = formMethods;
-  // console.log(formMethods.formState.errors.doctorprofile);
   const onEditSpecialization = async () => {
     try {
       // const isValid = formMethods.trigger();
@@ -268,16 +267,10 @@ const SpecialistRates = ({
   };
 
   // const onSaveSpecialistRate = async () => {
-  //   console.log({ errors: formMethods });
   //   try {
   //     // const isValid = formMethods.trigger();
   //     // if (!isValid) return;
 
-  //     // console.log(
-  //     //   formMethods.getValues("doctorprofile"),
-  //     //   formMethods.getValues("rate"),
-  //     //   "kkkk"
-  //     // );
   //     // const doctorprofileValues = formMethods.getValues("doctorprofile");
 
   //     await saveSpecialistRate.mutateAsync({
@@ -330,7 +323,6 @@ const SpecialistRates = ({
   const onSaveSpecialistRate = () => {
     formMethods.handleSubmit(onSubmitFrom)();
   };
-  console.log(errors.doctorprofile?.message, "hhhh");
   return (
     <Fragment>
       <Grid display={"flex"} justifyContent={"space-between"}>

@@ -88,13 +88,13 @@ const PrimaryInfo = ({
         ...getValues(),
         // phone: doctorProfileData.
         id_issued_district: allDistrictOptions.find(
-          p => p.value === doctorProfileData.id_issued_district
+          p => p.value === doctorProfileData.issued_district?.id
         )?.value,
         province: provinceOptions.find(
-          p => p.value === doctorProfileData?.user?.province
+          p => p.value === doctorProfileData?.user?.province_data?.id
         )?.value,
         district: districtOptions.find(
-          p => p.value === doctorProfileData?.user?.district
+          p => p.value === doctorProfileData?.user?.district_data?.id
         )?.value,
       });
     }
@@ -163,7 +163,6 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
-  console.log(isEditable, "777");
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -266,7 +265,7 @@ const PrimaryInfo = ({
         <MultiSelect
           label="Specialization"
           required
-          name="specialization"
+          name="specialization_names"
           multiValue={doctorProfileData?.specialization_names?.map(item => ({
             label: item?.name,
             value: item?.id?.toString(),
@@ -282,7 +281,7 @@ const PrimaryInfo = ({
           rules={{
             required: "Specialization is required.",
           }}
-          error={errors.specialization?.message}
+          error={errors.specialization_names?.message}
         />
       </GridItem>
       <GridItem colSpan={isEditable ? 1 : 1}>
@@ -317,6 +316,7 @@ const PrimaryInfo = ({
           name="id_type"
           register={register}
           options={idType}
+          value={doctorProfileData?.id_type}
           style={{
             background: colors.forminput,
             border: "none",
@@ -383,8 +383,7 @@ const PrimaryInfo = ({
           required
           register={register}
           options={allDistrictOptions}
-          defaultValue={doctorProfileData?.id_issued_district}
-          // value={0}
+          defaultValue={doctorProfileData?.issued_district?.id}
           style={{
             background: colors.forminput,
             border: "none",
@@ -417,67 +416,72 @@ const PrimaryInfo = ({
           Address Details
         </Text>
       </GridItem>
-      <GridItem colSpan={1}>
-        <Select
-          placeholder=" "
-          label="Province"
-          name="province"
-          required
-          // value={0}
-          register={register}
-          defaultValue={doctorProfileData?.user?.province}
-          options={provinceOptions}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Province is required.",
-          }}
-          error={errors.province?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={isEditable ? 1 : 1}>
-        <Select
-          placeholder=" "
-          label="District"
-          name="district"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.user?.district}
-          options={districtOptions}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "District is required.",
-          }}
-          error={errors.district?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={isEditable ? 1 : 1}>
-        <Select
-          placeholder=""
-          label="Municipality/Vdc"
-          name="municipality"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.user?.municipality}
-          options={municipalityOptions}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Municipality is required.",
-          }}
-          error={errors.municipality?.message}
-        />
-      </GridItem>
+      {!provinceInfo.isLoading && (
+        <GridItem colSpan={1}>
+          <Select
+            placeholder="Select Province"
+            label="Province"
+            name="province"
+            required
+            register={register}
+            defaultValue={doctorProfileData?.user?.province_data?.id}
+            options={provinceOptions}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "Province is required.",
+            }}
+            error={errors.province?.message}
+          />
+        </GridItem>
+      )}
+      {!districtInfo.isLoading && (
+        <GridItem colSpan={isEditable ? 1 : 1}>
+          <Select
+            placeholder="Select District"
+            label="District"
+            name="district"
+            required
+            register={register}
+            defaultValue={doctorProfileData?.user?.district_data?.id}
+            options={districtOptions}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "District is required.",
+            }}
+            error={errors.district?.message}
+          />
+        </GridItem>
+      )}
+      {!municipalityInfo.isLoading && (
+        <GridItem colSpan={isEditable ? 1 : 1}>
+          <Select
+            placeholder="Select Municipality/Vdc"
+            label="Municipality/Vdc"
+            name="municipality"
+            required
+            register={register}
+            defaultValue={doctorProfileData?.user?.municipality_data?.id}
+            options={municipalityOptions}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "Municipality is required.",
+            }}
+            error={errors.municipality?.message}
+          />
+        </GridItem>
+      )}
       <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           placeholder=""

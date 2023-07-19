@@ -22,18 +22,15 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { PrimaryInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import {
-  IGetDoctorProfile,
-  IUser,
-} from "@nepMeds/service/nepmeds-doctor-profile";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
   PrimaryInfo,
   useUpdatePersonalInfoRegister,
 } from "@nepMeds/service/nepmeds-register";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
-import { AxiosError } from "axios";
 import React from "react";
 import {
   FieldValues,
@@ -125,9 +122,11 @@ const EditPrimary = ({
 
   const [editPrimaryFormToggle, setEditPrimaryFormToggle] =
     React.useState(false);
-
   const onSavePrimaryInfo = async () => {
     const { getValues } = formMethods;
+    const editSpecializationData =
+      doctorProfileData?.specialization_names ?? [];
+
     try {
       const frontImage = getValues("id_front_image")?.[0];
       const backImage = getValues("id_back_image")?.[0];
@@ -141,12 +140,16 @@ const EditPrimary = ({
         municipality: getValues("municipality"),
         ward: getValues("ward"),
         tole: getValues("tole"),
-      } as IUser;
+      };
 
       const doctorProfile = {
         user: user,
-        specialization: getValues("specialization").map(
-          (e: { id: string; value: string }) => Number(e.value)
+        specialization: (getValues("specialization_names")
+          ? getValues("specialization_names")
+          : editSpecializationData
+        ).map(
+          (e: { label: string; value: string; id?: number }) =>
+            Number(e.value) || Number(e.id)
         ),
         pan_number: getValues("pan_number"),
         id_type: getValues("id_type"),
@@ -171,14 +174,9 @@ const EditPrimary = ({
       toastSuccess("Personal information updated successfully!");
       setEditPrimaryFormToggle(false);
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to edit basic information!"
-      );
+      const err = serverErrorResponse(error);
+
+      toastFail(err);
     }
   };
 
@@ -556,7 +554,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.province}
+                      :&nbsp;{doctorProfileData?.user?.province_data?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -600,7 +598,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.id_issued_district}
+                      :&nbsp;{doctorProfileData?.issued_district?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -619,7 +617,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.district}
+                      :&nbsp;{doctorProfileData?.user?.district_data?.name}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -662,7 +660,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.id_issued_district}
+                      :&nbsp;{doctorProfileData?.id_issued_date}
                     </Text>
                   </Box>
                   <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -681,7 +679,7 @@ const EditPrimary = ({
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
-                      :&nbsp;{doctorProfileData?.user?.municipality}
+                      :&nbsp;{doctorProfileData?.user?.municipality_data?.name}
                     </Text>
                   </Box>
                 </VStack>

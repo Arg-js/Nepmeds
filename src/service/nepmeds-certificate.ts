@@ -31,11 +31,12 @@ export const useCertificateInfoRegister = () => {
 const createCertificateFile = async (data: CertificateInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
-  console.log(data);
+
   if (data.certificate_documents) {
     // Append multiple files to formData
     data.certificate_documents.forEach((file, index) => {
-      if (file !== null) formData.append(`files[${index}]`, file);
+      if (file !== null && file instanceof File)
+        formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.certificate_file, formData);

@@ -1,6 +1,6 @@
 import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
-import { Box, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid, Spinner } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
@@ -16,8 +16,10 @@ import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
+  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  editMode?: boolean;
 }) => {
   const {
     control,
@@ -51,6 +53,8 @@ export const CertificationInfoForm = ({
           certificate_number: a.certificate_number,
           title: a.title,
           issued_by: a.issued_by,
+          isSubmitted: true,
+          certificate_documents: a.certificate_document,
         })),
       });
     }
@@ -104,46 +108,51 @@ export const CertificationInfoForm = ({
       return "Issued date cannot be greater than the current date.";
     } else return true; // Return true if the validation passes
   };
+
+  const handleRemoveCertificate = async (index: number) => {
+    if (watch(`certification.${index}.isSubmitted`)) {
+      const certificateInfoResponse =
+        await deleteCertificateInfoRegister.mutateAsync(
+          parseInt(getValues(`certification.${index}.id`))
+        );
+
+      if (certificateInfoResponse) {
+        toastSuccess("Certification data deleted successfully");
+        remove(index);
+      } else {
+        toastFail("Failed to delete certification information!");
+      }
+    } else remove(index);
+
+    // Remove corresponding files from selectedImagesFile state
+    setSelectedImagesFile(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+
+    setSelectedImages(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+  };
+
   return (
     <>
       {fields.map((item, index) => {
-        const certificateIndex = index;
-        const selectedImagesForCertification =
-          selectedImages[certificateIndex] || [];
-
-        const handleRemoveCertificate = async () => {
-          if (watch(`certification.${index}.isSubmitted`)) {
-            const certificateInfoResponse =
-              await deleteCertificateInfoRegister.mutateAsync(
-                parseInt(getValues(`certification.${index}.id`))
-              );
-
-            if (certificateInfoResponse) {
-              toastSuccess("Certification data deleted successfully");
-              remove(index);
-            } else {
-              toastFail("Failed to delete certification information!");
-            }
-          } else remove(index);
-
-          // Remove corresponding files from selectedImagesFile state
-          setSelectedImagesFile(prevImages => {
-            const updatedImages = [...prevImages];
-            updatedImages.splice(certificateIndex, 1);
-            return updatedImages;
-          });
-        };
         return (
           <Box key={item.id} position="relative">
             <Box mb={4}>
               <Controller
                 render={({ field }) => (
                   <MultipleImageUpload
-                    selectedImages={selectedImagesForCertification}
+                    editMode={editMode ?? false}
+                    selectedImages={selectedImages[index] ?? []}
                     setSelectedImages={images => {
                       setSelectedImages(prevImages => {
                         const updatedImages = [...prevImages];
-                        updatedImages[certificateIndex] = images;
+                        updatedImages[index] = images;
                         return updatedImages;
                       });
                     }}
@@ -251,9 +260,17 @@ export const CertificationInfoForm = ({
                 top="150px"
                 variant={"ghost"}
                 _hover={{ background: "transparent" }}
-                onClick={handleRemoveCertificate}
+                onClick={() => handleRemoveCertificate(index)}
               >
-                <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
+                <Icon
+                  as={
+                    deleteCertificateInfoRegister.isLoading
+                      ? Spinner
+                      : DeleteIcon
+                  }
+                  fontSize={28}
+                  color={colors.error}
+                />
               </Button>
             </SimpleGrid>
           </Box>

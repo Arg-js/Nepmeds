@@ -13,13 +13,14 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 
-import { colors } from "@nepMeds/theme/colors";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
   addOneHour,
   getMinutes,
   getMinutesDifference,
   isTimeInRange,
 } from "@nepMeds/helper/checkTimeRange";
+import { AddEvent } from "@nepMeds/pages/Calendar";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,
@@ -27,15 +28,14 @@ import {
   useDoctorAvailability,
   useUpdateDoctorAvailability,
 } from "@nepMeds/service/nepmeds-doctor-availability";
-import { parseISO, isSameDay } from "date-fns";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import ModalComponent from "../Form/ModalComponent";
-import { AddEvent } from "@nepMeds/pages/Calendar";
-import { toastFail, toastSuccess } from "../Toast";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
-import { FormProvider, useForm } from "react-hook-form";
+import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
+import { isSameDay, parseISO } from "date-fns";
 import { useState } from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import ModalComponent from "../Form/ModalComponent";
+import { toastFail, toastSuccess } from "../Toast";
 const ScheduleComponent = ({
   selectedFullDate,
 }: {
@@ -115,7 +115,6 @@ const ScheduleComponent = ({
     onOpenDeleteModal();
   };
   const onDeleteSymptom = async () => {
-    console.log(availabilityId);
     try {
       if (!availabilityId) return;
 

@@ -39,13 +39,13 @@ import { useRef, useState } from "react";
 import Calendar from "react-calendar";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BiTime } from "react-icons/bi";
 import {
   IoCalendar,
   IoChevronBackCircleOutline,
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
 import "../../assets/styles/fontFamily.css";
-import { BiTime } from "react-icons/bi";
 const options = [
   { label: "1:00 AM", value: "1:00 AM" },
   { label: "1:15 AM", value: "1:15 AM" },
@@ -436,7 +436,6 @@ const CalendarDailyDetailView = ({
     formMethods.handleSubmit(onSubmit)();
   };
   const onSubmit = async (data: IGetDoctorAvailability) => {
-    console.log(data);
     try {
       const response = await createDoctorAvailabilityInfo.mutateAsync(data);
       if (response) {
@@ -708,7 +707,6 @@ export const AddEvent = ({
               options.length
             );
             setOpt2(first);
-            // console.log(first, "anish");
           }}
           icon={<BiTime />}
         ></Select>
