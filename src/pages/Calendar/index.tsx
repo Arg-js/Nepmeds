@@ -28,6 +28,7 @@ import {
   format,
   getDay,
   isToday,
+  startOfMonth,
   // setDate,
   startOfWeek,
   subMonths,
@@ -129,7 +130,10 @@ const CalenderWeekView = ({
   // October 2022 (Note: Month is zero-based)
 
   const handleNextMonth = () => {
-    setDate(prevMonth => addMonths(prevMonth, 1));
+    const nextMonth = addMonths(date, 1);
+    const firstDayOfNextMonth = startOfMonth(nextMonth);
+    // Set the state to the first day of the next month
+    setDate(firstDayOfNextMonth);
   };
 
   const handlePreviousMonth = () => {
