@@ -22,6 +22,7 @@ import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { PrimaryInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { PRIMARYIDTYPE } from "@nepMeds/config/enum";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
   PrimaryInfo,
@@ -435,7 +436,12 @@ const EditPrimary = ({
                       color={colors?.black}
                       flexBasis={"50%"}
                     >
-                      :&nbsp;{doctorProfileData.id_type}
+                      :&nbsp;
+                      {
+                        PRIMARYIDTYPE[
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        ]
+                      }
                     </Text>
                   </Flex>
                 </VStack>
@@ -490,7 +496,12 @@ const EditPrimary = ({
                 letterSpacing={"0.4px"}
                 color={"#4D4D4D"}
               >
-                {doctorProfileData?.id_type} Detail
+                {
+                  PRIMARYIDTYPE[
+                    doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                  ]
+                }{" "}
+                Detail
               </Text>
             </Box>
             <Grid mt={5} templateColumns="repeat(2,1fr)" gap={2}>
@@ -527,7 +538,12 @@ const EditPrimary = ({
                       color={"#4D4D4D"}
                       //
                     >
-                      {doctorProfileData?.id_type} No.
+                      {
+                        PRIMARYIDTYPE[
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        ]
+                      }{" "}
+                      No.
                     </Text>
 
                     <Text
