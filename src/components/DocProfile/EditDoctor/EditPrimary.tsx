@@ -67,7 +67,6 @@ interface handleFormUpdateProps {
 }
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
-  handleFormUpdate,
   cancelButton,
   isLoading,
 }) => {
@@ -101,7 +100,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           backgroundColor={colors.primary}
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
-          onClick={handleFormUpdate}
+          type="submit"
           isLoading={isLoading}
         >
           Update
@@ -232,37 +231,39 @@ const EditPrimary = ({
         </Box>
         {editPrimaryFormToggle ? (
           <FormProvider {...formMethods}>
-            <Grid>
-              <GridItem
-                height={"60vh"}
-                css={{
-                  "&::-webkit-scrollbar": {
-                    width: "4px",
-                  },
-                  "&::-webkit-scrollbar-track": {
-                    width: "6px",
-                  },
-                  "&::-webkit-scrollbar-thumb": {
-                    // background: scrollbarColor,
-                    background: `${colors.light_gray}`,
-                    borderRadius: "24px",
-                  },
-                }}
-                overflow="scroll"
-              >
-                <EditPrimaryForm
-                  formMethods={formMethods}
-                  doctorProfileData={doctorProfileData}
-                />
-              </GridItem>
-              <GridItem>
-                <SubmitButton
-                  handleFormUpdate={onSavePrimaryInfo}
-                  cancelButton={() => setEditPrimaryFormToggle(false)}
-                  isLoading={updatePrimaryData.isLoading}
-                />
-              </GridItem>
-            </Grid>
+            <form onSubmit={formMethods.handleSubmit(onSavePrimaryInfo)}>
+              <Grid>
+                <GridItem
+                  height={"60vh"}
+                  css={{
+                    "&::-webkit-scrollbar": {
+                      width: "4px",
+                    },
+                    "&::-webkit-scrollbar-track": {
+                      width: "6px",
+                    },
+                    "&::-webkit-scrollbar-thumb": {
+                      // background: scrollbarColor,
+                      background: `${colors.light_gray}`,
+                      borderRadius: "24px",
+                    },
+                  }}
+                  overflow="scroll"
+                >
+                  <EditPrimaryForm
+                    formMethods={formMethods}
+                    doctorProfileData={doctorProfileData}
+                  />
+                </GridItem>
+                <GridItem>
+                  <SubmitButton
+                    handleFormUpdate={onSavePrimaryInfo}
+                    cancelButton={() => setEditPrimaryFormToggle(false)}
+                    isLoading={updatePrimaryData.isLoading}
+                  />
+                </GridItem>
+              </Grid>
+            </form>
           </FormProvider>
         ) : (
           <CardBody>
