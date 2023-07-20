@@ -11,9 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { CustomButton } from "@nepMeds/components/Button/Button";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import Select from "@nepMeds/components/Form/Select";
 import ScheduleComponent from "@nepMeds/components/Schedule";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
@@ -23,7 +21,6 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { AppointmentType, FrequencyType } from "@nepMeds/utils/choices";
 import {
   addMonths,
   eachDayOfInterval,
@@ -31,119 +28,22 @@ import {
   format,
   getDay,
   isToday,
+  startOfMonth,
   // setDate,
   startOfWeek,
   subMonths,
 } from "date-fns";
 import { useRef, useState } from "react";
 import Calendar from "react-calendar";
-import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlinePlus } from "react-icons/ai";
-import { BiTime } from "react-icons/bi";
 import {
   IoCalendar,
   IoChevronBackCircleOutline,
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
 import "../../assets/styles/fontFamily.css";
-const options = [
-  { label: "1:00 AM", value: "1:00 AM" },
-  { label: "1:15 AM", value: "1:15 AM" },
-  { label: "1:30 AM", value: "1:30 AM" },
-  { label: "1:45 AM", value: "1:45 AM" },
-  { label: "2:00 AM", value: "2:00 AM" },
-  { label: "2:15 AM", value: "2:15 AM" },
-  { label: "2:30 AM", value: "2:30 AM" },
-  { label: "2:45 AM", value: "2:45 AM" },
-  { label: "3:00 AM", value: "3:00 AM" },
-  { label: "3:15 AM", value: "3:15 AM" },
-  { label: "3:30 AM", value: "3:30 AM" },
-  { label: "3:45 AM", value: "3:45 AM" },
-  { label: "4:00 AM", value: "4:00 AM" },
-  { label: "4:15 AM", value: "4:15 AM" },
-  { label: "4:30 AM", value: "4:30 AM" },
-  { label: "4:45 AM", value: "4:45 AM" },
-  { label: "5:00 AM", value: "5:00 AM" },
-  { label: "5:15 AM", value: "5:15 AM" },
-  { label: "5:30 AM", value: "5:30 AM" },
-  { label: "5:45 AM", value: "5:45 AM" },
-  { label: "6:00 AM", value: "6:00 AM" },
-  { label: "6:15 AM", value: "6:15 AM" },
-  { label: "6:30 AM", value: "6:30 AM" },
-  { label: "6:45 AM", value: "6:45 AM" },
-  { label: "7:00 AM", value: "7:00 AM" },
-  { label: "7:15 AM", value: "7:15 AM" },
-  { label: "7:30 AM", value: "7:30 AM" },
-  { label: "7:45 AM", value: "7:45 AM" },
-  { label: "8:00 AM", value: "8:00 AM" },
-  { label: "8:15 AM", value: "8:15 AM" },
-  { label: "8:30 AM", value: "8:30 AM" },
-  { label: "8:45 AM", value: "8:45 AM" },
-  { label: "9:00 AM", value: "9:00 AM" },
-  { label: "9:15 AM", value: "9:15 AM" },
-  { label: "9:30 AM", value: "9:30 AM" },
-  { label: "9:45 AM", value: "9:45 AM" },
-  { label: "10:00 AM", value: "10:00 AM" },
-  { label: "10:15 AM", value: "10:15 AM" },
-  { label: "10:30 AM", value: "10:30 AM" },
-  { label: "10:45 AM", value: "10:45 AM" },
-  { label: "11:00 AM", value: "11:00 AM" },
-  { label: "11:15 AM", value: "11:15 AM" },
-  { label: "11:30 AM", value: "11:30 AM" },
-  { label: "11:45 AM", value: "11:45 AM" },
-  { label: "12:00 AM", value: "12:00 AM" },
-  { label: "12:15 AM", value: "12:15 AM" },
-  { label: "12:30 AM", value: "12:30 AM" },
-  { label: "12:45 AM", value: "12:45 AM" },
-  { label: "1:00 PM", value: "1:00 PM" },
-  { label: "1:15 PM", value: "1:15 PM" },
-  { label: "1:30 PM", value: "1:30 PM" },
-  { label: "1:45 PM", value: "1:45 PM" },
-  { label: "2:00 PM", value: "2:00 AM" },
-  { label: "2:15 PM", value: "2:15 AM" },
-  { label: "2:30 PM", value: "2:30 AM" },
-  { label: "2:45 PM", value: "2:45 AM" },
-  { label: "3:00 PM", value: "3:00 AM" },
-  { label: "3:15 PM", value: "3:15 AM" },
-  { label: "3:30 PM", value: "3:30 AM" },
-  { label: "3:45 PM", value: "3:45 AM" },
-  { label: "4:00 PM", value: "4:00 AM" },
-  { label: "4:15 PM", value: "4:15 AM" },
-  { label: "4:30 PM", value: "4:30 AM" },
-  { label: "4:45 PM", value: "4:45 AM" },
-  { label: "5:00 PM", value: "5:00 PM" },
-  { label: "5:15 PM", value: "5:15 PM" },
-  { label: "5:30 PM", value: "5:30 PM" },
-  { label: "5:45 PM", value: "5:45 PM" },
-  { label: "6:00 PM", value: "6:00 PM" },
-  { label: "6:15 PM", value: "6:15 PM" },
-  { label: "6:30 PM", value: "6:30 PM" },
-  { label: "6:45 PM", value: "6:45 PM" },
-  { label: "7:00 PM", value: "7:00 PM" },
-  { label: "7:15 PM", value: "7:15 PM" },
-  { label: "7:30 PM", value: "7:30 PM" },
-  { label: "7:45 PM", value: "7:45 PM" },
-  { label: "8:00 PM", value: "8:00 PM" },
-  { label: "8:15 PM", value: "8:15 PM" },
-  { label: "8:30 PM", value: "8:30 PM" },
-  { label: "8:45 PM", value: "8:45 PM" },
-  { label: "9:00 PM", value: "9:00 PM" },
-  { label: "9:15 PM", value: "9:15 PM" },
-  { label: "9:30 PM", value: "9:30 PM" },
-  { label: "9:45 PM", value: "9:45 PM" },
-  { label: "10:00 PM", value: "10:00 PM" },
-  { label: "10:15 PM", value: "10:15 PM" },
-  { label: "10:30 PM", value: "10:30 PM" },
-  { label: "10:45 PM", value: "10:45 PM" },
-  { label: "11:00 PM", value: "11:00 PM" },
-  { label: "11:15 PM", value: "11:15 PM" },
-  { label: "11:30 PM", value: "11:30 PM" },
-  { label: "11:45 PM", value: "11:45 PM" },
-  { label: "12:00 PM", value: "12:00 PM" },
-  { label: "12:15 PM", value: "12:15 PM" },
-  { label: "12:30 PM", value: "12:30 PM" },
-  { label: "12:45 PM", value: "12:45 AM" },
-];
+import { AddEvent } from "./Component/AddEvent";
 
 const CalendarView = () => {
   const currentDate = new Date();
@@ -230,7 +130,10 @@ const CalenderWeekView = ({
   // October 2022 (Note: Month is zero-based)
 
   const handleNextMonth = () => {
-    setDate(prevMonth => addMonths(prevMonth, 1));
+    const nextMonth = addMonths(date, 1);
+    const firstDayOfNextMonth = startOfMonth(nextMonth);
+    // Set the state to the first day of the next month
+    setDate(firstDayOfNextMonth);
   };
 
   const handlePreviousMonth = () => {
@@ -343,7 +246,7 @@ const CalenderWeekView = ({
                 {data.day}
               </Text>
             </Box>
-            <Text
+            <Box
               display={"flex"}
               alignItems={"baseline"}
               mt={2}
@@ -362,7 +265,7 @@ const CalenderWeekView = ({
               >
                 {data.year}
               </Text>
-            </Text>
+            </Box>
           </Box>
         ) : (
           <Box
@@ -387,7 +290,7 @@ const CalenderWeekView = ({
                   {data.day}
                 </Text>
               </Box>
-              <Text
+              <Box
                 display={"flex"}
                 alignItems={"baseline"}
                 mt={2}
@@ -405,7 +308,7 @@ const CalenderWeekView = ({
                 >
                   {data.year}
                 </Text>
-              </Text>
+              </Box>
             </Box>
           </Box>
         )
@@ -423,25 +326,29 @@ const CalendarDailyDetailView = ({
   selectedDay: string;
   selectedFullDate: string;
 }) => {
+  const formMethods = useForm();
   const {
     isOpen: isAddEventOpen,
-    onClose: onAddEventClose,
+    onClose,
     onOpen: onAddEventOpen,
   } = useDisclosure();
 
-  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
-  const formMethods = useForm();
-
-  const onSaveEvent = () => {
-    formMethods.handleSubmit(onSubmit)();
+  const onAddEventClose = () => {
+    onClose();
+    formMethods.reset();
   };
+  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
+
   const onSubmit = async (data: IGetDoctorAvailability) => {
+    const tempData = { ...data };
+    if (data.frequency === "Daily") {
+      delete tempData.date;
+    }
     try {
-      const response = await createDoctorAvailabilityInfo.mutateAsync(data);
-      if (response) {
-        toastSuccess("Event has been added successfully");
-        onAddEventClose();
-      }
+      await createDoctorAvailabilityInfo.mutateAsync(tempData);
+      toastSuccess("Event has been added successfully");
+      onAddEventClose();
+      formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error);
 
@@ -454,10 +361,7 @@ const CalendarDailyDetailView = ({
       <ModalComponent
         size="xl"
         isOpen={isAddEventOpen}
-        onClose={() => {
-          onAddEventClose();
-          formMethods.reset();
-        }}
+        onClose={onAddEventClose}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -466,12 +370,12 @@ const CalendarDailyDetailView = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onAddEventOpen} flex={1}>
+            <Button variant="outline" onClick={onAddEventClose} flex={1}>
               Discard
             </Button>
             <Button
               flex={1}
-              onClick={onSaveEvent}
+              onClick={formMethods.handleSubmit(onSubmit)}
               background={colors.primary}
               color={colors.white}
               isLoading={createDoctorAvailabilityInfo.isLoading}
@@ -494,7 +398,7 @@ const CalendarDailyDetailView = ({
       </ModalComponent>
       <Box p={5} height={900} overflow={"scroll"} className="inter-font-family">
         <Box display={"flex"} justifyContent={"space-between"}>
-          <Text
+          <Box
             display={"flex"}
             alignItems={"baseline"}
             fontSize={"24px"}
@@ -511,7 +415,7 @@ const CalendarDailyDetailView = ({
               {" "}
               {selectedDay}
             </Text>
-          </Text>
+          </Box>
           <Box onClick={onAddEventOpen} width="130px">
             <CustomButton backgroundColor={colors.primary}>
               <AiOutlinePlus />
@@ -524,203 +428,5 @@ const CalendarDailyDetailView = ({
         </Box>
       </Box>
     </>
-  );
-};
-
-export const AddEvent = ({
-  doctorAvailabilityData,
-}: {
-  doctorAvailabilityData?: IGetDoctorAvailability;
-}) => {
-  const {
-    register,
-    // getValues,
-    watch,
-    formState: { errors },
-  } = useFormContext<IGetDoctorAvailability>();
-
-  // const validateDateFormat = () => {
-  //   const givenDate = getValues("from_time");
-  //   const minute = getMinutes(givenDate ?? "");
-
-  //   // Check if minutes is a multiple of 5
-  //   if (minute % 5 !== 0) {
-  //     return "Minutes can be only multiple of 5"; // Disable the option
-  //   }
-
-  //   return true; // Enable the option
-  // };
-
-  // const validateToDateFormat = () => {
-  //   const givenDate = getValues("to_time");
-  //   const fromDate = getValues("from_time");
-
-  //   const differenceInTime = getTimeDifferenceInMinutes(
-  //     fromDate ?? "",
-  //     givenDate ?? ""
-  //   );
-  //   const minute = getMinutes(givenDate ?? "");
-
-  //   // Check if minutes is a multiple of 5
-  //   if (givenDate) {
-  //     if (minute % 5 !== 0) {
-  //       return "Minutes can be only multiple of 5"; // Disable the option
-  //     }
-  //     if (fromDate) {
-  //       if (differenceInTime < 0) {
-  //         return "To time cannot be less than from time";
-  //       } else if (differenceInTime === 0) {
-  //         return "To time cannot be equal to from time";
-  //       } else if (differenceInTime < 60) {
-  //         return "To time cannot be less than 1 hour";
-  //       }
-  //     }
-
-  //     return true; // Enable the option
-  //   }
-  // };
-  // const [time, setTime] = useState<string>("");
-  const [opt2, setOpt2] = useState<any>([]);
-
-  return (
-    <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      <GridItem colSpan={4}>
-        <Select
-          label="Type"
-          name="type"
-          register={register}
-          options={AppointmentType}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Appointment type is required.",
-          }}
-          error={errors.type?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={4}>
-        <FloatingLabelInput
-          label="Title"
-          name="title"
-          register={register}
-          defaultValue={doctorAvailabilityData?.title}
-          required
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Title is required.",
-          }}
-          error={errors.title?.message}
-        />
-      </GridItem>
-      {doctorAvailabilityData?.frequency ? null : (
-        <GridItem colSpan={4}>
-          <Select
-            label="Frequency"
-            name="frequency"
-            register={register}
-            defaultValue={doctorAvailabilityData?.frequency}
-            options={FrequencyType}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-          />
-        </GridItem>
-      )}
-      {watch("frequency") === "Do Not Repeat" && (
-        <GridItem colSpan={4}>
-          <FloatingLabelInput
-            label="Date"
-            name="date"
-            type="date"
-            register={register}
-            defaultValue={doctorAvailabilityData?.date}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-            rules={{
-              required: "Date is required.",
-            }}
-            error={errors.date?.message}
-          />
-        </GridItem>
-      )}
-      {/* <GridItem colSpan={2}>
-        <FloatingLabelInput
-          label="From"
-          name="from_time"
-          type="time"
-          defaultValue={doctorAvailabilityData?.from_time}
-          register={register}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "From time is required.",
-            validate: validateDateFormat,
-          }}
-          error={errors.from_time?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <FloatingLabelInput
-          label="To"
-          name="to_time"
-          type="time"
-          register={register}
-          defaultValue={doctorAvailabilityData?.to_time}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "To time is required.",
-            validate: validateToDateFormat,
-          }}
-          error={errors.to_time?.message}
-        />
-      </GridItem> */}
-      <GridItem colSpan={2}>
-        <Select
-          name="from_time"
-          register={register}
-          label="from"
-          placeholder="--:-- --"
-          options={options}
-          onChange={(e: any) => {
-            // setTime(e.target.value);
-            const first = options.slice(
-              options.findIndex(obj => obj.label === e.target.value) + 1,
-              options.length
-            );
-            setOpt2(first);
-          }}
-          icon={<BiTime />}
-        ></Select>
-      </GridItem>
-      <GridItem colSpan={2}>
-        <Select
-          name="to_time"
-          register={register}
-          label="to"
-          placeholder="--:-- --"
-          options={opt2}
-          icon={<BiTime />}
-        ></Select>
-      </GridItem>
-    </Grid>
   );
 };

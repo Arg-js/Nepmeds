@@ -48,13 +48,11 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface handleFormUpdateProps {
-  handleFormUpdate: () => void;
   handleCloseForm: () => void;
   isLoading: boolean;
 }
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
-  handleFormUpdate,
   handleCloseForm,
   isLoading,
 }) => {
@@ -81,8 +79,8 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           backgroundColor={colors.primary}
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
-          onClick={handleFormUpdate}
           isLoading={isLoading}
+          type="submit"
         >
           Update
         </Button>
@@ -293,39 +291,40 @@ const EditCertification = ({
 
           {editForm ? (
             <FormProvider {...formMethods}>
-              <Grid>
-                <GridItem
-                  height={"60vh"}
-                  css={{
-                    "&::-webkit-scrollbar": {
-                      width: "4px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      width: "6px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: `${colors.light_gray}`,
-                      borderRadius: "24px",
-                    },
-                    overflowY: "scroll",
-                  }}
-                >
-                  <CertificationInfoForm
-                    editMode={true}
-                    doctorProfileData={doctorProfileData}
-                  />
-                </GridItem>
-                <GridItem>
-                  <SubmitButton
-                    handleFormUpdate={handleFormUpdate}
-                    handleCloseForm={handleCloseForm}
-                    isLoading={
-                      updateCertificateInfoRegister.isLoading ||
-                      certificateFileRegister.isLoading
-                    }
-                  />
-                </GridItem>
-              </Grid>
+              <form onSubmit={formMethods.handleSubmit(handleFormUpdate)}>
+                <Grid>
+                  <GridItem
+                    height={"60vh"}
+                    css={{
+                      "&::-webkit-scrollbar": {
+                        width: "4px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: `${colors.light_gray}`,
+                        borderRadius: "24px",
+                      },
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CertificationInfoForm
+                      editMode={true}
+                      doctorProfileData={doctorProfileData}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <SubmitButton
+                      handleCloseForm={handleCloseForm}
+                      isLoading={
+                        updateCertificateInfoRegister.isLoading ||
+                        certificateFileRegister.isLoading
+                      }
+                    />
+                  </GridItem>
+                </Grid>
+              </form>
             </FormProvider>
           ) : doctorProfileData?.doctor_certification_info?.length ? (
             doctorProfileData?.doctor_certification_info?.map(

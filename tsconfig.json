@@ -21,7 +21,8 @@
       "@nepMeds/translations/*": ["translations/*"],
       "@nepMeds/types/*": ["types/*"],
       "@nepMeds/assets/*": ["assets/*"],
-      "@nepMeds/utils/*": ["utils/*"]
+      "@nepMeds/utils/*": ["utils/*"],
+      "@nepMeds/config/*": ["config/*"]
     },
     "allowSyntheticDefaultImports": true,
     "strict": true,
