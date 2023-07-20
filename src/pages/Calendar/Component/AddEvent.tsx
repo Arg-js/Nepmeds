@@ -18,12 +18,22 @@ export const AddEvent = ({
     register,
     watch,
     formState: { errors },
+    setValue,
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
     return generateTimeWith15MinutesInterval();
   }, []);
 
-  const [secondOptions, setSecondOptions] = useState<any>([]);
+  const [secondOptions, setSecondOptions] = useState<any>(
+    doctorAvailabilityData
+      ? options.slice(
+          options.findIndex(
+            obj => obj.value === doctorAvailabilityData?.from_time?.slice(0, 5)
+          ) + 1,
+          options.length
+        )
+      : []
+  );
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
@@ -85,6 +95,7 @@ export const AddEvent = ({
             name="date"
             type="date"
             register={register}
+            min={new Date().toString()}
             defaultValue={doctorAvailabilityData?.date}
             style={{
               background: colors.forminput,
@@ -140,14 +151,24 @@ export const AddEvent = ({
         <Select
           name="from_time"
           register={register}
-          label="from"
-          placeholder="--:-- --"
+          label="From"
+          required
+          rules={{ required: "From time is required." }}
+          error={errors.from_time?.message}
+          defaultValue={doctorAvailabilityData?.from_time?.slice(0, 5)}
+          placeholder="--:--"
           options={options}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
           onChange={(e: any) => {
             const first = options.slice(
               options.findIndex(obj => obj.value === e.target.value) + 1,
               options.length
             );
+            setValue("from_time", e.target.value);
             setSecondOptions(first);
           }}
           icon={<BiTime />}
@@ -157,8 +178,17 @@ export const AddEvent = ({
         <Select
           name="to_time"
           register={register}
-          label="to"
-          placeholder="--:-- --"
+          rules={{ required: "To time is required." }}
+          error={errors.to_time?.message}
+          required
+          label="To"
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
+          defaultValue={doctorAvailabilityData?.to_time?.slice(0, 5)}
+          placeholder="--:--"
           options={secondOptions}
           icon={<BiTime />}
         ></Select>

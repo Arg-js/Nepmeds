@@ -322,23 +322,29 @@ const CalendarDailyDetailView = ({
   selectedDay: string;
   selectedFullDate: string;
 }) => {
+  const formMethods = useForm();
   const {
     isOpen: isAddEventOpen,
-    onClose: onAddEventClose,
+    onClose,
     onOpen: onAddEventOpen,
   } = useDisclosure();
 
-  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
-  const formMethods = useForm();
-
-  const onSaveEvent = () => {
-    formMethods.handleSubmit(onSubmit)();
+  const onAddEventClose = () => {
+    onClose();
+    formMethods.reset();
   };
+  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
+
   const onSubmit = async (data: IGetDoctorAvailability) => {
+    const tempData = { ...data };
+    if (data.frequency === "Daily") {
+      delete tempData.date;
+    }
     try {
-      await createDoctorAvailabilityInfo.mutateAsync(data);
+      await createDoctorAvailabilityInfo.mutateAsync(tempData);
       toastSuccess("Event has been added successfully");
       onAddEventClose();
+      formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error);
 
@@ -351,10 +357,7 @@ const CalendarDailyDetailView = ({
       <ModalComponent
         size="xl"
         isOpen={isAddEventOpen}
-        onClose={() => {
-          onAddEventClose();
-          formMethods.reset();
-        }}
+        onClose={onAddEventClose}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -368,7 +371,7 @@ const CalendarDailyDetailView = ({
             </Button>
             <Button
               flex={1}
-              onClick={onSaveEvent}
+              onClick={formMethods.handleSubmit(onSubmit)}
               background={colors.primary}
               color={colors.white}
               isLoading={createDoctorAvailabilityInfo.isLoading}

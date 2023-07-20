@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  Center,
   Divider,
   Grid,
   GridItem,
   HStack,
   List,
   ListItem,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -46,6 +48,8 @@ const ScheduleComponent = ({
   selectedFullDate: string;
 }) => {
   const availabilityData = useDoctorAvailability().data;
+  const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
+    useState(false);
 
   const filteredEvents = availabilityData?.filter(event => {
     if (event.date) {
@@ -78,11 +82,6 @@ const ScheduleComponent = ({
   const updateDoctorAvailability = useUpdateDoctorAvailability();
   const formMethods = useForm();
 
-  const onSaveEvent = () => {
-    formMethods.handleSubmit(onSubmit)();
-    formMethods.reset();
-  };
-
   const [availabilityId, setAvailabilityId] = useState(0);
   const onSubmit = async (data: IGetDoctorAvailability) => {
     try {
@@ -103,15 +102,18 @@ const ScheduleComponent = ({
   const [doctorAvailabilityData, setDoctorAvailabilityData] =
     useState<IGetDoctorAvailability>();
   const handleEdit = async (id: number) => {
+    onEditModalOpen();
+    setIsSingleAvailabilityLoading(true);
     try {
       const res = await getSingleAvailability(id);
       setDoctorAvailabilityData(res);
       setAvailabilityId(id);
+      formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error as AxiosError);
       toastFail(err);
     }
-    onEditModalOpen();
+    setIsSingleAvailabilityLoading(false);
   };
 
   const handleDeleteModal = (id: number) => {
@@ -273,7 +275,7 @@ const ScheduleComponent = ({
             <Button
               variant="outline"
               onClick={() => {
-                onEditModalClose;
+                onEditModalClose();
                 formMethods.reset();
               }}
               flex={1}
@@ -282,7 +284,7 @@ const ScheduleComponent = ({
             </Button>
             <Button
               flex={1}
-              onClick={onSaveEvent}
+              onClick={formMethods.handleSubmit(onSubmit)}
               background={colors.primary}
               color={colors.white}
               isLoading={updateDoctorAvailability.isLoading}
@@ -298,7 +300,13 @@ const ScheduleComponent = ({
               onSubmit={formMethods.handleSubmit(onSubmit)}
               style={{ width: "100%" }}
             >
-              <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+              {isSingleAvailabilityLoading ? (
+                <Center>
+                  <Spinner />
+                </Center>
+              ) : (
+                <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+              )}
             </form>
           </FormProvider>
         </VStack>
