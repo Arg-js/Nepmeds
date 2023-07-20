@@ -1,6 +1,6 @@
 import qs from "query-string";
 
-const queryStringGenerator = (data: any) => {
+export const queryStringGenerator = (data: any) => {
   const finalData: any = {};
   Object.keys(data).map(x => {
     if (data[x] && data[x] !== "") {
@@ -15,5 +15,3 @@ const queryStringGenerator = (data: any) => {
   });
   return qs.stringify(finalData);
 };
-
-export default queryStringGenerator;

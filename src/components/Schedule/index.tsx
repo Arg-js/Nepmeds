@@ -20,7 +20,7 @@ import {
   getMinutesDifference,
   isTimeInRange,
 } from "@nepMeds/helper/checkTimeRange";
-import { AddEvent } from "@nepMeds/pages/Calendar";
+import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,
@@ -30,12 +30,16 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
+import { generateHoursTimeArray } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
 import { isSameDay, parseISO } from "date-fns";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
+
+const timeData = generateHoursTimeArray();
+
 const ScheduleComponent = ({
   selectedFullDate,
 }: {
@@ -131,8 +135,8 @@ const ScheduleComponent = ({
 
   return (
     <Box>
-      {timeData?.map((data, i) => (
-        <Grid key={i} templateColumns="repeat(5, 13%)" gap={0}>
+      {timeData?.map(data => (
+        <Grid key={data.time} templateColumns="repeat(5, 13%)" gap={0}>
           <GridItem colSpan={1} mb={"30px"}>
             <List spacing={"30px"}>
               <ListItem fontSize={"12px"} color={colors.grey_dark}>
@@ -171,7 +175,7 @@ const ScheduleComponent = ({
                 addOneHour(data.time),
                 eventData.from_time as string
               ) ? (
-                <Box position="relative">
+                <Box position="relative" key={eventData.id}>
                   <Box
                     key={i}
                     mt={`calc(${getMinutes(
@@ -227,7 +231,7 @@ const ScheduleComponent = ({
                   </Box>
                 </Box>
               ) : (
-                <Box position="relative">
+                <Box position="relative" key={eventData.id}>
                   <Box
                     key={i}
                     //   mt={"calc(15 * 2.5px)"}
@@ -337,82 +341,3 @@ const ScheduleComponent = ({
 };
 
 export default ScheduleComponent;
-
-interface IcTimeData {
-  time: string;
-}
-
-const timeData: IcTimeData[] = [
-  {
-    time: "1:00:00",
-  },
-  {
-    time: "2:00:00",
-  },
-  {
-    time: "3:00:00",
-  },
-  {
-    time: "4:00:00",
-  },
-  {
-    time: "5:00:00",
-  },
-  {
-    time: "6:00:00",
-  },
-  {
-    time: "7:00:00",
-  },
-  {
-    time: "8:00:00",
-  },
-  {
-    time: "9:00:00",
-  },
-  {
-    time: "10:00:00",
-  },
-  {
-    time: "11:00:00",
-  },
-  {
-    time: "12:00:00",
-  },
-  {
-    time: "13:00:00",
-  },
-  {
-    time: "14:00:00",
-  },
-  {
-    time: "15:00:00",
-  },
-  {
-    time: "16:00:00",
-  },
-  {
-    time: "17:00:00",
-  },
-  {
-    time: "18:00:00",
-  },
-  {
-    time: "19:00:00",
-  },
-  {
-    time: "20:00:00",
-  },
-  {
-    time: "21:00:00",
-  },
-  {
-    time: "22:00:00",
-  },
-  {
-    time: "23:00:00",
-  },
-  {
-    time: "24:00:00",
-  },
-];
