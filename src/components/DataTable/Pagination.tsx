@@ -27,8 +27,6 @@ function Pagination({ isBackendPaginated, pageIndex, table }: IPagination) {
     return table.getPageCount();
   }, [table.getPageCount()]);
 
-  console.log(isBackendPaginated);
-
   const currentPage = useMemo(() => {
     return isBackendPaginated
       ? (pageIndex ?? 0) + 1

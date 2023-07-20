@@ -1,7 +1,9 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Box,
   Button,
+  Center,
   Grid,
   GridItem,
   HStack,
@@ -9,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -73,7 +76,7 @@ const Specializations = ({
     useState<Specialization | null>(null);
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data } = useSpecializationData({
+  const { data, isSuccess, isLoading } = useSpecializationData({
     activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
@@ -279,55 +282,6 @@ const Specializations = ({
 
   return (
     <Fragment>
-      <Grid display={"flex"} justifyContent={"space-between"}>
-        <GridItem alignSelf={"end"}>
-          <Text fontWeight="medium" fontSize={"2xl"}>
-            Specializations
-          </Text>
-        </GridItem>
-
-        <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-          {/* <Box ml={1}>
-            <Menu>
-              <MenuButton as={Button} variant={"outline"}>
-                <Text
-                  display={"flex"}
-                  alignItems={"center"}
-                  fontWeight={400}
-                  color={colors.light_gray}
-                >
-                  {" "}
-                  Bulk Action{" "}
-                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
-                </Text>
-              </MenuButton>
-              <MenuList onClick={onOpenBulkModal}>
-                <MenuItem>Bulk Delete </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
-        </GridItem>
-      </Grid>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
       {/* edit modal */}
       <ModalComponent
         size="sm"
@@ -469,7 +423,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Symptom</Text>
+            <Text>Delete Specialist</Text>
           </HStack>
         }
         footer={
@@ -499,37 +453,63 @@ const Specializations = ({
         </Text>
       </ModalComponent>
 
-      {/* bulk delete modal */}
-      {/* <ModalComponent
-        size="sm"
-        isOpen={isBulkOpen}
-        onClose={onCloseBulkModal}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Bulk Delete Symptoms</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseBulkModal} flex={1}>
-              Cancel
-            </Button>
-            <Button
-              flex={1}
-              onClick={() => onBulkDelete(specialization)}
-              borderColor={colors.red}
-              color={colors.red}
-              isLoading={deleteBulkSpecialization.isLoading}
-              variant="outline"
-            >
-              Delete
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>Are you sure you want to delete all the symptoms </Text>
-      </ModalComponent> */}
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Specialist
+          </Text>
+        </GridItem>
+
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="search"
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+          {/* <Box ml={1}>
+            <Menu>
+              <MenuButton as={Button} variant={"outline"}>
+                <Text
+                  display={"flex"}
+                  alignItems={"center"}
+                  fontWeight={400}
+                  color={colors.light_gray}
+                >
+                  {" "}
+                  Bulk Action{" "}
+                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
+                </Text>
+              </MenuButton>
+              <MenuList onClick={onOpenBulkModal}>
+                <MenuItem>Bulk Delete </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box> */}
+        </GridItem>
+      </Grid>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </Fragment>
   );
 };

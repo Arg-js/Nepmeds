@@ -17,8 +17,10 @@ import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
+  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  editMode?: boolean;
 }) => {
   const {
     control,
@@ -57,7 +59,7 @@ export const AcademicInfoForm = ({
           degree_program: a.degree_program,
           doctor: a.doctor,
           major: a.major,
-          university: a.university,
+          university: a.university.toString(),
           id: a.id?.toString(),
           academic_documents: a.academic_document,
           isSubmitted: true,
@@ -117,8 +119,6 @@ export const AcademicInfoForm = ({
   });
 
   const handleRemoveAcademic = async (index: number) => {
-    const academicIndex = index;
-    console.log({ index });
     if (watch(`academic.${index}.isSubmitted`)) {
       const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
         parseInt(getValues(`academic.${index}.id`))
@@ -131,20 +131,19 @@ export const AcademicInfoForm = ({
         toastFail("Failed to delete academic information!");
       }
     } else {
-      console.log(index);
       remove(index);
     }
 
     // Remove corresponding files from selectedImagesFile state
     setSelectedImagesFile(prevImages => {
       const updatedImages = [...prevImages];
-      updatedImages.splice(academicIndex, 1);
+      updatedImages.splice(index, 1);
       return updatedImages;
     });
 
     setSelectedImages(prevImages => {
       const updatedImages = [...prevImages];
-      updatedImages.splice(academicIndex, 1);
+      updatedImages.splice(index, 1);
       return updatedImages;
     });
   };
@@ -173,7 +172,7 @@ export const AcademicInfoForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
-                editMode={true}
+                editMode={editMode ?? false}
               />
             </Box>
             <SimpleGrid
@@ -221,7 +220,7 @@ export const AcademicInfoForm = ({
                 render={({ field }) => (
                   <Select
                     required
-                    placeholder=""
+                    placeholder="Select College/University"
                     label="College/ University"
                     register={register}
                     options={collegeOptions}
@@ -232,9 +231,9 @@ export const AcademicInfoForm = ({
                       paddingTop: "15px",
                     }}
                     rules={{
-                      required: "Graduation year is required.",
+                      required: "College/University is required.",
                     }}
-                    error={errors?.academic?.[index]?.graduation_year?.message}
+                    error={errors?.academic?.[index]?.university?.message}
                   />
                 )}
                 name={`academic.${index}.university`}

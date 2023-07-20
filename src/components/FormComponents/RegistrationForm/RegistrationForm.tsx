@@ -57,11 +57,11 @@ const registerDefaultValues = {
   last_name: "",
   mobile_number: "",
   profile_picture: undefined as undefined | File[],
-  district: 0,
+  district: (0 as number) || null,
   ward: "",
   tole: "",
-  municipality: 0,
-  province: 0,
+  municipality: (0 as number) || null,
+  province: (0 as number) || null,
   gender: "Male",
   date_of_birth: "",
   email: "",
@@ -70,12 +70,12 @@ const registerDefaultValues = {
   confirm_password: "",
   bio_detail: "",
   phone: "+977",
-  specialization: [] as { label: string; value: string }[],
+  specialization_names: [] as { label: string; value: string }[],
   pan_number: "",
   id_type: "Citizenship",
   id_number: "",
   id_issued_date: "",
-  id_issued_district: 1,
+  id_issued_district: (0 as number) || null,
   id_front_image: undefined as undefined | File[],
   id_back_image: undefined as undefined | File[],
 
@@ -155,9 +155,9 @@ const RegistrationForm = () => {
     defaultValues: registerDefaultValues,
   });
 
-  const onClickHandler = (index: number) => {
-    setActiveStep(index);
-  };
+  // const onClickHandler = (index: number) => {
+  //   setActiveStep(index);
+  // };
 
   const base64 = async (image: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -180,7 +180,9 @@ const RegistrationForm = () => {
     try {
       const profilePicture = formMethods.getValues("profile_picture")?.[0];
 
-      const specializationValues = formMethods.getValues("specialization");
+      const specializationValues = formMethods.getValues(
+        "specialization_names"
+      );
       const specializationArray = specializationValues.map(specialization =>
         Number(specialization.value)
       );
@@ -277,7 +279,9 @@ const RegistrationForm = () => {
               title: values.title,
 
               bio_detail: values.bio_detail,
-              specialization: values.specialization.map(s => Number(s.value)),
+              specialization: values.specialization_names.map(s =>
+                Number(s.value)
+              ),
               age: 20,
               medical_degree: "test",
               designation: "Test",
@@ -675,7 +679,7 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "pointer",
                       }}
-                      onClick={() => onClickHandler(index)}
+                      // onClick={() => onClickHandler(index)}
                     >
                       {step?.title}
                     </StepTitle>

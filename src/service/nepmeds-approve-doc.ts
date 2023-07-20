@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
-import { HttpClient } from "./service-axios";
 import { NepMedsResponse, api } from "./service-api";
+import { HttpClient } from "./service-axios";
 
 const approveDoc = async (id: string) => {
   const response = await HttpClient.post<NepMedsResponse>(
@@ -9,16 +9,8 @@ const approveDoc = async (id: string) => {
   return response;
 };
 
-export const useApproveDoc = (
-  page_no?: number,
-  page_size?: number,
-  status?: string
-) => {
+export const useApproveDoc = (page_no?: number, page_size?: number) => {
   const queryClient = useQueryClient();
-
-  console.log(
-    `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=${status}`
-  );
 
   return useMutation(approveDoc, {
     onSuccess: () => {

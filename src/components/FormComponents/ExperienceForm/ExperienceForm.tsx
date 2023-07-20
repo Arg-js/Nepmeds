@@ -11,14 +11,18 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { DeleteIcon } from "@chakra-ui/icons";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
+import { useDeleteExperienceInfo } from "@nepMeds/service/nepmeds-experience";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
+  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
+  editMode?: boolean;
 }) => {
   const {
     control,
@@ -29,6 +33,7 @@ export const ExperienceForm = ({
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
+  const deleteExperienceInfo = useDeleteExperienceInfo();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experience",
@@ -50,6 +55,7 @@ export const ExperienceForm = ({
           from_date: a.from_date,
           to_date: a.to_date,
           id: a.id?.toString(),
+          isSubmitted: true,
           currently_working: a.currently_working,
         })),
       });
@@ -122,32 +128,46 @@ export const ExperienceForm = ({
     return true; // Return true if the validation passes
   };
 
+  const handleRemoveExperience = async (index: number) => {
+    if (watch(`experience.${index}.isSubmitted`)) {
+      try {
+        await deleteExperienceInfo.mutateAsync(
+          parseInt(getValues(`experience.${index}.id`))
+        );
+        toastSuccess("Experience data deleted successfully");
+        remove(index);
+      } catch (error) {
+        toastFail("Failed to delete experience information!");
+      }
+    } else {
+      remove(index);
+    }
+    // Remove corresponding files from selectedImagesFile state
+    setSelectedImagesFile(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+
+    setSelectedImages(prevImages => {
+      const updatedImages = [...prevImages];
+      updatedImages.splice(index, 1);
+      return updatedImages;
+    });
+  };
+
   return (
     <>
       {fields.map((item, index) => {
-        const experienceIndex = index;
-        const selectedImagesForExperience =
-          selectedImages[experienceIndex] || [];
-
-        const handleRemoveExperience = async () => {
-          remove(index);
-
-          // Remove corresponding files from selectedImagesFile state
-          setSelectedImagesFile(prevImages => {
-            const updatedImages = [...prevImages];
-            updatedImages.splice(experienceIndex, 1);
-            return updatedImages;
-          });
-        };
         return (
           <Box key={item.id} position="relative">
             <SimpleGrid mb={4}>
               <MultipleImageUpload
-                selectedImages={selectedImagesForExperience}
+                selectedImages={selectedImages[index] || []}
                 setSelectedImages={images => {
                   setSelectedImages(prevImages => {
                     const updatedImages = [...prevImages];
-                    updatedImages[experienceIndex] = images;
+                    updatedImages[index] = images;
                     return updatedImages;
                   });
                 }}
@@ -160,6 +180,7 @@ export const ExperienceForm = ({
                 background="#F9FAFB"
                 academicIndex={index}
                 helperText={false}
+                editMode={editMode ?? false}
               />
             </SimpleGrid>
 
@@ -276,7 +297,7 @@ export const ExperienceForm = ({
                 type="button"
                 cursor={"pointer"}
                 as={DeleteIcon}
-                onClick={handleRemoveExperience}
+                onClick={() => handleRemoveExperience(index)}
                 fontSize={28}
                 color={colors.error}
               />

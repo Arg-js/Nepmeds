@@ -9,11 +9,12 @@ export interface IUser {
   last_name: string;
   mobile_number: string;
   profile_picture: File | string;
-  district: number;
+
+  district_data: { id: number; name: string; province: number };
   ward: number;
   tole: number;
-  municipality: number;
-  province: number;
+  municipality_data: { id: number; name: string; district: number };
+  province_data: { id: number; name: string };
   gender: string;
   date_of_birth: string;
   email: string;
@@ -25,7 +26,7 @@ export interface IUser {
 export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
-  university: string;
+  university: number;
   major: string;
   academic_document: File[];
   doctor: number;
@@ -65,14 +66,17 @@ export interface IGetDoctorProfile {
   pan_number: string;
   id?: number;
   specialization_names: IResponseSpecialization[];
-  specialization: IResponseSpecialization[];
 
   id_front_image: File;
   id_back_image: File;
   id_number: string;
-  id_issued_district: number;
+  issued_district: {
+    id: number | string;
+    name: string;
+    province: number | string;
+  };
   id_type: string;
-  id_issued_date: string;
+  id_issued_date: string | null;
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | [];
   doctor_experience: IDoctorExperience[] | [];
@@ -121,14 +125,13 @@ export const useDoctorBasicProfile = () => {
 
 const getDoctorProfileById = (DoctorId: string) => () => {
   return HttpClient.get<NepMedsResponse<IGetDoctorProfile>>(
-    api.doctorProfileById.replace("{id}", DoctorId)
+    api.doctorProfileById.replace("{id}", DoctorId) + "/"
   );
 };
 
 // export const fetchDoctorProfileByIds = () => {
 //   return useMutation(getDoctorProfileById, {
 //     onError: (error: AxiosDefaults) => {
-//       console.log(error);
 //     },
 //   });
 // };

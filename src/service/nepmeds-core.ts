@@ -32,7 +32,7 @@ export const useGetProvince = () =>
     select: res => res.data.data,
   });
 
-const getDistrict = (provinceId: number) => async () => {
+const getDistrict = (provinceId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<District[]>>(
     api.district,
     {
@@ -42,10 +42,9 @@ const getDistrict = (provinceId: number) => async () => {
   return response;
 };
 
-export const useGetDistricts = (provinceId: number) => {
+export const useGetDistricts = (provinceId: number | null) => {
   return useQuery([api.district, provinceId], getDistrict(provinceId), {
     select: res => res.data.data,
-    enabled: !!provinceId,
   });
 };
 
@@ -61,7 +60,7 @@ export const useGetAllDistricts = () =>
     select: res => res.data.data,
   });
 
-const getMunicipalities = (districtId: number) => async () => {
+const getMunicipalities = (districtId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
     api.municipality,
     {
@@ -71,10 +70,9 @@ const getMunicipalities = (districtId: number) => async () => {
   return response;
 };
 
-export const useGetMunicipalities = (districtId: number) =>
+export const useGetMunicipalities = (districtId: number | null) =>
   useQuery([api.municipality, districtId], getMunicipalities(districtId), {
     select: res => res.data.data,
-    enabled: !!districtId,
   });
 
 const getAllCollege = () => async () => {

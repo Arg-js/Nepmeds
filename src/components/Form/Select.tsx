@@ -29,6 +29,7 @@ const Select = ({
   endIcons,
   ...rest
 }: ISelect) => {
+  console.log(rules);
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
       {startIcon ? (
@@ -54,11 +55,9 @@ const Select = ({
       <ChakraSelect
         sx={{ background: colors.forminput }}
         {...register(name, rules)}
-        {...rest}
         id={name}
-        placeholder="select"
         h={14}
-        // value={defaultValue}
+        {...rest}
 
         // pr={8}
       >

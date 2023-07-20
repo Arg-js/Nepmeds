@@ -13,7 +13,7 @@ export const gender = [
 export const idType = [
   {
     label: "Citizenship",
-    value: "Citizenship",
+    value: 1,
   },
   {
     label: "Passport",

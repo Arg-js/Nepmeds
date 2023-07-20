@@ -1,7 +1,7 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
-import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
+import { IDoctorExperience } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
@@ -30,11 +30,12 @@ export const useExperienceInfoRegister = () => {
 const createExperienceFile = async (data: ExperienceInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
-  console.log(data);
+
   if (data.experience_documents) {
     // Append multiple files to formData
     data.experience_documents.forEach((file, index) => {
-      if (file !== null) formData.append(`files[${index}]`, file);
+      if (file !== null && file instanceof File)
+        formData.append(`files[${index}]`, file);
     });
   }
   const response = await HttpClient.post(api.experience_file, formData);
@@ -45,7 +46,6 @@ export const useExperienceFileRegister = () =>
   useMutation(createExperienceFile);
 
 const updateExperienceData = async (id: number, data: ExperienceInfo) => {
-  console.log(id);
   const response = await HttpClient.patch(api.experience + `${id}/`, data);
   return response;
 };
@@ -89,8 +89,8 @@ export const useDeleteExperienceInfo = () => {
 
 //Get Single Certificate Info
 export const getSingleExperienceInfo = async (id: number) => {
-  const response = await HttpClient.get<
-    NepMedsResponse<IDoctorCertificationInfo>
-  >(api.experience + `${id}/`);
+  const response = await HttpClient.get<NepMedsResponse<IDoctorExperience>>(
+    api.experience + `${id}/`
+  );
   return response.data.data;
 };

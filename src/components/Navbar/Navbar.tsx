@@ -6,6 +6,10 @@ import {
   Flex,
   HStack,
   Icon,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -13,11 +17,17 @@ import { useForm } from "react-hook-form";
 import { Home, Notification } from "react-iconly";
 
 import Input from "@nepMeds/components/Form/Input";
-import { colors } from "@nepMeds/theme/colors";
-import { Link } from "react-router-dom";
+import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { colors } from "@nepMeds/theme/colors";
+import { RiArrowDropDownLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
+  const logoutAction = useLogoutMutation();
+  const logout = () => {
+    logoutAction.mutate();
+  };
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
@@ -65,12 +75,36 @@ const Navbar = () => {
               {data?.user_details?.first_name} {data?.user_details?.middle_name}{" "}
               {data?.user_details?.last_name}
             </Text>
+
             <Avatar
               src={data?.user_details?.profile_picture}
-              as={Link}
-              to="/doctor-profile"
+              // as={Link}
+              // to="/doctor-profile"
               size="md"
+              // mr={"-100%"}
             />
+            <Menu>
+              <MenuButton>
+                <Box
+                  display={"flex"}
+                  flexDir={"row"}
+                  justifyContent={"center"}
+                  alignItems={"end"}
+                  ml={"-100%"}
+                >
+                  <RiArrowDropDownLine
+                    fontSize={"45px"}
+                    color={colors.primary}
+                  />
+                </Box>
+              </MenuButton>
+              <MenuList>
+                <MenuItem as={Link} to={"/doctor-profile"}>
+                  Profile
+                </MenuItem>
+                <MenuItem onClick={logout}>LogOut</MenuItem>
+              </MenuList>
+            </Menu>
           </Flex>
         </HStack>
         <Divider mt={"14px"} />

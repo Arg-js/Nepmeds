@@ -37,6 +37,14 @@ export const api = {
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
+  specialistRate: {
+    fetchAll: "/core/specialist-rate",
+    fetchById: "/core/specialist-rate/{id}",
+    post: "/core/specialist-rate",
+    patch: "/core/specialist-rate/{id}",
+    delete: "/core/specialist-rate/{id}",
+  },
+  doctorList: "/doctor_consult/doctor-list/",
 };
 
 export interface NepMedsResponse<T = any> {
