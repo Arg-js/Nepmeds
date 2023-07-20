@@ -28,11 +28,11 @@ export type PrimaryInfo = Pick<
     last_name?: string;
     mobile_number?: string;
     profile_picture?: File | string;
-    district?: number;
+    district?: number | null;
     ward?: number | string;
     tole?: number | string;
-    municipality?: number;
-    province?: number;
+    municipality?: number | null;
+    province?: number | null;
     gender?: string;
     date_of_birth?: string;
     email?: string;

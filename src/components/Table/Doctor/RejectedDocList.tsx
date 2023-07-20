@@ -2,11 +2,13 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Center,
   HStack,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -17,8 +19,10 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -28,8 +32,6 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
-import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -62,7 +64,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
   const [searchFilter, setSearchFilter] = useState("");
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data } = useDoctorList({
+  const { data, isSuccess, isLoading } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -209,46 +211,6 @@ const RejectedDocList = ({ specializationList }: Props) => {
 
   return (
     <>
-      <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Rejected Doctors</Text>
-
-        <HStack>
-          <InputGroup w="190px" borderColor={colors.grey_dark}>
-            <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color={colors.grey_dark} boxSize={4} />
-            </InputLeftElement>
-            <Input
-              w={40}
-              h={8}
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-          <Button
-            color={colors.grey_dark}
-            bg={colors.white}
-            outlineColor={colors.grey_dark}
-            h={8}
-            onClick={() => {
-              onModalOpen();
-            }}
-          >
-            <IoFunnelOutline pointerEvents={"none"} />
-            &nbsp; Filter
-          </Button>
-        </HStack>
-      </HStack>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
       <ModalComponent
         isOpen={isModalOpen}
         onClose={onModalClose}
@@ -324,6 +286,55 @@ const RejectedDocList = ({ specializationList }: Props) => {
           </FormProvider>
         </VStack>
       </ModalComponent>
+
+      <HStack justifyContent="space-between">
+        <Text fontWeight="medium">Rejected Doctors</Text>
+
+        <HStack>
+          <InputGroup w="190px" borderColor={colors.grey_dark}>
+            <InputLeftElement pointerEvents="none" h={8}>
+              <SearchIcon color={colors.grey_dark} boxSize={4} />
+            </InputLeftElement>
+            <Input
+              w={40}
+              h={8}
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+          <Button
+            color={colors.grey_dark}
+            bg={colors.white}
+            outlineColor={colors.grey_dark}
+            h={8}
+            onClick={() => {
+              onModalOpen();
+            }}
+          >
+            <IoFunnelOutline pointerEvents={"none"} />
+            &nbsp; Filter
+          </Button>
+        </HStack>
+      </HStack>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          filter={{ globalFilter: searchFilter }}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </>
   );
 };
