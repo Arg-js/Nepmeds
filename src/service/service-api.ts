@@ -31,7 +31,8 @@ export const api = {
 
   province: "core/provinces/",
   district: "core/districts/",
-  municipality: "/core/municipalities",
+  municipality: "/core/municipalities/",
+  college_list: "/core/college-list/",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",

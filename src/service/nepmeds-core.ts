@@ -11,6 +11,10 @@ type District = {
   id: number;
   name: string;
 };
+type College = {
+  id: number;
+  name: string;
+};
 
 type Municipality = {
   id: number;
@@ -71,4 +75,16 @@ export const useGetMunicipalities = (districtId: number) =>
   useQuery([api.municipality, districtId], getMunicipalities(districtId), {
     select: res => res.data.data,
     enabled: !!districtId,
+  });
+
+const getAllCollege = () => async () => {
+  const response = await HttpClient.get<NepMedsResponse<College[]>>(
+    api.college_list
+  );
+  return response;
+};
+
+export const useGetAllCollege = () =>
+  useQuery([api.college_list], getAllCollege(), {
+    select: res => res.data.data,
   });
