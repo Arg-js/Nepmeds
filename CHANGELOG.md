@@ -91,6 +91,7 @@
 * **toast type fixes:** changed toast type of fail to success on rejection ([9b60c93](https://gitlab.com/r2850/nepmeds/commit/9b60c93a43ba60c04a2ea9bc08cd54f15c6f62ca))
 * update image field ([fd72a2e](https://gitlab.com/r2850/nepmeds/commit/fd72a2e3f9e9cf2aeb637b419ea38f5752977e20))
 * validation and forms ([a3ce00d](https://gitlab.com/r2850/nepmeds/commit/a3ce00d9a27d3203b98b8f6b15e6ad074192e5f3))
+* validation error on registration ([6e9ffda](https://gitlab.com/r2850/nepmeds/commit/6e9ffdaa210bfef341c3510605048cc7263cf426))
 * validation error on registration ([ae01a21](https://gitlab.com/r2850/nepmeds/commit/ae01a217661b50491ec8b0c38e595722055c3dda))
 * **validation:** validation added in master data ([4ff61d5](https://gitlab.com/r2850/nepmeds/commit/4ff61d50644d72ca8820106d04dfef7ca01a5c9e))
 * verified badge on conditional basis and improving interface of doctor-profile api ([39d8220](https://gitlab.com/r2850/nepmeds/commit/39d82203c61337347880bb8c1a5ba1ccb870be51))

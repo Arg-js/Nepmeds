@@ -139,6 +139,7 @@ const PrimaryInfo = ({
     const imgData = await fileToString(e);
     setSelectedBackFrontImage(imgData);
   };
+  // console.log(isEditable,"55");
 
   const validateDateOfBirth = () => {
     const currentDateObj = new Date();
@@ -163,6 +164,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
+  // console.log(doctorProfileData?.bio_detail,"55");'
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
