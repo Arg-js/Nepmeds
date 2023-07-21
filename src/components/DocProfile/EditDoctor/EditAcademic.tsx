@@ -41,7 +41,6 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
 interface handleFormUpdateProps {
-  handleFormUpdate: () => void;
   handleCloseForm: () => void;
   isLoading: boolean;
 }
@@ -257,39 +256,40 @@ const EditAcademic = ({
 
           {showEditForm ? (
             <FormProvider {...formMethods}>
-              <Grid>
-                <GridItem
-                  height={"60vh"}
-                  css={{
-                    "&::-webkit-scrollbar": {
-                      width: "4px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      width: "6px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: `${colors.light_gray}`,
-                      borderRadius: "24px",
-                    },
-                    overflowY: "scroll",
-                  }}
-                >
-                  <AcademicInfoForm
-                    doctorProfileData={doctorProfileData}
-                    editMode={true}
-                  />
-                </GridItem>
-                <GridItem>
-                  <SubmitButton
-                    handleFormUpdate={handleFormUpdate}
-                    handleCloseForm={handleCloseForm}
-                    isLoading={
-                      updateAcademicInfoRegister.isLoading ||
-                      academicFileRegister.isLoading
-                    }
-                  />
-                </GridItem>
-              </Grid>
+              <form onSubmit={formMethods.handleSubmit(handleFormUpdate)}>
+                <Grid>
+                  <GridItem
+                    height={"60vh"}
+                    css={{
+                      "&::-webkit-scrollbar": {
+                        width: "4px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: `${colors.light_gray}`,
+                        borderRadius: "24px",
+                      },
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <AcademicInfoForm
+                      doctorProfileData={doctorProfileData}
+                      editMode={true}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <SubmitButton
+                      handleCloseForm={handleCloseForm}
+                      isLoading={
+                        updateAcademicInfoRegister.isLoading ||
+                        academicFileRegister.isLoading
+                      }
+                    />
+                  </GridItem>
+                </Grid>
+              </form>
             </FormProvider>
           ) : doctorProfileData?.doctor_academic_info?.length ? (
             doctorProfileData?.doctor_academic_info?.map(
@@ -470,7 +470,6 @@ const EditAcademic = ({
 };
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
-  handleFormUpdate,
   handleCloseForm,
   isLoading,
 }) => {
@@ -497,7 +496,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           backgroundColor={colors.primary}
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
-          onClick={handleFormUpdate}
+          type="submit"
           isLoading={isLoading}
         >
           Update

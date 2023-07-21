@@ -1,3 +1,5 @@
+import { PRIMARYIDTYPE } from "@nepMeds/config/enum";
+
 export const title = [
   { label: "Dr", value: "Dr" },
   { label: "Md", value: "Md" },
@@ -13,15 +15,15 @@ export const gender = [
 export const idType = [
   {
     label: "Citizenship",
-    value: "Citizenship",
+    value: PRIMARYIDTYPE.Citizenship,
   },
   {
     label: "Passport",
-    value: "Passport",
+    value: PRIMARYIDTYPE.Passport,
   },
   {
     label: "Driving License",
-    value: "Driving License",
+    value: PRIMARYIDTYPE.Driving_License,
   },
 ];
 export const district = [

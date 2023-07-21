@@ -1,7 +1,9 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
+  Box,
   Button,
+  Center,
   Grid,
   GridItem,
   HStack,
@@ -9,6 +11,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -43,10 +46,7 @@ const schema = yup.object().shape({
     .required("Specialist name is required!")
 
     .max(30, "Specialist name can be 30 characters long"),
-  symptom: yup
-    .array()
-    .min(1, "Symptom keyword is required")
-    .of(yup.string().required("Symptom keyword is required")),
+  symptom: yup.array().min(1, "Symptom keyword is required"),
 });
 
 type OnOpenFunction = () => void;
@@ -73,7 +73,7 @@ const Specializations = ({
     useState<Specialization | null>(null);
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data } = useSpecializationData({
+  const { data, isSuccess, isLoading } = useSpecializationData({
     activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
@@ -113,6 +113,13 @@ const Specializations = ({
     onOpen: onOpenEditModal,
   } = useDisclosure();
 
+  const closeModal = () => {
+    onCloseEditModal();
+    onCloseDeleteModal();
+    onCloseSpecialization();
+    formMethods.reset({});
+  };
+
   const symptomsOptions = symptomList?.map(s => ({
     label: s.name,
     value: s.id,
@@ -124,12 +131,14 @@ const Specializations = ({
       name: "",
       symptom: [] as { label: string; value: string }[],
     },
+
     resolver: yupResolver(schema),
   });
 
   const {
     formState: { errors },
   } = formMethods;
+
   const columns = [
     {
       header: "S.N.",
@@ -211,21 +220,16 @@ const Specializations = ({
         consultation_fees: 3213123,
         symptom: symptoms,
       });
-      onCloseEditModal();
+      closeModal();
       toastSuccess("Specialization updated successfully!");
-      formMethods.reset({
-        name: "",
-        symptom: [],
-      });
     } catch (error) {
       toastFail("Failed to update Specialization!");
     }
   };
 
   const onSubmitForm = async () => {
+    console.log("first");
     try {
-      const isValid = formMethods.trigger();
-      if (!isValid) return;
       const symptomValues = formMethods.getValues("symptom");
       const symptoms = symptomValues.map(symptom => symptom.value);
       await saveSpecializationAction.mutateAsync({
@@ -233,21 +237,11 @@ const Specializations = ({
         consultation_fees: "3213123",
         symptom: symptoms,
       });
-      onCloseSpecialization();
+      closeModal();
       toastSuccess("Specialization saved successfully!");
-      formMethods.reset({
-        name: "",
-        symptom: [],
-      });
     } catch (error) {
       toastFail("Failed to save Specialization!");
     }
-  };
-  const onSaveSpecialization = () => {
-    formMethods.handleSubmit(onSubmitForm)();
-  };
-  const onEditSpecialization = () => {
-    formMethods.handleSubmit(onEditForm)();
   };
 
   const ondeleteSpecialization = async () => {
@@ -257,7 +251,7 @@ const Specializations = ({
       await deleteSpecializationAction.mutateAsync({
         id: deleteSpecialization.id.toString(),
       });
-      onCloseDeleteModal();
+      closeModal();
       toastSuccess("Specialization deleted successfully!");
     } catch (error) {
       toastFail("Failed to delete symptom!");
@@ -279,66 +273,11 @@ const Specializations = ({
 
   return (
     <Fragment>
-      <Grid display={"flex"} justifyContent={"space-between"}>
-        <GridItem alignSelf={"end"}>
-          <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist
-          </Text>
-        </GridItem>
-
-        <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
-          {/* <Box ml={1}>
-            <Menu>
-              <MenuButton as={Button} variant={"outline"}>
-                <Text
-                  display={"flex"}
-                  alignItems={"center"}
-                  fontWeight={400}
-                  color={colors.light_gray}
-                >
-                  {" "}
-                  Bulk Action{" "}
-                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
-                </Text>
-              </MenuButton>
-              <MenuList onClick={onOpenBulkModal}>
-                <MenuItem>Bulk Delete </MenuItem>
-              </MenuList>
-            </Menu>
-          </Box> */}
-        </GridItem>
-      </Grid>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
       {/* edit modal */}
       <ModalComponent
         size="sm"
         isOpen={isEditModalOpen}
-        onClose={() => {
-          onCloseEditModal();
-          formMethods.reset({
-            name: "",
-            symptom: [],
-          });
-        }}
+        onClose={closeModal}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -349,13 +288,7 @@ const Specializations = ({
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={() => {
-                onCloseEditModal();
-                formMethods.reset({
-                  name: "",
-                  symptom: [],
-                });
-              }}
+              onClick={closeModal}
               flex={1}
               border="1px solid"
               borderColor={colors.primary}
@@ -366,10 +299,10 @@ const Specializations = ({
             </Button>
             <Button
               flex={1}
-              onClick={onEditSpecialization}
+              onClick={formMethods.handleSubmit(onEditForm)}
               background={colors.primary}
               color={colors.white}
-              isLoading={saveSpecializationAction.isLoading}
+              isLoading={updateSpecializationAction.isLoading}
             >
               Save
             </Button>
@@ -403,7 +336,7 @@ const Specializations = ({
       <ModalComponent
         size="sm"
         isOpen={isSpecializationOpen}
-        onClose={onCloseSpecialization}
+        onClose={closeModal}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -414,7 +347,7 @@ const Specializations = ({
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={onCloseSpecialization}
+              onClick={closeModal}
               flex={1}
               border="1px solid"
               borderColor={colors.primary}
@@ -425,7 +358,7 @@ const Specializations = ({
             </Button>
             <Button
               flex={1}
-              onClick={onSaveSpecialization}
+              onClick={formMethods.handleSubmit(onSubmitForm)}
               background={colors.primary}
               color={colors.white}
               isLoading={saveSpecializationAction.isLoading}
@@ -465,7 +398,7 @@ const Specializations = ({
       <ModalComponent
         size="sm"
         isOpen={isDeleteModalOpen}
-        onClose={onCloseDeleteModal}
+        onClose={closeModal}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -474,7 +407,7 @@ const Specializations = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+            <Button variant="outline" onClick={closeModal} flex={1}>
               Cancel
             </Button>
             <Button
@@ -498,6 +431,64 @@ const Specializations = ({
           ?
         </Text>
       </ModalComponent>
+
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Specialist
+          </Text>
+        </GridItem>
+
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color="gray.300" boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="search"
+              onChange={({ target: { value } }) => setSearchFilter(value)}
+            />
+          </InputGroup>
+          {/* <Box ml={1}>
+            <Menu>
+              <MenuButton as={Button} variant={"outline"}>
+                <Text
+                  display={"flex"}
+                  alignItems={"center"}
+                  fontWeight={400}
+                  color={colors.light_gray}
+                >
+                  {" "}
+                  Bulk Action{" "}
+                  <IoChevronDownOutline style={{ marginLeft: "10px" }} />
+                </Text>
+              </MenuButton>
+              <MenuList onClick={onOpenBulkModal}>
+                <MenuItem>Bulk Delete </MenuItem>
+              </MenuList>
+            </Menu>
+          </Box> */}
+        </GridItem>
+      </Grid>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </Fragment>
   );
 };

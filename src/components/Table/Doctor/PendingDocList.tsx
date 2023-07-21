@@ -3,11 +3,13 @@ import {
   Badge,
   Box,
   Button,
+  Center,
   HStack,
   Icon,
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -18,8 +20,10 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import React, { useState } from "react";
@@ -29,8 +33,6 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
-import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 
 interface CellContextSearch {
   user: {
@@ -60,7 +62,7 @@ const PendingDocList = ({ specializationList }: Props) => {
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data } = useDoctorList({
+  const { data, isLoading, isSuccess } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -208,6 +210,83 @@ const PendingDocList = ({ specializationList }: Props) => {
 
   return (
     <>
+      {isModalOpen && (
+        <ModalComponent
+          isOpen={isModalOpen}
+          onClose={onModalClose}
+          size={"xl"}
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Filter</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w={"full"} justifyContent={"flex-end"}>
+              <Button
+                outlineColor={"#13ADE1"}
+                borderRadius={"12px"}
+                color={"#13ADE1"}
+                w={"150px"}
+                mr={1}
+                onClick={() => handleFilter(true)}
+              >
+                Reset
+              </Button>
+              <Button
+                outlineColor={"#13ADE1"}
+                borderRadius={"12px"}
+                color={"#13ADE1"}
+                w={"150px"}
+              >
+                Cancel
+              </Button>
+              <Button
+                bg={"#13ADE1"}
+                color={"white"}
+                w={"150px"}
+                onClick={() => handleFilter(false)}
+                borderRadius={"12px"}
+                sx={{
+                  "&:hover": { bg: "#13ADE1", color: "white" },
+                }}
+              >
+                Done
+              </Button>
+            </HStack>
+          }
+        >
+          <VStack h={"auto"}>
+            <FormProvider {...formMethods}>
+              <Select
+                placeholder="select specialization"
+                label="Specialization"
+                name="Specialization"
+                required
+                register={formMethods.register}
+                options={specializationList}
+              />
+              <Box display={"flex"} width={"100%"}>
+                <FloatingLabelInput
+                  label="From"
+                  name="fromDate"
+                  register={formMethods.register}
+                  type="date"
+                />
+                <Box ml={1}>
+                  <FloatingLabelInput
+                    label="To"
+                    name="toDate"
+                    register={formMethods.register}
+                    type="date"
+                  />
+                </Box>
+              </Box>
+            </FormProvider>
+          </VStack>
+        </ModalComponent>
+      )}
+
       <HStack justifyContent="space-between">
         <Text fontWeight="medium">Pending Doctors</Text>
 
@@ -236,92 +315,25 @@ const PendingDocList = ({ specializationList }: Props) => {
           </Button>
         </HStack>
       </HStack>
-      <DataTable
-        columns={columns}
-        data={data?.results ?? []}
-        filter={{ globalFilter: searchFilter }}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          pageCount: data?.page_count,
-          onChangePagination: setPagination,
-        }}
-      />
-
-      <ModalComponent
-        isOpen={isModalOpen}
-        onClose={onModalClose}
-        size={"xl"}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Filter</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w={"full"} justifyContent={"flex-end"}>
-            <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
-              w={"150px"}
-              mr={1}
-              onClick={() => handleFilter(true)}
-            >
-              Reset
-            </Button>
-            <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
-              w={"150px"}
-            >
-              Cancel
-            </Button>
-            <Button
-              bg={"#13ADE1"}
-              color={"white"}
-              w={"150px"}
-              onClick={() => handleFilter(false)}
-              borderRadius={"12px"}
-              sx={{
-                "&:hover": { bg: "#13ADE1", color: "white" },
-              }}
-            >
-              Done
-            </Button>
-          </HStack>
-        }
-      >
-        <VStack h={"auto"}>
-          <FormProvider {...formMethods}>
-            <Select
-              placeholder="select specialization"
-              label="Specialization"
-              name="Specialization"
-              required
-              register={formMethods.register}
-              options={specializationList}
-            />
-            <Box display={"flex"} width={"100%"}>
-              <FloatingLabelInput
-                label="From"
-                name="fromDate"
-                register={formMethods.register}
-                type="date"
-              />
-              <Box ml={1}>
-                <FloatingLabelInput
-                  label="To"
-                  name="toDate"
-                  register={formMethods.register}
-                  type="date"
-                />
-              </Box>
-            </Box>
-          </FormProvider>
-        </VStack>
-      </ModalComponent>
+      {isSuccess && (
+        <DataTable
+          columns={columns}
+          data={data?.results ?? []}
+          filter={{ globalFilter: searchFilter }}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            pageCount: data?.page_count,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
+      {isLoading && (
+        <Center>
+          <Spinner />
+        </Center>
+      )}
+      {data?.count === 0 && <Box>No Result Found!</Box>}
     </>
   );
 };
