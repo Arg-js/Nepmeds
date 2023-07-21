@@ -73,15 +73,15 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-  // useEffect(() => {
-  //   if (watch("province") !== 0) {
-  //     reset({
-  //       ...getValues(),
-  //       district: 0,
-  //       municipality: 0,
-  //     });
-  //   }
-  // }, [watch("province")]);
+  useEffect(() => {
+    if (watch("province") !== 0) {
+      reset({
+        ...getValues(),
+        district: (0 as number) || null,
+        municipality: (0 as number) || null,
+      });
+    }
+  }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
@@ -140,6 +140,7 @@ const PrimaryInfo = ({
     const imgData = await fileToString(e);
     setSelectedBackFrontImage(imgData);
   };
+  // console.log(isEditable,"55");
 
   const validateDateOfBirth = () => {
     const currentDateObj = new Date();
@@ -164,6 +165,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
+  // console.log(doctorProfileData?.bio_detail,"55");'
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>

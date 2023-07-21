@@ -5,13 +5,13 @@ import {
   List,
   ListItem,
   Text,
-  Icon,
+  // Icon,
 } from "@chakra-ui/react";
 import {
   Calendar,
   Call,
   Category,
-  Logout,
+  // Logout,
   Paper,
   TimeCircle,
   Wallet,
@@ -22,7 +22,7 @@ import { images } from "@nepMeds/assets/images";
 import { colors } from "@nepMeds/theme/colors";
 import {
   useLoginTokenDetailQuery,
-  useLogoutMutation,
+  // useLogoutMutation,
 } from "@nepMeds/service/nepmeds-auth";
 import { NavLink } from "react-router-dom";
 
@@ -124,10 +124,10 @@ const AdminSidebarOptions: ISidebarOption[] = [
 ];
 
 const Sidebar = () => {
-  const logoutAction = useLogoutMutation();
-  const logout = () => {
-    logoutAction.mutate();
-  };
+  // const logoutAction = useLogoutMutation();
+  // // const logout = () => {
+  // //   logoutAction.mutate();
+  // // };
   const { data: userInfo } = useLoginTokenDetailQuery();
 
   const menuOptions =
@@ -186,7 +186,7 @@ const Sidebar = () => {
           </List>
         </Box>
       </Stack>
-      <Box
+      {/* <Box
         display="flex"
         gap={3}
         onClick={logout}
@@ -198,7 +198,7 @@ const Sidebar = () => {
       >
         <Icon as={Logout} fontSize={20} color={colors.error} />
         <span>Logout</span>
-      </Box>
+      </Box> */}
     </Box>
   );
 };
