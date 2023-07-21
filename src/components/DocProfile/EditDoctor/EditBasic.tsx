@@ -157,34 +157,36 @@ const EditBasic = ({
 
       {editBasicFormToggle ? (
         <FormProvider {...formMethods}>
-          <Grid>
-            <GridItem
-              height={"60vh"}
-              css={{
-                "&::-webkit-scrollbar": {
-                  width: "4px",
-                },
-                "&::-webkit-scrollbar-track": {
-                  width: "6px",
-                },
-                "&::-webkit-scrollbar-thumb": {
-                  // background: scrollbarColor,
-                  background: `${colors.light_gray}`,
-                  borderRadius: "24px",
-                },
-              }}
-              overflow="scroll"
-            >
-              <EditBasicForm doctorProfileData={doctorProfileData} />
-            </GridItem>
-            <GridItem>
-              <SubmitButton
-                handleFormUpdate={handleFormUpdate}
-                handleCloseForm={handleCloseForm}
-                isLoading={updatePersonalInfo.isLoading}
-              />
-            </GridItem>
-          </Grid>
+          <form onSubmit={formMethods.handleSubmit(handleFormUpdate)}>
+            <Grid>
+              <GridItem
+                height={"60vh"}
+                css={{
+                  "&::-webkit-scrollbar": {
+                    width: "4px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    width: "6px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    // background: scrollbarColor,
+                    background: `${colors.light_gray}`,
+                    borderRadius: "24px",
+                  },
+                }}
+                overflow="scroll"
+              >
+                <EditBasicForm doctorProfileData={doctorProfileData} />
+              </GridItem>
+              <GridItem>
+                <SubmitButton
+                  handleFormUpdate={handleFormUpdate}
+                  handleCloseForm={handleCloseForm}
+                  isLoading={updatePersonalInfo.isLoading}
+                />
+              </GridItem>
+            </Grid>
+          </form>
         </FormProvider>
       ) : (
         <Card
@@ -270,7 +272,6 @@ interface handleFormUpdateProps {
 }
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
-  handleFormUpdate,
   handleCloseForm,
   isLoading,
 }) => {
@@ -297,8 +298,8 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           backgroundColor={colors.primary}
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
-          onClick={handleFormUpdate}
           isLoading={isLoading}
+          type="submit"
         >
           Update
         </Button>

@@ -1,12 +1,14 @@
 import {
   Box,
   Button,
+  Center,
   Divider,
   Grid,
   GridItem,
   HStack,
   List,
   ListItem,
+  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -20,7 +22,7 @@ import {
   getMinutesDifference,
   isTimeInRange,
 } from "@nepMeds/helper/checkTimeRange";
-import { AddEvent } from "@nepMeds/pages/Calendar";
+import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,
@@ -30,18 +32,24 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
+import { generateHoursTimeArray } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
 import { isSameDay, parseISO } from "date-fns";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
+
+const timeData = generateHoursTimeArray();
+
 const ScheduleComponent = ({
   selectedFullDate,
 }: {
   selectedFullDate: string;
 }) => {
   const availabilityData = useDoctorAvailability().data;
+  const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
+    useState(false);
 
   const filteredEvents = availabilityData?.filter(event => {
     if (event.date) {
@@ -74,11 +82,6 @@ const ScheduleComponent = ({
   const updateDoctorAvailability = useUpdateDoctorAvailability();
   const formMethods = useForm();
 
-  const onSaveEvent = () => {
-    formMethods.handleSubmit(onSubmit)();
-    formMethods.reset();
-  };
-
   const [availabilityId, setAvailabilityId] = useState(0);
   const onSubmit = async (data: IGetDoctorAvailability) => {
     try {
@@ -99,15 +102,18 @@ const ScheduleComponent = ({
   const [doctorAvailabilityData, setDoctorAvailabilityData] =
     useState<IGetDoctorAvailability>();
   const handleEdit = async (id: number) => {
+    onEditModalOpen();
+    setIsSingleAvailabilityLoading(true);
     try {
       const res = await getSingleAvailability(id);
       setDoctorAvailabilityData(res);
       setAvailabilityId(id);
+      formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error as AxiosError);
       toastFail(err);
     }
-    onEditModalOpen();
+    setIsSingleAvailabilityLoading(false);
   };
 
   const handleDeleteModal = (id: number) => {
@@ -131,8 +137,8 @@ const ScheduleComponent = ({
 
   return (
     <Box>
-      {timeData?.map((data, i) => (
-        <Grid key={i} templateColumns="repeat(5, 13%)" gap={0}>
+      {timeData?.map(data => (
+        <Grid key={data.time} templateColumns="repeat(5, 13%)" gap={0}>
           <GridItem colSpan={1} mb={"30px"}>
             <List spacing={"30px"}>
               <ListItem fontSize={"12px"} color={colors.grey_dark}>
@@ -171,7 +177,7 @@ const ScheduleComponent = ({
                 addOneHour(data.time),
                 eventData.from_time as string
               ) ? (
-                <Box position="relative">
+                <Box position="relative" key={eventData.id}>
                   <Box
                     key={i}
                     mt={`calc(${getMinutes(
@@ -227,7 +233,7 @@ const ScheduleComponent = ({
                   </Box>
                 </Box>
               ) : (
-                <Box position="relative">
+                <Box position="relative" key={eventData.id}>
                   <Box
                     key={i}
                     //   mt={"calc(15 * 2.5px)"}
@@ -269,7 +275,7 @@ const ScheduleComponent = ({
             <Button
               variant="outline"
               onClick={() => {
-                onEditModalClose;
+                onEditModalClose();
                 formMethods.reset();
               }}
               flex={1}
@@ -278,7 +284,7 @@ const ScheduleComponent = ({
             </Button>
             <Button
               flex={1}
-              onClick={onSaveEvent}
+              onClick={formMethods.handleSubmit(onSubmit)}
               background={colors.primary}
               color={colors.white}
               isLoading={updateDoctorAvailability.isLoading}
@@ -294,7 +300,13 @@ const ScheduleComponent = ({
               onSubmit={formMethods.handleSubmit(onSubmit)}
               style={{ width: "100%" }}
             >
-              <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+              {isSingleAvailabilityLoading ? (
+                <Center>
+                  <Spinner />
+                </Center>
+              ) : (
+                <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+              )}
             </form>
           </FormProvider>
         </VStack>
@@ -337,82 +349,3 @@ const ScheduleComponent = ({
 };
 
 export default ScheduleComponent;
-
-interface IcTimeData {
-  time: string;
-}
-
-const timeData: IcTimeData[] = [
-  {
-    time: "1:00:00",
-  },
-  {
-    time: "2:00:00",
-  },
-  {
-    time: "3:00:00",
-  },
-  {
-    time: "4:00:00",
-  },
-  {
-    time: "5:00:00",
-  },
-  {
-    time: "6:00:00",
-  },
-  {
-    time: "7:00:00",
-  },
-  {
-    time: "8:00:00",
-  },
-  {
-    time: "9:00:00",
-  },
-  {
-    time: "10:00:00",
-  },
-  {
-    time: "11:00:00",
-  },
-  {
-    time: "12:00:00",
-  },
-  {
-    time: "13:00:00",
-  },
-  {
-    time: "14:00:00",
-  },
-  {
-    time: "15:00:00",
-  },
-  {
-    time: "16:00:00",
-  },
-  {
-    time: "17:00:00",
-  },
-  {
-    time: "18:00:00",
-  },
-  {
-    time: "19:00:00",
-  },
-  {
-    time: "20:00:00",
-  },
-  {
-    time: "21:00:00",
-  },
-  {
-    time: "22:00:00",
-  },
-  {
-    time: "23:00:00",
-  },
-  {
-    time: "24:00:00",
-  },
-];
