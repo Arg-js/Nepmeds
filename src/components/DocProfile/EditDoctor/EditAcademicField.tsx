@@ -141,7 +141,7 @@ const EditAcademicField = ({
               register={register}
               defaultValue={
                 doctorProfileData?.doctor_academic_info[academicIndex]
-                  ?.university
+                  ?.university_data?.name
               }
               style={{ background: colors.forminput, border: "none" }}
               {...field}

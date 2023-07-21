@@ -7,13 +7,13 @@ import Select from "@nepMeds/components/Form/Select";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -56,14 +56,14 @@ export const AcademicInfoForm = ({
       reset({
         ...getValues(),
         academic: doctorProfileData?.doctor_academic_info.map(a => ({
-          degree_program: a.degree_program,
-          doctor: a.doctor,
-          major: a.major,
-          university: a.university.toString(),
+          degree_program: a?.degree_program,
+          doctor: a?.doctor,
+          major: a?.major,
+          university: a.university_data?.toString(),
           id: a.id?.toString(),
-          academic_documents: a.academic_document,
+          academic_documents: a?.academic_document,
           isSubmitted: true,
-          graduation_year: a.graduation_year?.toString(),
+          graduation_year: a?.graduation_year?.toString(),
         })),
       });
     }
