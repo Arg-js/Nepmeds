@@ -91,3 +91,9 @@ export const getSingleAcademicInfo = async (id: number) => {
   );
   return response.data.data;
 };
+
+//Delete Academic File
+export const deleteAcademicFile = async (id: number) => {
+  const response = await HttpClient.delete(api.academic_file_delete + `${id}/`);
+  return response;
+};

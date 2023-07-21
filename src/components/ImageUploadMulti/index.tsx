@@ -1,8 +1,25 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+
+interface MultipleImageUploadProps {
+  selectedImages: Array<File | { url: string; id: string } | null>;
+  setSelectedImages: (
+    images: Array<File | { url: string; id: string } | null>
+  ) => void;
+  name: string;
+  helperText: boolean;
+  uploadText: string;
+  academicIndex: number;
+  background?: string;
+  editMode?: boolean;
+  fieldValues?: any;
+  handleImageChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
+  deleteFile?: (id: number) => void;
+}
 
 const MultipleImageUpload = ({
   selectedImages,
@@ -12,6 +29,7 @@ const MultipleImageUpload = ({
   background,
   editMode,
   fieldValues,
+  deleteFile,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
     Array(selectedImages.length).fill(false)
@@ -30,7 +48,7 @@ const MultipleImageUpload = ({
 
           // Append the base URL with the file name
           const imageUrl = filePath
-            ? `http://38.242.204.217:8005/media/${filePath}`
+            ? { url: getImageUrl(filePath), id: item.id }
             : URL.createObjectURL(item);
 
           // Create a new image object using the file URL
@@ -45,7 +63,7 @@ const MultipleImageUpload = ({
     }
   }, [fieldValues]);
 
-  const handleRemoveImage = (index: number) => {
+  const handleRemoveImage = (index: number, image: any) => {
     const updatedImages = [...selectedImages];
     updatedImages.splice(index, 1);
 
@@ -53,6 +71,10 @@ const MultipleImageUpload = ({
     const updatedShowAddImageBox = [...showAddImageBox];
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
+
+    if (image?.id && image?.id !== "0" && deleteFile) {
+      deleteFile(Number(image?.id));
+    }
   };
 
   return (
@@ -79,12 +101,9 @@ const MultipleImageUpload = ({
               <Image
                 src={
                   editMode
-                    ? (image as string)
-                    : typeof image === "string"
-                    ? image
-                    : image instanceof File
-                    ? URL.createObjectURL(image)
-                    : undefined
+                    ? (image as { url: string; id: string }).url ??
+                      (image as any)[0]?.url
+                    : URL.createObjectURL(image as File)
                 }
                 alt="Selected Image"
                 objectFit="cover"
@@ -99,7 +118,7 @@ const MultipleImageUpload = ({
               top="4px"
               right="4px"
               size="sm"
-              onClick={() => handleRemoveImage(index)}
+              onClick={() => handleRemoveImage(index, image)}
             />
           </Box>
         </Flex>
@@ -163,16 +182,3 @@ const MultipleImageUpload = ({
 };
 
 export default MultipleImageUpload;
-
-interface MultipleImageUploadProps {
-  selectedImages: Array<File | string | null>;
-  setSelectedImages: (images: Array<File | string | null>) => void;
-  name: string;
-  helperText: boolean;
-  uploadText: string;
-  academicIndex: number;
-  background?: string;
-  editMode?: boolean;
-  fieldValues?: any;
-  handleImageChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
-}
