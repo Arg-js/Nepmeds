@@ -1,12 +1,9 @@
 import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import {
-  useSignUpUser,
-  useVerifySingUpOTP,
-} from "@nepMeds/service/nepmeds-register";
+import { useVerifySingUpOTP } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { FormEvent, useState } from "react";
+import { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -16,38 +13,63 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
-  const onFormSubmit = async (e: FormEvent) => {
-    try {
-      e.preventDefault();
-      await verifySingUpOTPAction.mutateAsync({
-        otp: otpCode,
-        email_or_mobile_number: mobile,
-      });
-      toastSuccess("OTP has been verified successfully!");
-      navigate("/register", { state: { mobile } });
-    } catch (error) {
-      const err = serverErrorResponse(error);
-      toastFail(err);
-    }
-  };
+  // const onFormSubmit = async (e: FormEvent) => {
+  //   try {
+  //     e.preventDefault();
+  //     await verifySingUpOTPAction.mutateAsync({
+  //       otp: otpCode,
+  //       email_or_mobile_number: mobile,
+  //     });
+  //     toastSuccess("OTP has been verified successfully!");
+  //     navigate("/register", { state: { mobile } });
+  //   } catch (error) {
+  //     const err = serverErrorResponse(error);
+  //     toastFail(err);
+  //   }
+  // };
 
-  const singUpAction = useSignUpUser();
+  // const signUpAction = useSignUpUser();
   const onSubmit = async () => {
     try {
-      await singUpAction.mutateAsync({
+      await verifySingUpOTPAction.mutateAsync({
         email_or_mobile_number: mobile,
+        otp: otpCode,
       });
 
       toastSuccess("OTP code has been sent to your mobile!");
       setOtp("");
+      navigate("/register", { state: { mobile } });
     } catch (error) {
       const err = serverErrorResponse(error);
 
       toastFail(err);
     }
   };
+
+  const otpCheck = async () => {
+    console.log(otpCode, "555");
+
+    if (otpCode.length === 6) {
+      await onSubmit().then(() => {
+        // toastSuccess("OTP code has been sent to your mobile!");
+        setOtp("");
+        // navigate("/register", { state: { mobile } });
+        // onSubmit();
+      });
+    }
+  };
+
+  useEffect(() => {
+    try {
+      otpCheck();
+    } catch (error) {
+      console.log(error);
+    }
+  }, [otpCode.length]);
+
   return (
-    <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
+    // <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
+    <>
       <VStack gap={7.5} mb={3}>
         <OtpInput
           value={otpCode}
@@ -64,8 +86,9 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           renderSeparator={index => (
             <span style={{ margin: "7px" }}>{index % 2 ? "-" : ""}</span>
           )}
-          inputType="tel"
+          // inputType="tel"
           renderInput={props => <Input {...props} />}
+          shouldAutoFocus
         />
       </VStack>
 
@@ -118,7 +141,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           Verify
         </Button>
       </HStack>
-    </form>
+    </>
   );
 };
 
