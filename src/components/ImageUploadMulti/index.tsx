@@ -72,8 +72,8 @@ const MultipleImageUpload = ({
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
 
-    if (image?.id && image?.id !== "0" && deleteFile) {
-      deleteFile(Number(image?.id));
+    if (image[0]?.id && image[0]?.id !== "0" && deleteFile) {
+      deleteFile(Number(image[0]?.id));
     }
   };
 

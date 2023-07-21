@@ -369,7 +369,7 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleAcademicInfo?.university}
+                            :&nbsp;{singleAcademicInfo?.university_data?.name}
                           </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"} gap={3}>

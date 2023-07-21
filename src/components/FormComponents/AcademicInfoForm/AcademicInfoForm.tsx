@@ -6,11 +6,16 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import {
+  deleteAcademicFile,
+  useDeleteAcademicInfo,
+} from "@nepMeds/service/nepmeds-academic";
 import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { AxiosError } from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
@@ -61,7 +66,7 @@ export const AcademicInfoForm = ({
           degree_program: a.degree_program,
           doctor: a.doctor,
           major: a.major,
-          university: a.university.toString(),
+          university: a.university_data.toString(),
           id: a.id?.toString(),
           academic_documents: a.academic_document,
           isSubmitted: true,
@@ -153,6 +158,14 @@ export const AcademicInfoForm = ({
     });
   };
 
+  const handleDeleteFile = async (id: number) => {
+    try {
+      await deleteAcademicFile(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+  };
   return (
     <>
       {fields.map((item, index) => {
@@ -178,6 +191,7 @@ export const AcademicInfoForm = ({
                 academicIndex={index}
                 helperText={false}
                 editMode={editMode ?? false}
+                deleteFile={handleDeleteFile}
               />
             </Box>
             <SimpleGrid
