@@ -396,7 +396,29 @@ const CalendarDailyDetailView = ({
           </FormProvider>
         </VStack>
       </ModalComponent>
-      <Box p={5} height={900} overflow={"scroll"} className="inter-font-family">
+      <Box
+        p={5}
+        height={900}
+        overflowY={"scroll"}
+        css={{
+          scrollbarGutter: "stable",
+          "&::-webkit-scrollbar": {
+            width: "0.2rem",
+            height: "0.6rem",
+            position: "absolute",
+          },
+          "&::-webkit-scrollbar-track": {
+            position: "absolute",
+            background: "#fff",
+            opacity: 0.1,
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#e9d8fd",
+            borderRadius: 20,
+          },
+        }}
+        className="inter-font-family"
+      >
         <Box display={"flex"} justifyContent={"space-between"}>
           <Box
             display={"flex"}

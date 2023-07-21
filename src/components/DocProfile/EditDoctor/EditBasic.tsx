@@ -4,12 +4,14 @@ import {
   Button,
   Card,
   CardBody,
+  Center,
   Divider,
   Flex,
   Grid,
   GridItem,
   Icon,
   Image,
+  Spinner,
   Text,
 } from "@chakra-ui/react";
 import { images } from "@nepMeds/assets/images";
@@ -131,7 +133,7 @@ const EditBasic = ({
           onClick={() => setEditBasicFormToggle(true)}
           cursor="pointer"
         >
-          {!editBasicFormToggle ? (
+          {!editBasicFormToggle && (
             <Button
               px={6}
               borderRadius="xl"
@@ -148,7 +150,7 @@ const EditBasic = ({
                 Edit
               </Text>
             </Button>
-          ) : null}
+          )}
         </Flex>
       </Flex>
       <Box>
@@ -189,59 +191,66 @@ const EditBasic = ({
           </form>
         </FormProvider>
       ) : (
-        <Card
-          direction={{ base: "column", sm: "row" }}
-          mb={"18px"}
-          p={4}
-          boxShadow={theme}
-        >
-          {imageDataUrl && (
-            <Image
-              w={"159px"}
-              h={"159px"}
-              src={`${normalURL}/media/${imageDataUrl}`}
-              objectFit="cover"
-            />
+        <>
+          {Object.keys(doctorProfileData).length === 0 && (
+            <Center>
+              <Spinner />
+            </Center>
           )}
-          <CardBody w={"100%"}>
-            <Box display={"flex"} justifyContent={"space-between"}>
-              <Text
-                fontWeight={"700"}
-                fontSize={"26.8085px"}
-                lineHeight={"32px"}
-                color={colors?.dark_1}
-                mb={"4px"}
-              >
-                {doctorProfileData?.user?.first_name}&nbsp;
-                {doctorProfileData?.user?.middle_name}&nbsp;
-                {doctorProfileData?.user?.last_name}&nbsp;
-                {doctorProfileData?.specialization_names?.length
-                  ? `(${doctorProfileData?.specialization_names?.[0]?.name})`
-                  : ""}
-                {doctorProfileData?.status === "approved" && (
-                  <Image
-                    display={"inline-block"}
-                    ml={"9px"}
-                    src={images?.verified}
-                    alt="verified"
-                    fontSize={"sm"}
-                    fontWeight={"normal"}
-                    whiteSpace={"nowrap"}
-                  />
-                )}
-              </Text>
-            </Box>
+          <Card
+            direction={{ base: "column", sm: "row" }}
+            mb={"18px"}
+            p={4}
+            boxShadow={theme}
+          >
+            {imageDataUrl && (
+              <Image
+                w={"159px"}
+                h={"159px"}
+                src={`${normalURL}/media/${imageDataUrl}`}
+                objectFit="cover"
+              />
+            )}
+            <CardBody w={"100%"}>
+              <Box display={"flex"} justifyContent={"space-between"}>
+                <Text
+                  fontWeight={"700"}
+                  fontSize={"26.8085px"}
+                  lineHeight={"32px"}
+                  color={colors?.dark_1}
+                  mb={"4px"}
+                >
+                  {doctorProfileData?.user?.first_name}&nbsp;
+                  {doctorProfileData?.user?.middle_name}&nbsp;
+                  {doctorProfileData?.user?.last_name}&nbsp;
+                  {doctorProfileData?.specialization_names?.length
+                    ? `(${doctorProfileData?.specialization_names?.[0]?.name})`
+                    : ""}
+                  {doctorProfileData?.status === "approved" && (
+                    <Image
+                      display={"inline-block"}
+                      ml={"9px"}
+                      src={images?.verified}
+                      alt="verified"
+                      fontSize={"sm"}
+                      fontWeight={"normal"}
+                      whiteSpace={"nowrap"}
+                    />
+                  )}
+                </Text>
+              </Box>
 
-            <Text
-              fontWeight={"400"}
-              fontSize={"16px"}
-              lineHeight={"28px"}
-              color={"#5B5B5B"}
-            >
-              {doctorProfileData?.bio_detail}
-            </Text>
-          </CardBody>
-        </Card>
+              <Text
+                fontWeight={"400"}
+                fontSize={"16px"}
+                lineHeight={"28px"}
+                color={"#5B5B5B"}
+              >
+                {doctorProfileData?.bio_detail}
+              </Text>
+            </CardBody>
+          </Card>
+        </>
       )}
     </Card>
   );
