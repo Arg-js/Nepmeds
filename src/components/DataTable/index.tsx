@@ -95,6 +95,7 @@ export function DataTable({
   const table = useReactTable({
     columns,
     data,
+
     state: {
       grouping,
       sorting,
@@ -125,6 +126,7 @@ export function DataTable({
     table.setGlobalFilter(filter?.globalFilter || "");
   }, [filter?.globalFilter]);
 
+  // console.log(table.,"555")
   return (
     <>
       <Box

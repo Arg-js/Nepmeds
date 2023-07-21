@@ -7,6 +7,7 @@ import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
 import ImageUpload from "@nepMeds/components/ImageUpload";
+import { PRIMARYIDTYPE } from "@nepMeds/config/enum";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
   useGetAllDistricts,
@@ -72,15 +73,15 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
-  // useEffect(() => {
-  //   if (watch("province") !== 0) {
-  //     reset({
-  //       ...getValues(),
-  //       district: 0,
-  //       municipality: 0,
-  //     });
-  //   }
-  // }, [watch("province")]);
+  useEffect(() => {
+    if (watch("province") !== 0) {
+      reset({
+        ...getValues(),
+        district: (0 as number) || null,
+        municipality: (0 as number) || null,
+      });
+    }
+  }, [watch("province")]);
 
   useEffect(() => {
     if (doctorProfileData) {
@@ -139,6 +140,7 @@ const PrimaryInfo = ({
     const imgData = await fileToString(e);
     setSelectedBackFrontImage(imgData);
   };
+  // console.log(isEditable,"55");
 
   const validateDateOfBirth = () => {
     const currentDateObj = new Date();
@@ -163,7 +165,7 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
-  console.log(getValues("id_issued_district"), "llll");
+  // console.log(doctorProfileData?.bio_detail,"55");'
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -279,9 +281,13 @@ const PrimaryInfo = ({
             border: "none",
             paddingTop: "15px",
           }}
-          rules={{
-            required: "Specialization is required.",
-          }}
+          rules={
+            !isEditable
+              ? {
+                  required: "Specialization is required.",
+                }
+              : {}
+          }
           error={errors.specialization_names?.message}
         />
       </GridItem>
@@ -317,7 +323,7 @@ const PrimaryInfo = ({
           name="id_type"
           register={register}
           options={idType}
-          value={doctorProfileData?.id_type}
+          defaultValue={doctorProfileData?.id_type}
           style={{
             background: colors.forminput,
             border: "none",
@@ -331,7 +337,8 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={4}>
         <Text fontWeight={100} fontSize={"20px"}>
-          {IdType(watchIdType)} Detail
+          {PRIMARYIDTYPE[IdType(watchIdType) as keyof typeof PRIMARYIDTYPE]}{" "}
+          Detail
         </Text>
       </GridItem>
       <GridItem colSpan={2}>

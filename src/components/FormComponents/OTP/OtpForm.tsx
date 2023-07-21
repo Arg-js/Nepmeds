@@ -39,6 +39,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       });
 
       toastSuccess("OTP code has been sent to your mobile!");
+      setOtp("");
     } catch (error) {
       const err = serverErrorResponse(error);
 
@@ -53,11 +54,12 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           onChange={val => setOtp(val)}
           numInputs={6}
           inputStyle={{
-            width: 41,
+            width: 45,
             backgroundColor: colors.forminput,
             color: colors.light_gray,
-            padding: "12px",
+            padding: "14px",
             border: "none",
+            height: "45px",
           }}
           renderSeparator={index => (
             <span style={{ margin: "7px" }}>{index % 2 ? "-" : ""}</span>
@@ -73,7 +75,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           marginBottom: "48px",
           color: colors.black_30,
           display: "flex",
-          marginTop: "15px",
+          marginTop: "20px",
           fontSize: "14px",
           justifyContent: "end",
         }}

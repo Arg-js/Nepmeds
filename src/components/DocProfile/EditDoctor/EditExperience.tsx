@@ -51,13 +51,11 @@ import { FormProvider, useForm } from "react-hook-form";
 // import { AiOutlineMore } from "react-icons/ai";
 
 interface handleFormUpdateProps {
-  handleFormUpdate: () => void;
   handleCloseForm: () => void;
   isLoading: boolean;
 }
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
-  handleFormUpdate,
   handleCloseForm,
   isLoading,
 }) => {
@@ -84,7 +82,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
           backgroundColor={colors.primary}
           _hover={{ bg: colors.primary_blue }}
           color={colors.white}
-          onClick={handleFormUpdate}
+          type="submit"
           isLoading={isLoading}
         >
           Update
@@ -288,39 +286,40 @@ const EditExperience = ({
 
           {editForm ? (
             <FormProvider {...formMethods}>
-              <Grid>
-                <GridItem
-                  height={"60vh"}
-                  css={{
-                    "&::-webkit-scrollbar": {
-                      width: "4px",
-                    },
-                    "&::-webkit-scrollbar-track": {
-                      width: "6px",
-                    },
-                    "&::-webkit-scrollbar-thumb": {
-                      background: `${colors.light_gray}`,
-                      borderRadius: "24px",
-                    },
-                    overflowY: "scroll",
-                  }}
-                >
-                  <ExperienceForm
-                    editMode={true}
-                    doctorProfileData={doctorProfileData}
-                  />
-                </GridItem>
-                <GridItem>
-                  <SubmitButton
-                    handleFormUpdate={handleFormUpdate}
-                    handleCloseForm={handleCloseForm}
-                    isLoading={
-                      updateExperienceFileRegister.isLoading ||
-                      experienceFileRegister.isLoading
-                    }
-                  />
-                </GridItem>
-              </Grid>
+              <form onSubmit={formMethods.handleSubmit(handleFormUpdate)}>
+                <Grid>
+                  <GridItem
+                    height={"60vh"}
+                    css={{
+                      "&::-webkit-scrollbar": {
+                        width: "4px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: `${colors.light_gray}`,
+                        borderRadius: "24px",
+                      },
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <ExperienceForm
+                      editMode={true}
+                      doctorProfileData={doctorProfileData}
+                    />
+                  </GridItem>
+                  <GridItem>
+                    <SubmitButton
+                      handleCloseForm={handleCloseForm}
+                      isLoading={
+                        updateExperienceFileRegister.isLoading ||
+                        experienceFileRegister.isLoading
+                      }
+                    />
+                  </GridItem>
+                </Grid>
+              </form>
             </FormProvider>
           ) : doctorProfileData?.doctor_experience?.length ? (
             doctorProfileData?.doctor_experience?.map(

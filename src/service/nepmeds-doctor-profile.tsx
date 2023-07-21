@@ -26,7 +26,7 @@ export interface IUser {
 export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
-  university: string;
+  university: number;
   major: string;
   academic_document: File[];
   doctor: number;

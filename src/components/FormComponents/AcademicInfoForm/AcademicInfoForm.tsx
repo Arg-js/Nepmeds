@@ -13,6 +13,7 @@ import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -30,6 +31,14 @@ export const AcademicInfoForm = ({
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
+
+  const collegeInfo = useGetAllCollege();
+
+  const collegeOptions =
+    collegeInfo.data?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
 
   const mappedImageInfo =
     doctorProfileData?.doctor_academic_info.map(e =>
@@ -50,7 +59,7 @@ export const AcademicInfoForm = ({
           degree_program: a.degree_program,
           doctor: a.doctor,
           major: a.major,
-          university: a.university,
+          university: a.university.toString(),
           id: a.id?.toString(),
           academic_documents: a.academic_document,
           isSubmitted: true,
@@ -209,12 +218,18 @@ export const AcademicInfoForm = ({
 
               <Controller
                 render={({ field }) => (
-                  <FloatingLabelInput
+                  <Select
                     required
+                    placeholder="Select College/University"
                     label="College/ University"
                     register={register}
-                    style={{ background: colors.forminput, border: "none" }}
+                    options={collegeOptions}
                     {...field}
+                    style={{
+                      background: colors.forminput,
+                      border: "none",
+                      paddingTop: "15px",
+                    }}
                     rules={{
                       required: "College/University is required.",
                     }}
