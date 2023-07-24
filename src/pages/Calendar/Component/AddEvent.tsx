@@ -18,7 +18,6 @@ export const AddEvent = ({
     register,
     watch,
     formState: { errors },
-    setValue,
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
     return generateTimeWith15MinutesInterval();
@@ -153,7 +152,7 @@ export const AddEvent = ({
           register={register}
           label="From"
           required
-          rules={{ required: "From time is required." }}
+          rules={{ required: "From time is required" }}
           error={errors.from_time?.message}
           defaultValue={doctorAvailabilityData?.from_time?.slice(0, 5)}
           placeholder="--:--"
@@ -163,12 +162,12 @@ export const AddEvent = ({
             border: "none",
             paddingTop: "15px",
           }}
-          onChange={(e: any) => {
+          onClick={(e: any) => {
             const first = options.slice(
               options.findIndex(obj => obj.value === e.target.value) + 1,
               options.length
             );
-            setValue("from_time", e.target.value);
+
             setSecondOptions(first);
           }}
           icon={<BiTime />}

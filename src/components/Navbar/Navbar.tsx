@@ -102,7 +102,7 @@ const Navbar = () => {
                 <MenuItem as={Link} to={"/doctor-profile"}>
                   Profile
                 </MenuItem>
-                <MenuItem onClick={logout}>LogOut</MenuItem>
+                <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
           </Flex>
