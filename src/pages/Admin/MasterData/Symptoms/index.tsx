@@ -187,7 +187,8 @@ const Symptoms = ({
       });
       onCloseSymptoms();
       toastSuccess("Symptom saved successfully!");
-      formMethods.reset({});
+      formMethods.reset();
+      // formMethods.reset({});
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
@@ -321,7 +322,10 @@ const Symptoms = ({
               </Button>
               <Button
                 flex={1}
-                onClick={onSaveSymptom}
+                onClick={() => {
+                  onSaveSymptom();
+                  // formMethods.reset();
+                }}
                 background={colors.primary}
                 type="submit"
                 color={colors.white}

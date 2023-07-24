@@ -238,8 +238,9 @@ const EditAcademic = ({
             }
           >
             <VStack>
-              {loading ? (
-                <Spinner />
+              {loading && <Spinner />}
+              {!loading && academicInfo.length === 0 ? (
+                <>No Images Found!</>
               ) : (
                 academicInfo.map((e: any) => (
                   <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
