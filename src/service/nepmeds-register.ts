@@ -66,7 +66,12 @@ const createPrimaryData = async (data: PrimaryInfo) => {
   return response;
 };
 
-export const usePrimaryInfoRegister = () => useMutation(createPrimaryData);
+export const usePrimaryInfoRegister = () =>
+  useMutation(createPrimaryData, {
+    onSuccess() {
+      // navigate("/register", { state: { mobile } })
+    },
+  });
 
 const editPersonalData = async (data: PrimaryInfo) => {
   const response = await HttpClient.patch(
