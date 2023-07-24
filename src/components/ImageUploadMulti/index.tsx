@@ -49,7 +49,7 @@ const MultipleImageUpload = ({
           // Append the base URL with the file name
           const imageUrl = filePath
             ? { url: getImageUrl(filePath), id: item?.id }
-            : URL.createObjectURL(item);
+            : item && URL.createObjectURL(item);
 
           console.log(imageUrl);
 
