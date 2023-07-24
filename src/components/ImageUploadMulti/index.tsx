@@ -106,6 +106,7 @@ const MultipleImageUpload = ({
                 src={
                   (image as { url: string; id: string })?.url ||
                   (image as any)[0]?.url ||
+                  (image as any)[0] ||
                   URL.createObjectURL(image as File)
                 }
                 alt="Selected Image"
