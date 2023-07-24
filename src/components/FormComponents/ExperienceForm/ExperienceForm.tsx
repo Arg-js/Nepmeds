@@ -41,7 +41,9 @@ export const ExperienceForm = ({
 
   const mappedImageInfo =
     doctorProfileData?.doctor_experience.map(e =>
-      e?.experience_document.map((e: any) => getImageUrl(e.file))
+      e?.experience_document.map((e: any) => {
+        return { url: getImageUrl(e?.file), id: e?.id };
+      })
     ) ?? [];
 
   useEffect(() => {
@@ -63,7 +65,9 @@ export const ExperienceForm = ({
   }, [doctorProfileData]);
 
   const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+    useState<Array<Array<File | { url: string; id: string } | null>>>(
+      mappedImageInfo
+    );
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
@@ -79,7 +83,7 @@ export const ExperienceForm = ({
         updatedImages[experienceIndex] = [
           ...(updatedImages[experienceIndex] || []),
         ];
-        updatedImages[experienceIndex][imageIndex] = imageUrl;
+        updatedImages[experienceIndex][imageIndex] = { url: imageUrl, id: "0" };
         return updatedImages;
       });
 

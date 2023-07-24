@@ -37,7 +37,9 @@ export const CertificationInfoForm = ({
 
   const mappedImageInfo =
     doctorProfileData?.doctor_certification_info.map(e =>
-      e?.certificate_document.map((e: any) => getImageUrl(e.file))
+      e?.certificate_document.map((e: any) => {
+        return { url: getImageUrl(e?.file), id: e?.id };
+      })
     ) ?? [];
 
   const deleteCertificateInfoRegister = useDeleteCertificateInfo();
@@ -61,7 +63,9 @@ export const CertificationInfoForm = ({
   }, [doctorProfileData, getValues]);
 
   const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+    useState<Array<Array<File | { url: string; id: string } | null>>>(
+      mappedImageInfo
+    );
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
@@ -77,7 +81,10 @@ export const CertificationInfoForm = ({
         updatedImages[certificateIndex] = [
           ...(updatedImages[certificateIndex] || []),
         ];
-        updatedImages[certificateIndex][imageIndex] = imageUrl;
+        updatedImages[certificateIndex][imageIndex] = {
+          url: imageUrl,
+          id: "0",
+        };
         return updatedImages;
       });
 

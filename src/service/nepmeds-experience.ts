@@ -94,3 +94,11 @@ export const getSingleExperienceInfo = async (id: number) => {
   );
   return response.data.data;
 };
+
+//Delete Experience File
+export const deleteExperienceFile = async (id: number) => {
+  const response = await HttpClient.delete(
+    api.experience_file_delete + `${id}/`
+  );
+  return response;
+};

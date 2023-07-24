@@ -22,7 +22,7 @@ const EditCertificateField = ({
   } = useFormContext<IRegisterFields>();
 
   const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
+    Array<Array<File | { url: string; id: string } | null>>
   >([]);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
@@ -39,8 +39,10 @@ const EditCertificateField = ({
         updatedImages[certificatecertificateIndex] = [
           ...(updatedImages[certificatecertificateIndex] || []),
         ];
-        updatedImages[certificatecertificateIndex][imagecertificateIndex] =
-          imageUrl;
+        updatedImages[certificatecertificateIndex][imagecertificateIndex] = {
+          url: imageUrl,
+          id: "0",
+        };
         return updatedImages;
       });
 

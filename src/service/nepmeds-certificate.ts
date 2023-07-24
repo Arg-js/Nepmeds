@@ -95,3 +95,11 @@ export const getSingleCertificateInfo = async (id: number) => {
   >(api.certificate + `${id}/`);
   return response.data.data;
 };
+
+//Delete Certificate File
+export const deleteCertificateFile = async (id: number) => {
+  const response = await HttpClient.delete(
+    api.certificate_file_delete + `${id}/`
+  );
+  return response;
+};
