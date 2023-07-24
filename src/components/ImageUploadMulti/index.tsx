@@ -51,8 +51,6 @@ const MultipleImageUpload = ({
             ? { url: getImageUrl(filePath), id: item?.id }
             : item && URL.createObjectURL(item);
 
-          console.log(imageUrl);
-
           // Create a new image object using the file URL
           return [imageUrl];
         });
@@ -64,8 +62,6 @@ const MultipleImageUpload = ({
       setSelectedImages(fieldValue);
     }
   }, [fieldValues]);
-
-  console.log(selectedImages);
 
   const handleRemoveImage = (index: number, image: any) => {
     const updatedImages = [...selectedImages];
