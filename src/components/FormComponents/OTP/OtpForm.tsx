@@ -47,8 +47,6 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
   };
 
   const otpCheck = async () => {
-    console.log(otpCode, "555");
-
     if (otpCode.length === 6) {
       await onSubmit().then(() => {
         // toastSuccess("OTP code has been sent to your mobile!");

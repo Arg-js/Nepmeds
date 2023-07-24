@@ -675,7 +675,6 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "default",
                       }}
-                      onClick={() => setActiveStep(index)}
                     >
                       {step?.title}
                     </StepTitle>

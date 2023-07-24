@@ -7,7 +7,6 @@ import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
 import ImageUpload from "@nepMeds/components/ImageUpload";
-import { PRIMARYIDTYPE } from "@nepMeds/config/enum";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
   useGetAllDistricts,
@@ -105,6 +104,7 @@ const PrimaryInfo = ({
   function IdType(watchIdType: string) {
     return watchIdType;
   }
+
   useEffect(() => {
     IdType(watchIdType);
   }, [watchIdType]);
@@ -140,7 +140,6 @@ const PrimaryInfo = ({
     const imgData = await fileToString(e);
     setSelectedBackFrontImage(imgData);
   };
-  // console.log(isEditable,"55");
 
   const validateDateOfBirth = () => {
     const currentDateObj = new Date();
@@ -165,7 +164,6 @@ const PrimaryInfo = ({
 
     return true; // Return true if the validation passes
   };
-  // console.log(doctorProfileData?.bio_detail,"55");'
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -323,7 +321,8 @@ const PrimaryInfo = ({
           name="id_type"
           register={register}
           options={idType}
-          defaultValue={doctorProfileData?.id_type}
+          required
+          defaultValue={doctorProfileData?.id_type ?? "1"}
           style={{
             background: colors.forminput,
             border: "none",
@@ -337,8 +336,7 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={4}>
         <Text fontWeight={100} fontSize={"20px"}>
-          {PRIMARYIDTYPE[IdType(watchIdType) as keyof typeof PRIMARYIDTYPE]}{" "}
-          Detail
+          Id Detail
         </Text>
       </GridItem>
       <GridItem colSpan={2}>
@@ -427,7 +425,7 @@ const PrimaryInfo = ({
         </Text>
       </GridItem>
       {!provinceInfo.isLoading && (
-        <GridItem colSpan={1}>
+        <GridItem colSpan={2}>
           <Select
             placeholder="Select Province"
             label="Province"
@@ -449,7 +447,7 @@ const PrimaryInfo = ({
         </GridItem>
       )}
       {!districtInfo.isLoading && (
-        <GridItem colSpan={isEditable ? 1 : 1}>
+        <GridItem colSpan={2}>
           <Select
             placeholder="Select District"
             label="District"
@@ -471,7 +469,7 @@ const PrimaryInfo = ({
         </GridItem>
       )}
       {!municipalityInfo.isLoading && (
-        <GridItem colSpan={isEditable ? 1 : 1}>
+        <GridItem colSpan={2}>
           <Select
             placeholder="Select Municipality/Vdc"
             label="Municipality/Vdc"
