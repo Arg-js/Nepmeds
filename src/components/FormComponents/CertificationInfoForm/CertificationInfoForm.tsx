@@ -11,8 +11,13 @@ import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useDeleteCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
+import {
+  useDeleteCertificateFile,
+  useDeleteCertificateInfo,
+} from "@nepMeds/service/nepmeds-certificate";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { AxiosError } from "axios";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
@@ -34,6 +39,7 @@ export const CertificationInfoForm = ({
     control,
     name: "certification",
   });
+  const deleteCertificateFile = useDeleteCertificateFile();
 
   const mappedImageInfo =
     doctorProfileData?.doctor_certification_info.map(e =>
@@ -145,6 +151,15 @@ export const CertificationInfoForm = ({
     });
   };
 
+  const handleDeleteFile = async (id: number) => {
+    try {
+      await deleteCertificateFile.mutateAsync(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -171,6 +186,7 @@ export const CertificationInfoForm = ({
                     background="#F9FAFB"
                     academicIndex={index}
                     helperText={false}
+                    deleteFile={handleDeleteFile}
                     {...field} // Pass the `field` props to ensure integration with `react-hook-form`
                   />
                 )}

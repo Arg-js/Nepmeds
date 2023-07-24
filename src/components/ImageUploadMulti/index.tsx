@@ -100,7 +100,7 @@ const MultipleImageUpload = ({
             {image && (
               <Image
                 src={
-                  (image as { url: string; id: string }).url ||
+                  (image as { url: string; id: string })?.url ||
                   (image as any)[0]?.url ||
                   URL.createObjectURL(image as File)
                 }

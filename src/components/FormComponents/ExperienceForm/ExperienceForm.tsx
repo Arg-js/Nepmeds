@@ -13,8 +13,13 @@ import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
-import { useDeleteExperienceInfo } from "@nepMeds/service/nepmeds-experience";
+import {
+  useDeleteExperienceFile,
+  useDeleteExperienceInfo,
+} from "@nepMeds/service/nepmeds-experience";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { AxiosError } from "axios";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
@@ -34,6 +39,7 @@ export const ExperienceForm = ({
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteExperienceInfo = useDeleteExperienceInfo();
+  const deleteExperienceFile = useDeleteExperienceFile();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "experience",
@@ -59,6 +65,7 @@ export const ExperienceForm = ({
           id: a.id?.toString(),
           isSubmitted: true,
           currently_working: a.currently_working,
+          experience_documents: a?.experience_document,
         })),
       });
     }
@@ -160,6 +167,15 @@ export const ExperienceForm = ({
     });
   };
 
+  const handleDeleteFile = async (id: number) => {
+    try {
+      await deleteExperienceFile.mutateAsync(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -185,6 +201,7 @@ export const ExperienceForm = ({
                 academicIndex={index}
                 helperText={false}
                 editMode={editMode ?? false}
+                deleteFile={handleDeleteFile}
               />
             </SimpleGrid>
 

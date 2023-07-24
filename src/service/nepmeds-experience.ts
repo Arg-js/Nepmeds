@@ -96,9 +96,22 @@ export const getSingleExperienceInfo = async (id: number) => {
 };
 
 //Delete Experience File
-export const deleteExperienceFile = async (id: number) => {
+const deleteExperienceFile = async (id: number) => {
   const response = await HttpClient.delete(
     api.experience_file_delete + `${id}/`
   );
   return response;
+};
+
+export const useDeleteExperienceFile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["delete" + api.experience_file_delete],
+    deleteExperienceFile,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+      },
+    }
+  );
 };
