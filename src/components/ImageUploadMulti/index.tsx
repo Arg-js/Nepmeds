@@ -100,10 +100,9 @@ const MultipleImageUpload = ({
             {image && (
               <Image
                 src={
-                  editMode
-                    ? (image as { url: string; id: string }).url ??
-                      (image as any)[0]?.url
-                    : URL.createObjectURL(image as File)
+                  (image as { url: string; id: string }).url ||
+                  (image as any)[0]?.url ||
+                  URL.createObjectURL(image as File)
                 }
                 alt="Selected Image"
                 objectFit="cover"
