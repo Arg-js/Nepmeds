@@ -7,7 +7,7 @@ import Select from "@nepMeds/components/Form/Select";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
-  deleteAcademicFile,
+  useDeleteAcademicFile,
   useDeleteAcademicInfo,
 } from "@nepMeds/service/nepmeds-academic";
 import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
@@ -36,7 +36,7 @@ export const AcademicInfoForm = ({
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
-
+  const deleteAcademicFile = useDeleteAcademicFile();
   const collegeInfo = useGetAllCollege();
 
   const collegeOptions =
@@ -63,14 +63,14 @@ export const AcademicInfoForm = ({
       reset({
         ...getValues(),
         academic: doctorProfileData?.doctor_academic_info.map(a => ({
-          degree_program: a.degree_program,
-          doctor: a.doctor,
-          major: a.major,
-          university: a.university_data.toString(),
-          id: a.id?.toString(),
-          academic_documents: a.academic_document,
+          degree_program: a?.degree_program,
+          doctor: a?.doctor,
+          major: a?.major,
+          university: a?.university_data.id,
+          id: a?.id?.toString(),
+          academic_documents: a?.academic_document,
           isSubmitted: true,
-          graduation_year: a.graduation_year?.toString(),
+          graduation_year: a?.graduation_year?.toString(),
         })),
       });
     }
@@ -160,7 +160,7 @@ export const AcademicInfoForm = ({
 
   const handleDeleteFile = async (id: number) => {
     try {
-      await deleteAcademicFile(id);
+      await deleteAcademicFile.mutateAsync(id);
     } catch (error) {
       const err = serverErrorResponse(error as AxiosError);
       toastFail(err);

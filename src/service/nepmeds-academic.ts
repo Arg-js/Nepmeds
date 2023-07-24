@@ -93,7 +93,20 @@ export const getSingleAcademicInfo = async (id: number) => {
 };
 
 //Delete Academic File
-export const deleteAcademicFile = async (id: number) => {
+const deleteAcademicFile = async (id: number) => {
   const response = await HttpClient.delete(api.academic_file_delete + `${id}/`);
   return response;
+};
+
+export const useDeleteAcademicFile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["delete" + api.academic_file_delete],
+    deleteAcademicFile,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+      },
+    }
+  );
 };
