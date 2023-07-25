@@ -9,6 +9,7 @@ import {
   InputGroup,
   InputLeftElement,
   Spinner,
+  Tag,
   Text,
   VStack,
   useDisclosure,
@@ -19,6 +20,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
@@ -32,7 +34,6 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
-import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface CellContextSearch {
   user: {
@@ -130,7 +131,11 @@ const RejectedDocList = ({ specializationList }: Props) => {
           row,
         }: CellContext<{ specialization_names: Specialization[] }, any>) => {
           const specialization = row?.original?.specialization_names?.map(
-            data => data.name
+            data => (
+              <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+                {data.name}
+              </Tag>
+            )
           );
           return (
             <Box
@@ -289,7 +294,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
       </ModalComponent>
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Hold Doctors</Text>
+        <Text fontWeight="medium">On-Hold Doctors</Text>
 
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>

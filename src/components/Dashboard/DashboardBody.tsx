@@ -1,10 +1,19 @@
-import { Box, Card, Flex, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Card,
+  Container,
+  Flex,
+  Image,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 import { images } from "@nepMeds/assets/images";
 import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/reactCalender.css";
+import PendingDocList from "../Table/Doctor/PendingDocList";
 
 interface IDashboardData {
   title: string;
@@ -92,6 +101,9 @@ const DashboardBody = () => {
       >
         <Calendar />
       </Box>
+      <Container maxW={"container.2xl"}>
+        <PendingDocList showFilter={false} />
+      </Container>
     </Box>
   );
 };
