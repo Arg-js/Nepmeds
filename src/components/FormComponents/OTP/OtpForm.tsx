@@ -36,7 +36,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         otp: otpCode,
       });
 
-      toastSuccess("OTP code has been sent to your mobile!");
+      toastSuccess("OTP verification successful!");
       setOtp("");
       navigate("/register", { state: { mobile } });
     } catch (error) {
@@ -46,29 +46,16 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
     }
   };
 
-  const otpCheck = async () => {
-    if (otpCode.length === 6) {
-      await onSubmit().then(() => {
-        // toastSuccess("OTP code has been sent to your mobile!");
-        setOtp("");
-        // navigate("/register", { state: { mobile } });
-        // onSubmit();
-      });
-    }
-  };
-
   useEffect(() => {
-    try {
-      otpCheck();
-    } catch (error) {
-      console.error(error);
+    if (otpCode.length === 6) {
+      onSubmit();
     }
   }, [otpCode.length]);
 
   return (
     // <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
     <>
-      <VStack gap={7.5} mb={3}>
+      <VStack alignItems={"end"}>
         <OtpInput
           value={otpCode}
           onChange={val => setOtp(val)}
@@ -78,7 +65,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             backgroundColor: colors.forminput,
             color: colors.light_gray,
             padding: "14px",
-            border: "none",
+            border: "1px solid #adadc9",
             height: "45px",
           }}
           renderSeparator={index => (
@@ -88,32 +75,29 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           renderInput={props => <Input {...props} />}
           shouldAutoFocus
         />
-      </VStack>
-
-      <p
-        style={{
-          textAlign: "right",
-          marginBottom: "48px",
-          color: colors.black_30,
-          display: "flex",
-          marginTop: "20px",
-          fontSize: "14px",
-          justifyContent: "end",
-        }}
-      >
-        Didnt receive the code?
-        <p
-          onClick={() => onSubmit()}
+        <div
           style={{
-            color: colors.blue_100,
-            marginLeft: "5px",
-            marginRight: "22px",
-            cursor: "pointer",
+            textAlign: "right",
+            color: colors.black_30,
+            display: "flex",
+            marginTop: "20px",
+            fontSize: "14px",
+            justifyContent: "end",
           }}
         >
-          Resend
-        </p>
-      </p>
+          Didnt receive the code?
+          <p
+            // onClick={() => onSubmit()}
+            style={{
+              color: colors.blue_100,
+              marginLeft: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Resend
+          </p>
+        </div>
+      </VStack>
 
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
@@ -128,7 +112,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         </Link>
       </Text>
 
-      <HStack mt={12} justifyContent="center">
+      <HStack mt={8} justifyContent="center">
         <Button
           backgroundColor={colors.primary}
           textColor={colors.white}

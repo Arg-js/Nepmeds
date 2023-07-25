@@ -43,7 +43,7 @@ const DoctorsList = () => {
               <Tab>Registered Doctors</Tab>
               <Tab>Pending Approval</Tab>
               <Tab>Approved</Tab>
-              <Tab>Hold Doctors</Tab>
+              <Tab>On-Hold Doctors</Tab>
             </TabList>
           </GridItem>
 
