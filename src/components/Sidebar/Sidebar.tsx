@@ -25,7 +25,7 @@ import {
   // useLogoutMutation,
 } from "@nepMeds/service/nepmeds-auth";
 import { NavLink } from "react-router-dom";
-import { STATUSTYPE } from "@nepMeds/config/enum";
+// import { STATUSTYPE } from "@nepMeds/config/enum";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarOption {
@@ -130,14 +130,10 @@ const Sidebar = () => {
   // //   logoutAction.mutate();
   // // };
   const { data: userInfo } = useLoginTokenDetailQuery();
-  const status = 1;
 
   const menuOptions =
-    (status === STATUSTYPE.approved
-      ? userInfo?.is_superuser
-        ? AdminSidebarOptions
-        : sidebarOptions
-      : []) || [];
+    (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
+  console.log(userInfo, "44");
 
   return (
     <Box
