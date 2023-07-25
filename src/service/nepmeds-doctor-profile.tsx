@@ -96,6 +96,7 @@ export interface IGetDoctorBasicProfile {
     profile_picture: string;
   };
   specialization: IResponseSpecialization[];
+  status?: string;
 }
 
 const getDoctorProfile = async () => {
