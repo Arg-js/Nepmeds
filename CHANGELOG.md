@@ -36,6 +36,7 @@
 * doctor self profile view ([9940c0a](https://gitlab.com/r2850/nepmeds/commit/9940c0a79442822b352f0c020be153ad367d142d))
 * **doctor:** bug fixing in doctor table ([77c15a1](https://gitlab.com/r2850/nepmeds/commit/77c15a14e5d12059d1225ace75223b0bbad668d2))
 * **doctor:** fix proper api call and pagination ([9f5dd9d](https://gitlab.com/r2850/nepmeds/commit/9f5dd9d9dd870b8fdcf0235a8720bb9cecf1f717))
+* doctorlist in admin ([274a829](https://gitlab.com/r2850/nepmeds/commit/274a8290126471430bb1b8ff31cd463d8f578426))
 * doctorlist in admin ([8929353](https://gitlab.com/r2850/nepmeds/commit/89293533861e0fc4a560d7b2ee8220d1008a1c63))
 * doctorlist in admin ([d660a74](https://gitlab.com/r2850/nepmeds/commit/d660a7456cb4c0abd57d0b3f3e388869f27df41a))
 * doctorlist in admin ([def0068](https://gitlab.com/r2850/nepmeds/commit/def00682dd36710428dae682eb86cd1507a42829))

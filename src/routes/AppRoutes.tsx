@@ -61,6 +61,10 @@ const routes = [
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
         element: <DoctorProfile />,
       },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_PROFILES,
+        element: <>HIII</>,
+      },
     ],
   },
 ];
@@ -158,6 +162,7 @@ const openRoutes = [
     path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
     element: <ConfirmPassword />,
   },
+
   // {
   //   path: NAVIGATION_ROUTES.DASHBOARD,
   //   element: <Dashboard />,

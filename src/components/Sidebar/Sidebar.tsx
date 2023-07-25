@@ -133,7 +133,6 @@ const Sidebar = () => {
 
   const menuOptions =
     (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
-  console.log(userInfo, "44");
 
   return (
     <Box

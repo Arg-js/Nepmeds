@@ -14,9 +14,14 @@ import Sidebar from "../Sidebar/Sidebar";
 // import { useState } from "react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+// import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { Link } from "react-router-dom";
+import { useState } from "react";
 
 const Layout = () => {
   const { data } = useDoctorBasicProfile();
+  const [active, setActive] = useState(true);
+  console.log(active, data?.is_doctor && data?.doctor?.status !== "1");
 
   return (
     // <Flex>
@@ -35,7 +40,7 @@ const Layout = () => {
     // "nav footer"
 
     <>
-      {data?.status === "4" ? (
+      {active && data?.is_doctor && data?.doctor?.status !== "1" ? (
         <>
           <Box
             justifyContent={"center"}
@@ -64,6 +69,11 @@ const Layout = () => {
               sx={{
                 "&:hover": { color: colors.white, bg: colors.primary },
               }}
+              as={Link}
+              to={"/doctor-profile"}
+              onClick={() => {
+                setActive(false);
+              }}
             >
               {" "}
               Click Here
@@ -71,23 +81,36 @@ const Layout = () => {
           </Stack>
         </>
       ) : (
-        <Grid
-          templateAreas={`"side nav"`}
-          gridTemplateColumns={"296px 1fr"}
-          gap="1"
-        >
-          <GridItem area={"side"}>
-            <Sidebar />
-          </GridItem>
-          <GridItem bg={colors.bg} area={"nav"}>
-            <Navbar />
-            <Box
-            //  m={2}
-            >
-              <Outlet />
-            </Box>
-          </GridItem>
-        </Grid>
+        <>
+          <Grid
+            templateAreas={
+              data?.is_doctor && data?.doctor?.status === "1"
+                ? `"side nav"`
+                : `"nav"`
+            }
+            gridTemplateColumns={
+              data?.is_doctor && data?.doctor?.status === "1"
+                ? "296px 1fr"
+                : "1fr"
+            }
+            gap="1"
+          >
+            {data?.is_doctor && data?.doctor?.status === "1" && (
+              <GridItem area={"side"}>
+                <Sidebar />
+              </GridItem>
+            )}
+
+            <GridItem bg={colors.bg} area={"nav"}>
+              <Navbar />
+              <Box
+              //  m={2}
+              >
+                <Outlet />
+              </Box>
+            </GridItem>
+          </Grid>
+        </>
       )}
     </>
   );

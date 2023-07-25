@@ -87,16 +87,21 @@ export interface IGetDoctorProfile {
 }
 export interface IGetDoctorBasicProfile {
   id: number;
-  user_details: {
-    first_name: string;
-    last_name: string;
-    middle_name: string;
-    email: string;
-    mobile_number: string;
-    profile_picture: string;
+  doctor: {
+    id?: number;
+    rejected_remarks: string;
+    specialization: IResponseSpecialization[];
+    status?: string;
   };
-  specialization: IResponseSpecialization[];
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  email: string;
+  mobile_number: string;
+  profile_picture: string;
+
   status?: string;
+  is_doctor?: boolean;
 }
 
 const getDoctorProfile = async () => {

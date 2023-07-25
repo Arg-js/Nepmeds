@@ -31,6 +31,8 @@ const Navbar = () => {
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
+  console.log(data?.first_name, "555");
+
   return (
     <>
       <Stack p={"15px 21px"} background="white">
@@ -79,13 +81,12 @@ const Navbar = () => {
                   fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
                   // justifyItems={"end"}
                 >
-                  {data?.user_details?.first_name || "Admin"}{" "}
-                  {data?.user_details?.middle_name}{" "}
-                  {data?.user_details?.last_name}&nbsp;
+                  {data?.first_name || "Admins"} {data?.middle_name}{" "}
+                  {data?.last_name}&nbsp;
                 </Text>
 
                 <Avatar
-                  src={data?.user_details?.profile_picture}
+                  src={data?.profile_picture}
                   // as={Link}
                   // to="/doctor-profile"
                   size="md"
