@@ -21,7 +21,7 @@ export const getDoctorList = async ({
   specialization?: string;
   name?: string;
 }) => {
-  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
+  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}/?`;
   if (specialization) {
     apiUrl += `&specialization=${specialization}`;
   }
@@ -60,7 +60,7 @@ export const useDoctorList = ({
   specialization?: string;
   name?: string;
 }) => {
-  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
+  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}/?`;
   if (specialization) {
     apiUrl += `&specialization=${specialization}`;
   }

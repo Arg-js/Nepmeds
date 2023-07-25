@@ -20,7 +20,7 @@ import Input from "@nepMeds/components/Form/Input";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
-import { RiArrowDropDownLine } from "react-icons/ri";
+// import { RiArrowDropDownLine } from "react-icons/ri";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -68,35 +68,42 @@ const Navbar = () => {
             />
           </Flex>
           <Flex gap={"20px"} alignItems={"center"}>
-            <Text
-              display={"flex"}
-              fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
-            >
-              {data?.user_details?.first_name} {data?.user_details?.middle_name}{" "}
-              {data?.user_details?.last_name}
-            </Text>
-
-            <Avatar
-              src={data?.user_details?.profile_picture}
-              // as={Link}
-              // to="/doctor-profile"
-              size="md"
-              // mr={"-100%"}
-            />
             <Menu>
-              <MenuButton>
-                <Box
+              <MenuButton
+                sx={{
+                  "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                }}
+              >
+                <Text
+                  display={"flex"}
+                  fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
+                  // justifyItems={"end"}
+                >
+                  {data?.user_details?.first_name || "Admin"}{" "}
+                  {data?.user_details?.middle_name}{" "}
+                  {data?.user_details?.last_name}&nbsp;
+                </Text>
+
+                <Avatar
+                  src={data?.user_details?.profile_picture}
+                  // as={Link}
+                  // to="/doctor-profile"
+                  size="md"
+                  // mr={"-100%"}
+                />
+
+                {/* <Box
                   display={"flex"}
                   flexDir={"row"}
                   justifyContent={"center"}
                   alignItems={"end"}
-                  ml={"-100%"}
+                  // ml={"-100%"}
                 >
                   <RiArrowDropDownLine
                     fontSize={"45px"}
                     color={colors.primary}
                   />
-                </Box>
+                </Box> */}
               </MenuButton>
               <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>

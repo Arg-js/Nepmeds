@@ -1,6 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Badge,
+  // Badge,
   Box,
   Button,
   Center,
@@ -55,7 +55,7 @@ const PendingDocList = ({ specializationList }: Props) => {
     pageSize: 10,
   });
   const [filterValue, setFilterValue] = useState<any>({
-    status: "pending",
+    status: 2,
   });
 
   const [searchFilter, setSearchFilter] = useState("");
@@ -78,7 +78,7 @@ const PendingDocList = ({ specializationList }: Props) => {
       });
     } else {
       setFilterValue({
-        status: "pending",
+        status: 2,
       });
       formMethods.reset({});
     }
@@ -142,26 +142,26 @@ const PendingDocList = ({ specializationList }: Props) => {
           );
         },
       },
-      {
-        header: "Status",
-        accessorKey: "profile_status",
-        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
-          const { is_approved } = row.original;
-          return (
-            <Badge
-              colorScheme={is_approved ? "green" : "red"}
-              p={1}
-              borderRadius={20}
-              fontSize={11}
-              w={24}
-              textAlign="center"
-              textTransform="capitalize"
-            >
-              {is_approved ? "Approved" : "Not approved"}
-            </Badge>
-          );
-        },
-      },
+      // {
+      //   header: "Status",
+      //   accessorKey: "profile_status",
+      //   cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
+      //     const { is_approved } = row.original;
+      //     return (
+      //       <Badge
+      //         colorScheme={is_approved ? "green" : "red"}
+      //         p={1}
+      //         borderRadius={20}
+      //         fontSize={11}
+      //         w={24}
+      //         textAlign="center"
+      //         textTransform="capitalize"
+      //       >
+      //         {is_approved ? "Approved" : "Not approved"}
+      //       </Badge>
+      //     );
+      //   },
+      // },
       {
         header: "Actions",
         accessorKey: "actions",

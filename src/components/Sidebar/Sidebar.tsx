@@ -129,9 +129,14 @@ const Sidebar = () => {
   // //   logoutAction.mutate();
   // // };
   const { data: userInfo } = useLoginTokenDetailQuery();
+  const status = 1;
 
   const menuOptions =
-    (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
+    (status === 1
+      ? userInfo?.is_superuser
+        ? AdminSidebarOptions
+        : sidebarOptions
+      : []) || [];
 
   return (
     <Box

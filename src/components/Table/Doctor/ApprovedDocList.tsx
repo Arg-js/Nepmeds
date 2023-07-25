@@ -1,6 +1,6 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  Badge,
+  // Badge,
   Box,
   Button,
   Center,
@@ -57,7 +57,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
     pageSize: 10,
   });
   const [filterValue, setFilterValue] = useState<any>({
-    status: "approved",
+    status: 1,
   });
 
   const formMethods = useForm();
@@ -115,26 +115,26 @@ const ApprovedDocList = ({ specializationList }: Props) => {
           );
         },
       },
-      {
-        header: "Status",
-        accessorKey: "profile_status",
-        cell: ({ row }: CellContext<{ is_approved: boolean }, any>) => {
-          const { is_approved } = row.original;
-          return (
-            <Badge
-              colorScheme={is_approved ? "green" : "red"}
-              p={1}
-              borderRadius={20}
-              fontSize={11}
-              w={24}
-              textAlign="center"
-              textTransform="capitalize"
-            >
-              {is_approved ? "Approved" : "Not approved"}
-            </Badge>
-          );
-        },
-      },
+      // {
+      //   header: "Status",
+      //   accessorKey: "profile_status",
+      //   cell: ({ row }: CellContext<{ status: number }, any>) => {
+      //     const { status } = row.original;
+      //     return (
+      //       <Badge
+      //         colorScheme={status == 1 ? "green" : "red"}
+      //         p={1}
+      //         borderRadius={20}
+      //         fontSize={11}
+      //         w={24}
+      //         textAlign="center"
+      //         textTransform="capitalize"
+      //       >
+      //         {status ? "Approved" : "Not approved"}
+      //       </Badge>
+      //     );
+      //   },
+      // },
       {
         header: "Actions",
         accessorKey: "actions",
@@ -148,6 +148,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
                 onClick={() => {
                   formMethods.reset(cell.row.original);
                   // // onDetailsModalOpen();
+                  console.log(cell.row.original, "555");
 
                   // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
                   navigate(
@@ -194,14 +195,14 @@ const ApprovedDocList = ({ specializationList }: Props) => {
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
-        status: "approved",
+        status: 1,
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
     } else {
       setFilterValue({
-        status: "approved",
+        status: 1,
       });
       formMethods.reset({});
     }
