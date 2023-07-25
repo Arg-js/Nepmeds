@@ -12,10 +12,8 @@ import { colors } from "@nepMeds/theme/colors";
 import { Outlet } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
-// import { useState } from "react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-// import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
@@ -43,21 +41,6 @@ const Layout = () => {
     );
 
   return (
-    // <Flex>
-    //   <Box flex={"1"}>
-    //     <Sidebar />
-    //   </Box>
-    //   <Box flex={"6"} bg={colors.bg}>
-    //     <Navbar />
-    //     <Card m={5} borderRadius={12} boxShadow="none">
-    //       <CardBody>
-    //         <Outlet />
-    //       </CardBody>
-    //     </Card>
-    //   </Box>
-    // </Flex>
-    // "nav footer"
-
     <>
       {active && data?.is_doctor && data?.doctor?.status !== "1" ? (
         <>

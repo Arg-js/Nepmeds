@@ -20,7 +20,7 @@ import Input from "@nepMeds/components/Form/Input";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
-// import { RiArrowDropDownLine } from "react-icons/ri";
+
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -78,32 +78,12 @@ const Navbar = () => {
                 <Text
                   display={"flex"}
                   fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
-                  // justifyItems={"end"}
                 >
                   {data?.first_name || "Admins"} {data?.middle_name}{" "}
                   {data?.last_name}&nbsp;
                 </Text>
 
-                <Avatar
-                  src={data?.profile_picture}
-                  // as={Link}
-                  // to="/doctor-profile"
-                  size="md"
-                  // mr={"-100%"}
-                />
-
-                {/* <Box
-                  display={"flex"}
-                  flexDir={"row"}
-                  justifyContent={"center"}
-                  alignItems={"end"}
-                  // ml={"-100%"}
-                >
-                  <RiArrowDropDownLine
-                    fontSize={"45px"}
-                    color={colors.primary}
-                  />
-                </Box> */}
+                <Avatar src={data?.profile_picture} size="md" />
               </MenuButton>
               <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>

@@ -136,12 +136,6 @@ const getDoctorProfileById = (DoctorId: string) => () => {
   );
 };
 
-// export const fetchDoctorProfileByIds = () => {
-//   return useMutation(getDoctorProfileById, {
-//     onError: (error: AxiosDefaults) => {
-//     },
-//   });
-// };
 export const fetchDoctorProfileById = (DoctorId: string) => {
   return useQuery(
     [api.doctorProfileById, DoctorId],
