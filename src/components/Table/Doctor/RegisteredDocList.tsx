@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Spinner,
+  Tag,
   Text,
   VStack,
   useDisclosure,
@@ -106,7 +107,11 @@ const RegisteredDocList = ({ specializationList }: Props) => {
           row,
         }: CellContext<{ specialization_names: Specialization[] }, any>) => {
           const specialization = row?.original?.specialization_names?.map(
-            data => data.name
+            data => (
+              <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+                {data.name}
+              </Tag>
+            )
           );
           return (
             <Box

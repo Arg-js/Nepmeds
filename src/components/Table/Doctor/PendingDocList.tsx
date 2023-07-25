@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Spinner,
+  Tag,
   Text,
   VStack,
   useDisclosure,
@@ -20,6 +21,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
@@ -33,7 +35,6 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
-import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface CellContextSearch {
   user: {
@@ -127,7 +128,11 @@ const PendingDocList = ({ specializationList }: Props) => {
           row,
         }: CellContext<{ specialization_names: Specialization[] }, any>) => {
           const specialization = row?.original?.specialization_names?.map(
-            data => data.name
+            data => (
+              <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+                {data.name}
+              </Tag>
+            )
           );
           return (
             <Box

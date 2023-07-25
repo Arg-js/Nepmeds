@@ -10,6 +10,7 @@ import {
   InputGroup,
   InputLeftElement,
   Spinner,
+  Tag,
   Text,
   VStack,
   useDisclosure,
@@ -22,6 +23,7 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 import Select from "@nepMeds/components/Form/Select";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
@@ -33,7 +35,6 @@ import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import { ISpecializationList } from "./DoctorsList";
-import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface CellContextSearch {
   user: {
@@ -100,7 +101,11 @@ const ApprovedDocList = ({ specializationList }: Props) => {
           row,
         }: CellContext<{ specialization_names: Specialization[] }, any>) => {
           const specialization = row?.original?.specialization_names?.map(
-            data => data.name
+            data => (
+              <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+                {data.name}
+              </Tag>
+            )
           );
           return (
             <Box
@@ -108,7 +113,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
               flexWrap={"wrap"}
               width={"fit-content"}
               p={1}
-              background={colors.grey}
               borderRadius={20}
             >
               <p>{specialization}</p>
@@ -288,7 +292,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
       </ModalComponent>
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Registered Doctors</Text>
+        <Text fontWeight="medium">Approved Doctors</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
