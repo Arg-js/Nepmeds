@@ -33,6 +33,7 @@ import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import { ISpecializationList } from "./DoctorsList";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface CellContextSearch {
   user: {
@@ -57,7 +58,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
     pageSize: 10,
   });
   const [filterValue, setFilterValue] = useState<any>({
-    status: 1,
+    status: STATUSTYPE.approved,
   });
 
   const formMethods = useForm();
@@ -195,14 +196,14 @@ const ApprovedDocList = ({ specializationList }: Props) => {
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
-        status: 1,
+        status: STATUSTYPE.approved,
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
     } else {
       setFilterValue({
-        status: 1,
+        status: STATUSTYPE.approved,
       });
       formMethods.reset({});
     }

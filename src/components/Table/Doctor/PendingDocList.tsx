@@ -33,6 +33,7 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { generatePath, useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface CellContextSearch {
   user: {
@@ -55,7 +56,7 @@ const PendingDocList = ({ specializationList }: Props) => {
     pageSize: 10,
   });
   const [filterValue, setFilterValue] = useState<any>({
-    status: 2,
+    status: STATUSTYPE.pending,
   });
 
   const [searchFilter, setSearchFilter] = useState("");
@@ -78,7 +79,7 @@ const PendingDocList = ({ specializationList }: Props) => {
       });
     } else {
       setFilterValue({
-        status: 2,
+        status: STATUSTYPE.pending,
       });
       formMethods.reset({});
     }
