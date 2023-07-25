@@ -168,7 +168,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
       )}
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Pending Doctors</Text>
+        {showFilter && <Text fontWeight="medium">Pending Doctors</Text>}
 
         {showFilter && (
           <HStack>
