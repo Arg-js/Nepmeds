@@ -149,7 +149,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
                 onClick={() => {
                   formMethods.reset(cell.row.original);
                   // // onDetailsModalOpen();
-                  console.log(cell.row.original, "555");
 
                   // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
                   navigate(

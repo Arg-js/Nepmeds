@@ -17,10 +17,6 @@ import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 const Layout = () => {
   const { data } = useDoctorBasicProfile();
-  console.log(data, "hhhh");
-
-  // const [approved, setApproved] = useState(false);
-  // console.log(setApproved());
 
   return (
     // <Flex>
