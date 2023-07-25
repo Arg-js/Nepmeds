@@ -17,11 +17,15 @@ import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 
 const Layout = () => {
   const { data } = useDoctorBasicProfile();
   const [active, setActive] = useState(true);
-  console.log(active, data?.is_doctor && data?.doctor?.status !== "1");
+  const logoutAction = useLogoutMutation();
+  const logout = () => {
+    logoutAction.mutate();
+  };
 
   return (
     // <Flex>
@@ -78,6 +82,7 @@ const Layout = () => {
               {" "}
               Click Here
             </Button>
+            <Button onClick={logout}>Logout</Button>
           </Stack>
         </>
       ) : (

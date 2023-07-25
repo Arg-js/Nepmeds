@@ -22,7 +22,6 @@ export const NAVIGATION_ROUTES = {
 
   DOCTOR_LIST: "/doctor-list",
   DOCTOR_PROFILE: "/doctor-profile",
-  DOCTOR_PROFILES: "/doctor-profiles",
   APPOINTMENTS: "appointments",
   FOLLOWUP: "followup",
   PATIENT_HISTORY: "patient-history",

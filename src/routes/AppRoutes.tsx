@@ -61,10 +61,6 @@ const routes = [
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
         element: <DoctorProfile />,
       },
-      {
-        path: NAVIGATION_ROUTES.DOCTOR_PROFILES,
-        element: <>HIII</>,
-      },
     ],
   },
 ];
