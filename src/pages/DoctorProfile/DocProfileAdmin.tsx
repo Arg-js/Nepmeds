@@ -15,7 +15,6 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
-
 import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";

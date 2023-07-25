@@ -158,6 +158,7 @@ const openRoutes = [
     path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
     element: <ConfirmPassword />,
   },
+
   // {
   //   path: NAVIGATION_ROUTES.DASHBOARD,
   //   element: <Dashboard />,

@@ -124,7 +124,7 @@ const EditBasic = ({
     <Card>
       <Flex alignItems={"center"} justifyContent={"space-between"} p={5}>
         <Text fontWeight={600} fontSize="20px">
-          Registration
+          Profile
         </Text>
 
         <Flex
