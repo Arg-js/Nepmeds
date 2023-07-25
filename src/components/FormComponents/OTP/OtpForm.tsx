@@ -61,7 +61,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
     try {
       otpCheck();
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [otpCode.length]);
 

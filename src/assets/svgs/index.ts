@@ -3,6 +3,7 @@ import { ReactComponent as logo } from "./logo.svg";
 import { ReactComponent as upload } from "./upload.svg";
 import { ReactComponent as confirmed } from "./confirmed.svg";
 import { ReactComponent as logo_small } from "./logosmall.svg";
+import { ReactComponent as Work } from "./work.svg";
 
 export const svgs = {
   image,
@@ -10,4 +11,5 @@ export const svgs = {
   logo,
   confirmed,
   logo_small,
+  Work,
 };
