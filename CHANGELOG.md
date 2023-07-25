@@ -62,6 +62,7 @@
 * few styling ([25bbbd1](https://gitlab.com/r2850/nepmeds/commit/25bbbd174b41bdb92a600cec2e80d2fd383ccf8b))
 * **filter:** filter by name implementation ([e087423](https://gitlab.com/r2850/nepmeds/commit/e087423426540d9e3452447006ee2d431c03704f))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
+* hold page ([848a8aa](https://gitlab.com/r2850/nepmeds/commit/848a8aa9eafa8aa1033dd8e98d4b3ee130fc03ae))
 * hold page ([8a4b620](https://gitlab.com/r2850/nepmeds/commit/8a4b62001fa2aa9560605be531f3b1c96bcf807c))
 * hold page ([8b46632](https://gitlab.com/r2850/nepmeds/commit/8b466320a1f95d5ed68778572c6ba32a36424d9a))
 * hold page ([e1623b8](https://gitlab.com/r2850/nepmeds/commit/e1623b8f942d230c6b9436b32d09ec38803c3821))

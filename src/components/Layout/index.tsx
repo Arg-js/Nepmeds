@@ -17,6 +17,7 @@ import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 
 const Layout = () => {
   const { data, isLoading } = useDoctorBasicProfile();
@@ -42,7 +43,9 @@ const Layout = () => {
 
   return (
     <>
-      {active && data?.is_doctor && data?.doctor?.status !== "1" ? (
+      {active &&
+      data?.is_doctor &&
+      data?.doctor?.status !== STATUSTYPE.approved.toString() ? (
         <>
           <Box
             justifyContent={"center"}
@@ -87,12 +90,14 @@ const Layout = () => {
         <>
           <Grid
             templateAreas={
-              data?.is_superuser || data?.doctor?.status === "1"
+              data?.is_superuser ||
+              data?.doctor?.status === STATUSTYPE.approved.toString()
                 ? `"side nav"`
                 : `"nav"`
             }
             gridTemplateColumns={
-              data?.is_superuser || data?.doctor?.status === "1"
+              data?.is_superuser ||
+              data?.doctor?.status === STATUSTYPE.approved.toString()
                 ? "296px 1fr"
                 : "1fr"
             }
@@ -107,7 +112,7 @@ const Layout = () => {
               </GridItem>
             ) : (
               data?.is_doctor &&
-              data?.doctor?.status === "1" && (
+              data?.doctor?.status === STATUSTYPE.approved.toString() && (
                 <GridItem area={"side"}>
                   <Sidebar />
                 </GridItem>
