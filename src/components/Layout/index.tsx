@@ -27,7 +27,7 @@ const Layout = () => {
   const logout = () => {
     logoutAction.mutate();
   };
-  console.log(data?.is_superuser, "8525858");
+
   if (isLoading)
     return (
       <Spinner

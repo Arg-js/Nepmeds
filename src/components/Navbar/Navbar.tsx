@@ -31,7 +31,6 @@ const Navbar = () => {
   const { register } = useForm();
 
   const { data } = useDoctorBasicProfile();
-  console.log(data?.first_name, "555");
 
   return (
     <>
