@@ -21,7 +21,7 @@ export const DocUpdateProfile = ({
   doctorProfileData: IGetDoctorProfile;
 }) => {
   const tabs = [
-    "Registration",
+    "Profile",
     "Primary Info",
     "Academic Info",
     "Certification Info",
