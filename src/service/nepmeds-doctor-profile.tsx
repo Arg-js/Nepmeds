@@ -102,6 +102,7 @@ export interface IGetDoctorBasicProfile {
 
   status?: string;
   is_doctor?: boolean;
+  is_superuser?: boolean;
 }
 
 const getDoctorProfile = async () => {

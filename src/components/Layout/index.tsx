@@ -4,6 +4,7 @@ import {
   Grid,
   GridItem,
   Heading,
+  Spinner,
   Stack,
   Text,
 } from "@chakra-ui/react";
@@ -20,12 +21,26 @@ import { useState } from "react";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 
 const Layout = () => {
-  const { data } = useDoctorBasicProfile();
+  const { data, isLoading } = useDoctorBasicProfile();
   const [active, setActive] = useState(true);
   const logoutAction = useLogoutMutation();
   const logout = () => {
     logoutAction.mutate();
   };
+  console.log(data?.is_superuser, "8525858");
+  if (isLoading)
+    return (
+      <Spinner
+        style={{
+          margin: "0 auto",
+          textAlign: "center",
+          display: "block",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "25%",
+        }}
+      />
+    );
 
   return (
     // <Flex>
@@ -89,21 +104,31 @@ const Layout = () => {
         <>
           <Grid
             templateAreas={
-              data?.is_doctor && data?.doctor?.status === "1"
+              data?.is_superuser || data?.doctor?.status === "1"
                 ? `"side nav"`
                 : `"nav"`
             }
             gridTemplateColumns={
-              data?.is_doctor && data?.doctor?.status === "1"
+              data?.is_superuser || data?.doctor?.status === "1"
                 ? "296px 1fr"
                 : "1fr"
             }
             gap="1"
           >
-            {data?.is_doctor && data?.doctor?.status === "1" && (
+            <GridItem area={"side"}>
+              <Sidebar />
+            </GridItem>
+            {data?.is_superuser ? (
               <GridItem area={"side"}>
                 <Sidebar />
               </GridItem>
+            ) : (
+              data?.is_doctor &&
+              data?.doctor?.status === "1" && (
+                <GridItem area={"side"}>
+                  <Sidebar />
+                </GridItem>
+              )
             )}
 
             <GridItem bg={colors.bg} area={"nav"}>
