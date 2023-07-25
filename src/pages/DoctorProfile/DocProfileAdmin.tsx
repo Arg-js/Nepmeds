@@ -97,7 +97,7 @@ const DocProfileAdmin = () => {
               />
             </TabPanel>
 
-            {doctorProfileData?.data?.status === "pending" && (
+            {doctorProfileData?.data?.status !== "1" && (
               <Flex dir="row" justifyContent={"flex-end"}>
                 <Button
                   bg={"#CC5F5F"}

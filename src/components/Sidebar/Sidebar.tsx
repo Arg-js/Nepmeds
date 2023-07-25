@@ -25,6 +25,7 @@ import {
   // useLogoutMutation,
 } from "@nepMeds/service/nepmeds-auth";
 import { NavLink } from "react-router-dom";
+// import { STATUSTYPE } from "@nepMeds/config/enum";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarOption {
@@ -132,6 +133,7 @@ const Sidebar = () => {
 
   const menuOptions =
     (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
+  console.log(userInfo, "44");
 
   return (
     <Box
