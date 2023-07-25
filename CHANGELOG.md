@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 ## 0.0.1 (2023-07-21)
+=======
+## 0.0.1 (2023-07-24)
+>>>>>>> staging
 
 
 ### Bug Fixes
@@ -24,6 +28,10 @@
 * **calender:** unique key error and time array generator ([7721a1b](https://gitlab.com/r2850/nepmeds/commit/7721a1b593980118268813c7bca4f766f0503575))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **college:** college listing fetched ([f0943e3](https://gitlab.com/r2850/nepmeds/commit/f0943e31dfd70809ed45c583ac9ad6b5fb4b8faf))
+<<<<<<< HEAD
+=======
+* **commom:** hotfix image upload registatration ([2de83d5](https://gitlab.com/r2850/nepmeds/commit/2de83d5533396cd2df2ca5cccc3e64b3ee3b9098))
+>>>>>>> staging
 * **common:** image loading issue and api field change ([68ffd75](https://gitlab.com/r2850/nepmeds/commit/68ffd759f17076ae27646a1e04441ab8a4bd691a))
 * **common:** invalid hooks call and select dropdown outside modal ([d8c0246](https://gitlab.com/r2850/nepmeds/commit/d8c02462ed0175a63e74284242ea23fc0e56b072))
 * **common:** multiple api call fix ([f13e228](https://gitlab.com/r2850/nepmeds/commit/f13e2288ae14442136094da75ebfcbd22f59fa9d))
@@ -36,12 +44,19 @@
 * **doctor:** fix proper api call and pagination ([9f5dd9d](https://gitlab.com/r2850/nepmeds/commit/9f5dd9d9dd870b8fdcf0235a8720bb9cecf1f717))
 * **doctortable:** doctor table approve and pending fixed ([43da358](https://gitlab.com/r2850/nepmeds/commit/43da3584f4d1ebf7a359430208c15c716b87cdc5))
 * **ediProfile:** edit profile flow fox ([763a4a9](https://gitlab.com/r2850/nepmeds/commit/763a4a98da563b40511dd9e620998bfbf94124b8))
+<<<<<<< HEAD
+=======
+* **edit:** delete image from server ([1a0860f](https://gitlab.com/r2850/nepmeds/commit/1a0860f45b836888d1d14cf2494fb2db26af2a85))
+* **edit:** delete server image ([b303f51](https://gitlab.com/r2850/nepmeds/commit/b303f519b835b7ea52c82c55354b562b68b97d1f))
+>>>>>>> staging
 * **edit:** fix edit for profile ([b4b53e1](https://gitlab.com/r2850/nepmeds/commit/b4b53e13cf8aee96fc1c07348041c86292ea7345))
 * **editProfile:** added loading for edit profile ([177368c](https://gitlab.com/r2850/nepmeds/commit/177368c54606e335d25bb3f23a4ed90ff6d9197a))
 * **editProfile:** edit profile api changes ([45ac5e3](https://gitlab.com/r2850/nepmeds/commit/45ac5e3993d7a513044aaf5c3bb367bb6d77732b))
 * **editProfile:** edit profile validation ([5560abc](https://gitlab.com/r2850/nepmeds/commit/5560abcd62449a684dc240be24b3a46073d866d0))
 * **editProfile:** fetched specialization and patch ([d746342](https://gitlab.com/r2850/nepmeds/commit/d7463422a471afae81bb13c79ebfbe3f78f7023f))
+* **editProfile:** null safety for academic ([78fc85b](https://gitlab.com/r2850/nepmeds/commit/78fc85bef7d906e5cebb785d780c3ec8e193798c))
 * **editProfile:** retrive image after delete ([89012b6](https://gitlab.com/r2850/nepmeds/commit/89012b6e4cc1a9406996797c03c20c7056efed16))
+* **edit:** university data load ([8fd89db](https://gitlab.com/r2850/nepmeds/commit/8fd89dbcc8fe73a2f0d6de2556b1b5d385eb7a3a))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
@@ -64,6 +79,7 @@
 * minor font size changes ([06fadb7](https://gitlab.com/r2850/nepmeds/commit/06fadb76b0814a1c82b046570ededf1b630101b6))
 * more values added in passed year dropdown ([d6834e8](https://gitlab.com/r2850/nepmeds/commit/d6834e83387274cfb148adaafd1def4556d53011))
 * onclick was on text rather than whole div, so onclick was assigned to whole div ([59dcbbd](https://gitlab.com/r2850/nepmeds/commit/59dcbbd158173b455e8096410f1124e140b5efb7))
+* opt error ([1b49b2a](https://gitlab.com/r2850/nepmeds/commit/1b49b2a90921695312146086374a1c971625d17f))
 * otp api integration ([95349a1](https://gitlab.com/r2850/nepmeds/commit/95349a1690d1ac9d8e16e8e0e7790b4e8cf9a3f5))
 * otp form api integration ([0334c28](https://gitlab.com/r2850/nepmeds/commit/0334c28fae96d5b88e43df4f4ecd203072c48a54))
 * **pagination:** backend pagination test ([e8fa671](https://gitlab.com/r2850/nepmeds/commit/e8fa671cf9af3600830712e702fa37bf280558ab))
@@ -74,6 +90,7 @@
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
+* **registration:** hotfix image upload ([a97996f](https://gitlab.com/r2850/nepmeds/commit/a97996f9bc7ad8108d7a8707732062759531f3a7))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))

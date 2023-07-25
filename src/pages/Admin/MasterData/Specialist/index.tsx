@@ -228,7 +228,6 @@ const Specializations = ({
   };
 
   const onSubmitForm = async () => {
-    console.log("first");
     try {
       const symptomValues = formMethods.getValues("symptom");
       const symptoms = symptomValues.map(symptom => symptom.value);

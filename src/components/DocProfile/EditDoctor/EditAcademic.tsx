@@ -238,8 +238,9 @@ const EditAcademic = ({
             }
           >
             <VStack>
-              {loading ? (
-                <Spinner />
+              {loading && <Spinner />}
+              {!loading && academicInfo.length === 0 ? (
+                <>No Images Found!</>
               ) : (
                 academicInfo.map((e: any) => (
                   <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
@@ -369,7 +370,7 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleAcademicInfo?.university}
+                            :&nbsp;{singleAcademicInfo?.university_data?.name}
                           </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"} gap={3}>

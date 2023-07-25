@@ -6,14 +6,19 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useDeleteAcademicInfo } from "@nepMeds/service/nepmeds-academic";
+import {
+  useDeleteAcademicFile,
+  useDeleteAcademicInfo,
+} from "@nepMeds/service/nepmeds-academic";
+import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { AxiosError } from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -31,7 +36,7 @@ export const AcademicInfoForm = ({
     setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
-
+  const deleteAcademicFile = useDeleteAcademicFile();
   const collegeInfo = useGetAllCollege();
 
   const collegeOptions =
@@ -42,7 +47,9 @@ export const AcademicInfoForm = ({
 
   const mappedImageInfo =
     doctorProfileData?.doctor_academic_info.map(e =>
-      e?.academic_document.map((e: any) => getImageUrl(e.file))
+      e?.academic_document.map((e: any) => {
+        return { url: getImageUrl(e?.file), id: e?.id };
+      })
     ) ?? [];
 
   const { fields, append, remove } = useFieldArray({
@@ -56,22 +63,25 @@ export const AcademicInfoForm = ({
       reset({
         ...getValues(),
         academic: doctorProfileData?.doctor_academic_info.map(a => ({
-          degree_program: a.degree_program,
-          doctor: a.doctor,
-          major: a.major,
-          university: a.university.toString(),
-          id: a.id?.toString(),
-          academic_documents: a.academic_document,
+          degree_program: a?.degree_program,
+          doctor: a?.doctor,
+          major: a?.major,
+          university: a?.university_data.id,
+          id: a?.id?.toString(),
+          academic_documents: a?.academic_document,
           isSubmitted: true,
-          graduation_year: a.graduation_year?.toString(),
+          graduation_year: a?.graduation_year?.toString(),
         })),
       });
     }
   }, [doctorProfileData, reset]);
 
   const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | string | null>>>(mappedImageInfo);
+    useState<Array<Array<File | { url: string; id: string } | null>>>(
+      mappedImageInfo
+    );
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
+
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
     imageIndex: number,
@@ -86,7 +96,7 @@ export const AcademicInfoForm = ({
         updatedImages[academicIndex] = [
           ...(updatedImages[academicIndex] || []),
         ];
-        updatedImages[academicIndex][imageIndex] = imageUrl;
+        updatedImages[academicIndex][imageIndex] = { url: imageUrl, id: "0" };
         // setValue(`academic.${academicIndex}.academic_documents`,selectedFiles[0])
 
         return updatedImages;
@@ -148,6 +158,14 @@ export const AcademicInfoForm = ({
     });
   };
 
+  const handleDeleteFile = async (id: number) => {
+    try {
+      await deleteAcademicFile.mutateAsync(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+  };
   return (
     <>
       {fields.map((item, index) => {
@@ -173,6 +191,7 @@ export const AcademicInfoForm = ({
                 academicIndex={index}
                 helperText={false}
                 editMode={editMode ?? false}
+                deleteFile={handleDeleteFile}
               />
             </Box>
             <SimpleGrid

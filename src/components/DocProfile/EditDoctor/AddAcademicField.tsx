@@ -17,7 +17,7 @@ const AddAcademicField = ({ index }: { index?: number }) => {
   } = useFormContext<IRegisterFields>();
 
   const [selectedImages, setSelectedImages] = useState<
-    Array<Array<File | string | null>>
+    Array<Array<File | { url: string; id: string } | null>>
   >([]);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
@@ -34,7 +34,7 @@ const AddAcademicField = ({ index }: { index?: number }) => {
         updatedImages[academicIndex] = [
           ...(updatedImages[academicIndex] || []),
         ];
-        updatedImages[academicIndex][imageIndex] = imageUrl;
+        updatedImages[academicIndex][imageIndex] = { url: imageUrl, id: "0" };
         return updatedImages;
       });
 

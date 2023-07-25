@@ -95,3 +95,24 @@ export const getSingleCertificateInfo = async (id: number) => {
   >(api.certificate + `${id}/`);
   return response.data.data;
 };
+
+//Delete Certificate File
+const deleteCertificateFile = async (id: number) => {
+  const response = await HttpClient.delete(
+    api.certificate_file_delete + `${id}/`
+  );
+  return response;
+};
+
+export const useDeleteCertificateFile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["delete" + api.certificate_file_delete],
+    deleteCertificateFile,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+      },
+    }
+  );
+};

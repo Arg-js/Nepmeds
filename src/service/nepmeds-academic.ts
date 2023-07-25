@@ -91,3 +91,22 @@ export const getSingleAcademicInfo = async (id: number) => {
   );
   return response.data.data;
 };
+
+//Delete Academic File
+const deleteAcademicFile = async (id: number) => {
+  const response = await HttpClient.delete(api.academic_file_delete + `${id}/`);
+  return response;
+};
+
+export const useDeleteAcademicFile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(
+    ["delete" + api.academic_file_delete],
+    deleteAcademicFile,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+      },
+    }
+  );
+};

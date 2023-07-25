@@ -126,7 +126,6 @@ export function DataTable({
     table.setGlobalFilter(filter?.globalFilter || "");
   }, [filter?.globalFilter]);
 
-  // console.log(table.,"555")
   return (
     <>
       <Box
