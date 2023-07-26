@@ -89,12 +89,10 @@ const PrimaryInfo = ({
   useEffect(() => {
     if (watch("province")) {
       if (+watch("province")! === doctorProfileData?.user?.province_data?.id) {
-        console.log(getValues(), "getValues");
         return reset({
           ...getValues(),
         });
       }
-      console.log(getValues(), "getValuesssss");
       reset({
         ...getValues(),
         district: (0 as number) || null,
