@@ -30,6 +30,7 @@ export default defineConfig(() => ({
       "@nepMeds/types": path.resolve("src/types"),
       "@nepMeds/utils": path.resolve("src/utils"),
       "@nepMeds/config": path.resolve("src/config"),
+      "@nepMeds/context": path.resolve("src/context"),
     },
   },
 }));

@@ -87,11 +87,11 @@ export interface IGetDoctorProfile {
 }
 export interface IGetDoctorBasicProfile {
   id: number;
-  doctor: {
-    id?: number;
+  doctor?: {
+    id: number;
     rejected_remarks: string;
     specialization: IResponseSpecialization[];
-    status?: string;
+    status: string;
   };
   first_name: string;
   last_name: string;
@@ -100,7 +100,6 @@ export interface IGetDoctorBasicProfile {
   mobile_number: string;
   profile_picture: string;
 
-  status?: string;
   is_doctor?: boolean;
   is_superuser?: boolean;
 }

@@ -50,6 +50,7 @@ export const useDoctorList = ({
   specialization,
   page_size,
   name,
+  enabled,
 }: {
   page_no: number;
   status?: string;
@@ -58,6 +59,7 @@ export const useDoctorList = ({
   page_size?: number;
   specialization?: string;
   name?: string;
+  enabled?: boolean;
 }) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -83,6 +85,7 @@ export const useDoctorList = ({
       }),
     {
       select: data => data.data.data,
+      enabled: !!enabled,
     }
   );
 };
