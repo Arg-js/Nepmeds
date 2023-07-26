@@ -16,7 +16,6 @@ export const AddEvent = ({
 }) => {
   const {
     register,
-    watch,
     formState: { errors },
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
@@ -71,43 +70,41 @@ export const AddEvent = ({
           error={errors.title?.message}
         />
       </GridItem>
-      {doctorAvailabilityData?.frequency ? null : (
-        <GridItem colSpan={4}>
-          <Select
-            label="Frequency"
-            name="frequency"
-            register={register}
-            defaultValue={doctorAvailabilityData?.frequency}
-            options={FrequencyType}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-          />
-        </GridItem>
-      )}
-      {watch("frequency") === "Do Not Repeat" && (
-        <GridItem colSpan={4}>
-          <FloatingLabelInput
-            label="Date"
-            name="date"
-            type="date"
-            register={register}
-            min={new Date().toString()}
-            defaultValue={doctorAvailabilityData?.date}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-            rules={{
-              required: "Date is required.",
-            }}
-            error={errors.date?.message}
-          />
-        </GridItem>
-      )}
+      <GridItem colSpan={4}>
+        <Select
+          label="Frequency"
+          name="frequency"
+          register={register}
+          defaultValue={doctorAvailabilityData?.frequency}
+          options={FrequencyType}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
+        />
+      </GridItem>
+
+      <GridItem colSpan={4}>
+        <FloatingLabelInput
+          label="Date"
+          name="date"
+          type="date"
+          register={register}
+          required
+          min={new Date().toString()}
+          defaultValue={doctorAvailabilityData?.date}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            paddingTop: "15px",
+          }}
+          rules={{
+            required: "Date is required.",
+          }}
+          error={errors.date?.message}
+        />
+      </GridItem>
       {/* <GridItem colSpan={2}>
           <FloatingLabelInput
             label="From"
