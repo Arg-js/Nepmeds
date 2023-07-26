@@ -8,26 +8,34 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
+import { STATUSTYPE } from "@nepMeds/config/enum";
+import AuthDataProvider from "@nepMeds/context/AuthDataContext";
+import { useProfileData } from "@nepMeds/context/index";
+import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
-import { Outlet } from "react-router-dom";
+import { useState } from "react";
+import { Link, Outlet } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
-import { svgs } from "@nepMeds/assets/svgs";
-import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
-import { STATUSTYPE } from "@nepMeds/config/enum";
 
 const Layout = () => {
-  const { data, isLoading } = useDoctorBasicProfile();
+  return (
+    <AuthDataProvider>
+      <LayoutComponent />
+    </AuthDataProvider>
+  );
+};
+
+const LayoutComponent = () => {
+  const profileData = useProfileData();
   const [active, setActive] = useState(true);
   const logoutAction = useLogoutMutation();
   const logout = () => {
     logoutAction.mutate();
   };
 
-  if (isLoading)
+  if (profileData?.isLoading)
     return (
       <Spinner
         style={{
@@ -42,10 +50,10 @@ const Layout = () => {
     );
 
   return (
-    <>
+    <AuthDataProvider>
       {active &&
-      data?.is_doctor &&
-      data?.doctor?.status !== STATUSTYPE.approved.toString() ? (
+      profileData?.data?.is_doctor &&
+      profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString() ? (
         <>
           <Box
             justifyContent={"center"}
@@ -90,14 +98,16 @@ const Layout = () => {
         <>
           <Grid
             templateAreas={
-              data?.is_superuser ||
-              data?.doctor?.status === STATUSTYPE.approved.toString()
+              profileData?.data?.is_superuser ||
+              profileData?.data?.doctor?.status ===
+                STATUSTYPE.approved.toString()
                 ? `"side nav"`
                 : `"nav"`
             }
             gridTemplateColumns={
-              data?.is_superuser ||
-              data?.doctor?.status === STATUSTYPE.approved.toString()
+              profileData?.data?.is_superuser ||
+              profileData?.data?.doctor?.status ===
+                STATUSTYPE.approved.toString()
                 ? "296px 1fr"
                 : "1fr"
             }
@@ -106,13 +116,14 @@ const Layout = () => {
             <GridItem area={"side"}>
               <Sidebar />
             </GridItem>
-            {data?.is_superuser ? (
+            {profileData?.data?.is_superuser ? (
               <GridItem area={"side"}>
                 <Sidebar />
               </GridItem>
             ) : (
-              data?.is_doctor &&
-              data?.doctor?.status === STATUSTYPE.approved.toString() && (
+              profileData?.data?.is_doctor &&
+              profileData?.data?.doctor?.status ===
+                STATUSTYPE.approved.toString() && (
                 <GridItem area={"side"}>
                   <Sidebar />
                 </GridItem>
@@ -130,7 +141,7 @@ const Layout = () => {
           </Grid>
         </>
       )}
-    </>
+    </AuthDataProvider>
   );
 };
 

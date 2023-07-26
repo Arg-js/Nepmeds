@@ -18,9 +18,9 @@ import { Home, Notification } from "react-iconly";
 
 import Input from "@nepMeds/components/Form/Input";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
-import { useDoctorBasicProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 
+import { useProfileData } from "@nepMeds/context/index";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -30,7 +30,7 @@ const Navbar = () => {
   };
   const { register } = useForm();
 
-  const { data } = useDoctorBasicProfile();
+  const profileData = useProfileData();
 
   return (
     <>
@@ -79,11 +79,12 @@ const Navbar = () => {
                   display={"flex"}
                   fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
                 >
-                  {data?.first_name || "Admins"} {data?.middle_name}{" "}
-                  {data?.last_name}&nbsp;
+                  {profileData?.data?.first_name || "Admins"}{" "}
+                  {profileData?.data?.middle_name}{" "}
+                  {profileData?.data?.last_name}&nbsp;
                 </Text>
 
-                <Avatar src={data?.profile_picture} size="md" />
+                <Avatar src={profileData?.data?.profile_picture} size="md" />
               </MenuButton>
               <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>
