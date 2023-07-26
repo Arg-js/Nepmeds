@@ -377,8 +377,6 @@ const EditPrimary = ({
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
                       flexBasis={{ base: "28%", xl: "50%" }}
-
-                      //
                     >
                       Date of Birth
                     </Text>
