@@ -385,26 +385,29 @@ const PrimaryInfo = ({
           error={errors.id_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 1 : 1}>
-        <p>{doctorProfileData?.issued_district?.id} </p>
-        <Select
-          placeholder="Select district"
-          label="Issued District"
-          name="id_issued_district"
-          required
-          register={register}
-          options={allDistrictOptions}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "ID issued district is required.",
-          }}
-          error={errors.id_issued_district?.message}
-        />
-      </GridItem>
+      {!allDistrictInfo.isLoading && (
+        <GridItem colSpan={isEditable ? 1 : 1}>
+          <Select
+            placeholder="Select district"
+            label="Issued District"
+            name="id_issued_district"
+            required
+            register={register}
+            options={allDistrictOptions}
+            defaultValue={doctorProfileData?.issued_district?.id}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "ID issued district is required.",
+            }}
+            error={errors.id_issued_district?.message}
+          />
+        </GridItem>
+      )}
+
       <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           name="id_issued_date"
