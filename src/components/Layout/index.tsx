@@ -93,6 +93,9 @@ const LayoutComponent = () => {
             </Button>
             <Button onClick={logout}>Logout</Button>
           </Stack>
+          <Box display={"flex"} justifyContent={"flex-end"}>
+            <svgs.logo />
+          </Box>
         </>
       ) : (
         <>

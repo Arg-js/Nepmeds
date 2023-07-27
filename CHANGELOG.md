@@ -1,9 +1,10 @@
-## 0.0.1 (2023-07-26)
+## 0.0.1 (2023-07-27)
 
 
 ### Bug Fixes
 
 * academic file ([8de7423](https://gitlab.com/r2850/nepmeds/commit/8de742336d82e12055d40b204f8e6b743c802715))
+* added date for everyday ([aafa811](https://gitlab.com/r2850/nepmeds/commit/aafa811a16cc1f27be6ee39109cf303f12fdb7d8))
 * adding fallbackSrc image and managing type docprofile image ([4637a90](https://gitlab.com/r2850/nepmeds/commit/4637a90d919b66058291d2a8ed94fde491df39ef))
 * **api fixes:** api fixes in doctor list ([9f44f04](https://gitlab.com/r2850/nepmeds/commit/9f44f04d8adbb4ac4a3224c4ab7a54b1fc581024))
 * **api:** changes uid name to uidb64,disable mobile field ([1ac8fea](https://gitlab.com/r2850/nepmeds/commit/1ac8feaa31af7aa0572a0800cee7373d84392b5f))
@@ -60,6 +61,7 @@
 * **edit:** remove cerficiate and experience image as well ([036ab91](https://gitlab.com/r2850/nepmeds/commit/036ab91abf409246ea4424fac76a4604c558c3aa))
 * **edit:** university data load ([8fd89db](https://gitlab.com/r2850/nepmeds/commit/8fd89dbcc8fe73a2f0d6de2556b1b5d385eb7a3a))
 * **error fixes:** error toast message fixed, added missing fields on form submit ([4fc4f67](https://gitlab.com/r2850/nepmeds/commit/4fc4f674adc59688d5c1a6ffd0e9d0249b7166a6))
+* eslint error fix ([77213bd](https://gitlab.com/r2850/nepmeds/commit/77213bd35f87719677b2f3d8cd5cf585be31f726))
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
 * few styling ([25bbbd1](https://gitlab.com/r2850/nepmeds/commit/25bbbd174b41bdb92a600cec2e80d2fd383ccf8b))
@@ -95,6 +97,7 @@
 * **pagination:** change page size to page index 1 ([b0e5c7b](https://gitlab.com/r2850/nepmeds/commit/b0e5c7bf862a6f7060de7fc8f535f4997e81f9b3))
 * **pagination:** pagination api fixing ([9c8a9f5](https://gitlab.com/r2850/nepmeds/commit/9c8a9f53d0d5fb279726967a58d89e3c0b4158e2))
 * **primaryInfo:** check for null ([9d29d31](https://gitlab.com/r2850/nepmeds/commit/9d29d317501446e3ddb4715effc000983d97270e))
+* **profile:** district edit mode ([28144aa](https://gitlab.com/r2850/nepmeds/commit/28144aa4d191fbfa129125c6ef303b74e9c0ffb7))
 * **profile:** id type with id ([6850409](https://gitlab.com/r2850/nepmeds/commit/6850409657d1fa26790282b0ba3aa33dd1fb83bb))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))

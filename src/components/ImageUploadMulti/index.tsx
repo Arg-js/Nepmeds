@@ -19,6 +19,7 @@ interface MultipleImageUploadProps {
   fieldValues?: any;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
   deleteFile?: (id: number) => void;
+  setError?: any;
 }
 
 const MultipleImageUpload = ({
@@ -30,6 +31,7 @@ const MultipleImageUpload = ({
   editMode,
   fieldValues,
   deleteFile,
+  setError,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
     Array(selectedImages.length).fill(false)
@@ -68,6 +70,13 @@ const MultipleImageUpload = ({
     updatedImages.splice(index, 1);
 
     setSelectedImages(updatedImages);
+    if (setError !== undefined && updatedImages.length === 0) {
+      setError("name", {
+        message: "",
+        type: "required",
+      });
+    }
+
     const updatedShowAddImageBox = [...showAddImageBox];
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
