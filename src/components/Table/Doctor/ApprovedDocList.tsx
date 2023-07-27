@@ -5,12 +5,10 @@ import {
   Button,
   Center,
   HStack,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement,
   Spinner,
-  Tag,
   Text,
   VStack,
   useDisclosure,
@@ -20,29 +18,19 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-
+import { approvedColumns } from "@nepMeds/components/DataTable/columns";
 import Select from "@nepMeds/components/Form/Select";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext, PaginationState } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { PaginationState } from "@tanstack/react-table";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
-import { generatePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { ISpecializationList } from "./DoctorsList";
 
-interface CellContextSearch {
-  user: {
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-  };
-}
 interface Props {
   specializationList: ISpecializationList[];
 }
@@ -63,127 +51,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
   });
 
   const formMethods = useForm();
-
-  const columns = React.useMemo(
-    () => [
-      {
-        header: "S.N",
-        accessorFn: (_cell: CellContext<any, any>, index: number) => {
-          return index + 1;
-        },
-      },
-      {
-        header: "Doctor's Name",
-        accessorKey: "first_name",
-        accessorFn: (_cell: CellContextSearch) => {
-          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
-        },
-      },
-      {
-        header: "Contact Number",
-        cell: ({
-          row,
-        }: CellContext<
-          {
-            user: IBasicInfo;
-          },
-          any
-        >) => {
-          const { mobile_number } = row?.original?.user ?? "";
-
-          return <p>{mobile_number}</p>;
-        },
-      },
-      {
-        header: "Specialization",
-        accessorKey: "specialization",
-        cell: ({
-          row,
-        }: CellContext<{ specialization_names: Specialization[] }, any>) => {
-          const specialization = row?.original?.specialization_names?.map(
-            data => (
-              <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
-                {data.name}
-              </Tag>
-            )
-          );
-          return (
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              width={"fit-content"}
-              p={1}
-              borderRadius={20}
-            >
-              <p>{specialization}</p>
-            </Box>
-          );
-        },
-      },
-      // {
-      //   header: "Status",
-      //   accessorKey: "profile_status",
-      //   cell: ({ row }: CellContext<{ status: number }, any>) => {
-      //     const { status } = row.original;
-      //     return (
-      //       <Badge
-      //         colorScheme={status == 1 ? "green" : "red"}
-      //         p={1}
-      //         borderRadius={20}
-      //         fontSize={11}
-      //         w={24}
-      //         textAlign="center"
-      //         textTransform="capitalize"
-      //       >
-      //         {status ? "Approved" : "Not approved"}
-      //       </Badge>
-      //     );
-      //   },
-      // },
-      {
-        header: "Actions",
-        accessorKey: "actions",
-        cell: (cell: CellContext<any, any>) => {
-          return (
-            <>
-              <Icon
-                as={Show}
-                fontSize={20}
-                cursor="pointer"
-                onClick={() => {
-                  formMethods.reset(cell.row.original);
-                  // // onDetailsModalOpen();
-
-                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
-                  navigate(
-                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                      id: cell.row.original.id,
-                    })
-                  );
-
-                  // navigate(`${"/doc-profile"}`)
-                }}
-              />
-
-              {/* <Icon
-                as={Delete}
-                fontSize={20}
-                cursor="pointer"
-                color={colors.red}
-                onClick={() => {
-                  handleDeleteDoctor(cell.row.original.id);
-                  // formMethods.reset(cell.row.original);
-                  // onDetailsModalOpen();
-                  // setId(cell.row.original.id);
-                }}
-              /> */}
-            </>
-          );
-        },
-      },
-    ],
-    []
-  );
 
   const [searchFilter, setSearchFilter] = useState("");
 
@@ -301,7 +168,10 @@ const ApprovedDocList = ({ specializationList }: Props) => {
             <Input
               w={40}
               h={8}
-              onChange={({ target: { value } }) => setSearchFilter(value)}
+              onChange={({ target: { value } }) => {
+                setSearchFilter(value);
+                setPagination({ pageIndex: 0, pageSize });
+              }}
             />
           </InputGroup>
           <Button
@@ -309,9 +179,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
             bg={colors.white}
             outlineColor={colors.grey_dark}
             h={8}
-            onClick={() => {
-              onModalOpen();
-            }}
+            onClick={onModalOpen}
           >
             <IoFunnelOutline pointerEvents={"none"} />
             &nbsp; Filter
@@ -320,7 +188,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={columns}
+          columns={approvedColumns(navigate)}
           data={data?.results ?? []}
           filter={{ globalFilter: searchFilter }}
           pagination={{
