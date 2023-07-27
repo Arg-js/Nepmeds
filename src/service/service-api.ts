@@ -35,11 +35,12 @@ export const api = {
   province: "core/provinces/",
   district: "core/districts/",
   municipality: "/core/municipalities/",
-  college_list: "/core/college-list/",
+  college_list: "/core/college/",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
+  rejectionTitle: "/core/rejected-title/",
   specialistRate: {
     fetchAll: "/core/specialist-rate",
     fetchById: "/core/specialist-rate/{id}",
