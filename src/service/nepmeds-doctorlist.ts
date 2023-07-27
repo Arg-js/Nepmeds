@@ -5,7 +5,7 @@ import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-type IGetDoctorList = Pick<
+export type IGetDoctorList = Pick<
   IGetDoctorProfile,
   "id" | "user" | "specialization_names" | "status" | "rejected_remarks"
 >;

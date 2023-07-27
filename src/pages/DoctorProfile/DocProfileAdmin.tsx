@@ -1,3 +1,4 @@
+import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -15,11 +16,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
-import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
@@ -95,7 +96,8 @@ const DocProfileAdmin = () => {
               />
             </TabPanel>
 
-            {doctorProfileData?.data?.status !== "1" && (
+            {doctorProfileData?.data?.status ===
+              STATUSTYPE.pending.toString() && (
               <Flex dir="row" justifyContent={"flex-end"}>
                 <Button
                   bg={"#CC5F5F"}

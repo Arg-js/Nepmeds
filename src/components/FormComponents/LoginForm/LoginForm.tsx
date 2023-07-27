@@ -47,7 +47,7 @@ const LoginForm = () => {
 
   return (
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
-      <VStack gap={7.5} mb={3}>
+      <VStack gap={7} mb={3}>
         <Input
           name="email"
           register={register}
@@ -107,7 +107,7 @@ const LoginForm = () => {
         </Link>
       </Text>
 
-      <HStack mt={12} justifyContent="center">
+      <HStack mt={10} justifyContent="center">
         <Button
           backgroundColor={colors.primary}
           textColor={colors.white}

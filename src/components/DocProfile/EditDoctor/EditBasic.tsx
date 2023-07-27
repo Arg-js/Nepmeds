@@ -239,15 +239,16 @@ const EditBasic = ({
                   )}
                 </Text>
               </Box>
-
-              <Text
-                fontWeight={"400"}
-                fontSize={"16px"}
-                lineHeight={"28px"}
-                color={"#5B5B5B"}
-              >
-                {doctorProfileData?.bio_detail}
-              </Text>
+              <Box width={"80%"}>
+                <Text
+                  fontWeight={"400"}
+                  fontSize={"16px"}
+                  lineHeight={"28px"}
+                  color={"#5B5B5B"}
+                >
+                  {doctorProfileData?.bio_detail}
+                </Text>
+              </Box>
             </CardBody>
           </Card>
         </>

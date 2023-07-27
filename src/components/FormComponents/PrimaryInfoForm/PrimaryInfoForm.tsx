@@ -178,6 +178,19 @@ const PrimaryInfo = ({
             name="bio_detail"
             register={register}
             defaultValue={doctorProfileData?.bio_detail}
+            required
+            rules={{
+              required: "Basic Information is required.",
+              minLength: {
+                value: 50,
+                message: "Basic Information must be 50 charaters.",
+              },
+              maxLength: {
+                value: 250,
+                message: "Basic Information must be less than 250 charateras.",
+              },
+            }}
+            error={errors.bio_detail?.message}
           />
         </GridItem>
       )}
