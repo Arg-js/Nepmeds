@@ -19,21 +19,6 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
-  // const onFormSubmit = async (e: FormEvent) => {
-  //   try {
-  //     e.preventDefault();
-  //     await verifySingUpOTPAction.mutateAsync({
-  //       otp: otpCode,
-  //       email_or_mobile_number: mobile,
-  //     });
-  //     toastSuccess("OTP has been verified successfully!");
-  //     navigate("/register", { state: { mobile } });
-  //   } catch (error) {
-  //     const err = serverErrorResponse(error);
-  //     toastFail(err);
-  //   }
-  // };
-
   const signUpAction = useSignUpUser();
 
   const handleResend = () => {
@@ -66,7 +51,6 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
   }, [otpCode.length]);
 
   return (
-    // <form style={{ width: "100%" }} onSubmit={onFormSubmit}>
     <>
       <VStack alignItems={"end"}>
         <OtpInput
@@ -88,31 +72,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           renderInput={props => <Input {...props} />}
           shouldAutoFocus
         />
-        {/* <div
-          style={{
-            textAlign: "right",
-            color: colors.black_30,
-            display: "flex",
-            marginTop: "20px",
-            fontSize: "14px",
-            justifyContent: "end",
-          }}
-        >
-          Didnt receive the code?
-          <p
-            onClick={() => {
-              setOtp("");
-              // onSubmit();
-            }}
-            style={{
-              color: colors.blue_100,
-              marginLeft: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Resend
-          </p>
-        </div> */}
+
         <Heading
           fontSize="14px"
           textAlign="center"
@@ -161,9 +121,6 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
                             countRef.current.start();
                             handleResend();
                             setOtp("");
-                            // signUpAction();
-
-                            // resendMobileOtp();
                           }
                         }}
                       >

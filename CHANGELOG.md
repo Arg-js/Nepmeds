@@ -105,6 +105,7 @@
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
 * **registration:** hotfix image upload ([a97996f](https://gitlab.com/r2850/nepmeds/commit/a97996f9bc7ad8108d7a8707732062759531f3a7))
+* reject doctor and refetch ([bb54c89](https://gitlab.com/r2850/nepmeds/commit/bb54c89f00becd6b763ae3cc6878ce641660f7be))
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
