@@ -1,15 +1,21 @@
-import { Button, HStack, Input, Text, VStack } from "@chakra-ui/react";
+import { Button, HStack, Heading, Input, Text, VStack } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useVerifySingUpOTP } from "@nepMeds/service/nepmeds-register";
+import {
+  useSignUpUser,
+  useVerifySingUpOTP,
+} from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
 const OtpForm = ({ mobile }: { mobile: string }) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
+  const countRef = useRef<Countdown>(null);
+  const [date, setDate] = useState(Date.now() + 300000);
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
@@ -28,7 +34,14 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
   //   }
   // };
 
-  // const signUpAction = useSignUpUser();
+  const signUpAction = useSignUpUser();
+
+  const handleResend = () => {
+    signUpAction.mutateAsync({
+      email_or_mobile_number: mobile,
+    });
+  };
+
   const onSubmit = async () => {
     try {
       await verifySingUpOTPAction.mutateAsync({
@@ -75,7 +88,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           renderInput={props => <Input {...props} />}
           shouldAutoFocus
         />
-        <div
+        {/* <div
           style={{
             textAlign: "right",
             color: colors.black_30,
@@ -87,7 +100,10 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         >
           Didnt receive the code?
           <p
-            // onClick={() => onSubmit()}
+            onClick={() => {
+              setOtp("");
+              // onSubmit();
+            }}
             style={{
               color: colors.blue_100,
               marginLeft: "5px",
@@ -96,7 +112,75 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           >
             Resend
           </p>
-        </div>
+        </div> */}
+        <Heading
+          fontSize="14px"
+          textAlign="center"
+          color={colors.black_30}
+          fontWeight="normal"
+        >
+          Didnt receive the code? &nbsp;
+          <span>
+            <Countdown
+              ref={countRef}
+              date={date}
+              autoStart
+              zeroPadTime={2}
+              controlled={false}
+              renderer={({
+                minutes,
+                seconds,
+                completed,
+              }: CountdownRenderProps) => {
+                if (completed) {
+                  return (
+                    <span>
+                      <Button
+                        fontWeight="inherit"
+                        fontSize="inherit"
+                        p={0}
+                        bg="transparent"
+                        h={5}
+                        color={colors.blue_100}
+                        sx={{
+                          "&:hover": {
+                            bg: "transparent !important",
+                            boxShadow: "none !important",
+                          },
+                        }}
+                        onClick={(
+                          event: React.MouseEvent<HTMLButtonElement>
+                        ) => {
+                          event.preventDefault();
+                          if (
+                            countRef.current !== null &&
+                            countRef.current !== undefined
+                          ) {
+                            setDate(Date.now() + 300000);
+                            countRef.current.stop();
+                            countRef.current.start();
+                            handleResend();
+                            setOtp("");
+                            // signUpAction();
+
+                            // resendMobileOtp();
+                          }
+                        }}
+                      >
+                        Resend
+                      </Button>
+                    </span>
+                  );
+                }
+                return (
+                  <span>
+                    {zeroPad(minutes)}:{zeroPad(seconds)}
+                  </span>
+                );
+              }}
+            />
+          </span>
+        </Heading>
       </VStack>
 
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
