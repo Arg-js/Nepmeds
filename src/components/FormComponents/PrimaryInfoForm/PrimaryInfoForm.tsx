@@ -20,7 +20,7 @@ import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
-import React, { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
@@ -56,6 +56,7 @@ const PrimaryInfo = ({
       label: p.name,
       value: p.id,
     })) || [];
+
   const districtOptions =
     districtInfo.data?.map(p => ({
       label: p.name,
@@ -72,8 +73,29 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
+
   useEffect(() => {
-    if (watch("province") !== 0) {
+    if (doctorProfileData) {
+      reset({
+        ...getValues(),
+        id_issued_district: +doctorProfileData.issued_district?.id,
+        province: doctorProfileData?.user?.province_data?.id,
+        district: doctorProfileData?.user?.district_data?.id,
+        municipality: doctorProfileData?.user?.municipality_data?.id,
+      });
+    }
+  }, [doctorProfileData]);
+
+  useEffect(() => {
+    if (watch("province")) {
+      if (
+        +(watch("province") as number) ===
+        doctorProfileData?.user?.province_data?.id
+      ) {
+        return reset({
+          ...getValues(),
+        });
+      }
       reset({
         ...getValues(),
         district: (0 as number) || null,
@@ -81,24 +103,6 @@ const PrimaryInfo = ({
       });
     }
   }, [watch("province")]);
-
-  useEffect(() => {
-    if (doctorProfileData) {
-      reset({
-        ...getValues(),
-        // phone: doctorProfileData.
-        id_issued_district: allDistrictOptions.find(
-          p => p.value === doctorProfileData.issued_district?.id
-        )?.value,
-        province: provinceOptions.find(
-          p => p.value === doctorProfileData?.user?.province_data?.id
-        )?.value,
-        district: districtOptions.find(
-          p => p.value === doctorProfileData?.user?.district_data?.id
-        )?.value,
-      });
-    }
-  }, [doctorProfileData, reset]);
 
   const watchIdType = watch("id_type");
   function IdType(watchIdType: string) {
@@ -109,11 +113,11 @@ const PrimaryInfo = ({
     IdType(watchIdType);
   }, [watchIdType]);
 
-  const [selectedFrontImage, setSelectedFrontImage] = React.useState<
+  const [selectedFrontImage, setSelectedFrontImage] = useState<
     File | string | null
   >(null);
 
-  const [selectedBackImage, setSelectedBackFrontImage] = React.useState<
+  const [selectedBackImage, setSelectedBackFrontImage] = useState<
     File | string | null
   >(null);
 
@@ -381,28 +385,29 @@ const PrimaryInfo = ({
           error={errors.id_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 1 : 1}>
-        <Select
-          placeholder=" "
-          label="Issued District"
-          name="id_issued_district"
-          required
-          register={register}
-          options={allDistrictOptions}
-          // value={0}
-          defaultValue={doctorProfileData?.issued_district?.id}
-          // defaultValue={""}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "ID issued district is required.",
-          }}
-          error={errors.id_issued_district?.message}
-        />
-      </GridItem>
+      {!allDistrictInfo.isLoading && (
+        <GridItem colSpan={isEditable ? 1 : 1}>
+          <Select
+            placeholder="Select district"
+            label="Issued District"
+            name="id_issued_district"
+            required
+            register={register}
+            options={allDistrictOptions}
+            defaultValue={doctorProfileData?.issued_district?.id}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "ID issued district is required.",
+            }}
+            error={errors.id_issued_district?.message}
+          />
+        </GridItem>
+      )}
+
       <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           name="id_issued_date"

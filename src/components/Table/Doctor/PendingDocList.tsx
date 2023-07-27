@@ -21,6 +21,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
 import { STATUSTYPE } from "@nepMeds/config/enum";
+import { useProfileData } from "@nepMeds/context/index";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { colors } from "@nepMeds/theme/colors";
@@ -49,6 +50,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
   const [filterValue, setFilterValue] = useState<any>({
     status: STATUSTYPE.pending,
   });
+  const profileData = useProfileData();
 
   const [searchFilter, setSearchFilter] = useState("");
 
@@ -59,6 +61,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
     page_no: pageIndex + 1,
     page_size: pageSize,
     name: debouncedInputValue,
+    enabled: profileData?.data?.is_superuser,
   });
 
   const handleFilter = async (isReset: boolean) => {

@@ -340,12 +340,8 @@ const CalendarDailyDetailView = ({
   const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
 
   const onSubmit = async (data: IGetDoctorAvailability) => {
-    const tempData = { ...data };
-    if (data.frequency === "Daily") {
-      delete tempData.date;
-    }
     try {
-      await createDoctorAvailabilityInfo.mutateAsync(tempData);
+      await createDoctorAvailabilityInfo.mutateAsync(data);
       toastSuccess("Event has been added successfully");
       onAddEventClose();
       formMethods.reset({});

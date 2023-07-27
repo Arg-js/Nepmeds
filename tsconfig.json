@@ -22,7 +22,8 @@
       "@nepMeds/types/*": ["types/*"],
       "@nepMeds/assets/*": ["assets/*"],
       "@nepMeds/utils/*": ["utils/*"],
-      "@nepMeds/config/*": ["config/*"]
+      "@nepMeds/config/*": ["config/*"],
+      "@nepMeds/context/*": ["context/*"]
     },
     "allowSyntheticDefaultImports": true,
     "strict": true,
