@@ -56,7 +56,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data, isLoading, isSuccess } = useDoctorList({
+  const { data, isFetching, isSuccess } = useDoctorList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -213,7 +213,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           }}
         />
       )}
-      {isLoading && (
+      {isFetching && (
         <Center>
           <Spinner />
         </Center>
