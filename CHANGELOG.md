@@ -25,6 +25,7 @@
 * **calendar:** close modal fix and date calendar ([57ed0b1](https://gitlab.com/r2850/nepmeds/commit/57ed0b1b7a2038ea084319be60157564acff0453))
 * **calender:** edit availability issues fixes ([37ac99f](https://gitlab.com/r2850/nepmeds/commit/37ac99f48e4c2738c0b4c2282bd32060761dd15b))
 * **calender:** unique key error and time array generator ([7721a1b](https://gitlab.com/r2850/nepmeds/commit/7721a1b593980118268813c7bca4f766f0503575))
+* change on ui on profile ([2725a09](https://gitlab.com/r2850/nepmeds/commit/2725a09d689ebbcaffbd9534fcb5a3858fe7cb60))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **college:** college listing fetched ([f0943e3](https://gitlab.com/r2850/nepmeds/commit/f0943e31dfd70809ed45c583ac9ad6b5fb4b8faf))
 * **commom:** hotfix image upload registatration ([2de83d5](https://gitlab.com/r2850/nepmeds/commit/2de83d5533396cd2df2ca5cccc3e64b3ee3b9098))
