@@ -23,6 +23,16 @@ export function getMinutes(time: string): number {
   return minutes;
 }
 
+export function getHour(time: string): number {
+  const [hour] = time.split(":").map(Number);
+  return hour;
+}
+
+export function removeMinutes(timeString: string): string {
+  const [hours, _] = timeString.split(":");
+  return `${hours}:00`;
+}
+
 export function getMinutesDifference(
   startTime: string,
   endTime: string
@@ -51,6 +61,23 @@ export function addOneHour(timeString: string): string {
 
   // Add one hour to the time
   time.setHours(time.getHours() + 1);
+
+  // Get the updated hours and minutes
+  const updatedHours = time.getHours();
+  const updatedMinutes = time.getMinutes();
+
+  return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
+}
+
+export function addFifteenMinutes(timeString: string): string {
+  const [hours, minutes] = timeString.split(":");
+
+  // Create a new Date object with the input time
+  const time = new Date();
+  time.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+
+  // Add 15 minutes to the time
+  time.setMinutes(time.getMinutes() + 15);
 
   // Get the updated hours and minutes
   const updatedHours = time.getHours();

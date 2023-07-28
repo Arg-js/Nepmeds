@@ -26,6 +26,7 @@ export const NAVIGATION_ROUTES = {
   FOLLOWUP: "followup",
   PATIENT_HISTORY: "patient-history",
   CALENDER: "calendar",
+  CALENDER2: "calendar2",
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
 

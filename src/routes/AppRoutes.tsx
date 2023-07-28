@@ -23,6 +23,7 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import Calendar2 from "@nepMeds/pages/Calendar2";
 
 const routes = [
   {
@@ -48,6 +49,10 @@ const routes = [
       {
         path: NAVIGATION_ROUTES.CALENDER,
         element: <Calendar />,
+      },
+      {
+        path: NAVIGATION_ROUTES.CALENDER2,
+        element: <Calendar2 />,
       },
       {
         path: NAVIGATION_ROUTES.BANK_DETAILS,

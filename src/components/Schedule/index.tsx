@@ -15,13 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import {
-  addOneHour,
-  getMinutes,
-  getMinutesDifference,
-  isTimeInRange,
-} from "@nepMeds/helper/checkTimeRange";
+import { addOneHour, isTimeInRange } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   IGetDoctorAvailability,
@@ -39,13 +33,17 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
+import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
 
 const timeData = generateHoursTimeArray();
 
-const ScheduleComponent = ({
-  selectedFullDate,
-}: {
+interface IScheduleComponent {
   selectedFullDate: string;
+}
+const boxPositions = ["0", "25%", "50%", "75%"];
+
+const ScheduleComponent: React.FC<IScheduleComponent> = ({
+  selectedFullDate,
 }) => {
   const availabilityData = useDoctorAvailability().data;
   const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
@@ -178,84 +176,29 @@ const ScheduleComponent = ({
                 eventData.from_time as string
               ) ? (
                 <Box position="relative" key={eventData.id}>
-                  <Box
-                    key={i}
-                    mt={`calc(${getMinutes(
-                      eventData.from_time as string
-                    )} * 2.5px)`}
-                    height={`calc(${getMinutesDifference(
-                      eventData.from_time as string,
-                      eventData.to_time as string
-                    )} * 2.5px)`}
-                    bg={"#FDECF0"}
-                    border={`1px dashed  #F48F18`}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    position="absolute"
-                    top={0}
-                    width={"100%"}
-                    left={0}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <>
-                      <Text
-                        fontWeight={600}
-                        fontSize={"16px"}
-                        lineHeight={"19px"}
-                      >
-                        {" "}
-                        {eventData?.title}
-                      </Text>
-                      <Text
-                        mt={2}
-                        fontSize={"12px"}
-                        lineHeight={"15px"}
-                        color={colors.grey_dark}
-                      >
-                        {eventData.from_time}........{eventData.to_time}
-                      </Text>
-                    </>
-                    <Box position={"absolute"} top={2} right={2}>
-                      <EditIcon
-                        color={colors.green_button}
-                        cursor={"pointer"}
-                        onClick={() => handleEdit(eventData.id ?? 0)}
-                      />
-
-                      <DeleteIcon
-                        cursor={"pointer"}
-                        color={colors?.red}
-                        marginLeft={2}
-                        onClick={() => handleDeleteModal(eventData.id ?? 0)}
-                      />
-                    </Box>
-                  </Box>
+                  {boxPositions.map(boxPosition => (
+                    <CalendarAppointmentBox
+                      // TODO: check this logic for key
+                      key={boxPosition + "CalendarAppointmentBox" + i}
+                      eventData={eventData}
+                      handleEdit={handleEdit}
+                      handleDeleteModal={handleDeleteModal}
+                      leftPosition={boxPosition}
+                    />
+                  ))}
                 </Box>
               ) : (
-                <Box position="relative" key={eventData.id}>
-                  <Box
-                    key={i}
-                    //   mt={"calc(15 * 2.5px)"}
-                    //   height={"calc(30 * 2.5px)"}
-                    height={"150px"}
-                    bg={"transparent"}
-                    border={"none"}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    position="absolute"
-                    top={0}
-                    width={"100:00%"}
-                    left={0}
-                  ></Box>
+                // TODO: border color too dark
+                // TODO: This box is similar to calendarAppointmentBox
+                <Box position="relative" key={eventData.id} zIndex={-1}>
+                  {/* <CalendarNoAppointmentBox /> */}
                 </Box>
               )
             )}
           </GridItem>
         </Grid>
       ))}
+
       {/* edit availability */}
       <ModalComponent
         size="xl"
@@ -313,7 +256,6 @@ const ScheduleComponent = ({
       </ModalComponent>
 
       {/* delete availability */}
-
       <ModalComponent
         size="sm"
         isOpen={isDeleteModalOpen}

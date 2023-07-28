@@ -1,0 +1,162 @@
+import {
+  useDisclosure,
+  HStack,
+  Button,
+  VStack,
+  Text,
+  Box,
+} from "@chakra-ui/react";
+import { svgs } from "@nepMeds/assets/svgs";
+import { CustomButton } from "@nepMeds/components/Button/Button";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import ScheduleComponent from "@nepMeds/components/Schedule";
+import { toastSuccess, toastFail } from "@nepMeds/components/Toast";
+import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
+import {
+  useCreateDoctorAvailability,
+  IGetDoctorAvailability,
+} from "@nepMeds/service/nepmeds-doctor-availability";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { colors } from "@nepMeds/theme/colors";
+import { useForm, FormProvider } from "react-hook-form";
+import { AiOutlinePlus } from "react-icons/ai";
+
+interface ICalendarDailyDetailView {
+  selectedDate: string;
+  selectedDay: string;
+  selectedFullDate: string;
+}
+
+const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
+  selectedDate,
+  selectedDay,
+  selectedFullDate,
+}) => {
+  const formMethods = useForm();
+
+  const {
+    isOpen: isAddEventOpen,
+    onClose,
+    onOpen: onAddEventOpen,
+  } = useDisclosure();
+
+  const onAddEventClose = () => {
+    onClose();
+    formMethods.reset();
+  };
+  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
+
+  const onSubmit = async (data: IGetDoctorAvailability) => {
+    const tempData = { ...data };
+    if (data.frequency === "Daily") {
+      delete tempData.date;
+    }
+    try {
+      await createDoctorAvailabilityInfo.mutateAsync(tempData);
+      toastSuccess("Event has been added successfully");
+      onAddEventClose();
+      formMethods.reset({});
+    } catch (error) {
+      const err = serverErrorResponse(error);
+
+      toastFail(err);
+    }
+  };
+
+  return (
+    <>
+      <ModalComponent
+        size="xl"
+        isOpen={isAddEventOpen}
+        onClose={onAddEventClose}
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Add Availability</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button variant="outline" onClick={onAddEventClose} flex={1}>
+              Discard
+            </Button>
+            <Button
+              flex={1}
+              onClick={formMethods.handleSubmit(onSubmit)}
+              background={colors.primary}
+              color={colors.white}
+              isLoading={createDoctorAvailabilityInfo.isLoading}
+            >
+              Save
+            </Button>
+          </HStack>
+        }
+      >
+        <VStack>
+          <FormProvider {...formMethods}>
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+              style={{ width: "100%" }}
+            >
+              <AddEvent />
+            </form>
+          </FormProvider>
+        </VStack>
+      </ModalComponent>
+      <Box
+        p={5}
+        height={900}
+        overflowY={"scroll"}
+        css={{
+          scrollbarGutter: "stable",
+          "&::-webkit-scrollbar": {
+            width: "0.2rem",
+            height: "0.6rem",
+            position: "absolute",
+          },
+          "&::-webkit-scrollbar-track": {
+            position: "absolute",
+            background: "#fff",
+            opacity: 0.1,
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: "#e9d8fd",
+            borderRadius: 20,
+          },
+        }}
+        className="inter-font-family"
+      >
+        <Box display={"flex"} justifyContent={"space-between"}>
+          <Box
+            display={"flex"}
+            alignItems={"baseline"}
+            fontSize={"24px"}
+            color={colors.grey_dark}
+            lineHeight={"24px"}
+          >
+            {selectedDate},
+            <Text
+              fontSize={"40px"}
+              color={colors.black}
+              lineHeight={"49px"}
+              fontWeight={600}
+              ml={1}
+            >
+              {selectedDay}
+            </Text>
+          </Box>
+          <Box onClick={onAddEventOpen} width="130px">
+            <CustomButton backgroundColor={colors.primary}>
+              <AiOutlinePlus />
+              <Text>Add Availability</Text>
+            </CustomButton>
+          </Box>
+        </Box>
+        <Box mt={5}>
+          <ScheduleComponent selectedFullDate={selectedFullDate} />
+        </Box>
+      </Box>
+    </>
+  );
+};
+export default CalendarDailyDetailView;
