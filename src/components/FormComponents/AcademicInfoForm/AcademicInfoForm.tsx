@@ -19,6 +19,9 @@ import { AxiosError } from "axios";
 import { ChangeEvent, useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { Previews } from "./dropzone";
+
+type IImageFileType = File & { preview: string };
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -80,6 +83,9 @@ export const AcademicInfoForm = ({
     useState<Array<Array<File | { url: string; id: string } | null>>>(
       mappedImageInfo
     );
+
+  const [files, setFiles] = useState<Array<IImageFileType[]>>([]);
+
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
   const handleImageChange = async (
@@ -166,6 +172,7 @@ export const AcademicInfoForm = ({
       toastFail(err);
     }
   };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -192,6 +199,11 @@ export const AcademicInfoForm = ({
                 helperText={false}
                 editMode={editMode ?? false}
                 deleteFile={handleDeleteFile}
+              />
+              <Previews
+                setFiles={setFiles as any}
+                files={files as any}
+                academicIndex={index}
               />
             </Box>
             <SimpleGrid
