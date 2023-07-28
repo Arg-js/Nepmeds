@@ -140,6 +140,7 @@
 
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
+* addition of appointments in Calendar view ([394455e](https://gitlab.com/r2850/nepmeds/commit/394455e5b17684f16487521e9608519ac5dff905))
 * **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))

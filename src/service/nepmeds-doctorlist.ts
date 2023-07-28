@@ -5,7 +5,7 @@ import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-type IGetDoctorList = Pick<
+export type IGetDoctorList = Pick<
   IGetDoctorProfile,
   "id" | "user" | "specialization_names" | "status" | "rejected_remarks"
 >;
@@ -50,6 +50,7 @@ export const useDoctorList = ({
   specialization,
   page_size,
   name,
+  enabled = true,
 }: {
   page_no: number;
   status?: string;
@@ -58,6 +59,7 @@ export const useDoctorList = ({
   page_size?: number;
   specialization?: string;
   name?: string;
+  enabled?: boolean;
 }) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -70,7 +72,7 @@ export const useDoctorList = ({
   });
 
   return useQuery(
-    `${api.registereddoctor}/?${qs}`,
+    [api.registereddoctor, qs],
     () =>
       getDoctorList({
         page_no: page_no,
@@ -83,6 +85,7 @@ export const useDoctorList = ({
       }),
     {
       select: data => data.data.data,
+      enabled: !!enabled,
     }
   );
 };

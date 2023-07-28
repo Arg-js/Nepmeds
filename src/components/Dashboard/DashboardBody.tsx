@@ -11,6 +11,7 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 import { images } from "@nepMeds/assets/images";
+import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "../Table/Doctor/PendingDocList";
@@ -45,6 +46,7 @@ const dashboardDatas: IDashboardData[] = [
 ];
 
 const DashboardBody = () => {
+  const profileData = useProfileData();
   return (
     <Box>
       <SimpleGrid
@@ -101,9 +103,12 @@ const DashboardBody = () => {
       >
         <Calendar />
       </Box>
-      <Container maxW={"container.2xl"}>
-        <PendingDocList showFilter={false} />
-      </Container>
+      {profileData?.data?.is_superuser && (
+        <Container maxW={"container.2xl"}>
+          <Text fontWeight={"bold"}>Pending Doctors</Text>
+          <PendingDocList showFilter={false} />
+        </Container>
+      )}
     </Box>
   );
 };

@@ -1,3 +1,4 @@
+import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -15,11 +16,11 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
-import { CheckIcon, WarningIcon } from "@chakra-ui/icons";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
@@ -41,29 +42,28 @@ const DocProfileAdmin = () => {
     onClose: onRejectModalClose,
   } = useDisclosure();
 
-  const approvePendingDoc = useApproveDoc(1, 10);
-  const rejectPendingDoc = useRejectDoc(1, 10);
+  const approvePendingDoc = useApproveDoc();
+  const rejectPendingDoc = useRejectDoc();
   const navigate = useNavigate();
 
   const onSubmitForm = async () => {
     try {
-      const isValid = await formMethods.trigger("remarks");
-      if (!isValid) return;
-
-      const val = formMethods.getValues("remarks");
       await rejectPendingDoc.mutateAsync({
         id: doctorProfileData?.data?.id?.toString() ?? "",
-        remarks: val,
+        title_id: formMethods.getValues("title_id"),
+        remarks: formMethods.getValues("remarks"),
       });
       onRejectModalClose();
       toastSuccess("Doctor Rejected!");
       formMethods.reset();
+      navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
     } catch (error) {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
 
-  const RejectDoctor = () => {
+  const RejectDoctorModal = () => {
+    formMethods.reset();
     onRejectModalClose();
   };
 
@@ -96,15 +96,14 @@ const DocProfileAdmin = () => {
               />
             </TabPanel>
 
-            {doctorProfileData?.data?.status !== "1" && (
+            {doctorProfileData?.data?.status ===
+              STATUSTYPE.pending.toString() && (
               <Flex dir="row" justifyContent={"flex-end"}>
                 <Button
                   bg={"#CC5F5F"}
                   color={"white"}
                   m={"10px"}
-                  onClick={() => {
-                    onRejectModalOpen();
-                  }}
+                  onClick={onRejectModalOpen}
                   sx={{ "&:hover": { bg: "#CC5F5F", color: "white" } }}
                 >
                   ON HOLD &nbsp;
@@ -134,7 +133,7 @@ const DocProfileAdmin = () => {
 
       <ModalComponent
         isOpen={isRejectModalOpen}
-        onClose={onRejectModalClose}
+        onClose={RejectDoctorModal}
         approve
         reject
         size="xl"
@@ -148,7 +147,7 @@ const DocProfileAdmin = () => {
           <HStack w="100%" gap={3}>
             <Button
               variant="outline"
-              onClick={RejectDoctor}
+              onClick={RejectDoctorModal}
               flex={1}
               border="2px solid"
               borderColor={colors.primary}
@@ -159,28 +158,10 @@ const DocProfileAdmin = () => {
             </Button>
             <Button
               flex={1}
-              onClick={async () => {
-                try {
-                  const isValid = await formMethods.trigger("remarks");
-                  if (!isValid) return;
-
-                  const val = formMethods.getValues("remarks");
-                  await rejectPendingDoc.mutateAsync({
-                    id: doctorProfileData?.data?.id?.toString() ?? "",
-                    remarks: val,
-                  });
-                  onRejectModalClose();
-                  navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
-
-                  toastSuccess("Doctor Rejected!");
-
-                  formMethods.reset();
-                } catch (error) {
-                  toastFail("Doctor cannot be rejected. Try Again!!");
-                }
-              }}
+              onClick={formMethods.handleSubmit(onSubmitForm)}
               background={colors.primary}
               color={colors.white}
+              isLoading={rejectPendingDoc.isLoading}
             >
               Done
             </Button>
@@ -191,7 +172,9 @@ const DocProfileAdmin = () => {
         otherAction={onRejectModalClose}
       >
         <FormProvider {...formMethods}>
-          <RejectionForm onSubmit={formMethods.handleSubmit(onSubmitForm)} />
+          <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
+            <RejectionForm />
+          </form>
         </FormProvider>
       </ModalComponent>
     </VStack>
