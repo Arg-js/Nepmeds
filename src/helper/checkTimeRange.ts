@@ -9,7 +9,7 @@ export function isTimeInRange(
   const endTime = getTimeInMinutes(end);
   const targetTime = getTimeInMinutes(target);
 
-  return startTime <= targetTime && targetTime < endTime;
+  return startTime <= targetTime && targetTime <= endTime;
 }
 
 export function getTimeInMinutes(time: string): number {
@@ -52,6 +52,49 @@ export function getMinutesDifference(
   return minutesDifference;
 }
 
+export function splitTimeRange(startTime: string, endTime: string) {
+  const start = new Date("1970-01-01 " + startTime);
+  const end = new Date("1970-01-01 " + endTime);
+
+  const intervals = [];
+  let current = start;
+
+  while (current < end) {
+    const nextHour = new Date(current);
+    nextHour.setHours(current.getHours() + 1, 0, 0, 0);
+
+    if (nextHour > end) {
+      intervals.push([formatTime(current), formatTime(end)]);
+    } else {
+      intervals.push([formatTime(current), formatTime(nextHour)]);
+    }
+
+    current = nextHour;
+  }
+
+  return intervals;
+}
+
+function formatTime(date: Date) {
+  return date.toTimeString().slice(0, 5);
+}
+
+export function findTimeRange(
+  inputTime: string,
+  timeRanges: Array<Array<string>>
+) {
+  const inputDateTime = new Date("1970-01-01 " + inputTime);
+
+  for (const [startTime, endTime] of timeRanges) {
+    const start = new Date("1970-01-01 " + startTime);
+    const end = new Date("1970-01-01 " + endTime);
+
+    if (inputDateTime >= start && inputDateTime < end) {
+      return [startTime, endTime];
+    }
+  }
+}
+
 export function addOneHour(timeString: string): string {
   const [hours, minutes] = timeString.split(":");
 
@@ -67,6 +110,41 @@ export function addOneHour(timeString: string): string {
   const updatedMinutes = time.getMinutes();
 
   return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
+}
+
+export function timeStringToMinutes(timeString: string) {
+  const [hours, minutes] = timeString.split(":").map(Number);
+  return hours * 60 + minutes;
+}
+
+export function calculateTimeDifferenceInMinutes(time1: string, time2: string) {
+  const minutes1 = timeStringToMinutes(time1);
+  const minutes2 = timeStringToMinutes(time2);
+  return Math.abs(minutes2 - minutes1);
+}
+
+export function addTimes(time1: string, time2: string) {
+  // Split the time strings to extract hours and minutes
+  const [hours1, minutes1] = time1.split(":").map(Number);
+  const [hours2, minutes2] = time2.split(":").map(Number);
+
+  // Calculate the total seconds for each time
+  const totalMinutes1 = hours1 * 3600 + minutes1 * 60;
+  const totalMinutes2 = hours2 * 3600 + minutes2 * 60;
+
+  // Calculate the total seconds for the sum
+  const totalSumMinutes = totalMinutes1 + totalMinutes2;
+
+  // Calculate the resulting hours and minutes
+  const resultHours = Math.floor(totalSumMinutes / 3600);
+  const resultMinutes = Math.floor((totalSumMinutes % 3600) / 60);
+
+  // Format the result as "HH:mm:ss"
+  const resultTime = `${String(resultHours).padStart(2, "0")}:${String(
+    resultMinutes
+  ).padStart(2, "0")}`;
+
+  return resultTime;
 }
 
 export function addFifteenMinutes(timeString: string): string {

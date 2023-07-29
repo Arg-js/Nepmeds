@@ -103,14 +103,41 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
           </FormProvider>
         </VStack>
       </ModalComponent>
+      <Box display={"flex"} justifyContent={"space-between"} p={5}>
+        <Box
+          display={"flex"}
+          alignItems={"baseline"}
+          fontSize={"24px"}
+          color={colors.grey_dark}
+          lineHeight={"24px"}
+        >
+          {selectedDate},
+          <Text
+            fontSize={"40px"}
+            color={colors.black}
+            lineHeight={"49px"}
+            fontWeight={600}
+            ml={1}
+          >
+            {selectedDay}
+          </Text>
+        </Box>
+        <Box onClick={onAddEventOpen} width="130px">
+          <CustomButton backgroundColor={colors.primary} gap={2}>
+            <AiOutlinePlus />
+            <Text>Create</Text>
+          </CustomButton>
+        </Box>
+      </Box>
+
       <Box
         p={5}
-        height={900}
+        height={"70dvh"}
         overflowY={"scroll"}
         css={{
           scrollbarGutter: "stable",
           "&::-webkit-scrollbar": {
-            width: "0.2rem",
+            width: "0.4rem",
             height: "0.6rem",
             position: "absolute",
           },
@@ -120,38 +147,12 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
             opacity: 0.1,
           },
           "&::-webkit-scrollbar-thumb": {
-            background: "#e9d8fd",
+            background: colors.gray,
             borderRadius: 20,
           },
         }}
         className="inter-font-family"
       >
-        <Box display={"flex"} justifyContent={"space-between"}>
-          <Box
-            display={"flex"}
-            alignItems={"baseline"}
-            fontSize={"24px"}
-            color={colors.grey_dark}
-            lineHeight={"24px"}
-          >
-            {selectedDate},
-            <Text
-              fontSize={"40px"}
-              color={colors.black}
-              lineHeight={"49px"}
-              fontWeight={600}
-              ml={1}
-            >
-              {selectedDay}
-            </Text>
-          </Box>
-          <Box onClick={onAddEventOpen} width="130px">
-            <CustomButton backgroundColor={colors.primary}>
-              <AiOutlinePlus />
-              <Text>Add Availability</Text>
-            </CustomButton>
-          </Box>
-        </Box>
         <Box mt={5}>
           <ScheduleComponent selectedFullDate={selectedFullDate} />
         </Box>

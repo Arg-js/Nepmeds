@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 
-import { addOneHour, isTimeInRange } from "@nepMeds/helper/checkTimeRange";
+import { isTimeInRange, removeMinutes } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   IGetDoctorAvailability,
@@ -36,6 +36,18 @@ import { toastFail, toastSuccess } from "../Toast";
 import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
 
 const timeData = generateHoursTimeArray();
+
+const boxStyle: React.CSSProperties = {
+  height: "138px",
+  backgroundColor: "transparent",
+  border: `1px solid ${colors.gray}`,
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  width: "25%",
+  alignItems: "center",
+  justifyContent: "center",
+};
 
 interface IScheduleComponent {
   selectedFullDate: string;
@@ -136,10 +148,12 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   return (
     <Box>
       {timeData?.map(data => (
-        <Grid key={data.time} templateColumns="repeat(5, 13%)" gap={0}>
+        <Grid key={data.time} templateColumns="5% repeat(4, 15%)" gap={0}>
+          {/* RULLER */}
           <GridItem colSpan={1} mb={"30px"}>
             <List spacing={"30px"}>
-              <ListItem fontSize={"12px"} color={colors.grey_dark}>
+              {/* TODO: claendar view shift this might create an issue */}
+              <ListItem fontSize={"12px"} color={colors.grey_dark} mt={-2}>
                 {data.time}
               </ListItem>
               <ListItem>
@@ -168,30 +182,49 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
               </ListItem>
             </List>
           </GridItem>
+          {/* RULLER ENDS */}
+
           <GridItem colStart={2} colEnd={8}>
-            {filteredEvents?.map((eventData, i) =>
+            {filteredEvents?.map(eventData =>
               isTimeInRange(
-                data.time,
-                addOneHour(data.time),
-                eventData.from_time as string
+                removeMinutes(eventData.from_time as string).toString(),
+                removeMinutes(eventData.to_time as string).toString(),
+                data.time
               ) ? (
                 <Box position="relative" key={eventData.id}>
                   {boxPositions.map(boxPosition => (
                     <CalendarAppointmentBox
-                      // TODO: check this logic for key
-                      key={boxPosition + "CalendarAppointmentBox" + i}
+                      key={boxPosition + eventData.id}
                       eventData={eventData}
                       handleEdit={handleEdit}
                       handleDeleteModal={handleDeleteModal}
                       leftPosition={boxPosition}
+                      time={data.time}
                     />
                   ))}
                 </Box>
               ) : (
                 // TODO: border color too dark
                 // TODO: This box is similar to calendarAppointmentBox
-                <Box position="relative" key={eventData.id} zIndex={-1}>
-                  {/* <CalendarNoAppointmentBox /> */}
+                // TODO: make a component for CalendarNoAppointmentBox
+                <Box position="relative" key={eventData.id}>
+                  {/* <CalendarNoAppointmentBox key={eventData.id} uniqueId={eventData.id!}/> */}
+                  <Box
+                    style={{ ...boxStyle, left: `${0 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${1 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${2 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${3 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
                 </Box>
               )
             )}

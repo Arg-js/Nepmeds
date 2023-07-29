@@ -17,9 +17,11 @@ const boxStyle: React.CSSProperties = {
   justifyContent: "center",
 };
 
-const CalendarNoAppointmentBox = () => {
+const CalendarNoAppointmentBox = ({ uniqueId }: { uniqueId: number }) => {
   for (let i = 0; i < boxCount; i++) {
-    boxes.push(<Box style={{ ...boxStyle, left: `${i * 25}%` }} key={i} />);
+    boxes.push(
+      <Box style={{ ...boxStyle, left: `${i * 25}%` }} key={uniqueId} />
+    );
   }
 
   return <>{boxes}</>;
