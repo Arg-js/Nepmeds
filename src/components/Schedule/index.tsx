@@ -2,12 +2,9 @@ import {
   Box,
   Button,
   Center,
-  Divider,
   Grid,
   GridItem,
   HStack,
-  List,
-  ListItem,
   Spinner,
   Text,
   VStack,
@@ -34,6 +31,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
 import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
+// TODO: change the path imports
+import HourTimeSlot from "./HourTimeSlot";
+import MinuteTImeSlot from "./MinuteTimeSlot";
 
 const timeData = generateHoursTimeArray();
 
@@ -147,41 +147,13 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
 
   return (
     <Box>
+      {/* Minute time Slot */}
+      <MinuteTImeSlot />
+      {/* Minute time Slot ends */}
       {timeData?.map(data => (
         <Grid key={data.time} templateColumns="5% repeat(4, 15%)" gap={0}>
           {/* RULER */}
-          <GridItem colSpan={1} mb={"30px"}>
-            <List spacing={"30px"}>
-              {/* TODO: claendar view shift this might create an issue */}
-              <ListItem fontSize={"12px"} color={colors.grey_dark} mt={-2}>
-                {data.time}
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={2}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={5}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={2}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-            </List>
-          </GridItem>
+          <HourTimeSlot timeSlot={data.time} />
           {/* RULER ENDS */}
 
           <GridItem colStart={2} colEnd={8}>
@@ -231,7 +203,6 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           </GridItem>
         </Grid>
       ))}
-
       {/* edit availability */}
       <ModalComponent
         size="xl"
@@ -287,7 +258,6 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           </FormProvider>
         </VStack>
       </ModalComponent>
-
       {/* delete availability */}
       <ModalComponent
         size="sm"
