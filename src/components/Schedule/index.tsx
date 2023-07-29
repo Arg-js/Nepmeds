@@ -149,7 +149,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     <Box>
       {timeData?.map(data => (
         <Grid key={data.time} templateColumns="5% repeat(4, 15%)" gap={0}>
-          {/* RULLER */}
+          {/* RULER */}
           <GridItem colSpan={1} mb={"30px"}>
             <List spacing={"30px"}>
               {/* TODO: claendar view shift this might create an issue */}
@@ -182,7 +182,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
               </ListItem>
             </List>
           </GridItem>
-          {/* RULLER ENDS */}
+          {/* RULER ENDS */}
 
           <GridItem colStart={2} colEnd={8}>
             {filteredEvents?.map(eventData =>
