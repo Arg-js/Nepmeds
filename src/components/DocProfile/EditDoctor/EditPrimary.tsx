@@ -143,6 +143,7 @@ const EditPrimary = ({
       };
 
       const doctorProfile = {
+        id: doctorProfileData?.id,
         user: user,
         specialization: (getValues("specialization_names")
           ? getValues("specialization_names")
@@ -303,7 +304,7 @@ const EditPrimary = ({
             </ModalComponent>
             <Flex flexDirection={"row"} wrap={{ base: "wrap", xl: "nowrap" }}>
               <Box w="100%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
@@ -317,7 +318,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       color={colors?.black}
                     >
                       :&nbsp;{doctorProfileData?.user?.mobile_number}
@@ -336,7 +337,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -346,7 +347,7 @@ const EditPrimary = ({
                 </VStack>
               </Box>
               <Box w="65%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
@@ -361,7 +362,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -382,7 +383,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -393,7 +394,7 @@ const EditPrimary = ({
                 </VStack>
               </Box>
               <Box w="50%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
@@ -408,7 +409,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -429,7 +430,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -526,7 +527,7 @@ const EditPrimary = ({
               columns={{ base: 1, md: 1, lg: 2, xl: 3 }}
             >
               <GridItem w="100%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
@@ -546,7 +547,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -565,7 +566,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -584,7 +585,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -594,7 +595,7 @@ const EditPrimary = ({
                 </VStack>
               </GridItem>
               <GridItem w="100%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
@@ -609,7 +610,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -628,7 +629,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -647,7 +648,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -657,7 +658,7 @@ const EditPrimary = ({
                 </VStack>
               </GridItem>
               <GridItem w="100%">
-                <VStack spacing={4} align="stretch">
+                <VStack spacing={5} align="stretch">
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
@@ -671,7 +672,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -690,7 +691,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"16px"}
+                      fontSize={"14px"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >

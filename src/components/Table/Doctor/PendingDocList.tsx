@@ -204,7 +204,6 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
         <DataTable
           columns={pendingColumns(navigate)}
           data={data?.results ?? []}
-          filter={{ globalFilter: searchFilter }}
           pagination={{
             manual: true,
             pageParams: { pageIndex, pageSize },

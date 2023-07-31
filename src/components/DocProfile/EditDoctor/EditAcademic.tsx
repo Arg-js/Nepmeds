@@ -80,6 +80,7 @@ const EditAcademic = ({
   };
 
   const formMethods = useForm();
+  // const downloadImageFile = useDownloadImage();
   const academicFileRegister = useAcademicFileRegister();
   const updateAcademicInfoRegister = useUpdateAcademicInfo();
   const academicInfoRegister = useAcademicInfoRegister();
@@ -166,6 +167,40 @@ const EditAcademic = ({
     await getAcademicInfo(id);
     setLoading(false);
   };
+  // const downloadImage = async (imageSrc: string) => {
+  //   var pom = document.createElement("a");
+  //   pom.href = `data:application/octet-stream;base64,${encodeURIComponent(
+  //     imageSrc
+  //   )}`;
+  //   pom.setAttribute("download", `${Date.now()}.jpg`);
+  //   pom.style.display = "none";
+  //   document.body.appendChild(pom);
+  //   pom.click();
+  //   document.body.removeChild(pom);
+  // };
+  // const handleDownload = () => {
+  //   academicInfo.map((e: any) => {
+  //     // downloadImage("http://38.242.204.217:8005/media/" +getImageUrl(e?.file));
+  // const anchor = document.createElement("a");
+  // anchor.download = `example.jpg`;
+  // anchor.href = "http://38.242.204.217:8005/media/" + e?.file;
+  // document.body.appendChild(anchor);
+  // anchor.click();
+  // document.body.removeChild(anchor);
+  // window.URL.revokeObjectURL();
+
+  //     downloadImageFile.mutateAsync(e.file).then((response: any) => {
+  //       // const fileHeader = response.headers["content-type"];
+  //       const fileData = response.data;
+  //       // const blob = new Blob([fileData], { type: "image/jpg" });
+  //       const objUrl = URL.createObjectURL(fileData);
+  //       const link = document.createElement("a");
+  //       link.setAttribute("href", objUrl);
+  //       link.setAttribute("download", "Provider-Profile.jpg");
+  //       link.click();
+  //     });
+  //   });
+  // };
 
   return (
     <>
@@ -224,8 +259,17 @@ const EditAcademic = ({
             }
             isOpen={isDocImgOpen}
             onClose={onDocImgClose}
+            size={"4xl"}
             footer={
               <HStack w="100%" gap={3}>
+                {/* <Button
+                  flex={1}
+                  onClick={handleDownload}
+                  background={colors.primary}
+                  color={colors.white}
+                >
+                  Download
+                </Button> */}
                 <Button
                   flex={1}
                   onClick={onDocImgClose}
@@ -237,7 +281,7 @@ const EditAcademic = ({
               </HStack>
             }
           >
-            <VStack>
+            <VStack bg={colors.grey_90}>
               {loading && <Spinner />}
               {!loading && academicInfo.length === 0 ? (
                 <>No Images Found!</>
@@ -248,6 +292,9 @@ const EditAcademic = ({
                       key={e?.id}
                       objectFit="cover"
                       src={getImageUrl(e?.file)}
+                      // border={"2px solid "}
+                      boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
+                      p={"20px"}
                     />
                   </AspectRatio>
                 ))
@@ -307,9 +354,9 @@ const EditAcademic = ({
                     pb={10}
                     key={i}
                   >
-                    <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
-                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                    <GridItem colSpan={1} mt={"30px"} w="100%" gap={4}>
+                      <VStack spacing={10} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={2}>
                           <Text
                             fontWeight={"500"}
                             fontSize={"14px"}
@@ -322,7 +369,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -342,7 +389,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -352,7 +399,7 @@ const EditAcademic = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -366,7 +413,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -386,7 +433,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -396,7 +443,7 @@ const EditAcademic = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={10} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -410,7 +457,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -430,7 +477,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"
