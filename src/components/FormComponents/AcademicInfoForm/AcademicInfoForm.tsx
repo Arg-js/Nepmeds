@@ -17,8 +17,8 @@ import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import { IImageFileType, Previews } from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { IImageFileType, Previews } from "./dropzone";
 
 export const AcademicInfoForm = ({
   doctorProfileData,

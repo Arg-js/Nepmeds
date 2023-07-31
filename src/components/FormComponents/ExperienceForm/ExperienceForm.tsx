@@ -19,7 +19,7 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import { IImageFileType, Previews } from "../AcademicInfoForm/dropzone";
+import { IImageFileType, Previews } from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({

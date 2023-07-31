@@ -3,7 +3,7 @@ import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IRegisterFields } from "../FormComponents/RegistrationForm/RegistrationForm";
 
 export type IImageFileType =
   | (File & { preview: string; id: string })
