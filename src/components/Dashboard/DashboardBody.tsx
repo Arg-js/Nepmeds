@@ -48,15 +48,13 @@ const dashboardDatas: IDashboardData[] = [
 
 const DashboardBody = () => {
   const profileData = useProfileData();
-  console.log(profileData, "5252");
-
   return (
     <Box>
       {profileData?.data?.is_doctor &&
-        profileData?.data?.doctor?.set_payment_status === false && (
+        !profileData?.data?.doctor?.set_payment_status && (
           <Flex
             width={"99%"}
-            bg={"#D1F4FF"}
+            bg={colors.light_blue}
             h={"70px"}
             // alignItems={"start"}
             borderRadius={"16px"}
