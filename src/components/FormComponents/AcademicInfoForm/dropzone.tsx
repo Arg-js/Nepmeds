@@ -5,7 +5,7 @@ import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
-type IImageFileType =
+export type IImageFileType =
   | (File & { preview: string; id: string })
   | { preview: string; id: string };
 interface Props {
@@ -13,9 +13,16 @@ interface Props {
   files: Array<IImageFileType[]>;
   dataIndex: number;
   deleteFile?: (id: number) => void;
+  fieldValue: string;
 }
 
-export function Previews({ files, setFiles, dataIndex, deleteFile }: Props) {
+export function Previews({
+  files,
+  setFiles,
+  dataIndex,
+  deleteFile,
+  fieldValue,
+}: Props) {
   const { setValue } = useFormContext<IRegisterFields>();
   const imagesFile = files[dataIndex] ?? [];
 
@@ -26,10 +33,7 @@ export function Previews({ files, setFiles, dataIndex, deleteFile }: Props) {
     maxFiles: 5,
     onDrop: acceptedFiles => {
       const newFiles = acceptedFiles.map((file, i) => {
-        setValue(
-          `academic.${dataIndex}.academic_documents.${i + imagesFile.length}`,
-          file
-        );
+        setValue(`${fieldValue}.${i + imagesFile.length}` as any, file);
 
         return Object.assign(file, {
           preview: URL.createObjectURL(file),

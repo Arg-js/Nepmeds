@@ -4,10 +4,9 @@ import { Box, Flex, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { DeleteIcon } from "@chakra-ui/icons";
@@ -20,14 +19,13 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
+import { IImageFileType, Previews } from "../AcademicInfoForm/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
-  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  editMode?: boolean;
 }) => {
   const {
     control,
@@ -35,7 +33,6 @@ export const ExperienceForm = ({
     getValues,
     reset,
     watch,
-    setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteExperienceInfo = useDeleteExperienceInfo();
@@ -48,7 +45,7 @@ export const ExperienceForm = ({
   const mappedImageInfo =
     doctorProfileData?.doctor_experience.map(e =>
       e?.experience_document.map((e: any) => {
-        return { url: getImageUrl(e?.file), id: e?.id };
+        return { preview: getImageUrl(e?.file), id: e?.id };
       })
     ) ?? [];
 
@@ -71,44 +68,9 @@ export const ExperienceForm = ({
     }
   }, [doctorProfileData]);
 
-  const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | { url: string; id: string } | null>>>(
-      mappedImageInfo
-    );
+  const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
+
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
-  const handleImageChange = async (
-    e: ChangeEvent<HTMLInputElement>,
-    imageIndex: number,
-    experienceIndex: number
-  ) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const imageUrl = URL.createObjectURL(selectedFiles[0]);
-      setSelectedImages(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[experienceIndex] = [
-          ...(updatedImages[experienceIndex] || []),
-        ];
-        updatedImages[experienceIndex][imageIndex] = { url: imageUrl, id: "0" };
-        return updatedImages;
-      });
-
-      setSelectedImagesFile(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[experienceIndex] = [
-          ...(updatedImages[experienceIndex] || []),
-        ];
-        updatedImages[experienceIndex][imageIndex] = selectedFiles[0];
-        setValue(
-          `experience.${experienceIndex}.experience_documents.${imageIndex}`,
-          selectedFiles[0]
-        );
-
-        return updatedImages;
-      });
-    }
-  };
 
   const validateFromDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
@@ -159,12 +121,6 @@ export const ExperienceForm = ({
       updatedImages.splice(index, 1);
       return updatedImages;
     });
-
-    setSelectedImages(prevImages => {
-      const updatedImages = [...prevImages];
-      updatedImages.splice(index, 1);
-      return updatedImages;
-    });
   };
 
   const handleDeleteFile = async (id: number) => {
@@ -182,26 +138,12 @@ export const ExperienceForm = ({
         return (
           <Box key={item.id} position="relative">
             <SimpleGrid mb={4}>
-              <MultipleImageUpload
-                selectedImages={selectedImages[index] || []}
-                setSelectedImages={images => {
-                  setSelectedImages(prevImages => {
-                    const updatedImages = [...prevImages];
-                    updatedImages[index] = images;
-                    return updatedImages;
-                  });
-                }}
-                handleImageChange={(e, imageIndex) =>
-                  handleImageChange(e, imageIndex, index)
-                }
-                name={`experience.${index}.experience_documents`}
-                fieldValues={`experience.${index}.experience_documents`}
-                uploadText="Upload Images"
-                background="#F9FAFB"
-                academicIndex={index}
-                helperText={false}
-                editMode={editMode ?? false}
+              <Previews
+                setFiles={setFiles as any}
+                files={files as any}
+                dataIndex={index}
                 deleteFile={handleDeleteFile}
+                fieldValue={`experience.${index}.experience_documents`}
               />
             </SimpleGrid>
 

@@ -304,10 +304,7 @@ const EditExperience = ({
                       overflowY: "scroll",
                     }}
                   >
-                    <ExperienceForm
-                      editMode={true}
-                      doctorProfileData={doctorProfileData}
-                    />
+                    <ExperienceForm doctorProfileData={doctorProfileData} />
                   </GridItem>
                   <GridItem>
                     <SubmitButton

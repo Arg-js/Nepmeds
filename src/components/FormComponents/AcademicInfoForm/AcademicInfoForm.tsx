@@ -18,15 +18,12 @@ import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import { Previews } from "./dropzone";
-
-type IImageFileType = File & { preview: string };
+import { IImageFileType, Previews } from "./dropzone";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  editMode?: boolean;
 }) => {
   const {
     control,
@@ -76,10 +73,7 @@ export const AcademicInfoForm = ({
     }
   }, [doctorProfileData, reset]);
 
-  const [files, setFiles] =
-    useState<Array<{ preview: string; id: string }[] | IImageFileType[]>>(
-      mappedImageInfo
-    );
+  const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
 
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
@@ -130,13 +124,18 @@ export const AcademicInfoForm = ({
     <>
       {fields.map((item, index) => {
         return (
-          <Box key={item.id} position="relative">
+          <Box
+            key={item.id}
+            position="relative"
+            w={{ base: "100%", lg: "94%" }}
+          >
             <Box mb={4}>
               <Previews
                 setFiles={setFiles as any}
                 files={files as any}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
+                fieldValue={`academic.${index}.academic_documents`}
               />
             </Box>
             <SimpleGrid

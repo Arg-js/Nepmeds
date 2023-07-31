@@ -276,10 +276,7 @@ const EditAcademic = ({
                       overflowY: "scroll",
                     }}
                   >
-                    <AcademicInfoForm
-                      doctorProfileData={doctorProfileData}
-                      editMode={true}
-                    />
+                    <AcademicInfoForm doctorProfileData={doctorProfileData} />
                   </GridItem>
                   <GridItem>
                     <SubmitButton
