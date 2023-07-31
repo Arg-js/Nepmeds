@@ -143,6 +143,7 @@ const EditPrimary = ({
       };
 
       const doctorProfile = {
+        id: doctorProfileData?.id,
         user: user,
         specialization: (getValues("specialization_names")
           ? getValues("specialization_names")
