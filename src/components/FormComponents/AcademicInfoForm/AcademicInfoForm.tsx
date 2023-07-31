@@ -4,7 +4,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   useDeleteAcademicFile,
@@ -16,7 +15,7 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import { Previews } from "./dropzone";
@@ -25,7 +24,6 @@ type IImageFileType = File & { preview: string };
 
 export const AcademicInfoForm = ({
   doctorProfileData,
-  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
   editMode?: boolean;
@@ -36,7 +34,6 @@ export const AcademicInfoForm = ({
     getValues,
     reset,
     watch,
-    setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteAcademicFile = useDeleteAcademicFile();
@@ -51,7 +48,7 @@ export const AcademicInfoForm = ({
   const mappedImageInfo =
     doctorProfileData?.doctor_academic_info.map(e =>
       e?.academic_document.map((e: any) => {
-        return { url: getImageUrl(e?.file), id: e?.id };
+        return { preview: getImageUrl(e?.file), id: String(e?.id) };
       })
     ) ?? [];
 
@@ -79,50 +76,11 @@ export const AcademicInfoForm = ({
     }
   }, [doctorProfileData, reset]);
 
-  const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | { url: string; id: string } | null>>>(
-      mappedImageInfo
-    );
-
-  const [files, setFiles] = useState<Array<IImageFileType[]>>([]);
+  const [files, setFiles] = useState<
+    { preview: string; id: string }[] | IImageFileType[]
+  >(mappedImageInfo.flat(1));
 
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
-  const handleImageChange = async (
-    e: ChangeEvent<HTMLInputElement>,
-    imageIndex: number,
-    academicIndex: number
-  ) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const imageUrl = URL.createObjectURL(selectedFiles[0]);
-
-      setSelectedImages(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[academicIndex] = [
-          ...(updatedImages[academicIndex] || []),
-        ];
-        updatedImages[academicIndex][imageIndex] = { url: imageUrl, id: "0" };
-        // setValue(`academic.${academicIndex}.academic_documents`,selectedFiles[0])
-
-        return updatedImages;
-      });
-
-      setSelectedImagesFile(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[academicIndex] = [
-          ...(updatedImages[academicIndex] || []),
-        ];
-        updatedImages[academicIndex][imageIndex] = selectedFiles[0];
-        setValue(
-          `academic.${academicIndex}.academic_documents.${imageIndex}`,
-          selectedFiles[0]
-        );
-
-        return updatedImages;
-      });
-    }
-  };
 
   // generating year
   const currentYear = new Date().getFullYear();
@@ -156,12 +114,6 @@ export const AcademicInfoForm = ({
       updatedImages.splice(index, 1);
       return updatedImages;
     });
-
-    setSelectedImages(prevImages => {
-      const updatedImages = [...prevImages];
-      updatedImages.splice(index, 1);
-      return updatedImages;
-    });
   };
 
   const handleDeleteFile = async (id: number) => {
@@ -179,31 +131,11 @@ export const AcademicInfoForm = ({
         return (
           <Box key={item.id} position="relative">
             <Box mb={4}>
-              <MultipleImageUpload
-                selectedImages={selectedImages[index] ?? []}
-                setSelectedImages={images => {
-                  setSelectedImages(prevImages => {
-                    const updatedImages = [...prevImages];
-                    updatedImages[index] = images;
-                    return updatedImages;
-                  });
-                }}
-                handleImageChange={(e, imageIndex) =>
-                  handleImageChange(e, imageIndex, index)
-                }
-                name={`academic.${index}.academic_documents`}
-                fieldValues={`academic.${index}.academic_documents`}
-                uploadText="Upload Images"
-                background="#F9FAFB"
-                academicIndex={index}
-                helperText={false}
-                editMode={editMode ?? false}
-                deleteFile={handleDeleteFile}
-              />
               <Previews
                 setFiles={setFiles as any}
                 files={files as any}
                 academicIndex={index}
+                deleteFile={handleDeleteFile}
               />
             </Box>
             <SimpleGrid

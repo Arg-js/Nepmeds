@@ -1,18 +1,26 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
-type IImageFileType = File & { preview: string; id: string };
+type IImageFileType =
+  | (File & { preview: string; id: string })
+  | { preview: string; id: string };
 interface Props {
-  setFiles: (files: IImageFileType[]) => void;
+  setFiles: Dispatch<SetStateAction<IImageFileType[]>>;
   files: IImageFileType[];
   academicIndex: number;
+  deleteFile?: (id: number) => void;
 }
 
-export function Previews({ files, setFiles, academicIndex }: Props) {
+export function Previews({
+  files,
+  setFiles,
+  academicIndex,
+  deleteFile,
+}: Props) {
   const { setValue } = useFormContext<IRegisterFields>();
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -38,7 +46,13 @@ export function Previews({ files, setFiles, academicIndex }: Props) {
 
   const removeFile = (file: IImageFileType) => () => {
     const newFiles = [...files];
-    newFiles.splice(newFiles.indexOf(file), 1);
+    const index = newFiles.indexOf(file);
+    newFiles.splice(index, 1);
+
+    if (file.id !== "0" && deleteFile) {
+      deleteFile(Number(file.id));
+    }
+
     setFiles(newFiles);
   };
 

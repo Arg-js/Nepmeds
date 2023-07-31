@@ -86,6 +86,7 @@ const EditAcademic = ({
   const handleFormUpdate = async () => {
     try {
       const academicArray = formMethods.getValues("academic");
+
       const academicPromises = academicArray.map(
         async (academicData: AcademicInfo) => {
           const createAcademicFileResponse =
