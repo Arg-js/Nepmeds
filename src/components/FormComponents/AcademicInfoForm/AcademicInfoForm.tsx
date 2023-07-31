@@ -76,9 +76,10 @@ export const AcademicInfoForm = ({
     }
   }, [doctorProfileData, reset]);
 
-  const [files, setFiles] = useState<
-    { preview: string; id: string }[] | IImageFileType[]
-  >(mappedImageInfo.flat(1));
+  const [files, setFiles] =
+    useState<Array<{ preview: string; id: string }[] | IImageFileType[]>>(
+      mappedImageInfo
+    );
 
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
@@ -134,7 +135,7 @@ export const AcademicInfoForm = ({
               <Previews
                 setFiles={setFiles as any}
                 files={files as any}
-                academicIndex={index}
+                dataIndex={index}
                 deleteFile={handleDeleteFile}
               />
             </Box>

@@ -9,19 +9,15 @@ type IImageFileType =
   | (File & { preview: string; id: string })
   | { preview: string; id: string };
 interface Props {
-  setFiles: Dispatch<SetStateAction<IImageFileType[]>>;
-  files: IImageFileType[];
-  academicIndex: number;
+  setFiles: Dispatch<SetStateAction<Array<IImageFileType[]>>>;
+  files: Array<IImageFileType[]>;
+  dataIndex: number;
   deleteFile?: (id: number) => void;
 }
 
-export function Previews({
-  files,
-  setFiles,
-  academicIndex,
-  deleteFile,
-}: Props) {
+export function Previews({ files, setFiles, dataIndex, deleteFile }: Props) {
   const { setValue } = useFormContext<IRegisterFields>();
+  const imagesFile = files[dataIndex] ?? [];
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -31,7 +27,7 @@ export function Previews({
     onDrop: acceptedFiles => {
       const newFiles = acceptedFiles.map((file, i) => {
         setValue(
-          `academic.${academicIndex}.academic_documents.${i + files.length}`,
+          `academic.${dataIndex}.academic_documents.${i + imagesFile.length}`,
           file
         );
 
@@ -40,27 +36,30 @@ export function Previews({
           id: "0",
         });
       });
-      setFiles([...files, ...newFiles]);
+
+      const tempArray = [...files];
+      tempArray[dataIndex] = [...imagesFile, ...newFiles];
+
+      setFiles(tempArray);
     },
   });
 
   const removeFile = (file: IImageFileType) => () => {
-    const newFiles = [...files];
+    const newFiles = [...imagesFile];
     const index = newFiles.indexOf(file);
     newFiles.splice(index, 1);
 
+    const tempArray = [...files];
+    tempArray[dataIndex] = [...newFiles];
     if (file.id !== "0" && deleteFile) {
       deleteFile(Number(file.id));
     }
-
-    setFiles(newFiles);
+    setFiles(tempArray);
   };
-
-  console.log(files);
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => files.forEach(file => URL.revokeObjectURL(file.preview));
+    return () => imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
   }, []);
 
   return (
@@ -73,7 +72,7 @@ export function Previews({
       flexWrap="wrap"
       alignItems={"self-end"}
     >
-      {files?.map((image, index) => (
+      {imagesFile.map((image, index) => (
         <Flex key={index} alignItems="center">
           <Box
             position="relative"
@@ -104,7 +103,7 @@ export function Previews({
           </Box>
         </Flex>
       ))}
-      {files.length < 5 && (
+      {imagesFile.length < 5 && (
         <Box
           style={{
             position: "relative",
