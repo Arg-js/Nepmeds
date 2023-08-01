@@ -8,6 +8,18 @@ import {
 import { IGetDoctorAvailability } from "@nepMeds/service/nepmeds-doctor-availability";
 import { colors } from "@nepMeds/theme/colors";
 
+// TODO
+const boxStyle: React.CSSProperties = {
+  height: "138px",
+  backgroundColor: "transparent",
+  border: `1px solid ${colors.gray}`,
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  width: "25%",
+  alignItems: "center",
+  justifyContent: "center",
+};
 interface ICalendarAppointmentBox {
   eventData: IGetDoctorAvailability;
   handleEdit: (id: number) => void;
@@ -55,7 +67,12 @@ const CalendarAppointmentBox: React.FC<ICalendarAppointmentBox> = ({
   }
 
   if (!showBox) {
-    return null;
+    return (
+      <Box
+        style={{ ...boxStyle, left: leftPosition }}
+        key={Math.random() + new Date().getTime()}
+      />
+    );
   }
 
   return (
