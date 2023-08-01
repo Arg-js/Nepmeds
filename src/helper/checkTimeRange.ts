@@ -9,7 +9,7 @@ export function isTimeInRange(
   const endTime = getTimeInMinutes(end);
   const targetTime = getTimeInMinutes(target);
 
-  return startTime <= targetTime && targetTime <= endTime;
+  return startTime <= targetTime && targetTime < endTime;
 }
 
 export function getTimeInMinutes(time: string): number {
