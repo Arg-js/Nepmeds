@@ -21,6 +21,7 @@ import {
   removeSeconds,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
+import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,
@@ -37,18 +38,16 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
-import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
 // TODO: change the path imports
-import HourTimeSlot from "./HourTimeSlot";
-import MinuteTImeSlot from "./MinuteTimeSlot";
 import {
   formatToDate,
   formatToDayOfWeek,
   formatToMonth,
 } from "@nepMeds/helper/dateTImeConverter";
+import HourTimeSlot from "./HourTimeSlot";
+import MinuteTImeSlot from "./MinuteTimeSlot";
 
 const timeData = generateHoursTimeArray();
-
 const boxStyle: React.CSSProperties = {
   height: "138px",
   backgroundColor: "transparent",
