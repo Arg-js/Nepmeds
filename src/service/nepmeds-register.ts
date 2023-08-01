@@ -17,6 +17,7 @@ export type PrimaryInfo = Pick<
   | "id_issued_district"
   | "pan_number"
 > & {
+  id?: string;
   specialization?: number[];
   id_front_image?: File | string;
   id_back_image?: File | string;
@@ -75,7 +76,8 @@ export const usePrimaryInfoRegister = () =>
 
 const editPersonalData = async (data: PrimaryInfo) => {
   const response = await HttpClient.patch(
-    api.doctor_profile,
+    // api.doctor_profile ,
+    `${api.doctor_profile}?doctor_id=${data.id}`,
     // toFormData(data, formData)
     data
   );

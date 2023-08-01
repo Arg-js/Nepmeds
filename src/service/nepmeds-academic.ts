@@ -43,6 +43,13 @@ const createAcademicFile = async (data: AcademicInfo) => {
 
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
+// export const useDownloadImage = () =>
+//   useMutation((filePath: string) =>
+//     HttpClient.get("http://38.242.204.217:8005/media/" + filePath, {
+//       responseType: "blob",
+//     })
+//   );
+
 const updateAcademicData = async (id: number, data: AcademicInfo) => {
   const response = await HttpClient.patch(api.academic + `${id}/`, data);
   return response;

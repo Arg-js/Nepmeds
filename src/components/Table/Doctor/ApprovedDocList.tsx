@@ -190,7 +190,6 @@ const ApprovedDocList = ({ specializationList }: Props) => {
         <DataTable
           columns={approvedColumns(navigate)}
           data={data?.results ?? []}
-          filter={{ globalFilter: searchFilter }}
           pagination={{
             manual: true,
             pageParams: { pageIndex, pageSize },
