@@ -30,9 +30,9 @@ const Calendar2: React.FC = () => {
         </GridItem>
         <GridItem colStart={3} colEnd={8} bg={colors.white}>
           <CalendarDailyDetailView
+            selectedDate={formatToDateMonth(formattedDate)}
             selectedDay={formatToDayOfWeek(formattedDate)}
             selectedFullDate={formattedDate}
-            selectedDate={formatToDateMonth(formattedDate)}
           />
         </GridItem>
       </Grid>

@@ -2,6 +2,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -10,9 +11,15 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
+import { DeleteIcon, EditIcon, TimeSquare, svgs } from "@nepMeds/assets/svgs";
 
-import { isTimeInRange, removeMinutes } from "@nepMeds/helper/checkTimeRange";
+import {
+  convertMinutesToHoursAndMinutes,
+  getTimeDifferenceInMinutes,
+  isTimeInRange,
+  removeMinutes,
+  removeSeconds,
+} from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   IGetDoctorAvailability,
@@ -34,6 +41,11 @@ import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarA
 // TODO: change the path imports
 import HourTimeSlot from "./HourTimeSlot";
 import MinuteTImeSlot from "./MinuteTimeSlot";
+import {
+  formatToDate,
+  formatToDayOfWeek,
+  formatToMonth,
+} from "@nepMeds/helper/dateTImeConverter";
 
 const timeData = generateHoursTimeArray();
 
@@ -78,8 +90,14 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
 
   const {
     isOpen: isEditModalOpen,
-    onClose: onEditModalClose,
     onOpen: onEditModalOpen,
+    onClose: onEditModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isViewModalOpen,
+    onOpen: onViewModalOpen,
+    onClose: onViewModalClose,
   } = useDisclosure();
 
   const {
@@ -102,6 +120,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
       if (response) {
         toastSuccess("Event has been added successfully");
         onEditModalClose();
+        onViewModalClose();
       }
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -111,6 +130,22 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   };
   const [doctorAvailabilityData, setDoctorAvailabilityData] =
     useState<IGetDoctorAvailability>();
+
+  const handleView = async (id: number) => {
+    onViewModalOpen();
+    setIsSingleAvailabilityLoading(true);
+    try {
+      const res = await getSingleAvailability(id);
+      setDoctorAvailabilityData(res);
+      setAvailabilityId(id);
+      formMethods.reset({});
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+    setIsSingleAvailabilityLoading(false);
+  };
+
   const handleEdit = async (id: number) => {
     onEditModalOpen();
     setIsSingleAvailabilityLoading(true);
@@ -139,6 +174,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
       });
 
       onCloseDeleteModal();
+      onViewModalClose();
       toastSuccess("Availability deleted successfully!");
     } catch (error) {
       toastFail("Failed to delete availability!");
@@ -150,6 +186,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
       {/* Minute time Slot */}
       <MinuteTImeSlot />
       {/* Minute time Slot ends */}
+
       {timeData?.map(data => (
         <Grid key={data.time} templateColumns="5% repeat(4, 15%)" gap={0}>
           {/* RULER */}
@@ -168,7 +205,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                     <CalendarAppointmentBox
                       key={boxPosition + eventData.id}
                       eventData={eventData}
-                      handleEdit={handleEdit}
+                      handleEdit={handleView}
                       handleDeleteModal={handleDeleteModal}
                       leftPosition={boxPosition}
                       time={data.time}
@@ -203,6 +240,84 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           </GridItem>
         </Grid>
       ))}
+
+      {/* view availability */}
+      <ModalComponent
+        size="xl"
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          onViewModalClose();
+        }}
+        heading={
+          <Flex justifyContent={"space-between"} mr={5}>
+            <Flex>
+              <Text>{doctorAvailabilityData?.title}</Text>
+            </Flex>
+            {/* TODO: move this to generic component */}
+            <Flex gap={4} mr={3}>
+              <EditIcon
+                cursor={"pointer"}
+                onClick={() => handleEdit(availabilityId ?? 0)}
+              />
+              <DeleteIcon
+                cursor={"pointer"}
+                onClick={() => handleDeleteModal(availabilityId ?? 0)}
+              />
+            </Flex>
+          </Flex>
+        }
+        footer={<></>}
+      >
+        <VStack>
+          <FormProvider {...formMethods}>
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+              style={{ width: "100%" }}
+            >
+              {isSingleAvailabilityLoading ? (
+                <Center>
+                  <Spinner />
+                </Center>
+              ) : (
+                <>
+                  <Flex direction={"column"} gap={3}>
+                    <Text>
+                      {doctorAvailabilityData &&
+                        `${formatToDayOfWeek(
+                          doctorAvailabilityData.date as string
+                        )},
+                      
+                        ${formatToMonth(doctorAvailabilityData.date as string)}
+                        ${formatToDate(doctorAvailabilityData.date as string)}.
+
+                        ${removeSeconds(
+                          doctorAvailabilityData.from_time as string
+                        )} -
+                        ${removeSeconds(
+                          doctorAvailabilityData.to_time as string
+                        )}
+                        `}
+                    </Text>
+                    <Flex gap={3} alignItems={"flex-start"}>
+                      <TimeSquare />
+                      <Text>
+                        {doctorAvailabilityData &&
+                          convertMinutesToHoursAndMinutes(
+                            getTimeDifferenceInMinutes(
+                              doctorAvailabilityData.from_time as string,
+                              doctorAvailabilityData.to_time as string
+                            )
+                          )}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </>
+              )}
+            </form>
+          </FormProvider>
+        </VStack>
+      </ModalComponent>
+
       {/* edit availability */}
       <ModalComponent
         size="xl"

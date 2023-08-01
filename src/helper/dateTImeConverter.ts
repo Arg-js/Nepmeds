@@ -1,3 +1,4 @@
+// Converts date (2023-07-29) to the format --> 29th July
 export function formatToDateMonth(inputDateStr: string): string {
   const months = [
     "January",
@@ -40,10 +41,25 @@ function getDaySuffix(day: number): string {
       return "th";
   }
 }
+////
 
+// Get day of week from date
 export function formatToDayOfWeek(inputDateStr: string): string {
   const inputDate = new Date(inputDateStr);
   const dayOfWeek = inputDate.toLocaleDateString("en-US", { weekday: "long" });
 
   return dayOfWeek;
+}
+//
+
+export function formatToMonth(inputDateStr: string): string {
+  const inputDate = new Date(inputDateStr);
+  const month = inputDate.toLocaleDateString("en-US", { month: "long" });
+  return month;
+}
+
+export function formatToDate(inputDateStr: string): number {
+  const inputDate = new Date(inputDateStr);
+  const date = inputDate.getDate();
+  return date;
 }

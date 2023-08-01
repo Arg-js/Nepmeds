@@ -6,7 +6,7 @@ import {
   Text,
   Box,
 } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
+import { PlusIcon, svgs } from "@nepMeds/assets/svgs";
 import { CustomButton } from "@nepMeds/components/Button/Button";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import ScheduleComponent from "@nepMeds/components/Schedule";
@@ -19,7 +19,6 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { useForm, FormProvider } from "react-hook-form";
-import { AiOutlinePlus } from "react-icons/ai";
 
 interface ICalendarDailyDetailView {
   selectedDate: string;
@@ -44,21 +43,16 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
     onClose();
     formMethods.reset();
   };
-  const createDoctorAvailabilityInfo = useCreateDoctorAvailability();
+  const { mutateAsync, isLoading } = useCreateDoctorAvailability();
 
   const onSubmit = async (data: IGetDoctorAvailability) => {
-    const tempData = { ...data };
-    if (data.frequency === "Daily") {
-      delete tempData.date;
-    }
     try {
-      await createDoctorAvailabilityInfo.mutateAsync(tempData);
+      await mutateAsync(data);
       toastSuccess("Event has been added successfully");
       onAddEventClose();
       formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error);
-
       toastFail(err);
     }
   };
@@ -72,7 +66,7 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Add Availability</Text>
+            <Text>Create Availability</Text>
           </HStack>
         }
         footer={
@@ -85,7 +79,7 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
               onClick={formMethods.handleSubmit(onSubmit)}
               background={colors.primary}
               color={colors.white}
-              isLoading={createDoctorAvailabilityInfo.isLoading}
+              isLoading={isLoading}
             >
               Save
             </Button>
@@ -124,8 +118,10 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
         </Box>
         <Box onClick={onAddEventOpen} width="130px">
           <CustomButton backgroundColor={colors.primary} gap={2}>
-            <AiOutlinePlus />
-            <Text>Create</Text>
+            <Text fontSize={"16px"} fontWeight={400}>
+              Create
+            </Text>
+            <PlusIcon />
           </CustomButton>
         </Box>
       </Box>

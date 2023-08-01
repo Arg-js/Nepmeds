@@ -1,5 +1,4 @@
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
-import { Box, Text } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import {
   findTimeRange,
   getHour,
@@ -20,7 +19,6 @@ interface ICalendarAppointmentBox {
 const CalendarAppointmentBox: React.FC<ICalendarAppointmentBox> = ({
   eventData,
   handleEdit,
-  handleDeleteModal,
   leftPosition,
   time,
 }) => {
@@ -72,29 +70,8 @@ const CalendarAppointmentBox: React.FC<ICalendarAppointmentBox> = ({
       left={leftPosition}
       alignItems={"center"}
       justifyContent={"center"}
-    >
-      <Text
-        mt={2}
-        fontSize={"12px"}
-        lineHeight={"15px"}
-        color={colors.grey_dark}
-      >
-        {timeRange[0]}........{timeRange[1]}
-      </Text>
-      <Box position={"absolute"} top={2} right={2}>
-        <EditIcon
-          color={colors.green_button}
-          cursor={"pointer"}
-          onClick={() => handleEdit(eventData.id ?? 0)}
-        />
-        <DeleteIcon
-          cursor={"pointer"}
-          color={colors?.red}
-          marginLeft={2}
-          onClick={() => handleDeleteModal(eventData.id ?? 0)}
-        />
-      </Box>
-    </Box>
+      onClick={() => handleEdit(eventData.id ?? 0)}
+    />
   );
 };
 

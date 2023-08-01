@@ -1,4 +1,4 @@
-import { differenceInMinutes, differenceInYears, parse } from "date-fns";
+import { differenceInYears } from "date-fns";
 
 export function isTimeInRange(
   start: string,
@@ -18,40 +18,35 @@ export function getTimeInMinutes(time: string): number {
   return hours * 60 + minutes;
 }
 
+// Get minutes only 07:30 --> 30
 export function getMinutes(time: string): number {
   const [, minutes] = time.split(":").map(Number);
   return minutes;
 }
+////
 
+// GET hour only 07:00 --> 07
 export function getHour(time: string): number {
   const [hour] = time.split(":").map(Number);
   return hour;
 }
+////
 
+// Get Hour 07:00 --> 07:00
 export function removeMinutes(timeString: string): string {
   const [hours, _] = timeString.split(":");
   return `${hours}:00`;
 }
+////
 
-export function getMinutesDifference(
-  startTime: string,
-  endTime: string
-): number {
-  const start = new Date();
-  const end = new Date();
-
-  const [startHour, startMinute] = startTime.split(":");
-  const [endHour, endMinute] = endTime.split(":");
-
-  start.setHours(Number(startHour), Number(startMinute), 0);
-  end.setHours(Number(endHour), Number(endMinute), 0);
-
-  const differenceInMilliseconds = end.getTime() - start.getTime();
-  const minutesDifference = Math.floor(differenceInMilliseconds / (1000 * 60));
-
-  return minutesDifference;
+// Remove seconds 07:00:00 --> 07:00
+export function removeSeconds(timeString: string): string {
+  const [hours, minutes] = timeString.split(":");
+  return `${hours}:${minutes}`;
 }
+////
 
+// RETURNS interval of time ---> [['07:15', '08:00'], ['08:00', '09:00'], ['09:00', '10:00'], ['10:00', '10:45']]
 export function splitTimeRange(startTime: string, endTime: string) {
   const start = new Date("1970-01-01 " + startTime);
   const end = new Date("1970-01-01 " + endTime);
@@ -78,7 +73,9 @@ export function splitTimeRange(startTime: string, endTime: string) {
 function formatTime(date: Date) {
   return date.toTimeString().slice(0, 5);
 }
+////
 
+// Takes ['07:15', '08:00'] and returns the interval in which the timerange falls  [['07:15', '08:00'], ['08:00', '09:00'], ['09:00', '10:00'], ['10:00', '10:45']]
 export function findTimeRange(
   inputTime: string,
   timeRanges: Array<Array<string>>
@@ -94,23 +91,24 @@ export function findTimeRange(
     }
   }
 }
+////
 
-export function addOneHour(timeString: string): string {
-  const [hours, minutes] = timeString.split(":");
+// export function addOneHour(timeString: string): string {
+//   const [hours, minutes] = timeString.split(":");
 
-  // Create a new Date object with the input time
-  const time = new Date();
-  time.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+//   // Create a new Date object with the input time
+//   const time = new Date();
+//   time.setHours(parseInt(hours, 10), parseInt(minutes, 10));
 
-  // Add one hour to the time
-  time.setHours(time.getHours() + 1);
+//   // Add one hour to the time
+//   time.setHours(time.getHours() + 1);
 
-  // Get the updated hours and minutes
-  const updatedHours = time.getHours();
-  const updatedMinutes = time.getMinutes();
+//   // Get the updated hours and minutes
+//   const updatedHours = time.getHours();
+//   const updatedMinutes = time.getMinutes();
 
-  return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
-}
+//   return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
+// }
 
 export function timeStringToMinutes(timeString: string) {
   const [hours, minutes] = timeString.split(":").map(Number);
@@ -176,12 +174,59 @@ export const getDayDifference = (date1: Date, date2: Date): number => {
 
 // This function will return the difference in minutes between two time
 // which takes time in such format 'HH:mm' e.g. '10:00'
-export const getTimeDifferenceInMinutes = (
-  fromDate: string,
-  toDate: string
-) => {
-  const toTime = parse(toDate, "HH:mm", new Date());
-  const fromTime = parse(fromDate, "HH:mm", new Date());
+export function getTimeDifferenceInMinutes(startTime: string, endTime: string) {
+  // Split the time strings into hours and minutes
+  const [startHours, startMinutes] = startTime.split(":").map(Number);
+  const [endHours, endMinutes] = endTime.split(":").map(Number);
 
-  return differenceInMinutes(toTime, fromTime);
-};
+  // Calculate the difference in minutes
+  const totalStartMinutes = startHours * 60 + startMinutes;
+  const totalEndMinutes = endHours * 60 + endMinutes;
+  const differenceInMinutes = totalEndMinutes - totalStartMinutes;
+
+  return differenceInMinutes;
+}
+
+export function getMinutesDifference(
+  startTime: string,
+  endTime: string
+): number {
+  const start = new Date();
+  const end = new Date();
+
+  const [startHour, startMinute] = startTime.split(":");
+  const [endHour, endMinute] = endTime.split(":");
+
+  start.setHours(Number(startHour), Number(startMinute), 0);
+  end.setHours(Number(endHour), Number(endMinute), 0);
+
+  const differenceInMilliseconds = end.getTime() - start.getTime();
+  const minutesDifference = Math.floor(differenceInMilliseconds / (1000 * 60));
+
+  return minutesDifference;
+}
+
+// OUTPUT 07:08 7hours 8 minutes
+export function convertMinutesToHoursAndMinutes(minutes: number) {
+  if (isNaN(minutes)) {
+    return "Invalid input. Please provide a valid number of minutes.";
+  }
+
+  const hours = Math.floor(minutes / 60);
+  const remainingMinutes = minutes % 60;
+
+  let result = "";
+  if (hours > 0) {
+    result += `${hours} hour${hours > 1 ? "s" : ""}`;
+  }
+
+  if (remainingMinutes > 0) {
+    if (result.length > 0) {
+      result += " ";
+    }
+    result += `${remainingMinutes} minute${remainingMinutes > 1 ? "s" : ""}`;
+  }
+
+  return result;
+}
+////
