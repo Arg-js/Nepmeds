@@ -21,7 +21,7 @@ import {
   removeSeconds,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
-import CalendarAppointmentBox from "@nepMeds/pages/Calendar2/Component/CalendarAppointmentBox";
+import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,

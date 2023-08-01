@@ -1,17 +1,17 @@
-import { Grid, GridItem, Box } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import React, { useState } from "react";
 // TODO: manage this route
-import CalendarDailyDetailView from "./Component/CalendarDailyView";
-import Calendar from "react-calendar";
-import { format } from "date-fns";
 import {
   formatToDateMonth,
   formatToDayOfWeek,
 } from "@nepMeds/helper/dateTImeConverter";
+import { format } from "date-fns";
+import Calendar from "react-calendar";
 import { Value } from "react-calendar/dist/cjs/shared/types";
+import CalendarDailyDetailView from "./Component/CalendarDailyView";
 
-const Calendar2: React.FC = () => {
+const NewCalendar: React.FC = () => {
   const [date, setDate] = useState(new Date());
   const formattedDate = format(date, "yyyy-MM-dd");
 
@@ -40,4 +40,4 @@ const Calendar2: React.FC = () => {
   );
 };
 
-export default Calendar2;
+export default NewCalendar;
