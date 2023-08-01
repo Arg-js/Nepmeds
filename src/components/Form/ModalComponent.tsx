@@ -40,7 +40,7 @@ const ModalComponent = ({
         scrollBehavior="inside"
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent borderRadius={"12px"}>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
           <Divider mb={3} />

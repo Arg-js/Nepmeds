@@ -1,7 +1,6 @@
 import { Center, Spinner } from "@chakra-ui/react";
 import Layout from "@nepMeds/components/Layout";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
-import Calendar from "@nepMeds/pages/Calendar";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
 import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
@@ -9,6 +8,7 @@ import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
 import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
+import Calendar from "@nepMeds/pages/NewCalendar";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
@@ -49,6 +49,7 @@ const routes = [
         path: NAVIGATION_ROUTES.CALENDER,
         element: <Calendar />,
       },
+
       {
         path: NAVIGATION_ROUTES.BANK_DETAILS,
         element: <>Bank details</>,

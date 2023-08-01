@@ -60,7 +60,8 @@ export const CustomButton = ({
       p={2}
       _hover={{ bg: hoverbg }}
       display={"flex"}
-      justifyContent={"space-around"}
+      // TODO: this might effect other parts of the code
+      // justifyContent={"space-around"}
       {...props}
     >
       {children}

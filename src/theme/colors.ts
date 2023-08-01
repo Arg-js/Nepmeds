@@ -73,6 +73,12 @@ export const colors = {
   // yellow dark
   yellow_dark: "#F48F18",
 
+  // calendar
+  // availability blue
+  // TODO : change the comment
+  sky_blue: "#EAF9FE",
+  // border gray
+  gray: "#D2D0D0",
   // light blue-greem
   light_blue: "#D1F4FF",
 };

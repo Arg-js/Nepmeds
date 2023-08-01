@@ -2,27 +2,26 @@ import {
   Box,
   Button,
   Center,
-  Divider,
+  Flex,
   Grid,
   GridItem,
   HStack,
-  List,
-  ListItem,
   Spinner,
   Text,
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
+import { DeleteIcon, EditIcon, TimeSquare, svgs } from "@nepMeds/assets/svgs";
 
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import {
-  addOneHour,
-  getMinutes,
-  getMinutesDifference,
+  convertMinutesToHoursAndMinutes,
+  getTimeDifferenceInMinutes,
   isTimeInRange,
+  removeMinutes,
+  removeSeconds,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
+import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
 import {
   IGetDoctorAvailability,
   getSingleAvailability,
@@ -39,13 +38,35 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
+// TODO: change the path imports
+import {
+  formatToDate,
+  formatToDayOfWeek,
+  formatToMonth,
+} from "@nepMeds/helper/dateTImeConverter";
+import HourTimeSlot from "./HourTimeSlot";
+import MinuteTImeSlot from "./MinuteTimeSlot";
 
 const timeData = generateHoursTimeArray();
+const boxStyle: React.CSSProperties = {
+  height: "138px",
+  backgroundColor: "transparent",
+  border: `1px solid ${colors.gray}`,
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute",
+  width: "25%",
+  alignItems: "center",
+  justifyContent: "center",
+};
 
-const ScheduleComponent = ({
-  selectedFullDate,
-}: {
+interface IScheduleComponent {
   selectedFullDate: string;
+}
+const boxPositions = ["0", "25%", "50%", "75%"];
+
+const ScheduleComponent: React.FC<IScheduleComponent> = ({
+  selectedFullDate,
 }) => {
   const availabilityData = useDoctorAvailability().data;
   const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
@@ -68,8 +89,14 @@ const ScheduleComponent = ({
 
   const {
     isOpen: isEditModalOpen,
-    onClose: onEditModalClose,
     onOpen: onEditModalOpen,
+    onClose: onEditModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isViewModalOpen,
+    onOpen: onViewModalOpen,
+    onClose: onViewModalClose,
   } = useDisclosure();
 
   const {
@@ -92,6 +119,7 @@ const ScheduleComponent = ({
       if (response) {
         toastSuccess("Event has been added successfully");
         onEditModalClose();
+        onViewModalClose();
       }
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -101,6 +129,22 @@ const ScheduleComponent = ({
   };
   const [doctorAvailabilityData, setDoctorAvailabilityData] =
     useState<IGetDoctorAvailability>();
+
+  const handleView = async (id: number) => {
+    onViewModalOpen();
+    setIsSingleAvailabilityLoading(true);
+    try {
+      const res = await getSingleAvailability(id);
+      setDoctorAvailabilityData(res);
+      setAvailabilityId(id);
+      formMethods.reset({});
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
+    setIsSingleAvailabilityLoading(false);
+  };
+
   const handleEdit = async (id: number) => {
     onEditModalOpen();
     setIsSingleAvailabilityLoading(true);
@@ -129,6 +173,7 @@ const ScheduleComponent = ({
       });
 
       onCloseDeleteModal();
+      onViewModalClose();
       toastSuccess("Availability deleted successfully!");
     } catch (error) {
       toastFail("Failed to delete availability!");
@@ -137,125 +182,141 @@ const ScheduleComponent = ({
 
   return (
     <Box>
+      {/* Minute time Slot */}
+      <MinuteTImeSlot />
+      {/* Minute time Slot ends */}
+
       {timeData?.map(data => (
-        <Grid key={data.time} templateColumns="repeat(5, 13%)" gap={0}>
-          <GridItem colSpan={1} mb={"30px"}>
-            <List spacing={"30px"}>
-              <ListItem fontSize={"12px"} color={colors.grey_dark}>
-                {data.time}
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={2}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={5}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-              <ListItem>
-                <Divider
-                  width={2}
-                  borderWidth={1}
-                  borderColor={colors.dark_grey}
-                  orientation="horizontal"
-                />
-              </ListItem>
-            </List>
-          </GridItem>
+        <Grid key={data.time} templateColumns="5% repeat(4, 15%)" gap={0}>
+          {/* RULER */}
+          <HourTimeSlot timeSlot={data.time} />
+          {/* RULER ENDS */}
+
           <GridItem colStart={2} colEnd={8}>
-            {filteredEvents?.map((eventData, i) =>
+            {filteredEvents?.map(eventData =>
               isTimeInRange(
-                data.time,
-                addOneHour(data.time),
-                eventData.from_time as string
+                removeMinutes(eventData.from_time as string).toString(),
+                removeMinutes(eventData.to_time as string).toString(),
+                data.time
               ) ? (
                 <Box position="relative" key={eventData.id}>
-                  <Box
-                    key={i}
-                    mt={`calc(${getMinutes(
-                      eventData.from_time as string
-                    )} * 2.5px)`}
-                    height={`calc(${getMinutesDifference(
-                      eventData.from_time as string,
-                      eventData.to_time as string
-                    )} * 2.5px)`}
-                    bg={"#FDECF0"}
-                    border={`1px dashed  #F48F18`}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    position="absolute"
-                    top={0}
-                    width={"100%"}
-                    left={0}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                  >
-                    <>
-                      <Text
-                        fontWeight={600}
-                        fontSize={"16px"}
-                        lineHeight={"19px"}
-                      >
-                        {" "}
-                        {eventData?.title}
-                      </Text>
-                      <Text
-                        mt={2}
-                        fontSize={"12px"}
-                        lineHeight={"15px"}
-                        color={colors.grey_dark}
-                      >
-                        {eventData.from_time}........{eventData.to_time}
-                      </Text>
-                    </>
-                    <Box position={"absolute"} top={2} right={2}>
-                      <EditIcon
-                        color={colors.green_button}
-                        cursor={"pointer"}
-                        onClick={() => handleEdit(eventData.id ?? 0)}
-                      />
-
-                      <DeleteIcon
-                        cursor={"pointer"}
-                        color={colors?.red}
-                        marginLeft={2}
-                        onClick={() => handleDeleteModal(eventData.id ?? 0)}
-                      />
-                    </Box>
-                  </Box>
+                  {boxPositions.map(boxPosition => (
+                    <CalendarAppointmentBox
+                      key={boxPosition + eventData.id}
+                      eventData={eventData}
+                      handleEdit={handleView}
+                      handleDeleteModal={handleDeleteModal}
+                      leftPosition={boxPosition}
+                      time={data.time}
+                    />
+                  ))}
                 </Box>
               ) : (
+                // TODO: border color too dark
+                // TODO: This box is similar to calendarAppointmentBox
+                // TODO: make a component for CalendarNoAppointmentBox
                 <Box position="relative" key={eventData.id}>
+                  {/* <CalendarNoAppointmentBox key={eventData.id} uniqueId={eventData.id!}/> */}
                   <Box
-                    key={i}
-                    //   mt={"calc(15 * 2.5px)"}
-                    //   height={"calc(30 * 2.5px)"}
-                    height={"150px"}
-                    bg={"transparent"}
-                    border={"none"}
-                    display={"flex"}
-                    flexDirection={"column"}
-                    alignItems={"center"}
-                    justifyContent={"center"}
-                    position="absolute"
-                    top={0}
-                    width={"100:00%"}
-                    left={0}
-                  ></Box>
+                    style={{ ...boxStyle, left: `${0 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${1 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${2 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
+                  <Box
+                    style={{ ...boxStyle, left: `${3 * 25}%` }}
+                    key={Math.random() + new Date().getTime()}
+                  />
                 </Box>
               )
             )}
           </GridItem>
         </Grid>
       ))}
+
+      {/* view availability */}
+      <ModalComponent
+        size="xl"
+        isOpen={isViewModalOpen}
+        onClose={() => {
+          onViewModalClose();
+        }}
+        heading={
+          <Flex justifyContent={"space-between"} mr={5}>
+            <Flex>
+              <Text>{doctorAvailabilityData?.title}</Text>
+            </Flex>
+            {/* TODO: move this to generic component */}
+            <Flex gap={4} mr={3}>
+              <EditIcon
+                cursor={"pointer"}
+                onClick={() => handleEdit(availabilityId ?? 0)}
+              />
+              <DeleteIcon
+                cursor={"pointer"}
+                onClick={() => handleDeleteModal(availabilityId ?? 0)}
+              />
+            </Flex>
+          </Flex>
+        }
+        footer={<></>}
+      >
+        <VStack>
+          <FormProvider {...formMethods}>
+            <form
+              onSubmit={formMethods.handleSubmit(onSubmit)}
+              style={{ width: "100%" }}
+            >
+              {isSingleAvailabilityLoading ? (
+                <Center>
+                  <Spinner />
+                </Center>
+              ) : (
+                <>
+                  <Flex direction={"column"} gap={3}>
+                    <Text>
+                      {doctorAvailabilityData &&
+                        `${formatToDayOfWeek(
+                          doctorAvailabilityData.date as string
+                        )},
+                      
+                        ${formatToMonth(doctorAvailabilityData.date as string)}
+                        ${formatToDate(doctorAvailabilityData.date as string)}.
+
+                        ${removeSeconds(
+                          doctorAvailabilityData.from_time as string
+                        )} -
+                        ${removeSeconds(
+                          doctorAvailabilityData.to_time as string
+                        )}
+                        `}
+                    </Text>
+                    <Flex gap={3} alignItems={"flex-start"}>
+                      <TimeSquare />
+                      <Text>
+                        {doctorAvailabilityData &&
+                          convertMinutesToHoursAndMinutes(
+                            getTimeDifferenceInMinutes(
+                              doctorAvailabilityData.from_time as string,
+                              doctorAvailabilityData.to_time as string
+                            )
+                          )}
+                      </Text>
+                    </Flex>
+                  </Flex>
+                </>
+              )}
+            </form>
+          </FormProvider>
+        </VStack>
+      </ModalComponent>
+
       {/* edit availability */}
       <ModalComponent
         size="xl"
@@ -311,9 +372,7 @@ const ScheduleComponent = ({
           </FormProvider>
         </VStack>
       </ModalComponent>
-
       {/* delete availability */}
-
       <ModalComponent
         size="sm"
         isOpen={isDeleteModalOpen}
