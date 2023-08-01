@@ -72,4 +72,7 @@ export const colors = {
   yellow_light: "#FEF4E8",
   // yellow dark
   yellow_dark: "#F48F18",
+
+  // light blue-greem
+  light_blue: "#D1F4FF",
 };

@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-27)
+## 0.0.1 (2023-07-28)
 
 
 ### Bug Fixes
@@ -16,6 +16,7 @@
 * bugs on doctor profile in admin flow ([e8eb50a](https://gitlab.com/r2850/nepmeds/commit/e8eb50aea777a692968b31e07e1d6985c1bdad26))
 * bugs on masterdata and registration flow ([cc05722](https://gitlab.com/r2850/nepmeds/commit/cc0572270030849c6642a080896285463aed9548))
 * bugs on regsitration ([a0664ba](https://gitlab.com/r2850/nepmeds/commit/a0664ba51532233691da2a8456ae0066e01e7fe9))
+* **bugs:** design manage ([c5680b5](https://gitlab.com/r2850/nepmeds/commit/c5680b5141cb3973eeec462910ae86505a540906))
 * **bugs:** design manage ([419d6cf](https://gitlab.com/r2850/nepmeds/commit/419d6cfce635b64c70341b4a82902bb61f252baf))
 * **button, modal:** ui issues in button and modal ([a3671d5](https://gitlab.com/r2850/nepmeds/commit/a3671d5d8fc9f21a0bb35794be2a6f643fe3003a))
 * **calendar:** calendar date validation and added global error response function ([2d51cc6](https://gitlab.com/r2850/nepmeds/commit/2d51cc60d3b191ec8dd412639450db54a3212104))
@@ -24,6 +25,7 @@
 * **calendar:** close modal fix and date calendar ([57ed0b1](https://gitlab.com/r2850/nepmeds/commit/57ed0b1b7a2038ea084319be60157564acff0453))
 * **calender:** edit availability issues fixes ([37ac99f](https://gitlab.com/r2850/nepmeds/commit/37ac99f48e4c2738c0b4c2282bd32060761dd15b))
 * **calender:** unique key error and time array generator ([7721a1b](https://gitlab.com/r2850/nepmeds/commit/7721a1b593980118268813c7bca4f766f0503575))
+* change on ui on profile ([2725a09](https://gitlab.com/r2850/nepmeds/commit/2725a09d689ebbcaffbd9534fcb5a3858fe7cb60))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **college:** college listing fetched ([f0943e3](https://gitlab.com/r2850/nepmeds/commit/f0943e31dfd70809ed45c583ac9ad6b5fb4b8faf))
 * **commom:** hotfix image upload registatration ([2de83d5](https://gitlab.com/r2850/nepmeds/commit/2de83d5533396cd2df2ca5cccc3e64b3ee3b9098))
@@ -86,6 +88,7 @@
 * **login:** login and otp verification issues resolved ([54c9274](https://gitlab.com/r2850/nepmeds/commit/54c9274913e159d22bb62304b3750e0a4a3fb5ba))
 * **login:** UI changes and small refactor ([1fa8be7](https://gitlab.com/r2850/nepmeds/commit/1fa8be77fbe97b39242e41b35aa185123e4031bd))
 * **masterData:** specialist rate page refactor and query string generator ([a38f52b](https://gitlab.com/r2850/nepmeds/commit/a38f52b6773a2efa508e5ed2ccb13a8c7c065489))
+* **merge:** merge from master ([3c336dd](https://gitlab.com/r2850/nepmeds/commit/3c336ddfee3588ba134e8416750a90dc1e067f3a))
 * **merge:** merge issues ([90b8ca9](https://gitlab.com/r2850/nepmeds/commit/90b8ca989417538c0f6105f156e2b38301f20e93))
 * minor changes ([ead2752](https://gitlab.com/r2850/nepmeds/commit/ead275217351fd4126a1b29c7a08de9a759b686f))
 * minor font size changes ([06fadb7](https://gitlab.com/r2850/nepmeds/commit/06fadb76b0814a1c82b046570ededf1b630101b6))
@@ -103,6 +106,7 @@
 * **profile:** id type with id ([6850409](https://gitlab.com/r2850/nepmeds/commit/6850409657d1fa26790282b0ba3aa33dd1fb83bb))
 * public pages ([34bef01](https://gitlab.com/r2850/nepmeds/commit/34bef0196ddaae21961f2776ad4f07d55fd3ab07))
 * redirect on 404 ([c2ba5b9](https://gitlab.com/r2850/nepmeds/commit/c2ba5b999ab015f2c55bf3e1e6f7bf620a43714c))
+* refactor table column ([2c7e86e](https://gitlab.com/r2850/nepmeds/commit/2c7e86e09ce2b18d4b7f8d54d148be312c688a1b))
 * registration changes ([956a4ea](https://gitlab.com/r2850/nepmeds/commit/956a4ea181b93b5f624e4995204ce317d8623b34))
 * **registration:** hotfix image upload ([a97996f](https://gitlab.com/r2850/nepmeds/commit/a97996f9bc7ad8108d7a8707732062759531f3a7))
 * reject doctor and refetch ([bb54c89](https://gitlab.com/r2850/nepmeds/commit/bb54c89f00becd6b763ae3cc6878ce641660f7be))
@@ -123,6 +127,7 @@
 * **specialization:** specialization and approval fixed ([72bc813](https://gitlab.com/r2850/nepmeds/commit/72bc81362de8fdeb75846f4c8b58de0aeecb8b89))
 * **specialization:** specialization issue in register resolved ([ceedfdb](https://gitlab.com/r2850/nepmeds/commit/ceedfdba3a2e4c6465620a2f1d19207ba20581d6))
 * **specialization:** specialization issue resolved ([b93e97b](https://gitlab.com/r2850/nepmeds/commit/b93e97b97f6f5145d00f4230ad063f4bcc4daf32))
+* status button for on hold doctor ([eab14fe](https://gitlab.com/r2850/nepmeds/commit/eab14fe6a8f02f719967a0880ae01bf2042793f9))
 * steps stepper ([cd4e33a](https://gitlab.com/r2850/nepmeds/commit/cd4e33a54c48e7abe5d35dd2afea85c35034d069))
 * table component ([c777269](https://gitlab.com/r2850/nepmeds/commit/c777269365e89a98714f8cf3cfe84a2c7197d5f9))
 * table component ([4a3ecda](https://gitlab.com/r2850/nepmeds/commit/4a3ecda5a8f95bc40ac43e58e3a0094605baf7e6))

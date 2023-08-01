@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   Card,
   Container,
   Flex,
@@ -49,6 +50,44 @@ const DashboardBody = () => {
   const profileData = useProfileData();
   return (
     <Box>
+      {profileData?.data?.is_doctor &&
+        !profileData?.data?.doctor?.set_payment_status && (
+          <Flex
+            width={"99%"}
+            bg={colors.light_blue}
+            h={"70px"}
+            // alignItems={"start"}
+            borderRadius={"16px"}
+            p={"10px"}
+            m={"10px"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Text
+              color={colors.primary}
+              fontSize={"16px"}
+              justifyContent={"center"}
+            >
+              Hello ! {profileData?.data?.first_name}. Congratulations, your
+              profile has been verified successfully. Please set estimated
+              charge for appointment to use our functionality fully. Thankyou !
+            </Text>
+            <Button
+              mr={"10px"}
+              color={colors.white}
+              bg={colors.primary}
+              h={"45px"}
+              w={"170px"}
+              fontSize={"18px"}
+              sx={{
+                "&:hover": { bg: colors.primary, color: colors.white },
+              }}
+            >
+              Click Me
+            </Button>
+          </Flex>
+        )}
+
       <SimpleGrid
         spacing={8}
         templateColumns="repeat(4, 1fr)"

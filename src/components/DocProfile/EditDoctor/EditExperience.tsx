@@ -254,6 +254,7 @@ const EditExperience = ({
             }
             isOpen={isDocImgOpen}
             onClose={onDocImgClose}
+            size={"4xl"}
             footer={
               <HStack w="100%" gap={3}>
                 <Button
@@ -267,7 +268,7 @@ const EditExperience = ({
               </HStack>
             }
           >
-            <VStack>
+            <VStack bg={colors.grey_50}>
               {loading ? (
                 <Spinner />
               ) : (
@@ -277,6 +278,7 @@ const EditExperience = ({
                       key={e?.id}
                       objectFit="cover"
                       src={getImageUrl(e?.file)}
+                      p={"20px"}
                     />
                   </AspectRatio>
                 ))
@@ -304,10 +306,7 @@ const EditExperience = ({
                       overflowY: "scroll",
                     }}
                   >
-                    <ExperienceForm
-                      editMode={true}
-                      doctorProfileData={doctorProfileData}
-                    />
+                    <ExperienceForm doctorProfileData={doctorProfileData} />
                   </GridItem>
                   <GridItem>
                     <SubmitButton
@@ -336,7 +335,7 @@ const EditExperience = ({
                     key={i}
                   >
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={4} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -350,7 +349,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -360,7 +359,7 @@ const EditExperience = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={4} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -374,7 +373,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -415,7 +414,7 @@ const EditExperience = ({
                           {singleExperience?.currently_working !== true && (
                             <Text
                               fontWeight={"500"}
-                              fontSize={"16px"}
+                              fontSize={"14px"}
                               lineHeight={"19px"}
                               color={colors?.black}
                             >
@@ -426,7 +425,7 @@ const EditExperience = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -440,7 +439,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"

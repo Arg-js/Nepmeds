@@ -194,7 +194,6 @@ const RejectedDocList = ({ specializationList }: Props) => {
         <DataTable
           columns={rejectedColumns(navigate)}
           data={data?.results ?? []}
-          filter={{ globalFilter: searchFilter }}
           pagination={{
             manual: true,
             pageParams: { pageIndex, pageSize },
