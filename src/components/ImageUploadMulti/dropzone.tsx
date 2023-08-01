@@ -16,7 +16,7 @@ interface Props {
   fieldValue: string;
 }
 
-export function Previews({
+export function MultiImageUpload({
   files,
   setFiles,
   dataIndex,
@@ -28,7 +28,9 @@ export function Previews({
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
-      "image/*": [],
+      "image/jpg": [],
+      "image/jpeg": [],
+      "image/png": [],
     },
     maxFiles: 5,
     onDrop: acceptedFiles => {

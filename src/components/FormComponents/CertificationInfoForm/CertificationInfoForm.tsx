@@ -17,7 +17,10 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import { IImageFileType, Previews } from "../../ImageUploadMulti/dropzone";
+import {
+  IImageFileType,
+  MultiImageUpload,
+} from "../../ImageUploadMulti/dropzone";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
@@ -123,9 +126,9 @@ export const CertificationInfoForm = ({
             w={{ base: "100%", lg: "94%" }}
           >
             <Box mb={4}>
-              <Previews
-                setFiles={setFiles as any}
-                files={files as any}
+              <MultiImageUpload
+                setFiles={setFiles}
+                files={files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`certification.${index}.certificate_documents`}

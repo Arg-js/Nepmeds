@@ -19,7 +19,10 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import { IImageFileType, Previews } from "../../ImageUploadMulti/dropzone";
+import {
+  IImageFileType,
+  MultiImageUpload,
+} from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
@@ -138,9 +141,9 @@ export const ExperienceForm = ({
         return (
           <Box key={item.id} position="relative">
             <SimpleGrid mb={4}>
-              <Previews
-                setFiles={setFiles as any}
-                files={files as any}
+              <MultiImageUpload
+                setFiles={setFiles}
+                files={files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`experience.${index}.experience_documents`}

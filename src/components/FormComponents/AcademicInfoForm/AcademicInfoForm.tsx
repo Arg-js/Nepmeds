@@ -14,10 +14,14 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { generateYearRange } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { IImageFileType, Previews } from "../../ImageUploadMulti/dropzone";
+import {
+  IImageFileType,
+  MultiImageUpload,
+} from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
@@ -77,10 +81,7 @@ export const AcademicInfoForm = ({
 
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
-  // generating year
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 1950 + 1 }, (_, index) => {
-    const year = currentYear - index;
+  const years = generateYearRange(1950).map(year => {
     return {
       label: year.toString(),
       value: year.toString(),
@@ -130,9 +131,9 @@ export const AcademicInfoForm = ({
             w={{ base: "100%", lg: "94%" }}
           >
             <Box mb={4}>
-              <Previews
-                setFiles={setFiles as any}
-                files={files as any}
+              <MultiImageUpload
+                setFiles={setFiles}
+                files={files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`academic.${index}.academic_documents`}
