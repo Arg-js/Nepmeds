@@ -25,7 +25,6 @@
 * **calendar:** close modal fix and date calendar ([57ed0b1](https://gitlab.com/r2850/nepmeds/commit/57ed0b1b7a2038ea084319be60157564acff0453))
 * **calender:** edit availability issues fixes ([37ac99f](https://gitlab.com/r2850/nepmeds/commit/37ac99f48e4c2738c0b4c2282bd32060761dd15b))
 * **calender:** unique key error and time array generator ([7721a1b](https://gitlab.com/r2850/nepmeds/commit/7721a1b593980118268813c7bca4f766f0503575))
-* change on ui on profile ([2725a09](https://gitlab.com/r2850/nepmeds/commit/2725a09d689ebbcaffbd9534fcb5a3858fe7cb60))
 * changelog after commit ([dafce6a](https://gitlab.com/r2850/nepmeds/commit/dafce6a52a07331497442df7d5599afe3a23ed29))
 * **college:** college listing fetched ([f0943e3](https://gitlab.com/r2850/nepmeds/commit/f0943e31dfd70809ed45c583ac9ad6b5fb4b8faf))
 * **commom:** hotfix image upload registatration ([2de83d5](https://gitlab.com/r2850/nepmeds/commit/2de83d5533396cd2df2ca5cccc3e64b3ee3b9098))
@@ -153,6 +152,7 @@
 
 * added active routes, ui changes and api issues resolved ([2b6c0c3](https://gitlab.com/r2850/nepmeds/commit/2b6c0c381e3750a8b589e0995e9de4dec9ccc75a))
 * added reusable components ([0633ace](https://gitlab.com/r2850/nepmeds/commit/0633aceab1ac71fd12839eca78b7899a4eed6cbb))
+* addition of appointments in Calendar view ([394455e](https://gitlab.com/r2850/nepmeds/commit/394455e5b17684f16487521e9608519ac5dff905))
 * **admin:** pagination ([4ad309f](https://gitlab.com/r2850/nepmeds/commit/4ad309fbff9a1ce9cea4623239617a254d457859))
 * **api integration:** login and register api ([608dd49](https://gitlab.com/r2850/nepmeds/commit/608dd49be124a81e3207a2616213454c6d16e142))
 * dashboard slicing ([c3fe7a3](https://gitlab.com/r2850/nepmeds/commit/c3fe7a33a971c94544a97cec49d8b6814692ecfa))

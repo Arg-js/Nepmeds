@@ -4,4 +4,5 @@ export { queryStringGenerator } from "./queryStringGenerator";
 export {
   generateHoursTimeArray,
   generateTimeWith15MinutesInterval,
+  generateYearRange,
 } from "./timeRange";

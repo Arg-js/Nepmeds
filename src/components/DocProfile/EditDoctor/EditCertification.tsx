@@ -312,7 +312,6 @@ const EditCertification = ({
                     }}
                   >
                     <CertificationInfoForm
-                      editMode={true}
                       doctorProfileData={doctorProfileData}
                     />
                   </GridItem>
