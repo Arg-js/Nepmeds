@@ -363,10 +363,10 @@ const PrimaryInfo = ({
           handleImageChange={handleImageChange}
           name="id_front_image"
           helperText={true}
-          upload_text="Upload Front of your Id "
+          upload_text="Upload Front Side of your Id "
           error={errors.id_front_image?.message}
           rules={{
-            required: "Front of your id is required",
+            required: "Front Side  of your id is required",
           }}
         />
       </GridItem>
@@ -376,11 +376,11 @@ const PrimaryInfo = ({
           setSelectedImage={setSelectedBackFrontImage}
           handleImageChange={handleBackImageChange}
           name="id_back_image"
-          upload_text="Upload Back of your Id "
+          upload_text="Upload Back side of your Id "
           helperText={true}
           error={errors.id_back_image?.message}
           rules={{
-            required: "Back of your id is required",
+            required: "Back Side of your id is required",
           }}
         />
       </GridItem>

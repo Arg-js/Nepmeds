@@ -15,7 +15,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
   const countRef = useRef<Countdown>(null);
-  const [date, setDate] = useState(Date.now() + 300000);
+  const [date, setDate] = useState(Date.now() + 30);
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
@@ -78,6 +78,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           textAlign="center"
           color={colors.black_30}
           fontWeight="normal"
+          justifyContent={"center"}
         >
           Didnt receive the code? &nbsp;
           <span>
@@ -96,9 +97,11 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
                   return (
                     <span>
                       <Button
-                        fontWeight="inherit"
-                        fontSize="inherit"
+                        fontWeight="400"
+                        fontSize="14px"
                         p={0}
+                        ml={"-5px"}
+                        mt={"-2px"}
                         bg="transparent"
                         h={5}
                         color={colors.blue_100}

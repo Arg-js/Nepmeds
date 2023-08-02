@@ -317,7 +317,13 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={"#c4d2e8"}
+              mx={"1px"}
+              m={"2px"}
+            >
               {data.name}
             </Tag>
           )
