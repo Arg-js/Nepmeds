@@ -32,7 +32,6 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { generateHoursTimeArray } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
-import { isSameDay, parseISO } from "date-fns";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
@@ -45,20 +44,13 @@ import {
 } from "@nepMeds/helper/dateTImeConverter";
 import HourTimeSlot from "./HourTimeSlot";
 import MinuteTImeSlot from "./MinuteTimeSlot";
+import { ListOfTimeObject, boxPositions, minuteTime } from "./scheduleHelper";
 
 const timeData = generateHoursTimeArray();
 
 interface IScheduleComponent {
   selectedFullDate: string;
 }
-const boxPositions = ["0", "25%", "50%", "75%"];
-
-const minuteTime = {
-  "0": "00",
-  "25%": "15",
-  "50%": "30",
-  "75%": "45",
-};
 
 const ScheduleComponent: React.FC<IScheduleComponent> = ({
   selectedFullDate,
@@ -67,38 +59,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
     useState(false);
 
-  const listOfTimeObject = availabilityData
-    ?.filter(event => {
-      if (event.date) {
-        const todayEvent = isSameDay(
-          parseISO(event.date),
-          parseISO(selectedFullDate)
-        );
-
-        return todayEvent;
-      } else if (event.frequency === "Daily") {
-        return true;
-      }
-
-      return false;
-    })
-    .flatMap(item => {
-      return {
-        id: item?.id,
-        timeFrame: item?.child_time_frames?.map(childFrame =>
-          childFrame?.from_time.slice(0, -3)
-        ),
-      };
-    });
-
-  const shouldColorBlock = (time: string, minute: string) => {
-    const tim =
-      String(getHour(time)) +
-      ":" +
-      minuteTime[minute as keyof typeof minuteTime];
-    if (!listOfTimeObject) return undefined;
-    return listOfTimeObject.find(item => item?.timeFrame?.includes(tim));
-  };
+  const listOfTimeObject = ListOfTimeObject(availabilityData, selectedFullDate);
 
   const {
     isOpen: isEditModalOpen,
@@ -191,6 +152,15 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     } catch (error) {
       toastFail("Failed to delete availability!");
     }
+  };
+
+  const shouldColorBlock = (time: string, minute: string) => {
+    const timeConcat =
+      String(getHour(time)) +
+      ":" +
+      minuteTime[minute as keyof typeof minuteTime];
+    if (!listOfTimeObject) return undefined;
+    return listOfTimeObject.find(item => item?.timeFrame?.includes(timeConcat));
   };
 
   return (
