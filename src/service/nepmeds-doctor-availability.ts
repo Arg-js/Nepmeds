@@ -3,6 +3,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
+export interface IChildTimeFrames {
+  id: number;
+  date: string;
+  from_time: string;
+  to_time: string;
+}
+
 export interface IGetDoctorAvailability {
   id?: 0;
   doctor?: 0;
@@ -12,6 +19,7 @@ export interface IGetDoctorAvailability {
   from_time?: string;
   to_time?: string;
   frequency?: string;
+  child_time_frames?: IChildTimeFrames[];
 }
 
 const getDoctorAvailability = async () => {
