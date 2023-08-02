@@ -199,23 +199,24 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                 removeMinutes(eventData.to_time as string).toString(),
                 data.time
               ) ? (
-                <Box position="relative" key={eventData.id}>
+                <Box position="relative" key={eventData.id + data.time}>
                   {boxPositions.map(boxPosition => (
-                    <CalendarAppointmentBox
-                      key={boxPosition + eventData.id}
-                      eventData={eventData}
-                      handleEdit={handleView}
-                      handleDeleteModal={handleDeleteModal}
-                      leftPosition={boxPosition}
-                      time={data.time}
-                    />
+                    <Box key={boxPosition + eventData.id + data.time}>
+                      <CalendarAppointmentBox
+                        eventData={eventData}
+                        handleEdit={handleView}
+                        handleDeleteModal={handleDeleteModal}
+                        leftPosition={boxPosition}
+                        time={data.time}
+                      />
+                    </Box>
                   ))}
                 </Box>
               ) : (
                 // TODO: border color too dark
                 // TODO: This box is similar to calendarAppointmentBox
                 // TODO: make a component for CalendarNoAppointmentBox
-                <Box position="relative" key={eventData.id}>
+                <Box position="relative" key={eventData.id + data.time}>
                   {/* <CalendarNoAppointmentBox key={eventData.id} uniqueId={eventData.id!}/> */}
                   <Box
                     style={{ ...boxStyle, left: `${0 * 25}%` }}

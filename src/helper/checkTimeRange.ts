@@ -83,7 +83,7 @@ export function findTimeRange(
   const inputDateTime = new Date("1970-01-01 " + inputTime);
 
   for (const [startTime, endTime] of timeRanges) {
-    const start = new Date("1970-01-01 " + startTime);
+    const start = new Date("1970-01-01 " + removeMinutes(startTime));
     const end = new Date("1970-01-01 " + endTime);
 
     if (inputDateTime >= start && inputDateTime < end) {
@@ -91,6 +91,7 @@ export function findTimeRange(
     }
   }
 }
+
 ////
 
 // export function addOneHour(timeString: string): string {
