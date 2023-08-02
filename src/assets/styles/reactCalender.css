@@ -2,6 +2,7 @@
   border-radius: 12px;
   width: 416px;
   font-family: poppins, sans-serif;
+  padding: 10px 20px 20px;
 }
 
 .react-calendar__tile--now {
@@ -48,8 +49,8 @@
 .react-calendar__month-view__weekdays {
   background-color: #eaf9fe;
   padding: 10px;
-  margin: 0 20px 10px 20px;
   border-radius: 12px;
+  margin-bottom: 10px;
 }
 
 .react-calendar__month-view__weekdays__weekday {
