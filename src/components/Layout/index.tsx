@@ -83,7 +83,20 @@ const LayoutComponent = () => {
             >
               Since, your application has been put on hold due to insufficient
               details provided.{"\n"} To resubmit the application for
-              verification please click here.
+              verification please{" "}
+              <Button
+                variant={"unstyled"}
+                as={Link}
+                to={"/doctor-profile"}
+                onClick={() => {
+                  setActive(false);
+                }}
+                fontSize={"16px"}
+                fontWeight={"500"}
+                color={colors.blue_100}
+              >
+                click here
+              </Button>
             </Text>
 
             {profileData.data.doctor?.status ===
@@ -95,9 +108,9 @@ const LayoutComponent = () => {
                 w={"auto"}
                 display={"flex"}
               >
-                {/* <Heading fontSize={"18px"} color={colors.red}>
+                <Heading fontSize={"18px"} color={colors.red}>
                   Rejected Reason :{" "}
-                </Heading> */}
+                </Heading>
                 <Text color={colors.red}>
                   {profileData.data.doctor.rejected_remarks}
                 </Text>
@@ -105,23 +118,6 @@ const LayoutComponent = () => {
             )}
           </Stack>
           <Stack pt={"15px"} justifyContent={"center"} alignItems={"center"}>
-            <Button
-              color={colors.white}
-              bg={colors.primary}
-              width={"250px"}
-              h={"60px"}
-              sx={{
-                "&:hover": { color: colors.white, bg: colors.primary },
-              }}
-              as={Link}
-              to={"/doctor-profile"}
-              onClick={() => {
-                setActive(false);
-              }}
-            >
-              {" "}
-              Click Here
-            </Button>
             <Button onClick={logout}>Logout</Button>
           </Stack>
           <Box

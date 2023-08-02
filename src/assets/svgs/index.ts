@@ -5,6 +5,7 @@ import { ReactComponent as upload } from "./upload.svg";
 import { ReactComponent as confirmed } from "./confirmed.svg";
 import { ReactComponent as logo_small } from "./logosmall.svg";
 import { ReactComponent as Work } from "./work.svg";
+import { ReactComponent as InCompletePayment } from "./inPayment.svg";
 
 export const svgs = {
   image,
@@ -13,6 +14,7 @@ export const svgs = {
   confirmed,
   logo_small,
   Work,
+  InCompletePayment,
 };
 export { ReactComponent as EditIcon } from "./edit.svg";
 export { ReactComponent as DeleteIcon } from "./delete.svg";
