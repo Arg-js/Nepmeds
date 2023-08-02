@@ -23,6 +23,7 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import PaymentSet from "@nepMeds/pages/Payment/PaymentSet";
 
 const routes = [
   {
@@ -55,7 +56,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.PAYMENT,
-        element: <>Payment</>,
+        element: <PaymentSet />,
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,

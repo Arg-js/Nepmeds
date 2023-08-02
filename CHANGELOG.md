@@ -1,4 +1,4 @@
-## 0.0.1 (2023-07-28)
+## 0.0.1 (2023-07-31)
 
 
 ### Bug Fixes
@@ -68,6 +68,7 @@
 * favicon and master data ([02ddfac](https://gitlab.com/r2850/nepmeds/commit/02ddfac19bd8e0b3a83eaf4591754b3cd3ea2a82))
 * few changes ([7db794b](https://gitlab.com/r2850/nepmeds/commit/7db794bdb01b6f3392597d44823539d67e1cab4e))
 * few styling ([25bbbd1](https://gitlab.com/r2850/nepmeds/commit/25bbbd174b41bdb92a600cec2e80d2fd383ccf8b))
+* filter removed from frontend and add card on dashboard in doctor ([3d58ec1](https://gitlab.com/r2850/nepmeds/commit/3d58ec1ea4ab8544e338067e028949e1e764f681))
 * **filter:** filter by name implementation ([e087423](https://gitlab.com/r2850/nepmeds/commit/e087423426540d9e3452447006ee2d431c03704f))
 * fixed review comments on mr-6 ([9fcdfa7](https://gitlab.com/r2850/nepmeds/commit/9fcdfa7b8e0aef6d0723ca8928aab35aa7675bbb))
 * hold page ([003a574](https://gitlab.com/r2850/nepmeds/commit/003a574803e7bc854d7bdbfc65222b300d3244f9))
@@ -113,6 +114,7 @@
 * remove comments ([1f5a845](https://gitlab.com/r2850/nepmeds/commit/1f5a845a91926aa9c35d0de950774c46e28475a5))
 * removing any from code ([18d80a2](https://gitlab.com/r2850/nepmeds/commit/18d80a24debb5d5ae0d50464f866392e2d5fc8ca))
 * removing unused lines of code ([ea6859f](https://gitlab.com/r2850/nepmeds/commit/ea6859fbfdc837aaf928c04ae8914c80575b7fc4))
+* resolve git comment ([e88308c](https://gitlab.com/r2850/nepmeds/commit/e88308cec5ef14b97754032c7f45e8790c70897e))
 * **routing issue:** fixed routes flicker issue ([659f24a](https://gitlab.com/r2850/nepmeds/commit/659f24ac935317c76b666635383a8b1775769666))
 * **signup/primary:** must be atleast 18 years old ([4ee3367](https://gitlab.com/r2850/nepmeds/commit/4ee3367f2148a9c09cb0453e11468ac0e3dbbee9))
 * **signup/primary:** ward and tole default value ([0d2e397](https://gitlab.com/r2850/nepmeds/commit/0d2e397ed02bf3d3e6e9ce776562a9b0cd3b4fe8))

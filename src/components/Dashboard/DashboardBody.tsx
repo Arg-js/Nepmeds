@@ -16,6 +16,8 @@ import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "../Table/Doctor/PendingDocList";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useNavigate } from "react-router-dom";
 
 interface IDashboardData {
   title: string;
@@ -48,13 +50,14 @@ const dashboardDatas: IDashboardData[] = [
 
 const DashboardBody = () => {
   const profileData = useProfileData();
+  const navigate = useNavigate();
   return (
     <Box>
       {profileData?.data?.is_doctor &&
         !profileData?.data?.doctor?.set_payment_status && (
           <Flex
             width={"99%"}
-            bg={colors.light_blue}
+            bg={"#FEE2E2"}
             h={"70px"}
             // alignItems={"start"}
             borderRadius={"16px"}
@@ -64,27 +67,22 @@ const DashboardBody = () => {
             alignItems={"center"}
           >
             <Text
-              color={colors.primary}
+              color={colors.red}
               fontSize={"16px"}
               justifyContent={"center"}
             >
-              Hello ! {profileData?.data?.first_name}. Congratulations, your
-              profile has been verified successfully. Please set estimated
-              charge for appointment to use our functionality fully. Thankyou !
+              Congratulations on the successful verification of your profile! To
+              fully utilize our platform`s functionality, please set an
+              estimated charge for appointments by{" "}
+              <Button
+                variant={"unstyled"}
+                onClick={() => {
+                  navigate(NAVIGATION_ROUTES.PAYMENTS);
+                }}
+              >
+                Clicking here
+              </Button>
             </Text>
-            <Button
-              mr={"10px"}
-              color={colors.white}
-              bg={colors.primary}
-              h={"45px"}
-              w={"170px"}
-              fontSize={"18px"}
-              sx={{
-                "&:hover": { bg: colors.primary, color: colors.white },
-              }}
-            >
-              Click Me
-            </Button>
           </Flex>
         )}
 
