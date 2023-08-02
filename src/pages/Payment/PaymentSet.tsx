@@ -72,6 +72,23 @@ const PaymentSet = () => {
   const triggerSubmit = () => {
     handleSubmit(handleSubmitPayment)();
   };
+  const paymentDetail = [
+    {
+      id: 1,
+      brandName: "Esewa",
+      imageName: Eswa,
+    },
+    {
+      id: 2,
+      brandName: "Khalti",
+      imageName: Khalti,
+    },
+    {
+      id: 3,
+      brandName: "Bank",
+      imageName: Bank,
+    },
+  ];
   return (
     <>
       <Box bg={colors.white}>
@@ -126,111 +143,22 @@ const PaymentSet = () => {
                 {tabIndex === 0 && (
                   <Box h={"80vh"} bg={colors.white}>
                     <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={"30px"}>
-                      <GridItem>
-                        <Card
-                          boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
-                        >
-                          <CardHeader
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                            display={"flex"}
-                            mt={"-40px"}
-                            bg={"#F4F4F4"}
-                            maxH={"70px"}
-                          >
-                            <Image
-                              src={Eswa}
-                              h={"70px"}
-                              w={"70px"}
-                              mb={"-15%"}
+                      {paymentDetail.map(x => {
+                        return (
+                          <GridItem key={x.id}>
+                            <PaymentCard
+                              brandName={x.brandName}
+                              imageName={x.imageName}
+                              onClickEdit={() => {
+                                onOpen();
+                              }}
+                              onClickView={() => {
+                                onOpen();
+                              }}
                             />
-                          </CardHeader>
-                          <CardBody>
-                            <Flex justifyContent={"space-between"}>
-                              <Text>Eswa</Text>
-                              <Menu>
-                                <MenuButton as={Button} variant={"unstyled"}>
-                                  <BsThreeDotsVertical />
-                                </MenuButton>
-                                <MenuList>
-                                  <MenuItem>View</MenuItem>
-                                  <MenuItem>Edit</MenuItem>
-                                </MenuList>
-                              </Menu>
-                            </Flex>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem>
-                        <Card
-                          boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
-                        >
-                          <CardHeader
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                            display={"flex"}
-                            mt={"-40px"}
-                            bg={"#F4F4F4"}
-                            maxH={"70px"}
-                          >
-                            <Image
-                              src={Khalti}
-                              h={"70px"}
-                              w={"70px"}
-                              mb={"-15%"}
-                            />
-                          </CardHeader>
-                          <CardBody>
-                            <Flex justifyContent={"space-between"}>
-                              <Text>Khalti</Text>
-                              <Menu>
-                                <MenuButton as={Button} variant={"unstyled"}>
-                                  <BsThreeDotsVertical />
-                                </MenuButton>
-                                <MenuList>
-                                  <MenuItem>View</MenuItem>
-                                  <MenuItem>Edit</MenuItem>
-                                </MenuList>
-                              </Menu>
-                            </Flex>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
-                      <GridItem>
-                        <Card
-                          boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
-                        >
-                          <CardHeader
-                            justifyContent={"center"}
-                            alignItems={"center"}
-                            display={"flex"}
-                            bg={"#F4F4F4"}
-                            mt={"-40px"}
-                            maxH={"70px"}
-                          >
-                            <Image
-                              src={Bank}
-                              h={"70px"}
-                              w={"70px"}
-                              mb={"-15%"}
-                            />
-                          </CardHeader>
-                          <CardBody justifyContent={"center"}>
-                            <Flex justifyContent={"space-between"}>
-                              <Text>Bank</Text>
-                              <Menu>
-                                <MenuButton as={Button} variant={"unstyled"}>
-                                  <BsThreeDotsVertical />
-                                </MenuButton>
-                                <MenuList>
-                                  <MenuItem>View</MenuItem>
-                                  <MenuItem>Edit</MenuItem>
-                                </MenuList>
-                              </Menu>
-                            </Flex>
-                          </CardBody>
-                        </Card>
-                      </GridItem>
+                          </GridItem>
+                        );
+                      })}
                     </Grid>
                   </Box>
                 )}
@@ -433,6 +361,68 @@ const PaymentSet = () => {
 };
 
 export default PaymentSet;
+
+const PaymentCard = ({
+  brandName,
+  imageName,
+  onClickView,
+  onClickEdit,
+}: IPaymentCard) => {
+  return (
+    <>
+      <Card
+        boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
+        w={"440px"}
+        h={"90px"}
+        mb={"50px"}
+      >
+        <CardHeader
+          justifyContent={"center"}
+          alignItems={"center"}
+          display={"flex"}
+          mt={"-40px"}
+          bg={"#F4F4F4"}
+          maxH={"70px"}
+        >
+          <Image src={imageName} h={"70px"} w={"70px"} mb={"-15%"} />
+        </CardHeader>
+        <CardBody>
+          <Flex justifyContent={"space-between"}>
+            <Text>{brandName}</Text>
+            <Menu>
+              <MenuButton as={Button} variant={"unstyled"}>
+                <BsThreeDotsVertical />
+              </MenuButton>
+              <MenuList>
+                <MenuItem
+                  onClick={() => {
+                    onClickView();
+                  }}
+                >
+                  View
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onClickEdit();
+                  }}
+                >
+                  Edit
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
+        </CardBody>
+      </Card>
+    </>
+  );
+};
+
+interface IPaymentCard {
+  brandName?: string;
+  imageName?: string;
+  onClickView: () => void;
+  onClickEdit: () => void;
+}
 
 {
   /* <form>
