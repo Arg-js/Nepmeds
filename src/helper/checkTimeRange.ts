@@ -231,3 +231,25 @@ export function convertMinutesToHoursAndMinutes(minutes: number) {
   return result;
 }
 ////
+
+// converts 24 hour format to 12 hour format , e.g. 00:00:00 to 12:00 AM
+export function convertTo12HourFormat(timeString: string) {
+  const [h, m] = timeString.split(":").map(Number);
+  let hours = h;
+  const minutes = m;
+  let period = "AM";
+
+  if (hours >= 12) {
+    period = "PM";
+    hours = hours % 12;
+  }
+
+  if (hours === 0) {
+    hours = 12; // 12:00 AM should be displayed as 12:00 AM, not 00:00 AM
+  }
+
+  const formattedTime = `${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")} ${period}`;
+  return formattedTime;
+}

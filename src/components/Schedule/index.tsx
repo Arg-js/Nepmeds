@@ -15,9 +15,8 @@ import { DeleteIcon, EditIcon, TimeSquare, svgs } from "@nepMeds/assets/svgs";
 
 import {
   convertMinutesToHoursAndMinutes,
-  getHour,
+  convertTo12HourFormat,
   getTimeDifferenceInMinutes,
-  removeSeconds,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
@@ -156,9 +155,10 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
 
   const shouldColorBlock = (time: string, minute: string) => {
     const timeConcat =
-      String(getHour(time)) +
+      String(time.split(":")[0]) +
       ":" +
       minuteTime[minute as keyof typeof minuteTime];
+
     if (!listOfTimeObject) return undefined;
     return listOfTimeObject.find(item => item?.timeFrame?.includes(timeConcat));
   };
@@ -240,14 +240,14 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                         )},
                       
                         ${formatToMonth(doctorAvailabilityData.date as string)}
-                        ${formatToDate(doctorAvailabilityData.date as string)}.
+                        ${formatToDate(doctorAvailabilityData.date as string)}
 
-                        ${removeSeconds(
-                          doctorAvailabilityData.from_time as string
-                        )} -
-                        ${removeSeconds(
+                       (${convertTo12HourFormat(
+                         doctorAvailabilityData.from_time as string
+                       )} -
+                        ${convertTo12HourFormat(
                           doctorAvailabilityData.to_time as string
-                        )}
+                        )})
                         `}
                     </Text>
                     <Flex gap={3} alignItems={"flex-start"}>
