@@ -25,18 +25,18 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import { svgs } from "@nepMeds/assets/svgs";
+import Checkbox from "@nepMeds/components/Form/Checkbox";
+import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { svgs } from "@nepMeds/assets/svgs";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import Bank from "../../assets/images/bank-fill.png";
 import Eswa from "../../assets/images/eswa.png";
 import Khalti from "../../assets/images/khalti.png";
-import Bank from "../../assets/images/bank-fill.png";
-import { BsThreeDotsVertical } from "react-icons/bs";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import Checkbox from "@nepMeds/components/Form/Checkbox";
 
 const PaymentSet = () => {
   const profileData = useProfileData();
@@ -64,8 +64,7 @@ const PaymentSet = () => {
     },
   });
 
-  const handleSubmitPayment = (data: any) => {
-    console.log(data);
+  const handleSubmitPayment = () => {
     reset();
     onClose();
   };
