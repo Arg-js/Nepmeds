@@ -140,17 +140,17 @@ export const CertificationInfoForm = ({
               columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Title"
                     required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Title is required.",
                     }}
                     error={errors?.certification?.[index]?.title?.message}
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.title`}
@@ -158,7 +158,7 @@ export const CertificationInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Issued By"
@@ -176,13 +176,12 @@ export const CertificationInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Credential ID"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Credential Id is required.",
                     }}
@@ -190,20 +189,20 @@ export const CertificationInfoForm = ({
                       errors?.certification?.[index]?.certificate_number
                         ?.message
                     }
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.certificate_number`}
                 control={control}
               />
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Issued Date"
                     required
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       validate: () => validateIssuedDate(index),
                     }}
@@ -211,6 +210,7 @@ export const CertificationInfoForm = ({
                       errors?.certification?.[index]?.certificate_issued_date
                         ?.message
                     }
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.certificate_issued_date`}
