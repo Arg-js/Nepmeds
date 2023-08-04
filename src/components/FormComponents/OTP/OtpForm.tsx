@@ -1,21 +1,29 @@
-import { Button, HStack, Heading, Input, Text, VStack } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  HStack,
+  Heading,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { useTimer } from "@nepMeds/hooks/Usetimer";
 import {
   useSignUpUser,
   useVerifySingUpOTP,
 } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
-import { useEffect, useRef, useState } from "react";
-import Countdown, { CountdownRenderProps, zeroPad } from "react-countdown";
+import { formatSecondsToMinuteAndSeconds } from "@nepMeds/utils/time";
+import { useEffect, useState } from "react";
+
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
 const OtpForm = ({ mobile }: { mobile: string }) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
-  const countRef = useRef<Countdown>(null);
-  const [date, setDate] = useState(Date.now() + 30);
 
   const verifySingUpOTPAction = useVerifySingUpOTP();
 
@@ -49,6 +57,16 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       onSubmit();
     }
   }, [otpCode.length]);
+  const WAITING_TIME_IN_SECONDS = 5 * 60;
+
+  const { time, startTimer, pauseTimer, resetTimer } = useTimer({
+    seconds: WAITING_TIME_IN_SECONDS,
+  });
+  useEffect(() => {
+    startTimer();
+    return () => pauseTimer();
+  }, []);
+  const timer = formatSecondsToMinuteAndSeconds(time);
 
   return (
     <>
@@ -72,75 +90,44 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           renderInput={props => <Input {...props} />}
           shouldAutoFocus
         />
-
-        <Heading
-          fontSize="14px"
-          textAlign="center"
-          color={colors.black_30}
-          fontWeight="normal"
-          justifyContent={"center"}
-        >
-          Didnt receive the code? &nbsp;
-          <span>
-            <Countdown
-              ref={countRef}
-              date={date}
-              autoStart
-              zeroPadTime={2}
-              controlled={false}
-              renderer={({
-                minutes,
-                seconds,
-                completed,
-              }: CountdownRenderProps) => {
-                if (completed) {
-                  return (
-                    <span>
-                      <Button
-                        fontWeight="400"
-                        fontSize="14px"
-                        p={0}
-                        ml={"-5px"}
-                        mt={"-2px"}
-                        bg="transparent"
-                        h={5}
-                        color={colors.blue_100}
-                        sx={{
-                          "&:hover": {
-                            bg: "transparent !important",
-                            boxShadow: "none !important",
-                          },
-                        }}
-                        onClick={(
-                          event: React.MouseEvent<HTMLButtonElement>
-                        ) => {
-                          event.preventDefault();
-                          if (
-                            countRef.current !== null &&
-                            countRef.current !== undefined
-                          ) {
-                            setDate(Date.now() + 300000);
-                            countRef.current.stop();
-                            countRef.current.start();
-                            handleResend();
-                            setOtp("");
-                          }
-                        }}
-                      >
-                        Resend
-                      </Button>
-                    </span>
-                  );
-                }
-                return (
-                  <span>
-                    {zeroPad(minutes)}:{zeroPad(seconds)}
-                  </span>
-                );
+        <Flex alignItems={"center"}>
+          <Heading
+            fontSize="14px"
+            textAlign="center"
+            color={colors.black_30}
+            fontWeight="normal"
+          >
+            Didnt receive the code? &nbsp;
+          </Heading>
+          {timer !== "00:00" ? (
+            <Text
+              fontSize="14px"
+              textAlign="center"
+              color={colors.black_30}
+              fontWeight="normal"
+            >
+              {" "}
+              {timer}
+            </Text>
+          ) : (
+            <Text
+              fontSize="14px"
+              textAlign="center"
+              color={colors.black_30}
+              fontWeight="normal"
+              cursor={"pointer"}
+              justifyContent={"center"}
+              onClick={() => {
+                handleResend();
+                setOtp("");
+                resetTimer();
+                startTimer();
               }}
-            />
-          </span>
-        </Heading>
+            >
+              Resend
+            </Text>
+          )}
+        </Flex>
       </VStack>
 
       <Text textAlign="center" fontSize={14} color={colors.black_30}>

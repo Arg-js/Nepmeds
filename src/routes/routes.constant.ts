@@ -31,4 +31,6 @@ export const NAVIGATION_ROUTES = {
 
   NO_MATCH: "*",
   DOC_PROFILE: "/doc-profile/:id",
+
+  PAYMENTS: "/payment",
 };

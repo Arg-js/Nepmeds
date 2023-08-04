@@ -15,10 +15,8 @@ import { DeleteIcon, EditIcon, TimeSquare, svgs } from "@nepMeds/assets/svgs";
 
 import {
   convertMinutesToHoursAndMinutes,
+  convertTo12HourFormat,
   getTimeDifferenceInMinutes,
-  isTimeInRange,
-  removeMinutes,
-  removeSeconds,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
@@ -33,7 +31,6 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { generateHoursTimeArray } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
-import { isSameDay, parseISO } from "date-fns";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
@@ -46,24 +43,13 @@ import {
 } from "@nepMeds/helper/dateTImeConverter";
 import HourTimeSlot from "./HourTimeSlot";
 import MinuteTImeSlot from "./MinuteTimeSlot";
+import { ListOfTimeObject, boxPositions, minuteTime } from "./scheduleHelper";
 
 const timeData = generateHoursTimeArray();
-const boxStyle: React.CSSProperties = {
-  height: "138px",
-  backgroundColor: "transparent",
-  border: `1px solid ${colors.gray}`,
-  display: "flex",
-  flexDirection: "column",
-  position: "absolute",
-  width: "25%",
-  alignItems: "center",
-  justifyContent: "center",
-};
 
 interface IScheduleComponent {
   selectedFullDate: string;
 }
-const boxPositions = ["0", "25%", "50%", "75%"];
 
 const ScheduleComponent: React.FC<IScheduleComponent> = ({
   selectedFullDate,
@@ -72,20 +58,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
     useState(false);
 
-  const filteredEvents = availabilityData?.filter(event => {
-    if (event.date) {
-      const todayEvent = isSameDay(
-        parseISO(event.date),
-        parseISO(selectedFullDate)
-      );
-
-      return todayEvent;
-    } else if (event.frequency === "Daily") {
-      return true;
-    }
-
-    return false;
-  });
+  const listOfTimeObject = ListOfTimeObject(availabilityData, selectedFullDate);
 
   const {
     isOpen: isEditModalOpen,
@@ -180,6 +153,16 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     }
   };
 
+  const shouldColorBlock = (time: string, minute: string) => {
+    const timeConcat =
+      String(time.split(":")[0]) +
+      ":" +
+      minuteTime[minute as keyof typeof minuteTime];
+
+    if (!listOfTimeObject) return undefined;
+    return listOfTimeObject.find(item => item?.timeFrame?.includes(timeConcat));
+  };
+
   return (
     <Box>
       {/* Minute time Slot */}
@@ -193,49 +176,19 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           {/* RULER ENDS */}
 
           <GridItem colStart={2} colEnd={8}>
-            {filteredEvents?.map(eventData =>
-              isTimeInRange(
-                removeMinutes(eventData.from_time as string).toString(),
-                removeMinutes(eventData.to_time as string).toString(),
-                data.time
-              ) ? (
-                <Box position="relative" key={eventData.id}>
-                  {boxPositions.map(boxPosition => (
-                    <CalendarAppointmentBox
-                      key={boxPosition + eventData.id}
-                      eventData={eventData}
-                      handleEdit={handleView}
-                      handleDeleteModal={handleDeleteModal}
-                      leftPosition={boxPosition}
-                      time={data.time}
-                    />
-                  ))}
-                </Box>
-              ) : (
-                // TODO: border color too dark
-                // TODO: This box is similar to calendarAppointmentBox
-                // TODO: make a component for CalendarNoAppointmentBox
-                <Box position="relative" key={eventData.id}>
-                  {/* <CalendarNoAppointmentBox key={eventData.id} uniqueId={eventData.id!}/> */}
-                  <Box
-                    style={{ ...boxStyle, left: `${0 * 25}%` }}
-                    key={Math.random() + new Date().getTime()}
-                  />
-                  <Box
-                    style={{ ...boxStyle, left: `${1 * 25}%` }}
-                    key={Math.random() + new Date().getTime()}
-                  />
-                  <Box
-                    style={{ ...boxStyle, left: `${2 * 25}%` }}
-                    key={Math.random() + new Date().getTime()}
-                  />
-                  <Box
-                    style={{ ...boxStyle, left: `${3 * 25}%` }}
-                    key={Math.random() + new Date().getTime()}
+            <Box position="relative">
+              {boxPositions.map(boxPosition => (
+                <Box key={boxPosition + data.time}>
+                  <CalendarAppointmentBox
+                    handleEdit={handleView}
+                    handleDeleteModal={handleDeleteModal}
+                    leftPosition={boxPosition}
+                    time={data.time}
+                    timeObject={shouldColorBlock(data.time, boxPosition)}
                   />
                 </Box>
-              )
-            )}
+              ))}
+            </Box>
           </GridItem>
         </Grid>
       ))}
@@ -287,14 +240,14 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                         )},
                       
                         ${formatToMonth(doctorAvailabilityData.date as string)}
-                        ${formatToDate(doctorAvailabilityData.date as string)}.
+                        ${formatToDate(doctorAvailabilityData.date as string)}
 
-                        ${removeSeconds(
-                          doctorAvailabilityData.from_time as string
-                        )} -
-                        ${removeSeconds(
+                       (${convertTo12HourFormat(
+                         doctorAvailabilityData.from_time as string
+                       )} -
+                        ${convertTo12HourFormat(
                           doctorAvailabilityData.to_time as string
-                        )}
+                        )})
                         `}
                     </Text>
                     <Flex gap={3} alignItems={"flex-start"}>
