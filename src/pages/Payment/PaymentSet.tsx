@@ -70,8 +70,7 @@ const PaymentSet = () => {
     reset();
   };
 
-  const handleSubmitPayment = (data: any) => {
-    console.log(data);
+  const handleSubmitPayment = () => {
     reset();
     onClose();
   };

@@ -205,7 +205,24 @@ const EditAcademic = ({
 
   return (
     <>
-      <Card mb={"18px"} minHeight={"77vh"} maxHeight={"100%"}>
+      <Card
+        mb={"18px"}
+        minHeight={"77vh"}
+        maxHeight={"77vh"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "4px",
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: `${colors.light_gray}`,
+            borderRadius: "24px",
+          },
+          overflowY: "scroll",
+        }}
+      >
         <Box
           p={"20px"}
           display={"flex"}
