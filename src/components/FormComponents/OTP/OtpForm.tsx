@@ -57,7 +57,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       onSubmit();
     }
   }, [otpCode.length]);
-  const WAITING_TIME_IN_SECONDS = 9;
+  const WAITING_TIME_IN_SECONDS = 5 * 60;
 
   const { time, startTimer, pauseTimer, resetTimer } = useTimer({
     seconds: WAITING_TIME_IN_SECONDS,
@@ -103,8 +103,8 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             <Text
               fontSize="14px"
               textAlign="center"
-              color={colors.black_30}
-              fontWeight="normal"
+              color={colors.black_50}
+              fontWeight="bold"
             >
               {" "}
               {timer}

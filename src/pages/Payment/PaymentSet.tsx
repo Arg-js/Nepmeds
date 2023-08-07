@@ -252,7 +252,7 @@ const PaymentSet = () => {
                         <HStack>
                           {" "}
                           <Image src={Esewa} h={"30px"} w={"30px"} />
-                          <Text>ESEWA</Text>
+                          <Text>ESewa</Text>
                         </HStack>
                       </Tab>
                       <Tab>
