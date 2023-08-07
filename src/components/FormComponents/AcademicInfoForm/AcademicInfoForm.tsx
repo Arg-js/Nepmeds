@@ -4,7 +4,6 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   useDeleteAcademicFile,
@@ -15,17 +14,20 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { generateYearRange } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
+import {
+  IImageFileType,
+  MultiImageUpload,
+} from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
-  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  editMode?: boolean;
 }) => {
   const {
     control,
@@ -33,7 +35,6 @@ export const AcademicInfoForm = ({
     getValues,
     reset,
     watch,
-    setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteAcademicFile = useDeleteAcademicFile();
@@ -48,7 +49,7 @@ export const AcademicInfoForm = ({
   const mappedImageInfo =
     doctorProfileData?.doctor_academic_info.map(e =>
       e?.academic_document.map((e: any) => {
-        return { url: getImageUrl(e?.file), id: e?.id };
+        return { preview: getImageUrl(e?.file), id: String(e?.id) };
       })
     ) ?? [];
 
@@ -76,52 +77,11 @@ export const AcademicInfoForm = ({
     }
   }, [doctorProfileData, reset]);
 
-  const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | { url: string; id: string } | null>>>(
-      mappedImageInfo
-    );
+  const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
+
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
-  const handleImageChange = async (
-    e: ChangeEvent<HTMLInputElement>,
-    imageIndex: number,
-    academicIndex: number
-  ) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const imageUrl = URL.createObjectURL(selectedFiles[0]);
-
-      setSelectedImages(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[academicIndex] = [
-          ...(updatedImages[academicIndex] || []),
-        ];
-        updatedImages[academicIndex][imageIndex] = { url: imageUrl, id: "0" };
-        // setValue(`academic.${academicIndex}.academic_documents`,selectedFiles[0])
-
-        return updatedImages;
-      });
-
-      setSelectedImagesFile(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[academicIndex] = [
-          ...(updatedImages[academicIndex] || []),
-        ];
-        updatedImages[academicIndex][imageIndex] = selectedFiles[0];
-        setValue(
-          `academic.${academicIndex}.academic_documents.${imageIndex}`,
-          selectedFiles[0]
-        );
-
-        return updatedImages;
-      });
-    }
-  };
-
-  // generating year
-  const currentYear = new Date().getFullYear();
-  const years = Array.from({ length: currentYear - 1950 + 1 }, (_, index) => {
-    const year = currentYear - index;
+  const years = generateYearRange(1950).map(year => {
     return {
       label: year.toString(),
       value: year.toString(),
@@ -150,12 +110,6 @@ export const AcademicInfoForm = ({
       updatedImages.splice(index, 1);
       return updatedImages;
     });
-
-    setSelectedImages(prevImages => {
-      const updatedImages = [...prevImages];
-      updatedImages.splice(index, 1);
-      return updatedImages;
-    });
   };
 
   const handleDeleteFile = async (id: number) => {
@@ -166,32 +120,23 @@ export const AcademicInfoForm = ({
       toastFail(err);
     }
   };
+
   return (
     <>
       {fields.map((item, index) => {
         return (
-          <Box key={item.id} position="relative">
+          <Box
+            key={item.id}
+            position="relative"
+            w={{ base: "100%", lg: "94%" }}
+          >
             <Box mb={4}>
-              <MultipleImageUpload
-                selectedImages={selectedImages[index] ?? []}
-                setSelectedImages={images => {
-                  setSelectedImages(prevImages => {
-                    const updatedImages = [...prevImages];
-                    updatedImages[index] = images;
-                    return updatedImages;
-                  });
-                }}
-                handleImageChange={(e, imageIndex) =>
-                  handleImageChange(e, imageIndex, index)
-                }
-                name={`academic.${index}.academic_documents`}
-                fieldValues={`academic.${index}.academic_documents`}
-                uploadText="Upload Images"
-                background="#F9FAFB"
-                academicIndex={index}
-                helperText={false}
-                editMode={editMode ?? false}
+              <MultiImageUpload
+                setFiles={setFiles}
+                files={files}
+                dataIndex={index}
                 deleteFile={handleDeleteFile}
+                fieldValue={`academic.${index}.academic_documents`}
               />
             </Box>
             <SimpleGrid
@@ -200,17 +145,17 @@ export const AcademicInfoForm = ({
               columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Degree"
                     required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Degree is required.",
                     }}
                     error={errors?.academic?.[index]?.degree_program?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.degree_program`}
@@ -218,7 +163,7 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Major"
@@ -236,14 +181,13 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <Select
                     required
                     placeholder="Select College/University"
                     label="College/ University"
                     register={register}
                     options={collegeOptions}
-                    {...field}
                     style={{
                       background: colors.forminput,
                       border: "none",
@@ -253,6 +197,7 @@ export const AcademicInfoForm = ({
                       required: "College/University is required.",
                     }}
                     error={errors?.academic?.[index]?.university?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.university`}
@@ -260,14 +205,13 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <Select
                     required
                     placeholder=""
                     label="Passed Year"
                     register={register}
                     options={years}
-                    {...field}
                     style={{
                       background: colors.forminput,
                       border: "none",
@@ -277,6 +221,7 @@ export const AcademicInfoForm = ({
                       required: "Graduation year is required.",
                     }}
                     error={errors?.academic?.[index]?.graduation_year?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.graduation_year`}

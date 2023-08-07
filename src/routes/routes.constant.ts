@@ -34,4 +34,6 @@ export const NAVIGATION_ROUTES = {
   // Patient module
   DOCTOR_CONSULTATION: "/doctor-consultation",
   NO_MATCH: "*",
+
+  PAYMENTS: "/payment",
 };

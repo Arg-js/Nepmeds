@@ -199,7 +199,23 @@ const EditExperience = ({
   };
   return (
     <>
-      <Card minHeight={"77vh"} maxHeight={"100%"}>
+      <Card
+        minHeight={"77vh"}
+        maxHeight={"77vh"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "4px",
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: `${colors.light_gray}`,
+            borderRadius: "24px",
+          },
+          overflowY: "scroll",
+        }}
+      >
         <Box
           p={"20px"}
           display={"flex"}
@@ -254,6 +270,7 @@ const EditExperience = ({
             }
             isOpen={isDocImgOpen}
             onClose={onDocImgClose}
+            size={"4xl"}
             footer={
               <HStack w="100%" gap={3}>
                 <Button
@@ -267,7 +284,7 @@ const EditExperience = ({
               </HStack>
             }
           >
-            <VStack>
+            <VStack bg={colors.grey_50}>
               {loading ? (
                 <Spinner />
               ) : (
@@ -277,6 +294,7 @@ const EditExperience = ({
                       key={e?.id}
                       objectFit="cover"
                       src={getImageUrl(e?.file)}
+                      p={"20px"}
                     />
                   </AspectRatio>
                 ))
@@ -304,10 +322,7 @@ const EditExperience = ({
                       overflowY: "scroll",
                     }}
                   >
-                    <ExperienceForm
-                      editMode={true}
-                      doctorProfileData={doctorProfileData}
-                    />
+                    <ExperienceForm doctorProfileData={doctorProfileData} />
                   </GridItem>
                   <GridItem>
                     <SubmitButton
@@ -336,8 +351,8 @@ const EditExperience = ({
                     key={i}
                   >
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={4} align="stretch">
-                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                      <VStack spacing={5} align="flex-start">
+                        <Box display={"flex"} alignItems={"center"} gap={1}>
                           <Text
                             fontWeight={"500"}
                             fontSize={"14px"}
@@ -350,7 +365,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -360,21 +375,21 @@ const EditExperience = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={4} align="stretch">
-                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                      <VStack spacing={1} align="stretch">
+                        <Box display={"flex"} alignItems={"center"} gap={1}>
                           <Text
                             fontWeight={"500"}
                             fontSize={"14px"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"86px"}
+                            w={"50px"}
                           >
                             From
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -390,7 +405,7 @@ const EditExperience = ({
                       w="100%"
                     >
                       <VStack
-                        spacing={4}
+                        spacing={1}
                         align={
                           singleExperience?.currently_working
                             ? "center"
@@ -404,7 +419,7 @@ const EditExperience = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"137px"}
+                            w={"20px"}
                           >
                             {singleExperience?.currently_working ? (
                               <Text>Currently Working</Text>
@@ -415,7 +430,7 @@ const EditExperience = ({
                           {singleExperience?.currently_working !== true && (
                             <Text
                               fontWeight={"500"}
-                              fontSize={"16px"}
+                              fontSize={"14px"}
                               lineHeight={"19px"}
                               color={colors?.black}
                             >
@@ -426,7 +441,7 @@ const EditExperience = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -440,7 +455,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"

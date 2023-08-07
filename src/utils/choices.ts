@@ -1,4 +1,4 @@
-import { PRIMARYIDTYPE } from "@nepMeds/config/enum";
+import { AVAILABILITYFREQUENCY, PRIMARYIDTYPE } from "@nepMeds/config/enum";
 
 export const title = [
   { label: "Dr", value: "Dr" },
@@ -55,7 +55,7 @@ export const AppointmentType = [
 ];
 
 export const FrequencyType = [
-  { label: "Everyday", value: "Daily" },
-
-  { label: "Does not Repeat", value: "Do Not Repeat" },
+  { label: "Everyday", value: AVAILABILITYFREQUENCY.Everyday },
+  { label: "Weekend", value: AVAILABILITYFREQUENCY.Weekends },
+  { label: "Does not Repeat", value: AVAILABILITYFREQUENCY.Do_Not_Repeat },
 ];

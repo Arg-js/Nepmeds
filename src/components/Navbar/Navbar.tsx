@@ -79,7 +79,7 @@ const Navbar = () => {
                   display={"flex"}
                   fontSize={{ sm: "12px", xl: "18px", base: "16px" }}
                 >
-                  {profileData?.data?.first_name || "Admins"}{" "}
+                  {profileData?.data?.first_name || "Admin"}{" "}
                   {profileData?.data?.middle_name}{" "}
                   {profileData?.data?.last_name}&nbsp;
                 </Text>

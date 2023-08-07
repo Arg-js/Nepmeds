@@ -59,41 +59,74 @@ const LayoutComponent = () => {
             justifyContent={"center"}
             alignItems={"center"}
             display={"flex"}
-            h={"700px"}
+            h={"auto"}
             flexDir={"row"}
             width={"100%"}
+            mt={"30px"}
+            // bg={"red"}
           >
             <svgs.Work />
           </Box>
-          <Stack justifyContent={"center"} alignItems={"center"} mt={"-150px"}>
-            <Heading color={"red"}>Account on Hold</Heading>
-            <Text color={colors.gray_700} fontSize={"18px"}>
+          <Stack justifyContent={"center"} alignItems={"center"}>
+            <Heading color={"red"}>
+              Account on{" "}
+              {profileData.data.doctor?.status ===
+              STATUSTYPE.rejected.toString()
+                ? "Hold"
+                : "Pending"}
+            </Heading>
+            <Text
+              color={colors.gray_700}
+              fontSize={"18px"}
+              w={"50%"}
+              textAlign={"center"}
+            >
               Since, your application has been put on hold due to insufficient
-              details provided. To resubmit the application for verification
-              please click here.
+              details provided.{"\n"} To resubmit the application for
+              verification please{" "}
+              <Button
+                variant={"unstyled"}
+                as={Link}
+                to={"/doctor-profile"}
+                onClick={() => {
+                  setActive(false);
+                }}
+                fontSize={"16px"}
+                fontWeight={"500"}
+                color={colors.blue_100}
+              >
+                click here
+              </Button>
             </Text>
+
+            {profileData.data.doctor?.status ===
+              STATUSTYPE.rejected.toString() && (
+              <Box
+                p={"18px"}
+                borderRadius={"16px"}
+                bg={"#FEE2E2"}
+                w={"auto"}
+                display={"flex"}
+              >
+                <Heading fontSize={"18px"} color={colors.red}>
+                  Rejected Reason :{" "}
+                </Heading>
+                <Text color={colors.red}>
+                  {profileData.data.doctor.rejected_remarks}
+                </Text>
+              </Box>
+            )}
           </Stack>
           <Stack pt={"15px"} justifyContent={"center"} alignItems={"center"}>
-            <Button
-              color={colors.white}
-              bg={colors.primary}
-              width={"250px"}
-              h={"60px"}
-              sx={{
-                "&:hover": { color: colors.white, bg: colors.primary },
-              }}
-              as={Link}
-              to={"/doctor-profile"}
-              onClick={() => {
-                setActive(false);
-              }}
-            >
-              {" "}
-              Click Here
-            </Button>
             <Button onClick={logout}>Logout</Button>
           </Stack>
-          <Box display={"flex"} justifyContent={"flex-end"}>
+          <Box
+            display={"flex"}
+            justifyContent={"flex-end"}
+            pb={"15px"}
+            pr={"50px"}
+            mt={"-80px"}
+          >
             <svgs.logo />
           </Box>
         </>

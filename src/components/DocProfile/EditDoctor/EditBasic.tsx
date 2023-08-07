@@ -67,6 +67,7 @@ const EditBasic = ({
       }
 
       await updatePersonalInfo.mutateAsync({
+        id: doctorProfileData.id?.toString(),
         user: user,
         specialization: formMethods.getValues("specialization"),
         pan_number: formMethods.getValues("pan_number"),
