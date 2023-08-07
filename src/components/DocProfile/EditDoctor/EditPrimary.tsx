@@ -183,12 +183,13 @@ const EditPrimary = ({
 
   return (
     <>
-      <Card mb={"18px"} minHeight={"80vh"} maxHeight={"100%"}>
+      <Card mb={"18px"} minHeight={"70vh"} maxHeight={"100%"}>
         <Box
           p={7}
           display={"flex"}
           alignItems="center"
           justifyContent={"space-between"}
+          // bg={"red"}
         >
           <Text
             fontWeight={"700"}

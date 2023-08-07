@@ -159,17 +159,17 @@ export const ExperienceForm = ({
             >
               <GridItem colSpan={{ base: 4, xl: 2 }}>
                 <Controller
-                  render={({ field }) => (
+                  render={({ field: { ref, ...field } }) => (
                     <FloatingLabelInput
                       label="Hospital/ Clinic Name"
                       register={register}
                       required
                       style={{ background: colors.forminput, border: "none" }}
-                      {...field}
                       rules={{
                         required: "Hospital/Clinic name is required.",
                       }}
                       error={errors?.experience?.[index]?.hospital?.message}
+                      {...field}
                     />
                   )}
                   name={`experience.${index}.hospital`}
@@ -178,19 +178,19 @@ export const ExperienceForm = ({
               </GridItem>
               <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                 <Controller
-                  render={({ field }) => (
+                  render={({ field: { ref, ...field } }) => (
                     <FloatingLabelInput
                       label="From"
                       required
                       register={register}
                       type="date"
                       style={{ background: colors.forminput, border: "none" }}
-                      {...field}
                       rules={{
                         required: "From date is required.",
                         validate: () => validateFromDate(index),
                       }}
                       error={errors?.experience?.[index]?.from_date?.message}
+                      {...field}
                     />
                   )}
                   name={`experience.${index}.from_date`}
@@ -201,19 +201,19 @@ export const ExperienceForm = ({
               {watch(`experience.${index}.currently_working`) !== true && (
                 <GridItem colSpan={{ base: 4, lg: 2, xl: 1 }}>
                   <Controller
-                    render={({ field }) => (
+                    render={({ field: { ref, ...field } }) => (
                       <FloatingLabelInput
                         label="To"
                         required
                         register={register}
                         type="date"
                         style={{ background: colors.forminput, border: "none" }}
-                        {...field}
                         rules={{
                           required: "To date is required.",
                           validate: () => validateToDate(index),
                         }}
                         error={errors?.experience?.[index]?.to_date?.message}
+                        {...field}
                       />
                     )}
                     name={`experience.${index}.to_date`}
@@ -224,7 +224,7 @@ export const ExperienceForm = ({
             </Grid>
             <Box>
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatinglabelTextArea
                     label="Description"
                     register={register}
@@ -234,11 +234,11 @@ export const ExperienceForm = ({
                       border: "none",
                       padding: "17px",
                     }}
-                    {...field}
                     rules={{
                       required: "Description is required.",
                     }}
                     error={errors?.experience?.[index]?.description?.message}
+                    {...field}
                   />
                 )}
                 name={`experience.${index}.description`}
@@ -247,12 +247,12 @@ export const ExperienceForm = ({
             </Box>
             <Flex my={4} alignItems={"center"} justifyContent={"space-between"}>
               <Controller
-                render={({ field: { value, ...fieldValues } }) => (
+                render={({ field: { value, ref, ...fieldValues } }) => (
                   <Checkbox
                     label="Currently working here"
                     control={control}
-                    {...fieldValues}
                     checked={value}
+                    {...fieldValues}
                   />
                 )}
                 name={`experience.${index}.currently_working`}
