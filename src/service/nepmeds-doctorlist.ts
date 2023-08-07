@@ -1,8 +1,14 @@
 import { AxiosResponse } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { queryStringGenerator } from "../utils";
 import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
+
+export type IGetDoctorList = Pick<
+  IGetDoctorProfile,
+  "id" | "user" | "specialization_names" | "status" | "rejected_remarks"
+>;
 
 export const getDoctorList = async ({
   page_no,
@@ -21,24 +27,17 @@ export const getDoctorList = async ({
   specialization?: string;
   name?: string;
 }) => {
-  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
-  if (specialization) {
-    apiUrl += `&specialization=${specialization}`;
-  }
-  if (status) {
-    apiUrl += `&status=${status}`;
-  }
-  if (from_date) {
-    apiUrl += `&created_at__date__gte=${from_date}`;
-  }
-  if (to_date) {
-    apiUrl += `&created_at__date__lte=${to_date}`;
-  }
-  if (name) {
-    apiUrl += `?user__name__icontains=${name}`;
-  }
-  const response = await HttpClient.get<PaginatedResponse<IGetDoctorProfile>>(
-    apiUrl
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    status,
+    specialization,
+    created_at__date__gte: from_date,
+    created_at__date__lte: to_date,
+    user__name__icontains: name,
+  });
+  const response = await HttpClient.get<PaginatedResponse<IGetDoctorList>>(
+    `${api.registereddoctor}/?${qs}`
   );
   return response;
 };
@@ -51,6 +50,7 @@ export const useDoctorList = ({
   specialization,
   page_size,
   name,
+  enabled = true,
 }: {
   page_no: number;
   status?: string;
@@ -59,25 +59,20 @@ export const useDoctorList = ({
   page_size?: number;
   specialization?: string;
   name?: string;
+  enabled?: boolean;
 }) => {
-  let apiUrl = `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`;
-  if (specialization) {
-    apiUrl += `&specialization=${specialization}`;
-  }
-  if (status) {
-    apiUrl += `&status=${status}`;
-  }
-  if (from_date) {
-    apiUrl += `&created_at__date__gte=${from_date}`;
-  }
-  if (to_date) {
-    apiUrl += `&created_at__date__lte=${to_date}`;
-  }
-  if (name) {
-    apiUrl += `?user__name__icontains=${name}`;
-  }
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    status,
+    specialization,
+    created_at__date__gte: from_date,
+    created_at__date__lte: to_date,
+    user__name__icontains: name,
+  });
+
   return useQuery(
-    apiUrl,
+    [api.registereddoctor, qs],
     () =>
       getDoctorList({
         page_no: page_no,
@@ -90,6 +85,7 @@ export const useDoctorList = ({
       }),
     {
       select: data => data.data.data,
+      enabled: !!enabled,
     }
   );
 };

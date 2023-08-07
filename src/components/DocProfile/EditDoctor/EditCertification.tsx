@@ -204,7 +204,24 @@ const EditCertification = ({
   };
   return (
     <>
-      <Card mb={"18px"} minHeight="77vh" maxHeight={"100%"}>
+      <Card
+        mb={"18px"}
+        minHeight="77vh"
+        maxHeight={"77vh"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "4px",
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: `${colors.light_gray}`,
+            borderRadius: "24px",
+          },
+          overflowY: "scroll",
+        }}
+      >
         <Box
           p={"20px"}
           display={"flex"}
@@ -258,6 +275,7 @@ const EditCertification = ({
               </HStack>
             }
             isOpen={isDocImgOpen}
+            size={"4xl"}
             onClose={onDocImgClose}
             footer={
               <HStack w="100%" gap={3}>
@@ -272,7 +290,7 @@ const EditCertification = ({
               </HStack>
             }
           >
-            <VStack>
+            <VStack bg={colors.grey_90}>
               {loading ? (
                 <Spinner />
               ) : (
@@ -282,6 +300,7 @@ const EditCertification = ({
                       key={e?.id}
                       objectFit="cover"
                       src={getImageUrl(e?.file)}
+                      p={"20px"}
                     />
                   </AspectRatio>
                 ))
@@ -310,7 +329,6 @@ const EditCertification = ({
                     }}
                   >
                     <CertificationInfoForm
-                      editMode={true}
                       doctorProfileData={doctorProfileData}
                     />
                   </GridItem>
@@ -344,7 +362,7 @@ const EditCertification = ({
                     key={i}
                   >
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -352,14 +370,14 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"90px"}
+                            w={"40px"}
                           >
                             Title
                           </Text>
 
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -369,7 +387,7 @@ const EditCertification = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -383,7 +401,7 @@ const EditCertification = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -394,7 +412,7 @@ const EditCertification = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -402,14 +420,14 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"137px"}
+                            w={"100px"}
                           >
                             Credential ID
                           </Text>
 
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -420,7 +438,7 @@ const EditCertification = ({
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">
-                      <VStack spacing={3} align="stretch">
+                      <VStack spacing={5} align="stretch">
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
@@ -428,14 +446,14 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"86px"}
+                            w={"80px"}
                           >
                             Issued By
                           </Text>
 
                           <Text
                             fontWeight={"500"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -460,7 +478,7 @@ const EditCertification = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"16px"}
+                            fontSize={"14px"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"

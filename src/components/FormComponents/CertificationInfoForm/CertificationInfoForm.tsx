@@ -2,24 +2,30 @@ import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
 import { Box, SimpleGrid, Spinner } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useDeleteCertificateInfo } from "@nepMeds/service/nepmeds-certificate";
+import {
+  useDeleteCertificateFile,
+  useDeleteCertificateInfo,
+} from "@nepMeds/service/nepmeds-certificate";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { AxiosError } from "axios";
+import {
+  IImageFileType,
+  MultiImageUpload,
+} from "../../ImageUploadMulti/dropzone";
 
 export const CertificationInfoForm = ({
   doctorProfileData,
-  editMode,
 }: {
   doctorProfileData?: IGetDoctorProfile;
-  editMode?: boolean;
 }) => {
   const {
     control,
@@ -27,18 +33,18 @@ export const CertificationInfoForm = ({
     getValues,
     watch,
     reset,
-    setValue,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const { fields, append, remove } = useFieldArray({
     control,
     name: "certification",
   });
+  const deleteCertificateFile = useDeleteCertificateFile();
 
   const mappedImageInfo =
     doctorProfileData?.doctor_certification_info.map(e =>
       e?.certificate_document.map((e: any) => {
-        return { url: getImageUrl(e?.file), id: e?.id };
+        return { preview: getImageUrl(e?.file), id: String(e?.id) };
       })
     ) ?? [];
 
@@ -60,49 +66,11 @@ export const CertificationInfoForm = ({
         })),
       });
     }
-  }, [doctorProfileData, getValues]);
+  }, [doctorProfileData, reset]);
 
-  const [selectedImages, setSelectedImages] =
-    useState<Array<Array<File | { url: string; id: string } | null>>>(
-      mappedImageInfo
-    );
+  const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
+
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
-  const handleImageChange = async (
-    e: ChangeEvent<HTMLInputElement>,
-    imageIndex: number,
-    certificateIndex: number
-  ) => {
-    const selectedFiles = e.target.files;
-    if (selectedFiles && selectedFiles.length > 0) {
-      const imageUrl = URL.createObjectURL(selectedFiles[0]);
-      setSelectedImages(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[certificateIndex] = [
-          ...(updatedImages[certificateIndex] || []),
-        ];
-        updatedImages[certificateIndex][imageIndex] = {
-          url: imageUrl,
-          id: "0",
-        };
-        return updatedImages;
-      });
-
-      setSelectedImagesFile(prevImages => {
-        const updatedImages = [...prevImages];
-        updatedImages[certificateIndex] = [
-          ...(updatedImages[certificateIndex] || []),
-        ];
-        updatedImages[certificateIndex][imageIndex] = selectedFiles[0];
-        setValue(
-          `certification.${certificateIndex}.certificate_documents.${imageIndex}`,
-          selectedFiles[0]
-        );
-
-        return updatedImages;
-      });
-    }
-  };
 
   const validateIssuedDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
@@ -137,45 +105,33 @@ export const CertificationInfoForm = ({
       updatedImages.splice(index, 1);
       return updatedImages;
     });
+  };
 
-    setSelectedImages(prevImages => {
-      const updatedImages = [...prevImages];
-      updatedImages.splice(index, 1);
-      return updatedImages;
-    });
+  const handleDeleteFile = async (id: number) => {
+    try {
+      await deleteCertificateFile.mutateAsync(id);
+    } catch (error) {
+      const err = serverErrorResponse(error as AxiosError);
+      toastFail(err);
+    }
   };
 
   return (
     <>
       {fields.map((item, index) => {
         return (
-          <Box key={item.id} position="relative">
+          <Box
+            key={item.id}
+            position="relative"
+            w={{ base: "100%", lg: "94%" }}
+          >
             <Box mb={4}>
-              <Controller
-                render={({ field }) => (
-                  <MultipleImageUpload
-                    editMode={editMode ?? false}
-                    selectedImages={selectedImages[index] ?? []}
-                    setSelectedImages={images => {
-                      setSelectedImages(prevImages => {
-                        const updatedImages = [...prevImages];
-                        updatedImages[index] = images;
-                        return updatedImages;
-                      });
-                    }}
-                    handleImageChange={(e, imageIndex) =>
-                      handleImageChange(e, imageIndex, index)
-                    }
-                    fieldValues={`certification.${index}.certificate_documents`}
-                    uploadText="Upload Images"
-                    background="#F9FAFB"
-                    academicIndex={index}
-                    helperText={false}
-                    {...field} // Pass the `field` props to ensure integration with `react-hook-form`
-                  />
-                )}
-                name={`certification.${index}.certificate_documents`} // Add the field name for registration and validation
-                control={control} // Pass the `control` prop to ensure integration with `react-hook-form`
+              <MultiImageUpload
+                setFiles={setFiles}
+                files={files}
+                dataIndex={index}
+                deleteFile={handleDeleteFile}
+                fieldValue={`certification.${index}.certificate_documents`}
               />
             </Box>
             <SimpleGrid
@@ -184,17 +140,17 @@ export const CertificationInfoForm = ({
               columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Title"
                     required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Title is required.",
                     }}
                     error={errors?.certification?.[index]?.title?.message}
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.title`}
@@ -202,7 +158,7 @@ export const CertificationInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Issued By"
@@ -220,13 +176,12 @@ export const CertificationInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Credential ID"
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Credential Id is required.",
                     }}
@@ -234,20 +189,20 @@ export const CertificationInfoForm = ({
                       errors?.certification?.[index]?.certificate_number
                         ?.message
                     }
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.certificate_number`}
                 control={control}
               />
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Issued Date"
                     required
                     register={register}
                     type="date"
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       validate: () => validateIssuedDate(index),
                     }}
@@ -255,6 +210,7 @@ export const CertificationInfoForm = ({
                       errors?.certification?.[index]?.certificate_issued_date
                         ?.message
                     }
+                    {...field}
                   />
                 )}
                 name={`certification.${index}.certificate_issued_date`}

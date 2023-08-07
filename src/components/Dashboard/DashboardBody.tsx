@@ -1,10 +1,23 @@
-import { Box, Card, Flex, Image, SimpleGrid, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Flex,
+  Image,
+  SimpleGrid,
+  Text,
+} from "@chakra-ui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
 import { images } from "@nepMeds/assets/images";
+import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import "../../assets/styles/reactCalender.css";
+import PendingDocList from "../Table/Doctor/PendingDocList";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useNavigate } from "react-router-dom";
 
 interface IDashboardData {
   title: string;
@@ -36,8 +49,43 @@ const dashboardDatas: IDashboardData[] = [
 ];
 
 const DashboardBody = () => {
+  const profileData = useProfileData();
+  const navigate = useNavigate();
   return (
     <Box>
+      {profileData?.data?.is_doctor &&
+        !profileData?.data?.doctor?.set_payment_status && (
+          <Flex
+            width={"99%"}
+            bg={"#FEE2E2"}
+            h={"70px"}
+            // alignItems={"start"}
+            borderRadius={"16px"}
+            p={"10px"}
+            m={"10px"}
+            justifyContent={"space-between"}
+            alignItems={"center"}
+          >
+            <Text
+              color={colors.red}
+              fontSize={"16px"}
+              justifyContent={"center"}
+            >
+              Congratulations on the successful verification of your profile! To
+              fully utilize our platform`s functionality, please set an
+              estimated charge for appointments by{" "}
+              <Button
+                variant={"unstyled"}
+                onClick={() => {
+                  navigate(NAVIGATION_ROUTES.PAYMENTS);
+                }}
+              >
+                Clicking here
+              </Button>
+            </Text>
+          </Flex>
+        )}
+
       <SimpleGrid
         spacing={8}
         templateColumns="repeat(4, 1fr)"
@@ -92,6 +140,12 @@ const DashboardBody = () => {
       >
         <Calendar />
       </Box>
+      {profileData?.data?.is_superuser && (
+        <Container maxW={"container.2xl"}>
+          <Text fontWeight={"bold"}>Pending Doctors</Text>
+          <PendingDocList showFilter={false} />
+        </Container>
+      )}
     </Box>
   );
 };

@@ -19,6 +19,7 @@ interface MultipleImageUploadProps {
   fieldValues?: any;
   handleImageChange: (e: ChangeEvent<HTMLInputElement>, index: number) => void;
   deleteFile?: (id: number) => void;
+  setError?: any;
 }
 
 const MultipleImageUpload = ({
@@ -68,6 +69,7 @@ const MultipleImageUpload = ({
     updatedImages.splice(index, 1);
 
     setSelectedImages(updatedImages);
+
     const updatedShowAddImageBox = [...showAddImageBox];
     updatedShowAddImageBox.splice(index, 1);
     setShowAddImageBox(updatedShowAddImageBox);
@@ -100,8 +102,9 @@ const MultipleImageUpload = ({
             {image && (
               <Image
                 src={
-                  (image as { url: string; id: string }).url ||
+                  (image as { url: string; id: string })?.url ||
                   (image as any)[0]?.url ||
+                  (image as any)[0] ||
                   URL.createObjectURL(image as File)
                 }
                 alt="Selected Image"

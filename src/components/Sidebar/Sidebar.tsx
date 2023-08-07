@@ -25,6 +25,7 @@ import {
   // useLogoutMutation,
 } from "@nepMeds/service/nepmeds-auth";
 import { NavLink } from "react-router-dom";
+// import { STATUSTYPE } from "@nepMeds/config/enum";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarOption {

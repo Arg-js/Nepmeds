@@ -1,33 +1,41 @@
-import { useMutation, useQueryClient } from "react-query";
-import { api } from "./service-api";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-const rejectDoc = async (data: { id: string; remarks: string }) => {
+const rejectDoc = async ({
+  id,
+  remarks,
+  title_id,
+}: {
+  id: string;
+  remarks: string;
+  title_id: string;
+}) => {
   const response = await HttpClient.post(
-    api.rejectsingledoctor.replace("{id}", data.id),
-    { remarks: data.remarks }
+    api.rejectsingledoctor.replace("{id}", id),
+    { remarks, title_id }
   );
   return response;
 };
 
-export const useRejectDoc = (
-  page_no?: number,
-
-  page_size?: number
-) => {
+export const useRejectDoc = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(rejectDoc, {
+  return useMutation([api.rejectsingledoctor], rejectDoc, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}`
-      );
-      queryClient.invalidateQueries(
-        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=pending`
-      );
-      queryClient.invalidateQueries(
-        `${api.registereddoctor}/?page=${page_no}&page_size=${page_size}&status=rejected`
-      );
+      queryClient.invalidateQueries(api.registereddoctor);
     },
   });
 };
+
+interface IGetRejectionTitle {
+  id: string;
+  name: string;
+}
+
+const getRejectionTitle = async () =>
+  await HttpClient.get<NepMedsResponse<IGetRejectionTitle[]>>(
+    api.rejectionTitle
+  );
+export const useGetRejectionTitle = () =>
+  useQuery([], getRejectionTitle, { select: data => data.data.data });

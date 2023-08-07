@@ -29,3 +29,14 @@ export function generateHoursTimeArray() {
   }
   return times;
 }
+
+export function generateYearRange(
+  startYear: number,
+  endYear = new Date().getFullYear()
+) {
+  const years = [];
+  for (let year = startYear; year <= endYear; year++) {
+    years.push(year);
+  }
+  return years;
+}

@@ -7,10 +7,10 @@ export const ApproveButton = ({ children, ...props }: any) => {
       backgroundColor={colors.green_button}
       borderRadius={12}
       size="sm"
-      w="100%"
-      color={colors.white}
       fontWeight="400"
+      color={colors.white}
       height={10}
+      w="100%"
       {...props}
     >
       {children}
@@ -27,10 +27,10 @@ export const RejectButton = ({ children, ...props }: any) => {
       background="transparent"
       borderRadius={12}
       size="sm"
-      w="100%"
-      color={colors.error}
       fontWeight="400"
+      color={colors.error}
       height={10}
+      w="100%"
       {...props}
     >
       {children}
@@ -41,10 +41,10 @@ export const RejectButton = ({ children, ...props }: any) => {
 export const CustomButton = ({
   children,
   backgroundColor = colors.green_button,
-  color = colors.white,
   borderRadius = 12,
   size = "sm",
   fontWeight = "400",
+  color = colors.white,
   hoverbg = colors.green_light,
   ...props
 }: any) => {
@@ -53,14 +53,15 @@ export const CustomButton = ({
       backgroundColor={backgroundColor}
       borderRadius={borderRadius}
       size={size}
-      display={"flex"}
-      justifyContent={"space-around"}
+      fontWeight={fontWeight}
+      color={color}
+      height={10}
       w="100%"
       p={2}
-      color={color}
-      fontWeight={fontWeight}
       _hover={{ bg: hoverbg }}
-      height={10}
+      display={"flex"}
+      // TODO: this might effect other parts of the code
+      // justifyContent={"space-around"}
       {...props}
     >
       {children}

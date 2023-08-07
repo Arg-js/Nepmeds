@@ -20,7 +20,7 @@ import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
-import React, { ChangeEvent, useEffect } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
@@ -56,6 +56,7 @@ const PrimaryInfo = ({
       label: p.name,
       value: p.id,
     })) || [];
+
   const districtOptions =
     districtInfo.data?.map(p => ({
       label: p.name,
@@ -72,8 +73,29 @@ const PrimaryInfo = ({
     label: s.name,
     value: s.id,
   }));
+
   useEffect(() => {
-    if (watch("province") !== 0) {
+    if (doctorProfileData) {
+      reset({
+        ...getValues(),
+        id_issued_district: +doctorProfileData.issued_district?.id,
+        province: doctorProfileData?.user?.province_data?.id,
+        district: doctorProfileData?.user?.district_data?.id,
+        municipality: doctorProfileData?.user?.municipality_data?.id,
+      });
+    }
+  }, [doctorProfileData]);
+
+  useEffect(() => {
+    if (watch("province")) {
+      if (
+        +(watch("province") as number) ===
+        doctorProfileData?.user?.province_data?.id
+      ) {
+        return reset({
+          ...getValues(),
+        });
+      }
       reset({
         ...getValues(),
         district: (0 as number) || null,
@@ -81,24 +103,6 @@ const PrimaryInfo = ({
       });
     }
   }, [watch("province")]);
-
-  useEffect(() => {
-    if (doctorProfileData) {
-      reset({
-        ...getValues(),
-        // phone: doctorProfileData.
-        id_issued_district: allDistrictOptions.find(
-          p => p.value === doctorProfileData.issued_district?.id
-        )?.value,
-        province: provinceOptions.find(
-          p => p.value === doctorProfileData?.user?.province_data?.id
-        )?.value,
-        district: districtOptions.find(
-          p => p.value === doctorProfileData?.user?.district_data?.id
-        )?.value,
-      });
-    }
-  }, [doctorProfileData, reset]);
 
   const watchIdType = watch("id_type");
   function IdType(watchIdType: string) {
@@ -109,11 +113,11 @@ const PrimaryInfo = ({
     IdType(watchIdType);
   }, [watchIdType]);
 
-  const [selectedFrontImage, setSelectedFrontImage] = React.useState<
+  const [selectedFrontImage, setSelectedFrontImage] = useState<
     File | string | null
   >(null);
 
-  const [selectedBackImage, setSelectedBackFrontImage] = React.useState<
+  const [selectedBackImage, setSelectedBackFrontImage] = useState<
     File | string | null
   >(null);
 
@@ -174,6 +178,19 @@ const PrimaryInfo = ({
             name="bio_detail"
             register={register}
             defaultValue={doctorProfileData?.bio_detail}
+            required
+            rules={{
+              required: "Basic Information is required.",
+              minLength: {
+                value: 50,
+                message: "Basic Information must be 50 charaters.",
+              },
+              maxLength: {
+                value: 250,
+                message: "Basic Information must be less than 250 charateras.",
+              },
+            }}
+            error={errors.bio_detail?.message}
           />
         </GridItem>
       )}
@@ -346,10 +363,10 @@ const PrimaryInfo = ({
           handleImageChange={handleImageChange}
           name="id_front_image"
           helperText={true}
-          upload_text="Upload Front of your Id "
+          upload_text="Upload Front Side of your Id "
           error={errors.id_front_image?.message}
           rules={{
-            required: "Front of your id is required",
+            required: "Front Side  of your id is required",
           }}
         />
       </GridItem>
@@ -359,11 +376,11 @@ const PrimaryInfo = ({
           setSelectedImage={setSelectedBackFrontImage}
           handleImageChange={handleBackImageChange}
           name="id_back_image"
-          upload_text="Upload Back of your Id "
+          upload_text="Upload Back side of your Id "
           helperText={true}
           error={errors.id_back_image?.message}
           rules={{
-            required: "Back of your id is required",
+            required: "Back Side of your id is required",
           }}
         />
       </GridItem>
@@ -381,28 +398,29 @@ const PrimaryInfo = ({
           error={errors.id_number?.message}
         />
       </GridItem>
-      <GridItem colSpan={isEditable ? 1 : 1}>
-        <Select
-          placeholder=" "
-          label="Issued District"
-          name="id_issued_district"
-          required
-          register={register}
-          options={allDistrictOptions}
-          // value={0}
-          defaultValue={doctorProfileData?.issued_district?.id}
-          // defaultValue={""}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "ID issued district is required.",
-          }}
-          error={errors.id_issued_district?.message}
-        />
-      </GridItem>
+      {!allDistrictInfo.isLoading && (
+        <GridItem colSpan={isEditable ? 1 : 1}>
+          <Select
+            placeholder="Select district"
+            label="Issued District"
+            name="id_issued_district"
+            required
+            register={register}
+            options={allDistrictOptions}
+            defaultValue={doctorProfileData?.issued_district?.id}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "ID issued district is required.",
+            }}
+            error={errors.id_issued_district?.message}
+          />
+        </GridItem>
+      )}
+
       <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           name="id_issued_date"

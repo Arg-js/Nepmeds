@@ -87,15 +87,22 @@ export interface IGetDoctorProfile {
 }
 export interface IGetDoctorBasicProfile {
   id: number;
-  user_details: {
-    first_name: string;
-    last_name: string;
-    middle_name: string;
-    email: string;
-    mobile_number: string;
-    profile_picture: string;
+  doctor?: {
+    id: number;
+    rejected_remarks?: string;
+    specialization?: IResponseSpecialization[];
+    status: string;
+    set_payment_status?: boolean;
   };
-  specialization: IResponseSpecialization[];
+  first_name: string;
+  last_name: string;
+  middle_name: string;
+  email: string;
+  mobile_number: string;
+  profile_picture: string;
+
+  is_doctor?: boolean;
+  is_superuser?: boolean;
 }
 
 const getDoctorProfile = async () => {
@@ -129,12 +136,6 @@ const getDoctorProfileById = (DoctorId: string) => () => {
   );
 };
 
-// export const fetchDoctorProfileByIds = () => {
-//   return useMutation(getDoctorProfileById, {
-//     onError: (error: AxiosDefaults) => {
-//     },
-//   });
-// };
 export const fetchDoctorProfileById = (DoctorId: string) => {
   return useQuery(
     [api.doctorProfileById, DoctorId],

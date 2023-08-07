@@ -72,4 +72,19 @@ export const colors = {
   yellow_light: "#FEF4E8",
   // yellow dark
   yellow_dark: "#F48F18",
+
+  light_blue: "#D1F4FF",
+
+  // patient module
+  dark_blue: "#0E5DAE",
+  background_blue: "#F5FDFF",
+  // gray: "#979797",
+
+  // calendar
+  // availability blue
+  // TODO : change the comment
+  sky_blue: "#EAF9FE",
+  // border gray
+  gray: "#D2D0D0",
+  // light blue-greem
 };

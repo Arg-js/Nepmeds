@@ -4,7 +4,6 @@ import {
   Button,
   Center,
   HStack,
-  Icon,
   Input,
   InputGroup,
   InputLeftElement,
@@ -16,30 +15,22 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import { rejectedColumns } from "@nepMeds/components/DataTable/columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext, PaginationState } from "@tanstack/react-table";
-import React, { useState } from "react";
+import { PaginationState } from "@tanstack/react-table";
+import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { Show } from "react-iconly";
 import { IoFunnelOutline } from "react-icons/io5";
-import { generatePath, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ISpecializationList } from "./DoctorsList";
 
-interface CellContextSearch {
-  user: {
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-  };
-}
 interface Props {
   specializationList: ISpecializationList[];
 }
@@ -53,12 +44,14 @@ const RejectedDocList = ({ specializationList }: Props) => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+  const navigate = useNavigate();
+
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const [filterValue, setFilterValue] = useState<any>({
-    status: "rejected",
+    status: STATUSTYPE.rejected,
   });
 
   const [searchFilter, setSearchFilter] = useState("");
@@ -74,14 +67,14 @@ const RejectedDocList = ({ specializationList }: Props) => {
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
-        status: "rejected",
+        status: STATUSTYPE.rejected,
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
     } else {
       setFilterValue({
-        status: "rejected",
+        status: STATUSTYPE.rejected,
       });
       formMethods.reset({});
     }
@@ -90,124 +83,6 @@ const RejectedDocList = ({ specializationList }: Props) => {
   };
 
   const formMethods = useForm({ resolver: yupResolver(schema) });
-
-  const navigate = useNavigate();
-  const columns = React.useMemo(
-    () => [
-      {
-        header: "S.N",
-        accessorFn: (_cell: CellContext<any, any>, index: number) => {
-          return index + 1;
-        },
-      },
-      {
-        header: "Doctor's Name",
-        accessorKey: "first_name",
-        accessorFn: (_cell: CellContextSearch) => {
-          return _cell?.user?.first_name + " " + _cell?.user?.last_name;
-        },
-      },
-      {
-        header: "Contact Number",
-        cell: ({
-          row,
-        }: CellContext<
-          {
-            user: IBasicInfo;
-          },
-          any
-        >) => {
-          const { mobile_number } = row?.original?.user ?? "";
-
-          return <p>{mobile_number}</p>;
-        },
-      },
-      {
-        header: "Specialization",
-        accessorKey: "specialization",
-        cell: ({
-          row,
-        }: CellContext<{ specialization_names: Specialization[] }, any>) => {
-          const specialization = row?.original?.specialization_names?.map(
-            data => data.name
-          );
-          return (
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              width={"fit-content"}
-              p={1}
-              // background={colors.grey}
-              // borderRadius={20}
-            >
-              <p>{specialization}</p>
-            </Box>
-          );
-        },
-      },
-      {
-        header: "Reason",
-        accessorKey: "specialization",
-        cell: ({ row }: CellContext<{ rejected_remarks: string }, any>) => {
-          const rejected_remarks = row?.original?.rejected_remarks ?? "";
-
-          return (
-            <Box
-              display={"flex"}
-              flexWrap={"wrap"}
-              // width={"fit-content"}
-              // p={1}
-              // background={colors.grey}
-              // borderRadius={20}
-            >
-              <p>{rejected_remarks}</p>
-            </Box>
-          );
-        },
-      },
-
-      {
-        header: "Actions",
-        accessorKey: "actions",
-        cell: (cell: CellContext<any, any>) => {
-          return (
-            <HStack>
-              <Icon
-                as={Show}
-                fontSize={20}
-                cursor="pointer"
-                onClick={() => {
-                  formMethods.reset(cell.row.original);
-                  // onDetailsModalOpen();
-
-                  // navigate(NAVIGATION_ROUTES.DOC_PROFILE);
-                  navigate(
-                    generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                      id: cell.row.original.id,
-                    })
-                  );
-                }}
-              />
-
-              {/* <Icon
-                as={Delete}
-                fontSize={20}
-                cursor="pointer"
-                color={colors.red}
-                onClick={() => {
-                  // handleDeleteDoctor(cell.row.original.id);
-                  // formMethods.reset(cell.row.original);
-                  // onDetailsModalOpen();
-                  // setId(cell.row.original.id);
-                }}
-              /> */}
-            </HStack>
-          );
-        },
-      },
-    ],
-    []
-  );
 
   return (
     <>
@@ -288,7 +163,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
       </ModalComponent>
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Rejected Doctors</Text>
+        <Text fontWeight="medium">On-Hold Doctors</Text>
 
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
@@ -317,9 +192,8 @@ const RejectedDocList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={columns}
+          columns={rejectedColumns(navigate)}
           data={data?.results ?? []}
-          filter={{ globalFilter: searchFilter }}
           pagination={{
             manual: true,
             pageParams: { pageIndex, pageSize },

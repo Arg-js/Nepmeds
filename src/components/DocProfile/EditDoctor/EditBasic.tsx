@@ -67,6 +67,7 @@ const EditBasic = ({
       }
 
       await updatePersonalInfo.mutateAsync({
+        id: doctorProfileData.id?.toString(),
         user: user,
         specialization: formMethods.getValues("specialization"),
         pan_number: formMethods.getValues("pan_number"),
@@ -124,7 +125,7 @@ const EditBasic = ({
     <Card>
       <Flex alignItems={"center"} justifyContent={"space-between"} p={5}>
         <Text fontWeight={600} fontSize="20px">
-          Registration
+          Profile
         </Text>
 
         <Flex
@@ -239,15 +240,16 @@ const EditBasic = ({
                   )}
                 </Text>
               </Box>
-
-              <Text
-                fontWeight={"400"}
-                fontSize={"16px"}
-                lineHeight={"28px"}
-                color={"#5B5B5B"}
-              >
-                {doctorProfileData?.bio_detail}
-              </Text>
+              <Box width={"80%"}>
+                <Text
+                  fontWeight={"400"}
+                  fontSize={"16px"}
+                  lineHeight={"28px"}
+                  color={"#5B5B5B"}
+                >
+                  {doctorProfileData?.bio_detail}
+                </Text>
+              </Box>
             </CardBody>
           </Card>
         </>
