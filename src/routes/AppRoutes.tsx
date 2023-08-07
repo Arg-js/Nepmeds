@@ -9,6 +9,7 @@ import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Calendar from "@nepMeds/pages/NewCalendar";
+import PaymentSet from "@nepMeds/pages/Payment/PaymentSet";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
@@ -23,7 +24,6 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
-import PaymentSet from "@nepMeds/pages/Payment/PaymentSet";
 
 const routes = [
   {
@@ -64,6 +64,10 @@ const routes = [
         element: <DoctorProfile />,
       },
     ],
+  },
+  {
+    path: NAVIGATION_ROUTES.NO_MATCH,
+    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
   },
 ];
 const adminRoutes = [
@@ -108,7 +112,7 @@ const adminRoutes = [
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.LOGGEDIN} replace />,
+    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
   },
 ];
 const openRoutes = [
@@ -175,7 +179,6 @@ const AppRoutes = () => {
   const { data: isAuthenticated, isLoading } = useAuthentication();
   const { data: userInfo } = useLoginTokenDetailQuery();
   const element = useRoutes(
-    // isAuthenticated ? adminRoutes : openRoutes
     isAuthenticated
       ? userInfo?.is_superuser
         ? adminRoutes

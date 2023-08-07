@@ -204,7 +204,24 @@ const EditCertification = ({
   };
   return (
     <>
-      <Card mb={"18px"} minHeight="77vh" maxHeight={"100%"}>
+      <Card
+        mb={"18px"}
+        minHeight="77vh"
+        maxHeight={"77vh"}
+        css={{
+          "&::-webkit-scrollbar": {
+            width: "4px",
+          },
+          "&::-webkit-scrollbar-track": {
+            width: "6px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: `${colors.light_gray}`,
+            borderRadius: "24px",
+          },
+          overflowY: "scroll",
+        }}
+      >
         <Box
           p={"20px"}
           display={"flex"}
@@ -353,7 +370,7 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"90px"}
+                            w={"40px"}
                           >
                             Title
                           </Text>
@@ -403,7 +420,7 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"137px"}
+                            w={"100px"}
                           >
                             Credential ID
                           </Text>
@@ -429,7 +446,7 @@ const EditCertification = ({
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"86px"}
+                            w={"80px"}
                           >
                             Issued By
                           </Text>

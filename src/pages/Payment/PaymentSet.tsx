@@ -16,6 +16,7 @@ import {
   MenuList,
   Stack,
   Tab,
+  TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
@@ -25,6 +26,9 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 // import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import Bank from "@nepMeds/assets/images/bank-fill.png";
+import Esewa from "@nepMeds/assets/images/esewa.png";
+import Khalti from "@nepMeds/assets/images/khalti.png";
 import { svgs } from "@nepMeds/assets/svgs";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
@@ -34,9 +38,6 @@ import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import Bank from "../../assets/images/bank-fill.png";
-import Eswa from "../../assets/images/eswa.png";
-import Khalti from "../../assets/images/khalti.png";
 
 const PaymentSet = () => {
   const profileData = useProfileData();
@@ -54,7 +55,7 @@ const PaymentSet = () => {
     defaultValues: {
       instant_rate: 0 || null,
       schedule_rate: 0 || null,
-      eswaId: 0 || null,
+      esewaId: 0 || null,
       khaltiId: 0 || null,
       AccNo: 0 || null,
       bankName: "",
@@ -63,6 +64,11 @@ const PaymentSet = () => {
       accName: "",
     },
   });
+
+  const onDetailModalClose = () => {
+    onClose();
+    reset();
+  };
 
   const handleSubmitPayment = () => {
     reset();
@@ -75,7 +81,7 @@ const PaymentSet = () => {
     {
       id: 1,
       brandName: "Esewa",
-      imageName: Eswa,
+      imageName: Esewa,
     },
     {
       id: 2,
@@ -169,44 +175,50 @@ const PaymentSet = () => {
 
         <ModalComponent
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={onDetailModalClose}
           size={"md"}
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Add Payment</Text>
+              <Text>Choose Your Rate</Text>
             </HStack>
           }
           footer={
-            <HStack w={"full"} justifyContent={"space-between"}>
+            <HStack w={"full"} justifyContent={"space-around"}>
               <Button
                 outlineColor={"#13ADE1"}
                 borderRadius={"12px"}
                 color={colors.primary}
+                bg={colors.white}
+                w={"150px"}
+                onClick={onDetailModalClose}
+              >
+                Cancel
+              </Button>
+              <Button
+                borderRadius={"12px"}
+                bg={colors.primary}
+                color={colors.white}
                 w={"150px"}
                 type="submit"
                 onClick={triggerSubmit}
                 mr={1}
+                variant={"solid"}
+                h={"45px"}
               >
                 ADD
-              </Button>
-              <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
-                w={"150px"}
-                onClick={onClose}
-              >
-                Cancel
               </Button>
             </HStack>
           }
         >
           <VStack h={"auto"}>
-            <form onSubmit={handleSubmit(handleSubmitPayment)}>
+            <form
+              onSubmit={handleSubmit(handleSubmitPayment)}
+              style={{ width: "96%", marginTop: "10px" }}
+            >
               <Stack gap={2} bg={colors.white} w={"100%"}>
                 <FloatingLabelInput
-                  label=" Instant Rate"
+                  label="Instant Rate"
                   name="instant_rate"
                   register={register}
                   required
@@ -235,12 +247,12 @@ const PaymentSet = () => {
                   alignItems={"center"}
                 >
                   <GridItem>
-                    <TabList border="none" p={4}>
+                    <TabList shadow={"sm"} p={4} pb={0}>
                       <Tab>
                         <HStack>
                           {" "}
-                          <Image src={Eswa} h={"30px"} w={"30px"} />
-                          <Text>ESWA</Text>
+                          <Image src={Esewa} h={"30px"} w={"30px"} />
+                          <Text>ESewa</Text>
                         </HStack>
                       </Tab>
                       <Tab>
@@ -258,25 +270,31 @@ const PaymentSet = () => {
                         </HStack>
                       </Tab>
                     </TabList>
+                    <TabIndicator
+                      mt="-3px"
+                      height="3px"
+                      bg="blue.500"
+                      borderRadius="1px"
+                    />
                   </GridItem>
                 </Grid>
 
                 <TabPanels>
-                  <TabPanel>
+                  <TabPanel w={"full"} px={0}>
                     {tabIndexs === 0 && (
                       <FloatingLabelInput
-                        label="Eswa Id"
-                        name="eswaId"
+                        label="Esewa Id"
+                        name="esewaId"
                         register={register}
                         required
                         rules={{
-                          required: "Please Enter Eswa Id",
+                          required: "Please Enter Esewa Id",
                         }}
-                        error={errors.eswaId?.message}
+                        error={errors.esewaId?.message}
                       />
                     )}
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel w={"full"} px={0}>
                     {tabIndexs === 1 && (
                       <FloatingLabelInput
                         label="Khalti ID"
@@ -290,7 +308,7 @@ const PaymentSet = () => {
                       />
                     )}
                   </TabPanel>
-                  <TabPanel>
+                  <TabPanel w={"full"} px={0}>
                     {tabIndexs === 2 && (
                       <VStack spacing={5}>
                         <FloatingLabelInput

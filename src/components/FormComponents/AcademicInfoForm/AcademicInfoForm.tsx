@@ -145,17 +145,17 @@ export const AcademicInfoForm = ({
               columns={{ base: 1, md: 1, lg: 2, xl: 4 }}
             >
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     label="Degree"
                     required
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
-                    {...field}
                     rules={{
                       required: "Degree is required.",
                     }}
                     error={errors?.academic?.[index]?.degree_program?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.degree_program`}
@@ -163,7 +163,7 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <FloatingLabelInput
                     required
                     label="Major"
@@ -181,14 +181,13 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <Select
                     required
                     placeholder="Select College/University"
                     label="College/ University"
                     register={register}
                     options={collegeOptions}
-                    {...field}
                     style={{
                       background: colors.forminput,
                       border: "none",
@@ -198,6 +197,7 @@ export const AcademicInfoForm = ({
                       required: "College/University is required.",
                     }}
                     error={errors?.academic?.[index]?.university?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.university`}
@@ -205,14 +205,13 @@ export const AcademicInfoForm = ({
               />
 
               <Controller
-                render={({ field }) => (
+                render={({ field: { ref, ...field } }) => (
                   <Select
                     required
                     placeholder=""
                     label="Passed Year"
                     register={register}
                     options={years}
-                    {...field}
                     style={{
                       background: colors.forminput,
                       border: "none",
@@ -222,6 +221,7 @@ export const AcademicInfoForm = ({
                       required: "Graduation year is required.",
                     }}
                     error={errors?.academic?.[index]?.graduation_year?.message}
+                    {...field}
                   />
                 )}
                 name={`academic.${index}.graduation_year`}

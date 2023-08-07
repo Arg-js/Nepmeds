@@ -97,14 +97,14 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             color={colors.black_30}
             fontWeight="normal"
           >
-            Didnt receive the code? &nbsp;
+            Didn&apos;t receive the code? &nbsp;
           </Heading>
           {timer !== "00:00" ? (
             <Text
               fontSize="14px"
               textAlign="center"
-              color={colors.black_30}
-              fontWeight="normal"
+              color={colors.black_50}
+              fontWeight="bold"
             >
               {" "}
               {timer}
@@ -113,7 +113,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             <Text
               fontSize="14px"
               textAlign="center"
-              color={colors.black_30}
+              color={colors.blue_100}
               fontWeight="normal"
               cursor={"pointer"}
               justifyContent={"center"}
