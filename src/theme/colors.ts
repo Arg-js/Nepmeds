@@ -78,6 +78,7 @@ export const colors = {
   // patient module
   dark_blue: "#0E5DAE",
   background_blue: "#F5FDFF",
+  gray_text: "#605E5E",
   // gray: "#979797",
 
   // calendar

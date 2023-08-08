@@ -31,8 +31,9 @@ export const NAVIGATION_ROUTES = {
 
   DOC_PROFILE: "/doc-profile/:id",
 
-  // Patient module
-  DOCTOR_CONSULTATION: "/doctor-consultation",
+  // PATIENT MODULE
+  DOCTOR_CONSULTATION: "/patient/doctor-consultation",
+  DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
   NO_MATCH: "*",
 
   PAYMENTS: "/payment",
