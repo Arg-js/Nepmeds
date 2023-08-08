@@ -49,6 +49,9 @@ export const api = {
     delete: "/core/specialist-rate/{id}",
   },
   doctorList: "/doctor_consult/doctor-list/",
+
+  //payment
+  payment_methods_create: "/doctor_consult/amount-payment-create/",
 };
 
 export interface NepMedsResponse<T = any> {
