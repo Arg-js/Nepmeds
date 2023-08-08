@@ -5,11 +5,14 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { colors } from "@nepMeds/theme/colors";
 import ConsultationStepSection from "./Section/CosultationStep";
 import ChooseUsSection from "./Section/ChooseUs";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 
 const DoctorConsultation = () => {
+  const { data: specializaionData = [] } = useSpecializationRegisterData();
   return (
     <>
-      <WrapperBox backgroundColor={colors.light_blue}>
+      <WrapperBox backgroundImage={`url(${heroSectionBg})`}>
         <HeroSection />
       </WrapperBox>
       <WrapperBox backgroundColor={colors.background_blue}>
@@ -20,7 +23,7 @@ const DoctorConsultation = () => {
             description={"Consult with top doctors across specialities"}
             btnText={"View All Doctors"}
           />
-          <Card />
+          <Card data={specializaionData} />
 
           {/* Health Concern / Symptoms SECTION */}
           <Header
@@ -28,7 +31,7 @@ const DoctorConsultation = () => {
             description="Consult a doctor online for any health issue"
             btnText={"View All Symptoms"}
           />
-          <Card />
+          <Card data={specializaionData} />
 
           {/* ADVERTISEMENT SECTION */}
           <WrapperBox height={"420px"} />
@@ -39,7 +42,7 @@ const DoctorConsultation = () => {
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
           />
-          <Card />
+          <Card data={specializaionData} />
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
           <ConsultationStepSection />

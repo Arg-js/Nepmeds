@@ -1,23 +1,25 @@
 import { CardBody, Card as ChakraCard } from "@chakra-ui/card";
 import { Flex, Text } from "@chakra-ui/layout";
 import { DummyImageIcon } from "@nepMeds/assets/svgs";
+import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { SpecilaizationDatas } from "@nepMeds/utils/Patient/DummyData";
 
-const Card = () => {
+const Card: React.FC<{ data: Specialization[] }> = ({ data }) => {
   return (
     <Flex gap={5} my={10}>
-      {SpecilaizationDatas.map(SpecilaizationData => {
+      {data.map(datum => {
+        const truncatedSymptomsList =
+          datum.symptom_list && datum?.symptom_list.slice(0, 4);
         return (
           <ChakraCard
             variant={"elevated"}
-            width={"auto"}
+            width={"201px"}
+            height={"282px"}
             textAlign={"center"}
-            key={SpecilaizationData.id}
+            key={datum.id}
             pb={4}
           >
             <Flex gap={3} direction={"column"}>
-              {/* <Card variant={"outline"} width={203} height={280}> */}
               <DummyImageIcon />
               <Text
                 size="md"
@@ -25,12 +27,23 @@ const Card = () => {
                 fontSize={"14px"}
                 color={colors.dark_blue}
               >
-                {SpecilaizationData.title}
+                {datum.name}
               </Text>
               <CardBody py={0}>
-                <Flex direction={"column"} gap={3}>
-                  <Text fontWeight={400} fontSize={"11px"}>
-                    {SpecilaizationData.description}
+                <Flex direction={"column"} gap={4}>
+                  <Text
+                    display={"flex"}
+                    justifyContent={"center"}
+                    fontWeight={400}
+                    fontSize={"11px"}
+                    height={"35px"}
+                  >
+                    {truncatedSymptomsList &&
+                      truncatedSymptomsList.map((symptom, index) => {
+                        return `${symptom.name} ${
+                          truncatedSymptomsList.length - 1 !== index ? "," : ""
+                        } `;
+                      })}
                   </Text>
                   <Text
                     fontWeight={600}

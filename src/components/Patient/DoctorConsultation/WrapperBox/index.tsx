@@ -1,15 +1,16 @@
 import { Box } from "@chakra-ui/layout";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
-import { colors } from "@nepMeds/theme/colors";
 
 interface IWrapperBox {
   children?: ReactJSXElement;
   backgroundColor?: string;
+  backgroundImage?: string;
   height?: string;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({
   children,
-  backgroundColor = colors.background_blue,
+  backgroundColor = "none",
+  backgroundImage = "none",
   height = "auto",
 }) => {
   return (
@@ -17,7 +18,8 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       height={height}
       bg={backgroundColor}
       fontFamily={"Quicksand"}
-      p={15}
+      backgroundImage={backgroundImage}
+      p={10}
       px={30}
     >
       {children}
