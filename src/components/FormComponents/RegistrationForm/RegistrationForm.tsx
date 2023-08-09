@@ -691,20 +691,24 @@ const RegistrationForm = () => {
             </Flex>
           </HStack>
 
-          <Flex justifyContent="space-between" mt={4} mb={4}>
-            <Button
-              onClick={() => {
-                setActiveStep(prevStep => prevStep - 1);
-              }}
-              background={colors.main}
-              color={colors.white}
-              fontWeight={400}
-              isDisabled={activeStep === 0}
-              variant="register"
-            >
-              Go Back
-            </Button>
-
+          <Flex
+            justifyContent={activeStep === 0 ? "flex-end" : "space-between"}
+            mt={4}
+            mb={4}
+          >
+            {activeStep !== 0 && (
+              <Button
+                onClick={() => {
+                  setActiveStep(prevStep => prevStep - 1);
+                }}
+                background={colors.main}
+                color={colors.white}
+                fontWeight={400}
+                variant="register"
+              >
+                Go Back
+              </Button>
+            )}
             <Flex gap={4}>
               {activeStep > 1 && activeStep < 5 && (
                 <Button
