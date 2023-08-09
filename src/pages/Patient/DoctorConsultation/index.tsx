@@ -7,6 +7,10 @@ import ConsultationStepSection from "./Section/CosultationStep";
 import ChooseUsSection from "./Section/ChooseUs";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
+import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
+import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
+import { Box, Image } from "@chakra-ui/react";
+import PatientFooter from "../Section/Footer";
 
 const DoctorConsultation = () => {
   const { data: specializaionData = [] } = useSpecializationRegisterData();
@@ -34,7 +38,13 @@ const DoctorConsultation = () => {
           <Card data={specializaionData} />
 
           {/* ADVERTISEMENT SECTION */}
-          <WrapperBox height={"420px"} />
+          <Box height={"420px"}>
+            <Image
+              src={advertisement1}
+              alt="advertisement"
+              objectFit={"contain"}
+            />
+          </Box>
 
           {/* Doctors SECTION */}
           <Header
@@ -48,13 +58,15 @@ const DoctorConsultation = () => {
           <ConsultationStepSection />
 
           {/* ADVERTISEMENT SECTION */}
-          <WrapperBox height={"470.86px"} />
+          <Box height={"470.86px"} my={10}>
+            <Image src={advertisement2} alt="advertisement" />
+          </Box>
 
           {/* WHY CHOOSE US SECTION */}
           <ChooseUsSection />
 
           {/* FOOTER SECTION */}
-          <WrapperBox height={"517px"} backgroundColor={colors.white} />
+          <PatientFooter />
         </>
       </WrapperBox>
     </>

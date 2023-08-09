@@ -7,6 +7,7 @@ export interface Specialization {
   symptom_list?: Symptom[];
   name: string;
   consultation_fees?: number;
+  image: string;
 }
 
 export interface Symptom {
