@@ -1,6 +1,7 @@
 import {
   Box,
   Button,
+  Flex,
   Grid,
   GridItem,
   HStack,
@@ -16,10 +17,8 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-// import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import Bank from "@nepMeds/assets/images/bank-fill.png";
-import Esewa from "@nepMeds/assets/images/esewa.png";
-import Khalti from "@nepMeds/assets/images/khalti.png";
+
+import { images } from "@nepMeds/assets/images";
 import { svgs } from "@nepMeds/assets/svgs";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
@@ -40,23 +39,23 @@ const paymentDetail = [
   {
     id: 1,
     name: "Esewa",
-    image: Esewa,
+    image: images.esewa,
   },
   {
     id: 2,
     name: "Khalti",
-    image: Khalti,
+    image: images.khalti,
   },
   {
     id: 3,
     name: "Bank",
-    image: Bank,
+    image: images.bank,
   },
 ];
 
 const PaymentSet = () => {
   const profileData = useProfileData();
-  const [tabIndexs, setTabIndexs] = useState<number>(0);
+  const [tabIndex, settabIndex] = useState<number>(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -72,6 +71,7 @@ const PaymentSet = () => {
 
   const onDetailModalClose = () => {
     onClose();
+    settabIndex(0);
     reset({});
   };
 
@@ -130,15 +130,17 @@ const PaymentSet = () => {
           </VStack>
         </Box>
       ) : (
-        <Box mt={20} h={"80vh"} bg={colors.white}>
-          <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={"30px"}>
-            {paymentDetail.map(x => {
+        <Box h={"80vh"} bg={colors.white}>
+          <Flex justifyContent={"end"}></Flex>
+          <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={12}>
+            {paymentDetail.map((x, i) => {
               return (
                 <GridItem key={x.id}>
                   <PaymentCard
                     name={x.name}
                     image={x.image}
                     onClickEdit={() => {
+                      settabIndex(i);
                       onOpen();
                     }}
                     onClickView={() => {
@@ -221,7 +223,7 @@ const PaymentSet = () => {
               />
               <Text>Choose Your Payment Method</Text>
             </Stack>
-            <Tabs onChange={index => setTabIndexs(index)} index={tabIndexs}>
+            <Tabs onChange={index => settabIndex(index)} index={tabIndex}>
               <Grid
                 display={"flex"}
                 templateColumns="repeat(5, 1fr)"
@@ -233,21 +235,21 @@ const PaymentSet = () => {
                     <Tab>
                       <HStack>
                         {" "}
-                        <Image src={Esewa} h={"30px"} w={"30px"} />
+                        <Image src={images.esewa} h={"30px"} w={"30px"} />
                         <Text>ESewa</Text>
                       </HStack>
                     </Tab>
                     <Tab>
                       <HStack>
                         {" "}
-                        <Image src={Khalti} h={"30px"} w={"30px"} />
+                        <Image src={images.khalti} h={"30px"} w={"30px"} />
                         <Text>Khalti</Text>
                       </HStack>
                     </Tab>
                     <Tab>
                       <HStack>
                         {" "}
-                        <Image src={Bank} h={"30px"} w={"30px"} />
+                        <Image src={images.bank} h={"30px"} w={"30px"} />
                         <Text>Bank</Text>
                       </HStack>
                     </Tab>
@@ -257,7 +259,7 @@ const PaymentSet = () => {
 
               <TabPanels>
                 <TabPanel w={"full"} px={0}>
-                  {tabIndexs === 0 && (
+                  {tabIndex === 0 && (
                     <>
                       <FloatingLabelInput
                         label="Esewa Id"
@@ -267,6 +269,10 @@ const PaymentSet = () => {
                         rules={{
                           required: "Please Enter Esewa Id",
                         }}
+                        error={
+                          errors?.doctor_amount &&
+                          errors?.doctor_amount[0]?.epayment_id?.message
+                        }
                       />
                       <Controller
                         render={({ field: { value, ref, ...fieldValues } }) => (
@@ -300,7 +306,7 @@ const PaymentSet = () => {
                   )}
                 </TabPanel>
                 <TabPanel w={"full"} px={0}>
-                  {tabIndexs === 1 && (
+                  {tabIndex === 1 && (
                     <>
                       <FloatingLabelInput
                         label="Khalti ID"
@@ -310,6 +316,10 @@ const PaymentSet = () => {
                         rules={{
                           required: "Please Enter Khalti Id",
                         }}
+                        error={
+                          errors?.doctor_amount &&
+                          errors?.doctor_amount[1]?.epayment_id?.message
+                        }
                       />
                       <Controller
                         render={({ field: { value, ref, ...fieldValues } }) => (
@@ -343,7 +353,7 @@ const PaymentSet = () => {
                   )}
                 </TabPanel>
                 <TabPanel w={"full"} px={0}>
-                  {tabIndexs === 2 && (
+                  {tabIndex === 2 && (
                     <VStack spacing={5}>
                       <FloatingLabelInput
                         label="Bank Name"

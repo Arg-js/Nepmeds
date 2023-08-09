@@ -52,6 +52,7 @@ export const api = {
 
   //payment
   payment_methods_create: "/doctor_consult/amount-payment-create/",
+  payment_methods: "/core/payment-mode/",
 };
 
 export interface NepMedsResponse<T = any> {
