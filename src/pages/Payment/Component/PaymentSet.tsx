@@ -39,24 +39,23 @@ import PaymentCard from "./PaymentCard";
 const paymentDetail = [
   {
     id: 1,
-    brandName: "Esewa",
-    imageName: Esewa,
+    name: "Esewa",
+    image: Esewa,
   },
   {
     id: 2,
-    brandName: "Khalti",
-    imageName: Khalti,
+    name: "Khalti",
+    image: Khalti,
   },
   {
     id: 3,
-    brandName: "Bank",
-    imageName: Bank,
+    name: "Bank",
+    image: Bank,
   },
 ];
 
 const PaymentSet = () => {
   const profileData = useProfileData();
-  const [tabIndex, setTabIndex] = useState<number>(0);
   const [tabIndexs, setTabIndexs] = useState<number>(0);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -66,17 +65,17 @@ const PaymentSet = () => {
     handleSubmit,
     reset,
     formState: { errors },
+    setValue,
+    getValues,
   } = useForm<IPaymentMethod>();
   const paymentMethods = useCreatePaymentMethods();
 
   const onDetailModalClose = () => {
     onClose();
-    reset();
+    reset({});
   };
 
   const handleSubmitPayment = (value: IPaymentMethod) => {
-    // reset();
-    // onClose();
     const val = value.doctor_amount.map((e, index) => {
       return { ...e, payment_mode: index + 1 };
     });
@@ -84,7 +83,9 @@ const PaymentSet = () => {
       { ...value, doctor_amount: val },
       {
         onSuccess: () => {
-          toastSuccess("come back");
+          toastSuccess("Payment details added scuccessfully");
+          profileData?.dataRefetch();
+          onDetailModalClose();
         },
         onError: error => {
           const err = serverErrorResponse(error);
@@ -106,7 +107,6 @@ const PaymentSet = () => {
           justifyContent={"center"}
           alignItems={"center"}
           display={"flex"}
-          // bg={colors.white}
         >
           <VStack>
             <svgs.InCompletePayment />
@@ -120,7 +120,7 @@ const PaymentSet = () => {
                 mt={5}
                 h={"45px"}
                 sx={{
-                  "&:hover": { bg: colors.primary, color: colors.white },
+                  "&:hover": { bg: colors.primary },
                 }}
                 onClick={onOpen}
               >
@@ -130,49 +130,26 @@ const PaymentSet = () => {
           </VStack>
         </Box>
       ) : (
-        <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
-          <Grid
-            display={"flex"}
-            templateColumns="repeat(5, 1fr)"
-            justifyContent={"space-between"}
-            alignItems={"center"}
-          >
-            <GridItem>
-              <TabList border="none" p={4}>
-                <Tab>Payment Method</Tab>
-                <Tab>Payment History</Tab>
-              </TabList>
-            </GridItem>
+        <Box mt={20} h={"80vh"} bg={colors.white}>
+          <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={"30px"}>
+            {paymentDetail.map(x => {
+              return (
+                <GridItem key={x.id}>
+                  <PaymentCard
+                    name={x.name}
+                    image={x.image}
+                    onClickEdit={() => {
+                      onOpen();
+                    }}
+                    onClickView={() => {
+                      onOpen();
+                    }}
+                  />
+                </GridItem>
+              );
+            })}
           </Grid>
-
-          <TabPanels>
-            <TabPanel>
-              {tabIndex === 0 && (
-                <Box h={"80vh"} bg={colors.white}>
-                  <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={"30px"}>
-                    {paymentDetail.map(x => {
-                      return (
-                        <GridItem key={x.id}>
-                          <PaymentCard
-                            brandName={x.brandName}
-                            imageName={x.imageName}
-                            onClickEdit={() => {
-                              onOpen();
-                            }}
-                            onClickView={() => {
-                              onOpen();
-                            }}
-                          />
-                        </GridItem>
-                      );
-                    })}
-                  </Grid>
-                </Box>
-              )}
-            </TabPanel>
-            <TabPanel>{tabIndex === 1 && <Text>world</Text>}</TabPanel>
-          </TabPanels>
-        </Tabs>
+        </Box>
       )}
 
       <ModalComponent
@@ -207,8 +184,9 @@ const PaymentSet = () => {
               mr={1}
               variant={"solid"}
               h={"45px"}
+              isLoading={paymentMethods.isLoading}
             >
-              ADD
+              Done
             </Button>
           </HStack>
         }
@@ -297,6 +275,22 @@ const PaymentSet = () => {
                             control={control}
                             {...fieldValues}
                             checked={value}
+                            onChange={e => {
+                              setValue(
+                                `doctor_amount.0.is_primary_method`,
+                                e.target.checked
+                              );
+                              getValues("doctor_amount.1") &&
+                                setValue(
+                                  `doctor_amount.1.is_primary_method`,
+                                  false
+                                );
+                              getValues("doctor_amount.2") &&
+                                setValue(
+                                  `doctor_amount.2.is_primary_method`,
+                                  false
+                                );
+                            }}
                           />
                         )}
                         name={`doctor_amount.0.is_primary_method`}
@@ -324,6 +318,22 @@ const PaymentSet = () => {
                             control={control}
                             {...fieldValues}
                             checked={value}
+                            onChange={e => {
+                              setValue(
+                                `doctor_amount.1.is_primary_method`,
+                                e.target.checked
+                              );
+                              getValues("doctor_amount.0") &&
+                                setValue(
+                                  `doctor_amount.0.is_primary_method`,
+                                  false
+                                );
+                              getValues("doctor_amount.2") &&
+                                setValue(
+                                  `doctor_amount.2.is_primary_method`,
+                                  false
+                                );
+                            }}
                           />
                         )}
                         name="doctor_amount.1.is_primary_method"
@@ -378,6 +388,22 @@ const PaymentSet = () => {
                             control={control}
                             {...fieldValues}
                             checked={value}
+                            onChange={e => {
+                              setValue(
+                                `doctor_amount.2.is_primary_method`,
+                                e.target.checked
+                              );
+                              getValues("doctor_amount.1") &&
+                                setValue(
+                                  `doctor_amount.1.is_primary_method`,
+                                  false
+                                );
+                              getValues("doctor_amount.0") &&
+                                setValue(
+                                  `doctor_amount.0.is_primary_method`,
+                                  false
+                                );
+                            }}
                           />
                         )}
                         name="doctor_amount.2.is_primary_method"

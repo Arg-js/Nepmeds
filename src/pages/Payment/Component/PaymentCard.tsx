@@ -14,15 +14,15 @@ import {
 import { BsThreeDotsVertical } from "react-icons/bs";
 
 interface IPaymentCard {
-  brandName?: string;
-  imageName?: string;
+  name?: string;
+  image?: string;
   onClickView: () => void;
   onClickEdit: () => void;
 }
 
 const PaymentCard = ({
-  brandName,
-  imageName,
+  name,
+  image,
   onClickView,
   onClickEdit,
 }: IPaymentCard) => {
@@ -42,11 +42,11 @@ const PaymentCard = ({
           bg={"#F4F4F4"}
           maxH={"70px"}
         >
-          <Image src={imageName} h={"70px"} w={"70px"} mb={"-15%"} />
+          <Image src={image} h={"70px"} w={"70px"} mb={"-15%"} />
         </CardHeader>
         <CardBody>
           <Flex justifyContent={"space-between"}>
-            <Text>{brandName}</Text>
+            <Text>{name}</Text>
             <Menu>
               <MenuButton as={Button} variant={"unstyled"}>
                 <BsThreeDotsVertical />

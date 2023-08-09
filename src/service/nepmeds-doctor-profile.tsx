@@ -125,7 +125,7 @@ const getBasicProfile = async () => {
 };
 
 export const useDoctorBasicProfile = () => {
-  return useQuery(api.basicProfile, getBasicProfile, {
+  return useQuery([api.basicProfile], getBasicProfile, {
     select: data => data.data.data,
   });
 };
