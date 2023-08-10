@@ -33,7 +33,7 @@ const MultipleImageUpload = ({
   deleteFile,
 }: MultipleImageUploadProps) => {
   const [showAddImageBox, setShowAddImageBox] = useState<boolean[]>(
-    Array(selectedImages.length).fill(false)
+    Array(selectedImages?.length).fill(false)
   );
 
   const { getValues } = useFormContext();
@@ -42,14 +42,14 @@ const MultipleImageUpload = ({
     const fieldValue = getValues(fieldValues);
     // Initialize selected images from field values when the component mounts
     if (editMode) {
-      if (fieldValue && fieldValue.length > 0) {
+      if (fieldValue && fieldValue?.length > 0) {
         const defaultImages = fieldValue?.map((item: any) => {
           // Extract the file path from each item in the array
           const filePath = item?.file;
 
           // Append the base URL with the file name
           const imageUrl = filePath
-            ? { url: getImageUrl(filePath), id: item?.id }
+            ? { url: getImageUrl(filePath), id: item.id }
             : item && URL.createObjectURL(item);
 
           // Create a new image object using the file URL
