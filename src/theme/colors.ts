@@ -82,6 +82,7 @@ export const colors = {
   gray_text_header: "#979797",
   gray_border: "#EBF3F5",
   gray_bg: "#F9FEFF",
+  forest_green: "#007D00",
 
   // calendar
   // availability blue
