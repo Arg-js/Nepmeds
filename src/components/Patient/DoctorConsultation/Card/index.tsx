@@ -1,16 +1,25 @@
 import { CardBody, Card as ChakraCard } from "@chakra-ui/card";
-import { Flex, Text } from "@chakra-ui/layout";
+import { Flex, Text, Grid } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
 import { DummyImageIcon } from "@nepMeds/assets/svgs";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
+// import { Specialization } from "@nepMeds/service/nepmeds-specialization";
+// import { Symptom } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
 
-const Card: React.FC<{ data: Specialization[] }> = ({ data }) => {
+enum Type {
+  SPECIALIST,
+  SYMPTOM,
+  DOCTOR,
+}
+
+const Card: React.FC<{ data: any; type: number }> = ({ data, type }) => {
   return (
-    <Flex gap={8} my={10}>
-      {data.map(datum => {
+    <Grid templateColumns={"repeat(6, 1fr)"} gap={8} my={10}>
+      {data.map((datum: any) => {
         const truncatedSymptomsList =
-          datum.symptom_list && datum?.symptom_list.slice(0, 4);
+          type === Type.SPECIALIST &&
+          datum.symptom_list &&
+          datum?.symptom_list.slice(0, 4);
         return (
           <ChakraCard
             variant={"elevated"}
@@ -38,7 +47,8 @@ const Card: React.FC<{ data: Specialization[] }> = ({ data }) => {
                 fontSize={"14px"}
                 color={colors.dark_blue}
               >
-                {datum.name}
+                {type === Type.SPECIALIST && datum.name}
+                {type === Type.SYMPTOM && datum.name}
               </Text>
               <CardBody py={0}>
                 <Flex direction={"column"} gap={4}>
@@ -49,12 +59,17 @@ const Card: React.FC<{ data: Specialization[] }> = ({ data }) => {
                     fontSize={"11px"}
                     height={"35px"}
                   >
-                    {truncatedSymptomsList &&
-                      truncatedSymptomsList.map((symptom, index) => {
-                        return `${symptom.name}${
-                          truncatedSymptomsList.length - 1 !== index ? "," : ""
-                        } `;
-                      })}
+                    {type === Type.SPECIALIST &&
+                      truncatedSymptomsList &&
+                      truncatedSymptomsList.map(
+                        (symptom: any, index: number) => {
+                          return `${symptom.name}${
+                            truncatedSymptomsList.length - 1 !== index
+                              ? ","
+                              : ""
+                          } `;
+                        }
+                      )}
                   </Text>
                   <Text
                     fontWeight={600}
@@ -69,7 +84,7 @@ const Card: React.FC<{ data: Specialization[] }> = ({ data }) => {
           </ChakraCard>
         );
       })}
-    </Flex>
+    </Grid>
   );
 };
 

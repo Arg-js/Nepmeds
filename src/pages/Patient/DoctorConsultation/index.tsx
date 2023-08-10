@@ -1,5 +1,5 @@
 import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
-import Header from "@nepMeds/components/Patient/DoctorConsultation/Header";
+import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
@@ -11,9 +11,11 @@ import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
 import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
 import { Box, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 
 const DoctorConsultation = () => {
   const { data: specializaionData = [] } = useSpecializationRegisterData();
+  const { data: symptomData = [] } = useGetSymptoms();
   return (
     <>
       <WrapperBox backgroundImage={`url(${heroSectionBg})`}>
@@ -22,20 +24,20 @@ const DoctorConsultation = () => {
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
           {/* Specialist Doctors SECTION*/}
-          <Header
+          <Heading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
             btnText={"View All Doctors"}
           />
-          <Card data={specializaionData} />
+          <Card data={specializaionData} type={0} />
 
           {/* Health Concern / Symptoms SECTION */}
-          <Header
+          <Heading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
             btnText={"View All Symptoms"}
           />
-          <Card data={specializaionData} />
+          <Card data={symptomData} type={1} />
 
           {/* ADVERTISEMENT SECTION */}
           <Box height={"420px"}>
@@ -47,12 +49,12 @@ const DoctorConsultation = () => {
           </Box>
 
           {/* Doctors SECTION */}
-          <Header
+          <Heading
             heading={"Our Doctors"}
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
           />
-          <Card data={specializaionData} />
+          <Card data={specializaionData} type={2} />
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
           <ConsultationStepSection />

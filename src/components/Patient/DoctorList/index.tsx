@@ -6,6 +6,7 @@ import {
 } from "@nepMeds/assets/svgs";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
+import doctorImage from "@nepMeds/assets/images/doctor.png";
 import { useMemo } from "react";
 
 const DoctorListCard: React.FC<{ data: Specialization[] }> = ({ data }) => {
@@ -30,11 +31,11 @@ const DoctorListCard: React.FC<{ data: Specialization[] }> = ({ data }) => {
     [data]
   );
   return (
-    <Flex gap={5} my={10}>
+    <Flex gap={5} mb={10}>
       <Card variant={"elevated"}>
         <Flex>
           <Box width={"296px"} height={"215px"}>
-            <Image src="/src/assets/images/doctor.png"></Image>
+            <Image src={doctorImage} alt="doctorImage" />
           </Box>
           <Flex
             width={"377px"}
