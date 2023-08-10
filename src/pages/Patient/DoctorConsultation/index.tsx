@@ -13,10 +13,13 @@ import { Box, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import Header from "@nepMeds/pages/Patient/Section/Header";
+import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
+import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
 
 const DoctorConsultation = () => {
   const { data: specializaionData = [] } = useSpecializationRegisterData();
   const { data: symptomData = [] } = useGetSymptoms();
+  const { data: doctorList } = useGetDoctorList();
 
   return (
     <>
@@ -52,12 +55,19 @@ const DoctorConsultation = () => {
           </Box>
 
           {/* Doctors SECTION */}
+
           <Heading
             heading={"Our Doctors"}
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
           />
-          <Card data={specializaionData} type={2} />
+
+          {doctorList?.results &&
+            doctorList.results.map(doctor => {
+              return (
+                <DoctorListCard data={doctor} size={Size.sm} key={doctor.id} />
+              );
+            })}
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
           <ConsultationStepSection />
