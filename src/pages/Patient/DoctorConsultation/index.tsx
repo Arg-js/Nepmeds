@@ -12,12 +12,15 @@ import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
 import { Box, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import Header from "@nepMeds/pages/Patient/Section/Header";
 
 const DoctorConsultation = () => {
   const { data: specializaionData = [] } = useSpecializationRegisterData();
   const { data: symptomData = [] } = useGetSymptoms();
+
   return (
     <>
+      <Header />
       <WrapperBox backgroundImage={`url(${heroSectionBg})`}>
         <HeroSection />
       </WrapperBox>
