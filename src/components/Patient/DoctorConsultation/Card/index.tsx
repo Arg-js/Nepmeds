@@ -12,6 +12,7 @@ enum Type {
   DOCTOR,
 }
 
+// TODO: remove this any
 const Card: React.FC<{ data: any; type: number }> = ({ data, type }) => {
   return (
     <Grid templateColumns={"repeat(6, 1fr)"} gap={8} my={10}>

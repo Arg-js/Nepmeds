@@ -7,6 +7,7 @@ interface IWrapperBox {
   backgroundImage?: string;
   height?: string;
   paddingX?: string;
+  padding?: string;
   width?: string;
   borderColor?: string;
   border?: string;
@@ -16,6 +17,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   backgroundColor = "none",
   backgroundImage = "none",
   height = "auto",
+  padding = "10",
   paddingX = "30",
   width = "auto",
   border = "none",
@@ -26,7 +28,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       bg={backgroundColor}
       fontFamily={"Quicksand"}
       backgroundImage={backgroundImage}
-      p={10}
+      p={padding}
       px={paddingX}
       width={width}
       border={border}
