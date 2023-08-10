@@ -135,6 +135,15 @@ export const ExperienceForm = ({
     }
   };
 
+  const getFiles = () => {
+    const academic = getValues("experience") ?? [];
+
+    const files = academic.map((item: any) => {
+      return item.experience_documents;
+    });
+    return files;
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -143,7 +152,7 @@ export const ExperienceForm = ({
             <SimpleGrid mb={4}>
               <MultiImageUpload
                 setFiles={setFiles}
-                files={files}
+                files={files.length === 0 ? getFiles() : files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`experience.${index}.experience_documents`}

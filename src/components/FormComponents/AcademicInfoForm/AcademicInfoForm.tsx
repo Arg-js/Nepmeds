@@ -79,8 +79,6 @@ export const AcademicInfoForm = ({
 
   const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
 
-  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
   const years = generateYearRange(1950).map(year => {
     return {
       label: year.toString(),
@@ -104,8 +102,7 @@ export const AcademicInfoForm = ({
       remove(index);
     }
 
-    // Remove corresponding files from selectedImagesFile state
-    setSelectedImagesFile(prevImages => {
+    setFiles(prevImages => {
       const updatedImages = [...prevImages];
       updatedImages.splice(index, 1);
       return updatedImages;
@@ -121,6 +118,15 @@ export const AcademicInfoForm = ({
     }
   };
 
+  const getFiles = () => {
+    const academic = getValues("academic") ?? [];
+
+    const files = academic.map((item: any) => {
+      return item.academic_documents;
+    });
+    return files;
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -133,7 +139,7 @@ export const AcademicInfoForm = ({
             <Box mb={4}>
               <MultiImageUpload
                 setFiles={setFiles}
-                files={files}
+                files={files.length === 0 ? getFiles() : files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`academic.${index}.academic_documents`}
