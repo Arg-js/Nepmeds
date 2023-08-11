@@ -1,6 +1,20 @@
-import { Grid, GridItem, Flex, Divider, Text } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Flex,
+  Divider,
+  Text,
+  Image,
+  VStack,
+} from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
+import googlePlay from "@nepMeds/assets/images/googlePlay.png";
+import appStore from "@nepMeds/assets/images/appStore.png";
+import visaImage from "@nepMeds/assets/images/visa.png";
+import esewaImage from "@nepMeds/assets/images/esewaImage.png";
+import khaltiImage from "@nepMeds/assets/images/khaltiImage.png";
+import imePayImage from "@nepMeds/assets/images/IMEpay.png";
 
 const FooterContents = [
   {
@@ -37,9 +51,13 @@ const FooterContents = [
 const PatientFooter = () => {
   return (
     <>
-      <WrapperBox height={"517px"} backgroundColor={colors.white} paddingX="5">
+      <WrapperBox
+        height={"517px"}
+        backgroundColor={colors.white}
+        width={"1512px"}
+      >
         <>
-          <Grid templateColumns={`repeat(5,250px) 1fr`} gap={10}>
+          <Grid templateColumns={`repeat(5,200px) 1fr`} gap={10}>
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
@@ -60,6 +78,31 @@ const PatientFooter = () => {
             })}
           </Grid>
           <Divider my={10} borderColor={colors.gray_text_header} />
+          <Flex justifyContent={"space-between"}>
+            <VStack gap={3.5}>
+              <Text fontWeight={600} fontSize={"14px"}>
+                Download App
+              </Text>
+              <Flex gap={2.5}>
+                <Image alt="Google Play" src={googlePlay} />
+                <Image alt="App Store" src={appStore} />
+              </Flex>
+            </VStack>
+            <VStack gap={3.5}>
+              <Text fontWeight={600} fontSize={"14px"}>
+                Payment Method
+              </Text>
+              <Flex gap={2.5}>
+                <Image alt="Google Play" src={imePayImage} />
+                <Image alt="App Store" src={esewaImage} />
+                <Image alt="Google Play" src={visaImage} />
+                <Image alt="App Store" src={khaltiImage} />
+              </Flex>
+            </VStack>
+          </Flex>
+          <Text fontWeight={500} fontSize={"18px"} textAlign={"center"} mt={15}>
+            Copyright © NepMeds 2023. All rights reserved
+          </Text>
         </>
       </WrapperBox>
     </>
