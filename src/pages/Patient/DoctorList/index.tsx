@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
+import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
 import { colors } from "@nepMeds/theme/colors";
@@ -74,7 +74,7 @@ const DoctorList = () => {
               route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
             }}
           />
-          <Heading
+          <SectionHeading
             heading="Doctors List"
             description="Book Appointment with top doctors across various speciality"
           />

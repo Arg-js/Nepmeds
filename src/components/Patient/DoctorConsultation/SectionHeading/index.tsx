@@ -2,13 +2,13 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 
-interface IHeading {
+interface ISectionHeading {
   heading?: string;
   description?: string;
   btnText?: string;
   onClick?: () => void;
 }
-const Heading: React.FC<IHeading> = ({
+const SectionHeading: React.FC<ISectionHeading> = ({
   heading,
   description,
   btnText,
@@ -52,4 +52,4 @@ const Heading: React.FC<IHeading> = ({
   );
 };
 
-export default Heading;
+export default SectionHeading;

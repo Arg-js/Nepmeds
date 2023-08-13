@@ -1,5 +1,5 @@
 import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
-import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
+import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
@@ -50,7 +50,7 @@ const DoctorConsultation = () => {
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
           {/* Specialist Doctors SECTION*/}
-          <Heading
+          <SectionHeading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
             // btnText={"View All Doctors"}
@@ -60,7 +60,7 @@ const DoctorConsultation = () => {
           </Box>
 
           {/* Health Concern / Symptoms SECTION */}
-          <Heading
+          <SectionHeading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
             // btnText={"View All Symptoms"}
@@ -81,7 +81,7 @@ const DoctorConsultation = () => {
 
           {/* Doctors SECTION */}
 
-          <Heading
+          <SectionHeading
             heading={"Our Doctors"}
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
