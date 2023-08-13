@@ -6,8 +6,14 @@ interface IHeading {
   heading?: string;
   description?: string;
   btnText?: string;
+  onClick?: () => void;
 }
-const Heading: React.FC<IHeading> = ({ heading, description, btnText }) => {
+const Heading: React.FC<IHeading> = ({
+  heading,
+  description,
+  btnText,
+  onClick,
+}) => {
   return (
     <Flex justifyContent={"space-between"} mb={4}>
       <Box>
@@ -37,6 +43,7 @@ const Heading: React.FC<IHeading> = ({ heading, description, btnText }) => {
           height={"48px"}
           px={7}
           border={`1px solid ${colors.primary}`}
+          onClick={onClick}
         >
           {btnText}
         </Button>
