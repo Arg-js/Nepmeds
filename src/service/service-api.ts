@@ -52,6 +52,7 @@ export const api = {
   patient: {
     doctorList: {
       get: "/patient/filter-doctor-list/",
+      getById: "/patient/doctor-details-appointment/{id}/",
     },
   },
 };

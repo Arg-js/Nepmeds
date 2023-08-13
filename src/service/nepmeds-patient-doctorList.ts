@@ -24,18 +24,90 @@ export interface IDoctorListResult {
   schedule_rate: string;
 }
 
+export interface IDoctorListById {
+  id: number;
+  name: string;
+  profile_picture: string;
+  specialization_names: SpecializationName[];
+  medical_licence_number: string;
+  bio_detail: string;
+  schedule_rate: string;
+  availability: string;
+}
+
 export interface SpecializationName {
   id: number;
   name: string;
 }
 
-const getDoctorList = () => {
+export interface IPaginatinParams {
+  search: string;
+  page_size: number;
+  page: number;
+}
+
+const getDoctorList = ({ page_size, page, search }: IPaginatinParams) => {
   return HttpClient.get<NepMedsResponse<IDoctorList>>(
-    api.patient.doctorList.get
+    api.patient.doctorList.get,
+    {
+      params: {
+        search,
+        page_size,
+        page,
+      },
+    }
   );
 };
-export const useGetDoctorList = () => {
-  return useQuery([api.patient.doctorList.get], getDoctorList, {
-    select: data => data.data.data,
-  });
+
+export const useGetDoctorList = ({
+  search,
+  page_size,
+  page,
+}: IPaginatinParams) => {
+  return useQuery(
+    [api.patient.doctorList.get, page_size, page, search],
+    () =>
+      getDoctorList({
+        search,
+        page_size,
+        page,
+      }),
+    {
+      select: data => data?.data?.data,
+    }
+  );
+};
+
+const getDoctorListById = ({
+  id,
+  target_date,
+}: {
+  id: number;
+  target_date: string;
+}) => {
+  return HttpClient.get<NepMedsResponse<IDoctorListById>>(
+    api.patient.doctorList.getById.replace("{id}", id.toString()),
+    {
+      params: {
+        target_date,
+      },
+    }
+  );
+};
+
+export const useGetDoctorListById = ({
+  id,
+  target_date,
+}: {
+  id: number;
+  target_date: string;
+}) => {
+  return useQuery(
+    [api.patient.doctorList.getById, id, target_date],
+    () => getDoctorListById({ id, target_date }),
+    {
+      enabled: !!id,
+      select: data => data?.data?.data,
+    }
+  );
 };
