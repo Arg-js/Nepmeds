@@ -119,7 +119,7 @@ const DoctorList = () => {
               width={"560px"}
               height={"797px"}
               backgroundColor={colors.white}
-              border={`2px solid ${colors.primary}`}
+              border={`1px solid ${colors.gray}`}
               paddingX={"4"}
               borderRadius={"3px"}
             >

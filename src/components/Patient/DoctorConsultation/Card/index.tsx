@@ -28,6 +28,7 @@ const Card: React.FC<{ data: any; type: number }> = ({ data, type }) => {
               width={"255px"}
               height={"282px"}
               textAlign={"center"}
+              mb={1}
               pb={4}
             >
               <Flex gap={3} direction={"column"}>
