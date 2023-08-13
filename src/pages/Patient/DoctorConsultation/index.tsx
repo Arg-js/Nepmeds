@@ -13,7 +13,9 @@ import { Box, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
+import DoctorListCard, {
+  Size,
+} from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";

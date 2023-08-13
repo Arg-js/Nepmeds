@@ -11,7 +11,9 @@ import {
 } from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
+import DoctorListCard, {
+  Size,
+} from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { colors } from "@nepMeds/theme/colors";
 import DoctorListFilter from "./Section/Filter";
 import PatientFooter from "../Section/Footer";
