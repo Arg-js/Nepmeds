@@ -15,11 +15,31 @@ import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import Carousel from "better-react-carousel";
+import { useState } from "react";
 
 const DoctorConsultation = () => {
+  // Pagination
+  const [pageParams, _setPageParams] = useState({
+    search: "",
+    page: 1,
+    limit: 10,
+  });
+  // Pagination ends
+
+  // REACT QUERIES
   const { data: specializaionData = [] } = useSpecializationRegisterData();
   const { data: symptomData = [] } = useGetSymptoms();
-  const { data: doctorList } = useGetDoctorList();
+  const { data: doctorList } = useGetDoctorList({
+    search: pageParams.search,
+    page_size: pageParams.limit,
+    page: pageParams.page,
+  });
+  // REACT QUERIES END
+
+  const navigate = useNavigate();
 
   return (
     <>
@@ -33,17 +53,22 @@ const DoctorConsultation = () => {
           <Heading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
-            btnText={"View All Doctors"}
+            // btnText={"View All Doctors"}
           />
-          <Card data={specializaionData} type={0} />
+          <Box my={10}>
+            <Card data={specializaionData} type={0} />
+          </Box>
 
           {/* Health Concern / Symptoms SECTION */}
           <Heading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
-            btnText={"View All Symptoms"}
+            // btnText={"View All Symptoms"}
           />
-          <Card data={symptomData} type={1} />
+
+          <Box my={10}>
+            <Card data={symptomData} type={1} />
+          </Box>
 
           {/* ADVERTISEMENT SECTION */}
           <Box height={"420px"}>
@@ -60,17 +85,31 @@ const DoctorConsultation = () => {
             heading={"Our Doctors"}
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+            }
           />
-
-          {doctorList?.results &&
-            doctorList.results.map(doctor => {
-              return (
-                <DoctorListCard data={doctor} size={Size.sm} key={doctor.id} />
-              );
-            })}
+          <Carousel cols={6} rows={1} gap={20} loop>
+            {/* <Flex gap={5} mb={10}> */}
+            {doctorList?.results &&
+              doctorList.results.map(doctor => {
+                return (
+                  <Carousel.Item key={doctor.id}>
+                    <DoctorListCard
+                      data={doctor}
+                      size={Size.sm}
+                      key={doctor.id}
+                    />
+                  </Carousel.Item>
+                );
+              })}
+            {/* </Flex> */}
+          </Carousel>
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
-          <ConsultationStepSection />
+          <Box mt={10}>
+            <ConsultationStepSection />
+          </Box>
 
           {/* ADVERTISEMENT SECTION */}
           <Box height={"470.86px"} my={10}>
@@ -81,9 +120,11 @@ const DoctorConsultation = () => {
           <ChooseUsSection />
 
           {/* FOOTER SECTION */}
-          <PatientFooter />
         </>
       </WrapperBox>
+      <Box bg={colors.background_blue}>
+        <PatientFooter />
+      </Box>
     </>
   );
 };
