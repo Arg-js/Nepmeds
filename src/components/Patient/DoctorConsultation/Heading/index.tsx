@@ -2,21 +2,29 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 
-interface IHeader {
+interface IHeading {
   heading?: string;
   description?: string;
   btnText?: string;
 }
-const Header: React.FC<IHeader> = ({ heading, description, btnText }) => {
+const Heading: React.FC<IHeading> = ({ heading, description, btnText }) => {
   return (
     <Flex justifyContent={"space-between"} mb={4}>
       <Box>
-        <Text fontWeight={600} fontSize={"20px"}>
-          {heading}
-        </Text>
-        <Text fontWeight={500} fontSize={"14px"} color={colors.gray}>
-          {description}
-        </Text>
+        {heading && (
+          <Text fontWeight={600} fontSize={"20px"}>
+            {heading}
+          </Text>
+        )}
+        {description && (
+          <Text
+            fontWeight={500}
+            fontSize={"14px"}
+            color={colors.gray_text_header}
+          >
+            {description}
+          </Text>
+        )}
       </Box>
       {btnText && (
         <Button
@@ -24,7 +32,7 @@ const Header: React.FC<IHeader> = ({ heading, description, btnText }) => {
           fontSize={"14px"}
           bg={"transparent"}
           color={colors.primary}
-          // same
+          // TODO: same make buttom component
           borderRadius={"3px"}
           height={"48px"}
           px={7}
@@ -37,4 +45,4 @@ const Header: React.FC<IHeader> = ({ heading, description, btnText }) => {
   );
 };
 
-export default Header;
+export default Heading;

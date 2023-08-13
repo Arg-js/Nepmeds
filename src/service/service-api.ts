@@ -49,6 +49,11 @@ export const api = {
     delete: "/core/specialist-rate/{id}",
   },
   doctorList: "/doctor_consult/doctor-list/",
+  patient: {
+    doctorList: {
+      get: "/patient/filter-doctor-list/",
+    },
+  },
 };
 
 export interface NepMedsResponse<T = any> {
