@@ -47,14 +47,20 @@ const DoctorListCard: React.FC<{
       onClick={() => {
         setDoctorId && setDoctorId(data.id);
       }}
-      cursor={"pointer"}
-      sx={{
-        "&:hover": {
-          border: `1px solid ${colors.primary}`,
-        },
-      }}
+      cursor={`${size === Size.sm ? "auto" : "pointer"}`}
     >
-      <Card variant={"elevated"}>
+      <Card
+        variant={"elevated"}
+        sx={{
+          "&:hover": {
+            boxShadow: `${
+              size === Size.sm
+                ? "none"
+                : ` rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px`
+            }`,
+          },
+        }}
+      >
         <Flex direction={`${size === Size.sm ? "column" : "row"}`}>
           <Box
             width={`${size === Size.sm ? "302px" : "296px"}`}
@@ -82,6 +88,7 @@ const DoctorListCard: React.FC<{
               fontWeight={700}
               fontSize={"16px"}
               color={colors.dark_blue}
+              textTransform={"capitalize"}
             >
               {data.name}
             </Text>
