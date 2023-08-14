@@ -16,14 +16,14 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 interface IPaymentCard {
   name?: string;
   image?: string;
-  onClickView: () => void;
+  onClickDelete: () => void;
   onClickEdit: () => void;
 }
 
 const PaymentCard = ({
   name,
   image,
-  onClickView,
+  onClickDelete,
   onClickEdit,
 }: IPaymentCard) => {
   return (
@@ -54,17 +54,17 @@ const PaymentCard = ({
               <MenuList>
                 <MenuItem
                   onClick={() => {
-                    onClickView();
-                  }}
-                >
-                  View
-                </MenuItem>
-                <MenuItem
-                  onClick={() => {
                     onClickEdit();
                   }}
                 >
                   Edit
+                </MenuItem>
+                <MenuItem
+                  onClick={() => {
+                    onClickDelete();
+                  }}
+                >
+                  Delete
                 </MenuItem>
               </MenuList>
             </Menu>

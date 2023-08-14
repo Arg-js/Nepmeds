@@ -23,80 +23,51 @@ import { svgs } from "@nepMeds/assets/svgs";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useProfileData } from "@nepMeds/context/index";
-import {
-  IPaymentMethod,
-  useCreatePaymentMethods,
-} from "@nepMeds/service/nepmeds-payment";
-import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { useGetAddedPaymentMethods } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
-import { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
+import { useEffect, useState } from "react";
+import { Controller } from "react-hook-form";
+import usePaymentForm from "../usePaymentForm";
 import PaymentCard from "./PaymentCard";
-
-const paymentDetail = [
-  {
-    id: 1,
-    name: "Esewa",
-    image: images.esewa,
-  },
-  {
-    id: 2,
-    name: "Khalti",
-    image: images.khalti,
-  },
-  {
-    id: 3,
-    name: "Bank",
-    image: images.bank,
-  },
-];
 
 const PaymentSet = () => {
   const profileData = useProfileData();
-  const [tabIndex, settabIndex] = useState<number>(0);
+  const [tabIndex, setTabIndex] = useState<number>(0);
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const { data: addedPaymentMethods, isLoading: getIsLoading } =
+    useGetAddedPaymentMethods(profileData?.data?.doctor?.id.toString() ?? "");
+  const {
+    formMethods: {
+      reset,
+      handleSubmit,
+      register,
+      control,
+      getValues,
+      setValue,
+      formState,
+    },
+    isLoading,
+    handleEditPayment,
+    handleSubmitPayment,
+    setPaymentValue,
+  } = usePaymentForm();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    register,
-    control,
-    handleSubmit,
-    reset,
-    formState: { errors },
-    setValue,
-    getValues,
-  } = useForm<IPaymentMethod>();
-  const paymentMethods = useCreatePaymentMethods();
 
   const onDetailModalClose = () => {
     onClose();
-    settabIndex(0);
+    setTabIndex(0);
+    setIsEditing(false);
     reset({});
   };
 
-  const handleSubmitPayment = (value: IPaymentMethod) => {
-    const val = value.doctor_amount.map((e, index) => {
-      return { ...e, payment_mode: index + 1 };
-    });
-    paymentMethods.mutate(
-      { ...value, doctor_amount: val },
-      {
-        onSuccess: () => {
-          toastSuccess("Payment details added scuccessfully");
-          profileData?.dataRefetch();
-          onDetailModalClose();
-        },
-        onError: error => {
-          const err = serverErrorResponse(error);
-          toastFail(err);
-        },
-      }
-    );
-  };
-  const triggerSubmit = () => {
-    handleSubmit(handleSubmitPayment)();
-  };
+  useEffect(() => {
+    if (addedPaymentMethods && !getIsLoading && isOpen) {
+      setPaymentValue(addedPaymentMethods[0]);
+    }
+  }, [addedPaymentMethods, isOpen]);
 
   return (
     <Box bg={colors.white}>
@@ -133,23 +104,26 @@ const PaymentSet = () => {
         <Box h={"80vh"} bg={colors.white}>
           <Flex justifyContent={"end"}></Flex>
           <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={12}>
-            {paymentDetail.map((x, i) => {
-              return (
-                <GridItem key={x.id}>
-                  <PaymentCard
-                    name={x.name}
-                    image={x.image}
-                    onClickEdit={() => {
-                      settabIndex(i);
-                      onOpen();
-                    }}
-                    onClickView={() => {
-                      onOpen();
-                    }}
-                  />
-                </GridItem>
-              );
-            })}
+            {addedPaymentMethods &&
+              addedPaymentMethods[0]?.doctor_amount?.map(x => {
+                return (
+                  <GridItem key={x.id}>
+                    <PaymentCard
+                      name={x.payment_detail.name}
+                      image={
+                        appendServerUrl(x.payment_detail.image ?? "") ??
+                        images.esewa
+                      }
+                      onClickEdit={() => {
+                        setTabIndex(x.payment_mode - 1);
+                        setIsEditing(true);
+                        onOpen();
+                      }}
+                      onClickDelete={() => {}}
+                    />
+                  </GridItem>
+                );
+              })}
           </Grid>
         </Box>
       )}
@@ -182,11 +156,21 @@ const PaymentSet = () => {
               color={colors.white}
               w={"150px"}
               type="submit"
-              onClick={triggerSubmit}
+              onClick={() =>
+                handleSubmit(
+                  isEditing
+                    ? value =>
+                        handleEditPayment({
+                          value,
+                          id: profileData?.data?.doctor?.id?.toString() ?? "",
+                        })
+                    : handleSubmitPayment
+                )()
+              }
               mr={1}
               variant={"solid"}
               h={"45px"}
-              isLoading={paymentMethods.isLoading}
+              isLoading={isLoading}
             >
               Done
             </Button>
@@ -194,10 +178,7 @@ const PaymentSet = () => {
         }
       >
         <VStack h={"auto"}>
-          <form
-            onSubmit={handleSubmit(handleSubmitPayment)}
-            style={{ width: "96%", marginTop: "10px" }}
-          >
+          <form style={{ width: "96%", marginTop: "10px" }}>
             <Stack gap={2} bg={colors.white} w={"100%"}>
               <FloatingLabelInput
                 label="Instant Rate"
@@ -208,7 +189,7 @@ const PaymentSet = () => {
                 rules={{
                   required: "Please Enter the Instant rate",
                 }}
-                error={errors?.instant_amount?.message}
+                error={formState?.errors?.instant_amount?.message}
               />
               <FloatingLabelInput
                 label="Schedule Rate"
@@ -219,11 +200,11 @@ const PaymentSet = () => {
                 rules={{
                   required: "Please Enter Schedule rate",
                 }}
-                error={errors.schedule_amount?.message}
+                error={formState?.errors.schedule_amount?.message}
               />
               <Text>Choose Your Payment Method</Text>
             </Stack>
-            <Tabs onChange={index => settabIndex(index)} index={tabIndex}>
+            <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
               <Grid
                 display={"flex"}
                 templateColumns="repeat(5, 1fr)"
@@ -232,21 +213,21 @@ const PaymentSet = () => {
               >
                 <GridItem>
                   <TabList shadow={"sm"} p={4} pb={0}>
-                    <Tab>
+                    <Tab value={1}>
                       <HStack>
                         {" "}
                         <Image src={images.esewa} h={"30px"} w={"30px"} />
                         <Text>ESewa</Text>
                       </HStack>
                     </Tab>
-                    <Tab>
+                    <Tab value={2}>
                       <HStack>
                         {" "}
                         <Image src={images.khalti} h={"30px"} w={"30px"} />
                         <Text>Khalti</Text>
                       </HStack>
                     </Tab>
-                    <Tab>
+                    <Tab value={3}>
                       <HStack>
                         {" "}
                         <Image src={images.bank} h={"30px"} w={"30px"} />
@@ -270,8 +251,9 @@ const PaymentSet = () => {
                           required: "Please Enter Esewa Id",
                         }}
                         error={
-                          errors?.doctor_amount &&
-                          errors?.doctor_amount[0]?.epayment_id?.message
+                          formState?.errors?.doctor_amount &&
+                          formState?.errors?.doctor_amount[0]?.epayment_id
+                            ?.message
                         }
                       />
                       <Controller
@@ -313,12 +295,14 @@ const PaymentSet = () => {
                         name="doctor_amount.1.epayment_id"
                         register={register}
                         required
+                        type="number"
                         rules={{
                           required: "Please Enter Khalti Id",
                         }}
                         error={
-                          errors?.doctor_amount &&
-                          errors?.doctor_amount[1]?.epayment_id?.message
+                          formState?.errors?.doctor_amount &&
+                          formState?.errors?.doctor_amount[1]?.epayment_id
+                            ?.message
                         }
                       />
                       <Controller
