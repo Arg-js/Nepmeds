@@ -7,6 +7,18 @@ type Province = {
   name: string;
 };
 
+interface IDistrict {
+  id: 0;
+  name: string;
+  district_municipality: Municipality[];
+}
+
+interface IDetailAddress {
+  id: number;
+  name: string;
+  province_district: IDistrict[];
+}
+
 type District = {
   id: number;
   name: string;
@@ -57,6 +69,18 @@ const getAllDistrict = () => async () => {
 
 export const useGetAllDistricts = () =>
   useQuery([api.district], getAllDistrict(), {
+    select: res => res.data.data,
+  });
+
+const getDetailAddress = () => async () => {
+  const response = await HttpClient.get<NepMedsResponse<IDetailAddress[]>>(
+    api.detail_address
+  );
+  return response;
+};
+
+export const useGetDetailAddress = () =>
+  useQuery([api.detail_address], getDetailAddress(), {
     select: res => res.data.data,
   });
 

@@ -11,7 +11,12 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteIcon, EditIcon, TimeSquare, svgs } from "@nepMeds/assets/svgs";
+import {
+  DeleteIcon,
+  EditIcon,
+  TimeSquareIcon,
+  svgs,
+} from "@nepMeds/assets/svgs";
 
 import {
   convertMinutesToHoursAndMinutes,
@@ -251,7 +256,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                         `}
                     </Text>
                     <Flex gap={3} alignItems={"flex-start"}>
-                      <TimeSquare />
+                      <TimeSquareIcon />
                       <Text>
                         {doctorAvailabilityData &&
                           convertMinutesToHoursAndMinutes(

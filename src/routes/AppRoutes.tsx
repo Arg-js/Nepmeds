@@ -24,6 +24,8 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
+import DoctorList from "@nepMeds/pages/Patient/DoctorList";
 
 const routes = [
   {
@@ -170,8 +172,16 @@ const openRoutes = [
   //   element: <Dashboard />,
   // },
   {
+    path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+    element: <DoctorConsultation />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+    element: <DoctorList />,
+  },
+  {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />,
+    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} />,
   },
 ];
 

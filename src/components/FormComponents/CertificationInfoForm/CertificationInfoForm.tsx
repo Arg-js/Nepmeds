@@ -70,8 +70,6 @@ export const CertificationInfoForm = ({
 
   const [files, setFiles] = useState<Array<IImageFileType[]>>(mappedImageInfo);
 
-  const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
-
   const validateIssuedDate = (index: number) => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const issuedDate = getValues(
@@ -100,7 +98,7 @@ export const CertificationInfoForm = ({
     } else remove(index);
 
     // Remove corresponding files from selectedImagesFile state
-    setSelectedImagesFile(prevImages => {
+    setFiles(prevImages => {
       const updatedImages = [...prevImages];
       updatedImages.splice(index, 1);
       return updatedImages;
@@ -116,6 +114,15 @@ export const CertificationInfoForm = ({
     }
   };
 
+  const getFiles = () => {
+    const academic = getValues("certification") ?? [];
+
+    const files = academic.map((item: any) => {
+      return item.certificate_documents;
+    });
+    return files;
+  };
+
   return (
     <>
       {fields.map((item, index) => {
@@ -128,7 +135,7 @@ export const CertificationInfoForm = ({
             <Box mb={4}>
               <MultiImageUpload
                 setFiles={setFiles}
-                files={files}
+                files={files.length === 0 ? getFiles() : files}
                 dataIndex={index}
                 deleteFile={handleDeleteFile}
                 fieldValue={`certification.${index}.certificate_documents`}
