@@ -36,6 +36,7 @@ export const api = {
   district: "core/districts/",
   municipality: "/core/municipalities/",
   college_list: "/core/college/",
+  detail_address: "/core/detail-address/",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
@@ -53,6 +54,11 @@ export const api = {
   //payment
   payment_methods_create: "/doctor_consult/amount-payment-create/",
   payment_methods: "/core/payment-mode/",
+  patient: {
+    doctorList: {
+      get: "/patient/filter-doctor-list/",
+    },
+  },
 };
 
 export interface NepMedsResponse<T = any> {

@@ -29,8 +29,12 @@ export const NAVIGATION_ROUTES = {
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
 
-  NO_MATCH: "*",
   DOC_PROFILE: "/doc-profile/:id",
+
+  // PATIENT MODULE
+  DOCTOR_CONSULTATION: "/patient/doctor-consultation",
+  DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
+  NO_MATCH: "*",
 
   PAYMENTS: "/payment",
 };
