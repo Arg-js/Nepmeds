@@ -1,12 +1,12 @@
 import {
-  ConsultationStep1,
-  ConsultationStep2,
-  ConsultationStep3,
-  ConsultationStep4,
+  ConsultationStep1Icon,
+  ConsultationStep2Icon,
+  ConsultationStep3Icon,
+  ConsultationStep4Icon,
   DummyImageIcon,
-  WhyChooseUs1,
-  WhyChooseUs2,
-  WhyChooseUs3,
+  WhyChooseUs1Icon,
+  WhyChooseUs2Icon,
+  WhyChooseUs3Icon,
 } from "@nepMeds/assets/svgs";
 
 export const SpecilaizationDatas = [
@@ -53,7 +53,7 @@ export const ConsultationSteps = [
     title: "Select Consultation",
     description:
       "This includes paid/free consultation and consultation mode i.e. audio/video/text.",
-    image: <ConsultationStep1 />,
+    image: <ConsultationStep1Icon />,
   },
   {
     id: "02",
@@ -61,21 +61,21 @@ export const ConsultationSteps = [
     description:
       "Type your health condition, problem you are facing, attach your lab reports or prescription if any.",
 
-    image: <ConsultationStep2 />,
+    image: <ConsultationStep2Icon />,
   },
   {
     id: "03",
     title: "Select Consultation",
     description:
       "This includes paid/free consultation and consultation mode i.e. audio/video/text.",
-    image: <ConsultationStep3 />,
+    image: <ConsultationStep3Icon />,
   },
   {
     id: "04",
     title: "Follow up with your doctor",
     description:
       "If you still have unclear doubts you can follow up with the doctor.",
-    image: <ConsultationStep4 />,
+    image: <ConsultationStep4Icon />,
   },
 ];
 
@@ -85,19 +85,19 @@ export const WhyChooseUs = [
     title: "Reliable",
     description:
       "All products displayed on Nepmeds are 100% genuine and reliable.",
-    image: <WhyChooseUs1 />,
+    image: <WhyChooseUs1Icon />,
   },
   {
     id: "02",
     title: "Secure",
     description: "Nepmeds uses SSL encryption for safe shopping experience.",
 
-    image: <WhyChooseUs2 />,
+    image: <WhyChooseUs2Icon />,
   },
   {
     id: "03",
     title: "Affordable",
     description: " Maximum discount and offers on products and services.",
-    image: <WhyChooseUs3 />,
+    image: <WhyChooseUs3Icon />,
   },
 ];
