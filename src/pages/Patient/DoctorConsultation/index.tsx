@@ -1,20 +1,20 @@
+import { Box, Image } from "@chakra-ui/react";
+import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
+import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
+import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
 import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import { colors } from "@nepMeds/theme/colors";
-import ConsultationStepSection from "./Section/CosultationStep";
-import ChooseUsSection from "./Section/ChooseUs";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
-import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
-import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
-import { Box, Image } from "@chakra-ui/react";
-import PatientFooter from "../Section/Footer";
-import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import DoctorListCard from "@nepMeds/components/Patient/DoctorList";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import DoctorListCard, { Size } from "@nepMeds/components/Patient/DoctorList";
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import { colors } from "@nepMeds/theme/colors";
+import PatientFooter from "../Section/Footer";
+import ChooseUsSection from "./Section/ChooseUs";
+import ConsultationStepSection from "./Section/CosultationStep";
 
 const DoctorConsultation = () => {
   const { data: specializaionData = [] } = useSpecializationRegisterData();
@@ -64,9 +64,7 @@ const DoctorConsultation = () => {
 
           {doctorList?.results &&
             doctorList.results.map(doctor => {
-              return (
-                <DoctorListCard data={doctor} size={Size.sm} key={doctor.id} />
-              );
+              return <DoctorListCard data={doctor} key={doctor.id} />;
             })}
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}

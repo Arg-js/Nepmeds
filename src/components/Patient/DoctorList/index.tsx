@@ -1,15 +1,14 @@
-import { Flex, Text, Card, Box, Image } from "@chakra-ui/react";
+import { Box, Card, Flex, Image, Text } from "@chakra-ui/react";
+import doctorImage from "@nepMeds/assets/images/doctor.png";
 import {
   LocationIcon,
   PayementIcon,
   StethoscopeIcon,
 } from "@nepMeds/assets/svgs";
-import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import doctorImage from "@nepMeds/assets/images/doctor.png";
 import { useMemo } from "react";
 
-const DoctorListCard: React.FC<{ data: Specialization[] }> = ({ data }) => {
+const DoctorListCard: React.FC<{ data: any }> = ({ data }) => {
   const doctorDetails = useMemo(
     () => [
       {

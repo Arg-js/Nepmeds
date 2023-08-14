@@ -36,6 +36,7 @@ export const api = {
   district: "core/districts/",
   municipality: "/core/municipalities/",
   college_list: "/core/college/",
+  detail_address: "/core/detail-address/",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
