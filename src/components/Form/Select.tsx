@@ -27,10 +27,16 @@ const Select = ({
   startIcon,
   onIconClick,
   endIcons,
+  size,
+  variant,
   ...rest
 }: ISelect) => {
   return (
-    <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
+    <FormControl
+      isInvalid={!!error}
+      isRequired={isRequired}
+      variant={variant ? variant : "floating"}
+    >
       {startIcon ? (
         <InputLeftElement
           top="10%"
@@ -50,12 +56,19 @@ const Select = ({
       ) : (
         ""
       )}
-
+      {label && (
+        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+          {label}{" "}
+          {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
+        </FormLabel>
+      )}
       <ChakraSelect
-        sx={{ background: colors.forminput }}
+        variant={"outline"}
+        // sx={{ background: colors.forminput }}
         {...register(name, rules)}
         id={name}
         h={14}
+        size={"md"}
         {...rest}
 
         // pr={8}
@@ -71,12 +84,6 @@ const Select = ({
           </option>
         ))}
       </ChakraSelect>
-      {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-          {label}{" "}
-          {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
-        </FormLabel>
-      )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
       {error && <FormErrorMessage>{error}</FormErrorMessage>}
@@ -100,6 +107,8 @@ export interface ISelect extends SelectProps {
   startIcon?: React.ReactNode;
   endIcons?: React.ReactNode;
   onIconClick?: () => void;
+  variant?: string;
+  size?: string;
 }
 export default Select;
 
