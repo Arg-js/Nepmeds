@@ -32,7 +32,14 @@ export interface IDoctorListById {
   medical_licence_number: string;
   bio_detail: string;
   schedule_rate: string;
-  availability: string;
+  availability: IAvailability[];
+}
+
+export interface IAvailability {
+  id: number;
+  date: string;
+  from_time: string;
+  to_time: string;
 }
 
 export interface SpecializationName {

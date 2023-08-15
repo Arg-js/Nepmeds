@@ -54,6 +54,9 @@ export const api = {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/{id}/",
     },
+    appointment:{
+      post: "/patient/appointment/"
+    }
   },
 };
 
