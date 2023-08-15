@@ -1,16 +1,18 @@
 import {
-  Stack,
-  Image,
   Box,
+  Flex,
+  Image,
   List,
   ListItem,
+  Stack,
   Text,
-  // Icon,
 } from "@chakra-ui/react";
 import {
   Calendar,
   Call,
   Category,
+  ChevronDown,
+  ChevronUp,
   // Logout,
   Paper,
   TimeCircle,
@@ -19,12 +21,10 @@ import {
 } from "react-iconly";
 
 import { images } from "@nepMeds/assets/images";
+import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
-import {
-  useLoginTokenDetailQuery,
-  // useLogoutMutation,
-} from "@nepMeds/service/nepmeds-auth";
-import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { NavLink, useMatch, useResolvedPath } from "react-router-dom";
 // import { STATUSTYPE } from "@nepMeds/config/enum";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
@@ -33,6 +33,8 @@ interface ISidebarOption {
   set: IconSet;
   text: string;
   link: string;
+  isOpenable?: boolean;
+  data?: { link: string; text: string }[];
 }
 const sidebarOptions: ISidebarOption[] = [
   {
@@ -97,6 +99,21 @@ const AdminSidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "Doctors",
     link: "/doctor-list",
+    isOpenable: true,
+    data: [
+      {
+        text: "Registration",
+        link: "/doctor-list/registration",
+      },
+      {
+        text: "Payment",
+        link: "/doctor-list/payment",
+      },
+      {
+        text: "Rejected List",
+        link: "/doctor-list/rejected-list",
+      },
+    ],
   },
   {
     icon: Paper,
@@ -124,11 +141,118 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 ];
 
+const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
+  const [isActive, setIsActive] = useState(false);
+
+  const isActiveFn = (to: string) => {
+    const resolved = useResolvedPath(to);
+    const match = useMatch({ path: resolved.pathname, end: true });
+    return match;
+  };
+
+  return (
+    <Box key={sidebarOption.text.trim()}>
+      {sidebarOption?.isOpenable ? (
+        <>
+          <ListItem
+            display={"flex"}
+            alignItems={"center"}
+            height="56px"
+            pl={4}
+            borderRadius={12}
+            _activeLink={{
+              background: colors.blue_100,
+              color: colors.white,
+            }}
+            style={
+              isActiveFn("/doctor-list/*")
+                ? {
+                    background: colors.blue_100,
+                    color: colors.white,
+                  }
+                : {}
+            }
+            _hover={{ cursor: "pointer" }}
+            onClick={() => setIsActive(!isActive)}
+          >
+            <sidebarOption.icon
+              set={sidebarOption.set}
+              color={colors?.black_50}
+              size={20}
+            />
+            <Text
+              fontWeight={"400"}
+              fontSize={"14px"}
+              lineHeight={"17px"}
+              color={colors?.black_50}
+              ml={"18px"}
+              w="140px"
+            >
+              {sidebarOption?.text}
+            </Text>
+            {isActive ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+          </ListItem>
+          {isActive && (
+            <Flex flexDirection={"column"} gap={6} my={3}>
+              {sidebarOption?.data?.map((item: any) => (
+                <Text
+                  as={NavLink}
+                  to={item?.link}
+                  key={item?.text}
+                  fontWeight={"400"}
+                  fontSize={"14px"}
+                  lineHeight={"17px"}
+                  color={colors?.black_50}
+                  ml={"50px"}
+                  w="140px"
+                  _activeLink={{
+                    color: colors.blue_100,
+                  }}
+                >
+                  {item?.text}
+                </Text>
+              ))}
+            </Flex>
+          )}
+        </>
+      ) : (
+        <>
+          <ListItem
+            display={"flex"}
+            alignItems={"center"}
+            as={NavLink}
+            height="56px"
+            pl={4}
+            borderRadius={12}
+            _activeLink={{
+              background: colors.blue_100,
+              color: colors.white,
+            }}
+            to={sidebarOption.link}
+          >
+            <sidebarOption.icon
+              set={sidebarOption.set}
+              color={colors?.black_50}
+              size={20}
+            />
+            <Text
+              fontWeight={"400"}
+              fontSize={"14px"}
+              lineHeight={"17px"}
+              color={colors?.black_50}
+              ml={"18px"}
+              w="140px"
+            >
+              {sidebarOption?.text}
+            </Text>
+          </ListItem>
+        </>
+      )}
+    </Box>
+  );
+};
+
 const Sidebar = () => {
-  // const logoutAction = useLogoutMutation();
-  // // const logout = () => {
-  // //   logoutAction.mutate();
-  // // };
   const { data: userInfo } = useLoginTokenDetailQuery();
 
   const menuOptions =
@@ -152,36 +276,10 @@ const Sidebar = () => {
           <List pl={3}>
             {menuOptions?.map((sidebarOption: any) => {
               return (
-                <ListItem
-                  display={"flex"}
-                  alignItems={"center"}
-                  as={NavLink}
-                  height="56px"
-                  pl={4}
-                  borderRadius={12}
-                  _activeLink={{
-                    background: colors.blue_100,
-                    color: colors.white,
-                  }}
-                  to={sidebarOption.link}
-                  key={sidebarOption.text.trim()}
-                >
-                  <sidebarOption.icon
-                    set={sidebarOption.set}
-                    color={colors?.black_50}
-                    size={20}
-                  />
-                  <Text
-                    fontWeight={"400"}
-                    fontSize={"14px"}
-                    lineHeight={"17px"}
-                    color={colors?.black_50}
-                    ml={"18px"}
-                    w="140px"
-                  >
-                    {sidebarOption?.text}
-                  </Text>
-                </ListItem>
+                <MenuOption
+                  key={sidebarOption.text}
+                  sidebarOption={sidebarOption}
+                />
               );
             })}
           </List>

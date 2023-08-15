@@ -3,12 +3,13 @@ import Layout from "@nepMeds/components/Layout";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
-import AllDoctors from "@nepMeds/pages/DoctorList/AllDoctors";
 import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
 import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Calendar from "@nepMeds/pages/NewCalendar";
+import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
+import DoctorList from "@nepMeds/pages/Patient/DoctorList";
 import PaymentDetails from "@nepMeds/pages/Payment";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
@@ -24,8 +25,6 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
-import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
-import DoctorList from "@nepMeds/pages/Patient/DoctorList";
 
 const routes = [
   {
@@ -87,7 +86,13 @@ const adminRoutes = [
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
-        element: <AllDoctors />,
+        element: <></>,
+        children: [
+          {
+            path: NAVIGATION_ROUTES.DOCTOR_LIST + "/registration",
+            element: <>Hiii</>,
+          },
+        ],
       },
       {
         path: NAVIGATION_ROUTES.DOC_PROFILE,
