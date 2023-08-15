@@ -51,9 +51,18 @@ export interface IPaginatinParams {
   search: string;
   page_size: number;
   page: number;
+  // make different interface
+  gender?: string;
+  specialization?: string;
 }
 
-const getDoctorList = ({ page_size, page, search }: IPaginatinParams) => {
+const getDoctorList = ({
+  page_size,
+  page,
+  search,
+  gender,
+  specialization,
+}: IPaginatinParams) => {
   return HttpClient.get<NepMedsResponse<IDoctorList>>(
     api.patient.doctorList.get,
     {
@@ -61,6 +70,8 @@ const getDoctorList = ({ page_size, page, search }: IPaginatinParams) => {
         search,
         page_size,
         page,
+        gender,
+        specialization,
       },
     }
   );
@@ -70,14 +81,25 @@ export const useGetDoctorList = ({
   search,
   page_size,
   page,
+  gender,
+  specialization,
 }: IPaginatinParams) => {
   return useQuery(
-    [api.patient.doctorList.get, page_size, page, search],
+    [
+      api.patient.doctorList.get,
+      page_size,
+      page,
+      search,
+      gender,
+      specialization,
+    ],
     () =>
       getDoctorList({
         search,
         page_size,
         page,
+        gender,
+        specialization,
       }),
     {
       select: data => data?.data?.data,

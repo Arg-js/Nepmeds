@@ -24,6 +24,8 @@ const formattedDate = currentDate.toISOString().slice(0, 10);
 const DoctorList = () => {
   const [doctorId, setDoctorId] = useState(0);
   const [targetDate, setTargeDate] = useState(formattedDate);
+  const [gender, setGender] = useState("");
+  const [specialization, setSpecialization] = useState<string[]>([]);
 
   // PAGINATION
   const [pageParams, setPageParams] = useState({
@@ -46,6 +48,8 @@ const DoctorList = () => {
     search: pageParams.search,
     page_size: pageParams.limit,
     page: pageParams.page,
+    gender: gender && gender,
+    specialization: specialization && specialization.join(", "),
   });
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({
@@ -82,7 +86,10 @@ const DoctorList = () => {
 
           <Flex mt={8}>
             {/* FILTER */}
-            <DoctorListFilter />
+            <DoctorListFilter
+              setGender={setGender}
+              setSpecialization={setSpecialization}
+            />
 
             {/* DOCTORS LIST */}
             <Box mx={30}>
