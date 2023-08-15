@@ -35,6 +35,7 @@ const usePaymentForm = () => {
       schedule_amount: +newSorted?.schedule_amount,
       doctor_amount:
         newSorted?.doctor_amount?.map((x: IPaymentMethodDoctorAmount) => ({
+          id: x.id,
           payment_mode: x.payment_mode,
           epayment_id: x.epayment_id ?? "",
           account_number: x.account_number ?? "",
