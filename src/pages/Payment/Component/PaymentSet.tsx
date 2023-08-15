@@ -47,11 +47,13 @@ const PaymentSet = () => {
       getValues,
       setValue,
       formState,
+      trigger,
     },
     isLoading,
     handleEditPayment,
     handleSubmitPayment,
     setPaymentValue,
+    handleDeteltePayment,
   } = usePaymentForm();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -119,7 +121,9 @@ const PaymentSet = () => {
                         setIsEditing(true);
                         onOpen();
                       }}
-                      onClickDelete={() => {}}
+                      onClickDelete={() => {
+                        handleDeteltePayment(x.id.toString());
+                      }}
                     />
                   </GridItem>
                 );
@@ -156,17 +160,20 @@ const PaymentSet = () => {
               color={colors.white}
               w={"150px"}
               type="submit"
-              onClick={() =>
+              onClick={async () => {
+                const isValid = await trigger();
+                if (!isValid) return;
                 handleSubmit(
                   isEditing
                     ? value =>
                         handleEditPayment({
                           value,
                           id: profileData?.data?.doctor?.id?.toString() ?? "",
+                          onSuccess: onDetailModalClose,
                         })
                     : handleSubmitPayment
-                )()
-              }
+                )();
+              }}
               mr={1}
               variant={"solid"}
               h={"45px"}
@@ -350,7 +357,7 @@ const PaymentSet = () => {
                       />
                       <FloatingLabelInput
                         label="Account No."
-                        name="doctor_amount.2.bank_account_number"
+                        name="doctor_amount.2.account_number"
                         register={register}
                         required
                         rules={{
@@ -359,7 +366,7 @@ const PaymentSet = () => {
                       />
                       <FloatingLabelInput
                         label="Account Holder Name"
-                        name="doctor_amount.2.bank_account_name"
+                        name="doctor_amount.2.account_holder_name"
                         register={register}
                         required
                         rules={{
@@ -368,7 +375,7 @@ const PaymentSet = () => {
                       />
                       <FloatingLabelInput
                         label="Branch Name"
-                        name="doctor_amount.2.bank_branch_name"
+                        name="doctor_amount.2.branch_name"
                         register={register}
                         required
                         rules={{

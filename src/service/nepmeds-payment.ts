@@ -1,5 +1,6 @@
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
+import { useProfileData } from "../context";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
@@ -9,29 +10,31 @@ export interface IPaymentMethod {
   doctor_amount: {
     payment_mode: number;
     epayment_id?: string;
-    bank_account_number?: string;
-    bank_account_name?: string;
-    bank_branch_name?: string;
+    account_number?: string;
+    account_holder_name?: string;
+    branch_name?: string;
     bank_name?: string;
     is_primary_method: boolean;
   }[];
+}
+
+export interface IPaymentMethodDoctorAmount {
+  id: number;
+  payment_mode: number;
+  payment_detail: { id: number; name: string; image: null | string };
+  epayment_id: string | null;
+  account_number: string | null;
+  account_holder_name: string | null;
+  bank_name: string | null;
+  branch_name: string | null;
+  is_primary_method: boolean;
 }
 
 export interface IGetPaymentMethods {
   id: number;
   instant_amount: string;
   schedule_amount: string;
-  doctor_amount: {
-    id: number;
-    payment_mode: number;
-    payment_detail: { id: number; name: string; image: null | string };
-    epayment_id: string | null;
-    account_number: string | null;
-    account_holder_name: string | null;
-    bank_name: string | null;
-    branch_name: string | null;
-    is_primary_method: boolean;
-  }[];
+  doctor_amount: IPaymentMethodDoctorAmount[];
 }
 
 // Add payment methods for doctor e.g bank account, esewa and more
@@ -65,8 +68,15 @@ const editPaymentMethods = async ({
 };
 
 export const useEditPaymentMethods = () => {
+  const profileData = useProfileData();
+  const queryClient = useQueryClient();
   return useMutation(editPaymentMethods, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries([
+        api.added_payment_methods,
+        profileData?.data?.doctor?.id.toString(),
+      ]);
+    },
   });
 };
 
@@ -106,4 +116,25 @@ export const useGetAddedPaymentMethods = (id: string) => {
       select: data => data.data.data,
     }
   );
+};
+
+//Delete payment methods for a doctor
+const deletePaymentMethods = async (id: string) => {
+  const response = await HttpClient.delete(
+    generatePath(api.edit_payment_methods, { id })
+  );
+  return response;
+};
+
+export const useDeletePaymentMethods = () => {
+  const profileData = useProfileData();
+  const queryClient = useQueryClient();
+  return useMutation(deletePaymentMethods, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([
+        api.added_payment_methods,
+        profileData?.data?.doctor?.id.toString(),
+      ]);
+    },
+  });
 };

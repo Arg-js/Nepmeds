@@ -3,7 +3,9 @@ import { useProfileData } from "@nepMeds/context/index";
 import {
   IGetPaymentMethods,
   IPaymentMethod,
+  IPaymentMethodDoctorAmount,
   useCreatePaymentMethods,
+  useDeletePaymentMethods,
   useEditPaymentMethods,
 } from "@nepMeds/service/nepmeds-payment";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
@@ -14,20 +16,31 @@ const usePaymentForm = () => {
   const formMethods = useForm<IPaymentMethod>();
   const addPaymentMethods = useCreatePaymentMethods();
   const editPaymentMethods = useEditPaymentMethods();
+  const detelePaymentMethods = useDeletePaymentMethods();
 
   const setPaymentValue = (value: IGetPaymentMethods) => {
+    const deepCopyValue = structuredClone(value);
+    const newSorted = {
+      ...deepCopyValue,
+      doctor_amount: deepCopyValue.doctor_amount.sort(
+        (a: IPaymentMethodDoctorAmount, b: IPaymentMethodDoctorAmount) => {
+          return a.payment_mode - b.payment_mode;
+        }
+      ),
+    };
+
     formMethods.reset({
       ...formMethods.getValues(),
-      instant_amount: Number(value?.instant_amount),
-      schedule_amount: +value?.schedule_amount,
+      instant_amount: Number(newSorted?.instant_amount),
+      schedule_amount: +newSorted?.schedule_amount,
       doctor_amount:
-        value?.doctor_amount?.map(x => ({
+        newSorted?.doctor_amount?.map((x: IPaymentMethodDoctorAmount) => ({
           payment_mode: x.payment_mode,
           epayment_id: x.epayment_id ?? "",
-          bank_account_number: x.account_number ?? "",
-          bank_account_name: x.account_holder_name ?? "",
+          account_number: x.account_number ?? "",
+          account_holder_name: x.account_holder_name ?? "",
           bank_name: x.bank_name ?? "",
-          bank_branch_name: x.branch_name ?? "",
+          branch_name: x.branch_name ?? "",
           is_primary_method: x.is_primary_method,
         })) ?? [],
     });
@@ -52,26 +65,35 @@ const usePaymentForm = () => {
     );
   };
 
-  const handleEditPayment = ({
+  const handleEditPayment = async ({
     value,
     id,
+    onSuccess,
   }: {
     value: IPaymentMethod;
     id: string;
+    onSuccess?: () => void;
   }) => {
-    editPaymentMethods.mutate(
-      { id, paymentMethods: value },
+    try {
+      await editPaymentMethods.mutateAsync({ id, paymentMethods: value });
+      toastSuccess("Payment details updated scuccessfully");
+      onSuccess && onSuccess();
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      toastFail(err);
+    }
+  };
 
-      {
-        onSuccess: () => {
-          toastSuccess("Payment details updated scuccessfully");
-        },
-        onError: error => {
-          const err = serverErrorResponse(error);
-          toastFail(err);
-        },
-      }
-    );
+  const handleDeteltePayment = (id: string) => {
+    detelePaymentMethods.mutate(id, {
+      onSuccess: () => {
+        toastSuccess("Payment details deleted scuccessfully");
+      },
+      onError: error => {
+        const err = serverErrorResponse(error);
+        toastFail(err);
+      },
+    });
   };
 
   return {
@@ -80,6 +102,7 @@ const usePaymentForm = () => {
     handleSubmitPayment,
     handleEditPayment,
     isLoading: addPaymentMethods.isLoading || editPaymentMethods.isLoading,
+    handleDeteltePayment,
   };
 };
 
