@@ -14,6 +14,7 @@ interface IWrapperBox {
   borderRadius?: string;
   paddingTop?: string;
   boxShadow?: string;
+  style?: Record<string, string>;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({
   children,
@@ -27,6 +28,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   border = "none",
   borderRadius = "none",
   boxShadow = "none",
+  style,
 }) => {
   return (
     <Box
@@ -41,6 +43,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       border={border}
       borderRadius={borderRadius}
       boxShadow={boxShadow}
+      style={style}
     >
       {children}
     </Box>
