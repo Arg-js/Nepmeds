@@ -8,6 +8,7 @@ import { colors } from "@nepMeds/theme/colors";
 import doctorImage from "@nepMeds/assets/images/doctor.png";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDoctorListResult } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { AxiosError } from "axios";
 
 export enum Size {
   sm,
@@ -18,13 +19,14 @@ const DoctorListCard: React.FC<{
   data: IDoctorListResult;
   size: number;
   setDoctorId?: Dispatch<SetStateAction<number>>;
+  error?: AxiosError;
 }> = ({ data, size, setDoctorId }) => {
   const doctorDetails = useMemo(
     () => [
       {
         id: 1,
         icon: <LocationIcon />,
-        description: data.workplace,
+        description: `${data.municipality}, ${data.district}`,
       },
       {
         id: 2,
@@ -56,7 +58,7 @@ const DoctorListCard: React.FC<{
             boxShadow: `${
               size === Size.sm
                 ? "none"
-                : ` rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px`
+                : ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
             }`,
           },
         }}
@@ -115,7 +117,7 @@ const DoctorListCard: React.FC<{
                 fontWeight={500}
                 fontSize={`${size === Size.sm ? "11px" : "12px"}`}
               >
-                Chitwan Medical College
+                {data.workplace}
               </Text>
             </Flex>
 

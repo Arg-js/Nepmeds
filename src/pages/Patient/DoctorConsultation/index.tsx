@@ -9,7 +9,7 @@ import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-speciali
 import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
 import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
-import { Box, Image } from "@chakra-ui/react";
+import { Box, Flex, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import Header from "@nepMeds/pages/Patient/Section/Header";
@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import Carousel from "better-react-carousel";
 import { useState } from "react";
+import { AxiosError } from "axios";
 
 const DoctorConsultation = () => {
   // Pagination
@@ -32,9 +33,19 @@ const DoctorConsultation = () => {
   // Pagination ends
 
   // REACT QUERIES
-  const { data: specializaionData = [] } = useSpecializationRegisterData();
-  const { data: symptomData = [] } = useGetSymptoms();
-  const { data: doctorList } = useGetDoctorList({
+  const {
+    data: specializaionData = [],
+    isLoading: SpecializationDataLoading,
+    error: specializaionDataError,
+  } = useSpecializationRegisterData();
+
+  const {
+    data: symptomData = [],
+    isLoading: symptomDataLoading,
+    error: symptomDataError,
+  } = useGetSymptoms();
+
+  const { data: doctorList, error: doctorListError } = useGetDoctorList({
     search: pageParams.search,
     page_size: pageParams.limit,
     page: pageParams.page,
@@ -57,8 +68,14 @@ const DoctorConsultation = () => {
             description={"Consult with top doctors across specialities"}
             // btnText={"View All Doctors"}
           />
+
           <Box my={10}>
-            <Card data={specializaionData} type={0} />
+            <Card
+              data={specializaionData}
+              isLoading={SpecializationDataLoading}
+              error={specializaionDataError as AxiosError}
+              type={0}
+            />
           </Box>
 
           {/* Health Concern / Symptoms SECTION */}
@@ -69,7 +86,12 @@ const DoctorConsultation = () => {
           />
 
           <Box my={10}>
-            <Card data={symptomData} type={1} />
+            <Card
+              data={symptomData}
+              isLoading={symptomDataLoading}
+              error={symptomDataError as AxiosError}
+              type={1}
+            />
           </Box>
 
           {/* ADVERTISEMENT SECTION */}
@@ -91,22 +113,31 @@ const DoctorConsultation = () => {
               navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
             }
           />
-          <Carousel cols={6} rows={1} gap={20} loop>
-            {/* <Flex gap={5} mb={10}> */}
-            {doctorList?.results &&
-              doctorList.results.map(doctor => {
-                return (
-                  <Carousel.Item key={doctor.id}>
-                    <DoctorListCard
-                      data={doctor}
-                      size={Size.sm}
-                      key={doctor.id}
-                    />
-                  </Carousel.Item>
-                );
-              })}
-            {/* </Flex> */}
-          </Carousel>
+
+          {(doctorListError as AxiosError)?.response?.status === 500 ? (
+            <Flex width={"255px"} height={"282px"} alignItems={"center"}>
+              Oops something went wrong!!
+            </Flex>
+          ) : (
+            doctorList?.results && (
+              <Carousel cols={6} rows={1} gap={20} loop>
+                {/* <Flex gap={5} mb={10}> */}
+                {doctorList.results.map(doctor => {
+                  return (
+                    <Carousel.Item key={doctor.id}>
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                        key={doctor.id}
+                      />
+                    </Carousel.Item>
+                  );
+                })}
+                {/* </Flex> */}
+              </Carousel>
+            )
+          )}
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
           <Box mt={10}>
