@@ -1,16 +1,16 @@
 /* eslint-disable */
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import {
-  Image,
   Box,
-  IconButton,
-  Text,
-  FormErrorMessage,
   FormControl,
+  FormErrorMessage,
+  IconButton,
+  Image,
+  Text,
 } from "@chakra-ui/react";
-import { CloseIcon, AddIcon } from "@chakra-ui/icons";
 
 import { ChangeEvent } from "react";
-import { useFormContext, RegisterOptions } from "react-hook-form";
+import { RegisterOptions, useFormContext } from "react-hook-form";
 
 const ImageUpload = ({
   SelectedImage,
@@ -49,7 +49,7 @@ const ImageUpload = ({
                   : undefined
               }
               alt="Selected Image"
-              objectFit="cover"
+              objectFit="contain"
               width="100%"
               height="100%"
             />
