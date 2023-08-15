@@ -2,11 +2,11 @@ import { Button } from "@chakra-ui/button";
 import { useDisclosure } from "@chakra-ui/hooks";
 import { HStack, Text, VStack } from "@chakra-ui/layout";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { colors } from "@nepMeds/theme/colors";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
-import { svgs } from "@nepMeds/assets/svgs";
 
 const schema = yup.object().shape({
   title: yup.string().required("Title is required!"),

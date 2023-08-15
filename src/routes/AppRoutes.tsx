@@ -9,7 +9,7 @@ import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Calendar from "@nepMeds/pages/NewCalendar";
-import PaymentSet from "@nepMeds/pages/Payment/PaymentSet";
+import PaymentDetails from "@nepMeds/pages/Payment";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
@@ -59,7 +59,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.PAYMENT,
-        element: <PaymentSet />,
+        element: <PaymentDetails />,
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
