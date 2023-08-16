@@ -36,6 +36,7 @@ export const api = {
   district: "core/districts/",
   municipality: "/core/municipalities/",
   college_list: "/core/college/",
+  detail_address: "/core/detail-address/",
 
   doctor_availability: "/doctor_consult/doctor-availability/",
   doctorProfileById: "/dashboard/view-doctor-profile/{id}",
@@ -49,14 +50,22 @@ export const api = {
     delete: "/core/specialist-rate/{id}",
   },
   doctorList: "/doctor_consult/doctor-list/",
+
+  //payment
+  payment_methods_create: "/doctor_consult/amount-payment-create/",
+  payment_methods: "/core/payment-mode/",
+  edit_payment_methods: "/doctor_consult/amount-payment/:id/",
+  delete_payment_methods: "/doctor_consult/doctor-payment/:id/",
+  added_payment_methods:
+    "/doctor_consult/doctorwise-paymentdetail-list/:doctor_id/",
   patient: {
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/{id}/",
     },
-    appointment:{
-      post: "/patient/appointment/"
-    }
+    appointment: {
+      post: "/patient/appointment/",
+    },
   },
 };
 

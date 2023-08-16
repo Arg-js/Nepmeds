@@ -2,9 +2,6 @@ import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import { colors } from "@nepMeds/theme/colors";
-import ConsultationStepSection from "./Section/CosultationStep";
-import ChooseUsSection from "./Section/ChooseUs";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
@@ -22,6 +19,9 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import Carousel from "better-react-carousel";
 import { useState } from "react";
 import { AxiosError } from "axios";
+import { colors } from "@nepMeds/theme/colors";
+import ChooseUsSection from "./Section/ChooseUs";
+import ConsultationStepSection from "./Section/CosultationStep";
 
 const DoctorConsultation = () => {
   // Pagination
