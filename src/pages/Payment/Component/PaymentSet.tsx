@@ -173,6 +173,7 @@ const PaymentSet = () => {
                         })
                     : handleSubmitPayment
                 )();
+                onDetailModalClose();
               }}
               mr={1}
               variant={"solid"}
