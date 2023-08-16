@@ -1,8 +1,8 @@
 import { Box, Checkbox, Divider, Flex, Text } from "@chakra-ui/react";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-// import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction } from "react";
 
 const GenderList = [
   { label: "Male Doctor", value: "1" },
@@ -11,12 +11,14 @@ const GenderList = [
 
 const DoctorListFilter: React.FC<{
   setGender: Dispatch<SetStateAction<string>>;
-  setSpecialization: Dispatch<SetStateAction<Array<string>>>;
-}> = ({ setGender, setSpecialization }) => {
+  setSpecialization: Dispatch<SetStateAction<string>>;
+  setSymptom: Dispatch<SetStateAction<string>>;
+}> = ({ setGender, setSpecialization, setSymptom }) => {
   // REACT QUERIES
-  // const { data: symptomData = [] } = useGetSymptoms();
+  const { data: symptomData = [] } = useGetSymptoms();
   const { data: specializaionData = [] } = useSpecializationRegisterData();
   // REACT QUERIES END
+
   return (
     <Box width={"277px"} border={`0.5px solid ${colors.gray_border}`} p={6}>
       <Flex direction={"column"} gap={3}>
@@ -30,6 +32,12 @@ const DoctorListFilter: React.FC<{
             fontSize={"12px"}
             color={colors.primary}
             textDecoration={"underline"}
+            cursor={"pointer"}
+            onClick={() => {
+              setGender("");
+              setSpecialization("");
+              setSymptom("");
+            }}
           >
             Clear All
           </Text>
@@ -60,15 +68,14 @@ const DoctorListFilter: React.FC<{
                 <Checkbox
                   onChange={e =>
                     e.target.checked
-                      ? setSpecialization(prev => {
-                          prev.push(specialization.name);
-                          return prev;
-                        })
-                      : setSpecialization(prev => {
-                          return prev.filter(
-                            item => item !== specialization.name
-                          );
-                        })
+                      ? setSpecialization(prev =>
+                          prev
+                            ? prev + "," + specialization.name
+                            : specialization.name
+                        )
+                      : setSpecialization(prev =>
+                          prev.replace(`${specialization.name}`, "")
+                        )
                   }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
@@ -82,16 +89,20 @@ const DoctorListFilter: React.FC<{
           <Text fontWeight={600} fontSize={"16px"} mb={3}>
             Health Concern
           </Text>
-          {specializaionData.map(specialization => {
+          {symptomData.map(symptom => {
             return (
-              <Flex gap={4} key={specialization.id} mb={2}>
+              <Flex gap={4} key={symptom.id} mb={2}>
                 <Checkbox
-                // onChange={e =>
-                //   e.target.checked && setSpecialization(specialization.name)
-                // }
+                  onChange={e =>
+                    e.target.checked
+                      ? setSymptom(prev =>
+                          prev ? prev + "," + symptom.name : symptom.name
+                        )
+                      : setSymptom(prev => prev.replace(`${symptom.name}`, ""))
+                  }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
-                  {specialization.name}
+                  {symptom.name}
                 </Text>
               </Flex>
             );
