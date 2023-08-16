@@ -1,5 +1,7 @@
 import { Center, Spinner } from "@chakra-ui/react";
 import Layout from "@nepMeds/components/Layout";
+import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
+import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
@@ -86,11 +88,14 @@ const adminRoutes = [
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
-        element: <></>,
         children: [
           {
             path: NAVIGATION_ROUTES.DOCTOR_LIST + "/registration",
-            element: <>Hiii</>,
+            element: <DoctorsList />,
+          },
+          {
+            path: NAVIGATION_ROUTES.DOCTOR_LIST + "/payment",
+            element: <PaymentList />,
           },
         ],
       },

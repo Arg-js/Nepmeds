@@ -109,10 +109,6 @@ const AdminSidebarOptions: ISidebarOption[] = [
         text: "Payment",
         link: "/doctor-list/payment",
       },
-      {
-        text: "Rejected List",
-        link: "/doctor-list/rejected-list",
-      },
     ],
   },
   {
@@ -177,14 +173,18 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
           >
             <sidebarOption.icon
               set={sidebarOption.set}
-              color={colors?.black_50}
+              color={
+                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
+              }
               size={20}
             />
             <Text
               fontWeight={"400"}
               fontSize={"14px"}
               lineHeight={"17px"}
-              color={colors?.black_50}
+              color={
+                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
+              }
               ml={"18px"}
               w="140px"
             >

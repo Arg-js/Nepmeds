@@ -1,10 +1,10 @@
-import { Box, Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import { colors } from "@nepMeds/theme/colors";
+import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
+import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import PaymentSet from "./Component/PaymentSet";
 
 const PaymentDetails = () => {
   return (
-    <Box bg={colors.white} m={5} p={8} pt={3} borderRadius={10}>
+    <BoxWrapper>
       <Tabs>
         <TabList borderBottom={"none"}>
           <Tab>Payment Type</Tab>
@@ -23,7 +23,7 @@ const PaymentDetails = () => {
           <TabPanel>History</TabPanel>
         </TabPanels>
       </Tabs>
-    </Box>
+    </BoxWrapper>
   );
 };
 

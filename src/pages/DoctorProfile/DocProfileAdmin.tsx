@@ -49,7 +49,7 @@ const DocProfileAdmin = () => {
   const onSubmitForm = async () => {
     try {
       await rejectPendingDoc.mutateAsync({
-        id: doctorProfileData?.data?.id?.toString() ?? "",
+        id: id?.toString() ?? "",
         title_id: formMethods.getValues("title_id"),
         remarks: formMethods.getValues("remarks"),
       });
