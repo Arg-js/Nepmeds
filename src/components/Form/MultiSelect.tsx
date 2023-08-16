@@ -65,7 +65,7 @@ const MultiSelect = ({
           <FormControl
             isInvalid={!!fieldState.error}
             isRequired={isRequired}
-            variant={`${variant ? variant : "floating"}`}
+            variant={variant ?? "floating"}
           >
             {label && (
               <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>

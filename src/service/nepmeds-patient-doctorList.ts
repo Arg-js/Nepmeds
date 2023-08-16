@@ -1,6 +1,7 @@
 import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
+import { generatePath } from "react-router-dom";
 
 export interface IDoctorList {
   count: number;
@@ -121,7 +122,9 @@ const getDoctorListById = ({
   target_date: string;
 }) => {
   return HttpClient.get<NepMedsResponse<IDoctorListById>>(
-    api.patient.doctorList.getById.replace("{id}", id.toString()),
+    generatePath(api.patient.doctorList.getById, {
+      id: id.toString(),
+    }),
     {
       params: {
         target_date,

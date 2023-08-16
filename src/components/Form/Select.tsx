@@ -35,7 +35,7 @@ const Select = ({
     <FormControl
       isInvalid={!!error}
       isRequired={isRequired}
-      variant={variant ? variant : "floating"}
+      variant={variant ?? "floating"}
     >
       {startIcon ? (
         <InputLeftElement
