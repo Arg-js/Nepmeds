@@ -278,7 +278,7 @@ const PaymentSet = () => {
                         register={register}
                         required
                         rules={{
-                          required: "Please Enter Esewa Id",
+                          required: "Please Enter ESewa Id",
                         }}
                         error={
                           formState?.errors?.doctor_amount &&
