@@ -1,12 +1,12 @@
 import { Grid, GridItem, Flex, Text } from "@chakra-ui/react";
-import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
+import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
 import { colors } from "@nepMeds/theme/colors";
 import { ConsultationSteps } from "@nepMeds/utils/Patient/DummyData";
 
 const ConsultationStepSection = () => {
   return (
     <>
-      <SectionHeading heading="How Our Doctor Consultation works?" />
+      <Heading heading="How Our Doctor Consultation works?" />
       <Grid templateColumns="repeat(2, 1fr)" gap={10}>
         {ConsultationSteps.map(consultationStep => {
           return (

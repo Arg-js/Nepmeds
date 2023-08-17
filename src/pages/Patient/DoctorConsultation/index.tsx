@@ -1,60 +1,25 @@
-import Card, {
-  Type,
-} from "@nepMeds/components/Patient/DoctorConsultation/Card";
-import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
-import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
-import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
+import { Box, Image } from "@chakra-ui/react";
 import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
 import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
-import { Box, Flex, Image } from "@chakra-ui/react";
-import PatientFooter from "../Section/Footer";
-import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
+import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
+import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
+import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
+import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import DoctorListCard from "@nepMeds/components/Patient/DoctorList";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import DoctorListCard, {
-  Size,
-} from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
-import { useNavigate } from "react-router-dom";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import Carousel from "better-react-carousel";
-import { useState } from "react";
-import { AxiosError } from "axios";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
+import PatientFooter from "../Section/Footer";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
 
 const DoctorConsultation = () => {
-  // Pagination
-  const [pageParams, _setPageParams] = useState({
-    search: "",
-    page: 1,
-    limit: 10,
-  });
-  // Pagination ends
-
-  // REACT QUERIES
-  const {
-    data: specializaionData = [],
-    isLoading: SpecializationDataLoading,
-    error: specializaionDataError,
-  } = useSpecializationRegisterData();
-
-  const {
-    data: symptomData = [],
-    isLoading: symptomDataLoading,
-    error: symptomDataError,
-  } = useGetSymptoms();
-
-  const { data: doctorList, error: doctorListError } = useGetDoctorList({
-    search: pageParams.search,
-    page_size: pageParams.limit,
-    page: pageParams.page,
-  });
-  // REACT QUERIES END
-
-  const navigate = useNavigate();
+  const { data: specializaionData = [] } = useSpecializationRegisterData();
+  const { data: symptomData = [] } = useGetSymptoms();
+  const { data: doctorList } = useGetDoctorList();
 
   return (
     <>
@@ -65,36 +30,20 @@ const DoctorConsultation = () => {
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
           {/* Specialist Doctors SECTION*/}
-          <SectionHeading
+          <Heading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
-            // btnText={"View All Doctors"}
+            btnText={"View All Doctors"}
           />
-
-          <Box my={10}>
-            <Card
-              data={specializaionData}
-              isLoading={SpecializationDataLoading}
-              error={specializaionDataError as AxiosError}
-              type={Type.SPECIALIST}
-            />
-          </Box>
+          <Card data={specializaionData} type={0} />
 
           {/* Health Concern / Symptoms SECTION */}
-          <SectionHeading
+          <Heading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
-            // btnText={"View All Symptoms"}
+            btnText={"View All Symptoms"}
           />
-
-          <Box my={10}>
-            <Card
-              data={symptomData}
-              isLoading={symptomDataLoading}
-              error={symptomDataError as AxiosError}
-              type={Type.SYMPTOM}
-            />
-          </Box>
+          <Card data={symptomData} type={1} />
 
           {/* ADVERTISEMENT SECTION */}
           <Box height={"420px"}>
@@ -107,44 +56,19 @@ const DoctorConsultation = () => {
 
           {/* Doctors SECTION */}
 
-          <SectionHeading
+          <Heading
             heading={"Our Doctors"}
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
-            onClick={() =>
-              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
-            }
           />
 
-          {(doctorListError as AxiosError)?.response?.status === 500 ? (
-            <Flex width={"255px"} height={"282px"} alignItems={"center"}>
-              Oops something went wrong!!
-            </Flex>
-          ) : (
-            doctorList?.results && (
-              <Carousel cols={6} rows={1} gap={20} loop>
-                {/* <Flex gap={5} mb={10}> */}
-                {doctorList.results.map(doctor => {
-                  return (
-                    <Carousel.Item key={doctor.id}>
-                      <DoctorListCard
-                        data={doctor}
-                        error={doctorListError as AxiosError}
-                        size={Size.sm}
-                        key={doctor.id}
-                      />
-                    </Carousel.Item>
-                  );
-                })}
-                {/* </Flex> */}
-              </Carousel>
-            )
-          )}
+          {doctorList?.results &&
+            doctorList.results.map(doctor => {
+              return <DoctorListCard data={doctor} key={doctor.id} />;
+            })}
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
-          <Box mt={10}>
-            <ConsultationStepSection />
-          </Box>
+          <ConsultationStepSection />
 
           {/* ADVERTISEMENT SECTION */}
           <Box height={"470.86px"} my={10}>
@@ -155,11 +79,9 @@ const DoctorConsultation = () => {
           <ChooseUsSection />
 
           {/* FOOTER SECTION */}
+          <PatientFooter />
         </>
       </WrapperBox>
-      <Box bg={colors.background_blue}>
-        <PatientFooter />
-      </Box>
     </>
   );
 };

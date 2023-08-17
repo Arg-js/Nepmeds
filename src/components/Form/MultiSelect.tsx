@@ -27,7 +27,6 @@ interface IMultiSelect extends SelectProps {
   required?: boolean;
   multiValue?: { label: string; value: string }[];
   register: UseFormRegister<any>;
-  variant?: string;
 }
 
 const MultiSelect = ({
@@ -43,7 +42,6 @@ const MultiSelect = ({
   rules,
   required,
   multiValue,
-  variant,
 }: IMultiSelect) => {
   const { t } = useTranslation();
 
@@ -65,17 +63,8 @@ const MultiSelect = ({
           <FormControl
             isInvalid={!!fieldState.error}
             isRequired={isRequired}
-            variant={variant ?? "floating"}
+            variant="floating"
           >
-            {label && (
-              <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-                {label}
-                {required && (
-                  <span style={{ color: colors.error }}>&nbsp;*</span>
-                )}
-              </FormLabel>
-            )}
-
             <ReactSelect
               isMulti
               onChange={newValue => {
@@ -102,6 +91,14 @@ const MultiSelect = ({
                 }),
               }}
             />
+            {label && (
+              <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+                {label}
+                {required && (
+                  <span style={{ color: colors.error }}>&nbsp;*</span>
+                )}
+              </FormLabel>
+            )}
 
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
             {fieldState.error?.message && (
