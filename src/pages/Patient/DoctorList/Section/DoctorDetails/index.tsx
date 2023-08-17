@@ -114,11 +114,13 @@ const DoctorDetails: React.FC<{
   return (
     <WrapperBox
       width={"560px"}
-      // height={"797px"}
-      height={"auto"}
       backgroundColor={colors.white}
       border={`1px solid ${colors.light_blue}`}
-      paddingX={"4"}
+      style={{
+        // TODO: RESPONSIVE
+        px: { base: "4", md: "4" },
+        height: "auto",
+      }}
       borderRadius={"3px"}
     >
       {doctorInfo ? (
@@ -133,7 +135,6 @@ const DoctorDetails: React.FC<{
             </Text>
             <Box textAlign={"center"}>
               <Text fontWeight={400} fontSize={"12px"}>
-                {/* MBBS, MD - General Medicine - Cardiology */}
                 {doctorInfo?.specialization_names &&
                   doctorInfo?.specialization_names.map(
                     (specializaion_name, index) => {

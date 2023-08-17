@@ -56,16 +56,18 @@ const DoctorListCard: React.FC<{
         sx={{
           "&:hover": {
             boxShadow: `${
-              size === Size.sm
-                ? "none"
-                : ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
+              size === Size.lg &&
+              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
             }`,
           },
         }}
       >
         <Flex direction={`${size === Size.sm ? "column" : "row"}`}>
           <Box
-            width={`${size === Size.sm ? "302px" : "296px"}`}
+            width={{
+              base: `${size === Size.sm ? "285px" : "150px"}`,
+              md: `${size === Size.sm ? "302px" : "296px"}`,
+            }}
             height={`${size === Size.sm ? "159px" : "215px"}`}
           >
             {/* TODO: what happens when width and height not provided in image */}
@@ -73,17 +75,32 @@ const DoctorListCard: React.FC<{
               src={doctorImage}
               alt="doctorImage"
               objectFit={"cover"}
-              width={`${size === Size.sm ? "302px" : "296px"}`}
+              width={{
+                base: `${size === Size.sm ? "285px" : "150px"}`,
+                md: `${size === Size.sm ? "302px" : "296px"}`,
+              }}
               height={`${size === Size.sm ? "159px" : "215px"}`}
             />
           </Box>
           <Flex
-            width={`${size === Size.sm ? "302px" : "377px"}`}
+            width={{
+              base: `${size === Size.sm ? "302px" : "200px"}`,
+              md: `${size === Size.sm ? "302px" : "377px"}`,
+            }}
             height={`${size === Size.sm ? "159px" : "215px"}`}
             direction={"column"}
-            gap={`${size === Size.sm ? "2" : "4"}`}
-            py={`${size === Size.sm ? "3" : "5"}`}
-            px={`${size === Size.sm ? "3" : "8"}`}
+            gap={{
+              base: `${size === Size.sm ? "2" : "3"}`,
+              md: `${size === Size.sm ? "2" : "4"}`,
+            }}
+            py={{
+              base: `${size === Size.sm ? "3" : "5"}`,
+              md: `${size === Size.sm ? "3" : "5"}`,
+            }}
+            px={{
+              base: `${size === Size.sm ? "3" : "3"}`,
+              md: `${size === Size.sm ? "3" : "8"}`,
+            }}
           >
             <Text
               size="md"
@@ -125,7 +142,7 @@ const DoctorListCard: React.FC<{
               {doctorDetails.map(doctorDetail => {
                 return (
                   <Flex gap={4} key={doctorDetail.id}>
-                    {doctorDetail.icon}
+                    <Box>{doctorDetail.icon}</Box>
                     <Text
                       fontWeight={400}
                       fontSize={`${size === Size.sm ? "11px" : "13px"}`}

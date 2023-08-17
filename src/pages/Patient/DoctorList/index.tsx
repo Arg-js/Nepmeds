@@ -63,7 +63,12 @@ const DoctorList = () => {
   return (
     <>
       <Header />
-      <WrapperBox backgroundColor={colors.background_blue} paddingTop={"4"}>
+      <WrapperBox
+        backgroundColor={colors.background_blue}
+        style={{
+          pt: 4,
+        }}
+      >
         <>
           <BreadCrumb
             items={[
@@ -86,7 +91,7 @@ const DoctorList = () => {
             description="Book Appointment with top doctors across various speciality"
           />
 
-          <Flex mt={8}>
+          <Flex mt={8} direction={{ base: "column", md: "row" }}>
             {/* FILTER */}
             <DoctorListFilter
               setGender={setGender}
@@ -95,7 +100,7 @@ const DoctorList = () => {
             />
 
             {/* DOCTORS LIST */}
-            <Box mx={30}>
+            <Box mx={{ base: "0", md: "30" }}>
               <>
                 {isLoading && <Skeleton height={"215px"} width={"673px"} />}
                 {DoctorListError && (

@@ -15,7 +15,12 @@ const SectionHeading: React.FC<ISectionHeading> = ({
   onClick,
 }) => {
   return (
-    <Flex justifyContent={"space-between"} mb={4}>
+    <Flex
+      justifyContent={"space-between"}
+      gap={{ base: 4, md: 0 }}
+      mb={4}
+      direction={{ base: "column", md: "row" }}
+    >
       <Box>
         {heading && (
           <Text fontWeight={600} fontSize={"20px"}>

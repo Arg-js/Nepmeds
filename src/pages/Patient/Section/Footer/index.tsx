@@ -54,13 +54,17 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
   return (
     <>
       <WrapperBox
-        height={"517px"}
         backgroundColor={colors.white}
-        width={"auto"}
-        style={style}
+        style={{ ...style, height: { base: "auto", md: "517px" } }}
       >
         <>
-          <Grid templateColumns={`repeat(5,200px) 1fr`} gap={10}>
+          <Grid
+            templateColumns={{
+              base: `1fr`,
+              md: `repeat(5,200px) 1fr`,
+            }}
+            gap={10}
+          >
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
