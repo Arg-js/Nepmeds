@@ -11,16 +11,24 @@ interface IWrapperBox {
   width?: string;
   borderColor?: string;
   border?: string;
+  borderRadius?: string;
+  paddingTop?: string;
+  boxShadow?: string;
+  style?: Record<string, string>;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({
   children,
   backgroundColor = "none",
   backgroundImage = "none",
   height = "auto",
+  paddingTop = "none",
   padding = "10",
   paddingX = "30",
   width = "auto",
   border = "none",
+  borderRadius = "none",
+  boxShadow = "none",
+  style,
 }) => {
   return (
     <Box
@@ -29,9 +37,13 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       fontFamily={"Quicksand"}
       backgroundImage={backgroundImage}
       p={padding}
+      pt={paddingTop}
       px={paddingX}
       width={width}
       border={border}
+      borderRadius={borderRadius}
+      boxShadow={boxShadow}
+      style={style}
     >
       {children}
     </Box>
