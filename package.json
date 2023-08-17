@@ -34,6 +34,7 @@
     "@types/react-calendar": "^4.1.0",
     "@types/react-table": "^7.7.14",
     "axios": "^1.4.0",
+    "better-react-carousel": "^1.1.1",
     "date-fns": "^2.30.0",
     "framer-motion": "^10.12.9",
     "http-status": "^1.6.2",
