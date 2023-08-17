@@ -2,18 +2,12 @@ import { Button } from "@chakra-ui/button";
 import { Box, Flex, Text } from "@chakra-ui/layout";
 import { colors } from "@nepMeds/theme/colors";
 
-interface ISectionHeading {
+interface IHeading {
   heading?: string;
   description?: string;
   btnText?: string;
-  onClick?: () => void;
 }
-const SectionHeading: React.FC<ISectionHeading> = ({
-  heading,
-  description,
-  btnText,
-  onClick,
-}) => {
+const Heading: React.FC<IHeading> = ({ heading, description, btnText }) => {
   return (
     <Flex justifyContent={"space-between"} mb={4}>
       <Box>
@@ -43,7 +37,6 @@ const SectionHeading: React.FC<ISectionHeading> = ({
           height={"48px"}
           px={7}
           border={`1px solid ${colors.primary}`}
-          onClick={onClick}
         >
           {btnText}
         </Button>
@@ -52,4 +45,4 @@ const SectionHeading: React.FC<ISectionHeading> = ({
   );
 };
 
-export default SectionHeading;
+export default Heading;
