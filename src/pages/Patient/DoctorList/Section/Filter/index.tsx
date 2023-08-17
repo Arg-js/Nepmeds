@@ -5,8 +5,9 @@ import { colors } from "@nepMeds/theme/colors";
 import React, { Dispatch, SetStateAction } from "react";
 
 const GenderList = [
-  { label: "Male Doctor", value: "1" },
-  { label: "Female Doctor", value: "2" },
+  { label: "Male Doctor", value: "Male" },
+  { label: "Female Doctor", value: "Female" },
+  { label: "Others", value: "Other" },
 ];
 
 const DoctorListFilter: React.FC<{
