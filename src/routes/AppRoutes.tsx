@@ -31,7 +31,7 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 const routes = [
   {
     path: NAVIGATION_ROUTES.LOGGEDIN,
-    // element: <Layout />,
+    element: <Layout />,
     children: [
       {
         path: NAVIGATION_ROUTES.DASHBOARD,
