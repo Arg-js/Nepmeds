@@ -1,4 +1,6 @@
-import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
+import Card, {
+  Type,
+} from "@nepMeds/components/Patient/DoctorConsultation/Card";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -74,7 +76,7 @@ const DoctorConsultation = () => {
               data={specializaionData}
               isLoading={SpecializationDataLoading}
               error={specializaionDataError as AxiosError}
-              type={0}
+              type={Type.SPECIALIST}
             />
           </Box>
 
@@ -90,7 +92,7 @@ const DoctorConsultation = () => {
               data={symptomData}
               isLoading={symptomDataLoading}
               error={symptomDataError as AxiosError}
-              type={1}
+              type={Type.SYMPTOM}
             />
           </Box>
 

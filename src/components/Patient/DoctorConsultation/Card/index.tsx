@@ -8,7 +8,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
 import Carousel from "better-react-carousel";
 
-enum Type {
+export enum Type {
   SPECIALIST,
   SYMPTOM,
   DOCTOR,

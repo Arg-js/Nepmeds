@@ -34,7 +34,7 @@ export const BreadCrumb = ({ items, title }: IBreadCrumb) => {
                 >
                   {title?.name}
                 </Text>
-                {items.length != 0 && (
+                {!!items.length && (
                   <Icon
                     as={ChevronRightIcon}
                     color={colors.gray}

@@ -46,7 +46,7 @@ export const Pagination = ({
               borderRadius="6px"
               size="sm"
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                pageSizeChange && pageSizeChange(parseInt(e.target.value));
+                pageSizeChange?.(parseInt(e.target.value));
               }}
             >
               <option value={""} disabled>
