@@ -125,7 +125,7 @@ export const useGetAddedPaymentMethods = (id: string) => {
 //Delete payment methods for a doctor
 const deletePaymentMethods = async (id: string) => {
   const response = await HttpClient.delete(
-    generatePath(api.edit_payment_methods, { id })
+    generatePath(api.delete_payment_methods, { id })
   );
   return response;
 };
@@ -220,3 +220,5 @@ export const useGetPaymentList = ({
     }
   );
 };
+
+//Reject Payment for doctor (Requires Doctor ID)

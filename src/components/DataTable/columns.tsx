@@ -612,7 +612,7 @@ export const pendingPaymentColumn = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Approve Doctor">
+            <Tooltip label="Approve Payment">
               <span>
                 <Icon
                   as={CheckIcon}
@@ -625,7 +625,7 @@ export const pendingPaymentColumn = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Reject Doctor">
+            <Tooltip label="Reject Payment">
               <span>
                 <Icon
                   as={CloseIcon}
