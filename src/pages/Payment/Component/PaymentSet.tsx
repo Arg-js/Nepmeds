@@ -104,12 +104,31 @@ const PaymentSet = () => {
         </Box>
       ) : (
         <Box h={"80vh"} bg={colors.white}>
-          <Flex justifyContent={"end"}></Flex>
-          <Grid templateColumns="repeat(3, 1fr)" gap={6} mt={12}>
-            {addedPaymentMethods &&
-              addedPaymentMethods[0]?.doctor_amount?.map(x => {
-                return (
-                  <GridItem key={x.id}>
+          <Flex justifyContent={"end"}>
+            <Button
+              bg={colors.primary}
+              color={colors.white}
+              w={"200px"}
+              mt={5}
+              h={"45px"}
+              sx={{
+                "&:hover": { bg: colors.primary },
+              }}
+              onClick={onOpen}
+            >
+              Add Payment
+            </Button>
+          </Flex>
+          {addedPaymentMethods &&
+            addedPaymentMethods[0]?.doctor_amount?.map(x => {
+              return (
+                <Grid
+                  templateColumns="repeat(3, 1fr)"
+                  gap={6}
+                  mt={12}
+                  key={x.id}
+                >
+                  <GridItem>
                     <PaymentCard
                       name={x.payment_detail.name}
                       image={
@@ -126,9 +145,13 @@ const PaymentSet = () => {
                       }}
                     />
                   </GridItem>
-                );
-              })}
-          </Grid>
+                </Grid>
+              );
+            })}
+          {addedPaymentMethods &&
+            addedPaymentMethods[0]?.doctor_amount?.length < 1 && (
+              <Text align={"center"}>No Payment Methods Found!</Text>
+            )}
         </Box>
       )}
 
@@ -255,7 +278,7 @@ const PaymentSet = () => {
                         register={register}
                         required
                         rules={{
-                          required: "Please Enter ESewa Id",
+                          required: "Please Enter Esewa Id",
                         }}
                         error={
                           formState?.errors?.doctor_amount &&
