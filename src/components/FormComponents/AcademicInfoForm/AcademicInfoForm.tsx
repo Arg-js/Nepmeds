@@ -270,7 +270,7 @@ export const AcademicInfoForm = ({
           });
         }}
       >
-        Add Another Academic Detail
+        Add {watch("academic")?.length > 0 && "Another"} Academic Detail
       </Button>
     </>
   );

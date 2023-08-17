@@ -56,15 +56,15 @@ export const api = {
   payment_methods: "/core/payment-mode/",
   edit_payment_methods: "/doctor_consult/amount-payment/:id/",
   delete_payment_methods: "/doctor_consult/doctor-payment/:id/",
+  approve_payment_methods: "/approve-doctor-payment/:id/",
+  reject_payment_methods: "/reject-doctor-payment/:id/",
+
   added_payment_methods:
     "/doctor_consult/doctorwise-paymentdetail-list/:doctor_id/",
+  allpaymentList: "/dashboard/doctor-list-asper-payment-status/",
   patient: {
     doctorList: {
       get: "/patient/filter-doctor-list/",
-      getById: "/patient/doctor-details-appointment/:id/",
-    },
-    appointment: {
-      post: "/patient/appointment/",
     },
   },
 };

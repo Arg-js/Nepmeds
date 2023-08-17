@@ -268,7 +268,8 @@ export const CertificationInfoForm = ({
           });
         }}
       >
-        Add Another Certification Detail
+        Add {watch("certification")?.length > 0 && "Another"} Certification
+        Detail
       </Button>
     </>
   );

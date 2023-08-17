@@ -1,12 +1,12 @@
 import { Grid, GridItem, Flex, Text, Box } from "@chakra-ui/react";
-import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
+import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
 import { colors } from "@nepMeds/theme/colors";
 import { WhyChooseUs } from "@nepMeds/utils/Patient/DummyData";
 
 const ChooseUsSection = () => {
   return (
     <Box my={16}>
-      <SectionHeading heading="Why Choose Us?" />
+      <Heading heading="Why Choose Us?" />
       <Grid templateColumns="repeat(3, 1fr)" gap={6}>
         {WhyChooseUs.map(WhyChooseUsStep => {
           return (

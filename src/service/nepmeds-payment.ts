@@ -1,7 +1,10 @@
+import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
 import { useProfileData } from "../context";
-import { NepMedsResponse, api } from "./service-api";
+import { queryStringGenerator } from "../utils";
+import { IUser } from "./nepmeds-doctor-profile";
+import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface IPaymentMethod {
@@ -117,6 +120,7 @@ export const useGetAddedPaymentMethods = (id: string) => {
     () => getAddedPaymentMethods(id),
     {
       select: data => data.data.data,
+      enabled: !!id,
     }
   );
 };
@@ -141,3 +145,83 @@ export const useDeletePaymentMethods = () => {
     },
   });
 };
+
+export interface IAllPaymentResponse {
+  id: number;
+  user: IUser;
+  specialization_names: {
+    id: number;
+    name: string;
+  }[];
+  status: number;
+  rejected_remarks: null | string;
+  payment_rejected_remark: string;
+  instant_amount: null | string;
+  schedule_amount: null | string;
+  payment_modes: [];
+}
+
+// Get all payment list (Payment Status)
+const getPaymentList = async ({
+  page_no,
+  payment_status,
+  from_date,
+  to_date,
+  page_size,
+  name,
+  specialization,
+}: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    payment_status,
+    created_at__date__gte: from_date,
+    created_at__date__lte: to_date,
+    user__name__icontains: name,
+    specialization,
+  });
+  const response = await HttpClient.get<PaginatedResponse<IAllPaymentResponse>>(
+    `${api.allpaymentList}?${qs}`
+  );
+  return response;
+};
+
+export const useGetPaymentList = ({
+  page_no,
+  payment_status,
+  from_date,
+  to_date,
+  page_size,
+  name,
+  enabled,
+  specialization,
+}: IFilterSearch & { enabled?: boolean }) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    payment_status,
+    created_at__date__gte: from_date,
+    created_at__date__lte: to_date,
+    user__name__icontains: name,
+    specialization,
+  });
+  return useQuery(
+    [api.allpaymentList, qs],
+    () =>
+      getPaymentList({
+        page_no: page_no,
+        payment_status,
+        from_date: from_date,
+        to_date: to_date,
+        name: name,
+        page_size: page_size ?? 10,
+        specialization,
+      }),
+    {
+      select: data => data.data.data,
+      enabled: !!enabled,
+    }
+  );
+};
+
+//Reject Payment for doctor (Requires Doctor ID)
