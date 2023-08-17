@@ -536,7 +536,10 @@ export const allPaymentColumn = () => {
 };
 
 export const pendingPaymentColumn = (
-  onClick: (isApproved: boolean, doctorId: string) => void
+  onClick: (
+    isApproved: boolean,
+    doctorInfo: { id: string; name: string }
+  ) => void
 ) => {
   return [
     {
@@ -620,7 +623,13 @@ export const pendingPaymentColumn = (
                   cursor="pointer"
                   color={colors.green_light}
                   onClick={() => {
-                    onClick(true, cell.row.original.id);
+                    onClick(true, {
+                      id: cell.row.original.id,
+                      name:
+                        cell.row.original.user.first_name +
+                        " " +
+                        cell.row.original.user.last_name,
+                    });
                   }}
                 />
               </span>
@@ -633,7 +642,13 @@ export const pendingPaymentColumn = (
                   color={colors.red}
                   cursor="pointer"
                   onClick={() => {
-                    onClick(false, cell.row.original.id);
+                    onClick(false, {
+                      id: cell.row.original.id,
+                      name:
+                        cell.row.original.user.first_name +
+                        " " +
+                        cell.row.original.user.last_name,
+                    });
                   }}
                 />
               </span>

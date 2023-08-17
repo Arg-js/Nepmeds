@@ -108,7 +108,7 @@ export const useGetPaymentMethods = () => {
 
 //Get list of added payment methods for a doctor
 const getAddedPaymentMethods = async (id: string) => {
-  const response = await HttpClient.get<NepMedsResponse<IGetPaymentMethods[]>>(
+  const response = await HttpClient.get<NepMedsResponse<IGetPaymentMethods>>(
     generatePath(api.added_payment_methods, { doctor_id: id })
   );
   return response;
@@ -225,3 +225,44 @@ export const useGetPaymentList = ({
 };
 
 //Reject Payment for doctor (Requires Doctor ID)
+const rejectPayment = async ({
+  id,
+  remarks,
+  title_id,
+}: {
+  id: string;
+  remarks: string;
+  title_id: string;
+}) => {
+  const response = await HttpClient.post(
+    generatePath(api.reject_payment_methods, { id }),
+    { title_id, remarks }
+  );
+  return response;
+};
+
+export const useRejectPayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation(rejectPayment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.allpaymentList]);
+    },
+  });
+};
+
+//Approve Payment for doctor (Requires Doctor ID)
+const approvePayment = async (id: string) => {
+  const response = await HttpClient.post(
+    generatePath(api.approve_payment_methods, { id })
+  );
+  return response;
+};
+
+export const useApprovePayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation(approvePayment, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.allpaymentList]);
+    },
+  });
+};

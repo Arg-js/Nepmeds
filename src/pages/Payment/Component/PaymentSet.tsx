@@ -38,6 +38,7 @@ const PaymentSet = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);
   const { data: addedPaymentMethods, isLoading: getIsLoading } =
     useGetAddedPaymentMethods(profileData?.data?.doctor?.id.toString() ?? "");
+
   const {
     formMethods: {
       reset,
@@ -67,7 +68,7 @@ const PaymentSet = () => {
 
   useEffect(() => {
     if (addedPaymentMethods && !getIsLoading && isOpen) {
-      setPaymentValue(addedPaymentMethods[0]);
+      setPaymentValue(addedPaymentMethods);
     }
   }, [addedPaymentMethods, isOpen]);
 
@@ -120,7 +121,7 @@ const PaymentSet = () => {
             </Button>
           </Flex>
           {addedPaymentMethods &&
-            addedPaymentMethods[0]?.doctor_amount?.map(x => {
+            addedPaymentMethods?.doctor_amount?.map(x => {
               return (
                 <Grid
                   templateColumns="repeat(3, 1fr)"
@@ -149,7 +150,7 @@ const PaymentSet = () => {
               );
             })}
           {addedPaymentMethods &&
-            addedPaymentMethods[0]?.doctor_amount?.length < 1 && (
+            addedPaymentMethods?.doctor_amount?.length < 1 && (
               <Text align={"center"}>No Payment Methods Found!</Text>
             )}
         </Box>
