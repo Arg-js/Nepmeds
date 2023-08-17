@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   HStack,
   Input,
   InputGroup,
@@ -14,15 +15,17 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { svgs } from "@nepMeds/assets/svgs";
+import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { pendingColumns } from "@nepMeds/components/DataTable/columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useProfileData } from "@nepMeds/context/index";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import useDoctorStatusForm from "@nepMeds/pages/DoctorProfile/useDoctorStatusForm";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
@@ -51,7 +54,20 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
     status: STATUSTYPE.pending,
   });
   const profileData = useProfileData();
-
+  const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
+    id: "",
+    name: "",
+  });
+  const {
+    isOpen: isRejectModalOpen,
+    onOpen: onRejectModalOpen,
+    onClose: onRejectModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: confirmationModal,
+    onOpen: onOpenConfirmation,
+    onClose: onCloseConfirmation,
+  } = useDisclosure();
   const [searchFilter, setSearchFilter] = useState("");
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
@@ -63,6 +79,22 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
     name: debouncedInputValue,
     enabled: profileData?.data?.is_superuser,
   });
+  const formMethods = useForm({ resolver: yupResolver(schema) });
+
+  const navigate = useNavigate();
+
+  const {
+    isOpen: isModalOpen,
+    onOpen: onModalOpen,
+    onClose: onModalClose,
+  } = useDisclosure();
+  const {
+    ApproveDoctor,
+    RejectDoctor,
+    approveLoading,
+    rejectLoading,
+    formMethods: statusFormMethods,
+  } = useDoctorStatusForm();
 
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
@@ -81,15 +113,23 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
     onModalClose();
   };
 
-  const formMethods = useForm({ resolver: yupResolver(schema) });
+  const onActionClick = async (
+    isApproved: boolean,
+    doctorInfo: { id: string; name: string }
+  ) => {
+    setDoctorInfo({ name: doctorInfo.name, id: doctorInfo.id });
+    if (isApproved) {
+      onOpenConfirmation();
+      // ApproveDoctor(doctorId)
+    } else {
+      onRejectModalOpen();
+    }
+  };
 
-  const navigate = useNavigate();
-
-  const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
+  const RejectDoctorModal = () => {
+    statusFormMethods.reset();
+    onRejectModalClose();
+  };
 
   return (
     <>
@@ -170,6 +210,119 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
         </ModalComponent>
       )}
 
+      {isRejectModalOpen && (
+        <ModalComponent
+          isOpen={isRejectModalOpen}
+          onClose={RejectDoctorModal}
+          approve
+          reject
+          size="xl"
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Remarks for rejection</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="outline"
+                onClick={RejectDoctorModal}
+                flex={1}
+                border="2px solid"
+                borderColor={colors.primary}
+                color={colors.primary}
+                fontWeight={400}
+              >
+                Cancel
+              </Button>
+              <Button
+                flex={1}
+                onClick={statusFormMethods.handleSubmit(value =>
+                  RejectDoctor({ ...value, id: doctorInfo.id }).then(() =>
+                    RejectDoctorModal()
+                  )
+                )}
+                background={colors.primary}
+                color={colors.white}
+                isLoading={rejectLoading}
+              >
+                Done
+              </Button>
+            </HStack>
+          }
+          primaryText="Done"
+          secondaryText="Cancel"
+          otherAction={onRejectModalClose}
+        >
+          <FormProvider {...statusFormMethods}>
+            <form
+              onSubmit={statusFormMethods.handleSubmit(value =>
+                RejectDoctor({ ...value, id: doctorInfo.id })
+              )}
+            >
+              <RejectionForm />
+            </form>
+          </FormProvider>
+        </ModalComponent>
+      )}
+
+      {confirmationModal && (
+        <ModalComponent
+          isOpen={confirmationModal}
+          onClose={onCloseConfirmation}
+          approve
+          reject
+          size="xl"
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Dcotor Approval</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="outline"
+                onClick={onCloseConfirmation}
+                flex={1}
+                border="2px solid"
+                borderColor={colors.primary}
+                color={colors.primary}
+                fontWeight={400}
+              >
+                Cancel
+              </Button>
+              <Button
+                flex={1}
+                onClick={statusFormMethods.handleSubmit(() =>
+                  ApproveDoctor(doctorInfo.id).then(() => onCloseConfirmation())
+                )}
+                background={colors.primary}
+                color={colors.white}
+                isLoading={approveLoading}
+              >
+                Yes
+              </Button>
+            </HStack>
+          }
+          primaryText="Done"
+          secondaryText="Cancel"
+          otherAction={onCloseConfirmation}
+        >
+          <Flex
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <ConfirmationImage />
+            <Text fontWeight={"bold"} mt={4}>
+              Are you sure you want to approve {doctorInfo.name}?
+            </Text>
+          </Flex>
+        </ModalComponent>
+      )}
+
       <HStack justifyContent="space-between">
         {showFilter && <Text fontWeight="medium">Pending Doctors</Text>}
 
@@ -200,9 +353,9 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           </HStack>
         )}
       </HStack>
-      {isSuccess && (
+      {isSuccess && !isFetching && (
         <DataTable
-          columns={pendingColumns(navigate)}
+          columns={pendingColumns(navigate, onActionClick)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

@@ -303,7 +303,7 @@ export const ExperienceForm = ({
           });
         }}
       >
-        Add Another experience Detail
+        Add {watch("experience")?.length > 0 && "Another"} experience Detail
       </Button>
     </>
   );

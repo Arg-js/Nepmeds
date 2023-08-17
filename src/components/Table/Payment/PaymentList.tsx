@@ -10,10 +10,11 @@ import {
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useState } from "react";
-import ApprovedDocList from "./ApprovedDocList";
-import PendingDocList from "./PendingDocList";
-import RegisteredDocList from "./RegisteredDocList";
-import RejectedDocList from "./RejectedDocList";
+import AllPayment from "./AllPayment";
+import ApprovedPayment from "./ApprovedPayment";
+import PendingPayment from "./PendingPayment";
+import RejectedPaymentList from "./RejectedPayment";
+
 // import { Link } from "react-router-dom";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
@@ -22,7 +23,7 @@ export interface ISpecializationList {
   value: number;
 }
 
-const DoctorsList = () => {
+const PaymentList = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
   const { data: specialization = [] } = useSpecializationRegisterData();
 
@@ -41,40 +42,40 @@ const DoctorsList = () => {
         >
           <GridItem>
             <TabList border="none" p={4}>
-              <Tab>Registered Doctors</Tab>
-              <Tab>Pending Approval</Tab>
-              <Tab>Approved</Tab>
-              <Tab>On-Hold Doctors</Tab>
+              <Tab>All</Tab>
+              <Tab>Payment Pending</Tab>
+              <Tab>Approved Payment</Tab>
+              <Tab>Rejected Payment</Tab>
             </TabList>
           </GridItem>
 
           {/* <GridItem width={"15%"}>
-            <CustomButton backgroundColor={colors.primary}>
-              {" "}
-              <IoAdd /> Add Doctor
-            </CustomButton>
-          </GridItem> */}
+              <CustomButton backgroundColor={colors.primary}>
+                {" "}
+                <IoAdd /> Add Doctor
+              </CustomButton>
+            </GridItem> */}
         </Grid>
 
         <TabPanels>
           <TabPanel>
             {tabIndex === 0 && (
-              <RegisteredDocList specializationList={specializationList} />
+              <AllPayment specializationList={specializationList} />
             )}
           </TabPanel>
           <TabPanel>
             {tabIndex === 1 && (
-              <PendingDocList specializationList={specializationList} />
+              <PendingPayment specializationList={specializationList} />
             )}
           </TabPanel>
           <TabPanel>
             {tabIndex === 2 && (
-              <ApprovedDocList specializationList={specializationList} />
+              <ApprovedPayment specializationList={specializationList} />
             )}
           </TabPanel>
           <TabPanel>
             {tabIndex === 3 && (
-              <RejectedDocList specializationList={specializationList} />
+              <RejectedPaymentList specializationList={specializationList} />
             )}
           </TabPanel>
         </TabPanels>
@@ -83,4 +84,4 @@ const DoctorsList = () => {
   );
 };
 
-export default DoctorsList;
+export default PaymentList;
