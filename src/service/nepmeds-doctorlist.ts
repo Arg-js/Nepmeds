@@ -1,3 +1,4 @@
+import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { AxiosResponse } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { queryStringGenerator } from "../utils";
@@ -18,15 +19,7 @@ export const getDoctorList = async ({
   specialization,
   page_size,
   name,
-}: {
-  page_no: number;
-  page_size: number;
-  status?: string;
-  from_date?: string;
-  to_date?: string;
-  specialization?: string;
-  name?: string;
-}) => {
+}: IFilterSearch & { status?: string }) => {
   const qs = queryStringGenerator({
     page: page_no,
     page_size,
@@ -51,16 +44,7 @@ export const useDoctorList = ({
   page_size,
   name,
   enabled = true,
-}: {
-  page_no: number;
-  status?: string;
-  from_date?: string;
-  to_date?: string;
-  page_size?: number;
-  specialization?: string;
-  name?: string;
-  enabled?: boolean;
-}) => {
+}: IFilterSearch & { status?: string; enabled?: boolean }) => {
   const qs = queryStringGenerator({
     page: page_no,
     page_size,

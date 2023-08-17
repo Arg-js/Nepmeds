@@ -90,11 +90,11 @@ const adminRoutes = [
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
         children: [
           {
-            path: NAVIGATION_ROUTES.DOCTOR_LIST + "/registration",
+            path: NAVIGATION_ROUTES.DOCTOR_LIST_REGISTRATION,
             element: <DoctorsList />,
           },
           {
-            path: NAVIGATION_ROUTES.DOCTOR_LIST + "/payment",
+            path: NAVIGATION_ROUTES.DOCTOR_LIST_PAYMENT,
             element: <PaymentList />,
           },
         ],

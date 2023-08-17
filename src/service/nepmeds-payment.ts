@@ -1,3 +1,4 @@
+import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
 import { useProfileData } from "../context";
@@ -143,7 +144,7 @@ export const useDeletePaymentMethods = () => {
 };
 
 export interface IAllPaymentResponse {
-  id: 16;
+  id: number;
   user: IUser;
   specialization_names: {
     id: number;
@@ -166,15 +167,7 @@ const getPaymentList = async ({
   page_size,
   name,
   specialization,
-}: {
-  page_no: number;
-  page_size: number;
-  payment_status?: string;
-  from_date?: string;
-  to_date?: string;
-  name?: string;
-  specialization?: string;
-}) => {
+}: IFilterSearch) => {
   const qs = queryStringGenerator({
     page: page_no,
     page_size,
@@ -199,16 +192,7 @@ export const useGetPaymentList = ({
   name,
   enabled,
   specialization,
-}: {
-  page_no: number;
-  page_size: number;
-  payment_status?: string;
-  from_date?: string;
-  to_date?: string;
-  name?: string;
-  enabled?: boolean;
-  specialization?: string;
-}) => {
+}: IFilterSearch & { enabled?: boolean }) => {
   const qs = queryStringGenerator({
     page: page_no,
     page_size,
