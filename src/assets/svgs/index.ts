@@ -33,3 +33,5 @@ export { ReactComponent as DeleteIcon } from "./delete.svg";
 export { ReactComponent as EditIcon } from "./edit.svg";
 export { ReactComponent as PlusIcon } from "./plus.svg";
 export { ReactComponent as TimeSquareIcon } from "./timeSquare.svg";
+
+export { ReactComponent as NoDataIcon } from "./noData.svg";

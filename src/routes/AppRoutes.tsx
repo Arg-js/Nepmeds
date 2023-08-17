@@ -31,7 +31,7 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 const routes = [
   {
     path: NAVIGATION_ROUTES.LOGGEDIN,
-    element: <Layout />,
+    // element: <Layout />,
     children: [
       {
         path: NAVIGATION_ROUTES.DASHBOARD,
@@ -65,6 +65,14 @@ const routes = [
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
         element: <DoctorProfile />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        element: <DoctorConsultation />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        element: <DoctorList />,
       },
     ],
   },
@@ -119,6 +127,14 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        element: <DoctorConsultation />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        element: <DoctorList />,
       },
     ],
   },

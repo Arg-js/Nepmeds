@@ -50,8 +50,11 @@ const addPaymentMethods = async (paymentMethods: IPaymentMethod) => {
 };
 
 export const useCreatePaymentMethods = () => {
+  const queryClient = useQueryClient();
   return useMutation(addPaymentMethods, {
-    onSuccess: () => {},
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.added_payment_methods]);
+    },
   });
 };
 
