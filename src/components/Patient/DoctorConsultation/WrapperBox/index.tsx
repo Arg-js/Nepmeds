@@ -22,6 +22,9 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   padding = "10",
   width = "auto",
   border = "none",
+  borderRadius = "none",
+  boxShadow = "none",
+  style,
 }) => {
   return (
     <Box

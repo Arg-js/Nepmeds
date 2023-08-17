@@ -22,7 +22,7 @@ const usePaymentForm = () => {
     const deepCopyValue = structuredClone(value);
     const newSorted = {
       ...deepCopyValue,
-      doctor_amount: deepCopyValue?.doctor_amount?.sort(
+      doctor_amount: deepCopyValue.doctor_amount.sort(
         (a: IPaymentMethodDoctorAmount, b: IPaymentMethodDoctorAmount) => {
           return a.payment_mode - b.payment_mode;
         }

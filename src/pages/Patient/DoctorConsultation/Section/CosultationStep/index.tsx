@@ -1,5 +1,5 @@
 import { Grid, GridItem, Flex, Text } from "@chakra-ui/react";
-import Heading from "@nepMeds/components/Patient/DoctorConsultation/Heading";
+import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import { colors } from "@nepMeds/theme/colors";
 import { ConsultationSteps } from "@nepMeds/utils/Patient/DummyData";
 

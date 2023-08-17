@@ -1,7 +1,5 @@
 import { Center, Spinner } from "@chakra-ui/react";
 import Layout from "@nepMeds/components/Layout";
-import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
-import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
@@ -10,8 +8,6 @@ import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
 import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
 import Login from "@nepMeds/pages/Login/Login";
 import Calendar from "@nepMeds/pages/NewCalendar";
-import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
-import DoctorList from "@nepMeds/pages/Patient/DoctorList";
 import PaymentDetails from "@nepMeds/pages/Payment";
 import Register from "@nepMeds/pages/Register";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
@@ -27,6 +23,10 @@ import {
 import { Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
+import DoctorList from "@nepMeds/pages/Patient/DoctorList";
+import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
+import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
 
 const routes = [
   {
@@ -65,6 +65,14 @@ const routes = [
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
         element: <DoctorProfile />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        element: <DoctorConsultation />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        element: <DoctorList />,
       },
     ],
   },

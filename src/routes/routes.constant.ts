@@ -30,7 +30,7 @@ export const NAVIGATION_ROUTES = {
   PAYMENT: "payment",
 
   DOC_PROFILE: "/doc-profile/:id",
-  //Add Navigation
+
   DOCTOR_LIST_REGISTRATION: "/doctor-list/registration",
   DOCTOR_LIST_PAYMENT: "/doctor-list/payment",
 
