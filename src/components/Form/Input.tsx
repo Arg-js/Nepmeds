@@ -89,10 +89,9 @@ const Input = ({
         )}
 
         <ChakraInput
-          variant="outline"
           id={name}
           type={type}
-          // variant="register"
+          variant="register"
           {...register(name, rules)}
           {...rest}
         />
