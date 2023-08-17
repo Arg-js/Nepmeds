@@ -56,7 +56,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
       <WrapperBox
         height={"517px"}
         backgroundColor={colors.white}
-        width={"1512px"}
+        width={"auto"}
         style={style}
       >
         <>

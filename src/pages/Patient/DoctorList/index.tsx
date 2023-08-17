@@ -131,9 +131,9 @@ const DoctorList = () => {
               setTargeDate={setTargeDate}
             />
           </Flex>
-          <PatientFooter style={{ margin: "30px" }} />
         </>
       </WrapperBox>
+      <PatientFooter />
     </>
   );
 };
