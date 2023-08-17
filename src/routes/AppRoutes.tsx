@@ -73,6 +73,21 @@ const routes = [
     element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
   },
 ];
+const paientRoutes = [
+  {
+    path: NAVIGATION_ROUTES.LOGGEDIN,
+    children: [
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        element: <DoctorConsultation />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        element: <DoctorList />,
+      },
+    ],
+  },
+];
 const adminRoutes = [
   {
     path: NAVIGATION_ROUTES.LOGGEDIN,
@@ -202,6 +217,8 @@ const AppRoutes = () => {
     isAuthenticated
       ? userInfo?.is_superuser
         ? adminRoutes
+        : userInfo?.is_patient
+        ? paientRoutes
         : routes
       : openRoutes
   );

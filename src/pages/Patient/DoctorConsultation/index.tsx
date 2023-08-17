@@ -46,7 +46,7 @@ const DoctorConsultation = () => {
           <Card data={symptomData} type={1} />
 
           {/* ADVERTISEMENT SECTION */}
-          <Box height={"420px"}>
+          <Box my={{ base: 5, md: 10 }}>
             <Image
               src={advertisement1}
               alt="advertisement"
@@ -71,7 +71,7 @@ const DoctorConsultation = () => {
           <ConsultationStepSection />
 
           {/* ADVERTISEMENT SECTION */}
-          <Box height={"470.86px"} my={10}>
+          <Box my={{ base: 5, md: 10 }}>
             <Image src={advertisement2} alt="advertisement" />
           </Box>
 
