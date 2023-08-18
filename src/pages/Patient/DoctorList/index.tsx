@@ -36,6 +36,10 @@ const DoctorList = () => {
   });
 
   const pageChange = (page: number) => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth", // This adds smooth scrolling animation
+    });
     setPageParams({ ...pageParams, page });
   };
   // PAGINATION ENDS
@@ -115,6 +119,7 @@ const DoctorList = () => {
                         data={doctorData}
                         size={Size.lg}
                         setDoctorId={setDoctorId}
+                        doctorId={doctorId}
                         key={doctorData.id}
                       />
                     );

@@ -129,8 +129,8 @@ const DoctorDetails: React.FC<{
             <Text fontWeight={600} fontSize={"14px"} color={colors.dark_blue}>
               Doctor’s Profile
             </Text>
-            <Avatar size={"lg"} />
-            <Text fontWeight={600} fontSize={"16px"}>
+            <Avatar size={"lg"} src={doctorInfo.profile_picture} />
+            <Text fontWeight={600} fontSize={"16px"} textTransform="capitalize">
               {doctorInfo?.name}
             </Text>
             <Box textAlign={"center"}>

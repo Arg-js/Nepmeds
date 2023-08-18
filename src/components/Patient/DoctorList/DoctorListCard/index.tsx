@@ -5,7 +5,7 @@ import {
   StethoscopeIcon,
 } from "@nepMeds/assets/svgs";
 import { colors } from "@nepMeds/theme/colors";
-import doctorImage from "@nepMeds/assets/images/doctor.png";
+import doctorImage from "@nepMeds/assets/images/userAvatar.png";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDoctorListResult } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { AxiosError } from "axios";
@@ -19,8 +19,9 @@ const DoctorListCard: React.FC<{
   data: IDoctorListResult;
   size: number;
   setDoctorId?: Dispatch<SetStateAction<number>>;
+  doctorId?: number;
   error?: AxiosError;
-}> = ({ data, size, setDoctorId }) => {
+}> = ({ data, size, setDoctorId, doctorId }) => {
   const doctorDetails = useMemo(
     () => [
       {
@@ -53,6 +54,11 @@ const DoctorListCard: React.FC<{
     >
       <Card
         variant={"elevated"}
+        boxShadow={
+          doctorId === data.id
+            ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
+            : "none"
+        }
         sx={{
           "&:hover": {
             boxShadow: `${
@@ -72,9 +78,9 @@ const DoctorListCard: React.FC<{
           >
             {/* TODO: what happens when width and height not provided in image */}
             <Image
-              src={doctorImage}
+              src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              objectFit={"cover"}
+              objectFit={"contain"}
               width={{
                 base: `${size === Size.sm ? "285px" : "150px"}`,
                 md: `${size === Size.sm ? "302px" : "296px"}`,

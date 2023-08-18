@@ -80,7 +80,7 @@ export const Pagination = ({
             boxShadow={`0px 0px 3px rgba(0, 0, 0, 0.5)`}
             isDisabled={queryPageIndex === 1}
             onClick={() => {
-              pageChange && pageChange(queryPageIndex - 1);
+              pageChange?.(queryPageIndex - 1);
             }}
             icon={<ChevronLeftIcon fill={colors.gray} />}
             sx={{
@@ -159,7 +159,7 @@ export const Pagination = ({
             width="30px"
             boxShadow={` 0px 0px 3px rgba(0, 0, 0, 0.5)`}
             onClick={() => {
-              pageChange && pageChange(queryPageIndex + 1);
+              pageChange?.(queryPageIndex + 1);
             }}
             isDisabled={queryPageIndex * queryPageSize >= totalCount}
             icon={<ChevronRightIcon />}

@@ -69,15 +69,10 @@ const DoctorListFilter: React.FC<{
                 <Checkbox
                   onChange={e =>
                     e.target.checked
-                      ? setSpecialization(prev =>
-                          // prev
-                          //   ? prev + "," + specialization.name
-                          //   : specialization.name
-                          {
-                            prev.push(specialization.name);
-                            return prev;
-                          }
-                        )
+                      ? setSpecialization(prev => [
+                          ...prev,
+                          specialization.name,
+                        ])
                       : setSpecialization(prev => {
                           return prev.filter(
                             item => item !== specialization.name
@@ -102,16 +97,9 @@ const DoctorListFilter: React.FC<{
                 <Checkbox
                   onChange={e =>
                     e.target.checked
-                      ? setSymptom(prev =>
-                          // prev ? prev + "," + symptom.name : symptom.name
-                          {
-                            prev.push(symptom.name);
-                            return prev;
-                          }
-                        )
+                      ? setSymptom(prev => [...prev, symptom.name])
                       : setSymptom(prev => {
-                          prev.find(item => item !== symptom.name);
-                          return prev;
+                          return prev.filter(item => item !== symptom.name);
                         })
                   }
                 />
