@@ -65,9 +65,14 @@ export const api = {
   added_payment_methods:
     "/doctor_consult/doctorwise-paymentdetail-list/:doctor_id/",
   allpaymentList: "/dashboard/doctor-list-asper-payment-status/",
+
   patient: {
     doctorList: {
       get: "/patient/filter-doctor-list/",
+      getById: "/patient/doctor-details-appointment/:id/",
+    },
+    appointment: {
+      post: "/patient/appointment/",
     },
   },
 };

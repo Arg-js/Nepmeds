@@ -236,7 +236,12 @@ export function DataTable({
       </Box>
 
       {pagination ? (
-        <HStack justifyContent={"flex-end"} float={"right"} flexWrap="wrap">
+        <HStack
+          justifyContent={"flex-end"}
+          float={"right"}
+          flexWrap="wrap"
+          mt={3}
+        >
           <HStack>
             <FormControl variant={"floating"}>
               <Select

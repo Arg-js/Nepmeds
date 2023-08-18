@@ -7,7 +7,6 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useState } from "react";
 import ApprovedDocList from "./ApprovedDocList";
@@ -31,7 +30,7 @@ const DoctorsList = () => {
     value: s.id,
   }));
   return (
-    <BoxWrapper>
+    <>
       <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
         <Grid
           display={"flex"}
@@ -79,7 +78,7 @@ const DoctorsList = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </BoxWrapper>
+    </>
   );
 };
 
