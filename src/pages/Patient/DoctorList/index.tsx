@@ -25,8 +25,8 @@ const DoctorList = () => {
   const [doctorId, setDoctorId] = useState(0);
   const [targetDate, setTargeDate] = useState(formattedDate);
   const [gender, setGender] = useState("");
-  const [specialization, setSpecialization] = useState<string>("");
-  const [symptom, setSymptom] = useState<string>("");
+  const [specialization, setSpecialization] = useState<string[]>([]);
+  const [symptom, setSymptom] = useState<string[]>([]);
 
   // PAGINATION
   const [pageParams, setPageParams] = useState({
@@ -50,8 +50,8 @@ const DoctorList = () => {
     page_size: pageParams.limit,
     page: pageParams.page,
     gender: gender,
-    specialization: specialization,
-    symptom: symptom,
+    specialization: specialization?.join(","),
+    symptom: symptom?.join(","),
   });
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({

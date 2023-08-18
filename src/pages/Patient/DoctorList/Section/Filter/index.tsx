@@ -12,8 +12,8 @@ const GenderList = [
 
 const DoctorListFilter: React.FC<{
   setGender: Dispatch<SetStateAction<string>>;
-  setSpecialization: Dispatch<SetStateAction<string>>;
-  setSymptom: Dispatch<SetStateAction<string>>;
+  setSpecialization: Dispatch<SetStateAction<string[]>>;
+  setSymptom: Dispatch<SetStateAction<string[]>>;
 }> = ({ setGender, setSpecialization, setSymptom }) => {
   // REACT QUERIES
   const { data: symptomData = [] } = useGetSymptoms();
@@ -36,8 +36,8 @@ const DoctorListFilter: React.FC<{
             cursor={"pointer"}
             onClick={() => {
               setGender("");
-              setSpecialization("");
-              setSymptom("");
+              setSpecialization([]);
+              setSymptom([]);
             }}
           >
             Clear All
@@ -70,13 +70,19 @@ const DoctorListFilter: React.FC<{
                   onChange={e =>
                     e.target.checked
                       ? setSpecialization(prev =>
-                          prev
-                            ? prev + "," + specialization.name
-                            : specialization.name
+                          // prev
+                          //   ? prev + "," + specialization.name
+                          //   : specialization.name
+                          {
+                            prev.push(specialization.name);
+                            return prev;
+                          }
                         )
-                      : setSpecialization(prev =>
-                          prev.replace(`${specialization.name}`, "")
-                        )
+                      : setSpecialization(prev => {
+                          return prev.filter(
+                            item => item !== specialization.name
+                          );
+                        })
                   }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
@@ -97,9 +103,16 @@ const DoctorListFilter: React.FC<{
                   onChange={e =>
                     e.target.checked
                       ? setSymptom(prev =>
-                          prev ? prev + "," + symptom.name : symptom.name
+                          // prev ? prev + "," + symptom.name : symptom.name
+                          {
+                            prev.push(symptom.name);
+                            return prev;
+                          }
                         )
-                      : setSymptom(prev => prev.replace(`${symptom.name}`, ""))
+                      : setSymptom(prev => {
+                          prev.find(item => item !== symptom.name);
+                          return prev;
+                        })
                   }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>

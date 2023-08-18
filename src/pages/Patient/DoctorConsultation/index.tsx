@@ -23,7 +23,6 @@ import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
-import Carousel from "better-react-carousel";
 
 const DoctorConsultation = () => {
   // Pagination
@@ -89,7 +88,7 @@ const DoctorConsultation = () => {
 
           <Box my={10}>
             <Card
-              data={symptomData}
+              data={symptomData.slice(0, 4)}
               isLoading={symptomDataLoading}
               error={symptomDataError as AxiosError}
               type={Type.SYMPTOM}
@@ -122,24 +121,18 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              // <Flex gap={5} mb={10}>
-              <Carousel cols={6} rows={1} gap={20} loop>
-                {/* <Flex gap={5} mb={10}> */}
-                {doctorList.results.map(doctor => {
+              <Flex gap={5} mb={10}>
+                {doctorList.results.slice(0, 5).map(doctor => {
                   return (
-                    <Carousel.Item key={doctor.id}>
-                      <DoctorListCard
-                        data={doctor}
-                        error={doctorListError as AxiosError}
-                        size={Size.sm}
-                        key={doctor.id}
-                      />
-                    </Carousel.Item>
+                    <DoctorListCard
+                      data={doctor}
+                      error={doctorListError as AxiosError}
+                      size={Size.sm}
+                      key={doctor.id}
+                    />
                   );
                 })}
-                {/* </Flex> */}
-              </Carousel>
-              // </Flex>
+              </Flex>
             )
           )}
 
