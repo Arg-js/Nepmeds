@@ -11,6 +11,7 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { IPaymentMethodDoctorAmount } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -20,7 +21,7 @@ interface IPaymentCard {
   image?: string;
   onClickDelete: () => void;
   onClickEdit: () => void;
-  data?: any;
+  data?: IPaymentMethodDoctorAmount | undefined;
 }
 
 const PaymentCard = ({
@@ -30,7 +31,6 @@ const PaymentCard = ({
   onClickEdit,
   data,
 }: IPaymentCard) => {
-  console.log(data);
   return (
     <Card
       boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}

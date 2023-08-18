@@ -62,7 +62,12 @@ export const pendingColumns = (
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -188,7 +193,12 @@ export const approvedColumns = (navigate: NavigateFunction) => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -270,7 +280,12 @@ export const registeredColumns = (navigate: NavigateFunction) => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -371,7 +386,7 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
               key={data.id}
               mb={1}
               color={colors.main}
-              bg={"#c4d2e8"}
+              bg={colors.lightish_blue}
               mx={"1px"}
             >
               {data.name}
@@ -464,7 +479,12 @@ export const allPaymentColumn = () => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -478,13 +498,13 @@ export const allPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -578,7 +598,12 @@ export const pendingPaymentColumn = (
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -685,7 +710,12 @@ export const approvedPaymentColumn = () => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -699,13 +729,13 @@ export const approvedPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -752,7 +782,7 @@ export const rejectedPaymentColumns = () => {
               key={data.id}
               mb={1}
               color={colors.main}
-              bg={"#c4d2e8"}
+              bg={colors.lightish_blue}
               mx={"1px"}
             >
               {data.name}
@@ -775,13 +805,13 @@ export const rejectedPaymentColumns = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -849,7 +879,7 @@ export const paymentRateColumn = () => {
               key={data.id}
               mb={1}
               color={colors.main}
-              bg={"#c4d2e8"}
+              bg={colors.lightish_blue}
               mx={"1px"}
             >
               {data.name}
@@ -894,13 +924,13 @@ export const paymentRateColumn = () => {
 
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Appointment Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },

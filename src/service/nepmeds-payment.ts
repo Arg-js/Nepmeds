@@ -150,6 +150,8 @@ export const useDeletePaymentMethods = () => {
         api.added_payment_methods,
         profileData?.data?.doctor?.id.toString(),
       ]);
+
+      queryClient.invalidateQueries([api.payment_methods_create]);
     },
   });
 };
