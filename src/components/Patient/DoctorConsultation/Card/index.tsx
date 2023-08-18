@@ -6,6 +6,7 @@ import { DummyImageIcon } from "@nepMeds/assets/svgs";
 // import { Symptom } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
+import Carousel from "better-react-carousel";
 
 export enum Type {
   SPECIALIST,
@@ -25,7 +26,7 @@ const Card: React.FC<{
     </Flex>
   ) : (
     data && (
-      <Flex gap={3}>
+      <Carousel cols={9} rows={1} gap={20} loop key={data}>
         {data.map((datum: any) => {
           const truncatedSymptomsList =
             type === Type.SPECIALIST &&
@@ -34,73 +35,72 @@ const Card: React.FC<{
           return isLoading ? (
             <Spinner />
           ) : (
-            // <Carousel.Item key={datum.id}>
-            <ChakraCard
-              variant={"elevated"}
-              width={"255px"}
-              height={"282px"}
-              textAlign={"center"}
-              mb={1}
-              pb={4}
-              key={datum.id}
-            >
-              <Flex gap={3} direction={"column"}>
-                {datum.image ? (
-                  <Image
-                    src={datum.image}
-                    alt="Doctor Image"
-                    width={"255px"}
-                    height={"160px"}
-                    objectFit={"cover"}
-                  />
-                ) : (
-                  <DummyImageIcon />
-                )}
-                <Text
-                  size="md"
-                  fontWeight={700}
-                  fontSize={"14px"}
-                  color={colors.dark_blue}
-                >
-                  {type === Type.SPECIALIST && datum.name}
-                  {type === Type.SYMPTOM && datum.name}
-                </Text>
-                <CardBody py={0}>
-                  <Flex direction={"column"} gap={4}>
-                    <Text
-                      display={"flex"}
-                      justifyContent={"center"}
-                      fontWeight={400}
-                      fontSize={"11px"}
-                      height={"35px"}
-                    >
-                      {type === Type.SPECIALIST &&
-                        truncatedSymptomsList &&
-                        truncatedSymptomsList.map(
-                          (symptom: any, index: number) => {
-                            return `${symptom.name}${
-                              truncatedSymptomsList.length - 1 !== index
-                                ? ","
-                                : ""
-                            } `;
-                          }
-                        )}
-                    </Text>
-                    <Text
-                      fontWeight={600}
-                      fontSize={"11px"}
-                      color={colors.primary}
-                    >
-                      Consult now &gt;
-                    </Text>
-                  </Flex>
-                </CardBody>
-              </Flex>
-            </ChakraCard>
-            // </Carousel.Item>
+            <Carousel.Item key={datum.id}>
+              <ChakraCard
+                variant={"elevated"}
+                width={"255px"}
+                height={"282px"}
+                textAlign={"center"}
+                mb={1}
+                pb={4}
+              >
+                <Flex gap={3} direction={"column"}>
+                  {datum.image ? (
+                    <Image
+                      src={datum.image}
+                      alt="Doctor Image"
+                      width={"255px"}
+                      height={"160px"}
+                      objectFit={"cover"}
+                    />
+                  ) : (
+                    <DummyImageIcon />
+                  )}
+                  <Text
+                    size="md"
+                    fontWeight={700}
+                    fontSize={"14px"}
+                    color={colors.dark_blue}
+                  >
+                    {type === Type.SPECIALIST && datum.name}
+                    {type === Type.SYMPTOM && datum.name}
+                  </Text>
+                  <CardBody py={0}>
+                    <Flex direction={"column"} gap={4}>
+                      <Text
+                        display={"flex"}
+                        justifyContent={"center"}
+                        fontWeight={400}
+                        fontSize={"11px"}
+                        height={"35px"}
+                      >
+                        {type === Type.SPECIALIST &&
+                          truncatedSymptomsList &&
+                          truncatedSymptomsList.map(
+                            (symptom: any, index: number) => {
+                              return `${symptom.name}${
+                                truncatedSymptomsList.length - 1 !== index
+                                  ? ","
+                                  : ""
+                              } `;
+                            }
+                          )}
+                      </Text>
+                      <Text
+                        fontWeight={600}
+                        fontSize={"11px"}
+                        color={colors.primary}
+                      >
+                        Consult now &gt;
+                      </Text>
+                    </Flex>
+                  </CardBody>
+                </Flex>
+              </ChakraCard>
+            </Carousel.Item>
           );
         })}
-      </Flex>
+      </Carousel>
     )
   );
 };

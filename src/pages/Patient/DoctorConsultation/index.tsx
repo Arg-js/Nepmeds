@@ -23,6 +23,7 @@ import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
+import Carousel from "better-react-carousel";
 
 const DoctorConsultation = () => {
   // Pagination
@@ -121,18 +122,24 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              <Flex gap={5} mb={10}>
+              // <Flex gap={5} mb={10}>
+              <Carousel cols={6} rows={1} gap={20} loop>
+                {/* <Flex gap={5} mb={10}> */}
                 {doctorList.results.map(doctor => {
                   return (
-                    <DoctorListCard
-                      data={doctor}
-                      error={doctorListError as AxiosError}
-                      size={Size.sm}
-                      key={doctor.id}
-                    />
+                    <Carousel.Item key={doctor.id}>
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                        key={doctor.id}
+                      />
+                    </Carousel.Item>
                   );
                 })}
-              </Flex>
+                {/* </Flex> */}
+              </Carousel>
+              // </Flex>
             )
           )}
 
