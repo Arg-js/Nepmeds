@@ -18,7 +18,6 @@ import DoctorListCard, {
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import Carousel from "better-react-carousel";
 import { useState } from "react";
 import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
@@ -122,22 +121,18 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              <Carousel cols={6} rows={1} gap={20} loop>
-                {/* <Flex gap={5} mb={10}> */}
+              <Flex gap={5} mb={10}>
                 {doctorList.results.map(doctor => {
                   return (
-                    <Carousel.Item key={doctor.id}>
-                      <DoctorListCard
-                        data={doctor}
-                        error={doctorListError as AxiosError}
-                        size={Size.sm}
-                        key={doctor.id}
-                      />
-                    </Carousel.Item>
+                    <DoctorListCard
+                      data={doctor}
+                      error={doctorListError as AxiosError}
+                      size={Size.sm}
+                      key={doctor.id}
+                    />
                   );
                 })}
-                {/* </Flex> */}
-              </Carousel>
+              </Flex>
             )
           )}
 
