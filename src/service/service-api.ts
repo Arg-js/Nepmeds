@@ -52,12 +52,15 @@ export const api = {
   doctorList: "/doctor_consult/doctor-list/",
 
   //payment
-  payment_methods_create: "/doctor_consult/amount-payment-create/",
+  payment_methods_create: "/doctor_consult/doctor-payment/",
   payment_methods: "/core/payment-mode/",
   edit_payment_methods: "/doctor_consult/amount-payment/:id/",
   delete_payment_methods: "/doctor_consult/doctor-payment/:id/",
   approve_payment_methods: "/dashboard/approve-doctor-payment/:id/",
   reject_payment_methods: "/dashboard/reject-doctor-payment/:id/",
+
+  //amount
+  add_amount_create: "/doctor_consult/doctor-amount-set/",
 
   added_payment_methods:
     "/doctor_consult/doctorwise-paymentdetail-list/:doctor_id/",

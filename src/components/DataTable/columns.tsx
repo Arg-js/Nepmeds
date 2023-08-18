@@ -819,3 +819,102 @@ export const rejectedPaymentColumns = () => {
     },
   ];
 };
+
+//Rate Column
+export const paymentRateColumn = () => {
+  return [
+    {
+      header: "S.N",
+      accessorFn: (_cell: CellContext<any, any>, index: number) => {
+        return index + 1;
+      },
+    },
+    {
+      header: "Pending Date",
+      accessorKey: "pending_date",
+      accessorFn: (_cell: PendingCellContextSearch) => {
+        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      },
+    },
+
+    {
+      header: "Approval Date",
+      accessorKey: "approval_date",
+      cell: ({
+        row,
+      }: CellContext<{ specialization_names: Specialization[] }, any>) => {
+        const specialization = row?.original?.specialization_names?.map(
+          data => (
+            <Tag
+              key={data.id}
+              mb={1}
+              color={colors.main}
+              bg={"#c4d2e8"}
+              mx={"1px"}
+            >
+              {data.name}
+            </Tag>
+          )
+        );
+        return (
+          <Box
+            display={"flex"}
+            flexWrap={"wrap"}
+            width={"fit-content"}
+            p={1}
+            // background={colors.grey}
+            // borderRadius={20}
+          >
+            <p>{specialization}</p>
+          </Box>
+        );
+      },
+    },
+
+    {
+      header: "Status",
+      accessorKey: "specialization",
+      cell: ({ row }: CellContext<{ rejected_remarks: string }, any>) => {
+        const rejected_remarks = row?.original?.rejected_remarks ?? "";
+
+        return (
+          <Box
+            display={"flex"}
+            flexWrap={"wrap"}
+            // width={"fit-content"}
+            // p={1}
+            // background={colors.grey}
+            // borderRadius={20}
+          >
+            <p>{rejected_remarks}</p>
+          </Box>
+        );
+      },
+    },
+
+    {
+      header: "Instant Rate",
+      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+        return row?.original?.data?.instant_amount;
+      },
+    },
+    {
+      header: "Appointment Rate",
+      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+        return row?.original?.data?.schedule_amount;
+      },
+    },
+
+    {
+      header: "Actions",
+      accessorKey: "actions",
+      cell: () => {
+        return (
+          <HStack>
+            <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+          </HStack>
+        );
+      },
+    },
+  ];
+};

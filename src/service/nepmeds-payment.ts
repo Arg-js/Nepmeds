@@ -23,7 +23,7 @@ export interface IPaymentMethod {
 
 export interface IPaymentMethodDoctorAmount {
   id: number;
-  payment_mode: number;
+  payment_mode: string;
   payment_detail: { id: number; name: string; image: null | string };
   epayment_id: string | null;
   account_number: string | null;
@@ -31,6 +31,7 @@ export interface IPaymentMethodDoctorAmount {
   bank_name: string | null;
   branch_name: string | null;
   is_primary_method: boolean;
+  doctor?: number;
 }
 
 export interface IGetPaymentMethods {
@@ -40,8 +41,13 @@ export interface IGetPaymentMethods {
   doctor_amount: IPaymentMethodDoctorAmount[];
 }
 
+export type IPaymentFormType = Omit<
+  IPaymentMethodDoctorAmount,
+  "id" | "payment_detail"
+>;
+
 // Add payment methods for doctor e.g bank account, esewa and more
-const addPaymentMethods = async (paymentMethods: IPaymentMethod) => {
+const addPaymentMethods = async (paymentMethods: IPaymentFormType) => {
   const response = await HttpClient.post(
     api.payment_methods_create,
     paymentMethods
@@ -54,6 +60,7 @@ export const useCreatePaymentMethods = () => {
   return useMutation(addPaymentMethods, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.added_payment_methods]);
+      queryClient.invalidateQueries([api.payment_methods_create]);
     },
   });
 };
@@ -63,7 +70,7 @@ const editPaymentMethods = async ({
   paymentMethods,
   id,
 }: {
-  paymentMethods: IPaymentMethod;
+  paymentMethods: IPaymentFormType;
   id: string;
 }) => {
   const response = await HttpClient.patch(
@@ -82,6 +89,7 @@ export const useEditPaymentMethods = () => {
         api.added_payment_methods,
         profileData?.data?.doctor?.id.toString(),
       ]);
+      queryClient.invalidateQueries([api.payment_methods_create]);
     },
   });
 };
@@ -94,7 +102,7 @@ export interface IPaymentMethodType {
 
 // Get list of payment methods
 const getPaymentMethods = async () => {
-  const response = await HttpClient.get<NepMedsResponse<IPaymentMethodType>>(
+  const response = await HttpClient.get<NepMedsResponse<IPaymentMethodType[]>>(
     api.payment_methods
   );
   return response;
@@ -106,7 +114,7 @@ export const useGetPaymentMethods = () => {
   });
 };
 
-//Get list of added payment methods for a doctor
+//Get list of added payment methods for a doctor by doctor id
 const getAddedPaymentMethods = async (id: string) => {
   const response = await HttpClient.get<NepMedsResponse<IGetPaymentMethods>>(
     generatePath(api.added_payment_methods, { doctor_id: id })
@@ -264,5 +272,84 @@ export const useApprovePayment = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.allpaymentList]);
     },
+  });
+};
+
+//get list of payment methods for doctor (without doctor id)
+const getPaymentMethodsList = async () => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IPaymentMethodDoctorAmount[]>
+  >(api.payment_methods_create);
+  return response;
+};
+
+export const useGetPaymentMethodsList = () => {
+  return useQuery([api.payment_methods_create], getPaymentMethodsList, {
+    select: data => data.data.data,
+  });
+};
+
+//Edit single payment methods by Id
+const editSinglePaymentMethods = async ({
+  id,
+  paymentMethods,
+}: {
+  id: string;
+  paymentMethods: IPaymentFormType;
+}) => {
+  const response = await HttpClient.patch(
+    generatePath(api.delete_payment_methods, { id }),
+    paymentMethods
+  );
+  return response;
+};
+
+export const useEditSinglePaymentMethods = () => {
+  const queryClient = useQueryClient();
+  return useMutation(editSinglePaymentMethods, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.payment_methods_create]);
+    },
+  });
+};
+
+export interface IAddDoctorAmount {
+  instant_amount: string;
+  schedule_amount: string;
+}
+
+//Add amount for doctor
+const addAmount = async (data: IAddDoctorAmount) => {
+  const response = await HttpClient.post(api.add_amount_create, data);
+  return response;
+};
+
+export const useAddDoctorAmount = () => {
+  const queryClient = useQueryClient();
+  return useMutation(addAmount, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.add_amount_create]);
+    },
+  });
+};
+
+export interface IAmountListDoctor {
+  id: number;
+  instant_amount: number;
+  schedule_amount: number;
+  doctor: number;
+}
+
+//Get list of amount for doctor (Without id)
+const getAmountList = async () => {
+  const response = await HttpClient.get<NepMedsResponse<IAmountListDoctor[]>>(
+    api.add_amount_create
+  );
+  return response;
+};
+
+export const useGetAmountList = () => {
+  return useQuery([api.add_amount_create], getAmountList, {
+    select: data => data.data.data,
   });
 };
