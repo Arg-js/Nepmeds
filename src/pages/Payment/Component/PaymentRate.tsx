@@ -234,7 +234,7 @@ const PaymentRate = () => {
         </ModalComponent>
       )}
 
-      {amountList && amountList?.length > 1 && (
+      {amountList && amountList?.length < 1 ? (
         <Box
           h={"84vh"}
           width={"100%"}
@@ -263,49 +263,51 @@ const PaymentRate = () => {
             </VStack>
           </VStack>
         </Box>
-      )}
+      ) : (
+        <>
+          <HStack justifyContent="space-between">
+            <Text fontWeight="medium">Rate</Text>
+            <HStack>
+              <InputGroup w="190px" borderColor={colors.grey_dark}>
+                <InputLeftElement pointerEvents="none" h={8}>
+                  <SearchIcon color={colors.grey_dark} boxSize={4} />
+                </InputLeftElement>
+                <Input
+                  w={40}
+                  h={8}
+                  onChange={({ target: { value } }) => {
+                    setSearchFilter(value);
+                    setPagination({ pageIndex: 0, pageSize });
+                  }}
+                />
+              </InputGroup>
+              <Button
+                color={colors.grey_dark}
+                bg={colors.white}
+                outlineColor={colors.grey_dark}
+                h={8}
+                onClick={onModalOpen}
+              >
+                <IoFunnelOutline pointerEvents={"none"} />
+                &nbsp; Filter
+              </Button>
+            </HStack>
+          </HStack>
 
-      <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Rate</Text>
-        <HStack>
-          <InputGroup w="190px" borderColor={colors.grey_dark}>
-            <InputLeftElement pointerEvents="none" h={8}>
-              <SearchIcon color={colors.grey_dark} boxSize={4} />
-            </InputLeftElement>
-            <Input
-              w={40}
-              h={8}
-              onChange={({ target: { value } }) => {
-                setSearchFilter(value);
-                setPagination({ pageIndex: 0, pageSize });
+          {isSuccess && (
+            <DataTable
+              columns={paymentRateColumn()}
+              data={amountList ?? []}
+              pagination={{
+                manual: true,
+                pageParams: { pageIndex, pageSize },
+                // pageCount: data?.page_count,
+                pageCount: 0,
+                onChangePagination: setPagination,
               }}
             />
-          </InputGroup>
-          <Button
-            color={colors.grey_dark}
-            bg={colors.white}
-            outlineColor={colors.grey_dark}
-            h={8}
-            onClick={onModalOpen}
-          >
-            <IoFunnelOutline pointerEvents={"none"} />
-            &nbsp; Filter
-          </Button>
-        </HStack>
-      </HStack>
-
-      {isSuccess && (
-        <DataTable
-          columns={paymentRateColumn()}
-          data={amountList ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            // pageCount: data?.page_count,
-            pageCount: 0,
-            onChangePagination: setPagination,
-          }}
-        />
+          )}
+        </>
       )}
     </div>
   );

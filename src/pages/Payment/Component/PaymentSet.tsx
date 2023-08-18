@@ -51,18 +51,6 @@ const PaymentSet = () => {
     isKhalti: activeMethod === "2",
   };
 
-  // const onDetailModalClose = () => {
-  //   onClose();
-  //   setIsEditing(false);
-  //   reset({});
-  // };
-
-  // useEffect(() => {
-  //   if (addedPaymentMethods && !getIsLoading && isOpen) {
-  //     setPaymentValue(addedPaymentMethods);
-  //   }
-  // }, [addedPaymentMethods, isOpen]);
-
   const handleFormSubmit = async () => {
     const isValid = await trigger();
     if (!isValid) return;
@@ -104,7 +92,10 @@ const PaymentSet = () => {
                   data && setPaymentValue(data as any);
                 }}
                 onClickDelete={() => {
-                  handleDeteltePayment(x.id.toString());
+                  const data = paymentMethods?.find(
+                    e => e.payment_mode?.toString() === x.id?.toString()
+                  );
+                  handleDeteltePayment(data?.id?.toString() ?? "");
                 }}
               />
             );
