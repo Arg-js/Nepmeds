@@ -10,6 +10,7 @@ import khalti from "./khalti.png";
 import logo from "./logo.png";
 import profileUser from "./profileUser.png";
 import verified from "./verified.png";
+import userAvatar from "./userAvatar.png";
 export const images = {
   logo,
   dashboard1,
@@ -23,4 +24,5 @@ export const images = {
   esewa,
   khalti,
   bank,
+  userAvatar,
 };
