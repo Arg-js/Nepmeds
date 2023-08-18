@@ -1,5 +1,6 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
+import PaymentRate from "./Component/PaymentRate";
 import PaymentSet from "./Component/PaymentSet";
 
 const PaymentDetails = () => {
@@ -7,6 +8,7 @@ const PaymentDetails = () => {
     <BoxWrapper>
       <Tabs>
         <TabList borderBottom={"none"}>
+          <Tab>Rate</Tab>
           <Tab>Payment Type</Tab>
           <Tab>Payment History</Tab>
         </TabList>
@@ -17,6 +19,9 @@ const PaymentDetails = () => {
                     borderRadius="1px"
                 /> */}
         <TabPanels>
+          <TabPanel>
+            <PaymentRate />
+          </TabPanel>
           <TabPanel>
             <PaymentSet />
           </TabPanel>
