@@ -19,18 +19,20 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
 // import { useDebounce } from '@nepMeds/hooks/useDebounce';
+import { useGetAmountList } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import useAmountForm from "../useAmountForm";
 
 paymentRateColumn;
 
 const PaymentRate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [, setSearchFilter] = useState("");
-
+  const { data: amountList, isSuccess } = useGetAmountList();
   // const debouncedInputValue = useDebounce(searchFilter, 500);
 
   const {
@@ -38,8 +40,12 @@ const PaymentRate = () => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
-  const { register } = useForm();
   const formMethods = useForm();
+  const {
+    formMethods: { formState, trigger, getValues, register, reset },
+    handleSubmitAmount,
+    addLoading,
+  } = useAmountForm();
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -60,6 +66,18 @@ const PaymentRate = () => {
     }
 
     onModalClose();
+  };
+
+  const handleFormSubmit = async () => {
+    const isValid = await trigger();
+    if (!isValid) return;
+
+    handleSubmitAmount({ value: getValues(), closeModal: closeAmountModal });
+  };
+
+  const closeAmountModal = () => {
+    onClose();
+    reset();
   };
 
   return (
@@ -145,7 +163,7 @@ const PaymentRate = () => {
       {isOpen && (
         <ModalComponent
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={closeAmountModal}
           size={"md"}
           heading={
             <HStack>
@@ -162,7 +180,7 @@ const PaymentRate = () => {
                 color={colors.primary}
                 bg={colors.white}
                 w={"150px"}
-                onClick={onClose}
+                onClick={closeAmountModal}
               >
                 Cancel
               </Button>
@@ -175,6 +193,8 @@ const PaymentRate = () => {
                 mr={1}
                 variant={"solid"}
                 h={"45px"}
+                onClick={handleFormSubmit}
+                isLoading={addLoading}
               >
                 Done
               </Button>
@@ -194,6 +214,7 @@ const PaymentRate = () => {
                   rules={{
                     required: "Please Enter the Instant rate",
                   }}
+                  error={formState?.errors?.instant_amount?.message}
                 />
                 <FloatingLabelInput
                   label="Schedule Rate"
@@ -205,6 +226,7 @@ const PaymentRate = () => {
                   rules={{
                     required: "Please Enter Schedule rate",
                   }}
+                  error={formState?.errors?.schedule_amount?.message}
                 />
               </Stack>
             </form>
@@ -212,34 +234,36 @@ const PaymentRate = () => {
         </ModalComponent>
       )}
 
-      <Box
-        h={"84vh"}
-        width={"100%"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        display={"flex"}
-      >
-        <VStack>
-          <svgs.InCompletePayment />
-          <Heading color={colors.red}>Rate hasn’t been added</Heading>
-          <Text>You can get started by clicking the Add button.</Text>
+      {amountList && amountList?.length > 1 && (
+        <Box
+          h={"84vh"}
+          width={"100%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          display={"flex"}
+        >
           <VStack>
-            <Button
-              bg={colors.primary}
-              color={colors.white}
-              w={"200px"}
-              mt={5}
-              h={"45px"}
-              sx={{
-                "&:hover": { bg: colors.primary },
-              }}
-              onClick={onOpen}
-            >
-              Add Rate
-            </Button>
+            <svgs.InCompletePayment />
+            <Heading color={colors.red}>Rate hasn’t been added</Heading>
+            <Text>You can get started by clicking the Add button.</Text>
+            <VStack>
+              <Button
+                bg={colors.primary}
+                color={colors.white}
+                w={"200px"}
+                mt={5}
+                h={"45px"}
+                sx={{
+                  "&:hover": { bg: colors.primary },
+                }}
+                onClick={onOpen}
+              >
+                Add Rate
+              </Button>
+            </VStack>
           </VStack>
-        </VStack>
-      </Box>
+        </Box>
+      )}
 
       <HStack justifyContent="space-between">
         <Text fontWeight="medium">Rate</Text>
@@ -270,19 +294,19 @@ const PaymentRate = () => {
         </HStack>
       </HStack>
 
-      {/* {isSuccess && ( */}
-      <DataTable
-        columns={paymentRateColumn()}
-        data={[]}
-        pagination={{
-          manual: true,
-          pageParams: { pageIndex, pageSize },
-          // pageCount: data?.page_count,
-          pageCount: 0,
-          onChangePagination: setPagination,
-        }}
-      />
-      {/* )} */}
+      {isSuccess && (
+        <DataTable
+          columns={paymentRateColumn()}
+          data={amountList ?? []}
+          pagination={{
+            manual: true,
+            pageParams: { pageIndex, pageSize },
+            // pageCount: data?.page_count,
+            pageCount: 0,
+            onChangePagination: setPagination,
+          }}
+        />
+      )}
     </div>
   );
 };
