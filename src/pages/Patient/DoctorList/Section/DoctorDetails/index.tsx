@@ -14,6 +14,7 @@ import { useCreatePatientAppointment } from "@nepMeds/service/nepmeds-patient-ap
 import { HttpStatusCode } from "axios";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import ReadMoreComponent from "@nepMeds/components/ReadMore";
 
 // TODO: check the similarity
 export interface IPatientAppointment {
@@ -163,9 +164,7 @@ const DoctorDetails: React.FC<{
             <Text fontWeight={700} fontSize={"13px"}>
               About
             </Text>
-            <Text fontWeight={400} fontSize={"12px"}>
-              {doctorInfo?.bio_detail}
-            </Text>
+            <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
           </Flex>
           <Flex
             bg={colors.sky_blue}
