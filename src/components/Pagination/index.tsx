@@ -89,7 +89,7 @@ export const Pagination = ({
               },
             }}
           />
-          <Box>
+          <HStack gap={"1"}>
             {getPager(totalCount, queryPageIndex, queryPageSize).map(index => {
               return (
                 index === queryPageIndex - 4 && (
@@ -146,7 +146,7 @@ export const Pagination = ({
                 )
               );
             })}
-          </Box>
+          </HStack>
           <IconButton
             aria-label="Search services"
             size="sm"
