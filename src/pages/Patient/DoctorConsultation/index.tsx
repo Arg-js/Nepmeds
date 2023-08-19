@@ -23,7 +23,25 @@ import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
+import Carousel from "react-multi-carousel";
 
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 5,
+    slidesToSlide: 3, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 3,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
 const DoctorConsultation = () => {
   // Pagination
   const [pageParams, _setPageParams] = useState({
@@ -94,7 +112,7 @@ const DoctorConsultation = () => {
 
           <Box my={10}>
             <Card
-              data={symptomData.slice(0, 4)}
+              data={symptomData}
               isLoading={symptomDataLoading}
               error={symptomDataError as AxiosError}
               type={Type.SYMPTOM}
@@ -127,8 +145,8 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              <Flex gap={5} mb={10}>
-                {doctorList.results.slice(0, 5).map(doctor => {
+              <Carousel responsive={responsive}>
+                {doctorList.results.map(doctor => {
                   return (
                     <DoctorListCard
                       data={doctor}
@@ -138,7 +156,7 @@ const DoctorConsultation = () => {
                     />
                   );
                 })}
-              </Flex>
+              </Carousel>
             )
           )}
 

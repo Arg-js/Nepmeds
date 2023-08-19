@@ -6,12 +6,32 @@ import { DummyImageIcon } from "@nepMeds/assets/svgs";
 // import { Symptom } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 
 export enum Type {
   SPECIALIST,
   SYMPTOM,
   DOCTOR,
 }
+
+const responsive = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1024 },
+    items: 6,
+    slidesToSlide: 3, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 464 },
+    items: 4,
+    slidesToSlide: 2, // optional, default to 1.
+  },
+  mobile: {
+    breakpoint: { max: 464, min: 0 },
+    items: 1,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+};
 
 const Card: React.FC<{
   data: any;
@@ -25,7 +45,7 @@ const Card: React.FC<{
     </Flex>
   ) : (
     data && (
-      <Flex gap={5} key={data}>
+      <Carousel responsive={responsive}>
         {data.map((datum: any) => {
           const truncatedSymptomsList =
             type === Type.SPECIALIST &&
@@ -98,7 +118,7 @@ const Card: React.FC<{
             </ChakraCard>
           );
         })}
-      </Flex>
+      </Carousel>
     )
   );
 };
