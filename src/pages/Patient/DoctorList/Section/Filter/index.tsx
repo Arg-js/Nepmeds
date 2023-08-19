@@ -68,16 +68,11 @@ const DoctorListFilter: React.FC<{
               <Flex gap={4} key={specialization.id} mb={2}>
                 <Checkbox
                   onChange={e =>
-                    e.target.checked
-                      ? setSpecialization(prev => [
-                          ...prev,
-                          specialization.name,
-                        ])
-                      : setSpecialization(prev => {
-                          return prev.filter(
-                            item => item !== specialization.name
-                          );
-                        })
+                    setSpecialization(prev =>
+                      e.target.checked
+                        ? [...prev, specialization.name]
+                        : prev.filter(item => item !== specialization.name)
+                    )
                   }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
@@ -96,11 +91,11 @@ const DoctorListFilter: React.FC<{
               <Flex gap={4} key={symptom.id} mb={2}>
                 <Checkbox
                   onChange={e =>
-                    e.target.checked
-                      ? setSymptom(prev => [...prev, symptom.name])
-                      : setSymptom(prev => {
-                          return prev.filter(item => item !== symptom.name);
-                        })
+                    setSymptom(prev =>
+                      e.target.checked
+                        ? [...prev, symptom.name]
+                        : prev.filter(item => item !== symptom.name)
+                    )
                   }
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
