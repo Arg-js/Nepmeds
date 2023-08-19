@@ -67,12 +67,7 @@ const DoctorList = () => {
   return (
     <>
       <Header />
-      <WrapperBox
-        backgroundColor={colors.background_blue}
-        style={{
-          pt: 4,
-        }}
-      >
+      <WrapperBox backgroundColor={colors.background_blue}>
         <>
           <BreadCrumb
             items={[

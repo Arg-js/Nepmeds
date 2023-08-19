@@ -98,9 +98,7 @@ const DoctorDetails: React.FC<{
         patientAppointmentDetails: {
           ...data,
           availability: data.availability.map(({ value }) => +value),
-          // availability: [+data.availability[0].value],
           symptoms: data.symptoms.map(({ value }) => +value),
-          // symptoms: [+data.symptoms[0].value],
           doctor: doctorInfo?.id as number,
         },
       });
@@ -116,7 +114,7 @@ const DoctorDetails: React.FC<{
     <WrapperBox
       width={"560px"}
       backgroundColor={colors.white}
-      border={`1px solid ${colors.light_blue}`}
+      boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
       style={{
         // TODO: RESPONSIVE
         px: { base: "4", md: "4" },
