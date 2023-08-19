@@ -67,7 +67,10 @@ const DoctorConsultation = () => {
           <SectionHeading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
-            // btnText={"View All Doctors"}
+            btnText={"View All Doctors"}
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+            }
           />
 
           <Box my={10}>
@@ -83,7 +86,10 @@ const DoctorConsultation = () => {
           <SectionHeading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
-            // btnText={"View All Symptoms"}
+            btnText={"View All Doctors"}
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+            }
           />
 
           <Box my={10}>
