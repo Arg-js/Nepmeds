@@ -22,6 +22,17 @@ const DoctorListCard: React.FC<{
   doctorId?: number;
   error?: AxiosError;
 }> = ({ data, size, setDoctorId, doctorId }) => {
+  // const widthBase = size === Size.sm ? "285px" : "150px";
+  // const widthMd = size === Size.sm ? "302px" : "296px";
+
+  // const pyBase = size === Size.sm ? "3" : "5";
+  // const pyMd = size === Size.sm ? "3" : "5";
+
+  // const pxBase = size === Size.sm ? "3" : "3";
+  // const pxMd = size === Size.sm ? "3" : "8";
+
+  // const cursorValue = size === Size.sm ? "auto" : "pointer";
+
   const doctorDetails = useMemo(
     () => [
       {
@@ -53,22 +64,24 @@ const DoctorListCard: React.FC<{
       cursor={`${size === Size.sm ? "auto" : "pointer"}`}
     >
       <Card
-        variant={"elevated"}
-        boxShadow={
-          doctorId === data.id
-            ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
-            : "none"
-        }
         sx={{
           "&:hover": {
             boxShadow: `${
               size === Size.lg &&
-              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
+              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 0.5px`
             }`,
           },
         }}
+        variant={"elevated"}
       >
-        <Flex direction={`${size === Size.sm ? "column" : "row"}`}>
+        <Flex
+          direction={`${size === Size.sm ? "column" : "row"}`}
+          boxShadow={
+            doctorId === data.id
+              ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`
+              : "none"
+          }
+        >
           <Box
             width={{
               base: `${size === Size.sm ? "285px" : "150px"}`,
