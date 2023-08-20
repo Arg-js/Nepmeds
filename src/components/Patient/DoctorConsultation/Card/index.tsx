@@ -29,11 +29,11 @@ const Card: React.FC<{
     >
       <Flex gap={3} direction={"column"}>
         <Image
-          src={image ?? userAvatar}
+          src={image || userAvatar}
           alt="Doctor Image"
           width={"255px"}
           height={"160px"}
-          objectFit={"cover"}
+          objectFit={"contain"}
         />
 
         <Text

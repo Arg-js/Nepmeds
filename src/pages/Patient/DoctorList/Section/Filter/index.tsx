@@ -104,28 +104,30 @@ const DoctorListFilter: React.FC<{
               }}
             />
           </Flex>
-          <Text fontWeight={600} fontSize={"16px"}>
-            Gender
-          </Text>
-          {GenderList.map(gender => {
-            return (
-              <Flex gap={4} key={gender.value}>
-                <Checkbox
-                  onChange={e => {
-                    setGender(prev =>
-                      e.target.checked
-                        ? [...prev, gender.value]
-                        : prev.filter(item => item !== gender.value)
-                    );
-                    setPageParams({ ...pageParams, page: 1 });
-                  }}
-                />
-                <Text fontWeight={500} fontSize={"13px"}>
-                  {gender.label}
-                </Text>
-              </Flex>
-            );
-          })}
+          <Box>
+            <Text fontWeight={600} fontSize={"16px"} mb={3}>
+              Gender
+            </Text>
+            {GenderList.map(gender => {
+              return (
+                <Flex gap={4} key={gender.value} mb={2}>
+                  <Checkbox
+                    onChange={e => {
+                      setGender(prev =>
+                        e.target.checked
+                          ? [...prev, gender.value]
+                          : prev.filter(item => item !== gender.value)
+                      );
+                      setPageParams({ ...pageParams, page: 1 });
+                    }}
+                  />
+                  <Text fontWeight={500} fontSize={"13px"}>
+                    {gender.label}
+                  </Text>
+                </Flex>
+              );
+            })}
+          </Box>
           <Box>
             <Text fontWeight={600} fontSize={"16px"} mb={3}>
               Specialization
