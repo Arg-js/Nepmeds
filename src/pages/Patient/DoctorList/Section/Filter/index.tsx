@@ -24,13 +24,20 @@ interface IDateParams {
   from_date: string;
   to_date: string;
 }
+
+interface IPageParams {
+  page: number;
+  limit: number;
+}
 const DoctorListFilter: React.FC<{
   setGender: Dispatch<SetStateAction<string[]>>;
   setSpecialization: Dispatch<SetStateAction<string[]>>;
   setSymptom: Dispatch<SetStateAction<string[]>>;
   setSearchValue: Dispatch<SetStateAction<string>>;
   setDateParams: Dispatch<SetStateAction<IDateParams>>;
+  setPageParams: Dispatch<SetStateAction<IPageParams>>;
   dateParams: IDateParams;
+  pageParams: IPageParams;
 }> = ({
   setGender,
   setSpecialization,
@@ -38,6 +45,8 @@ const DoctorListFilter: React.FC<{
   setSearchValue,
   setDateParams,
   dateParams,
+  setPageParams,
+  pageParams,
 }) => {
   // REACT QUERIES
   const { data: symptomData = [] } = useGetSymptoms();
@@ -81,16 +90,18 @@ const DoctorListFilter: React.FC<{
           <Flex gap={2} justifyContent="center">
             <Input
               type={"date"}
-              onChange={e =>
-                setDateParams({ ...dateParams, from_date: e.target.value })
-              }
+              onChange={e => {
+                setDateParams({ ...dateParams, from_date: e.target.value });
+                setPageParams({ ...pageParams, page: 1 });
+              }}
             />
             <Text>-</Text>
             <Input
               type={"date"}
-              onChange={e =>
-                setDateParams({ ...dateParams, to_date: e.target.value })
-              }
+              onChange={e => {
+                setDateParams({ ...dateParams, to_date: e.target.value });
+                setPageParams({ ...pageParams, page: 1 });
+              }}
             />
           </Flex>
           <Text fontWeight={600} fontSize={"16px"}>
@@ -100,13 +111,14 @@ const DoctorListFilter: React.FC<{
             return (
               <Flex gap={4} key={gender.value}>
                 <Checkbox
-                  onChange={e =>
+                  onChange={e => {
                     setGender(prev =>
                       e.target.checked
                         ? [...prev, gender.value]
                         : prev.filter(item => item !== gender.value)
-                    )
-                  }
+                    );
+                    setPageParams({ ...pageParams, page: 1 });
+                  }}
                 />
                 <Text fontWeight={500} fontSize={"13px"}>
                   {gender.label}
@@ -122,13 +134,14 @@ const DoctorListFilter: React.FC<{
               return (
                 <Flex gap={4} key={specialization.id} mb={2}>
                   <Checkbox
-                    onChange={e =>
+                    onChange={e => {
                       setSpecialization(prev =>
                         e.target.checked
                           ? [...prev, specialization.name]
                           : prev.filter(item => item !== specialization.name)
-                      )
-                    }
+                      );
+                      setPageParams({ ...pageParams, page: 1 });
+                    }}
                   />
                   <Text fontWeight={500} fontSize={"13px"}>
                     {specialization.name}
@@ -145,13 +158,14 @@ const DoctorListFilter: React.FC<{
               return (
                 <Flex gap={4} key={symptom.id} mb={2}>
                   <Checkbox
-                    onChange={e =>
+                    onChange={e => {
                       setSymptom(prev =>
                         e.target.checked
                           ? [...prev, symptom.name]
                           : prev.filter(item => item !== symptom.name)
-                      )
-                    }
+                      );
+                      setPageParams({ ...pageParams, page: 1 });
+                    }}
                   />
                   <Text fontWeight={500} fontSize={"13px"}>
                     {symptom.name}

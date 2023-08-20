@@ -144,7 +144,6 @@ const DoctorConsultation = () => {
                     description={[]}
                     isLoading={symptomDataLoading}
                     error={symptomDataError as AxiosError}
-                    // type={Type.SYMPTOM}
                     key={symptom.id}
                   />
                 );

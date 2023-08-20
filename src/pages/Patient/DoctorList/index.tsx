@@ -105,6 +105,8 @@ const DoctorList = () => {
               setSearchValue={setSearchValue}
               setDateParams={setDateParams}
               dateParams={dateParams}
+              setPageParams={setPageParams}
+              pageParams={pageParams}
             />
 
             {/* DOCTORS LIST */}
