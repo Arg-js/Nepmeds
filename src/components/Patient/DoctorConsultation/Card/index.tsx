@@ -2,8 +2,6 @@ import { CardBody, Card as ChakraCard } from "@chakra-ui/card";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Image } from "@chakra-ui/react";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
-// import { Specialization } from "@nepMeds/service/nepmeds-specialization";
-// import { Symptom } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
 import "react-multi-carousel/lib/styles.css";
@@ -30,23 +28,14 @@ const Card: React.FC<{
       pb={4}
     >
       <Flex gap={3} direction={"column"}>
-        {image ? (
-          <Image
-            src={image}
-            alt="Doctor Image"
-            width={"255px"}
-            height={"160px"}
-            objectFit={"cover"}
-          />
-        ) : (
-          <Image
-            src={userAvatar}
-            alt="Doctor Image"
-            width={"255px"}
-            height={"160px"}
-            objectFit={"contain"}
-          />
-        )}
+        <Image
+          src={image ?? userAvatar}
+          alt="Doctor Image"
+          width={"255px"}
+          height={"160px"}
+          objectFit={"cover"}
+        />
+
         <Text
           size="md"
           fontWeight={700}
