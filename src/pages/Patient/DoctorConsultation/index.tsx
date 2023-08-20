@@ -1,6 +1,4 @@
-import Card, {
-  Type,
-} from "@nepMeds/components/Patient/DoctorConsultation/Card";
+import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -25,21 +23,37 @@ import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
 import Carousel from "react-multi-carousel";
 
+export enum Type {
+  SPECIALIST,
+  SYMPTOM,
+  DOCTOR,
+}
+
+const style = {
+  breakpoint: { max: 3000, min: 1024 },
+  slidesToSlide: 3,
+};
 const responsive = {
   desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 5,
-    slidesToSlide: 3, // optional, default to 1.
+    ...style,
+    items: 6,
   },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    items: 3,
     slidesToSlide: 2, // optional, default to 1.
+    items: 3,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    items: 1,
     slidesToSlide: 1, // optional, default to 1.
+    items: 1,
+  },
+};
+const responsiveDoctorCard = {
+  ...responsive,
+  desktop: {
+    ...style,
+    items: 5,
   },
 };
 const DoctorConsultation = () => {
@@ -55,7 +69,7 @@ const DoctorConsultation = () => {
   const {
     data: specializaionData = [],
     isLoading: SpecializationDataLoading,
-    error: specializaionDataError,
+    error: specializationDataError,
   } = useSpecializationRegisterData();
 
   const {
@@ -92,12 +106,22 @@ const DoctorConsultation = () => {
           />
 
           <Box my={10}>
-            <Card
-              data={specializaionData}
-              isLoading={SpecializationDataLoading}
-              error={specializaionDataError as AxiosError}
-              type={Type.SPECIALIST}
-            />
+            <Carousel responsive={responsive}>
+              {specializaionData?.map(specialization => {
+                return (
+                  <Card
+                    name={specialization.name}
+                    image={specialization.image}
+                    description={
+                      specialization?.symptom_list?.slice(0, 4) ?? []
+                    }
+                    isLoading={SpecializationDataLoading}
+                    error={specializationDataError as AxiosError}
+                    key={specialization.id}
+                  />
+                );
+              })}
+            </Carousel>
           </Box>
 
           {/* Health Concern / Symptoms SECTION */}
@@ -111,12 +135,21 @@ const DoctorConsultation = () => {
           />
 
           <Box my={10}>
-            <Card
-              data={symptomData}
-              isLoading={symptomDataLoading}
-              error={symptomDataError as AxiosError}
-              type={Type.SYMPTOM}
-            />
+            <Carousel responsive={responsive}>
+              {symptomData?.map(symptom => {
+                return (
+                  <Card
+                    name={symptom.name}
+                    image={""}
+                    description={[]}
+                    isLoading={symptomDataLoading}
+                    error={symptomDataError as AxiosError}
+                    // type={Type.SYMPTOM}
+                    key={symptom.id}
+                  />
+                );
+              })}
+            </Carousel>
           </Box>
 
           {/* ADVERTISEMENT SECTION */}
@@ -145,7 +178,7 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              <Carousel responsive={responsive}>
+              <Carousel responsive={responsiveDoctorCard}>
                 {doctorList.results.map(doctor => {
                   return (
                     <DoctorListCard
