@@ -32,3 +32,4 @@ export { ReactComponent as EditIcon } from "./edit.svg";
 export { ReactComponent as PlusIcon } from "./plus.svg";
 export { ReactComponent as TimeSquareIcon } from "./timeSquare.svg";
 export { ReactComponent as NoDataIcon } from "./noData.svg";
+export { ReactComponent as SearchIcon } from "./search.svg";

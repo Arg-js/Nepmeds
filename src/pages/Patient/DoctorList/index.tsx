@@ -24,13 +24,17 @@ const formattedDate = currentDate.toISOString().slice(0, 10);
 const DoctorList = () => {
   const [doctorId, setDoctorId] = useState(0);
   const [targetDate, setTargeDate] = useState(formattedDate);
-  const [gender, setGender] = useState("");
+  const [gender, setGender] = useState<string[]>([]);
   const [specialization, setSpecialization] = useState<string[]>([]);
   const [symptom, setSymptom] = useState<string[]>([]);
+  const [search, setSearchValue] = useState("");
+  const [dateParams, setDateParams] = useState({
+    from_date: "",
+    to_date: "",
+  });
 
   // PAGINATION
   const [pageParams, setPageParams] = useState({
-    search: "",
     page: 1,
     limit: 5,
   });
@@ -50,12 +54,14 @@ const DoctorList = () => {
     isLoading,
     error: DoctorListError,
   } = useGetDoctorList({
-    search: pageParams.search,
     page_size: pageParams.limit,
     page: pageParams.page,
-    gender: gender,
+    gender: gender?.join(","),
     specialization: specialization?.join(","),
     symptom: symptom?.join(","),
+    search,
+    from_date: dateParams.from_date,
+    to_date: dateParams.to_date,
   });
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({
@@ -96,6 +102,9 @@ const DoctorList = () => {
               setGender={setGender}
               setSpecialization={setSpecialization}
               setSymptom={setSymptom}
+              setSearchValue={setSearchValue}
+              setDateParams={setDateParams}
+              dateParams={dateParams}
             />
 
             {/* DOCTORS LIST */}

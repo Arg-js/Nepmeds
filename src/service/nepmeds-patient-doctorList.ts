@@ -56,6 +56,8 @@ export interface IPaginatinParams {
   gender?: string;
   specialization?: string;
   symptom?: string;
+  from_date?: string;
+  to_date?: string;
 }
 
 const getDoctorList = ({
@@ -65,6 +67,8 @@ const getDoctorList = ({
   gender,
   specialization,
   symptom,
+  from_date,
+  to_date,
 }: IPaginatinParams) => {
   return HttpClient.get<NepMedsResponse<IDoctorList>>(
     api.patient.doctorList.get,
@@ -76,6 +80,8 @@ const getDoctorList = ({
         gender,
         specialization,
         symptom,
+        from_date,
+        to_date,
       },
     }
   );
@@ -88,6 +94,8 @@ export const useGetDoctorList = ({
   gender,
   specialization,
   symptom,
+  from_date,
+  to_date,
 }: IPaginatinParams) => {
   return useQuery(
     [
@@ -98,6 +106,8 @@ export const useGetDoctorList = ({
       gender,
       specialization,
       symptom,
+      from_date,
+      to_date,
     ],
     () =>
       getDoctorList({
@@ -107,6 +117,8 @@ export const useGetDoctorList = ({
         gender,
         specialization,
         symptom,
+        from_date,
+        to_date,
       }),
     {
       select: data => data?.data?.data,
