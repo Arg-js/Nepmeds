@@ -10,8 +10,13 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useResetPasswordMutation } from "@nepMeds/service/nepmeds-forgot-password";
 import { colors } from "@nepMeds/theme/colors";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
 import { AxiosError } from "axios";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 
 const schema = yup.object().shape({
   password: yup.string().required("Password is required"),
@@ -25,6 +30,7 @@ const ConformPasswordForm = () => {
   }>();
   const resetPasswordAction = useResetPasswordMutation();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -51,11 +57,12 @@ const ConformPasswordForm = () => {
   };
 
   const onSubmit = async () => {
+    const { mobile, otp } = location.state as { mobile: string; otp: string };
     try {
       await resetPasswordAction
         .mutateAsync({
-          token,
-          uidb64,
+          otp,
+          email_or_mobile_number: mobile,
           new_password: getValues("password"),
           confirm_new_password: getValues("confirmPassword"),
         })
