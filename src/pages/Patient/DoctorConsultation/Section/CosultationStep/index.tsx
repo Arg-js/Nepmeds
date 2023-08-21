@@ -8,7 +8,11 @@ const ConsultationStepSection = () => {
     <>
       <SectionHeading heading="How Our Doctor Consultation works?" />
       <Grid
-        templateColumns={{ base: "repeat(1, 1fr)", md: "repeat(2, 1fr)" }}
+        templateColumns={{
+          base: "repeat(1, 1fr)",
+          md: "repeat(1, 1fr)",
+          xl: "repeat(2, 1fr)",
+        }}
         gap={10}
       >
         {ConsultationSteps.map(consultationStep => {

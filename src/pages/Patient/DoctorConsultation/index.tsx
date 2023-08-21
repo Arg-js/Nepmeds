@@ -38,14 +38,20 @@ const responsive = {
     ...style,
     items: 6,
   },
+  laptopLarge: {
+    breakpoint: { max: 1440, min: 1024 },
+    items: 4,
+  },
+  laptop: {
+    breakpoint: { max: 1024, min: 768 },
+    items: 3,
+  },
   tablet: {
     breakpoint: { max: 1024, min: 464 },
-    slidesToSlide: 2, // optional, default to 1.
-    items: 3,
+    items: 2,
   },
   mobile: {
     breakpoint: { max: 464, min: 0 },
-    slidesToSlide: 1, // optional, default to 1.
     items: 1,
   },
 };
@@ -54,6 +60,20 @@ const responsiveDoctorCard = {
   desktop: {
     ...style,
     items: 5,
+  },
+  tablet: {
+    breakpoint: { max: 768, min: 464 },
+    slidesToSlide: 1, // optional, default to 1.
+    items: 2,
+  },
+  laptop: {
+    breakpoint: { max: 1024, min: 768 },
+    slidesToSlide: 1, // optional, default to 1.
+    items: 2,
+  },
+  laptopLarge: {
+    breakpoint: { max: 1440, min: 1024 },
+    items: 3,
   },
 };
 const DoctorConsultation = () => {
@@ -180,12 +200,13 @@ const DoctorConsultation = () => {
               <Carousel responsive={responsiveDoctorCard}>
                 {doctorList.results.map(doctor => {
                   return (
-                    <DoctorListCard
-                      data={doctor}
-                      error={doctorListError as AxiosError}
-                      size={Size.sm}
-                      key={doctor.id}
-                    />
+                    <Box key={doctor.id}>
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                      />
+                    </Box>
                   );
                 })}
               </Carousel>

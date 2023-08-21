@@ -104,7 +104,8 @@ const DoctorListCard: React.FC<{
           <Flex
             width={{
               base: `${size === Size.sm ? "302px" : "200px"}`,
-              md: `${size === Size.sm ? "302px" : "377px"}`,
+              md: `${size === Size.sm ? "302px" : "200px"}`,
+              xl: `${size === Size.sm ? "302px" : "377px"}`,
             }}
             height={`${size === Size.sm ? "159px" : "215px"}`}
             direction={"column"}
