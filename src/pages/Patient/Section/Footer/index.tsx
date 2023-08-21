@@ -68,7 +68,10 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
-                  <Flex direction={"column"}>
+                  <Flex
+                    direction={"column"}
+                    alignItems={{ base: "center", md: "start" }}
+                  >
                     <Text fontSize={"14px"} fontWeight={700}>
                       {footerContent.title}
                     </Text>
@@ -85,7 +88,11 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             })}
           </Grid>
           <Divider my={10} borderColor={colors.gray_text_header} />
-          <Flex justifyContent={"space-between"}>
+          <Flex
+            justifyContent={"space-between"}
+            direction={{ base: "column", md: "row" }}
+            gap={3}
+          >
             <VStack gap={3.5}>
               <Text fontWeight={600} fontSize={"14px"}>
                 Download App
@@ -99,7 +106,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               <Text fontWeight={600} fontSize={"14px"}>
                 Payment Method
               </Text>
-              <Flex gap={2.5}>
+              <Flex gap={2.5} direction={{ base: "column", md: "row" }}>
                 <Image alt="Google Play" src={imePayImage} />
                 <Image alt="App Store" src={esewaImage} />
                 <Image alt="Google Play" src={visaImage} />

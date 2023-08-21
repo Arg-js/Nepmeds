@@ -14,6 +14,7 @@ import { useCreatePatientAppointment } from "@nepMeds/service/nepmeds-patient-ap
 import { HttpStatusCode } from "axios";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import ReadMoreComponent from "@nepMeds/components/ReadMore";
 
 // TODO: check the similarity
 export interface IPatientAppointment {
@@ -41,11 +42,15 @@ const defaultValues = {
   availabilityDate: "",
 };
 
-const schema = Yup.object().shape({
-  // availability: [],
+const schema = Yup.object({
   full_name: Yup.string().required("This field is requried"),
-  gender: Yup.string().required("This field is requried"),
-  // symptoms: [],
+  availabilityDate: Yup.string().required("This field is required"),
+  availability: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
+  symptoms: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
   description: Yup.string().required("This field is requried"),
   // old_report_file: "",
   // status: "",
@@ -82,11 +87,14 @@ const DoctorDetails: React.FC<{
     register,
     formState: { errors },
     watch,
-    // handleSubmit,
+    handleSubmit,
     reset,
-    getValues,
     control,
-  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+  } = useForm({
+    defaultValues: defaultValues,
+    resolver: yupResolver(schema),
+  });
+
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
   }, [watch("availabilityDate")]);
@@ -97,9 +105,7 @@ const DoctorDetails: React.FC<{
         patientAppointmentDetails: {
           ...data,
           availability: data.availability.map(({ value }) => +value),
-          // availability: [+data.availability[0].value],
           symptoms: data.symptoms.map(({ value }) => +value),
-          // symptoms: [+data.symptoms[0].value],
           doctor: doctorInfo?.id as number,
         },
       });
@@ -115,7 +121,7 @@ const DoctorDetails: React.FC<{
     <WrapperBox
       width={"560px"}
       backgroundColor={colors.white}
-      border={`1px solid ${colors.light_blue}`}
+      boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
       style={{
         // TODO: RESPONSIVE
         px: { base: "4", md: "4" },
@@ -129,8 +135,8 @@ const DoctorDetails: React.FC<{
             <Text fontWeight={600} fontSize={"14px"} color={colors.dark_blue}>
               Doctor’s Profile
             </Text>
-            <Avatar size={"lg"} />
-            <Text fontWeight={600} fontSize={"16px"}>
+            <Avatar size={"lg"} src={doctorInfo.profile_picture} />
+            <Text fontWeight={600} fontSize={"16px"} textTransform="capitalize">
               {doctorInfo?.name}
             </Text>
             <Box textAlign={"center"}>
@@ -163,9 +169,7 @@ const DoctorDetails: React.FC<{
             <Text fontWeight={700} fontSize={"13px"}>
               About
             </Text>
-            <Text fontWeight={400} fontSize={"12px"}>
-              {doctorInfo?.bio_detail}
-            </Text>
+            <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
           </Flex>
           <Flex
             bg={colors.sky_blue}
@@ -191,7 +195,7 @@ const DoctorDetails: React.FC<{
           <Text fontWeight={700} fontSize={"13px"}>
             Available time
           </Text>
-          <form>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Flex gap={6} direction={"column"}>
               {/* <Box>
                 <Button
@@ -248,13 +252,11 @@ const DoctorDetails: React.FC<{
                 control={"radio"}
                 label={"Choose Gender"}
                 name={"gender"}
-                error={errors?.full_name?.message ?? ""}
                 register={register}
                 options={[
                   { label: "Male", value: "1" },
                   { label: "Female", value: "2" },
                 ]}
-                required
               />
               <FormControl
                 control={"input"}
@@ -262,7 +264,7 @@ const DoctorDetails: React.FC<{
                 type={"date"}
                 name={"availabilityDate"}
                 placeholder={""}
-                // error={errors?.full_name?.message ?? ""}
+                error={errors?.availabilityDate?.message ?? ""}
                 register={register}
                 variant={"outline"}
                 style={{
@@ -311,8 +313,6 @@ const DoctorDetails: React.FC<{
                 label={"Tell us about your symptoms"}
                 name={"description"}
                 placeholder={"Type your symptoms here"}
-                // variant={"outline"}
-                // size={"sm"}
                 sx={{
                   borderRadius: "8px",
                   p: "3",
@@ -322,9 +322,14 @@ const DoctorDetails: React.FC<{
                 register={register}
               />
               <Button
-                onClick={e => {
-                  e.preventDefault();
-                  onSubmitHandler(getValues());
+                type="submit"
+                sx={{
+                  bg: `${colors.primary}`,
+                  color: `${colors.white}`,
+                  "&:hover": {
+                    bg: `${colors.sky_blue}`,
+                    color: `${colors.primary}`,
+                  },
                 }}
               >
                 Confrim & Pay

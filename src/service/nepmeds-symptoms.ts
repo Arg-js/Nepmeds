@@ -1,13 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { Symptom } from "./nepmeds-specialization";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
-
-export interface Symptom {
-  id: number;
-  name: string;
-  keyword: string;
-  file?: string;
-}
 
 const getSymptoms = async () => {
   const response = await HttpClient.get<NepMedsResponse<Symptom[]>>(

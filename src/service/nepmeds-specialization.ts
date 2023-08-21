@@ -10,7 +10,6 @@ export interface Specialization {
   image: string;
 }
 
-// TODO: REMOVE THIS REPEATED CODE
 export interface Symptom {
   id: number;
   name: string;
