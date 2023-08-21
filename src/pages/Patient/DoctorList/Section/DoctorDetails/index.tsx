@@ -308,8 +308,6 @@ const DoctorDetails: React.FC<{
                 label={"Tell us about your symptoms"}
                 name={"description"}
                 placeholder={"Type your symptoms here"}
-                // variant={"outline"}
-                // size={"sm"}
                 sx={{
                   borderRadius: "8px",
                   p: "3",
@@ -322,6 +320,14 @@ const DoctorDetails: React.FC<{
                 onClick={e => {
                   e.preventDefault();
                   onSubmitHandler(getValues());
+                }}
+                sx={{
+                  bg: `${colors.primary}`,
+                  color: `${colors.white}`,
+                  "&:hover": {
+                    bg: `${colors.sky_blue}`,
+                    color: `${colors.primary}`,
+                  },
                 }}
               >
                 Confrim & Pay
