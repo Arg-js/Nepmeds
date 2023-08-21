@@ -1,4 +1,12 @@
-import { Box, Button, Flex, HStack, Text, VStack } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  HStack,
+  Spinner,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
 
 import { svgs } from "@nepMeds/assets/svgs";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
@@ -17,7 +25,7 @@ import PaymentCard from "./PaymentCard";
 const PaymentSet = () => {
   const [activeMethod, setActiveMethod] = useState<string>("0");
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const { data: methods } = useGetPaymentMethods();
+  const { data: methods, isLoading: methodsLoading } = useGetPaymentMethods();
   const { data: paymentMethods } = useGetPaymentMethodsList();
 
   const {
@@ -72,6 +80,7 @@ const PaymentSet = () => {
 
   return (
     <Box bg={colors.white}>
+      {methodsLoading && <Spinner />}
       <Box h={"80vh"} bg={colors.white}>
         <Flex gap={6} mt={10} justifyContent={"space-between"} wrap={"wrap"}>
           {methods?.map(x => {
@@ -95,7 +104,7 @@ const PaymentSet = () => {
                   const data = paymentMethods?.find(
                     e => e.payment_mode?.toString() === x.id?.toString()
                   );
-                  handleDeteltePayment(data?.id?.toString() ?? "");
+                  data?.id && handleDeteltePayment(data?.id?.toString());
                 }}
               />
             );
@@ -103,161 +112,163 @@ const PaymentSet = () => {
         </Flex>
       </Box>
 
-      <ModalComponent
-        isOpen={modalMethods.isOpen}
-        onClose={modalMethods.closeModal}
-        size={"md"}
-        heading={
-          <HStack>
-            <svgs.logo_small />
-            <Text>Edit Payment Details</Text>
-          </HStack>
-        }
-        footer={
-          <HStack w={"full"} justifyContent={"space-around"}>
-            <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={colors.primary}
-              bg={colors.white}
-              w={"150px"}
-              onClick={modalMethods.closeModal}
-            >
-              Cancel
-            </Button>
-            <Button
-              borderRadius={"12px"}
-              bg={colors.primary}
-              color={colors.white}
-              w={"150px"}
-              type="submit"
-              onClick={handleFormSubmit}
-              mr={1}
-              variant={"solid"}
-              h={"45px"}
-              isLoading={isLoading}
-            >
-              Done
-            </Button>
-          </HStack>
-        }
-      >
-        <VStack h={"auto"}>
-          <form style={{ width: "96%", marginTop: "10px" }}>
-            {modalMethods.isEsewa && (
-              <>
-                <FloatingLabelInput
-                  label="Esewa Id"
-                  name="epayment_id"
-                  register={register}
-                  required
-                  rules={{
-                    required: "Please Enter Esewa Id",
-                  }}
-                  error={formState?.errors?.epayment_id?.message}
-                />
-                <Controller
-                  render={({ field: { value, ref, ...fieldValues } }) => (
-                    <Checkbox
-                      label="Set Primary Payment Method"
-                      control={control}
-                      {...fieldValues}
-                      checked={value}
-                    />
-                  )}
-                  name={`is_primary_method`}
-                  control={control}
-                />
-              </>
-            )}
+      {modalMethods.isOpen && (
+        <ModalComponent
+          isOpen={modalMethods.isOpen}
+          onClose={modalMethods.closeModal}
+          size={"md"}
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Edit Payment Details</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w={"full"} justifyContent={"space-around"}>
+              <Button
+                outlineColor={"#13ADE1"}
+                borderRadius={"12px"}
+                color={colors.primary}
+                bg={colors.white}
+                w={"150px"}
+                onClick={modalMethods.closeModal}
+              >
+                Cancel
+              </Button>
+              <Button
+                borderRadius={"12px"}
+                bg={colors.primary}
+                color={colors.white}
+                w={"150px"}
+                type="submit"
+                onClick={handleFormSubmit}
+                mr={1}
+                variant={"solid"}
+                h={"45px"}
+                isLoading={isLoading}
+              >
+                Done
+              </Button>
+            </HStack>
+          }
+        >
+          <VStack h={"auto"}>
+            <form style={{ width: "96%", marginTop: "10px" }}>
+              {modalMethods.isEsewa && (
+                <>
+                  <FloatingLabelInput
+                    label="Esewa Id"
+                    name="epayment_id"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Please Enter Esewa Id",
+                    }}
+                    error={formState?.errors?.epayment_id?.message}
+                  />
+                  <Controller
+                    render={({ field: { value, ref, ...fieldValues } }) => (
+                      <Checkbox
+                        label="Set Primary Payment Method"
+                        control={control}
+                        {...fieldValues}
+                        checked={value}
+                      />
+                    )}
+                    name={`is_primary_method`}
+                    control={control}
+                  />
+                </>
+              )}
 
-            {modalMethods.isKhalti && (
-              <>
-                <FloatingLabelInput
-                  label="Khalti ID"
-                  name="epayment_id"
-                  register={register}
-                  required
-                  type="number"
-                  rules={{
-                    required: "Please Enter Khalti Id",
-                  }}
-                  error={formState?.errors?.epayment_id?.message}
-                />
-                <Controller
-                  render={({ field: { value, ref, ...fieldValues } }) => (
-                    <Checkbox
-                      label="Set Primary Payment Method"
-                      control={control}
-                      {...fieldValues}
-                      checked={value}
-                    />
-                  )}
-                  name="is_primary_method"
-                  control={control}
-                />
-              </>
-            )}
+              {modalMethods.isKhalti && (
+                <>
+                  <FloatingLabelInput
+                    label="Khalti ID"
+                    name="epayment_id"
+                    register={register}
+                    required
+                    type="number"
+                    rules={{
+                      required: "Please Enter Khalti Id",
+                    }}
+                    error={formState?.errors?.epayment_id?.message}
+                  />
+                  <Controller
+                    render={({ field: { value, ref, ...fieldValues } }) => (
+                      <Checkbox
+                        label="Set Primary Payment Method"
+                        control={control}
+                        {...fieldValues}
+                        checked={value}
+                      />
+                    )}
+                    name="is_primary_method"
+                    control={control}
+                  />
+                </>
+              )}
 
-            {modalMethods.isBank && (
-              <VStack spacing={5}>
-                <FloatingLabelInput
-                  label="Bank Name"
-                  name="bank_name"
-                  register={register}
-                  required
-                  rules={{
-                    required: "Please Enter Bank Name",
-                  }}
-                  error={formState?.errors?.bank_name?.message}
-                />
-                <FloatingLabelInput
-                  label="Account No."
-                  name="account_number"
-                  register={register}
-                  required
-                  rules={{
-                    required: "Please Enter Account Number",
-                  }}
-                  error={formState?.errors?.account_number?.message}
-                />
-                <FloatingLabelInput
-                  label="Account Holder Name"
-                  name="account_holder_name"
-                  register={register}
-                  required
-                  rules={{
-                    required: "Please Enter Account Holder Name",
-                  }}
-                  error={formState?.errors?.account_holder_name?.message}
-                />
-                <FloatingLabelInput
-                  label="Branch Name"
-                  name="branch_name"
-                  register={register}
-                  required
-                  rules={{
-                    required: "Please Enter Branch Name",
-                  }}
-                  error={formState?.errors?.branch_name?.message}
-                />
-                <Controller
-                  render={({ field: { value, ref, ...fieldValues } }) => (
-                    <Checkbox
-                      label="Set Primary Payment Method"
-                      control={control}
-                      {...fieldValues}
-                      checked={value}
-                    />
-                  )}
-                  name="is_primary_method"
-                  control={control}
-                />
-              </VStack>
-            )}
-          </form>
-        </VStack>
-      </ModalComponent>
+              {modalMethods.isBank && (
+                <VStack spacing={5}>
+                  <FloatingLabelInput
+                    label="Bank Name"
+                    name="bank_name"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Please Enter Bank Name",
+                    }}
+                    error={formState?.errors?.bank_name?.message}
+                  />
+                  <FloatingLabelInput
+                    label="Account No."
+                    name="account_number"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Please Enter Account Number",
+                    }}
+                    error={formState?.errors?.account_number?.message}
+                  />
+                  <FloatingLabelInput
+                    label="Account Holder Name"
+                    name="account_holder_name"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Please Enter Account Holder Name",
+                    }}
+                    error={formState?.errors?.account_holder_name?.message}
+                  />
+                  <FloatingLabelInput
+                    label="Branch Name"
+                    name="branch_name"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Please Enter Branch Name",
+                    }}
+                    error={formState?.errors?.branch_name?.message}
+                  />
+                  <Controller
+                    render={({ field: { value, ref, ...fieldValues } }) => (
+                      <Checkbox
+                        label="Set Primary Payment Method"
+                        control={control}
+                        {...fieldValues}
+                        checked={value}
+                      />
+                    )}
+                    name="is_primary_method"
+                    control={control}
+                  />
+                </VStack>
+              )}
+            </form>
+          </VStack>
+        </ModalComponent>
+      )}
     </Box>
   );
 };

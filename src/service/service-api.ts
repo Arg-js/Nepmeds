@@ -61,6 +61,7 @@ export const api = {
 
   //amount
   add_amount_create: "/doctor_consult/doctor-amount-set/",
+  edit_amount: "/doctor_consult/doctor-amount-set/:id/",
 
   added_payment_methods:
     "/doctor_consult/doctorwise-paymentdetail-list/:doctor_id/",

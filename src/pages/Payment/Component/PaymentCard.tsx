@@ -65,7 +65,9 @@ const PaymentCard = ({
         <Flex justifyContent={"space-between"}>
           <Flex gap={5}>
             <Text fontWeight={"bold"}>{name}</Text>
-            <Text>{data?.epayment_id ?? data?.bank_name}</Text>
+            <Text>
+              {data?.payment_mode === "3" ? data?.bank_name : data?.epayment_id}
+            </Text>
           </Flex>
           <Menu>
             <MenuButton as={Button} variant={"unstyled"}>
