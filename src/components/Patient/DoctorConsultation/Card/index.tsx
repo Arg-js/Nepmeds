@@ -9,6 +9,7 @@ import "react-multi-carousel/lib/styles.css";
 const Card: React.FC<{
   name: string;
   image: string;
+  // TODO
   // description: Record<string, string | number>[];
   description: Record<string, any>[];
   isLoading: boolean;

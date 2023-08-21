@@ -42,11 +42,15 @@ const defaultValues = {
   availabilityDate: "",
 };
 
-const schema = Yup.object().shape({
-  // availability: [],
+const schema = Yup.object({
   full_name: Yup.string().required("This field is requried"),
-  gender: Yup.string().required("This field is requried"),
-  // symptoms: [],
+  availabilityDate: Yup.string().required("This field is required"),
+  availability: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
+  symptoms: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
   description: Yup.string().required("This field is requried"),
   // old_report_file: "",
   // status: "",
@@ -83,11 +87,14 @@ const DoctorDetails: React.FC<{
     register,
     formState: { errors },
     watch,
-    // handleSubmit,
+    handleSubmit,
     reset,
-    getValues,
     control,
-  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+  } = useForm({
+    defaultValues: defaultValues,
+    resolver: yupResolver(schema),
+  });
+
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
   }, [watch("availabilityDate")]);
@@ -188,7 +195,7 @@ const DoctorDetails: React.FC<{
           <Text fontWeight={700} fontSize={"13px"}>
             Available time
           </Text>
-          <form>
+          <form onSubmit={handleSubmit(onSubmitHandler)}>
             <Flex gap={6} direction={"column"}>
               {/* <Box>
                 <Button
@@ -245,13 +252,11 @@ const DoctorDetails: React.FC<{
                 control={"radio"}
                 label={"Choose Gender"}
                 name={"gender"}
-                error={errors?.full_name?.message ?? ""}
                 register={register}
                 options={[
                   { label: "Male", value: "1" },
                   { label: "Female", value: "2" },
                 ]}
-                required
               />
               <FormControl
                 control={"input"}
@@ -259,7 +264,7 @@ const DoctorDetails: React.FC<{
                 type={"date"}
                 name={"availabilityDate"}
                 placeholder={""}
-                // error={errors?.full_name?.message ?? ""}
+                error={errors?.availabilityDate?.message ?? ""}
                 register={register}
                 variant={"outline"}
                 style={{
@@ -317,10 +322,7 @@ const DoctorDetails: React.FC<{
                 register={register}
               />
               <Button
-                onClick={e => {
-                  e.preventDefault();
-                  onSubmitHandler(getValues());
-                }}
+                type="submit"
                 sx={{
                   bg: `${colors.primary}`,
                   color: `${colors.white}`,
