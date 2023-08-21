@@ -181,7 +181,9 @@ const OtpForm = ({
           textColor={colors.white}
           type="submit"
           isDisabled={otpCode.length !== 6}
-          isLoading={verifySignUpOTPAction.isLoading}
+          isLoading={
+            verifySignUpOTPAction.isLoading || verifyForgetPasswordOTP.isLoading
+          }
         >
           Verify
         </Button>
