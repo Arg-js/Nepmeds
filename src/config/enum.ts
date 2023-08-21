@@ -14,3 +14,9 @@ export enum AVAILABILITYFREQUENCY {
   Everyday = 2,
   Weekends = 3,
 }
+
+export enum PAYMENTMODE {
+  ESEWA = 1,
+  KHALTI = 2,
+  BANK = 3,
+}

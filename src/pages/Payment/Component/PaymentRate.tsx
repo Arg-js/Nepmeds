@@ -44,7 +44,8 @@ const PaymentRate = () => {
   const {
     formMethods: { formState, trigger, getValues, register, reset },
     handleSubmitAmount,
-    addLoading,
+    handleEditPayment,
+    loading,
   } = useAmountForm();
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
@@ -72,12 +73,29 @@ const PaymentRate = () => {
     const isValid = await trigger();
     if (!isValid) return;
 
-    handleSubmitAmount({ value: getValues(), closeModal: closeAmountModal });
+    const data = amountList?.find(e => e.rate_status === "2");
+
+    data
+      ? handleEditPayment(getValues(), data?.id?.toString(), closeAmountModal)
+      : handleSubmitAmount({
+          value: getValues(),
+          closeModal: closeAmountModal,
+        });
   };
 
   const closeAmountModal = () => {
     onClose();
     reset();
+  };
+
+  const onOpenAmountModal = () => {
+    const data = amountList?.find(e => e.rate_status === "2");
+    onOpen();
+    data &&
+      reset({
+        instant_amount: data?.instant_amount,
+        schedule_amount: data?.schedule_amount,
+      });
   };
 
   return (
@@ -194,7 +212,7 @@ const PaymentRate = () => {
                 variant={"solid"}
                 h={"45px"}
                 onClick={handleFormSubmit}
-                isLoading={addLoading}
+                isLoading={loading}
               >
                 Done
               </Button>
@@ -296,7 +314,7 @@ const PaymentRate = () => {
 
           {isSuccess && (
             <DataTable
-              columns={paymentRateColumn()}
+              columns={paymentRateColumn(onOpenAmountModal)}
               data={amountList ?? []}
               pagination={{
                 manual: true,

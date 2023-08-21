@@ -1,13 +1,16 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Badge, Box, HStack, Icon, Tag, Tooltip } from "@chakra-ui/react";
+import { Badge, Box, HStack, Icon, Tag, Text, Tooltip } from "@chakra-ui/react";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
+import {
+  IAllPaymentResponse,
+  IAmountListDoctor,
+} from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
-import { Show } from "react-iconly";
+import { Edit, Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router-dom";
 
 interface PendingCellContextSearch {
@@ -851,7 +854,7 @@ export const rejectedPaymentColumns = () => {
 };
 
 //Rate Column
-export const paymentRateColumn = () => {
+export const paymentRateColumn = (onEditClick: () => void) => {
   return [
     {
       header: "S.N",
@@ -862,86 +865,70 @@ export const paymentRateColumn = () => {
     {
       header: "Pending Date",
       accessorKey: "pending_date",
-      accessorFn: (_cell: PendingCellContextSearch) => {
-        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      accessorFn: (_cell: IAmountListDoctor) => {
+        return _cell?.created_date;
       },
     },
 
     {
       header: "Approval Date",
       accessorKey: "approval_date",
-      cell: ({
-        row,
-      }: CellContext<{ specialization_names: Specialization[] }, any>) => {
-        const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag
-              key={data.id}
-              mb={1}
-              color={colors.main}
-              bg={colors.lightish_blue}
-              mx={"1px"}
-            >
-              {data.name}
-            </Tag>
-          )
-        );
-        return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
-            <p>{specialization}</p>
-          </Box>
-        );
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return row?.original?.approved_date ?? "-";
       },
     },
 
     {
       header: "Status",
       accessorKey: "specialization",
-      cell: ({ row }: CellContext<{ rejected_remarks: string }, any>) => {
-        const rejected_remarks = row?.original?.rejected_remarks ?? "";
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        const isApproved = row?.original?.rate_status === "1";
 
         return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            // width={"fit-content"}
-            // p={1}
-            // background={colors.grey}
-            // borderRadius={20}
+          <Badge
+            colorScheme={isApproved ? "green" : "yellow"}
+            p={1}
+            borderRadius={20}
+            fontSize={11}
+            w={24}
+            textAlign="center"
+            textTransform="capitalize"
           >
-            <p>{rejected_remarks}</p>
-          </Box>
+            {isApproved ? "Approved" : "Pending"}
+          </Badge>
         );
       },
     },
 
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.instant_amount;
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.instant_amount}</Text>;
       },
     },
     {
       header: "Appointment Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.schedule_amount;
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
       },
     },
 
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: () => {
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        const show = row?.original?.rate_status === "2";
         return (
           <HStack>
-            <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+            {show && (
+              <Icon
+                as={Edit}
+                fontSize={20}
+                cursor="pointer"
+                color={"green"}
+                onClick={onEditClick}
+              />
+            )}
           </HStack>
         );
       },

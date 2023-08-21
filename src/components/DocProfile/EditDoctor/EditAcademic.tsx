@@ -168,40 +168,6 @@ const EditAcademic = ({
     await getAcademicInfo(id);
     setLoading(false);
   };
-  // const downloadImage = async (imageSrc: string) => {
-  //   var pom = document.createElement("a");
-  //   pom.href = `data:application/octet-stream;base64,${encodeURIComponent(
-  //     imageSrc
-  //   )}`;
-  //   pom.setAttribute("download", `${Date.now()}.jpg`);
-  //   pom.style.display = "none";
-  //   document.body.appendChild(pom);
-  //   pom.click();
-  //   document.body.removeChild(pom);
-  // };
-  // const handleDownload = () => {
-  //   academicInfo.map((e: any) => {
-  //     // downloadImage("http://38.242.204.217:8005/media/" +getImageUrl(e?.file));
-  // const anchor = document.createElement("a");
-  // anchor.download = `example.jpg`;
-  // anchor.href = "http://38.242.204.217:8005/media/" + e?.file;
-  // document.body.appendChild(anchor);
-  // anchor.click();
-  // document.body.removeChild(anchor);
-  // window.URL.revokeObjectURL();
-
-  //     downloadImageFile.mutateAsync(e.file).then((response: any) => {
-  //       // const fileHeader = response.headers["content-type"];
-  //       const fileData = response.data;
-  //       // const blob = new Blob([fileData], { type: "image/jpg" });
-  //       const objUrl = URL.createObjectURL(fileData);
-  //       const link = document.createElement("a");
-  //       link.setAttribute("href", objUrl);
-  //       link.setAttribute("download", "Provider-Profile.jpg");
-  //       link.click();
-  //     });
-  //   });
-  // };
 
   return (
     <>
