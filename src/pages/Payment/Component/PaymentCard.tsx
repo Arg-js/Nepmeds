@@ -11,6 +11,7 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { PAYMENTMODE } from "@nepMeds/config/enum";
 import { IPaymentMethodDoctorAmount } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
@@ -66,7 +67,9 @@ const PaymentCard = ({
           <Flex gap={5}>
             <Text fontWeight={"bold"}>{name}</Text>
             <Text>
-              {data?.payment_mode === "3" ? data?.bank_name : data?.epayment_id}
+              {data?.payment_mode.toString() === PAYMENTMODE.BANK.toString()
+                ? data?.bank_name
+                : data?.epayment_id}
             </Text>
           </Flex>
           <Menu>
