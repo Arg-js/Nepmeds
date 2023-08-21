@@ -337,9 +337,12 @@ export const useAddDoctorAmount = () => {
 
 export interface IAmountListDoctor {
   id: number;
-  instant_amount: number;
-  schedule_amount: number;
-  doctor: number;
+  instant_amount: string;
+  schedule_amount: string;
+  is_active_amount: boolean;
+  rate_status: string;
+  approved_date: string;
+  created_date: string;
 }
 
 //Get list of amount for doctor (Without id)
@@ -353,5 +356,29 @@ const getAmountList = async () => {
 export const useGetAmountList = () => {
   return useQuery([api.add_amount_create], getAmountList, {
     select: data => data.data.data,
+  });
+};
+
+//Edit amount for doctor
+const editAmount = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: IAddDoctorAmount;
+}) => {
+  const response = await HttpClient.patch(
+    generatePath(api.edit_amount, { id }),
+    data
+  );
+  return response;
+};
+
+export const useEditAmount = () => {
+  const queryClient = useQueryClient();
+  return useMutation(editAmount, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.add_amount_create]);
+    },
   });
 };
