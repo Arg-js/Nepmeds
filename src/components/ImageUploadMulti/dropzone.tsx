@@ -1,6 +1,6 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
-import { Dispatch, SetStateAction, useEffect } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../FormComponents/RegistrationForm/RegistrationForm";
@@ -63,10 +63,12 @@ export function MultiImageUpload({
     setFiles(tempArray);
   };
 
-  useEffect(() => {
-    // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
-  }, []);
+  // useEffect(() => {
+  // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
+  //   return () => imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
+  // }, []);
+
+  console.log(imagesFile);
 
   return (
     <Flex

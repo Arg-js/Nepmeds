@@ -317,8 +317,11 @@ const RegistrationForm = () => {
           const academicArray = formMethods.getValues("academic");
 
           const academicPromises = academicArray.map(async academicData => {
+            console.log(academicData);
             const createAcademicFileResponse =
               await academicFileRegister.mutateAsync(academicData);
+
+            console.log(createAcademicFileResponse.data);
 
             const academicInfoData = {
               ...academicData,
@@ -330,6 +333,8 @@ const RegistrationForm = () => {
               ),
             };
             if (academicData.id) {
+              console.log(academicInfoData);
+
               const academicInfoResponse =
                 await updateAcademicInfoRegister.mutateAsync({
                   id: parseInt(academicData.id),
