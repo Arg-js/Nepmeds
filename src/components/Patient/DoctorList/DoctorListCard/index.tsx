@@ -93,7 +93,7 @@ const DoctorListCard: React.FC<{
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              objectFit={"contain"}
+              objectFit={"cover"}
               width={{
                 base: `${size === Size.sm ? "285px" : "150px"}`,
                 md: `${size === Size.sm ? "302px" : "296px"}`,

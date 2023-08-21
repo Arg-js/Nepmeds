@@ -153,6 +153,10 @@ const adminRoutes = [
 const openRoutes = [
   {
     path: NAVIGATION_ROUTES.LOGIN,
+    element: <DoctorConsultation />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DOCTOR_LOGIN,
     element: <Login />,
   },
   {

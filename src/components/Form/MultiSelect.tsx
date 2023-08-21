@@ -44,6 +44,7 @@ const MultiSelect = ({
   required,
   multiValue,
   variant,
+  error,
 }: IMultiSelect) => {
   const { t } = useTranslation();
 
@@ -93,13 +94,16 @@ const MultiSelect = ({
                 control: baseStyles => ({
                   ...baseStyles,
                   background: colors.forminput,
-                  border: "none",
-                  paddingTop: 20,
-                  minHeight: "58px",
+                  // paddingTop: 10,
+                  minHeight: "35px",
                   borderRadius: "8px",
-                  borderWidth: fieldState.error ? "2px" : "1px",
+                  border: error
+                    ? `2px solid ${colors.error}`
+                    : `1px solid ${colors.gray_border}`,
                   ...style,
+                  borderWidth: error ? "2px" : "1px",
                 }),
+                indicatorSeparator: () => ({ display: "none" }),
               }}
             />
 

@@ -156,7 +156,7 @@ const DoctorConsultation = () => {
             <Image
               src={advertisement1}
               alt="advertisement"
-              objectFit={"contain"}
+              objectFit={"cover"}
             />
           </Box>
 
