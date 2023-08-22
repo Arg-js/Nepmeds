@@ -5,7 +5,7 @@ import {
   StethoscopeIcon,
 } from "@nepMeds/assets/svgs";
 import { colors } from "@nepMeds/theme/colors";
-import doctorImage from "@nepMeds/assets/images/doctor.png";
+import doctorImage from "@nepMeds/assets/images/userAvatar.png";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDoctorListResult } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { AxiosError } from "axios";
@@ -19,8 +19,20 @@ const DoctorListCard: React.FC<{
   data: IDoctorListResult;
   size: number;
   setDoctorId?: Dispatch<SetStateAction<number>>;
+  doctorId?: number;
   error?: AxiosError;
-}> = ({ data, size, setDoctorId }) => {
+}> = ({ data, size, setDoctorId, doctorId }) => {
+  // const widthBase = size === Size.sm ? "285px" : "150px";
+  // const widthMd = size === Size.sm ? "302px" : "296px";
+
+  // const pyBase = size === Size.sm ? "3" : "5";
+  // const pyMd = size === Size.sm ? "3" : "5";
+
+  // const pxBase = size === Size.sm ? "3" : "3";
+  // const pxMd = size === Size.sm ? "3" : "8";
+
+  // const cursorValue = size === Size.sm ? "auto" : "pointer";
+
   const doctorDetails = useMemo(
     () => [
       {
@@ -52,17 +64,24 @@ const DoctorListCard: React.FC<{
       cursor={`${size === Size.sm ? "auto" : "pointer"}`}
     >
       <Card
-        variant={"elevated"}
         sx={{
           "&:hover": {
             boxShadow: `${
               size === Size.lg &&
-              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 1px`
+              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 0.5px`
             }`,
           },
         }}
+        variant={"elevated"}
       >
-        <Flex direction={`${size === Size.sm ? "column" : "row"}`}>
+        <Flex
+          direction={`${size === Size.sm ? "column" : "row"}`}
+          boxShadow={
+            doctorId === data.id
+              ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`
+              : "none"
+          }
+        >
           <Box
             width={{
               base: `${size === Size.sm ? "285px" : "150px"}`,
@@ -72,9 +91,9 @@ const DoctorListCard: React.FC<{
           >
             {/* TODO: what happens when width and height not provided in image */}
             <Image
-              src={doctorImage}
+              src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              objectFit={"cover"}
+              objectFit={"contain"}
               width={{
                 base: `${size === Size.sm ? "285px" : "150px"}`,
                 md: `${size === Size.sm ? "302px" : "296px"}`,

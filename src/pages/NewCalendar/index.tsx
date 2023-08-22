@@ -1,7 +1,6 @@
 import { Box, Grid, GridItem } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import React, { useState } from "react";
-// TODO: manage this route
 import {
   formatToDateMonth,
   formatToDayOfWeek,

@@ -40,7 +40,6 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import ModalComponent from "../Form/ModalComponent";
 import { toastFail, toastSuccess } from "../Toast";
-// TODO: change the path imports
 import {
   formatToDate,
   formatToDayOfWeek,
@@ -210,7 +209,6 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
             <Flex>
               <Text>{doctorAvailabilityData?.title}</Text>
             </Flex>
-            {/* TODO: move this to generic component */}
             <Flex gap={4} mr={3}>
               <EditIcon
                 cursor={"pointer"}

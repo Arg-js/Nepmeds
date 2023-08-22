@@ -49,6 +49,11 @@ const SectionHeading: React.FC<ISectionHeading> = ({
           px={7}
           border={`1px solid ${colors.primary}`}
           onClick={onClick}
+          sx={{
+            "&:hover": {
+              bg: colors.sky_blue,
+            },
+          }}
         >
           {btnText}
         </Button>
