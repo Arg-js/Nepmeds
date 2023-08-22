@@ -1,6 +1,4 @@
-import Card, {
-  Type,
-} from "@nepMeds/components/Patient/DoctorConsultation/Card";
+import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -23,7 +21,28 @@ import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
+import Carousel from "react-multi-carousel";
 
+export enum Type {
+  SPECIALIST,
+  SYMPTOM,
+  DOCTOR,
+}
+
+const responsive = {
+  desktop: { breakpoint: { max: 3000, min: 1024 }, slidesToSlide: 3, items: 6 },
+  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
+  laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
+  tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+  mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
+};
+const responsiveDoctorCard = {
+  ...responsive,
+  desktop: { ...responsive.desktop, items: 5 },
+  laptopLarge: { ...responsive.laptopLarge, items: 3 },
+  laptop: { ...responsive.laptop, items: 2 },
+  tablet: { breakpoint: { max: 768, min: 464 }, slidesToSlide: 1, items: 2 },
+};
 const DoctorConsultation = () => {
   // Pagination
   const [pageParams, _setPageParams] = useState({
@@ -37,7 +56,7 @@ const DoctorConsultation = () => {
   const {
     data: specializaionData = [],
     isLoading: SpecializationDataLoading,
-    error: specializaionDataError,
+    error: specializationDataError,
   } = useSpecializationRegisterData();
 
   const {
@@ -67,32 +86,56 @@ const DoctorConsultation = () => {
           <SectionHeading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
-            // btnText={"View All Doctors"}
+            btnText={"View All Doctors"}
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+            }
           />
 
           <Box my={10}>
-            <Card
-              data={specializaionData}
-              isLoading={SpecializationDataLoading}
-              error={specializaionDataError as AxiosError}
-              type={Type.SPECIALIST}
-            />
+            <Carousel responsive={responsive}>
+              {specializaionData?.map(specialization => {
+                return (
+                  <Card
+                    name={specialization.name}
+                    image={specialization.image}
+                    description={
+                      specialization?.symptom_list?.slice(0, 4) ?? []
+                    }
+                    isLoading={SpecializationDataLoading}
+                    error={specializationDataError as AxiosError}
+                    key={specialization.id}
+                  />
+                );
+              })}
+            </Carousel>
           </Box>
 
           {/* Health Concern / Symptoms SECTION */}
           <SectionHeading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
-            // btnText={"View All Symptoms"}
+            btnText={"View All Doctors"}
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+            }
           />
 
           <Box my={10}>
-            <Card
-              data={symptomData.slice(0, 4)}
-              isLoading={symptomDataLoading}
-              error={symptomDataError as AxiosError}
-              type={Type.SYMPTOM}
-            />
+            <Carousel responsive={responsive}>
+              {symptomData?.map(symptom => {
+                return (
+                  <Card
+                    name={symptom.name}
+                    image={""}
+                    description={[]}
+                    isLoading={symptomDataLoading}
+                    error={symptomDataError as AxiosError}
+                    key={symptom.id}
+                  />
+                );
+              })}
+            </Carousel>
           </Box>
 
           {/* ADVERTISEMENT SECTION */}
@@ -100,7 +143,7 @@ const DoctorConsultation = () => {
             <Image
               src={advertisement1}
               alt="advertisement"
-              objectFit={"contain"}
+              objectFit={"cover"}
             />
           </Box>
 
@@ -121,18 +164,19 @@ const DoctorConsultation = () => {
             </Flex>
           ) : (
             doctorList?.results && (
-              <Flex gap={5} mb={10}>
-                {doctorList.results.slice(0, 5).map(doctor => {
+              <Carousel responsive={responsiveDoctorCard}>
+                {doctorList.results.map(doctor => {
                   return (
-                    <DoctorListCard
-                      data={doctor}
-                      error={doctorListError as AxiosError}
-                      size={Size.sm}
-                      key={doctor.id}
-                    />
+                    <Box key={doctor.id}>
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                      />
+                    </Box>
                   );
                 })}
-              </Flex>
+              </Carousel>
             )
           )}
 

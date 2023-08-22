@@ -23,8 +23,8 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { Symptom } from "@nepMeds/service/nepmeds-specialization";
 import {
-  Symptom,
   // useDeleteBulkSymptoms,
   useDeleteSymptom,
   useSaveSymptoms,

@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useSignUpUser } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -34,7 +35,6 @@ const schema = yup.object().shape({
 });
 
 const SignupForm = () => {
-  const [, setOTP] = useState("");
   const [enableOTP, setEnableOTP] = useState(false);
   const {
     getValues,
@@ -56,11 +56,10 @@ const SignupForm = () => {
     email_or_mobile_number: string;
   }) => {
     try {
-      const { data: otpInfo } = await singUpAction.mutateAsync({
+      await singUpAction.mutateAsync({
         email_or_mobile_number: email_or_mobile_number,
       });
       setEnableOTP(true);
-      setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
       toastSuccess("OTP sent successfully!");
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -70,7 +69,12 @@ const SignupForm = () => {
   };
 
   if (enableOTP) {
-    return <OtpSignUp mobile={getValues("email_or_mobile_number")} />;
+    return (
+      <OtpSignUp
+        isResetPassword={false}
+        mobile={getValues("email_or_mobile_number")}
+      />
+    );
   }
 
   return (
@@ -91,7 +95,7 @@ const SignupForm = () => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/"
+          to={NAVIGATION_ROUTES.DOCTOR_LOGIN}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",

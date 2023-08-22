@@ -1,12 +1,9 @@
 import { Box } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 
-// TODO
-
 interface ICalendarAppointmentBox {
   handleEdit: (id: number) => void;
   handleDeleteModal: (id: number) => void;
-  //   TODO: set an enum
   leftPosition: string;
   time: string;
   timeObject:

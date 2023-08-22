@@ -14,6 +14,7 @@ import { useCreatePatientAppointment } from "@nepMeds/service/nepmeds-patient-ap
 import { HttpStatusCode } from "axios";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect } from "react";
+import ReadMoreComponent from "@nepMeds/components/ReadMore";
 
 // TODO: check the similarity
 export interface IPatientAppointment {
@@ -41,11 +42,17 @@ const defaultValues = {
   availabilityDate: "",
 };
 
-const schema = Yup.object().shape({
-  // availability: [],
+const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
+
+const schema = Yup.object({
   full_name: Yup.string().required("This field is requried"),
-  gender: Yup.string().required("This field is requried"),
-  // symptoms: [],
+  availabilityDate: Yup.string().required("This field is required"),
+  availability: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
+  symptoms: Yup.array()
+    .required("This field is required")
+    .min(1, "This field is required"),
   description: Yup.string().required("This field is requried"),
   // old_report_file: "",
   // status: "",
@@ -82,11 +89,14 @@ const DoctorDetails: React.FC<{
     register,
     formState: { errors },
     watch,
-    // handleSubmit,
+    handleSubmit,
     reset,
-    getValues,
     control,
-  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+  } = useForm({
+    defaultValues: defaultValues,
+    resolver: yupResolver(schema),
+  });
+
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
   }, [watch("availabilityDate")]);
@@ -97,9 +107,7 @@ const DoctorDetails: React.FC<{
         patientAppointmentDetails: {
           ...data,
           availability: data.availability.map(({ value }) => +value),
-          // availability: [+data.availability[0].value],
           symptoms: data.symptoms.map(({ value }) => +value),
-          // symptoms: [+data.symptoms[0].value],
           doctor: doctorInfo?.id as number,
         },
       });
@@ -112,88 +120,97 @@ const DoctorDetails: React.FC<{
   };
 
   return (
-    <WrapperBox
-      width={"560px"}
-      backgroundColor={colors.white}
-      border={`1px solid ${colors.light_blue}`}
-      style={{
-        // TODO: RESPONSIVE
-        px: { base: "4", md: "4" },
-        height: "auto",
-      }}
-      borderRadius={"3px"}
-    >
+    <>
       {doctorInfo ? (
-        <Flex direction={"column"} gap={5}>
-          <Flex direction={"column"} alignItems={"center"} gap={4}>
-            <Text fontWeight={600} fontSize={"14px"} color={colors.dark_blue}>
-              Doctor’s Profile
-            </Text>
-            <Avatar size={"lg"} />
-            <Text fontWeight={600} fontSize={"16px"}>
-              {doctorInfo?.name}
-            </Text>
-            <Box textAlign={"center"}>
-              <Text fontWeight={400} fontSize={"12px"}>
-                {doctorInfo?.specialization_names &&
-                  doctorInfo?.specialization_names.map(
-                    (specializaion_name, index) => {
-                      return `${
-                        index === doctorInfo.specialization_names.length - 1 ||
-                        doctorInfo.specialization_names.length === 1
-                          ? specializaion_name.name
-                          : `${specializaion_name.name} - `
-                      }`;
-                    }
-                  )}
-              </Text>
-              <Text fontWeight={400} fontSize={"12px"}>
-                NMC No: 95671
-              </Text>
-            </Box>
-            <Divider borderWidth={"0.5px"} />
-          </Flex>
-          <Flex
-            direction={"column"}
-            justifyContent={"flex-start"}
-            gap={1}
-            px={4}
+        <form onSubmit={handleSubmit(onSubmitHandler)}>
+          <WrapperBox
+            // width={"560px"}
+            backgroundColor={colors.white}
+            // TODO: reduce repeated code
+            boxShadow={boxShadow}
+            style={{
+              px: { base: "0", md: "2", xl: "4" },
+              height: "auto",
+              width: { base: "auto", xl: "560px" },
+              borderTopRadius: 3,
+            }}
           >
-            {/* TODO: same component */}
-            <Text fontWeight={700} fontSize={"13px"}>
-              About
-            </Text>
-            <Text fontWeight={400} fontSize={"12px"}>
-              {doctorInfo?.bio_detail}
-            </Text>
-          </Flex>
-          <Flex
-            bg={colors.sky_blue}
-            justifyContent={"space-between"}
-            alignItems={"center"}
-            p={2}
-            px={3.5}
-            borderRadius={"8px"}
-          >
-            <Text fontWeight={590} fontSize={"13px"} color={colors.primary}>
-              Consultation Fee
-            </Text>
-            <Text
-              fontWeight={500}
-              fontSize={"16px"}
-              color={colors.forest_green}
-            >
-              NRs. {doctorInfo.schedule_rate}
-            </Text>
-          </Flex>
-          <Divider borderWidth={"0.5px"} />
-          {/* TODO: same component */}
-          <Text fontWeight={700} fontSize={"13px"}>
-            Available time
-          </Text>
-          <form>
-            <Flex gap={6} direction={"column"}>
-              {/* <Box>
+            <Flex direction={"column"} gap={5}>
+              <Flex direction={"column"} alignItems={"center"} gap={4}>
+                <Text
+                  fontWeight={600}
+                  fontSize={"14px"}
+                  color={colors.dark_blue}
+                >
+                  Doctor’s Profile
+                </Text>
+                <Avatar size={"lg"} src={doctorInfo.profile_picture} />
+                <Text
+                  fontWeight={600}
+                  fontSize={"16px"}
+                  textTransform="capitalize"
+                >
+                  {doctorInfo?.name}
+                </Text>
+                <Box textAlign={"center"}>
+                  <Text fontWeight={400} fontSize={"12px"}>
+                    {doctorInfo?.specialization_names &&
+                      doctorInfo?.specialization_names.map(
+                        (specializaion_name, index) => {
+                          return `${
+                            index ===
+                              doctorInfo.specialization_names.length - 1 ||
+                            doctorInfo.specialization_names.length === 1
+                              ? specializaion_name.name
+                              : `${specializaion_name.name} - `
+                          }`;
+                        }
+                      )}
+                  </Text>
+                  <Text fontWeight={400} fontSize={"12px"}>
+                    NMC No: 95671
+                  </Text>
+                </Box>
+                <Divider borderWidth={"0.5px"} />
+              </Flex>
+              <Flex
+                direction={"column"}
+                justifyContent={"flex-start"}
+                gap={1}
+                px={4}
+              >
+                {/* TODO: same component */}
+                <Text fontWeight={700} fontSize={"13px"}>
+                  About
+                </Text>
+                <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
+              </Flex>
+              <Flex
+                bg={colors.sky_blue}
+                justifyContent={"space-between"}
+                alignItems={"center"}
+                p={2}
+                px={3.5}
+                borderRadius={"8px"}
+              >
+                <Text fontWeight={590} fontSize={"13px"} color={colors.primary}>
+                  Consultation Fee
+                </Text>
+                <Text
+                  fontWeight={500}
+                  fontSize={"16px"}
+                  color={colors.forest_green}
+                >
+                  NRs. {doctorInfo.schedule_rate}
+                </Text>
+              </Flex>
+              <Divider borderWidth={"0.5px"} />
+              {/* TODO: same component */}
+              <Text fontWeight={700} fontSize={"13px"}>
+                Available time
+              </Text>
+              <Flex gap={6} direction={"column"}>
+                {/* <Box>
                 <Button
                   color={colors.primary}
                   px={3}
@@ -231,131 +248,136 @@ const DoctorDetails: React.FC<{
                   11:30 AM
                 </Button>
               </Box> */}
-              <FormControl
-                control={"input"}
-                label={"Full Name"}
-                name={"full_name"}
-                placeholder={"Enter patient name"}
-                error={errors?.full_name?.message ?? ""}
-                register={register}
-                variant={"outline"}
-                style={{
-                  minHeight: "55px",
-                }}
-                required
-              />
-              <FormControl
-                control={"radio"}
-                label={"Choose Gender"}
-                name={"gender"}
-                error={errors?.full_name?.message ?? ""}
-                register={register}
-                options={[
-                  { label: "Male", value: "1" },
-                  { label: "Female", value: "2" },
-                ]}
-                required
-              />
-              <FormControl
-                control={"input"}
-                label={"Date"}
-                type={"date"}
-                name={"availabilityDate"}
-                placeholder={""}
-                // error={errors?.full_name?.message ?? ""}
-                register={register}
-                variant={"outline"}
-                style={{
-                  minHeight: "55px",
-                }}
-                required
-              />
-              <FormControl
-                control={"multiSelect"}
-                label={"Availability"}
-                name={"availability"}
-                placeholder={"Book availability"}
-                variant={"outline"}
-                size={"sm"}
-                error={errors?.symptoms?.message ?? ""}
-                register={register}
-                selectControl={control}
-                options={availabilityOptions ?? []}
-                style={{
-                  border: `1px solid  ${colors.gray_border} `,
-                  background: colors.white,
-                  minHeight: "35px",
-                }}
-                required
-              />
-              <FormControl
-                control={"multiSelect"}
-                label={"Select Health Issue"}
-                name={"symptoms"}
-                placeholder={"Select health issue"}
-                variant={"outline"}
-                size={"sm"}
-                error={errors?.symptoms?.message ?? ""}
-                register={register}
-                selectControl={control}
-                options={symptomDataOptions ?? []}
-                style={{
-                  border: `1px solid  ${colors.gray_border} `,
-                  background: colors.white,
-                  minHeight: "35px",
-                }}
-                required
-              />
-              <FormControl
-                control={"textArea"}
-                label={"Tell us about your symptoms"}
-                name={"description"}
-                placeholder={"Type your symptoms here"}
-                // variant={"outline"}
-                // size={"sm"}
-                sx={{
-                  borderRadius: "8px",
-                  p: "3",
-                  minHeight: "200px",
-                }}
-                error={errors?.description?.message ?? ""}
-                register={register}
-              />
-              <Button
-                onClick={e => {
-                  e.preventDefault();
-                  onSubmitHandler(getValues());
-                }}
-              >
-                Confrim & Pay
-              </Button>
+                <FormControl
+                  control={"input"}
+                  label={"Full Name"}
+                  name={"full_name"}
+                  placeholder={"Enter patient name"}
+                  error={errors?.full_name?.message ?? ""}
+                  register={register}
+                  variant={"outline"}
+                  style={{
+                    minHeight: "55px",
+                  }}
+                  required
+                />
+                <FormControl
+                  control={"radio"}
+                  label={"Choose Gender"}
+                  name={"gender"}
+                  register={register}
+                  options={[
+                    { label: "Male", value: "1" },
+                    { label: "Female", value: "2" },
+                  ]}
+                />
+                <FormControl
+                  control={"input"}
+                  label={"Date"}
+                  type={"date"}
+                  name={"availabilityDate"}
+                  placeholder={""}
+                  error={errors?.availabilityDate?.message ?? ""}
+                  register={register}
+                  variant={"outline"}
+                  style={{
+                    minHeight: "55px",
+                  }}
+                  required
+                />
+                <FormControl
+                  control={"multiSelect"}
+                  label={"Available Time"}
+                  name={"availability"}
+                  placeholder={"Book availability"}
+                  variant={"outline"}
+                  size={"sm"}
+                  error={errors?.symptoms?.message ?? ""}
+                  register={register}
+                  selectControl={control}
+                  options={availabilityOptions ?? []}
+                  style={{
+                    background: colors.white,
+                    minHeight: "35px",
+                  }}
+                  required
+                />
+                <FormControl
+                  control={"multiSelect"}
+                  label={"Select Health Issue"}
+                  name={"symptoms"}
+                  placeholder={"Select health issue"}
+                  variant={"outline"}
+                  size={"sm"}
+                  error={errors?.symptoms?.message ?? ""}
+                  register={register}
+                  selectControl={control}
+                  options={symptomDataOptions ?? []}
+                  style={{
+                    background: colors.white,
+                    minHeight: "35px",
+                  }}
+                  required
+                />
+                <FormControl
+                  control={"textArea"}
+                  label={"Tell us about your symptoms"}
+                  name={"description"}
+                  placeholder={"Type your symptoms here"}
+                  sx={{
+                    borderRadius: "8px",
+                    p: "3",
+                    minHeight: "200px",
+                  }}
+                  error={errors?.description?.message ?? ""}
+                  register={register}
+                />
+              </Flex>
             </Flex>
-          </form>
-        </Flex>
+          </WrapperBox>
+          {/* TODO: ui update */}
+          {/* TODO: wrapper code repeated, width 560px also repeat */}
+          <Button type="submit" width="560px" borderRadius="none">
+            Confrim & Pay
+          </Button>
+        </form>
       ) : (
-        <VStack
-          justifyContent={"center"}
-          alignContent={"center"}
-          // width={"544px"}
-          // height={"700px"}
-          mt={30}
+        <WrapperBox
+          // width={"560px"}
+          backgroundColor={colors.white}
+          boxShadow={boxShadow}
+          style={{
+            px: 4,
+            height: "1227px",
+            width: { base: "auto", xl: "560px" },
+          }}
+          borderRadius={"3px"}
         >
-          {isFetching ? (
-            <Spinner />
-          ) : (
-            <>
-              <NoDataIcon />
-              <Text fontWeight={700} fontSize={"16px"} color={colors.red_700}>
-                There are no details here.
-              </Text>
-              <Text fontWeight={400} fontSize={"12px"}>
-                Please Click on the doctor list to view detail doctor’s profile.
-              </Text>
-            </>
-          )}
-        </VStack>
+          <VStack
+            justifyContent={"center"}
+            alignContent={"center"}
+            // width={"544px"}
+            // height={"700px"}
+            mt={30}
+          >
+            {isFetching ? (
+              <Spinner />
+            ) : (
+              <>
+                <NoDataIcon />
+                <Text fontWeight={700} fontSize={"16px"} color={colors.red_700}>
+                  There are no details here.
+                </Text>
+                <Text fontWeight={400} fontSize={"12px"}>
+                  Please Click on the doctor list to view detail doctor’s
+                  profile.
+                </Text>
+              </>
+            )}
+          </VStack>
+        </WrapperBox>
       )}
-    </WrapperBox>
+    </>
   );
 };
 

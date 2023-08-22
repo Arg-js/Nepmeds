@@ -26,6 +26,7 @@ import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useAcademicFileRegister,
   useAcademicInfoRegister,
@@ -798,7 +799,7 @@ const RegistrationForm = () => {
 
       <ModalComponent
         isOpen={isConfirmationOpen}
-        onClose={() => navigate("/login")}
+        onClose={() => navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN)}
         heading={
           <HStack>
             <svgs.logo_small />
@@ -809,7 +810,7 @@ const RegistrationForm = () => {
           <HStack gap={3}>
             <Button
               variant="outline"
-              onClick={() => navigate("/login")}
+              onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN)}
               flex={1}
               background={colors.primary}
               color={colors.white}

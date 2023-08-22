@@ -1,5 +1,15 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Badge, Box, HStack, Icon, Tag, Text, Tooltip } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Flex,
+  HStack,
+  Icon,
+  Image,
+  Tag,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
@@ -10,7 +20,7 @@ import {
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
-import { Edit, Show } from "react-iconly";
+import { Delete, Edit, Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router-dom";
 
 interface PendingCellContextSearch {
@@ -457,7 +467,7 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
 };
 
 // Payment Column
-export const allPaymentColumn = () => {
+export const allPaymentColumn = (onDeleteClick: (id: string) => void) => {
   return [
     {
       header: "S.N",
@@ -501,14 +511,39 @@ export const allPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.instant_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {" "}
+            {row?.original?.instant_amount
+              ? `Rs. ${row?.original?.instant_amount}`
+              : "-"}
+          </Text>
+        );
       },
     },
     {
       header: "Schedule Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.schedule_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {row?.original?.schedule_amount
+              ? `Rs. ${row?.original?.schedule_amount}`
+              : "-"}
+          </Text>
+        );
+      },
+    },
+    {
+      header: "Payment Method",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Flex>
+            {row?.original?.payment_modes?.map(e => (
+              <Image key={e.id} src={e.url} width={"80px"} />
+            ))}
+          </Flex>
+        );
       },
     },
     {
@@ -547,10 +582,17 @@ export const allPaymentColumn = () => {
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: () => {
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
             <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+            <Icon
+              as={Delete}
+              color={"red"}
+              fontSize={20}
+              cursor="pointer"
+              onClick={() => onDeleteClick(row.original?.id?.toString())}
+            />
           </HStack>
         );
       },
@@ -625,7 +667,43 @@ export const pendingPaymentColumn = (
         );
       },
     },
-
+    {
+      header: "Instant Rate",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {" "}
+            {row?.original?.instant_amount
+              ? `Rs. ${row?.original?.instant_amount}`
+              : "-"}
+          </Text>
+        );
+      },
+    },
+    {
+      header: "Schedule Rate",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {row?.original?.schedule_amount
+              ? `Rs. ${row?.original?.schedule_amount}`
+              : "-"}
+          </Text>
+        );
+      },
+    },
+    {
+      header: "Payment Method",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Flex>
+            {row?.original?.payment_modes?.map(e => (
+              <Image key={e.id} src={e.url} width={"80px"} />
+            ))}
+          </Flex>
+        );
+      },
+    },
     {
       header: "Actions",
       accessorKey: "actions",
@@ -732,14 +810,40 @@ export const approvedPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.instant_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {" "}
+            {row?.original?.instant_amount
+              ? `Rs. ${row?.original?.instant_amount}`
+              : "-"}
+          </Text>
+        );
       },
     },
     {
       header: "Schedule Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.schedule_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {row?.original?.schedule_amount
+              ? `Rs. ${row?.original?.schedule_amount}`
+              : "-"}
+          </Text>
+        );
+      },
+    },
+
+    {
+      header: "Payment Method",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Flex>
+            {row?.original?.payment_modes?.map(e => (
+              <Image key={e.id} src={e.url} width={"80px"} />
+            ))}
+          </Flex>
+        );
       },
     },
 
@@ -808,14 +912,27 @@ export const rejectedPaymentColumns = () => {
     },
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.instant_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {" "}
+            {row?.original?.instant_amount
+              ? `Rs. ${row?.original?.instant_amount}`
+              : "-"}
+          </Text>
+        );
       },
     },
     {
       header: "Schedule Rate",
-      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
-        return row?.original?.data?.schedule_amount;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Text pl={"12px"}>
+            {row?.original?.schedule_amount
+              ? `Rs. ${row?.original?.schedule_amount}`
+              : "-"}
+          </Text>
+        );
       },
     },
     {
@@ -912,7 +1029,18 @@ export const paymentRateColumn = (onEditClick: () => void) => {
         return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
       },
     },
-
+    {
+      header: "Payment Method",
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <Flex>
+            {row?.original?.payment_modes?.map(e => (
+              <Image key={e.id} src={e.url} width={"80px"} />
+            ))}
+          </Flex>
+        );
+      },
+    },
     {
       header: "Actions",
       accessorKey: "actions",

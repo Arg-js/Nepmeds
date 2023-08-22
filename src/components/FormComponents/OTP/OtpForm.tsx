@@ -9,6 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useTimer } from "@nepMeds/hooks/Usetimer";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import {
+  useGenerateForgetPasswordOTP,
+  useVerifyForgetPasswordOTP,
+} from "@nepMeds/service/nepmeds-forgot-password";
 import {
   useSignUpUser,
   useVerifySingUpOTP,
@@ -21,30 +26,58 @@ import { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
-const OtpForm = ({ mobile }: { mobile: string }) => {
+const OtpForm = ({
+  mobile,
+  isResetPassword,
+}: {
+  mobile: string;
+  isResetPassword: boolean;
+}) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
 
-  const verifySingUpOTPAction = useVerifySingUpOTP();
-
+  const verifySignUpOTPAction = useVerifySingUpOTP();
   const signUpAction = useSignUpUser();
 
+  //For Forget Password
+  const forgotPasswordAction = useGenerateForgetPasswordOTP();
+  const verifyForgetPasswordOTP = useVerifyForgetPasswordOTP();
+
   const handleResend = () => {
-    signUpAction.mutateAsync({
-      email_or_mobile_number: mobile,
-    });
+    try {
+      if (isResetPassword) {
+        forgotPasswordAction.mutateAsync({ email_or_mobile_number: mobile });
+      } else {
+        signUpAction.mutateAsync({
+          email_or_mobile_number: mobile,
+        });
+      }
+
+      toastSuccess("OTP has been sent!");
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      toastFail(err);
+    }
   };
 
   const onSubmit = async () => {
     try {
-      await verifySingUpOTPAction.mutateAsync({
-        email_or_mobile_number: mobile,
-        otp: otpCode,
-      });
+      if (isResetPassword) {
+        await verifyForgetPasswordOTP.mutateAsync({
+          email_or_mobile_number: mobile,
+          otp: otpCode,
+        });
+        navigate("/reset-password", { state: { mobile, otp: otpCode } });
+      } else {
+        await verifySignUpOTPAction.mutateAsync({
+          email_or_mobile_number: mobile,
+          otp: otpCode,
+        });
 
+        navigate("/register", { state: { mobile } });
+      }
       toastSuccess("OTP verification successful!");
       setOtp("");
-      navigate("/register", { state: { mobile } });
     } catch (error) {
       const err = serverErrorResponse(error);
 
@@ -92,7 +125,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         />
         <Flex alignItems={"center"}>
           <Heading
-            fontSize="14px"
+            fontSize="sm"
             textAlign="center"
             color={colors.black_30}
             fontWeight="normal"
@@ -101,7 +134,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           </Heading>
           {timer !== "00:00" ? (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.black_50}
               fontWeight="bold"
@@ -111,7 +144,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             </Text>
           ) : (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.blue_100}
               fontWeight="normal"
@@ -133,7 +166,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/"
+          to={NAVIGATION_ROUTES.DOCTOR_LOGIN}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",
@@ -149,7 +182,9 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           textColor={colors.white}
           type="submit"
           isDisabled={otpCode.length !== 6}
-          isLoading={verifySingUpOTPAction.isLoading}
+          isLoading={
+            verifySignUpOTPAction.isLoading || verifyForgetPasswordOTP.isLoading
+          }
         >
           Verify
         </Button>

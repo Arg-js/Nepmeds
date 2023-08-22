@@ -5,7 +5,6 @@ const HourTimeSlot: React.FC<{ timeSlot: string }> = ({ timeSlot }) => {
   return (
     <GridItem colSpan={1} mb={"30px"}>
       <List spacing={"30px"}>
-        {/* TODO: claendar view shift this might create an issue */}
         <ListItem fontSize={"12px"} color={colors.grey_dark} mt={-2}>
           {timeSlot}
         </ListItem>

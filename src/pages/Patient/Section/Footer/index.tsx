@@ -55,20 +55,24 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
     <>
       <WrapperBox
         backgroundColor={colors.white}
-        style={{ ...style, height: { base: "auto", md: "517px" } }}
+        style={{ ...style, height: { base: "auto", xl: "517px" } }}
       >
         <>
           <Grid
             templateColumns={{
               base: `1fr`,
-              md: `repeat(5,200px) 1fr`,
+              md: `repeat(5,1fr)`,
+              xl: `repeat(5,200px) 1fr`,
             }}
             gap={10}
           >
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
-                  <Flex direction={"column"}>
+                  <Flex
+                    direction={"column"}
+                    alignItems={{ base: "center", md: "start" }}
+                  >
                     <Text fontSize={"14px"} fontWeight={700}>
                       {footerContent.title}
                     </Text>
@@ -85,12 +89,16 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             })}
           </Grid>
           <Divider my={10} borderColor={colors.gray_text_header} />
-          <Flex justifyContent={"space-between"}>
+          <Flex
+            justifyContent={"space-between"}
+            direction={{ base: "column", md: "row" }}
+            gap={3}
+          >
             <VStack gap={3.5}>
               <Text fontWeight={600} fontSize={"14px"}>
                 Download App
               </Text>
-              <Flex gap={2.5}>
+              <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={googlePlay} />
                 <Image alt="App Store" src={appStore} />
               </Flex>
@@ -99,7 +107,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               <Text fontWeight={600} fontSize={"14px"}>
                 Payment Method
               </Text>
-              <Flex gap={2.5}>
+              <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={imePayImage} />
                 <Image alt="App Store" src={esewaImage} />
                 <Image alt="Google Play" src={visaImage} />

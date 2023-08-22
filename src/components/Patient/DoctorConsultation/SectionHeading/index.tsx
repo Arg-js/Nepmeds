@@ -38,18 +38,7 @@ const SectionHeading: React.FC<ISectionHeading> = ({
         )}
       </Box>
       {btnText && (
-        <Button
-          fontWeight={400}
-          fontSize={"14px"}
-          bg={"transparent"}
-          color={colors.primary}
-          // TODO: same make buttom component
-          borderRadius={"3px"}
-          height={"48px"}
-          px={7}
-          border={`1px solid ${colors.primary}`}
-          onClick={onClick}
-        >
+        <Button variant={"primaryOutline"} onClick={onClick}>
           {btnText}
         </Button>
       )}
