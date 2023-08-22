@@ -124,6 +124,7 @@ const DoctorDetails: React.FC<{
           <WrapperBox
             // width={"560px"}
             backgroundColor={colors.white}
+            // TODO: reduce repeated code
             boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
             style={{
               px: { base: "0", md: "2", xl: "4" },

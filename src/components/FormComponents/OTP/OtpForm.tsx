@@ -92,7 +92,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
         />
         <Flex alignItems={"center"}>
           <Heading
-            fontSize="14px"
+            fontSize="sm"
             textAlign="center"
             color={colors.black_30}
             fontWeight="normal"
@@ -101,7 +101,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           </Heading>
           {timer !== "00:00" ? (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.black_50}
               fontWeight="bold"
@@ -111,7 +111,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
             </Text>
           ) : (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.blue_100}
               fontWeight="normal"
