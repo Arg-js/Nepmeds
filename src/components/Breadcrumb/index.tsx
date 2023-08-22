@@ -29,7 +29,7 @@ export const BreadCrumb = ({ items, title }: IBreadCrumb) => {
                 <Text
                   fontWeight={600}
                   color={colors.primary}
-                  fontSize={{ base: "14px", md: "14px" }}
+                  fontSize="14px"
                   onClick={() => navigate(title.route)}
                 >
                   {title?.name}

@@ -29,32 +29,19 @@ export enum Type {
   DOCTOR,
 }
 
-const style = {
-  breakpoint: { max: 3000, min: 1024 },
-  slidesToSlide: 3,
-};
 const responsive = {
-  desktop: {
-    ...style,
-    items: 6,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    slidesToSlide: 2, // optional, default to 1.
-    items: 3,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    slidesToSlide: 1, // optional, default to 1.
-    items: 1,
-  },
+  desktop: { breakpoint: { max: 3000, min: 1024 }, slidesToSlide: 3, items: 6 },
+  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
+  laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
+  tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+  mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 const responsiveDoctorCard = {
   ...responsive,
-  desktop: {
-    ...style,
-    items: 5,
-  },
+  desktop: { ...responsive.desktop, items: 5 },
+  laptopLarge: { ...responsive.laptopLarge, items: 3 },
+  laptop: { ...responsive.laptop, items: 2 },
+  tablet: { breakpoint: { max: 768, min: 464 }, slidesToSlide: 1, items: 2 },
 };
 const DoctorConsultation = () => {
   // Pagination
@@ -156,7 +143,7 @@ const DoctorConsultation = () => {
             <Image
               src={advertisement1}
               alt="advertisement"
-              objectFit={"contain"}
+              objectFit={"cover"}
             />
           </Box>
 
@@ -180,12 +167,13 @@ const DoctorConsultation = () => {
               <Carousel responsive={responsiveDoctorCard}>
                 {doctorList.results.map(doctor => {
                   return (
-                    <DoctorListCard
-                      data={doctor}
-                      error={doctorListError as AxiosError}
-                      size={Size.sm}
-                      key={doctor.id}
-                    />
+                    <Box key={doctor.id}>
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                      />
+                    </Box>
                   );
                 })}
               </Carousel>

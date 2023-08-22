@@ -34,7 +34,7 @@ const Card: React.FC<{
           alt="Doctor Image"
           width={"255px"}
           height={"160px"}
-          objectFit={"contain"}
+          objectFit={"cover"}
         />
 
         <Text
@@ -54,6 +54,7 @@ const Card: React.FC<{
               fontSize={"11px"}
               height={"35px"}
             >
+              {/* TODO: remove any */}
               {description?.map(
                 (symptom: any, index: number) =>
                   `${symptom.name}${
