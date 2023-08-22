@@ -83,26 +83,14 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button
-          px={6}
-          // borderRadius="xl"
-          // backgroundColor={colors.primary}
-          // _hover={{ bg: colors.primary_blue }}
-          // color={colors.white}
-          onClick={cancelButton}
-        >
-          Cancel
-        </Button>
+        <Button onClick={cancelButton}>Cancel</Button>
       </GridItem>
       <GridItem colSpan={1}>
         <Button
-          px={6}
           borderRadius="xl"
-          backgroundColor={colors.primary}
-          _hover={{ bg: colors.primary_blue }}
-          color={colors.white}
           type="submit"
           isLoading={isLoading}
+          variant={"secondary"}
         >
           Update
         </Button>
@@ -204,13 +192,9 @@ const EditPrimary = ({
               display={"flex"}
               alignItems={"center"}
               justifyContent={"center"}
-              // onClick={onPrimaryOpen}
               onClick={() => setEditPrimaryFormToggle(true)}
               cursor="pointer"
               borderRadius="xl"
-              backgroundColor={colors.primary}
-              _hover={{ bg: colors.primary_blue }}
-              px={6}
             >
               <Icon
                 as={EditIcon}

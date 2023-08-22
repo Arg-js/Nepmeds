@@ -284,7 +284,7 @@ const DoctorDetails: React.FC<{
                 />
                 <FormControl
                   control={"multiSelect"}
-                  label={"Availability"}
+                  label={"Available Time"}
                   name={"availability"}
                   placeholder={"Book availability"}
                   variant={"outline"}
@@ -336,16 +336,9 @@ const DoctorDetails: React.FC<{
           {/* TODO: wrapper code repeated, width 560px also repeat */}
           <Button
             type="submit"
-            sx={{
-              width: "560px",
-              borderRadius: "none",
-              bg: `${colors.primary}`,
-              color: `${colors.white}`,
-              "&:hover": {
-                bg: `${colors.sky_blue}`,
-                color: `${colors.primary}`,
-              },
-            }}
+            width="560px"
+            variant={"primary"}
+            borderRadius="none"
           >
             Confrim & Pay
           </Button>

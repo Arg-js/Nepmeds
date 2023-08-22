@@ -134,13 +134,9 @@ const EditBasic = ({
           onClick={() => setEditBasicFormToggle(true)}
           cursor="pointer"
         >
+          {/* TODO: icon button */}
           {!editBasicFormToggle && (
-            <Button
-              px={6}
-              borderRadius="xl"
-              backgroundColor={colors.primary}
-              _hover={{ bg: colors.primary_blue }}
-            >
+            <Button borderRadius="xl">
               <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
               <Text
                 color={colors?.white}
@@ -298,17 +294,12 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button onClick={handleCloseForm} px={6}>
-          Cancel
-        </Button>
+        <Button onClick={handleCloseForm}>Cancel</Button>
       </GridItem>
       <GridItem colSpan={1}>
         <Button
-          px={6}
           borderRadius="xl"
-          backgroundColor={colors.primary}
-          _hover={{ bg: colors.primary_blue }}
-          color={colors.white}
+          variant={"secondary"}
           isLoading={isLoading}
           type="submit"
         >
