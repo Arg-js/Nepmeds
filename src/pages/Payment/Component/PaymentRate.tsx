@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  Spinner,
   Stack,
   Text,
   VStack,
@@ -32,7 +33,7 @@ paymentRateColumn;
 const PaymentRate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [, setSearchFilter] = useState("");
-  const { data: amountList, isSuccess } = useGetAmountList();
+  const { data: amountList, isSuccess, isLoading } = useGetAmountList();
   // const debouncedInputValue = useDebounce(searchFilter, 500);
 
   const {
@@ -327,6 +328,7 @@ const PaymentRate = () => {
           )}
         </>
       )}
+      {isLoading && <Spinner />}
     </div>
   );
 };
