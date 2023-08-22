@@ -34,7 +34,6 @@ const schema = yup.object().shape({
 });
 
 const SignupForm = () => {
-  const [, setOTP] = useState("");
   const [enableOTP, setEnableOTP] = useState(false);
   const {
     getValues,
@@ -56,11 +55,10 @@ const SignupForm = () => {
     email_or_mobile_number: string;
   }) => {
     try {
-      const { data: otpInfo } = await singUpAction.mutateAsync({
+      await singUpAction.mutateAsync({
         email_or_mobile_number: email_or_mobile_number,
       });
       setEnableOTP(true);
-      setOTP(typeof otpInfo.data === "string" ? otpInfo.data : "");
       toastSuccess("OTP sent successfully!");
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -70,7 +68,12 @@ const SignupForm = () => {
   };
 
   if (enableOTP) {
-    return <OtpSignUp mobile={getValues("email_or_mobile_number")} />;
+    return (
+      <OtpSignUp
+        isResetPassword={false}
+        mobile={getValues("email_or_mobile_number")}
+      />
+    );
   }
 
   return (

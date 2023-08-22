@@ -10,6 +10,10 @@ import {
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useTimer } from "@nepMeds/hooks/Usetimer";
 import {
+  useGenerateForgetPasswordOTP,
+  useVerifyForgetPasswordOTP,
+} from "@nepMeds/service/nepmeds-forgot-password";
+import {
   useSignUpUser,
   useVerifySingUpOTP,
 } from "@nepMeds/service/nepmeds-register";
@@ -21,30 +25,58 @@ import { useEffect, useState } from "react";
 import OtpInput from "react-otp-input";
 import { Link, useNavigate } from "react-router-dom";
 
-const OtpForm = ({ mobile }: { mobile: string }) => {
+const OtpForm = ({
+  mobile,
+  isResetPassword,
+}: {
+  mobile: string;
+  isResetPassword: boolean;
+}) => {
   const navigate = useNavigate();
   const [otpCode, setOtp] = useState("");
 
-  const verifySingUpOTPAction = useVerifySingUpOTP();
-
+  const verifySignUpOTPAction = useVerifySingUpOTP();
   const signUpAction = useSignUpUser();
 
+  //For Forget Password
+  const forgotPasswordAction = useGenerateForgetPasswordOTP();
+  const verifyForgetPasswordOTP = useVerifyForgetPasswordOTP();
+
   const handleResend = () => {
-    signUpAction.mutateAsync({
-      email_or_mobile_number: mobile,
-    });
+    try {
+      if (isResetPassword) {
+        forgotPasswordAction.mutateAsync({ email_or_mobile_number: mobile });
+      } else {
+        signUpAction.mutateAsync({
+          email_or_mobile_number: mobile,
+        });
+      }
+
+      toastSuccess("OTP has been sent!");
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      toastFail(err);
+    }
   };
 
   const onSubmit = async () => {
     try {
-      await verifySingUpOTPAction.mutateAsync({
-        email_or_mobile_number: mobile,
-        otp: otpCode,
-      });
+      if (isResetPassword) {
+        await verifyForgetPasswordOTP.mutateAsync({
+          email_or_mobile_number: mobile,
+          otp: otpCode,
+        });
+        navigate("/reset-password", { state: { mobile, otp: otpCode } });
+      } else {
+        await verifySignUpOTPAction.mutateAsync({
+          email_or_mobile_number: mobile,
+          otp: otpCode,
+        });
 
+        navigate("/register", { state: { mobile } });
+      }
       toastSuccess("OTP verification successful!");
       setOtp("");
-      navigate("/register", { state: { mobile } });
     } catch (error) {
       const err = serverErrorResponse(error);
 
@@ -149,7 +181,9 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
           textColor={colors.white}
           type="submit"
           isDisabled={otpCode.length !== 6}
-          isLoading={verifySingUpOTPAction.isLoading}
+          isLoading={
+            verifySignUpOTPAction.isLoading || verifyForgetPasswordOTP.isLoading
+          }
         >
           Verify
         </Button>
