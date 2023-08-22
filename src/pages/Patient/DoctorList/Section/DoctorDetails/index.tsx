@@ -126,9 +126,8 @@ const DoctorDetails: React.FC<{
             backgroundColor={colors.white}
             boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
             style={{
-              // TODO: RESPONSIVE
-              px: { base: "4", md: "4" },
-              height: "1227px ",
+              px: { base: "0", md: "2", xl: "4" },
+              height: "auto",
               width: { base: "auto", xl: "560px" },
               borderTopRadius: 3,
             }}
@@ -295,7 +294,6 @@ const DoctorDetails: React.FC<{
                   selectControl={control}
                   options={availabilityOptions ?? []}
                   style={{
-                    border: `1px solid  ${colors.gray_border} `,
                     background: colors.white,
                     minHeight: "35px",
                   }}
@@ -313,7 +311,6 @@ const DoctorDetails: React.FC<{
                   selectControl={control}
                   options={symptomDataOptions ?? []}
                   style={{
-                    border: `1px solid  ${colors.gray_border} `,
                     background: colors.white,
                     minHeight: "35px",
                   }}
@@ -359,9 +356,8 @@ const DoctorDetails: React.FC<{
           backgroundColor={colors.white}
           boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
           style={{
-            // TODO: RESPONSIVE
-            px: { base: "4", md: "4" },
-            height: "auto",
+            px: 4,
+            height: "1227px",
             width: { base: "auto", xl: "560px" },
           }}
           borderRadius={"3px"}

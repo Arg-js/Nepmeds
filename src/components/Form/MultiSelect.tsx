@@ -101,7 +101,6 @@ const MultiSelect = ({
                     ? `2px solid ${colors.error}`
                     : `1px solid ${colors.gray_border}`,
                   ...style,
-                  borderWidth: error ? "2px" : "1px",
                 }),
                 indicatorSeparator: () => ({ display: "none" }),
               }}
