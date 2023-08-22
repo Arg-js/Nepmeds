@@ -2,7 +2,7 @@ export const api = {
   verify_otp_forgotPassword: "user-management/verify-password-reset-otp/",
   login: "user-management/login/",
   forgotPassword: "user-management/request-reset-password/",
-  resetPassword: "user-management/confirm-password-reset/{uidb64}/{token}/",
+  resetPassword: "user-management/reset-password/",
   basicProfile: "/doctor-consult/doctor-basic-info/",
   signup: "user-management/otp-send/",
   otp_verify: "user-management/otp-verify/",
