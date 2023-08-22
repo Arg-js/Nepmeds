@@ -1,8 +1,8 @@
 import {
   Box,
   Button,
-  Flex,
   HStack,
+  SimpleGrid,
   Spinner,
   Text,
   VStack,
@@ -82,7 +82,7 @@ const PaymentSet = () => {
     <Box bg={colors.white}>
       {methodsLoading && <Spinner />}
       <Box h={"80vh"} bg={colors.white}>
-        <Flex gap={6} mt={10} justifyContent={"space-between"} wrap={"wrap"}>
+        <SimpleGrid minChildWidth="420px" spacing={10}>
           {methods?.map(x => {
             return (
               <PaymentCard
@@ -109,7 +109,7 @@ const PaymentSet = () => {
               />
             );
           })}
-        </Flex>
+        </SimpleGrid>
       </Box>
 
       {modalMethods.isOpen && (

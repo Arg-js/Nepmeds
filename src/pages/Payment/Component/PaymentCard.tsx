@@ -35,7 +35,6 @@ const PaymentCard = ({
   return (
     <Card
       boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
-      w={"440px"}
       h={"90px"}
       mb={"50px"}
     >
@@ -44,20 +43,15 @@ const PaymentCard = ({
         alignItems={"center"}
         display={"flex"}
         bg={"#F4F4F4"}
-        maxH={"70px"}
+        maxH={"80px"}
         borderTopRadius={10}
       >
-        <Image src={image} h={"70px"} w={"70px"} mb={"-15%"} />
+        <Image src={image} h={"70px"} w={"70px"} />
         {data?.is_primary_method && (
-          <AiFillCheckCircle
-            color="green"
-            size={25}
-            style={{ marginBottom: "-15%" }}
-          />
+          <AiFillCheckCircle color="green" size={25} />
         )}
       </CardHeader>
       <CardBody
-        mt={8}
         bg={colors.white}
         boxShadow={"md"}
         p={3}
