@@ -13,8 +13,6 @@ import { useGenerateForgetPasswordOTP } from "@nepMeds/service/nepmeds-forgot-pa
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
   email_or_mobile_number: yup
@@ -25,8 +23,6 @@ const schema = yup.object().shape({
 const ForgotPasswordForm = () => {
   const forgotPasswordAction = useGenerateForgetPasswordOTP();
   const [enableOTP, setEnableOTP] = useState(false);
-
-  const navigate = useNavigate();
 
   const {
     register,
@@ -45,7 +41,6 @@ const ForgotPasswordForm = () => {
         email_or_mobile_number: getValues("email_or_mobile_number"),
       });
       toastSuccess("Reset password OTP has been sent!");
-      navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN);
       setEnableOTP(true);
     } catch (error) {
       const err = serverErrorResponse(error);
