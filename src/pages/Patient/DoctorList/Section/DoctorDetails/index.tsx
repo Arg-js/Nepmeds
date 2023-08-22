@@ -42,6 +42,8 @@ const defaultValues = {
   availabilityDate: "",
 };
 
+const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
+
 const schema = Yup.object({
   full_name: Yup.string().required("This field is requried"),
   availabilityDate: Yup.string().required("This field is required"),
@@ -125,7 +127,7 @@ const DoctorDetails: React.FC<{
             // width={"560px"}
             backgroundColor={colors.white}
             // TODO: reduce repeated code
-            boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
+            boxShadow={boxShadow}
             style={{
               px: { base: "0", md: "2", xl: "4" },
               height: "auto",
@@ -335,12 +337,7 @@ const DoctorDetails: React.FC<{
           </WrapperBox>
           {/* TODO: ui update */}
           {/* TODO: wrapper code repeated, width 560px also repeat */}
-          <Button
-            type="submit"
-            width="560px"
-            variant={"primary"}
-            borderRadius="none"
-          >
+          <Button type="submit" width="560px" borderRadius="none">
             Confrim & Pay
           </Button>
         </form>
@@ -348,7 +345,7 @@ const DoctorDetails: React.FC<{
         <WrapperBox
           // width={"560px"}
           backgroundColor={colors.white}
-          boxShadow={` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`}
+          boxShadow={boxShadow}
           style={{
             px: 4,
             height: "1227px",
