@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useTimer } from "@nepMeds/hooks/Usetimer";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useSignUpUser,
   useVerifySingUpOTP,
@@ -133,7 +134,7 @@ const OtpForm = ({ mobile }: { mobile: string }) => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/"
+          to={NAVIGATION_ROUTES.DOCTOR_LOGIN}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",

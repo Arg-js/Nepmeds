@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useSignUpUser } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -91,7 +92,7 @@ const SignupForm = () => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/"
+          to={NAVIGATION_ROUTES.DOCTOR_LIST}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",

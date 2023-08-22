@@ -11,6 +11,7 @@ import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useGenerateForgetPasswordLink } from "@nepMeds/service/nepmeds-forgot-password";
 import { colors } from "@nepMeds/theme/colors";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const schema = yup.object().shape({
   email: yup.string().required("Mobile number or email is required!"),
@@ -35,7 +36,7 @@ const ForgotPasswordForm = () => {
     try {
       await forgotPasswordAction.mutateAsync({ email: getValues("email") });
       toastSuccess("Reset password link has been sent to your email!");
-      navigate("/");
+      navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN);
     } catch {
       toastFail("Failed to send reset password link!");
     }
