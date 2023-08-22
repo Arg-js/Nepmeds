@@ -67,12 +67,7 @@ const sidebarOptions: ISidebarOption[] = [
     text: "Calender",
     link: "/calendar",
   },
-  {
-    icon: Work,
-    set: "light",
-    text: "Bank Details",
-    link: "/bank-details",
-  },
+
   {
     icon: Wallet,
     set: "light",

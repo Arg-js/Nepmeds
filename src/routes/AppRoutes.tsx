@@ -55,10 +55,6 @@ const routes = [
       },
 
       {
-        path: NAVIGATION_ROUTES.BANK_DETAILS,
-        element: <>Bank details</>,
-      },
-      {
         path: NAVIGATION_ROUTES.PAYMENT,
         element: <PaymentDetails />,
       },

@@ -463,7 +463,7 @@ const EditPrimary = ({
                       <Tag
                         key={s.id ?? s}
                         color={colors.main}
-                        bg={"#c4d2e8"}
+                        bg={colors.lightish_blue}
                         mx={1}
                       >
                         {s.name ?? s}

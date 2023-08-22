@@ -59,6 +59,10 @@ export const api = {
   approve_payment_methods: "/dashboard/approve-doctor-payment/:id/",
   reject_payment_methods: "/dashboard/reject-doctor-payment/:id/",
 
+  //amount
+  add_amount_create: "/doctor-consult/doctor-amount-set/",
+  edit_amount: "/doctor-consult/doctor-amount-set/:id/",
+
   added_payment_methods:
     "/doctor-consult/doctorwise-paymentdetail-list/:doctor_id/",
   allpaymentList: "/dashboard/doctor-list-asper-payment-status/",

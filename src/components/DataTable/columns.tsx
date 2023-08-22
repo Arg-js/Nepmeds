@@ -1,13 +1,16 @@
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Badge, Box, HStack, Icon, Tag, Tooltip } from "@chakra-ui/react";
+import { Badge, Box, HStack, Icon, Tag, Text, Tooltip } from "@chakra-ui/react";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
+import {
+  IAllPaymentResponse,
+  IAmountListDoctor,
+} from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
-import { Show } from "react-iconly";
+import { Edit, Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router-dom";
 
 interface PendingCellContextSearch {
@@ -62,7 +65,12 @@ export const pendingColumns = (
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -188,7 +196,12 @@ export const approvedColumns = (navigate: NavigateFunction) => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -270,7 +283,12 @@ export const registeredColumns = (navigate: NavigateFunction) => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -371,7 +389,7 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
               key={data.id}
               mb={1}
               color={colors.main}
-              bg={"#c4d2e8"}
+              bg={colors.lightish_blue}
               mx={"1px"}
             >
               {data.name}
@@ -464,7 +482,12 @@ export const allPaymentColumn = () => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -478,13 +501,13 @@ export const allPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -578,7 +601,12 @@ export const pendingPaymentColumn = (
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -685,7 +713,12 @@ export const approvedPaymentColumn = () => {
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
-            <Tag key={data.id} color={colors.main} bg={"#c4d2e8"} mx={"1px"}>
+            <Tag
+              key={data.id}
+              color={colors.main}
+              bg={colors.lightish_blue}
+              mx={"1px"}
+            >
               {data.name}
             </Tag>
           )
@@ -699,13 +732,13 @@ export const approvedPaymentColumn = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -752,7 +785,7 @@ export const rejectedPaymentColumns = () => {
               key={data.id}
               mb={1}
               color={colors.main}
-              bg={"#c4d2e8"}
+              bg={colors.lightish_blue}
               mx={"1px"}
             >
               {data.name}
@@ -775,13 +808,13 @@ export const rejectedPaymentColumns = () => {
     },
     {
       header: "Instant Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.instant_amount;
       },
     },
     {
       header: "Schedule Rate",
-      coll: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
+      cell: ({ row }: CellContext<{ data: IAllPaymentResponse }, any>) => {
         return row?.original?.data?.schedule_amount;
       },
     },
@@ -813,6 +846,89 @@ export const rejectedPaymentColumns = () => {
         return (
           <HStack>
             <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+          </HStack>
+        );
+      },
+    },
+  ];
+};
+
+//Rate Column
+export const paymentRateColumn = (onEditClick: () => void) => {
+  return [
+    {
+      header: "S.N",
+      accessorFn: (_cell: CellContext<any, any>, index: number) => {
+        return index + 1;
+      },
+    },
+    {
+      header: "Pending Date",
+      accessorKey: "pending_date",
+      accessorFn: (_cell: IAmountListDoctor) => {
+        return _cell?.created_date;
+      },
+    },
+
+    {
+      header: "Approval Date",
+      accessorKey: "approval_date",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return row?.original?.approved_date ?? "-";
+      },
+    },
+
+    {
+      header: "Status",
+      accessorKey: "specialization",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        const isApproved = row?.original?.rate_status === "1";
+
+        return (
+          <Badge
+            colorScheme={isApproved ? "green" : "yellow"}
+            p={1}
+            borderRadius={20}
+            fontSize={11}
+            w={24}
+            textAlign="center"
+            textTransform="capitalize"
+          >
+            {isApproved ? "Approved" : "Pending"}
+          </Badge>
+        );
+      },
+    },
+
+    {
+      header: "Instant Rate",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.instant_amount}</Text>;
+      },
+    },
+    {
+      header: "Appointment Rate",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
+      },
+    },
+
+    {
+      header: "Actions",
+      accessorKey: "actions",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        const show = row?.original?.rate_status === "2";
+        return (
+          <HStack>
+            {show && (
+              <Icon
+                as={Edit}
+                fontSize={20}
+                cursor="pointer"
+                color={"green"}
+                onClick={onEditClick}
+              />
+            )}
           </HStack>
         );
       },
