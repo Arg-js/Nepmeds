@@ -9,6 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useTimer } from "@nepMeds/hooks/Usetimer";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useGenerateForgetPasswordOTP,
   useVerifyForgetPasswordOTP,
@@ -124,7 +125,7 @@ const OtpForm = ({
         />
         <Flex alignItems={"center"}>
           <Heading
-            fontSize="14px"
+            fontSize="sm"
             textAlign="center"
             color={colors.black_30}
             fontWeight="normal"
@@ -133,7 +134,7 @@ const OtpForm = ({
           </Heading>
           {timer !== "00:00" ? (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.black_50}
               fontWeight="bold"
@@ -143,7 +144,7 @@ const OtpForm = ({
             </Text>
           ) : (
             <Text
-              fontSize="14px"
+              fontSize="sm"
               textAlign="center"
               color={colors.blue_100}
               fontWeight="normal"
@@ -165,7 +166,7 @@ const OtpForm = ({
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to="/"
+          to={NAVIGATION_ROUTES.DOCTOR_LOGIN}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",

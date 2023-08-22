@@ -18,8 +18,12 @@ import { allPaymentColumn } from "@nepMeds/components/DataTable/columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import { useGetPaymentList } from "@nepMeds/service/nepmeds-payment";
+import {
+  useDeleteAmount,
+  useGetPaymentList,
+} from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
@@ -35,6 +39,7 @@ const AllPayment = ({
   const formMethods = useForm();
   const [filterValue, setFilterValue] = useState<any>({});
   const [searchFilter, setSearchFilter] = useState("");
+  const deleteAmount = useDeleteAmount();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -68,6 +73,17 @@ const AllPayment = ({
     }
 
     onModalClose();
+  };
+
+  const handleDeleteRate = (id: string) => {
+    deleteAmount.mutate(id, {
+      onSuccess: () => {
+        toastSuccess("Amount Deleted Successfully");
+      },
+      onError: () => {
+        toastFail("Something went wrong");
+      },
+    });
   };
 
   return (
@@ -182,7 +198,7 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn()}
+          columns={allPaymentColumn(handleDeleteRate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

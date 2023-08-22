@@ -72,10 +72,9 @@ export const Pagination = ({
             size="sm"
             bgColor={colors.white}
             borderRadius={"29px"}
-            height="30px"
-            width="30px"
+            height="40px"
+            width="40px"
             variant="unstyled"
-            fontSize="14px"
             fontWeight="medium"
             boxShadow={`0px 0px 3px rgba(0, 0, 0, 0.5)`}
             isDisabled={queryPageIndex === 1}
@@ -105,27 +104,17 @@ export const Pagination = ({
                   index >= queryPageIndex - 3 &&
                   index < queryPageIndex + 2 && (
                     <Button
-                      type="submit"
                       key={index}
+                      type="submit"
+                      variant={"round"}
+                      fontFamily="Poppins"
                       sx={{
+                        color: queryPageIndex === page ? colors.white : "#000",
                         bgColor:
                           queryPageIndex === page
                             ? colors.primary
                             : "transparent",
-                        borderRadius: "50%",
-                        w: "40px",
-                        h: "40px",
-                        transition: "all 300ms ease-in-out",
-                        textAlign: "center",
-                        lineHeight: "40px",
-                        color: queryPageIndex === page ? colors.white : "#000",
-                        "&:hover": {
-                          bgColor: colors.primary,
-                          color: colors.white,
-                        },
                       }}
-                      fontSize="18px"
-                      fontFamily="'Urbanist', sans-serif"
                       cursor="pointer"
                       onClick={() => {
                         pageChange?.(page);
@@ -147,16 +136,16 @@ export const Pagination = ({
               );
             })}
           </HStack>
+          {/* TODO: make generic Icon button */}
           <IconButton
             aria-label="Search services"
             size="sm"
             variant="unstyled"
-            fontSize="14px"
             fontWeight="medium"
             bgColor={colors.white}
             borderRadius={"29px"}
-            height="30px"
-            width="30px"
+            height="40px"
+            width="40px"
             boxShadow={` 0px 0px 3px rgba(0, 0, 0, 0.5)`}
             onClick={() => {
               pageChange?.(queryPageIndex + 1);
