@@ -95,7 +95,7 @@ const SignupForm = () => {
       <Text textAlign="center" fontSize={14} color={colors.black_30}>
         Already have an account?
         <Link
-          to={NAVIGATION_ROUTES.DOCTOR_LIST}
+          to={NAVIGATION_ROUTES.DOCTOR_LOGIN}
           style={{
             color: colors.blue_100,
             marginLeft: "5px",
