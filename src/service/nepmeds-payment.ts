@@ -168,7 +168,7 @@ export interface IAllPaymentResponse {
   payment_rejected_remark: string;
   instant_amount: null | string;
   schedule_amount: null | string;
-  payment_modes: [];
+  payment_modes: { id: string; url: string }[];
 }
 
 // Get all payment list (Payment Status)
@@ -377,6 +377,23 @@ const editAmount = async ({
 export const useEditAmount = () => {
   const queryClient = useQueryClient();
   return useMutation(editAmount, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.add_amount_create]);
+    },
+  });
+};
+
+//Delete amount rate by admin using Doctor ID
+const deleteAmount = async (id: string) => {
+  const response = await HttpClient.delete(
+    generatePath(api.edit_amount, { id })
+  );
+  return response;
+};
+
+export const useDeleteAmount = () => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
     },
