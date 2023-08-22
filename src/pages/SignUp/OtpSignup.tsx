@@ -1,7 +1,13 @@
 import OtpForm from "@nepMeds/components/FormComponents/OTP/OtpForm";
 
-const OtpSignUp = ({ mobile }: { mobile: string }) => {
-  return <OtpForm mobile={mobile} />;
+const OtpSignUp = ({
+  mobile,
+  isResetPassword,
+}: {
+  mobile: string;
+  isResetPassword: boolean;
+}) => {
+  return <OtpForm mobile={mobile} isResetPassword={isResetPassword} />;
 };
 
 export default OtpSignUp;

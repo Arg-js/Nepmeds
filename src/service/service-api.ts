@@ -1,4 +1,5 @@
 export const api = {
+  verify_otp_forgotPassword: "user_management/verify-password-reset-otp/",
   login: "user-management/login/",
   forgotPassword: "user-management/request-reset-password/",
   resetPassword: "user-management/confirm-password-reset/{uidb64}/{token}/",
