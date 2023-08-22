@@ -11,6 +11,7 @@ import {
   MenuList,
   Text,
 } from "@chakra-ui/react";
+import { PAYMENTMODE } from "@nepMeds/config/enum";
 import { IPaymentMethodDoctorAmount } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { AiFillCheckCircle } from "react-icons/ai";
@@ -34,7 +35,6 @@ const PaymentCard = ({
   return (
     <Card
       boxShadow={"0px 4px 32px 0px rgba(61, 70, 112, 0.08)"}
-      w={"440px"}
       h={"90px"}
       mb={"50px"}
     >
@@ -43,20 +43,15 @@ const PaymentCard = ({
         alignItems={"center"}
         display={"flex"}
         bg={"#F4F4F4"}
-        maxH={"70px"}
+        maxH={"80px"}
         borderTopRadius={10}
       >
-        <Image src={image} h={"70px"} w={"70px"} mb={"-15%"} />
+        <Image src={image} h={"70px"} w={"70px"} />
         {data?.is_primary_method && (
-          <AiFillCheckCircle
-            color="green"
-            size={25}
-            style={{ marginBottom: "-15%" }}
-          />
+          <AiFillCheckCircle color="green" size={25} />
         )}
       </CardHeader>
       <CardBody
-        mt={8}
         bg={colors.white}
         boxShadow={"md"}
         p={3}
@@ -65,7 +60,11 @@ const PaymentCard = ({
         <Flex justifyContent={"space-between"}>
           <Flex gap={5}>
             <Text fontWeight={"bold"}>{name}</Text>
-            <Text>{data?.epayment_id ?? data?.bank_name}</Text>
+            <Text>
+              {data?.payment_mode.toString() === PAYMENTMODE.BANK.toString()
+                ? data?.bank_name
+                : data?.epayment_id}
+            </Text>
           </Flex>
           <Menu>
             <MenuButton as={Button} variant={"unstyled"}>
