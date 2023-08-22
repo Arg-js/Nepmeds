@@ -4,22 +4,29 @@ import { HStack, VStack } from "@chakra-ui/layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { Message } from "react-iconly";
-import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 
 import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useGenerateForgetPasswordLink } from "@nepMeds/service/nepmeds-forgot-password";
+import OtpSignUp from "@nepMeds/pages/SignUp/OtpSignup";
+import { useGenerateForgetPasswordOTP } from "@nepMeds/service/nepmeds-forgot-password";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
+import { useState } from "react";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useNavigate } from "react-router-dom";
 
 const schema = yup.object().shape({
-  email: yup.string().required("Mobile number or email is required!"),
+  email_or_mobile_number: yup
+    .string()
+    .required("Mobile number or email is required!"),
 });
 
 const ForgotPasswordForm = () => {
+  const forgotPasswordAction = useGenerateForgetPasswordOTP();
+  const [enableOTP, setEnableOTP] = useState(false);
+
   const navigate = useNavigate();
-  const forgotPasswordAction = useGenerateForgetPasswordLink();
 
   const {
     register,
@@ -28,27 +35,40 @@ const ForgotPasswordForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      email: "",
+      email_or_mobile_number: "",
     },
     resolver: yupResolver(schema),
   });
   const onSubmit = async () => {
     try {
-      await forgotPasswordAction.mutateAsync({ email: getValues("email") });
-      toastSuccess("Reset password link has been sent to your email!");
+      await forgotPasswordAction.mutateAsync({
+        email_or_mobile_number: getValues("email_or_mobile_number"),
+      });
+      toastSuccess("Reset password OTP has been sent!");
       navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN);
-    } catch {
-      toastFail("Failed to send reset password link!");
+      setEnableOTP(true);
+    } catch (error) {
+      const err = serverErrorResponse(error);
+
+      toastFail(err);
     }
   };
+
+  if (enableOTP) {
+    return (
+      <OtpSignUp
+        isResetPassword={true}
+        mobile={getValues("email_or_mobile_number")}
+      />
+    );
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} style={{ width: "100%" }}>
       <VStack gap={7.5} mb={12}>
         <Input
-          name="email"
+          name="email_or_mobile_number"
           register={register}
-          type="emali"
           startIcon={
             <Icon as={Message} fontSize={20} color={colors.black_40} />
           }
@@ -56,7 +76,7 @@ const ForgotPasswordForm = () => {
           backgroundColor={colors.forminput}
           placeholder="Email Address/ Mobile No."
           _placeholder={{ color: colors.light_gray }}
-          error={errors.email?.message}
+          error={errors.email_or_mobile_number?.message}
         />
       </VStack>
       <HStack mt={12} justifyContent="center">

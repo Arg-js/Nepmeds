@@ -1,30 +1,20 @@
 import { Button, HStack, Icon, VStack } from "@chakra-ui/react";
-import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Hide, Lock, Show } from "react-iconly";
-import * as yup from "yup";
 
 import Input from "@nepMeds/components/Form/Input";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useResetPasswordMutation } from "@nepMeds/service/nepmeds-forgot-password";
 import { colors } from "@nepMeds/theme/colors";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
-import { AxiosError } from "axios";
-
-const schema = yup.object().shape({
-  password: yup.string().required("Password is required"),
-  confirmPassword: yup.string().required("Password is required"),
-});
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 
 const ConformPasswordForm = () => {
-  const { uidb64 = "", token = "" } = useParams<{
-    uidb64: string;
-    token: string;
-  }>();
   const resetPasswordAction = useResetPasswordMutation();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { mobile, otp } = location.state as { mobile: string; otp: string };
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -36,10 +26,9 @@ const ConformPasswordForm = () => {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      new_password: "",
+      confirm_new_password: "",
     },
-    resolver: yupResolver(schema),
   });
 
   const togglepasswordView = () => {
@@ -52,29 +41,25 @@ const ConformPasswordForm = () => {
 
   const onSubmit = async () => {
     try {
-      await resetPasswordAction
-        .mutateAsync({
-          token,
-          uidb64,
-          new_password: getValues("password"),
-          confirm_new_password: getValues("confirmPassword"),
-        })
-        .then(() => {
-          toastSuccess("New password saved successfully!");
-          navigate("/login");
-        })
-        .catch(error => {
-          {
-            const err = error as AxiosError<{ message: string }>;
-            toastFail(err?.response?.data?.message || "");
-          }
-        });
+      await resetPasswordAction.mutateAsync({
+        otp,
+        email_or_mobile_number: mobile,
+        new_password: getValues("new_password"),
+        confirm_new_password: getValues("confirm_new_password"),
+      });
+      toastSuccess("New password saved successfully!");
+      navigate("/login");
     } catch (error) {
       toastFail("Failed to update password!");
     }
   };
 
-  if (!uidb64 && !token) {
+  const validateConfirmPassword = (value: string) => {
+    const password = getValues("new_password");
+    return value === password || "Passwords do not match.";
+  };
+
+  if (!mobile && !otp) {
     return <Navigate to={NAVIGATION_ROUTES.LOGIN} replace />;
   }
 
@@ -82,7 +67,7 @@ const ConformPasswordForm = () => {
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={7.5} mb={3}>
         <Input
-          name="password"
+          name="new_password"
           register={register}
           type={showPassword ? "text" : "password"}
           startIcon={<Icon as={Lock} fontSize={20} color={colors.black_40} />}
@@ -96,12 +81,20 @@ const ConformPasswordForm = () => {
           }
           backgroundColor={colors.forminput}
           border="none"
-          placeholder="Password"
+          placeholder="New Password"
           _placeholder={{ color: colors.light_gray }}
-          error={errors.password?.message}
+          rules={{
+            required: "Password is required.",
+            minLength: {
+              value: 8,
+              message: "Password must be at least 8 characters long.",
+            },
+          }}
+          error={errors?.new_password?.message}
         />
+        {errors?.new_password?.message}
         <Input
-          name="confirmPassword"
+          name="confirm_new_password"
           register={register}
           type={showConfirmPassword ? "text" : "password"}
           startIcon={<Icon as={Lock} fontSize={20} color={colors.black_40} />}
@@ -113,11 +106,15 @@ const ConformPasswordForm = () => {
               cursor="pointer"
             />
           }
+          rules={{
+            required: "Confirm password is required.",
+            validate: validateConfirmPassword,
+          }}
           backgroundColor={colors.forminput}
           border="none"
-          placeholder="Password"
+          placeholder="Confirm Password"
           _placeholder={{ color: colors.light_gray }}
-          error={errors.password?.message}
+          error={errors?.confirm_new_password?.message}
         />
       </VStack>
       <HStack mt={12} justifyContent="center">

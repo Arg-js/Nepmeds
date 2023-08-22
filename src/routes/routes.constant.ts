@@ -11,7 +11,7 @@ export const NAVIGATION_ROUTES = {
   DOCTOR_LOGIN: "/doctor",
   SIGNUP: "/signup",
   FORGOTPASSWORD: "/forgot-password",
-  CONFIRMPASSWORD: "/reset-password/:uidb64/:token",
+  CONFIRMPASSWORD: "/reset-password",
   OTPVERIFY: "/otp-verify",
 
   LOGGEDIN: "/",
