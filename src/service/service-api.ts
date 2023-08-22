@@ -1,5 +1,5 @@
 export const api = {
-  verify_otp_forgotPassword: "user_management/verify-password-reset-otp/",
+  verify_otp_forgotPassword: "user-management/verify-password-reset-otp/",
   login: "user-management/login/",
   forgotPassword: "user-management/request-reset-password/",
   resetPassword: "user-management/confirm-password-reset/{uidb64}/{token}/",
@@ -53,7 +53,7 @@ export const api = {
   doctorList: "/doctor-consult/doctor-list/",
 
   //payment
-  payment_methods_create: "/doctor-consult/doctor-payment/",
+  payment_methods_create: "/doctor-consult/amount-payment-create/",
   payment_methods: "/core/payment-mode/",
   edit_payment_methods: "/doctor-consult/amount-payment/:id/",
   delete_payment_methods: "/doctor-consult/doctor-payment/:id/",

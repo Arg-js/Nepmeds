@@ -8,6 +8,7 @@ import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
 import { BroadcastChannel } from "broadcast-channel";
 import { HttpClient } from "./service-axios";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const logoutChannel = new BroadcastChannel("logout");
 const loginChannel = new BroadcastChannel("login");
@@ -41,7 +42,7 @@ const useLogoutMutation = (noToast?: boolean) => {
       queryClient.setQueryData(authTokenKey, () => false);
       localStorage.setItem("doctor", "false");
       localStorage.setItem("admin", "false");
-      navigate("/", { replace: true });
+      navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN, { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
     },
   });

@@ -211,12 +211,8 @@ const EditAcademic = ({
               onClick={handleEditMode}
               cursor="pointer"
             >
-              <Button
-                px={6}
-                borderRadius="xl"
-                backgroundColor={colors.primary}
-                _hover={{ bg: colors.primary_blue }}
-              >
+              {/* TODO: add button with icon */}
+              <Button px={6} borderRadius="xl">
                 <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
                 <Text
                   color={colors?.white}
@@ -246,20 +242,7 @@ const EditAcademic = ({
             size={"4xl"}
             footer={
               <HStack w="100%" gap={3}>
-                {/* <Button
-                  flex={1}
-                  onClick={handleDownload}
-                  background={colors.primary}
-                  color={colors.white}
-                >
-                  Download
-                </Button> */}
-                <Button
-                  flex={1}
-                  onClick={onDocImgClose}
-                  background={colors.primary}
-                  color={colors.white}
-                >
+                <Button flex={1} onClick={onDocImgClose}>
                   Done
                 </Button>
               </HStack>
@@ -514,17 +497,12 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button onClick={handleCloseForm} px={6}>
-          Cancel
-        </Button>
+        <Button onClick={handleCloseForm}>Cancel</Button>
       </GridItem>
       <GridItem colSpan={1}>
         <Button
-          px={6}
-          borderRadius="xl"
-          backgroundColor={colors.primary}
-          _hover={{ bg: colors.primary_blue }}
-          color={colors.white}
+          // borderRadius="xl"
+          variant={"secondary"}
           type="submit"
           isLoading={isLoading}
         >
