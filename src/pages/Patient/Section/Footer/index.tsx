@@ -55,13 +55,14 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
     <>
       <WrapperBox
         backgroundColor={colors.white}
-        style={{ ...style, height: { base: "auto", md: "517px" } }}
+        style={{ ...style, height: { base: "auto", xl: "517px" } }}
       >
         <>
           <Grid
             templateColumns={{
               base: `1fr`,
-              md: `repeat(5,200px) 1fr`,
+              md: `repeat(5,1fr)`,
+              xl: `repeat(5,200px) 1fr`,
             }}
             gap={10}
           >
@@ -97,7 +98,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               <Text fontWeight={600} fontSize={"14px"}>
                 Download App
               </Text>
-              <Flex gap={2.5}>
+              <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={googlePlay} />
                 <Image alt="App Store" src={appStore} />
               </Flex>
@@ -106,7 +107,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               <Text fontWeight={600} fontSize={"14px"}>
                 Payment Method
               </Text>
-              <Flex gap={2.5} direction={{ base: "column", md: "row" }}>
+              <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={imePayImage} />
                 <Image alt="App Store" src={esewaImage} />
                 <Image alt="Google Play" src={visaImage} />

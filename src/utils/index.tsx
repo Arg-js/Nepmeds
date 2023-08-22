@@ -6,3 +6,4 @@ export {
   generateTimeWith15MinutesInterval,
   generateYearRange,
 } from "./timeRange";
+export { getArray, calMaxLen } from "./ReadMore/arrayFunctions";

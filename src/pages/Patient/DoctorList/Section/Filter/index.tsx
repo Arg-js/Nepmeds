@@ -60,7 +60,10 @@ const DoctorListFilter: React.FC<{
           <SearchIcon />
         </InputLeftElement>
         <Input
-          onChange={e => setSearchValue(e.target.value)}
+          onChange={e => {
+            setSearchValue(e.target.value);
+            setPageParams({ ...pageParams, page: 1 });
+          }}
           placeholder="Search by doctors name"
         />
       </InputGroup>

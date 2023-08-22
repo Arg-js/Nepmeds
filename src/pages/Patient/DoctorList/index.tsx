@@ -109,43 +109,50 @@ const DoctorList = () => {
               pageParams={pageParams}
             />
 
-            {/* DOCTORS LIST */}
-            <Box mx={{ base: "0", md: "30" }}>
-              <>
-                {isLoading && <Skeleton height={"215px"} width={"673px"} />}
-                {DoctorListError && (
-                  <Box width={"673px"} height={"215px"}>
-                    Oops something went wrong!!
-                  </Box>
-                )}
-                {doctorData &&
-                  doctorData?.results.map(doctorData => {
-                    return (
-                      <DoctorListCard
-                        data={doctorData}
-                        size={Size.lg}
-                        setDoctorId={setDoctorId}
-                        doctorId={doctorId}
-                        key={doctorData.id}
-                      />
-                    );
-                  })}
-                {doctorData && doctorData.count > 5 && (
-                  <Pagination
-                    enabled={true}
-                    queryPageSize={pageParams.limit}
-                    queryPageIndex={pageParams.page}
-                    pageChange={pageChange}
-                    totalCount={doctorData?.count ?? 0}
-                  />
-                )}
-              </>
-            </Box>
-            <DoctorDetailsSection
-              doctorInfo={doctorInfo}
-              isFetching={isFetching}
-              setTargeDate={setTargeDate}
-            />
+            <Flex
+              direction={{ base: "column", "2xl": "row" }}
+              alignItems={{ base: "center", "2xl": "flex-start" }}
+            >
+              {/* DOCTORS LIST */}
+              <Box mx={{ base: "0", md: "30" }}>
+                <>
+                  {isLoading && <Skeleton height={"215px"} width={"673px"} />}
+                  {DoctorListError && (
+                    <Box width={"673px"} height={"215px"}>
+                      Oops something went wrong!!
+                    </Box>
+                  )}
+                  {doctorData &&
+                    doctorData?.results.map(doctorData => {
+                      return (
+                        <Box key={doctorData.id}>
+                          <DoctorListCard
+                            data={doctorData}
+                            size={Size.lg}
+                            setDoctorId={setDoctorId}
+                            doctorId={doctorId}
+                          />
+                        </Box>
+                      );
+                    })}
+                  {doctorData && doctorData.count > 5 && (
+                    <Pagination
+                      enabled={true}
+                      queryPageSize={pageParams.limit}
+                      queryPageIndex={pageParams.page}
+                      pageChange={pageChange}
+                      totalCount={doctorData?.count ?? 0}
+                    />
+                  )}
+                </>
+              </Box>
+
+              <DoctorDetailsSection
+                doctorInfo={doctorInfo}
+                isFetching={isFetching}
+                setTargeDate={setTargeDate}
+              />
+            </Flex>
           </Flex>
         </>
       </WrapperBox>

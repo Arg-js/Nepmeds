@@ -93,7 +93,7 @@ const DoctorListCard: React.FC<{
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              objectFit={"contain"}
+              objectFit={"cover"}
               width={{
                 base: `${size === Size.sm ? "285px" : "150px"}`,
                 md: `${size === Size.sm ? "302px" : "296px"}`,
@@ -104,7 +104,8 @@ const DoctorListCard: React.FC<{
           <Flex
             width={{
               base: `${size === Size.sm ? "302px" : "200px"}`,
-              md: `${size === Size.sm ? "302px" : "377px"}`,
+              md: `${size === Size.sm ? "302px" : "200px"}`,
+              xl: `${size === Size.sm ? "302px" : "377px"}`,
             }}
             height={`${size === Size.sm ? "159px" : "215px"}`}
             direction={"column"}
