@@ -4,6 +4,7 @@ import { HttpClient } from "./service-axios";
 import { toastSuccess } from "./service-toast";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
 // TODO: check the similarity
 export interface IPatientAppointmentReqBody {
@@ -13,7 +14,7 @@ export interface IPatientAppointmentReqBody {
   gender: string;
   symptoms: number[];
   description: string;
-  old_report_file?: string;
+  old_report_file?: File;
   status?: string;
 }
 
@@ -22,9 +23,10 @@ const createPatientAppointment = ({
 }: {
   patientAppointmentDetails: IPatientAppointmentReqBody;
 }) => {
+  console.log("first", JSON.stringify(patientAppointmentDetails));
   return HttpClient.post(
     api.patient.appointment.post,
-    patientAppointmentDetails
+    objectToFormData(patientAppointmentDetails)
   );
 };
 
