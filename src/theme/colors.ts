@@ -93,4 +93,7 @@ export const colors = {
   // border gray
   gray: "#D2D0D0",
   // light blue-greem
+
+  reset: "#F57E77",
+  resetHover: "#FFF0F0",
 };
