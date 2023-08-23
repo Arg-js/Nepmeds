@@ -26,6 +26,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 
 interface Props {
@@ -40,6 +41,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+  const navigate = useNavigate();
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -187,7 +189,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={rejectedPaymentColumns()}
+          columns={rejectedPaymentColumns(navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

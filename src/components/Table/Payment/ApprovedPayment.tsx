@@ -26,6 +26,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 
 const ApprovedPayment = ({
@@ -34,6 +35,7 @@ const ApprovedPayment = ({
   specializationList: ISpecializationList[];
 }) => {
   const [searchFilter, setSearchFilter] = useState("");
+  const navigate = useNavigate();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -189,7 +191,7 @@ const ApprovedPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={approvedPaymentColumn()}
+          columns={approvedPaymentColumn(navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

@@ -28,6 +28,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 import usePaymentStatusForm from "./usePaymentStatusForm";
 
@@ -37,6 +38,7 @@ const PendingPayment = ({
   specializationList: ISpecializationList[];
 }) => {
   const formMethods = useForm();
+  const navigate = useNavigate();
   const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
     id: "",
     name: "",
@@ -347,7 +349,7 @@ const PendingPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={pendingPaymentColumn(onActionClick)}
+          columns={pendingPaymentColumn(onActionClick, navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

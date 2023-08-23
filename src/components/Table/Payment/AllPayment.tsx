@@ -29,6 +29,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 
 const AllPayment = ({
@@ -40,6 +41,7 @@ const AllPayment = ({
   const [filterValue, setFilterValue] = useState<any>({});
   const [searchFilter, setSearchFilter] = useState("");
   const deleteAmount = useDeleteAmount();
+  const navigate = useNavigate();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -198,7 +200,7 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn(handleDeleteRate)}
+          columns={allPaymentColumn(handleDeleteRate, navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,
