@@ -320,11 +320,8 @@ const RegistrationForm = () => {
 
           const academicPromises = academicArray.map(
             async (academicData, i) => {
-              console.log(academicData);
               const createAcademicFileResponse =
                 await academicFileRegister.mutateAsync(academicData);
-
-              console.log(formMethods.getValues("academic"));
 
               const academicInfoData = {
                 ...academicData,
@@ -336,8 +333,6 @@ const RegistrationForm = () => {
                 ),
               };
               if (academicData.id) {
-                console.log(academicInfoData);
-
                 const academicInfoResponse =
                   await updateAcademicInfoRegister.mutateAsync({
                     id: parseInt(academicData.id),
@@ -351,16 +346,7 @@ const RegistrationForm = () => {
                       (e: any) => ({ preview: getImageUrl(e?.file), id: e?.id })
                     )
                   );
-                  console.log(
-                    academicInfoResponse.data?.data?.academic_document
-                  );
-                  console.log(
-                    academicInfoResponse.data?.data?.academic_document?.map(
-                      (e: any) => {
-                        return { preview: getImageUrl(e?.file), id: e?.id };
-                      }
-                    )
-                  );
+
                   return academicInfoResponse.data.data;
                 } else {
                   throw new Error("Failed to update academic information!");
@@ -426,7 +412,7 @@ const RegistrationForm = () => {
           const certificationArray = formMethods.getValues("certification");
 
           const certificationPromises = certificationArray.map(
-            async certificationData => {
+            async (certificationData, i) => {
               const createCertificateFileResponse =
                 await certificateFileRegister.mutateAsync(certificationData);
 
@@ -450,6 +436,15 @@ const RegistrationForm = () => {
                     });
 
                   if (certificateInfoResponse) {
+                    formMethods.setValue(
+                      `certification.${i}.certificate_documents`,
+                      certificateInfoResponse.data?.data?.certificate_document?.map(
+                        (e: any) => ({
+                          preview: getImageUrl(e?.file),
+                          id: e?.id,
+                        })
+                      )
+                    );
                     return certificateInfoResponse.data.data;
                   } else {
                     throw new Error(
@@ -463,6 +458,15 @@ const RegistrationForm = () => {
                     );
 
                   if (certificateInfoResponse) {
+                    formMethods.setValue(
+                      `certification.${i}.certificate_documents`,
+                      certificateInfoResponse.data?.data?.certificate_document?.map(
+                        (e: any) => ({
+                          preview: getImageUrl(e?.file),
+                          id: e?.id,
+                        })
+                      )
+                    );
                     return certificateInfoResponse.data.data;
                   } else {
                     throw new Error("Failed to add certificate information!");

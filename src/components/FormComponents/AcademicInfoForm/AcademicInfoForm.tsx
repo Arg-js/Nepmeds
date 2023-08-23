@@ -125,7 +125,6 @@ export const AcademicInfoForm = ({
       return item.academic_documents;
     });
 
-    console.log(academic);
     return files;
   };
 

@@ -33,8 +33,8 @@ export function MultiImageUpload({
       "image/png": [],
     },
     maxFiles: 5,
+
     onDrop: acceptedFiles => {
-      console.log(acceptedFiles);
       const newFiles = acceptedFiles.map((file, i) => {
         setValue(`${fieldValue}.${i + imagesFile.length}` as any, file);
 
@@ -44,8 +44,8 @@ export function MultiImageUpload({
         });
       });
 
-      const tempArray = [...files];
-      tempArray[dataIndex] = [...imagesFile, ...newFiles];
+      const tempArray = [];
+      tempArray[dataIndex] = imagesFile.concat(newFiles);
 
       setFiles(tempArray);
     },
@@ -66,10 +66,11 @@ export function MultiImageUpload({
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
+    return () => {
+      setFiles([]);
+      imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
+    };
   }, []);
-
-  console.log(imagesFile);
 
   return (
     <Flex

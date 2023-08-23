@@ -88,16 +88,10 @@ const EditAcademic = ({
     try {
       const academicArray = formMethods.getValues("academic");
 
-      console.log(academicArray);
-
       const academicPromises = academicArray.map(
         async (academicData: AcademicInfo) => {
-          console.log(academicData);
-
           const createAcademicFileResponse =
             await academicFileRegister.mutateAsync(academicData);
-
-          console.log(createAcademicFileResponse.data);
 
           const academicInfoData = {
             ...academicData,
@@ -109,7 +103,6 @@ const EditAcademic = ({
             ),
           };
           if (academicData.id) {
-            console.log(academicInfoData);
             const academicInfoResponse =
               await updateAcademicInfoRegister.mutateAsync({
                 id: parseInt(academicData.id),
@@ -122,8 +115,6 @@ const EditAcademic = ({
               throw new Error("Failed to update academic information!");
             }
           } else {
-            console.log("not edit");
-
             const academicInfoResponse = await academicInfoRegister.mutateAsync(
               academicInfoData
             );
