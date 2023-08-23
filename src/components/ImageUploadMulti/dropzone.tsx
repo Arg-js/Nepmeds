@@ -1,5 +1,6 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
+import { colors } from "@nepMeds/theme/colors";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
@@ -89,24 +90,25 @@ export function MultiImageUpload({
             overflow="hidden"
           >
             {image && (
-              <Image
-                src={image.preview}
-                alt="Selected Image"
-                objectFit="cover"
-                width="100%"
-                height="100%"
-              />
+              <>
+                <Image
+                  src={image.preview}
+                  alt="Selected Image"
+                  objectFit="cover"
+                  width="100%"
+                  height="100%"
+                />
+                <CloseIcon
+                  color={colors.grey_90}
+                  position="absolute"
+                  top="4px"
+                  right="4px"
+                  onClick={removeFile(image)}
+                  cursor={"pointer"}
+                  bg={"transparent!"}
+                />
+              </>
             )}
-            <IconButton
-              icon={<CloseIcon color={"colors.grey_90"} />}
-              aria-label="Remove Image"
-              position="absolute"
-              top="1px"
-              right="4px"
-              size="sm"
-              onClick={removeFile(image)}
-              bg={"transparent!"}
-            />
           </Box>
         </Flex>
       ))}
