@@ -126,25 +126,16 @@ const PaymentSet = () => {
           footer={
             <HStack w={"full"} justifyContent={"space-around"}>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={colors.primary}
-                bg={colors.white}
                 w={"150px"}
+                variant={"primaryOutline"}
                 onClick={modalMethods.closeModal}
               >
                 Cancel
               </Button>
               <Button
-                borderRadius={"12px"}
-                bg={colors.primary}
-                color={colors.white}
                 w={"150px"}
                 type="submit"
                 onClick={handleFormSubmit}
-                mr={1}
-                variant={"solid"}
-                h={"45px"}
                 isLoading={isLoading}
               >
                 Done

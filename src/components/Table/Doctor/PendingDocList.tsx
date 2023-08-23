@@ -209,13 +209,9 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
+                variant="primaryOutline"
                 onClick={RejectDoctorModal}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
               >
                 Cancel
               </Button>
@@ -226,8 +222,6 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
                     RejectDoctorModal()
                   )
                 )}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={rejectLoading}
               >
                 Done

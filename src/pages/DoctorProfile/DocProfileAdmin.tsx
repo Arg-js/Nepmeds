@@ -25,7 +25,6 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
-import { colors } from "@nepMeds/theme/colors";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -131,6 +130,7 @@ const DocProfileAdmin = () => {
         </TabPanels>
       </Tabs>
 
+      {/*TODO: make component Remarks for rejection */}
       <ModalComponent
         isOpen={isRejectModalOpen}
         onClose={RejectDoctorModal}
@@ -146,21 +146,15 @@ const DocProfileAdmin = () => {
         footer={
           <HStack w="100%" gap={3}>
             <Button
-              variant="outline"
+              variant="primaryOutline"
               onClick={RejectDoctorModal}
               flex={1}
-              border="2px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
             >
               Cancel
             </Button>
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onSubmitForm)}
-              background={colors.primary}
-              color={colors.white}
               isLoading={rejectPendingDoc.isLoading}
             >
               Done
