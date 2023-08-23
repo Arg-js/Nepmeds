@@ -38,10 +38,20 @@ const primaryOutline = defineStyle({
   ...baseStyles,
   color: colors.primary,
   bg: "transparent",
-  borderRadius: "3px",
+  // borderRadius: "3px",
   border: `1px solid ${colors.primary}`,
   _hover: {
     bg: colors.sky_blue,
+  },
+});
+
+const reset = defineStyle({
+  ...baseStyles,
+  bg: colors.reset,
+  color: colors.white,
+  _hover: {
+    bg: colors.resetHover,
+    color: colors.reset,
   },
 });
 
@@ -60,7 +70,7 @@ const round = defineStyle({
 });
 
 export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
-  variants: { primary, secondary, primaryOutline, round },
+  variants: { primary, secondary, primaryOutline, reset, round },
   // sizes: {
   //   lg: {
   //     width: "auto",

@@ -99,33 +99,20 @@ const RegisteredDocList = ({ specializationList }: Props) => {
           footer={
             <HStack w={"full"} justifyContent={"flex-end"}>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
                 w={"150px"}
+                variant={"reset"}
                 onClick={() => handleFilterData(true)}
-                mr={1}
               >
                 Reset
               </Button>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
+                variant={"primaryOutline"}
                 w={"150px"}
+                onClick={() => handleFilterData(true)}
               >
                 Cancel
               </Button>
-              <Button
-                bg={"#13ADE1"}
-                color={"white"}
-                w={"150px"}
-                borderRadius={"12px"}
-                onClick={() => handleFilterData(false)}
-                sx={{
-                  "&:hover": { bg: "#13ADE1", color: "white" },
-                }}
-              >
+              <Button w={"150px"} onClick={() => handleFilterData(false)}>
                 Done
               </Button>
             </HStack>

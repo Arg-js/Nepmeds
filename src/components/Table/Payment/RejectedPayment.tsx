@@ -26,6 +26,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 
 interface Props {
@@ -40,6 +41,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
     onOpen: onModalOpen,
     onClose: onModalClose,
   } = useDisclosure();
+  const navigate = useNavigate();
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -94,34 +96,21 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
             <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
+              variant={"reset"}
               w={"150px"}
-              mr={1}
               onClick={() => handleFilter(true)}
             >
               Reset
             </Button>
 
             <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
+              variant={"primaryOutline"}
+              onClick={() => handleFilter(true)}
               w={"150px"}
             >
               Cancel
             </Button>
-            <Button
-              bg={"#13ADE1"}
-              color={"white"}
-              w={"150px"}
-              onClick={() => handleFilter(false)}
-              borderRadius={"12px"}
-              sx={{
-                "&:hover": { bg: "#13ADE1", color: "white" },
-              }}
-            >
+            <Button w={"150px"} onClick={() => handleFilter(false)}>
               Done
             </Button>
           </HStack>
@@ -187,7 +176,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={rejectedPaymentColumns()}
+          columns={rejectedPaymentColumns(navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

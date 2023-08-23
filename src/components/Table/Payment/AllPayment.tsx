@@ -29,6 +29,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 
 const AllPayment = ({
@@ -40,6 +41,7 @@ const AllPayment = ({
   const [filterValue, setFilterValue] = useState<any>({});
   const [searchFilter, setSearchFilter] = useState("");
   const deleteAmount = useDeleteAmount();
+  const navigate = useNavigate();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -102,33 +104,16 @@ const AllPayment = ({
           footer={
             <HStack w={"full"} justifyContent={"flex-end"}>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
+                variant={"reset"}
                 w={"150px"}
                 onClick={() => handleFilterData(true)}
-                mr={1}
               >
                 Reset
               </Button>
-              <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
-                w={"150px"}
-              >
+              <Button variant={"primaryOutline"} w={"150px"}>
                 Cancel
               </Button>
-              <Button
-                bg={"#13ADE1"}
-                color={"white"}
-                w={"150px"}
-                borderRadius={"12px"}
-                onClick={() => handleFilterData(false)}
-                sx={{
-                  "&:hover": { bg: "#13ADE1", color: "white" },
-                }}
-              >
+              <Button w={"150px"} onClick={() => handleFilterData(false)}>
                 Done
               </Button>
             </HStack>
@@ -198,7 +183,7 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn(handleDeleteRate)}
+          columns={allPaymentColumn(handleDeleteRate, navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

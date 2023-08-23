@@ -54,15 +54,13 @@ const ImageUpload = ({
               width="100%"
               height="100%"
             />
-            <IconButton
-              icon={<CloseIcon color={colors.grey_90} />}
-              aria-label="Remove Image"
+            <CloseIcon
+              color={colors.grey_90}
               position="absolute"
               top="1px"
               right="4px"
-              size="sm"
               onClick={handleRemoveImage}
-              bg={"transparent!"}
+              cursor={"pointer"}
             />
           </Box>
         ) : (

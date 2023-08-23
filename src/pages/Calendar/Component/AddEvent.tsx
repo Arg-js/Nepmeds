@@ -3,7 +3,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
 import { IGetDoctorAvailability } from "@nepMeds/service/nepmeds-doctor-availability";
 import { colors } from "@nepMeds/theme/colors";
-import { AppointmentType, FrequencyType } from "@nepMeds/utils/choices";
+import { FrequencyType } from "@nepMeds/utils/choices";
 import { generateTimeWith15MinutesInterval } from "@nepMeds/utils/timeRange";
 import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
@@ -35,23 +35,6 @@ export const AddEvent = ({
 
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
-      <GridItem colSpan={4}>
-        <Select
-          label="Type"
-          name="type"
-          register={register}
-          options={AppointmentType}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Appointment type is required.",
-          }}
-          error={errors.type?.message}
-        />
-      </GridItem>
       <GridItem colSpan={4}>
         <FloatingLabelInput
           label="Title"
@@ -105,44 +88,7 @@ export const AddEvent = ({
           error={errors.date?.message}
         />
       </GridItem>
-      {/* <GridItem colSpan={2}>
-          <FloatingLabelInput
-            label="From"
-            name="from_time"
-            type="time"
-            defaultValue={doctorAvailabilityData?.from_time}
-            register={register}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-            rules={{
-              required: "From time is required.",
-              validate: validateDateFormat,
-            }}
-            error={errors.from_time?.message}
-          />
-        </GridItem>
-        <GridItem colSpan={2}>
-          <FloatingLabelInput
-            label="To"
-            name="to_time"
-            type="time"
-            register={register}
-            defaultValue={doctorAvailabilityData?.to_time}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
-            rules={{
-              required: "To time is required.",
-              validate: validateToDateFormat,
-            }}
-            error={errors.to_time?.message}
-          />
-        </GridItem> */}
+
       <GridItem colSpan={2}>
         <Select
           name="from_time"

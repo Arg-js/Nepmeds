@@ -112,37 +112,24 @@ const PaymentRate = () => {
               <Text>Filter</Text>
             </HStack>
           }
+          // TODO: Make FILTER component
           footer={
             <HStack w={"full"} justifyContent={"flex-end"}>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
+                variant={"reset"}
                 w={"150px"}
-                mr={1}
                 onClick={() => handleFilter(true)}
               >
                 Reset
               </Button>
               <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={"#13ADE1"}
+                variant={"primaryOutline"}
                 w={"150px"}
                 onClick={() => handleFilter(true)}
               >
                 Cancel
               </Button>
-              <Button
-                bg={"#13ADE1"}
-                color={"white"}
-                w={"150px"}
-                onClick={() => handleFilter(false)}
-                borderRadius={"12px"}
-                sx={{
-                  "&:hover": { bg: "#13ADE1", color: "white" },
-                }}
-              >
+              <Button w={"150px"} onClick={() => handleFilter(false)}>
                 Done
               </Button>
             </HStack>

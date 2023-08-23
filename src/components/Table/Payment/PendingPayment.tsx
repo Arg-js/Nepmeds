@@ -28,6 +28,7 @@ import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
+import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
 import usePaymentStatusForm from "./usePaymentStatusForm";
 
@@ -37,6 +38,7 @@ const PendingPayment = ({
   specializationList: ISpecializationList[];
 }) => {
   const formMethods = useForm();
+  const navigate = useNavigate();
   const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
     id: "",
     name: "",
@@ -135,34 +137,17 @@ const PendingPayment = ({
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
             <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
+              variant={"reset"}
               w={"150px"}
-              mr={1}
               onClick={() => handleFilter(true)}
             >
               Reset
             </Button>
 
-            <Button
-              outlineColor={"#13ADE1"}
-              borderRadius={"12px"}
-              color={"#13ADE1"}
-              w={"150px"}
-            >
+            <Button variant={"primaryOutline"} w={"150px"}>
               Cancel
             </Button>
-            <Button
-              bg={"#13ADE1"}
-              color={"white"}
-              w={"150px"}
-              onClick={() => handleFilter(false)}
-              borderRadius={"12px"}
-              sx={{
-                "&:hover": { bg: "#13ADE1", color: "white" },
-              }}
-            >
+            <Button w={"150px"} onClick={() => handleFilter(false)}>
               Done
             </Button>
           </HStack>
@@ -214,13 +199,9 @@ const PendingPayment = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={RejectPaymentModal}
+                variant="primaryOutline"
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                onClick={RejectPaymentModal}
               >
                 Cancel
               </Button>
@@ -231,8 +212,6 @@ const PendingPayment = ({
                     RejectPaymentModal()
                   )
                 )}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={rejectLoading}
               >
                 Done
@@ -347,7 +326,7 @@ const PendingPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={pendingPaymentColumn(onActionClick)}
+          columns={pendingPaymentColumn(onActionClick, navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

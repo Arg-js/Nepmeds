@@ -467,7 +467,10 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
 };
 
 // Payment Column
-export const allPaymentColumn = (onDeleteClick: (id: string) => void) => {
+export const allPaymentColumn = (
+  onDeleteClick: (id: string) => void,
+  navigate: NavigateFunction
+) => {
   return [
     {
       header: "S.N",
@@ -585,7 +588,18 @@ export const allPaymentColumn = (onDeleteClick: (id: string) => void) => {
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
-            <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+            <Icon
+              as={Show}
+              fontSize={20}
+              cursor="pointer"
+              onClick={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                    id: row.original.id?.toString(),
+                  })
+                );
+              }}
+            />
             <Icon
               as={Delete}
               color={"red"}
@@ -604,7 +618,8 @@ export const pendingPaymentColumn = (
   onClick: (
     isApproved: boolean,
     doctorInfo: { id: string; name: string }
-  ) => void
+  ) => void,
+  navigate: NavigateFunction
 ) => {
   return [
     {
@@ -717,7 +732,13 @@ export const pendingPaymentColumn = (
                   fontSize={20}
                   mt={2}
                   cursor="pointer"
-                  onClick={() => {}}
+                  onClick={() => {
+                    navigate(
+                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                        id: cell.row.original.id?.toString(),
+                      })
+                    );
+                  }}
                 />
               </span>
             </Tooltip>
@@ -766,7 +787,7 @@ export const pendingPaymentColumn = (
   ];
 };
 
-export const approvedPaymentColumn = () => {
+export const approvedPaymentColumn = (navigate: NavigateFunction) => {
   return [
     {
       header: "S.N",
@@ -850,10 +871,21 @@ export const approvedPaymentColumn = () => {
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: () => {
+      cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+            <Icon
+              as={Show}
+              fontSize={20}
+              cursor="pointer"
+              onClick={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                    id: cell.row.original.id,
+                  })
+                );
+              }}
+            />
           </HStack>
         );
       },
@@ -861,7 +893,7 @@ export const approvedPaymentColumn = () => {
   ];
 };
 
-export const rejectedPaymentColumns = () => {
+export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
   return [
     {
       header: "S.N",
@@ -959,10 +991,21 @@ export const rejectedPaymentColumns = () => {
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: () => {
+      cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Icon as={Show} fontSize={20} cursor="pointer" onClick={() => {}} />
+            <Icon
+              as={Show}
+              fontSize={20}
+              cursor="pointer"
+              onClick={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                    id: cell.row.original.id,
+                  })
+                );
+              }}
+            />
           </HStack>
         );
       },
