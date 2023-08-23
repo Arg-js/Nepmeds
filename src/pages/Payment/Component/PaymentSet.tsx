@@ -191,6 +191,14 @@ const PaymentSet = () => {
                     type="number"
                     rules={{
                       required: "Please Enter Khalti Id",
+                      minLength: {
+                        value: 10,
+                        message: "Khalti ID must be atleast 10 digit long.",
+                      },
+                      maxLength: {
+                        value: 10,
+                        message: "Khalti ID must be atmost 10 digit long.",
+                      },
                     }}
                     error={formState?.errors?.epayment_id?.message}
                   />
