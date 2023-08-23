@@ -37,6 +37,7 @@ const PaymentSet = () => {
       setValue,
       formState,
       trigger,
+      watch,
     },
     isLoading,
     handleEditPayment,
@@ -76,6 +77,15 @@ const PaymentSet = () => {
           })
         : handleSubmitPayment({ value, id: activeMethod })
     )().then(() => modalMethods.closeModal());
+  };
+
+  const validateLength = (type: string, value: string | null) => {
+    if (value && value?.length > 10) {
+      return `${type} ID must be at most 10 digit long.`;
+    } else if (value && value?.length < 10) {
+      return `${type} ID must be at least 10 digit long.`;
+    }
+    return true;
   };
 
   return (
@@ -154,6 +164,8 @@ const PaymentSet = () => {
                     required
                     rules={{
                       required: "Please Enter Esewa Id",
+                      validate: () =>
+                        validateLength("Esewa", watch("epayment_id")),
                     }}
                     error={formState?.errors?.epayment_id?.message}
                   />
@@ -182,6 +194,8 @@ const PaymentSet = () => {
                     type="number"
                     rules={{
                       required: "Please Enter Khalti Id",
+                      validate: () =>
+                        validateLength("Khalti", watch("epayment_id")),
                     }}
                     error={formState?.errors?.epayment_id?.message}
                   />
