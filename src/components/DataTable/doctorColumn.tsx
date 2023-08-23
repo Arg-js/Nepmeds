@@ -68,7 +68,7 @@ export const pendingColumns = (
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -199,7 +199,7 @@ export const approvedColumns = (navigate: NavigateFunction) => {
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -286,7 +286,7 @@ export const registeredColumns = (navigate: NavigateFunction) => {
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -389,7 +389,7 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
               mb={1}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>

@@ -33,7 +33,7 @@ export const paymentRateColumn = (onEditClick: () => void) => {
 
     {
       header: "Status",
-      accessorKey: "specialization",
+      accessorKey: "status",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         const isApproved = row?.original?.rate_status === "1";
 

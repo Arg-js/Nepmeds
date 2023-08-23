@@ -53,7 +53,7 @@ export const allPaymentColumn = (
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -232,7 +232,7 @@ export const pendingPaymentColumn = (
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -386,7 +386,7 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
               key={data.id}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
@@ -496,7 +496,7 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
               mb={1}
               color={colors.main}
               bg={colors.lightish_blue}
-              mx={"1px"}
+              m={"1px"}
             >
               {data.name}
             </Tag>
