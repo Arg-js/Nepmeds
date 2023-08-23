@@ -142,7 +142,7 @@ const PendingPayment = ({
               Reset
             </Button>
 
-            <Button variant={"primaryOultine"} w={"150px"}>
+            <Button variant={"primaryOutline"} w={"150px"}>
               Cancel
             </Button>
             <Button w={"150px"} onClick={() => handleFilter(false)}>
@@ -197,13 +197,9 @@ const PendingPayment = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={RejectPaymentModal}
+                variant="primaryOutline"
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                onClick={RejectPaymentModal}
               >
                 Cancel
               </Button>
@@ -214,8 +210,6 @@ const PendingPayment = ({
                     RejectPaymentModal()
                   )
                 )}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={rejectLoading}
               >
                 Done
