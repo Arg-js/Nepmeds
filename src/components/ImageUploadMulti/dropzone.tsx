@@ -3,7 +3,6 @@ import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
-import { IRegisterFields } from "../FormComponents/RegistrationForm/RegistrationForm";
 
 export type IImageFileType =
   | (File & { preview: string; id: string })
@@ -23,7 +22,7 @@ export function MultiImageUpload({
   deleteFile,
   fieldValue,
 }: Props) {
-  const { setValue } = useFormContext<IRegisterFields>();
+  const { setValue } = useFormContext();
   const imagesFile = files[dataIndex] ?? [];
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -36,7 +35,7 @@ export function MultiImageUpload({
 
     onDrop: acceptedFiles => {
       const newFiles = acceptedFiles.map((file, i) => {
-        setValue(`${fieldValue}.${i + imagesFile.length}` as any, file);
+        setValue(`${fieldValue}.${i + imagesFile.length}`, file);
 
         return Object.assign(file, {
           preview: URL.createObjectURL(file),

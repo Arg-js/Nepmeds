@@ -126,6 +126,10 @@ const registerDefaultValues = {
   ],
 };
 export type IRegisterFields = typeof registerDefaultValues;
+interface IResponseFileMap {
+  file: string;
+  id: string;
+}
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -343,7 +347,10 @@ const RegistrationForm = () => {
                   formMethods.setValue(
                     `academic.${i}.academic_documents`,
                     academicInfoResponse.data?.data?.academic_document?.map(
-                      (e: any) => ({ preview: getImageUrl(e?.file), id: e?.id })
+                      (e: IResponseFileMap) => ({
+                        preview: getImageUrl(e?.file),
+                        id: e?.id,
+                      })
                     )
                   );
 
@@ -359,7 +366,10 @@ const RegistrationForm = () => {
                   formMethods.setValue(
                     `academic.${i}.academic_documents`,
                     academicInfoResponse.data?.data?.academic_document?.map(
-                      (e: any) => ({ preview: getImageUrl(e?.file), id: e?.id })
+                      (e: IResponseFileMap) => ({
+                        preview: getImageUrl(e?.file),
+                        id: e?.id,
+                      })
                     )
                   );
 
@@ -439,7 +449,7 @@ const RegistrationForm = () => {
                     formMethods.setValue(
                       `certification.${i}.certificate_documents`,
                       certificateInfoResponse.data?.data?.certificate_document?.map(
-                        (e: any) => ({
+                        (e: IResponseFileMap) => ({
                           preview: getImageUrl(e?.file),
                           id: e?.id,
                         })
@@ -461,7 +471,7 @@ const RegistrationForm = () => {
                     formMethods.setValue(
                       `certification.${i}.certificate_documents`,
                       certificateInfoResponse.data?.data?.certificate_document?.map(
-                        (e: any) => ({
+                        (e: IResponseFileMap) => ({
                           preview: getImageUrl(e?.file),
                           id: e?.id,
                         })
