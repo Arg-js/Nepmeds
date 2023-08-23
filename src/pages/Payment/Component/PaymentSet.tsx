@@ -174,7 +174,7 @@ const PaymentSet = () => {
                     rules={{
                       required: "Please Enter Esewa Id",
                       validate: () =>
-                        validateLength("Khalti", watch("epayment_id")),
+                        validateLength("Esewa", watch("epayment_id")),
                     }}
                     error={formState?.errors?.epayment_id?.message}
                   />
