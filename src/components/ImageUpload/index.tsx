@@ -8,6 +8,7 @@ import {
   Image,
   Text,
 } from "@chakra-ui/react";
+import { colors } from "@nepMeds/theme/colors";
 
 import { ChangeEvent } from "react";
 import { RegisterOptions, useFormContext } from "react-hook-form";
@@ -54,13 +55,14 @@ const ImageUpload = ({
               height="100%"
             />
             <IconButton
-              icon={<CloseIcon />}
+              icon={<CloseIcon color={colors.grey_90} />}
               aria-label="Remove Image"
               position="absolute"
-              top="4px"
+              top="1px"
               right="4px"
               size="sm"
               onClick={handleRemoveImage}
+              bg={"transparent!"}
             />
           </Box>
         ) : (

@@ -98,13 +98,14 @@ export function MultiImageUpload({
               />
             )}
             <IconButton
-              icon={<CloseIcon />}
+              icon={<CloseIcon color={"colors.grey_90"} />}
               aria-label="Remove Image"
               position="absolute"
-              top="4px"
+              top="1px"
               right="4px"
               size="sm"
               onClick={removeFile(image)}
+              bg={"transparent!"}
             />
           </Box>
         </Flex>
