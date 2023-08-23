@@ -124,6 +124,7 @@ export const AcademicInfoForm = ({
     const files = academic.map((item: any) => {
       return item.academic_documents;
     });
+
     return files;
   };
 

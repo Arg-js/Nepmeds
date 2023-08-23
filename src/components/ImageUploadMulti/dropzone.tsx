@@ -4,7 +4,6 @@ import { colors } from "@nepMeds/theme/colors";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { useFormContext } from "react-hook-form";
-import { IRegisterFields } from "../FormComponents/RegistrationForm/RegistrationForm";
 
 export type IImageFileType =
   | (File & { preview: string; id: string })
@@ -24,7 +23,7 @@ export function MultiImageUpload({
   deleteFile,
   fieldValue,
 }: Props) {
-  const { setValue } = useFormContext<IRegisterFields>();
+  const { setValue } = useFormContext();
   const imagesFile = files[dataIndex] ?? [];
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -34,9 +33,10 @@ export function MultiImageUpload({
       "image/png": [],
     },
     maxFiles: 5,
+
     onDrop: acceptedFiles => {
       const newFiles = acceptedFiles.map((file, i) => {
-        setValue(`${fieldValue}.${i + imagesFile.length}` as any, file);
+        setValue(`${fieldValue}.${i + imagesFile.length}`, file);
 
         return Object.assign(file, {
           preview: URL.createObjectURL(file),
@@ -44,8 +44,8 @@ export function MultiImageUpload({
         });
       });
 
-      const tempArray = [...files];
-      tempArray[dataIndex] = [...imagesFile, ...newFiles];
+      const tempArray = [];
+      tempArray[dataIndex] = imagesFile.concat(newFiles);
 
       setFiles(tempArray);
     },
@@ -66,7 +66,10 @@ export function MultiImageUpload({
 
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
-    return () => imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
+    return () => {
+      setFiles([]);
+      imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
+    };
   }, []);
 
   return (

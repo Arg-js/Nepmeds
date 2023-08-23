@@ -47,6 +47,7 @@ import {
 } from "@nepMeds/service/nepmeds-register";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
 import React, { useEffect } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -125,6 +126,10 @@ const registerDefaultValues = {
   ],
 };
 export type IRegisterFields = typeof registerDefaultValues;
+interface IResponseFileMap {
+  file: string;
+  id: string;
+}
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -317,42 +322,64 @@ const RegistrationForm = () => {
         try {
           const academicArray = formMethods.getValues("academic");
 
-          const academicPromises = academicArray.map(async academicData => {
-            const createAcademicFileResponse =
-              await academicFileRegister.mutateAsync(academicData);
+          const academicPromises = academicArray.map(
+            async (academicData, i) => {
+              const createAcademicFileResponse =
+                await academicFileRegister.mutateAsync(academicData);
 
-            const academicInfoData = {
-              ...academicData,
-              doctor: doctor,
-              academic_documents: createAcademicFileResponse.data.data.map(
-                (file: string) => ({
-                  file: file,
-                })
-              ),
-            };
-            if (academicData.id) {
-              const academicInfoResponse =
-                await updateAcademicInfoRegister.mutateAsync({
-                  id: parseInt(academicData.id),
-                  data: academicInfoData,
-                });
+              const academicInfoData = {
+                ...academicData,
+                doctor: doctor,
+                academic_documents: createAcademicFileResponse.data.data.map(
+                  (file: string) => ({
+                    file: file,
+                  })
+                ),
+              };
+              if (academicData.id) {
+                const academicInfoResponse =
+                  await updateAcademicInfoRegister.mutateAsync({
+                    id: parseInt(academicData.id),
+                    data: academicInfoData,
+                  });
 
-              if (academicInfoResponse) {
-                return academicInfoResponse.data.data;
+                if (academicInfoResponse) {
+                  formMethods.setValue(
+                    `academic.${i}.academic_documents`,
+                    academicInfoResponse.data?.data?.academic_document?.map(
+                      (e: IResponseFileMap) => ({
+                        preview: getImageUrl(e?.file),
+                        id: e?.id,
+                      })
+                    )
+                  );
+
+                  return academicInfoResponse.data.data;
+                } else {
+                  throw new Error("Failed to update academic information!");
+                }
               } else {
-                throw new Error("Failed to update academic information!");
-              }
-            } else {
-              const academicInfoResponse =
-                await academicInfoRegister.mutateAsync(academicInfoData);
+                const academicInfoResponse =
+                  await academicInfoRegister.mutateAsync(academicInfoData);
 
-              if (academicInfoResponse) {
-                return academicInfoResponse.data.data;
-              } else {
-                throw new Error("Failed to add academic information!");
+                if (academicInfoResponse) {
+                  formMethods.setValue(
+                    `academic.${i}.academic_documents`,
+                    academicInfoResponse.data?.data?.academic_document?.map(
+                      (e: IResponseFileMap) => ({
+                        preview: getImageUrl(e?.file),
+                        id: e?.id,
+                      })
+                    )
+                  );
+
+                  return academicInfoResponse.data.data;
+                } else {
+                  throw new Error("Failed to add academic information!");
+                }
               }
             }
-          });
+          );
 
           const academicInfoResponses = await Promise.all(academicPromises);
 
@@ -395,7 +422,7 @@ const RegistrationForm = () => {
           const certificationArray = formMethods.getValues("certification");
 
           const certificationPromises = certificationArray.map(
-            async certificationData => {
+            async (certificationData, i) => {
               const createCertificateFileResponse =
                 await certificateFileRegister.mutateAsync(certificationData);
 
@@ -419,6 +446,15 @@ const RegistrationForm = () => {
                     });
 
                   if (certificateInfoResponse) {
+                    formMethods.setValue(
+                      `certification.${i}.certificate_documents`,
+                      certificateInfoResponse.data?.data?.certificate_document?.map(
+                        (e: IResponseFileMap) => ({
+                          preview: getImageUrl(e?.file),
+                          id: e?.id,
+                        })
+                      )
+                    );
                     return certificateInfoResponse.data.data;
                   } else {
                     throw new Error(
@@ -432,6 +468,15 @@ const RegistrationForm = () => {
                     );
 
                   if (certificateInfoResponse) {
+                    formMethods.setValue(
+                      `certification.${i}.certificate_documents`,
+                      certificateInfoResponse.data?.data?.certificate_document?.map(
+                        (e: IResponseFileMap) => ({
+                          preview: getImageUrl(e?.file),
+                          id: e?.id,
+                        })
+                      )
+                    );
                     return certificateInfoResponse.data.data;
                   } else {
                     throw new Error("Failed to add certificate information!");
