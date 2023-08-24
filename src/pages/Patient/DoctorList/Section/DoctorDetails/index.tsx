@@ -94,7 +94,7 @@ const DoctorDetails: React.FC<{
     watch,
     handleSubmit,
     setValue,
-    // reset,
+    reset,
     control,
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
@@ -117,7 +117,7 @@ const DoctorDetails: React.FC<{
         },
       });
       if (response.status === HttpStatusCode.Created) {
-        // reset(defaultValues);
+        reset(defaultValues);
       }
     } catch (e) {
       console.error(e);
