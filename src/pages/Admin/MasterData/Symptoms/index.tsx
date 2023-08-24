@@ -30,6 +30,7 @@ import {
   useSaveSymptoms,
   useSymptomsDataWithPagination,
 } from "@nepMeds/service/nepmeds-symptoms";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Fragment, useState } from "react";
@@ -42,7 +43,10 @@ const schema = yup.object().shape({
     .string()
     .required("Symptom name is required!")
     .max(30, "Symptom name can be 30 characters long"),
-  keyword: yup.string().required("Symptom keyword is required"),
+  keyword: yup
+    .string()
+    .required("Symptom keyword is required")
+    .max(30, "Keyword can be 30 characters long"),
 });
 
 type OnOpenFunction = () => void;
@@ -105,6 +109,7 @@ const Symptoms = ({
   const {
     formState: { errors },
     register,
+    reset,
   } = formMethods;
 
   const columns = [
@@ -190,7 +195,8 @@ const Symptoms = ({
       formMethods.reset();
       // formMethods.reset({});
     } catch (error) {
-      toastFail("Failed to save symptom!");
+      const err = serverErrorResponse(error, "Failed to save symptom!");
+      toastFail(err);
     }
   };
   const onSaveSymptom = () => {
@@ -199,6 +205,11 @@ const Symptoms = ({
 
   const onEditHandle = () => {
     formMethods.handleSubmit(onEditForm)();
+  };
+
+  const onCloseModal = () => {
+    onCloseEditModal();
+    reset();
   };
 
   const onDeleteSymptom = async () => {
@@ -214,19 +225,7 @@ const Symptoms = ({
       toastFail("Failed to delete symptom!");
     }
   };
-  // const onBulkDelete = async (data: Symptom[]) => {
-  //   const id = data.map(data => data.id);
 
-  //   try {
-  //     await deleteBulkSymptom.mutateAsync({
-  //       id: id,
-  //     });
-  //     onCloseBulkModal();
-  //     toastSuccess("Symptoms deleted successfully!");
-  //   } catch (error) {
-  //     toastFail("Failed to delete symptom!");
-  //   }
-  // };
   return (
     <Fragment>
       {/* edit modal */}
@@ -234,10 +233,7 @@ const Symptoms = ({
         <ModalComponent
           size="sm"
           isOpen={isEditModalOpen}
-          onClose={() => {
-            onCloseEditModal();
-            formMethods.reset({});
-          }}
+          onClose={onCloseModal}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -248,10 +244,7 @@ const Symptoms = ({
             <HStack w="100%" gap={3}>
               <Button
                 variant="outline"
-                onClick={() => {
-                  onCloseEditModal();
-                  formMethods.reset({});
-                }}
+                onClick={onCloseModal}
                 flex={1}
                 border="1px solid"
                 borderColor={colors.primary}
@@ -286,6 +279,12 @@ const Symptoms = ({
                   label="Keywords"
                   name="keyword"
                   register={register}
+                  rules={{
+                    maxLength: {
+                      value: 30,
+                      message: "Keyword can be only be 30 characters long",
+                    },
+                  }}
                   error={errors.keyword?.message}
                 />
               </VStack>
@@ -300,7 +299,10 @@ const Symptoms = ({
         <ModalComponent
           size="sm"
           isOpen={isSymptomsOpen}
-          onClose={onCloseSymptoms}
+          onClose={() => {
+            onCloseSymptoms();
+            reset();
+          }}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -311,7 +313,10 @@ const Symptoms = ({
             <HStack w="100%" gap={3}>
               <Button
                 variant="outline"
-                onClick={onCloseSymptoms}
+                onClick={() => {
+                  onCloseSymptoms();
+                  reset();
+                }}
                 flex={1}
                 border="1px solid"
                 borderColor={colors.primary}
@@ -344,10 +349,12 @@ const Symptoms = ({
                   name="name"
                   register={formMethods.register}
                   error={errors.name?.message}
+                  required
                 />
 
                 <FloatinglabelTextArea
                   label="Keywords"
+                  required
                   name="keyword"
                   register={register}
                   error={errors.keyword?.message}
