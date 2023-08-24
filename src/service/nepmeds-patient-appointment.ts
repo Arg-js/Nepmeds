@@ -34,6 +34,6 @@ export const useCreatePatientAppointment = () => {
   return useMutation(createPatientAppointment, {
     onSuccess: () => toastSuccess("Appointment has been successfuly created!"),
     onError: (error: AxiosError<{ message: string; error: string }>) =>
-      toastFail(error.message ?? "Somethig went wrong"),
+      toastFail(error.message ?? "Something went wrong"),
   });
 };

@@ -34,7 +34,7 @@ export const useGetAvailability = ({ id, target_date }: IGetAvailability) => {
       enabled: !!id && !!target_date,
       select: ({ data }) => data?.data?.availability,
       onError: (error: AxiosError<{ message: string; error: string }>) =>
-        toastFail(error.message ?? "Somethig went wrong"),
+        toastFail(error.message ?? "Something went wrong"),
     }
   );
 };
