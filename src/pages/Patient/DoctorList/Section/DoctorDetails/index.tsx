@@ -33,7 +33,6 @@ interface IPatientAppointment extends IPatientAppointmentBasicDetails {
 }
 
 const defaultValues = {
-  // TODO:
   // availability: [{ label: "", value: "" }],
   availability: [],
   full_name: "",
@@ -101,7 +100,6 @@ const DoctorDetails: React.FC<{
 
   const oldReportFileWatch = watch("old_report_file");
 
-  // TODO: remove watch from useeffect
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
     setValue("availability", []);
@@ -132,7 +130,6 @@ const DoctorDetails: React.FC<{
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <WrapperBox
             backgroundColor={colors.white}
-            // TODO: reduce repeated code
             boxShadow={boxShadow}
             style={{
               px: { base: "0", md: "2", xl: "4" },
@@ -185,7 +182,6 @@ const DoctorDetails: React.FC<{
                 gap={1}
                 px={4}
               >
-                {/* TODO: same component */}
                 <Text fontWeight={700} fontSize={"13px"}>
                   About
                 </Text>
@@ -211,7 +207,6 @@ const DoctorDetails: React.FC<{
                 </Text>
               </Flex>
               <Divider borderWidth={"0.5px"} />
-              {/* TODO: same component */}
               <Text fontWeight={700} fontSize={"13px"}>
                 Available time
               </Text>
@@ -383,8 +378,6 @@ const DoctorDetails: React.FC<{
               </Flex>
             </Flex>
           </WrapperBox>
-          {/* TODO: ui update */}
-          {/* TODO: wrapper code repeated, width 560px also repeat */}
           <Button
             type="submit"
             width="560px"
