@@ -44,6 +44,7 @@ const MultiSelect = ({
   required,
   multiValue,
   variant,
+  error,
 }: IMultiSelect) => {
   const { t } = useTranslation();
 
@@ -96,7 +97,9 @@ const MultiSelect = ({
                   // paddingTop: 10,
                   minHeight: "35px",
                   borderRadius: "8px",
-                  border: `1px solid ${colors.gray_border}`,
+                  border: error
+                    ? `2px solid ${colors.error}`
+                    : `1px solid ${colors.gray_border}`,
                   ...style,
                 }),
                 indicatorSeparator: () => ({ display: "none" }),
