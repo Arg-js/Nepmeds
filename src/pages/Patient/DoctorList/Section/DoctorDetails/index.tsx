@@ -13,23 +13,17 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreatePatientAppointment } from "@nepMeds/service/nepmeds-patient-appointment";
+import {
+  IPatientAppointmentBasicDetails,
+  useCreatePatientAppointment,
+} from "@nepMeds/service/nepmeds-patient-appointment";
 import { HttpStatusCode } from "axios";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import ReadMoreComponent from "@nepMeds/components/ReadMore";
 import { FormLabel, HStack, Image } from "@chakra-ui/react";
 
-// TODO: check the similarity
-
 type IOptionItem = { label: string; value: string };
-
-export interface IPatientAppointmentBasicDetails {
-  full_name: string;
-  gender: string;
-  description: string;
-  status?: string;
-}
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -107,6 +101,7 @@ const DoctorDetails: React.FC<{
 
   const oldReportFileWatch = watch("old_report_file");
 
+  // TODO: remove watch from useeffect
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
     setValue("availability", []);

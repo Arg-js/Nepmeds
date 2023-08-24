@@ -5,8 +5,13 @@ import { toastSuccess } from "./service-toast";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";
 import { objectToFormData } from "@nepMeds/utils/toFormData";
-import { IPatientAppointmentBasicDetails } from "@nepMeds/pages/Patient/DoctorList/Section/DoctorDetails";
 
+export interface IPatientAppointmentBasicDetails {
+  full_name: string;
+  gender: string;
+  description: string;
+  status?: string;
+}
 interface IPatientAppointmentReqBody extends IPatientAppointmentBasicDetails {
   doctor: number;
   symptoms: number[];

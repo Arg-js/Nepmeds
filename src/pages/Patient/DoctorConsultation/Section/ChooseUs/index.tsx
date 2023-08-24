@@ -7,6 +7,7 @@ const ChooseUsSection = () => {
   return (
     <Box my={16}>
       <SectionHeading heading="Why Choose Us?" />
+      {/* TODO: "repeat(auto-fit,1fr)" */}
       <Grid
         templateColumns={{
           base: "repeat(1, 1fr)",

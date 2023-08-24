@@ -102,6 +102,7 @@ const MultiSelect = ({
                     : `1px solid ${colors.gray_border}`,
                   ...style,
                 }),
+                // TODO: move this to custom styles
                 indicatorSeparator: () => ({ display: "none" }),
               }}
             />

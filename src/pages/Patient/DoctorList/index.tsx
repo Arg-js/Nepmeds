@@ -106,6 +106,7 @@ const DoctorList = () => {
 
           <Flex mt={8} direction={{ base: "column", md: "row" }}>
             {/* FILTER */}
+            {/* TODO: create only two states for this */}
             <DoctorListFilter
               setGender={setGender}
               setSpecialization={setSpecialization}
