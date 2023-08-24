@@ -37,7 +37,6 @@ export type PrimaryInfo = Pick<
     gender?: string;
     date_of_birth?: string;
     email?: string;
-    is_mobile_number_verified?: boolean;
     is_email_verified?: boolean;
   };
 };
@@ -76,9 +75,8 @@ export const usePrimaryInfoRegister = () =>
 
 const editPersonalData = async (data: PrimaryInfo) => {
   const response = await HttpClient.patch(
-    // api.doctor_profile ,
     `${api.doctor_profile}?doctor_id=${data.id}`,
-    // toFormData(data, formData)
+
     data
   );
   return response;
@@ -87,7 +85,7 @@ export const useUpdatePersonalInfoRegister = () => {
   const queryClient = useQueryClient();
   return useMutation(editPersonalData, {
     onSuccess() {
-      queryClient.invalidateQueries(api.doctor_profile);
+      queryClient.invalidateQueries(api.doctordetails);
     },
   });
 };

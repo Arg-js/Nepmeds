@@ -4,7 +4,7 @@ export interface ServerError {
   success: boolean;
 }
 
-const serverErrorResponse = (error: any) => {
+const serverErrorResponse = (error: any, customMessage?: string) => {
   if (axios.isAxiosError(error)) {
     const err = error as AxiosError<{ errors: [0] }>;
 
@@ -13,7 +13,9 @@ const serverErrorResponse = (error: any) => {
       ? Object.values(errorObject)[0]
       : null;
 
-    return firstErrorMessage?.toString() || "Something went wrong.";
+    return (
+      firstErrorMessage?.toString() || customMessage || "Something went wrong."
+    );
   }
   return "Something went wrong.";
 };

@@ -18,8 +18,10 @@ import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { gender, idType } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
+import { checkNumberMatch } from "@nepMeds/utils/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
+import { useLocation } from "react-router-dom";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 
 const PrimaryInfo = ({
@@ -34,10 +36,12 @@ const PrimaryInfo = ({
     watch,
     reset,
     getValues,
+    setValue,
     control,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
-
+  const location = useLocation();
+  const [validField, setValidField] = useState<"mobile" | "email">();
   const allDistrictInfo = useGetAllDistricts();
   const { data: detailedAddress } = useGetDetailAddress();
   const { data: specialization = [] } = useSpecializationRegisterData();
@@ -114,6 +118,19 @@ const PrimaryInfo = ({
       });
     }
   }, [doctorProfileData]);
+
+  useEffect(() => {
+    if (location.state) {
+      const mobileNumber = (location.state as { mobile: string }).mobile;
+      if (checkNumberMatch(mobileNumber)) {
+        setValue("mobile_number", mobileNumber);
+        setValidField("mobile");
+      } else {
+        setValue("email", mobileNumber);
+        setValidField("email");
+      }
+    }
+  }, [location.state]);
 
   const watchIdType = watch("id_type");
   function IdType(watchIdType: string) {
@@ -224,6 +241,8 @@ const PrimaryInfo = ({
           name="mobile_number"
           type="tel"
           required
+          isReadOnly={validField === "mobile"}
+          isDisabled={validField === "mobile"}
           // isReadOnly
 
           register={register}
@@ -243,6 +262,8 @@ const PrimaryInfo = ({
           label="Email"
           required
           name="email"
+          isReadOnly={validField === "email"}
+          isDisabled={validField === "email"}
           register={register}
           defaultValue={doctorProfileData?.user?.email}
           style={{ background: colors.forminput, border: "none" }}
@@ -525,6 +546,10 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "Ward is required.",
+            maxLength: {
+              value: 2,
+              message: "Ward can be only 2 digits long.",
+            },
           }}
           error={errors.ward?.message}
         />

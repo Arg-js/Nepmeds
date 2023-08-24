@@ -20,7 +20,6 @@ export interface IUser {
   email: string;
   password: string;
   confirm_password: string;
-  is_mobile_number_verified: boolean;
   is_email_verified: boolean;
 }
 export interface IDoctorAcademicInfo {
@@ -132,13 +131,13 @@ export const useDoctorBasicProfile = () => {
 
 const getDoctorProfileById = (DoctorId: string) => () => {
   return HttpClient.get<NepMedsResponse<IGetDoctorProfile>>(
-    api.doctorProfileById.replace("{id}", DoctorId) + "/"
+    api.doctordetails.replace("{id}", DoctorId) + "/"
   );
 };
 
 export const fetchDoctorProfileById = (DoctorId: string) => {
   return useQuery(
-    [api.doctorProfileById, DoctorId],
+    [api.doctordetails, DoctorId],
     getDoctorProfileById(DoctorId ?? ""),
     {
       enabled: !!DoctorId,
