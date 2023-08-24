@@ -32,6 +32,7 @@ interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   old_report_file?: FileList | null;
 }
 
+const today = new Date().toISOString().split("T")[0];
 const defaultValues = {
   // availability: [{ label: "", value: "" }],
   availability: [],
@@ -99,11 +100,12 @@ const DoctorDetails: React.FC<{
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   const oldReportFileWatch = watch("old_report_file");
+  const availabilityDateWatch = watch("availabilityDate");
 
   useEffect(() => {
-    watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
+    availabilityDateWatch && setTargeDate(availabilityDateWatch);
     setValue("availability", []);
-  }, [watch("availabilityDate")]);
+  }, [availabilityDateWatch]);
 
   const onSubmitHandler = async (data: IPatientAppointment) => {
     try {
@@ -284,6 +286,8 @@ const DoctorDetails: React.FC<{
                   style={{
                     minHeight: "35px",
                   }}
+                  // Restrics selection of past date in Datepicker
+                  min={today}
                   required
                 />
                 <FormControl
@@ -384,7 +388,7 @@ const DoctorDetails: React.FC<{
             borderRadius="none"
             isLoading={isLoading}
           >
-            Confrim & Pay
+            Confirm & Pay
           </Button>
         </form>
       ) : (

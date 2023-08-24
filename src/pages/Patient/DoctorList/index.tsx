@@ -122,20 +122,16 @@ const DoctorList = () => {
               alignItems={{ base: "center", "2xl": "flex-start" }}
             >
               {/* DOCTORS LIST */}
-              <Box
-                mx={{ base: "0", md: "30" }}
-                height={"215px"}
-                width={"673px"}
-              >
+              <Box mx={{ base: 0, md: 30 }} height="215px" width="673px">
                 <>
-                  {isLoading && <Skeleton height={"215px"} width={"673px"} />}
+                  {isLoading && <Skeleton height="215px" width="673px" />}
                   {doctorData && !doctorData?.results.length && (
-                    <Box width={"673px"} height={"215px"}>
+                    <Box width="673px" height="215px">
                       No Data to be shown!
                     </Box>
                   )}
                   {DoctorListError && (
-                    <Box width={"673px"} height={"215px"}>
+                    <Box width="673px" height="215px">
                       Oops something went wrong!!
                     </Box>
                   )}
