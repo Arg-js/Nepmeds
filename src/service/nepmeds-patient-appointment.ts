@@ -5,17 +5,13 @@ import { toastSuccess } from "./service-toast";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";
 import { objectToFormData } from "@nepMeds/utils/toFormData";
+import { IPatientAppointmentBasicDetails } from "@nepMeds/pages/Patient/DoctorList/Section/DoctorDetails";
 
-// TODO: check the similarity
-export interface IPatientAppointmentReqBody {
+interface IPatientAppointmentReqBody extends IPatientAppointmentBasicDetails {
   doctor: number;
-  availability: number[];
-  full_name: string;
-  gender: string;
   symptoms: number[];
-  description: string;
+  availability: number[];
   old_report_file?: File;
-  status?: string;
 }
 
 const createPatientAppointment = ({
@@ -23,7 +19,6 @@ const createPatientAppointment = ({
 }: {
   patientAppointmentDetails: IPatientAppointmentReqBody;
 }) => {
-  console.log("first", JSON.stringify(patientAppointmentDetails));
   return HttpClient.post(
     api.patient.appointment.post,
     objectToFormData(patientAppointmentDetails)

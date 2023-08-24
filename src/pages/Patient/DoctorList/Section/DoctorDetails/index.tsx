@@ -6,7 +6,10 @@ import { ImageCancel, NoDataIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import { useForm } from "react-hook-form";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
+import {
+  IAvailability,
+  IDoctorListById,
+} from "@nepMeds/service/nepmeds-patient-doctorList";
 import { colors } from "@nepMeds/theme/colors";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -18,18 +21,25 @@ import ReadMoreComponent from "@nepMeds/components/ReadMore";
 import { FormLabel, HStack, Image } from "@chakra-ui/react";
 
 // TODO: check the similarity
-export interface IPatientAppointment {
-  availability: { label: string; value: string }[];
+
+type IOptionItem = { label: string; value: string };
+
+export interface IPatientAppointmentBasicDetails {
   full_name: string;
   gender: string;
-  symptoms: { label: string; value: string }[];
   description: string;
-  old_report_file?: FileList | null;
   status?: string;
+}
+
+interface IPatientAppointment extends IPatientAppointmentBasicDetails {
+  symptoms: IOptionItem[];
   availabilityDate?: string;
+  availability: IOptionItem[];
+  old_report_file?: FileList | null;
 }
 
 const defaultValues = {
+  // TODO:
   // availability: [{ label: "", value: "" }],
   availability: [],
   full_name: "",
@@ -61,8 +71,9 @@ const schema = Yup.object({
 const DoctorDetails: React.FC<{
   doctorInfo: IDoctorListById | undefined;
   isFetching: boolean;
+  availability: IAvailability[] | undefined;
   setTargeDate: Dispatch<SetStateAction<string>>;
-}> = ({ doctorInfo, isFetching, setTargeDate }) => {
+}> = ({ doctorInfo, availability, isFetching, setTargeDate }) => {
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
@@ -76,9 +87,8 @@ const DoctorDetails: React.FC<{
     })) || [];
 
   const availabilityOptions =
-    doctorInfo &&
-    doctorInfo.availability &&
-    doctorInfo?.availability.map(info => {
+    availability?.length &&
+    availability?.map(info => {
       return {
         label: info.from_time,
         value: info.id,
@@ -99,6 +109,7 @@ const DoctorDetails: React.FC<{
 
   useEffect(() => {
     watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
+    setValue("availability", []);
   }, [watch("availabilityDate")]);
 
   const onSubmitHandler = async (data: IPatientAppointment) => {
@@ -125,7 +136,6 @@ const DoctorDetails: React.FC<{
       {doctorInfo ? (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <WrapperBox
-            // width={"560px"}
             backgroundColor={colors.white}
             // TODO: reduce repeated code
             boxShadow={boxShadow}
@@ -169,7 +179,7 @@ const DoctorDetails: React.FC<{
                       )}
                   </Text>
                   <Text fontWeight={400} fontSize={"12px"}>
-                    NMC No: 95671
+                    NMC No: {doctorInfo?.medical_licence_number || "N/A"}
                   </Text>
                 </Box>
                 <Divider borderWidth={"0.5px"} />

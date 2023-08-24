@@ -17,6 +17,8 @@ import { useState } from "react";
 import { BreadCrumb } from "@nepMeds/components/Breadcrumb";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import DoctorDetailsSection from "@nepMeds/pages/Patient/DoctorList/Section/DoctorDetails";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 
 const currentDate = new Date();
 const formattedDate = currentDate.toISOString().slice(0, 10);
@@ -48,6 +50,8 @@ const DoctorList = () => {
   };
   // PAGINATION ENDS
 
+  const debouncedInputValue = useDebounce(search, 500);
+
   // REACT QUERIES
   const {
     data: doctorData,
@@ -59,12 +63,16 @@ const DoctorList = () => {
     gender: gender?.join(","),
     specialization: specialization?.join(","),
     symptom: symptom?.join(","),
-    search,
+    search: debouncedInputValue,
     from_date: dateParams.from_date,
     to_date: dateParams.to_date,
   });
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({
+    id: doctorId,
+    target_date: targetDate || formattedDate,
+  });
+  const { data: availability } = useGetAvailability({
     id: doctorId,
     target_date: targetDate || formattedDate,
   });
@@ -114,9 +122,18 @@ const DoctorList = () => {
               alignItems={{ base: "center", "2xl": "flex-start" }}
             >
               {/* DOCTORS LIST */}
-              <Box mx={{ base: "0", md: "30" }}>
+              <Box
+                mx={{ base: "0", md: "30" }}
+                height={"215px"}
+                width={"673px"}
+              >
                 <>
                   {isLoading && <Skeleton height={"215px"} width={"673px"} />}
+                  {doctorData && !doctorData?.results.length && (
+                    <Box width={"673px"} height={"215px"}>
+                      No Data to be shown!
+                    </Box>
+                  )}
                   {DoctorListError && (
                     <Box width={"673px"} height={"215px"}>
                       Oops something went wrong!!
@@ -149,6 +166,7 @@ const DoctorList = () => {
 
               <DoctorDetailsSection
                 doctorInfo={doctorInfo}
+                availability={availability}
                 isFetching={isFetching}
                 setTargeDate={setTargeDate}
               />
