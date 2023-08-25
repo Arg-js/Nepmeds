@@ -27,6 +27,7 @@ import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
 import DoctorList from "@nepMeds/pages/Patient/DoctorList";
 import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
 import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
+import Appointment from "@nepMeds/pages/Doctor/Appointment";
 
 const routes = [
   {
@@ -39,7 +40,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,
-        element: <>Appointments</>,
+        element: <Appointment />,
       },
       {
         path: NAVIGATION_ROUTES.FOLLOWUP,

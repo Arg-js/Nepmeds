@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/layout";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
+import { colors } from "@nepMeds/theme/colors";
 
 interface IWrapperBox {
   children?: ReactJSXElement;
@@ -12,18 +13,19 @@ interface IWrapperBox {
   border?: string;
   borderRadius?: string;
   boxShadow?: string;
+  px?: string;
   style?: Record<string, any>;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({
   children,
-  backgroundColor = "none",
+  backgroundColor = colors.white,
   backgroundImage = "none",
   height = "auto",
   padding = "10",
   width = "auto",
   border = "none",
-  borderRadius = "none",
   boxShadow = "none",
+  px = '{ base: "10px", md: "30" }',
   style,
 }) => {
   return (
@@ -33,10 +35,9 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       fontFamily={"Quicksand"}
       backgroundImage={backgroundImage}
       p={padding}
-      px={{ base: "10px", md: "30" }}
+      px={px}
       width={width}
       border={border}
-      borderRadius={borderRadius}
       boxShadow={boxShadow}
       sx={style}
     >
