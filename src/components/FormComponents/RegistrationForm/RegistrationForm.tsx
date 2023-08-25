@@ -45,13 +45,14 @@ import {
   usePrimaryInfoRegister,
   useUpdatePrimaryInfoRegister,
 } from "@nepMeds/service/nepmeds-register";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
-import React, { useEffect } from "react";
+import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const registerDefaultValues = {
   first_name: "",
@@ -133,15 +134,11 @@ interface IResponseFileMap {
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
-  const location = useLocation();
 
   const [activeStep, setActiveStep] = React.useState(0);
   const [doctor, setDoctor] = React.useState(0);
   const [name, setName] = React.useState("");
   const [isPrimarySubmitted, setIsPrimarySubmitted] = React.useState(false);
-
-  const [isMobileVerified, setIsMobileVerified] = React.useState(false);
-  const [isEmailVerified, setIsEmailVerified] = React.useState(false);
 
   const { isOpen: isConfirmationOpen, onOpen: onOpenConfirmation } =
     useDisclosure();
@@ -202,8 +199,6 @@ const RegistrationForm = () => {
           province: formMethods.getValues("province"),
           gender: formMethods.getValues("gender"),
           date_of_birth: formMethods.getValues("date_of_birth"),
-          is_mobile_number_verified: isMobileVerified,
-          is_email_verified: isEmailVerified,
           password: formMethods.getValues("password"),
           confirm_password: formMethods.getValues("confirm_password"),
         },
@@ -231,15 +226,12 @@ const RegistrationForm = () => {
           setActiveStep(2);
         });
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-      toastFail(
-        firstErrorMessage?.toString() || "Failed to update primary information!"
+      const err = serverErrorResponse(
+        error,
+        "Failed to update primary information!"
       );
+
+      toastFail(err);
     }
   };
 
@@ -272,8 +264,6 @@ const RegistrationForm = () => {
                 province: values.province,
                 gender: values.gender,
                 date_of_birth: values.date_of_birth,
-                is_mobile_number_verified: isMobileVerified,
-                is_email_verified: isEmailVerified,
                 password: values.password,
                 confirm_password: values.confirm_password,
                 email: values.email,
@@ -305,16 +295,12 @@ const RegistrationForm = () => {
               setActiveStep(2);
             });
         } catch (error) {
-          const err = error as AxiosError<{ errors: [0] }>;
-
-          const errorObject = err?.response?.data?.errors?.[0];
-          const firstErrorMessage = errorObject
-            ? Object.values(errorObject)[0]
-            : null;
-          toastFail(
-            firstErrorMessage?.toString() ||
-              "Failed to add primary information!"
+          const err = serverErrorResponse(
+            error,
+            "Failed to add primary information!"
           );
+
+          toastFail(err);
         }
         break;
       }
@@ -402,17 +388,12 @@ const RegistrationForm = () => {
             throw new Error("Failed to update academic information!");
           }
         } catch (error) {
-          const err = error as AxiosError<{ errors: [0] }>;
-
-          const errorObject = err?.response?.data?.errors?.[0];
-          const firstErrorMessage = errorObject
-            ? Object.values(errorObject)[0]
-            : null;
-
-          toastFail(
-            firstErrorMessage?.toString() ||
-              "Failed to update academic information!"
+          const err = serverErrorResponse(
+            error,
+            "Failed to update academic information!"
           );
+
+          toastFail(err);
         }
 
         break;
@@ -515,16 +496,12 @@ const RegistrationForm = () => {
             throw new Error("Failed to add certificate information!");
           }
         } catch (error) {
-          const err = error as AxiosError<{ errors: [0] }>;
-          const errorObject = err?.response?.data?.errors?.[0];
-          const firstErrorMessage = errorObject
-            ? Object.values(errorObject)[0]
-            : null;
-
-          toastFail(
-            firstErrorMessage?.toString() ||
-              "Failed to add certificate information!"
+          const err = serverErrorResponse(
+            error,
+            "Failed to add certificate information!"
           );
+
+          toastFail(err);
         }
 
         break;
@@ -641,25 +618,6 @@ const RegistrationForm = () => {
       content: <ExperienceInfo />,
     },
   ];
-
-  function checkNumberMatch(number: string): boolean {
-    const pattern = /^(?:\+977[-\s]?)?9[78]\d{8}$/;
-    return pattern.test(number);
-  }
-  useEffect(() => {
-    if (location.state) {
-      const mobileNumber = (location.state as { mobile: string }).mobile;
-      if (checkNumberMatch(mobileNumber)) {
-        formMethods.setValue("mobile_number", mobileNumber);
-        setIsMobileVerified(true);
-      } else {
-        formMethods.setValue("email", mobileNumber);
-        setIsEmailVerified(true);
-      }
-    } else {
-      navigate("/signup");
-    }
-  }, [location.state]);
 
   const { content } = steps[activeStep];
 

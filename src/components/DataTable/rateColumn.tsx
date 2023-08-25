@@ -71,7 +71,7 @@ export const paymentRateColumn = (onEditClick: () => void) => {
         return (
           <Flex>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image key={e.id} src={e.image} width={"80px"} />
             ))}
           </Flex>
         );

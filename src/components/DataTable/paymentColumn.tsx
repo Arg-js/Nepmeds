@@ -9,8 +9,9 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { CellContext } from "@tanstack/table-core";
-import { Delete, Show } from "react-iconly";
+import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
 
 interface PendingCellContextSearch {
@@ -21,10 +22,7 @@ interface PendingCellContextSearch {
   };
 }
 
-export const allPaymentColumn = (
-  onDeleteClick: (doctorInfo: { id: string; name: string }) => void,
-  navigate: NavigateFunction
-) => {
+export const allPaymentColumn = (navigate: NavigateFunction) => {
   return [
     {
       header: "S.N",
@@ -95,9 +93,15 @@ export const allPaymentColumn = (
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );
@@ -141,7 +145,7 @@ export const allPaymentColumn = (
       accessorKey: "actions",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <HStack>
+          <HStack justifyContent={"center"}>
             <Tooltip label="View Doctor">
               <span>
                 <Icon
@@ -155,25 +159,6 @@ export const allPaymentColumn = (
                       })
                     );
                   }}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip label="Delete Payment">
-              <span>
-                <Icon
-                  as={Delete}
-                  color={"red"}
-                  fontSize={20}
-                  cursor="pointer"
-                  onClick={() =>
-                    onDeleteClick({
-                      id: row.original?.id?.toString(),
-                      name:
-                        row.original.user.first_name +
-                        " " +
-                        row.original.user.last_name,
-                    })
-                  }
                 />
               </span>
             </Tooltip>
@@ -239,14 +224,7 @@ export const pendingPaymentColumn = (
           )
         );
         return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
+          <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
             <p>{specialization}</p>
           </Box>
         );
@@ -281,9 +259,15 @@ export const pendingPaymentColumn = (
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );
@@ -429,9 +413,15 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );
@@ -503,14 +493,7 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
           )
         );
         return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
+          <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
             <p>{specialization}</p>
           </Box>
         );

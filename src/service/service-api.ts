@@ -28,7 +28,7 @@ export const api = {
   approveddoctor: "/dashboard/approved-doctor-list",
   approvesingledoctor: "/dashboard/approve-doctor/{id}/",
   rejectsingledoctor: "/dashboard/reject-doctor/{id}/",
-  doctordetails: "/dashboard/view-doctor-profile/{id}/",
+  doctordetails: "/dashboard/view-doctor-profile/{id}",
   // certificate fetch garda ko id
   certificate_update: "/user-management/certificate/{id}",
   experience_update: "/user-management/experience/{id}",
@@ -40,7 +40,6 @@ export const api = {
   detail_address: "/core/detail-address/",
 
   doctor_availability: "/doctor-consult/doctor-availability/",
-  doctorProfileById: "/dashboard/view-doctor-profile/{id}",
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
   rejectionTitle: "/core/rejected-title/",
   specialistRate: {
@@ -75,6 +74,9 @@ export const api = {
     },
     appointment: {
       post: "/patient/appointment/",
+    },
+    doctor_availability: {
+      get: "/patient/doctor-booking-availabilities/:id/",
     },
   },
 };

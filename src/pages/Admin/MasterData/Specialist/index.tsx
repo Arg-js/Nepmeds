@@ -375,6 +375,7 @@ const Specializations = ({
                 name="name"
                 register={formMethods.register}
                 error={errors.name?.message}
+                required
               />
 
               <MultiSelect
