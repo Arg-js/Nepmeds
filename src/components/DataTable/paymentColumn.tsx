@@ -9,8 +9,9 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { CellContext } from "@tanstack/table-core";
-import { Delete, Show } from "react-iconly";
+import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
 
 interface PendingCellContextSearch {
@@ -21,10 +22,7 @@ interface PendingCellContextSearch {
   };
 }
 
-export const allPaymentColumn = (
-  onDeleteClick: (doctorInfo: { id: string; name: string }) => void,
-  navigate: NavigateFunction
-) => {
+export const allPaymentColumn = (navigate: NavigateFunction) => {
   return [
     {
       header: "S.N",
@@ -95,9 +93,15 @@ export const allPaymentColumn = (
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );
@@ -158,7 +162,7 @@ export const allPaymentColumn = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Delete Payment">
+            {/* <Tooltip label="Delete Payment">
               <span>
                 <Icon
                   as={Delete}
@@ -176,7 +180,7 @@ export const allPaymentColumn = (
                   }
                 />
               </span>
-            </Tooltip>
+            </Tooltip> */}
           </HStack>
         );
       },
@@ -281,9 +285,15 @@ export const pendingPaymentColumn = (
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );
@@ -429,9 +439,15 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       header: "Payment Method",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <Flex>
+          <Flex gap={3}>
             {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.url} width={"80px"} />
+              <Image
+                key={e.id}
+                src={appendServerUrl(e.image)}
+                width={"30px"}
+                height={"30px"}
+                aspectRatio={"auto"}
+              />
             ))}
           </Flex>
         );

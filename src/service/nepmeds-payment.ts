@@ -168,7 +168,7 @@ export interface IAllPaymentResponse {
   payment_rejected_remark: string;
   instant_amount: null | string;
   schedule_amount: null | string;
-  payment_modes: { id: string; url: string }[];
+  payment_modes: { id: string; image: string }[];
 }
 
 // Get all payment list (Payment Status)

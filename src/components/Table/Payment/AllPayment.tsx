@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   Center,
-  Flex,
   HStack,
   Input,
   InputGroup,
@@ -13,18 +12,14 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { DeleteTrashImage, svgs } from "@nepMeds/assets/svgs";
+import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { allPaymentColumn } from "@nepMeds/components/DataTable/columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import {
-  useDeleteAmount,
-  useGetPaymentList,
-} from "@nepMeds/service/nepmeds-payment";
+import { useGetPaymentList } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
@@ -41,17 +36,12 @@ const AllPayment = ({
   const formMethods = useForm();
   const [filterValue, setFilterValue] = useState<any>({});
   const [searchFilter, setSearchFilter] = useState("");
-  const deleteAmount = useDeleteAmount();
   const navigate = useNavigate();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
   const debouncedInputValue = useDebounce(searchFilter, 500);
-  const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
-    id: "",
-    name: "",
-  });
 
   const { data, isLoading, isSuccess } = useGetPaymentList({
     ...filterValue,
@@ -67,12 +57,6 @@ const AllPayment = ({
     onClose: onModalClose,
   } = useDisclosure();
 
-  const {
-    isOpen: confirmationModal,
-    onOpen: onOpenConfirmation,
-    onClose: onCloseConfirmation,
-  } = useDisclosure();
-
   const handleFilterData = (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
@@ -86,23 +70,6 @@ const AllPayment = ({
     }
 
     onModalClose();
-  };
-
-  const handleDeleteRate = (id: string) => {
-    deleteAmount.mutate(id, {
-      onSuccess: () => {
-        toastSuccess("Amount Deleted Successfully");
-        onCloseConfirmation();
-      },
-      onError: () => {
-        toastFail("Something went wrong");
-      },
-    });
-  };
-
-  const onActionClick = async (doctorInfo: { id: string; name: string }) => {
-    setDoctorInfo({ name: doctorInfo.name, id: doctorInfo.id });
-    onOpenConfirmation();
   };
 
   return (
@@ -167,62 +134,6 @@ const AllPayment = ({
         </ModalComponent>
       )}
 
-      {confirmationModal && (
-        <ModalComponent
-          isOpen={confirmationModal}
-          onClose={onCloseConfirmation}
-          approve
-          reject
-          size="xl"
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Dcotor Approval</Text>
-            </HStack>
-          }
-          footer={
-            <HStack w="100%" gap={3}>
-              <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
-                flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
-              >
-                Cancel
-              </Button>
-              <Button
-                flex={1}
-                onClick={formMethods.handleSubmit(() =>
-                  handleDeleteRate(doctorInfo.id)
-                )}
-                background={colors.primary}
-                color={colors.white}
-                isLoading={deleteAmount.isLoading}
-              >
-                Yes
-              </Button>
-            </HStack>
-          }
-          primaryText="Done"
-          secondaryText="Cancel"
-          otherAction={onCloseConfirmation}
-        >
-          <Flex
-            flexDirection={"column"}
-            justifyContent={"center"}
-            alignItems={"center"}
-          >
-            <DeleteTrashImage />
-            <Text fontWeight={"bold"} mt={4}>
-              Are you sure you want to delete amount for {doctorInfo.name}?
-            </Text>
-          </Flex>
-        </ModalComponent>
-      )}
-
       <HStack justifyContent="space-between">
         <Text fontWeight="medium">All Payment</Text>
         <HStack>
@@ -257,7 +168,7 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn(onActionClick, navigate)}
+          columns={allPaymentColumn(navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,
