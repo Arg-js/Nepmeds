@@ -145,7 +145,7 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <HStack>
+          <HStack justifyContent={"center"}>
             <Tooltip label="View Doctor">
               <span>
                 <Icon
@@ -162,25 +162,6 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
                 />
               </span>
             </Tooltip>
-            {/* <Tooltip label="Delete Payment">
-              <span>
-                <Icon
-                  as={Delete}
-                  color={"red"}
-                  fontSize={20}
-                  cursor="pointer"
-                  onClick={() =>
-                    onDeleteClick({
-                      id: row.original?.id?.toString(),
-                      name:
-                        row.original.user.first_name +
-                        " " +
-                        row.original.user.last_name,
-                    })
-                  }
-                />
-              </span>
-            </Tooltip> */}
           </HStack>
         );
       },
@@ -243,14 +224,7 @@ export const pendingPaymentColumn = (
           )
         );
         return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
+          <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
             <p>{specialization}</p>
           </Box>
         );
@@ -519,14 +493,7 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
           )
         );
         return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
+          <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
             <p>{specialization}</p>
           </Box>
         );
