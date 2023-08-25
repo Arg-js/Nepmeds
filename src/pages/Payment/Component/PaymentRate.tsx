@@ -28,8 +28,6 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import useAmountForm from "../useAmountForm";
 
-paymentRateColumn;
-
 const PaymentRate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [, setSearchFilter] = useState("");
@@ -87,16 +85,6 @@ const PaymentRate = () => {
   const closeAmountModal = () => {
     onClose();
     reset();
-  };
-
-  const onOpenAmountModal = () => {
-    const data = amountList?.find(e => e.rate_status === "2");
-    onOpen();
-    data &&
-      reset({
-        instant_amount: data?.instant_amount,
-        schedule_amount: data?.schedule_amount,
-      });
   };
 
   return (
@@ -302,7 +290,7 @@ const PaymentRate = () => {
 
           {isSuccess && (
             <DataTable
-              columns={paymentRateColumn(onOpenAmountModal)}
+              columns={paymentRateColumn()}
               data={amountList ?? []}
               pagination={{
                 manual: true,

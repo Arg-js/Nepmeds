@@ -342,7 +342,7 @@ export interface IAmountListDoctor {
   is_active_amount: boolean;
   rate_status: string;
   approved_date: string;
-  created_date: string;
+  requested_date: string;
 }
 
 //Get list of amount for doctor (Without id)

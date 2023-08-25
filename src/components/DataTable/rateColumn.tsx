@@ -1,13 +1,9 @@
-import { Badge, Flex, HStack, Icon, Image, Text } from "@chakra-ui/react";
-import {
-  IAllPaymentResponse,
-  IAmountListDoctor,
-} from "@nepMeds/service/nepmeds-payment";
+import { Badge, Text } from "@chakra-ui/react";
+import { IAmountListDoctor } from "@nepMeds/service/nepmeds-payment";
 import { CellContext } from "@tanstack/react-table";
-import { Edit } from "react-iconly";
 
 //Rate Column
-export const paymentRateColumn = (onEditClick: () => void) => {
+export const paymentRateColumn = () => {
   return [
     {
       header: "S.N",
@@ -19,7 +15,7 @@ export const paymentRateColumn = (onEditClick: () => void) => {
       header: "Pending Date",
       accessorKey: "pending_date",
       accessorFn: (_cell: IAmountListDoctor) => {
-        return _cell?.created_date;
+        return _cell?.requested_date;
       },
     },
 
@@ -63,38 +59,6 @@ export const paymentRateColumn = (onEditClick: () => void) => {
       header: "Appointment Rate",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
-      },
-    },
-    {
-      header: "Payment Method",
-      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
-        return (
-          <Flex>
-            {row?.original?.payment_modes?.map(e => (
-              <Image key={e.id} src={e.image} width={"80px"} />
-            ))}
-          </Flex>
-        );
-      },
-    },
-    {
-      header: "Actions",
-      accessorKey: "actions",
-      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        const show = row?.original?.rate_status === "2";
-        return (
-          <HStack>
-            {show && (
-              <Icon
-                as={Edit}
-                fontSize={20}
-                cursor="pointer"
-                color={"green"}
-                onClick={onEditClick}
-              />
-            )}
-          </HStack>
-        );
       },
     },
   ];
