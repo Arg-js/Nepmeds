@@ -27,6 +27,7 @@ import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import ReadMoreComponent from "@nepMeds/components/ReadMore";
 import { FormLabel, HStack, Image } from "@chakra-ui/react";
+import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 
 type IOptionItem = { label: string; value: string };
 
@@ -66,9 +67,16 @@ const schema = Yup.object({
 const DoctorDetails: React.FC<{
   doctorInfo: IDoctorListById | undefined;
   isFetching: boolean;
+  isAvailabilityFetching: boolean;
   availability: IAvailability[] | undefined;
   setTargeDate: Dispatch<SetStateAction<string>>;
-}> = ({ doctorInfo, availability, isFetching, setTargeDate }) => {
+}> = ({
+  doctorInfo,
+  availability,
+  isFetching,
+  isAvailabilityFetching,
+  setTargeDate,
+}) => {
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
@@ -148,7 +156,10 @@ const DoctorDetails: React.FC<{
                     >
                       Doctor’s Profile
                     </Text>
-                    <Avatar size={"lg"} src={doctorInfo.profile_picture} />
+                    <Avatar
+                      size={"lg"}
+                      src={doctorInfo.profile_picture ?? userAvatar}
+                    />
                     <Text
                       fontWeight={600}
                       fontSize={"16px"}
@@ -215,8 +226,8 @@ const DoctorDetails: React.FC<{
                   <Flex alignSelf={"flex-end"}>
                     {/* TODO: add this */}
                     {/* <Text fontWeight={700} fontSize={"13px"}>
-                  Available time
-                </Text> */}
+                      Available time
+                    </Text> */}
                     <FormControl
                       control={"input"}
                       label={""}
@@ -237,38 +248,46 @@ const DoctorDetails: React.FC<{
                     />
                   </Flex>
                   <Box>
-                    <FormLabel color={colors.red}>
-                      {!availability?.length
-                        ? "This doctor is not available"
-                        : selectedAvailability?.length === 0 &&
-                          "Please Choose the availability"}
-                    </FormLabel>
-                    {availability?.map(data => (
-                      <Button
-                        variant={"primaryOutline"}
-                        width={"120px"}
-                        key={data.id}
-                        borderRadius={3}
-                        height={"34px"}
-                        m={1}
-                        sx={{
-                          bg: `${
-                            selectedAvailability.includes(data.id)
-                              ? colors.sky_blue
-                              : "transparent"
-                          }`,
-                        }}
-                        onClick={() =>
-                          setSelectedAvailability(prev =>
-                            prev.includes(data.id)
-                              ? prev.filter(item => item !== data.id)
-                              : [...prev, data.id]
-                          )
-                        }
-                      >
-                        {data.from_time}
-                      </Button>
-                    ))}
+                    {!isAvailabilityFetching && (
+                      <FormLabel color={colors.red}>
+                        {!availability?.length
+                          ? "This doctor is not available on this date, choose another date"
+                          : selectedAvailability?.length === 0 &&
+                            "Please Choose the availability*"}
+                      </FormLabel>
+                    )}
+                    {isAvailabilityFetching ? (
+                      <Box textAlign={"center"}>
+                        <Spinner />
+                      </Box>
+                    ) : (
+                      availability?.map(data => (
+                        <Button
+                          variant={"primaryOutline"}
+                          width={"120px"}
+                          key={data.id}
+                          borderRadius={3}
+                          height={"34px"}
+                          m={1}
+                          sx={{
+                            bg: `${
+                              selectedAvailability.includes(data.id)
+                                ? colors.sky_blue
+                                : "transparent"
+                            }`,
+                          }}
+                          onClick={() =>
+                            setSelectedAvailability(prev =>
+                              prev.includes(data.id)
+                                ? prev.filter(item => item !== data.id)
+                                : [...prev, data.id]
+                            )
+                          }
+                        >
+                          {data?.from_time?.substr(0, 5)}
+                        </Button>
+                      ))
+                    )}
                   </Box>
                 </Flex>
               </WrapperBox>

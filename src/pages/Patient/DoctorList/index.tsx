@@ -72,10 +72,11 @@ const DoctorList = () => {
     id: doctorId,
     target_date: targetDate || formattedDate,
   });
-  const { data: availability } = useGetAvailability({
-    id: doctorId,
-    target_date: targetDate || formattedDate,
-  });
+  const { data: availability, isFetching: isAvailabilityFetching } =
+    useGetAvailability({
+      id: doctorId,
+      target_date: targetDate || formattedDate,
+    });
   // REACT QUERIES END
 
   return (
@@ -163,6 +164,7 @@ const DoctorList = () => {
               <DoctorDetailsSection
                 doctorInfo={doctorInfo}
                 availability={availability}
+                isAvailabilityFetching={isAvailabilityFetching}
                 isFetching={isFetching}
                 setTargeDate={setTargeDate}
               />
