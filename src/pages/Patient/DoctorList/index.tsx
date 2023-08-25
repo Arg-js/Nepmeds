@@ -122,7 +122,7 @@ const DoctorList = () => {
               alignItems={{ base: "center", "2xl": "flex-start" }}
             >
               {/* DOCTORS LIST */}
-              <Box mx={{ base: 0, md: 30 }} height="215px" width="673px">
+              <Box mx={{ base: 0, md: 30 }} width="673px">
                 <>
                   {isLoading && <Skeleton height="215px" width="673px" />}
                   {doctorData && !doctorData?.results.length && (
