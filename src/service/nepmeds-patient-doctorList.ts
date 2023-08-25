@@ -153,7 +153,7 @@ export const useGetDoctorListById = ({
   target_date: string;
 }) => {
   return useQuery(
-    [api.patient.doctorList.getById, id, target_date],
+    [api.patient.doctorList.getById, id],
     () => getDoctorListById({ id, target_date }),
     {
       enabled: !!id,

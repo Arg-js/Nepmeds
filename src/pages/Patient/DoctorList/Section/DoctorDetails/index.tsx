@@ -2,42 +2,46 @@ import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
 import { Flex, Divider, VStack, Box, Text } from "@chakra-ui/layout";
 import { Spinner } from "@chakra-ui/spinner";
-import { NoDataIcon } from "@nepMeds/assets/svgs";
+import { ImageCancel, NoDataIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import { useForm } from "react-hook-form";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
+import {
+  IAvailability,
+  IDoctorListById,
+} from "@nepMeds/service/nepmeds-patient-doctorList";
 import { colors } from "@nepMeds/theme/colors";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useCreatePatientAppointment } from "@nepMeds/service/nepmeds-patient-appointment";
+import {
+  IPatientAppointmentBasicDetails,
+  useCreatePatientAppointment,
+} from "@nepMeds/service/nepmeds-patient-appointment";
 import { HttpStatusCode } from "axios";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import ReadMoreComponent from "@nepMeds/components/ReadMore";
+import { FormLabel, HStack, Image } from "@chakra-ui/react";
 
-// TODO: check the similarity
-export interface IPatientAppointment {
-  availability: { label: string; value: string }[];
-  full_name: string;
-  gender: string;
-  symptoms: { label: string; value: string }[];
-  description: string;
-  old_report_file?: string;
-  status?: string;
+type IOptionItem = { label: string; value: string };
+
+interface IPatientAppointment extends IPatientAppointmentBasicDetails {
+  symptoms: IOptionItem[];
   availabilityDate?: string;
+  availability: IOptionItem[];
+  old_report_file?: FileList | null;
 }
 
+const today = new Date().toISOString().split("T")[0];
 const defaultValues = {
-  // doctor: 0,
   // availability: [{ label: "", value: "" }],
   availability: [],
   full_name: "",
   gender: "",
   symptoms: [],
+  old_report_file: null,
   // symptoms: [{ label: "", value: "" }],
   description: "",
-  // old_report_file: "",
   // status: "",
   availabilityDate: "",
 };
@@ -61,11 +65,12 @@ const schema = Yup.object({
 const DoctorDetails: React.FC<{
   doctorInfo: IDoctorListById | undefined;
   isFetching: boolean;
+  availability: IAvailability[] | undefined;
   setTargeDate: Dispatch<SetStateAction<string>>;
-}> = ({ doctorInfo, isFetching, setTargeDate }) => {
+}> = ({ doctorInfo, availability, isFetching, setTargeDate }) => {
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
-  const { mutateAsync: createPatientAppointment } =
+  const { mutateAsync: createPatientAppointment, isLoading } =
     useCreatePatientAppointment();
   // REACT QUERIES END
 
@@ -76,9 +81,8 @@ const DoctorDetails: React.FC<{
     })) || [];
 
   const availabilityOptions =
-    doctorInfo &&
-    doctorInfo.availability &&
-    doctorInfo?.availability.map(info => {
+    availability?.length &&
+    availability?.map(info => {
       return {
         label: info.from_time,
         value: info.id,
@@ -90,16 +94,18 @@ const DoctorDetails: React.FC<{
     formState: { errors },
     watch,
     handleSubmit,
+    setValue,
     reset,
     control,
-  } = useForm({
-    defaultValues: defaultValues,
-    resolver: yupResolver(schema),
-  });
+  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+
+  const oldReportFileWatch = watch("old_report_file");
+  const availabilityDateWatch = watch("availabilityDate");
 
   useEffect(() => {
-    watch("availabilityDate") && setTargeDate(watch("availabilityDate"));
-  }, [watch("availabilityDate")]);
+    availabilityDateWatch && setTargeDate(availabilityDateWatch);
+    setValue("availability", []);
+  }, [availabilityDateWatch]);
 
   const onSubmitHandler = async (data: IPatientAppointment) => {
     try {
@@ -108,6 +114,7 @@ const DoctorDetails: React.FC<{
           ...data,
           availability: data.availability.map(({ value }) => +value),
           symptoms: data.symptoms.map(({ value }) => +value),
+          old_report_file: data.old_report_file?.[0] as File,
           doctor: doctorInfo?.id as number,
         },
       });
@@ -124,9 +131,7 @@ const DoctorDetails: React.FC<{
       {doctorInfo ? (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           <WrapperBox
-            // width={"560px"}
             backgroundColor={colors.white}
-            // TODO: reduce repeated code
             boxShadow={boxShadow}
             style={{
               px: { base: "0", md: "2", xl: "4" },
@@ -168,7 +173,7 @@ const DoctorDetails: React.FC<{
                       )}
                   </Text>
                   <Text fontWeight={400} fontSize={"12px"}>
-                    NMC No: 95671
+                    NMC No: {doctorInfo?.medical_licence_number || "N/A"}
                   </Text>
                 </Box>
                 <Divider borderWidth={"0.5px"} />
@@ -179,7 +184,6 @@ const DoctorDetails: React.FC<{
                 gap={1}
                 px={4}
               >
-                {/* TODO: same component */}
                 <Text fontWeight={700} fontSize={"13px"}>
                   About
                 </Text>
@@ -205,7 +209,6 @@ const DoctorDetails: React.FC<{
                 </Text>
               </Flex>
               <Divider borderWidth={"0.5px"} />
-              {/* TODO: same component */}
               <Text fontWeight={700} fontSize={"13px"}>
                 Available time
               </Text>
@@ -257,7 +260,7 @@ const DoctorDetails: React.FC<{
                   register={register}
                   variant={"outline"}
                   style={{
-                    minHeight: "55px",
+                    minHeight: "35px",
                   }}
                   required
                 />
@@ -281,13 +284,15 @@ const DoctorDetails: React.FC<{
                   register={register}
                   variant={"outline"}
                   style={{
-                    minHeight: "55px",
+                    minHeight: "35px",
                   }}
+                  // Restrics selection of past date in Datepicker
+                  min={today}
                   required
                 />
                 <FormControl
                   control={"multiSelect"}
-                  label={"Available Time"}
+                  label={"Availability"}
                   name={"availability"}
                   placeholder={"Book availability"}
                   variant={"outline"}
@@ -332,13 +337,58 @@ const DoctorDetails: React.FC<{
                   error={errors?.description?.message ?? ""}
                   register={register}
                 />
+                <Box>
+                  <FormLabel
+                    fontWeight={"500"}
+                    fontSize={"13px"}
+                    fontFamily={"Quicksand"}
+                  >
+                    Upload Older Reports or Prescription (if any)
+                  </FormLabel>
+                  <FormControl
+                    register={register}
+                    control={"input"}
+                    type={"file"}
+                    id={"image"}
+                    name={"old_report_file"}
+                    display={"none"}
+                  />
+                  <Flex>
+                    <FormLabel
+                      htmlFor="image"
+                      cursor={"pointer"}
+                      border={`1px dashed ${colors.gray}`}
+                      width={"76px"}
+                    >
+                      <UploadImageIcon />
+                    </FormLabel>
+
+                    {oldReportFileWatch && (
+                      <HStack>
+                        <Image
+                          src={URL.createObjectURL(
+                            oldReportFileWatch[0] as unknown as Blob
+                          )}
+                          width={"76px"}
+                          objectFit={"cover"}
+                        />
+                        <Box onClick={() => setValue("old_report_file", null)}>
+                          <ImageCancel style={{ cursor: "pointer" }} />
+                        </Box>
+                      </HStack>
+                    )}
+                  </Flex>
+                </Box>
               </Flex>
             </Flex>
           </WrapperBox>
-          {/* TODO: ui update */}
-          {/* TODO: wrapper code repeated, width 560px also repeat */}
-          <Button type="submit" width="560px" borderRadius="none">
-            Confrim & Pay
+          <Button
+            type="submit"
+            width="560px"
+            borderRadius="none"
+            isLoading={isLoading}
+          >
+            Confirm & Pay
           </Button>
         </form>
       ) : (

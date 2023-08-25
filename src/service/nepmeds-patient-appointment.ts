@@ -4,17 +4,19 @@ import { HttpClient } from "./service-axios";
 import { toastSuccess } from "./service-toast";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
-// TODO: check the similarity
-export interface IPatientAppointmentReqBody {
-  doctor: number;
-  availability: number[];
+export interface IPatientAppointmentBasicDetails {
   full_name: string;
   gender: string;
-  symptoms: number[];
   description: string;
-  old_report_file?: string;
   status?: string;
+}
+interface IPatientAppointmentReqBody extends IPatientAppointmentBasicDetails {
+  doctor: number;
+  symptoms: number[];
+  availability: number[];
+  old_report_file?: File;
 }
 
 const createPatientAppointment = ({
@@ -24,7 +26,7 @@ const createPatientAppointment = ({
 }) => {
   return HttpClient.post(
     api.patient.appointment.post,
-    patientAppointmentDetails
+    objectToFormData(patientAppointmentDetails)
   );
 };
 
@@ -32,6 +34,6 @@ export const useCreatePatientAppointment = () => {
   return useMutation(createPatientAppointment, {
     onSuccess: () => toastSuccess("Appointment has been successfuly created!"),
     onError: (error: AxiosError<{ message: string; error: string }>) =>
-      toastFail(error.message ?? "Somethig went wrong"),
+      toastFail(error.message ?? "Something went wrong"),
   });
 };

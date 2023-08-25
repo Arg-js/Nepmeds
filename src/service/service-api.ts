@@ -75,6 +75,9 @@ export const api = {
     appointment: {
       post: "/patient/appointment/",
     },
+    doctor_availability: {
+      get: "/patient/doctor-booking-availabilities/:id/",
+    },
   },
 };
 
