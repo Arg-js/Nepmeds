@@ -1,15 +1,16 @@
 import { Badge, BadgeProps } from "@chakra-ui/react";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 
 const defaultBadgeText = {
-  "1": "Approved",
-  "2": "Pending",
-  "3": "Rejected",
+  [STATUSTYPE.approved.toString()]: "Approved",
+  [STATUSTYPE.pending.toString()]: "Pending",
+  [STATUSTYPE.rejected.toString()]: "Rejected",
 };
 
 const defaultBadgeColor = {
-  "1": "green",
-  "2": "yellow",
-  "3": "red",
+  [STATUSTYPE.approved.toString()]: "green",
+  [STATUSTYPE.pending.toString()]: "yellow",
+  [STATUSTYPE.rejected.toString()]: "red",
 };
 
 const StatusBadge = ({

@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import { getFullDate } from "@nepMeds/helper/dateTImeConverter";
 import { IAmountListDoctor } from "@nepMeds/service/nepmeds-payment";
 import { CellContext } from "@tanstack/react-table";
 import StatusBadge from "../Common/StatusBadge";
@@ -15,9 +16,9 @@ export const paymentRateColumn = () => {
     },
     {
       header: "Requested Date",
-      accessorKey: "pending_date",
+      accessorKey: "requested_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return row?.original?.requested_date ?? "-";
+        return getFullDate(row?.original?.requested_date) ?? "-";
       },
       size: 22,
     },
