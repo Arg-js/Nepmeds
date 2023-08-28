@@ -2,12 +2,12 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Flex,
   HStack,
   Heading,
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Stack,
   Text,
   VStack,
@@ -20,6 +20,9 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
 // import { useDebounce } from '@nepMeds/hooks/useDebounce';
+import CenterLoader from "@nepMeds/components/Common/Loader";
+import PaymentAmountBox from "@nepMeds/components/Payment/PaymentRateBox";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useGetAmountList } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
@@ -72,7 +75,9 @@ const PaymentRate = () => {
     const isValid = await trigger();
     if (!isValid) return;
 
-    const data = amountList?.find(e => e.rate_status === "2");
+    const data = amountList?.find(
+      e => e.rate_status === STATUSTYPE.pending.toString()
+    );
 
     data
       ? handleEditPayment(getValues(), data?.id?.toString(), closeAmountModal)
@@ -87,6 +92,20 @@ const PaymentRate = () => {
     reset();
   };
 
+  const onOpenModal = () => {
+    onOpen();
+    const data = amountList?.find(
+      e => e.rate_status === STATUSTYPE.pending.toString()
+    );
+    if (data) {
+      reset({
+        instant_amount: data?.instant_amount,
+        schedule_amount: data?.schedule_amount,
+      });
+    }
+  };
+
+  if (isLoading) return <CenterLoader />;
   return (
     <div>
       {isModalOpen && (
@@ -258,9 +277,22 @@ const PaymentRate = () => {
           </VStack>
         </Box>
       ) : (
-        <>
+        <Box>
+          <Flex gap={5} my={3}>
+            <PaymentAmountBox
+              isPending={false}
+              data={amountList?.find(e => e.is_active_amount)}
+            />
+            <PaymentAmountBox
+              isPending={true}
+              data={amountList?.find(
+                e => e.rate_status === STATUSTYPE.pending.toString()
+              )}
+              onOpen={onOpenModal}
+            />
+          </Flex>
           <HStack justifyContent="space-between">
-            <Text fontWeight="medium">Rate</Text>
+            <Text fontWeight="medium">Rate History</Text>
             <HStack>
               <InputGroup w="190px" borderColor={colors.grey_dark}>
                 <InputLeftElement pointerEvents="none" h={8}>
@@ -301,9 +333,8 @@ const PaymentRate = () => {
               }}
             />
           )}
-        </>
+        </Box>
       )}
-      {isLoading && <Spinner />}
     </div>
   );
 };
