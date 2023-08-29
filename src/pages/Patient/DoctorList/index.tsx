@@ -1,4 +1,4 @@
-import { Box, Flex, Skeleton } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
@@ -105,27 +105,31 @@ const DoctorList = () => {
             description="Book Appointment with top doctors across various speciality"
           />
 
-          <Flex mt={8} direction={{ base: "column", md: "row" }}>
-            {/* FILTER */}
-            <DoctorListFilter
-              setGender={setGender}
-              setSpecialization={setSpecialization}
-              setSymptom={setSymptom}
-              setSearchValue={setSearchValue}
-              setDateParams={setDateParams}
-              dateParams={dateParams}
-              setPageParams={setPageParams}
-              pageParams={pageParams}
-            />
+          <Grid
+            templateColumns={{
+              base: "repeat(3, 1fr)",
+              lg: "repeat(6, 1fr)",
+              "2xl": "repeat(5, 1fr)",
+            }}
+            columnGap={{ base: 2, lg: 4, xl: 10 }}
+          >
+            <GridItem colSpan={1}>
+              <DoctorListFilter
+                setGender={setGender}
+                setSpecialization={setSpecialization}
+                setSymptom={setSymptom}
+                setSearchValue={setSearchValue}
+                setDateParams={setDateParams}
+                dateParams={dateParams}
+                setPageParams={setPageParams}
+                pageParams={pageParams}
+              />
+            </GridItem>
 
-            <Flex
-              direction={{ base: "column", "2xl": "row" }}
-              alignItems={{ base: "center", "2xl": "flex-start" }}
-            >
-              {/* DOCTORS LIST */}
-              <Box mx={{ base: 0, md: 30 }} width="673px">
+            <GridItem colSpan={{ base: 1, lg: 3, "2xl": 2 }}>
+              <Box w={"full"}>
                 <>
-                  {isLoading && <Skeleton height="215px" width="673px" />}
+                  {isLoading && <Skeleton height="215px" width="inherit" />}
                   {doctorData && !doctorData?.results.length && (
                     <Box width="673px" height="215px">
                       No Data to be shown!
@@ -139,7 +143,7 @@ const DoctorList = () => {
                   {doctorData &&
                     doctorData?.results.map(doctorData => {
                       return (
-                        <Box key={doctorData.id}>
+                        <Box key={doctorData.id} mb={6}>
                           <DoctorListCard
                             data={doctorData}
                             size={Size.lg}
@@ -160,16 +164,20 @@ const DoctorList = () => {
                   )}
                 </>
               </Box>
+            </GridItem>
 
-              <DoctorDetailsSection
-                doctorInfo={doctorInfo}
-                availability={availability}
-                isAvailabilityFetching={isAvailabilityFetching}
-                isFetching={isFetching}
-                setTargeDate={setTargeDate}
-              />
-            </Flex>
-          </Flex>
+            <GridItem colSpan={{ base: 1, lg: 2 }}>
+              <Box>
+                <DoctorDetailsSection
+                  doctorInfo={doctorInfo}
+                  availability={availability}
+                  isAvailabilityFetching={isAvailabilityFetching}
+                  isFetching={isFetching}
+                  setTargeDate={setTargeDate}
+                />
+              </Box>
+            </GridItem>
+          </Grid>
         </>
       </WrapperBox>
       <PatientFooter />

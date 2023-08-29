@@ -132,7 +132,7 @@ const DoctorDetails: React.FC<{
   };
 
   return (
-    <>
+    <Box>
       {doctorInfo ? (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
           {!isAvailability && (
@@ -143,156 +143,158 @@ const DoctorDetails: React.FC<{
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   height: "auto",
-                  width: { base: "auto", xl: "560px" },
                   borderTopRadius: 3,
                 }}
               >
-                <Flex direction={"column"} gap={5}>
-                  <Flex direction={"column"} alignItems={"center"} gap={4}>
-                    <Text
-                      fontWeight={600}
-                      fontSize={"14px"}
-                      color={colors.dark_blue}
-                    >
-                      Doctor’s Profile
-                    </Text>
-                    <Avatar
-                      size={"lg"}
-                      src={doctorInfo.profile_picture ?? userAvatar}
-                    />
-                    <Text
-                      fontWeight={600}
-                      fontSize={"16px"}
-                      textTransform="capitalize"
-                    >
-                      {doctorInfo?.name}
-                    </Text>
-                    <Box textAlign={"center"}>
-                      <Text fontWeight={400} fontSize={"12px"}>
-                        {doctorInfo?.specialization_names &&
-                          doctorInfo?.specialization_names.map(
-                            (specializaion_name, index) => {
-                              return `${
-                                index ===
-                                  doctorInfo.specialization_names.length - 1 ||
-                                doctorInfo.specialization_names.length === 1
-                                  ? specializaion_name.name
-                                  : `${specializaion_name.name} - `
-                              }`;
-                            }
-                          )}
+                <>
+                  <Flex direction={"column"} gap={5}>
+                    <Flex direction={"column"} alignItems={"center"} gap={4}>
+                      <Text
+                        fontWeight={600}
+                        fontSize={"14px"}
+                        color={colors.dark_blue}
+                      >
+                        Doctor’s Profile
                       </Text>
-                      <Text fontWeight={400} fontSize={"12px"}>
-                        NMC No: {doctorInfo?.medical_licence_number || "N/A"}
+                      <Avatar
+                        size={"lg"}
+                        src={doctorInfo.profile_picture ?? userAvatar}
+                      />
+                      <Text
+                        fontWeight={600}
+                        fontSize={"16px"}
+                        textTransform="capitalize"
+                      >
+                        {doctorInfo?.name}
                       </Text>
-                    </Box>
+                      <Box textAlign={"center"}>
+                        <Text fontWeight={400} fontSize={"12px"}>
+                          {doctorInfo?.specialization_names &&
+                            doctorInfo?.specialization_names.map(
+                              (specializaion_name, index) => {
+                                return `${
+                                  index ===
+                                    doctorInfo.specialization_names.length -
+                                      1 ||
+                                  doctorInfo.specialization_names.length === 1
+                                    ? specializaion_name.name
+                                    : `${specializaion_name.name} - `
+                                }`;
+                              }
+                            )}
+                        </Text>
+                        <Text fontWeight={400} fontSize={"12px"}>
+                          NMC No: {doctorInfo?.medical_licence_number || "N/A"}
+                        </Text>
+                      </Box>
+                      <Divider borderWidth={"0.5px"} />
+                    </Flex>
+                    <Flex
+                      direction={"column"}
+                      justifyContent={"flex-start"}
+                      gap={1}
+                      px={4}
+                    >
+                      <Text fontWeight={700} fontSize={"13px"}>
+                        About
+                      </Text>
+                      <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
+                    </Flex>
+                    <Flex
+                      bg={colors.sky_blue}
+                      justifyContent={"space-between"}
+                      alignItems={"center"}
+                      p={2}
+                      px={3.5}
+                      borderRadius={"8px"}
+                    >
+                      <Text
+                        fontWeight={590}
+                        fontSize={"13px"}
+                        color={colors.primary}
+                      >
+                        Consultation Fee
+                      </Text>
+                      <Text
+                        fontWeight={500}
+                        fontSize={"16px"}
+                        color={colors.forest_green}
+                      >
+                        NRs. {doctorInfo.schedule_rate}
+                      </Text>
+                    </Flex>
                     <Divider borderWidth={"0.5px"} />
-                  </Flex>
-                  <Flex
-                    direction={"column"}
-                    justifyContent={"flex-start"}
-                    gap={1}
-                    px={4}
-                  >
-                    <Text fontWeight={700} fontSize={"13px"}>
-                      About
-                    </Text>
-                    <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
-                  </Flex>
-                  <Flex
-                    bg={colors.sky_blue}
-                    justifyContent={"space-between"}
-                    alignItems={"center"}
-                    p={2}
-                    px={3.5}
-                    borderRadius={"8px"}
-                  >
-                    <Text
-                      fontWeight={590}
-                      fontSize={"13px"}
-                      color={colors.primary}
-                    >
-                      Consultation Fee
-                    </Text>
-                    <Text
-                      fontWeight={500}
-                      fontSize={"16px"}
-                      color={colors.forest_green}
-                    >
-                      NRs. {doctorInfo.schedule_rate}
-                    </Text>
-                  </Flex>
-                  <Divider borderWidth={"0.5px"} />
-                  <Flex alignSelf={"flex-end"}>
-                    {/* TODO: add this */}
-                    {/* <Text fontWeight={700} fontSize={"13px"}>
+                    <Flex alignSelf={"flex-end"}>
+                      {/* TODO: add this */}
+                      {/* <Text fontWeight={700} fontSize={"13px"}>
                       Available time
                     </Text> */}
-                    <FormControl
-                      control={"input"}
-                      label={""}
-                      type={"date"}
-                      name={"availabilityDate"}
-                      placeholder={""}
-                      error={errors?.availabilityDate?.message ?? ""}
-                      register={register}
-                      variant={"outline"}
-                      style={{
-                        minHeight: "35px",
-                        width: "180px",
-                        borderRadius: "9px",
-                      }}
-                      // Restricts selection of past date in Datepicker
-                      min={today}
-                      required
-                    />
+                      <FormControl
+                        control={"input"}
+                        label={""}
+                        type={"date"}
+                        name={"availabilityDate"}
+                        placeholder={""}
+                        error={errors?.availabilityDate?.message ?? ""}
+                        register={register}
+                        variant={"outline"}
+                        style={{
+                          minHeight: "35px",
+                          width: "180px",
+                          borderRadius: "9px",
+                        }}
+                        // Restricts selection of past date in Datepicker
+                        min={today}
+                        required
+                      />
+                    </Flex>
+                    <Box>
+                      {!isAvailabilityFetching && (
+                        <FormLabel color={colors.red}>
+                          {!availability?.length
+                            ? "This doctor is not available on this date, choose another date"
+                            : selectedAvailability?.length === 0 &&
+                              "Please Choose the availability*"}
+                        </FormLabel>
+                      )}
+                      {isAvailabilityFetching ? (
+                        <Box textAlign={"center"}>
+                          <Spinner />
+                        </Box>
+                      ) : (
+                        availability?.map(data => (
+                          <Button
+                            variant={"primaryOutline"}
+                            width={"100px"}
+                            key={data.id}
+                            borderRadius={3}
+                            height={"34px"}
+                            m={1}
+                            sx={{
+                              bg: `${
+                                selectedAvailability.includes(data.id)
+                                  ? colors.sky_blue
+                                  : "transparent"
+                              }`,
+                            }}
+                            onClick={() =>
+                              setSelectedAvailability(prev =>
+                                prev.includes(data.id)
+                                  ? prev.filter(item => item !== data.id)
+                                  : [...prev, data.id]
+                              )
+                            }
+                          >
+                            {data?.from_time?.substr(0, 5)}
+                          </Button>
+                        ))
+                      )}
+                    </Box>
                   </Flex>
-                  <Box>
-                    {!isAvailabilityFetching && (
-                      <FormLabel color={colors.red}>
-                        {!availability?.length
-                          ? "This doctor is not available on this date, choose another date"
-                          : selectedAvailability?.length === 0 &&
-                            "Please Choose the availability*"}
-                      </FormLabel>
-                    )}
-                    {isAvailabilityFetching ? (
-                      <Box textAlign={"center"}>
-                        <Spinner />
-                      </Box>
-                    ) : (
-                      availability?.map(data => (
-                        <Button
-                          variant={"primaryOutline"}
-                          width={"120px"}
-                          key={data.id}
-                          borderRadius={3}
-                          height={"34px"}
-                          m={1}
-                          sx={{
-                            bg: `${
-                              selectedAvailability.includes(data.id)
-                                ? colors.sky_blue
-                                : "transparent"
-                            }`,
-                          }}
-                          onClick={() =>
-                            setSelectedAvailability(prev =>
-                              prev.includes(data.id)
-                                ? prev.filter(item => item !== data.id)
-                                : [...prev, data.id]
-                            )
-                          }
-                        >
-                          {data?.from_time?.substr(0, 5)}
-                        </Button>
-                      ))
-                    )}
-                  </Box>
-                </Flex>
+                </>
               </WrapperBox>
               <Button
-                width="560px"
+                width="full"
                 borderRadius="none"
                 onClick={() =>
                   selectedAvailability?.length &&
@@ -312,7 +314,9 @@ const DoctorDetails: React.FC<{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
                   height: "auto",
-                  width: { base: "auto", xl: "560px" },
+                  // width: { base: "auto" },
+                  // width: "clamp(200px, 100%, 100%)",
+                  // maxWidth: "400px",
                   borderTopRadius: 3,
                 }}
               >
@@ -471,7 +475,7 @@ const DoctorDetails: React.FC<{
               </WrapperBox>
               <Button
                 type="submit"
-                width="560px"
+                width="full"
                 borderRadius="none"
                 isLoading={isLoading}
               >
@@ -487,8 +491,9 @@ const DoctorDetails: React.FC<{
           boxShadow={boxShadow}
           style={{
             px: 4,
-            height: "567px",
-            width: { base: "auto", xl: "560px" },
+            py: 48,
+            // height: "567px",
+            width: { base: "auto" },
           }}
           borderRadius={"3px"}
         >
@@ -497,13 +502,13 @@ const DoctorDetails: React.FC<{
             alignContent={"center"}
             // width={"544px"}
             // height={"700px"}
-            mt={30}
+            // mt={30}
           >
             {isFetching ? (
               <Spinner />
             ) : (
               <>
-                <NoDataIcon />
+                <NoDataIcon width={"full"} />
                 <Text fontWeight={700} fontSize={"16px"} color={colors.red_700}>
                   There are no details here.
                 </Text>
@@ -516,7 +521,7 @@ const DoctorDetails: React.FC<{
           </VStack>
         </WrapperBox>
       )}
-    </>
+    </Box>
   );
 };
 
