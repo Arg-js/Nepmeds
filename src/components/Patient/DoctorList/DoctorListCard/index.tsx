@@ -38,7 +38,8 @@ const DoctorListCard: React.FC<{
       {
         id: 1,
         icon: <LocationIcon />,
-        description: `${data.municipality}, ${data.district}`,
+        // description: `${data.municipality}, ${data.district}`,
+        description: ` ${data.district}`,
       },
       {
         id: 2,
@@ -76,23 +77,26 @@ const DoctorListCard: React.FC<{
         w={"full"}
       >
         <Grid
-          templateColumns={"repeat(5, 1fr)"}
+          templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
+          templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           columnGap={4}
-          h={"200px"}
+          h={size === Size.sm ? "302px" : "150px"}
           boxShadow={
             doctorId === data.id
               ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`
               : "none"
           }
+          borderRadius={4}
         >
-          <GridItem colSpan={2} h={"inherit"}>
+          <GridItem colSpan={2} h={size === Size.sm ? "151px" : "inherit"}>
             {/* TODO: what happens when width and height not provided in image */}
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
               w={"full"}
-              h={"full"}
+              h={size === Size.sm ? "151px" : "182px"}
               objectFit={"cover"}
+              borderRadius={"6px 0 0 6px"}
             />
           </GridItem>
 
@@ -126,7 +130,7 @@ const DoctorListCard: React.FC<{
                   )}
               </Text>
               <Text
-                fontWeight={600}
+                fontWeight={500}
                 fontSize={`${size === Size.sm ? "11px" : "12px"}`}
               >
                 {data.workplace}

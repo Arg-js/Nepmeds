@@ -12,7 +12,7 @@ import { SearchIcon } from "@nepMeds/assets/svgs";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 
 const GenderList = [
   { label: "Male Doctor", value: "Male" },
@@ -29,6 +29,9 @@ interface IPageParams {
   page: number;
   limit: number;
 }
+
+const dateToday = new Date(Date.now()).toISOString().split("T")[0];
+
 const DoctorListFilter: React.FC<{
   setGender: Dispatch<SetStateAction<string[]>>;
   setSpecialization: Dispatch<SetStateAction<string[]>>;
@@ -50,8 +53,33 @@ const DoctorListFilter: React.FC<{
 }) => {
   // REACT QUERIES
   const { data: symptomData = [] } = useGetSymptoms();
-  const { data: specializaionData = [] } = useSpecializationRegisterData();
+  const { data: specializationData = [] } = useSpecializationRegisterData();
+  const genderFiltersRef = useRef<HTMLInputElement[]>([]);
+  const specializationFiltersRef = useRef<HTMLInputElement[]>([]);
+  const symptomFiltersRef = useRef<HTMLInputElement[]>([]);
+  const dateFromRef = useRef<HTMLInputElement>(null);
+  const dateToRef = useRef<HTMLInputElement>(null);
+  // const clearAll = useRef(false);
   // REACT QUERIES END
+
+  // useEffect(() => {
+  //   if (!clearAll.current) return;
+
+  //   clearAll.current = !clearAll.current;
+  // }, [clearAll.current]);
+
+  const clearAllFilter = () => {
+    for (let i = 0; i < genderFiltersRef.current.length; i++) {
+      genderFiltersRef.current[i].checked = false;
+      specializationFiltersRef.current[i].checked = false;
+      symptomFiltersRef.current[i].checked = false;
+    }
+
+    if (dateFromRef.current && dateToRef.current) {
+      dateFromRef.current.value = "";
+      dateToRef.current.value = "";
+    }
+  };
 
   return (
     <Box display={"flex"} gap={"2"} flexDirection={"column"}>
@@ -74,25 +102,33 @@ const DoctorListFilter: React.FC<{
             <Text fontWeight={700} fontSize={"16px"}>
               Filters
             </Text>
-            {/* <Text
+            <Text
               fontWeight={500}
               fontSize={"12px"}
               color={colors.primary}
               textDecoration={"underline"}
               cursor={"pointer"}
               onClick={() => {
+                // clearAll.current = true;
+                clearAllFilter();
                 setGender([]);
                 setSpecialization([]);
                 setSymptom([]);
+                setDateParams({
+                  from_date: "",
+                  to_date: "",
+                });
               }}
             >
               Clear All
-            </Text> */}
+            </Text>
           </Flex>
           <Divider />
           <Flex gap={2} justifyContent="center" wrap={"wrap"}>
             <Input
               type={"date"}
+              ref={dateFromRef}
+              defaultValue={dateToday}
               onChange={e => {
                 setDateParams({ ...dateParams, from_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
@@ -101,6 +137,8 @@ const DoctorListFilter: React.FC<{
             <Text>-</Text>
             <Input
               type={"date"}
+              ref={dateToRef}
+              defaultValue={dateToday}
               onChange={e => {
                 setDateParams({ ...dateParams, to_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
@@ -111,10 +149,17 @@ const DoctorListFilter: React.FC<{
             <Text fontWeight={600} fontSize={"16px"} mb={3}>
               Gender
             </Text>
-            {GenderList.map(gender => {
+            {GenderList.map((gender, index) => {
               return (
                 <Flex gap={4} key={gender.value} mb={2}>
                   <Checkbox
+                    ref={element => {
+                      if (element) genderFiltersRef.current[index] = element;
+                    }}
+                    isChecked={genderFiltersRef?.current[index]?.checked}
+                    // isChecked={
+                    //   clearAll.current ? false : g.includes(gender.value)
+                    // }
                     onChange={e => {
                       setGender(prev =>
                         e.target.checked
@@ -135,10 +180,20 @@ const DoctorListFilter: React.FC<{
             <Text fontWeight={600} fontSize={"16px"} mb={3}>
               Specialization
             </Text>
-            {specializaionData.map(specialization => {
+            {specializationData.map((specialization, index) => {
               return (
                 <Flex gap={4} key={specialization.id} mb={2}>
                   <Checkbox
+                    ref={element => {
+                      if (element)
+                        specializationFiltersRef.current[index] = element;
+                    }}
+                    isChecked={
+                      specializationFiltersRef?.current[index]?.checked
+                    }
+                    // isChecked={
+                    //   clearAll.current ? false : s.includes(specialization.name)
+                    // }
                     onChange={e => {
                       setSpecialization(prev =>
                         e.target.checked
@@ -159,10 +214,14 @@ const DoctorListFilter: React.FC<{
             <Text fontWeight={600} fontSize={"16px"} mb={3}>
               Health Concern
             </Text>
-            {symptomData.map(symptom => {
+            {symptomData.map((symptom, index) => {
               return (
                 <Flex gap={4} key={symptom.id} mb={2}>
                   <Checkbox
+                    ref={element => {
+                      if (element) symptomFiltersRef.current[index] = element;
+                    }}
+                    isChecked={symptomFiltersRef?.current[index]?.checked}
                     onChange={e => {
                       setSymptom(prev =>
                         e.target.checked
