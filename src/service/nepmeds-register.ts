@@ -38,6 +38,7 @@ export type PrimaryInfo = Pick<
     date_of_birth?: string;
     email?: string;
     is_email_verified?: boolean;
+    is_mobile_number_verified?: boolean;
   };
 };
 
