@@ -67,14 +67,14 @@ const DoctorListFilter: React.FC<{
           placeholder="Search by doctors name"
         />
       </InputGroup>
-      <Box width={"277px"} border={`0.5px solid ${colors.gray_border}`} p={6}>
+      <Box border={`0.5px solid ${colors.gray_border}`} p={6}>
         <Flex direction={"column"} gap={3}>
           {/* HEADING */}
           <Flex justifyContent={"space-between"} alignItems={"center"}>
             <Text fontWeight={700} fontSize={"16px"}>
               Filters
             </Text>
-            <Text
+            {/* <Text
               fontWeight={500}
               fontSize={"12px"}
               color={colors.primary}
@@ -87,10 +87,10 @@ const DoctorListFilter: React.FC<{
               }}
             >
               Clear All
-            </Text>
+            </Text> */}
           </Flex>
           <Divider />
-          <Flex gap={2} justifyContent="center">
+          <Flex gap={2} justifyContent="center" wrap={"wrap"}>
             <Input
               type={"date"}
               onChange={e => {

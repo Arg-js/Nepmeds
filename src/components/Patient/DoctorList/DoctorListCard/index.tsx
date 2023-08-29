@@ -1,4 +1,4 @@
-import { Flex, Text, Card, Box, Image } from "@chakra-ui/react";
+import { Flex, Text, Card, Box, Image, Grid, GridItem } from "@chakra-ui/react";
 import {
   LocationIcon,
   PayementIcon,
@@ -73,55 +73,30 @@ const DoctorListCard: React.FC<{
           },
         }}
         variant={"elevated"}
+        w={"full"}
       >
-        <Flex
-          direction={`${size === Size.sm ? "column" : "row"}`}
+        <Grid
+          templateColumns={"repeat(5, 1fr)"}
+          columnGap={4}
+          h={"200px"}
           boxShadow={
             doctorId === data.id
               ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`
               : "none"
           }
         >
-          <Box
-            width={{
-              base: `${size === Size.sm ? "285px" : "150px"}`,
-              md: `${size === Size.sm ? "302px" : "296px"}`,
-            }}
-            height={`${size === Size.sm ? "159px" : "215px"}`}
-          >
+          <GridItem colSpan={2} h={"inherit"}>
             {/* TODO: what happens when width and height not provided in image */}
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
+              w={"full"}
+              h={"full"}
               objectFit={"cover"}
-              width={{
-                base: `${size === Size.sm ? "285px" : "150px"}`,
-                md: `${size === Size.sm ? "302px" : "296px"}`,
-              }}
-              height={`${size === Size.sm ? "159px" : "215px"}`}
             />
-          </Box>
-          <Flex
-            width={{
-              base: `${size === Size.sm ? "302px" : "200px"}`,
-              md: `${size === Size.sm ? "302px" : "200px"}`,
-              xl: `${size === Size.sm ? "302px" : "377px"}`,
-            }}
-            height={`${size === Size.sm ? "159px" : "215px"}`}
-            direction={"column"}
-            gap={{
-              base: `${size === Size.sm ? "2" : "3"}`,
-              md: `${size === Size.sm ? "2" : "4"}`,
-            }}
-            py={{
-              base: `${size === Size.sm ? "3" : "5"}`,
-              md: `${size === Size.sm ? "3" : "5"}`,
-            }}
-            px={{
-              base: `${size === Size.sm ? "3" : "3"}`,
-              md: `${size === Size.sm ? "3" : "8"}`,
-            }}
-          >
+          </GridItem>
+
+          <GridItem colSpan={3} py={4} px={2}>
             <Text
               size="md"
               fontWeight={700}
@@ -151,14 +126,18 @@ const DoctorListCard: React.FC<{
                   )}
               </Text>
               <Text
-                fontWeight={500}
+                fontWeight={600}
                 fontSize={`${size === Size.sm ? "11px" : "12px"}`}
               >
                 {data.workplace}
               </Text>
             </Flex>
 
-            <Flex direction={"column"} gap={`${size === Size.sm ? "1" : "3"}`}>
+            <Flex
+              direction={"column"}
+              gap={`${size === Size.sm ? "1" : "2"}`}
+              mt={3}
+            >
               {doctorDetails.map(doctorDetail => {
                 return (
                   <Flex gap={4} key={doctorDetail.id}>
@@ -174,8 +153,8 @@ const DoctorListCard: React.FC<{
                 );
               })}
             </Flex>
-          </Flex>
-        </Flex>
+          </GridItem>
+        </Grid>
       </Card>
     </Flex>
   );
