@@ -166,9 +166,12 @@ export interface IAllPaymentResponse {
   status: number;
   rejected_remarks: null | string;
   payment_rejected_remark: string;
-  instant_amount: null | string;
-  schedule_amount: null | string;
   payment_modes: { id: string; image: string }[];
+  doctor_amount_detail: {
+    schedule_amount: null | string;
+    id: string;
+    instant_amount: null | string;
+  };
 }
 
 // Get all payment list (Payment Status)

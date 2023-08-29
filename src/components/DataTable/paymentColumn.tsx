@@ -70,8 +70,8 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
         return (
           <Text pl={"12px"}>
             {" "}
-            {row?.original?.instant_amount
-              ? `Rs. ${row?.original?.instant_amount}`
+            {row?.original?.doctor_amount_detail?.instant_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.instant_amount}`
               : "-"}
           </Text>
         );
@@ -82,8 +82,8 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
-            {row?.original?.schedule_amount
-              ? `Rs. ${row?.original?.schedule_amount}`
+            {row?.original?.doctor_amount_detail?.schedule_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.schedule_amount}`
               : "-"}
           </Text>
         );
@@ -236,8 +236,8 @@ export const pendingPaymentColumn = (
         return (
           <Text pl={"12px"}>
             {" "}
-            {row?.original?.instant_amount
-              ? `Rs. ${row?.original?.instant_amount}`
+            {row?.original?.doctor_amount_detail?.instant_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.instant_amount}`
               : "-"}
           </Text>
         );
@@ -248,8 +248,8 @@ export const pendingPaymentColumn = (
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
-            {row?.original?.schedule_amount
-              ? `Rs. ${row?.original?.schedule_amount}`
+            {row?.original?.doctor_amount_detail?.schedule_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.schedule_amount}`
               : "-"}
           </Text>
         );
@@ -276,7 +276,7 @@ export const pendingPaymentColumn = (
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: (cell: CellContext<any, any>) => {
+      cell: (cell: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
             <Tooltip label="View Doctor">
@@ -305,7 +305,7 @@ export const pendingPaymentColumn = (
                   color={colors.green_light}
                   onClick={() => {
                     onClick(true, {
-                      id: cell.row.original.id,
+                      id: cell.row.original.doctor_amount_detail?.id?.toString(),
                       name:
                         cell.row.original.user.first_name +
                         " " +
@@ -324,7 +324,7 @@ export const pendingPaymentColumn = (
                   cursor="pointer"
                   onClick={() => {
                     onClick(false, {
-                      id: cell.row.original.id,
+                      id: cell.row.original.doctor_amount_detail?.id?.toString(),
                       name:
                         cell.row.original.user.first_name +
                         " " +
@@ -389,8 +389,8 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
         return (
           <Text pl={"12px"}>
             {" "}
-            {row?.original?.instant_amount
-              ? `Rs. ${row?.original?.instant_amount}`
+            {row?.original?.doctor_amount_detail?.instant_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.instant_amount}`
               : "-"}
           </Text>
         );
@@ -401,8 +401,8 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
-            {row?.original?.schedule_amount
-              ? `Rs. ${row?.original?.schedule_amount}`
+            {row?.original?.doctor_amount_detail?.schedule_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.schedule_amount}`
               : "-"}
           </Text>
         );
@@ -505,8 +505,8 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
         return (
           <Text pl={"12px"}>
             {" "}
-            {row?.original?.instant_amount
-              ? `Rs. ${row?.original?.instant_amount}`
+            {row?.original?.doctor_amount_detail?.instant_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.instant_amount}`
               : "-"}
           </Text>
         );
@@ -517,8 +517,8 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
-            {row?.original?.schedule_amount
-              ? `Rs. ${row?.original?.schedule_amount}`
+            {row?.original?.doctor_amount_detail?.schedule_amount
+              ? `Rs. ${row?.original?.doctor_amount_detail?.schedule_amount}`
               : "-"}
           </Text>
         );
