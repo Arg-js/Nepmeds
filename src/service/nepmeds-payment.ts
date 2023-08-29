@@ -347,7 +347,7 @@ export interface IAmountListDoctor {
 
 //Get list of amount for doctor (Without id)
 const getAmountList = async () => {
-  const response = await HttpClient.get<NepMedsResponse<IAmountListDoctor[]>>(
+  const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
     api.add_amount_create
   );
   return response;

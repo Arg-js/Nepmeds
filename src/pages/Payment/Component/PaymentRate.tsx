@@ -34,7 +34,8 @@ import useAmountForm from "../useAmountForm";
 const PaymentRate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [, setSearchFilter] = useState("");
-  const { data: amountList, isSuccess, isLoading } = useGetAmountList();
+  const { data, isSuccess, isLoading } = useGetAmountList();
+  const amountList = data?.results;
   // const debouncedInputValue = useDebounce(searchFilter, 500);
 
   const {
