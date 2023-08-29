@@ -26,6 +26,7 @@ const LayoutComponent = () => {
   useEffect(() => {
     if (profileData?.data) {
       if (
+        profileData?.data?.is_doctor &&
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
         navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED);
