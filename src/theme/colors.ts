@@ -96,4 +96,8 @@ export const colors = {
 
   reset: "#F57E77",
   resetHover: "#FFF0F0",
+
+  dark_green: "#065F46",
+  yellow: "#FEF3C7",
+  maroon: "#92400E",
 };

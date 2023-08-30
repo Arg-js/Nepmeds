@@ -66,7 +66,7 @@ export const theme = extendTheme({
   styles: {
     global: {
       body: {
-        fontFamily: "'Poppins', sans-serif",
+        fontFamily: "'Inter', sans-serif",
         fontWeight: 400,
         backgroundColor: colors.background,
       },

@@ -14,9 +14,10 @@ const Appointment: React.FC = () => {
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
       <Tabs variant="unstyled" fontSize="16px" fontWeight="400">
         <TabList>
-          <Tab>Instant Consults</Tab>
-          <Tab>Consultant</Tab>
-          <Tab>Appointments</Tab>
+          <Tab>All</Tab>
+          <Tab>Pending Appointment</Tab>
+          <Tab>Approved</Tab>
+          <Tab>Rejected</Tab>
         </TabList>
         <TabIndicator
           mt="-1.5px"

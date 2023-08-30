@@ -82,13 +82,16 @@ const round = defineStyle({
 
 export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
   variants: { primary, secondary, primaryOutline, outline, reset, round },
-  // sizes: {
-  //   lg: {
-  //     width: "auto",
-  //   },
-  // },
+  sizes: {
+    sm: {
+      height: "44px",
+    },
+    md: {
+      height: "48px",
+    },
+  },
   defaultProps: {
-    // size: "lg",
+    size: "md",
     variant: "primary",
   },
 });

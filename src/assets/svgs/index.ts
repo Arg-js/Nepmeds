@@ -40,3 +40,6 @@ export { ReactComponent as WhyChooseUs3Icon } from "./whyChoose3.svg";
 export { ReactComponent as ImageCancelIcon } from "./imageCancel.svg";
 export { ReactComponent as FilterIcon } from "./filter.svg";
 export { ReactComponent as DownIcon } from "./down.svg";
+export { ReactComponent as ViewIcon } from "./view.svg";
+export { ReactComponent as AcceptIcon } from "./accept.svg";
+export { ReactComponent as RejectIcon } from "./reject.svg";
