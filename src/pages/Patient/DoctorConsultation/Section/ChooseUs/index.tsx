@@ -8,22 +8,23 @@ const ChooseUsSection = () => {
     <Box my={16}>
       <SectionHeading heading="Why Choose Us?" />
       <Grid
-        templateColumns={{
-          base: "repeat(1, 1fr)",
-          xl: "repeat(2, 1fr)",
-          "2xl": "repeat(3, 1fr)",
-        }}
+        // templateColumns={{
+        //   base: "repeat(1, 1fr)",
+        //   xl: "repeat(2, 1fr)",
+        //   "2xl": "repeat(3, 1fr)",
+        // }}
+        gridTemplateColumns={"repeat(auto-fit, minmax(250px, 1fr))"}
         gap={6}
       >
         {WhyChooseUs.map(WhyChooseUsStep => {
           return (
             <GridItem
-              width={{ base: "300px", md: "518px" }}
+              // width={{ base: "300px", md: "518px" }}
               key={WhyChooseUsStep.id}
             >
               <Flex gap={{ base: 4, md: 8 }}>
                 {WhyChooseUsStep.image}
-                <Box width={{ base: "250px", md: "518px" }}>
+                <Box>
                   <Flex direction={"column"}>
                     <Text
                       fontWeight={700}

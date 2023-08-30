@@ -30,17 +30,21 @@ export enum Type {
 }
 
 const responsive = {
-  desktop: { breakpoint: { max: 3000, min: 1024 }, slidesToSlide: 3, items: 6 },
+  desktop: {
+    breakpoint: { max: 3000, min: 1440 },
+    slidesToSlide: 3,
+    items: 5,
+  },
   laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
   laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
-  tablet: { breakpoint: { max: 1024, min: 464 }, items: 2 },
+  tablet: { breakpoint: { max: 768, min: 464 }, items: 2 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 const responsiveDoctorCard = {
   ...responsive,
   desktop: { ...responsive.desktop, items: 5 },
-  laptopLarge: { ...responsive.laptopLarge, items: 3 },
-  laptop: { ...responsive.laptop, items: 2 },
+  laptopLarge: { ...responsive.laptopLarge, items: 5 },
+  laptop: { ...responsive.laptop, items: 4 },
   tablet: { breakpoint: { max: 768, min: 464 }, slidesToSlide: 1, items: 2 },
 };
 const DoctorConsultation = () => {
@@ -167,7 +171,7 @@ const DoctorConsultation = () => {
               <Carousel responsive={responsiveDoctorCard}>
                 {doctorList.results.map(doctor => {
                   return (
-                    <Box key={doctor.id}>
+                    <Box key={doctor.id} mr={4}>
                       <DoctorListCard
                         data={doctor}
                         error={doctorListError as AxiosError}

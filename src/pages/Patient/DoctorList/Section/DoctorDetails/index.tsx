@@ -92,7 +92,9 @@ const DoctorDetails: React.FC<{
       label: p.name,
       value: p.id,
     })) || [];
-
+  useEffect(() => {
+    setIsAvailability(false);
+  }, [doctorInfo]);
   const {
     register,
     formState: { errors },
@@ -249,14 +251,6 @@ const DoctorDetails: React.FC<{
                       />
                     </Flex>
                     <Box>
-                      {!isAvailabilityFetching && (
-                        <FormLabel color={colors.red}>
-                          {!availability?.length
-                            ? "This doctor is not available on this date, choose another date"
-                            : selectedAvailability?.length === 0 &&
-                              "Please Choose the availability*"}
-                        </FormLabel>
-                      )}
                       {isAvailabilityFetching ? (
                         <Box textAlign={"center"}>
                           <Spinner />
@@ -288,6 +282,14 @@ const DoctorDetails: React.FC<{
                             {data?.from_time?.substr(0, 5)}
                           </Button>
                         ))
+                      )}
+                      {!isAvailabilityFetching && (
+                        <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
+                          {!availability?.length
+                            ? "This doctor is not available on this date, choose another date"
+                            : selectedAvailability?.length === 0 &&
+                              "Please Choose the availability*"}
+                        </FormLabel>
                       )}
                     </Box>
                   </Flex>
