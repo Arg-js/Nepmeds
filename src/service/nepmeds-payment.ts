@@ -402,3 +402,57 @@ export const useDeleteAmount = () => {
     },
   });
 };
+
+//Get Payment History By Admin  by doctor Id (No Pagination or Filter)
+const getPaymentHistory = async ({ id, qs }: { id: string; qs: string }) => {
+  const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
+    generatePath(`${api.getAmountHistory}?${qs}`, { id })
+  );
+  return response;
+};
+
+export const useGetPaymentHistory = ({
+  id,
+  page_no,
+  page_size,
+}: IFilterSearch & { id: string }) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+  });
+
+  return useQuery(
+    [api.getAmountHistory, id, qs],
+    () => getPaymentHistory({ id, qs }),
+    {
+      select: data => data.data.data,
+    }
+  );
+};
+
+export interface IDoctorRateHistoryDetail {
+  id: number;
+  title: string;
+  profile_picture: string;
+  name: string;
+  specialization_names: { name: string; id: string }[];
+  total_experience: number;
+}
+
+//Get Doctor Detail by rate history (Doctor ID)
+const getDoctorDetail = async ({ id }: { id: string }) => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IDoctorRateHistoryDetail>
+  >(generatePath(api.doctor_detail_history, { id }));
+  return response;
+};
+
+export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
+  return useQuery(
+    [api.doctor_detail_history, id],
+    () => getDoctorDetail({ id }),
+    {
+      select: data => data.data.data,
+    }
+  );
+};

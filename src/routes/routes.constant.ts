@@ -35,6 +35,7 @@ export const NAVIGATION_ROUTES = {
 
   DOCTOR_LIST_REGISTRATION: "/doctor-list/registration",
   DOCTOR_LIST_PAYMENT: "/doctor-list/payment",
+  AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",

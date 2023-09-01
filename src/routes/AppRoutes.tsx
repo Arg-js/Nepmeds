@@ -2,6 +2,7 @@ import { Center, Spinner } from "@chakra-ui/react";
 import Layout from "@nepMeds/components/Layout";
 import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
 import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
+import RateHistory from "@nepMeds/components/Table/Payment/RateHistory";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
@@ -143,6 +144,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
+      },
+      {
+        path: NAVIGATION_ROUTES.AMOUNT_HISTORY,
+        element: <RateHistory />,
       },
     ],
   },
