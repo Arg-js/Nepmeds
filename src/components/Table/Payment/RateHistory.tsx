@@ -35,7 +35,14 @@ const RateHistory = () => {
   return (
     <div>
       <BoxWrapper>
-        <Flex justifyContent={"start"} alignContent={"center"} my={2}>
+        <Flex
+          justifyContent={"start"}
+          alignContent={"center"}
+          my={2}
+          _hover={{ cursor: "pointer" }}
+          w={"8%"}
+          onClick={() => window.history.back()}
+        >
           <Icon as={BackArrowIcon} fontSize={"xl"} />
           <Text ml={5} fontWeight={"semibold"}>
             Go Back

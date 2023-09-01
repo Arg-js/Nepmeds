@@ -64,6 +64,7 @@ const LayoutComponent = () => {
             : "1fr"
         }
         gap="1"
+        overflowX={"hidden"}
       >
         <GridItem area={"side"}>
           <Sidebar />
