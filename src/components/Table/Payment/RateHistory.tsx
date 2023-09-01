@@ -1,5 +1,6 @@
 import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { BackArrowIcon } from "@nepMeds/assets/svgs";
+import CenterLoader from "@nepMeds/components/Common/Loader";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { rateHistoryColumn } from "@nepMeds/components/DataTable/rateColumn";
 import PaymentAmountBox from "@nepMeds/components/Payment/PaymentRateBox";
@@ -19,14 +20,17 @@ const RateHistory = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { data } = useGetPaymentHistory({
+  const { data, isLoading: historyLoading } = useGetPaymentHistory({
     id: id?.toString() ?? "",
     page_no: pageIndex + 1,
     page_size: pageSize,
   });
-  const { data: doctorDetail } = useGetDoctorDetailRateHistory({
-    id: id?.toString() ?? "",
-  });
+  const { data: doctorDetail, isLoading: docDetailLoading } =
+    useGetDoctorDetailRateHistory({
+      id: id?.toString() ?? "",
+    });
+
+  if (historyLoading || docDetailLoading) return <CenterLoader />;
 
   return (
     <div>
@@ -39,11 +43,13 @@ const RateHistory = () => {
         </Flex>
         <Flex justifyContent={"space-between"} mt={1}>
           <Flex gap={8}>
-            <Image
-              src={doctorDetail?.profile_picture}
-              w={"120px"}
-              h={"120px"}
-            />
+            {doctorDetail?.profile_picture && (
+              <Image
+                src={doctorDetail?.profile_picture}
+                w={"120px"}
+                h={"120px"}
+              />
+            )}
             <Box mt={4}>
               <Text
                 fontWeight={"700"}
