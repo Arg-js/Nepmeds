@@ -146,7 +146,7 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack justifyContent={"center"}>
-            <Tooltip label="View Doctor">
+            <Tooltip label="View Rate History">
               <span>
                 <Icon
                   as={Show}
@@ -154,8 +154,8 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
                   cursor="pointer"
                   onClick={() => {
                     navigate(
-                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                        id: row.original.id?.toString(),
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: row?.original?.id?.toString(),
                       })
                     );
                   }}

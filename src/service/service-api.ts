@@ -58,6 +58,7 @@ export const api = {
   delete_payment_methods: "/doctor-consult/doctor-payment/:id/",
   approve_payment_methods: "/dashboard/approve-doctor-payment/:id/",
   reject_payment_methods: "/dashboard/reject-doctor-payment/:id/",
+  doctor_detail_history: "/dashboard/doctor-detail-rate-history/:id/",
 
   //amount
   add_amount_create: "/doctor-consult/doctor-amount-set/",
@@ -66,6 +67,7 @@ export const api = {
   added_payment_methods:
     "/doctor-consult/doctorwise-paymentdetail-list/:doctor_id/",
   allpaymentList: "/dashboard/doctor-list-asper-payment-status/",
+  getAmountHistory: "/dashboard/doctor-rate-history/:id/",
 
   patient: {
     doctorList: {

@@ -63,3 +63,61 @@ export const paymentRateColumn = () => {
     },
   ];
 };
+export const rateHistoryColumn = () => {
+  return [
+    {
+      header: "S.N",
+      accessorFn: (_cell: CellContext<any, any>, index: number) => {
+        return index + 1;
+      },
+      size: 2,
+    },
+    {
+      header: "Requested Date",
+      accessorKey: "requested_date",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return getFullDate(row?.original?.requested_date) ?? "-";
+      },
+      size: 22,
+    },
+
+    {
+      header: "Verified Date",
+      accessorKey: "approval_date",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return row?.original?.approved_date ?? "-";
+      },
+      size: 22,
+    },
+
+    {
+      header: "Instant Rate",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.instant_amount}</Text>;
+      },
+      size: 10,
+    },
+    {
+      header: "Appointment Rate",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
+      },
+      size: 10,
+    },
+
+    {
+      header: "Status",
+      accessorKey: "status",
+      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
+        return (
+          <StatusBadge
+            customProps={{
+              status: row?.original?.rate_status,
+            }}
+          />
+        );
+      },
+      size: 10,
+    },
+  ];
+};
