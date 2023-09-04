@@ -28,6 +28,8 @@ export { ReactComponent as ImageCancel } from "./imageCancel.svg";
 export { ReactComponent as LocationIcon } from "./location.svg";
 export { ReactComponent as PayementIcon } from "./payement.svg";
 export { ReactComponent as PlusIcon } from "./plus.svg";
+export { ReactComponent as BackArrowIcon } from "./backArrow.svg";
+export { ReactComponent as SearchIcon } from "./search.svg";
 export { ReactComponent as StethoscopeIcon } from "./stethoscope.svg";
 export { ReactComponent as TimeSquareIcon } from "./timeSquare.svg";
 export { ReactComponent as NoDataIcon } from "./noData.svg";

@@ -23,6 +23,7 @@ export const NAVIGATION_ROUTES = {
 
   DOCTOR_LIST: "/doctor-list",
   DOCTOR_PROFILE: "/doctor-profile",
+  DOCTOR_PROFILE_UNAPPROVED: "/doctor-unapproved",
   APPOINTMENTS: "appointments",
   FOLLOWUP: "followup",
   PATIENT_HISTORY: "patient-history",
@@ -34,6 +35,7 @@ export const NAVIGATION_ROUTES = {
 
   DOCTOR_LIST_REGISTRATION: "/doctor-list/registration",
   DOCTOR_LIST_PAYMENT: "/doctor-list/payment",
+  AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",

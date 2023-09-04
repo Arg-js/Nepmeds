@@ -166,9 +166,12 @@ export interface IAllPaymentResponse {
   status: number;
   rejected_remarks: null | string;
   payment_rejected_remark: string;
-  instant_amount: null | string;
-  schedule_amount: null | string;
   payment_modes: { id: string; image: string }[];
+  doctor_amount_detail: {
+    schedule_amount: null | string;
+    id: string;
+    instant_amount: null | string;
+  };
 }
 
 // Get all payment list (Payment Status)
@@ -342,12 +345,12 @@ export interface IAmountListDoctor {
   is_active_amount: boolean;
   rate_status: string;
   approved_date: string;
-  created_date: string;
+  requested_date: string;
 }
 
 //Get list of amount for doctor (Without id)
 const getAmountList = async () => {
-  const response = await HttpClient.get<NepMedsResponse<IAmountListDoctor[]>>(
+  const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
     api.add_amount_create
   );
   return response;
@@ -398,4 +401,58 @@ export const useDeleteAmount = () => {
       queryClient.invalidateQueries([api.add_amount_create]);
     },
   });
+};
+
+//Get Payment History By Admin  by doctor Id (No Pagination or Filter)
+const getPaymentHistory = async ({ id, qs }: { id: string; qs: string }) => {
+  const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
+    generatePath(`${api.getAmountHistory}?${qs}`, { id })
+  );
+  return response;
+};
+
+export const useGetPaymentHistory = ({
+  id,
+  page_no,
+  page_size,
+}: IFilterSearch & { id: string }) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+  });
+
+  return useQuery(
+    [api.getAmountHistory, id, qs],
+    () => getPaymentHistory({ id, qs }),
+    {
+      select: data => data.data.data,
+    }
+  );
+};
+
+export interface IDoctorRateHistoryDetail {
+  id: number;
+  title: string;
+  profile_picture: string;
+  name: string;
+  specialization_names: { name: string; id: string }[];
+  total_experience: number;
+}
+
+//Get Doctor Detail by rate history (Doctor ID)
+const getDoctorDetail = async ({ id }: { id: string }) => {
+  const response = await HttpClient.get<
+    NepMedsResponse<IDoctorRateHistoryDetail>
+  >(generatePath(api.doctor_detail_history, { id }));
+  return response;
+};
+
+export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
+  return useQuery(
+    [api.doctor_detail_history, id],
+    () => getDoctorDetail({ id }),
+    {
+      select: data => data.data.data,
+    }
+  );
 };

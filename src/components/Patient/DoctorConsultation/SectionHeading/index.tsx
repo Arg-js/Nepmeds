@@ -38,7 +38,11 @@ const SectionHeading: React.FC<ISectionHeading> = ({
         )}
       </Box>
       {btnText && (
-        <Button variant={"primaryOutline"} onClick={onClick}>
+        <Button
+          variant={"primaryOutline"}
+          onClick={onClick}
+          borderRadius={"3px"}
+        >
           {btnText}
         </Button>
       )}

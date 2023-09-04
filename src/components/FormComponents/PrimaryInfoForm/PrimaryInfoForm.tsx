@@ -125,9 +125,11 @@ const PrimaryInfo = ({
       if (checkNumberMatch(mobileNumber)) {
         setValue("mobile_number", mobileNumber);
         setValidField("mobile");
+        setValue("is_mobile_number_verified", true);
       } else {
         setValue("email", mobileNumber);
         setValidField("email");
+        setValue("is_email_verified", true);
       }
     }
   }, [location.state]);

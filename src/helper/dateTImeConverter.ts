@@ -1,3 +1,5 @@
+import { format, isValid } from "date-fns";
+
 // Converts date (2023-07-29) to the format --> 29th July
 export function formatToDateMonth(inputDateStr: string): string {
   const months = [
@@ -62,4 +64,16 @@ export function formatToDate(inputDateStr: string): number {
   const inputDate = new Date(inputDateStr);
   const date = inputDate.getDate();
   return date;
+}
+
+//Take input as 2023-07-29T15:30:22.067881+05:45 and returns 2023-07-29
+export function getFullDate(inputDateStr: string): string {
+  const date = new Date(inputDateStr);
+
+  if (!isValid(date)) {
+    return "";
+  } else {
+    const fullDate = format(date, "yyyy-MM-dd");
+    return fullDate; // Output: '2023-08-28'
+  }
 }

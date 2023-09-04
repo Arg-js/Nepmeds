@@ -81,7 +81,8 @@ const registerDefaultValues = {
   id_issued_district: (0 as number) || null,
   id_front_image: undefined as undefined | File[],
   id_back_image: undefined as undefined | File[],
-
+  is_email_verified: false,
+  is_mobile_number_verified: false,
   age: 0,
   medical_degree: "",
   designation: "",
@@ -201,6 +202,10 @@ const RegistrationForm = () => {
           date_of_birth: formMethods.getValues("date_of_birth"),
           password: formMethods.getValues("password"),
           confirm_password: formMethods.getValues("confirm_password"),
+          is_email_verified: formMethods.getValues("is_email_verified"),
+          is_mobile_number_verified: formMethods.getValues(
+            "is_mobile_number_verified"
+          ),
         },
         title: formMethods.getValues("title"),
 
@@ -267,6 +272,8 @@ const RegistrationForm = () => {
                 password: values.password,
                 confirm_password: values.confirm_password,
                 email: values.email,
+                is_email_verified: values.is_email_verified,
+                is_mobile_number_verified: values.is_mobile_number_verified,
               },
               title: values.title,
 
