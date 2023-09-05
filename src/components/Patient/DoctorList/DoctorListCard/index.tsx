@@ -73,6 +73,11 @@ const DoctorListCard: React.FC<{
             }`,
           },
         }}
+        boxShadow={
+          doctorId === data.id
+            ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
+            : "none"
+        }
         variant={"elevated"}
         w={"full"}
       >
@@ -81,11 +86,6 @@ const DoctorListCard: React.FC<{
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           columnGap={4}
           h={size === Size.sm ? "302px" : "150px"}
-          boxShadow={
-            doctorId === data.id
-              ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`
-              : "none"
-          }
           borderRadius={4}
         >
           <GridItem colSpan={2} h={size === Size.sm ? "151px" : "inherit"}>

@@ -12,7 +12,8 @@ import { SearchIcon } from "@nepMeds/assets/svgs";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 
 const GenderList = [
   { label: "Male Doctor", value: "Male" },
@@ -28,6 +29,11 @@ interface IDateParams {
 interface IPageParams {
   page: number;
   limit: number;
+}
+
+interface ILocationState {
+  specialization: string;
+  symptom: string;
 }
 
 const dateToday = new Date(Date.now()).toISOString().split("T")[0];
@@ -51,27 +57,49 @@ const DoctorListFilter: React.FC<{
   setPageParams,
   pageParams,
 }) => {
+  const location = useLocation();
+  const state = location.state as ILocationState;
+
   // REACT QUERIES
   const { data: symptomData = [] } = useGetSymptoms();
   const { data: specializationData = [] } = useSpecializationRegisterData();
+  // REACT QUERIES END
+
   const genderFiltersRef = useRef<HTMLInputElement[]>([]);
   const specializationFiltersRef = useRef<HTMLInputElement[]>([]);
   const symptomFiltersRef = useRef<HTMLInputElement[]>([]);
   const dateFromRef = useRef<HTMLInputElement>(null);
   const dateToRef = useRef<HTMLInputElement>(null);
-  // const clearAll = useRef(false);
-  // REACT QUERIES END
 
-  // useEffect(() => {
-  //   if (!clearAll.current) return;
+  // TODO: LOGIC IS REDUNDANT IN BOTH USE EFFECT, TRY TO MAKE A CONCISE FUNCTION FOR REUSABILITY
+  useEffect(() => {
+    if (state?.specialization && specializationData) {
+      for (let i = 0; i < specializationData.length; i++) {
+        if (specializationData[i].name === state.specialization)
+          specializationFiltersRef.current[i].checked = true;
+      }
+    }
+  }, [state?.specialization, specializationData]);
 
-  //   clearAll.current = !clearAll.current;
-  // }, [clearAll.current]);
+  useEffect(() => {
+    if (state?.symptom && symptomData) {
+      for (let i = 0; i < symptomData.length; i++) {
+        if (symptomData[i].name === state.symptom)
+          specializationFiltersRef.current[i].checked = true;
+      }
+    }
+  }, [state?.symptom, symptomData]);
 
   const clearAllFilter = () => {
     for (let i = 0; i < genderFiltersRef.current.length; i++) {
       genderFiltersRef.current[i].checked = false;
+    }
+
+    for (let i = 0; i < specializationFiltersRef.current.length; i++) {
       specializationFiltersRef.current[i].checked = false;
+    }
+
+    for (let i = 0; i < symptomFiltersRef.current.length; i++) {
       symptomFiltersRef.current[i].checked = false;
     }
 
@@ -93,6 +121,7 @@ const DoctorListFilter: React.FC<{
             setPageParams({ ...pageParams, page: 1 });
           }}
           placeholder="Search by doctors name"
+          fontSize={"sm"}
         />
       </InputGroup>
       <Box border={`0.5px solid ${colors.gray_border}`} p={6}>
@@ -109,7 +138,6 @@ const DoctorListFilter: React.FC<{
               textDecoration={"underline"}
               cursor={"pointer"}
               onClick={() => {
-                // clearAll.current = true;
                 clearAllFilter();
                 setGender([]);
                 setSpecialization([]);
@@ -157,9 +185,6 @@ const DoctorListFilter: React.FC<{
                       if (element) genderFiltersRef.current[index] = element;
                     }}
                     isChecked={genderFiltersRef?.current[index]?.checked}
-                    // isChecked={
-                    //   clearAll.current ? false : g.includes(gender.value)
-                    // }
                     onChange={e => {
                       setGender(prev =>
                         e.target.checked
@@ -191,9 +216,6 @@ const DoctorListFilter: React.FC<{
                     isChecked={
                       specializationFiltersRef?.current[index]?.checked
                     }
-                    // isChecked={
-                    //   clearAll.current ? false : s.includes(specialization.name)
-                    // }
                     onChange={e => {
                       setSpecialization(prev =>
                         e.target.checked

@@ -1,7 +1,10 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
-import { Flex, Divider, VStack, Box, Text } from "@chakra-ui/layout";
+import { Box, Divider, Flex, Text, VStack } from "@chakra-ui/layout";
+import { FormLabel, HStack, Image } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
+import { yupResolver } from "@hookform/resolvers/yup";
+import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import {
   BackArrowIcon,
   ImageCancel,
@@ -9,25 +12,23 @@ import {
   UploadImageIcon,
 } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
-import { useForm } from "react-hook-form";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import {
-  IAvailability,
-  IDoctorListById,
-} from "@nepMeds/service/nepmeds-patient-doctorList";
-import { colors } from "@nepMeds/theme/colors";
-import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+import ReadMoreComponent from "@nepMeds/components/ReadMore";
 import {
   IPatientAppointmentBasicDetails,
   useCreatePatientAppointment,
 } from "@nepMeds/service/nepmeds-patient-appointment";
-import { HttpStatusCode } from "axios";
+import {
+  IAvailability,
+  IDoctorListById,
+} from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import { colors } from "@nepMeds/theme/colors";
+import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import ReadMoreComponent from "@nepMeds/components/ReadMore";
-import { FormLabel, HStack, Image } from "@chakra-ui/react";
-import userAvatar from "@nepMeds/assets/images/userAvatar.png";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import TokenService from "@nepMeds/service/service-token";
 
 type IOptionItem = { label: string; value: string };
 
@@ -77,6 +78,7 @@ const DoctorDetails: React.FC<{
   isAvailabilityFetching,
   setTargeDate,
 }) => {
+  const isAuthenticated = TokenService.isAuthenticated();
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
@@ -130,6 +132,14 @@ const DoctorDetails: React.FC<{
       }
     } catch (e) {
       console.error(e);
+    }
+  };
+
+  const handleBookAppointment = () => {
+    if (isAuthenticated) {
+      selectedAvailability?.length && setIsAvailability(!isAvailability);
+    } else {
+      window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
     }
   };
 
@@ -298,10 +308,7 @@ const DoctorDetails: React.FC<{
               <Button
                 width="full"
                 borderRadius="none"
-                onClick={() =>
-                  selectedAvailability?.length &&
-                  setIsAvailability(!isAvailability)
-                }
+                onClick={handleBookAppointment}
               >
                 Book Appointment
               </Button>

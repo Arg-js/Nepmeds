@@ -33,7 +33,7 @@ const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1440 },
     slidesToSlide: 3,
-    items: 5,
+    items: 5.5,
   },
   laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
   laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
@@ -78,6 +78,22 @@ const DoctorConsultation = () => {
 
   const navigate = useNavigate();
 
+  const handleViewSpecialists = (specialization: string) => {
+    navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE, {
+      state: {
+        specialization,
+      },
+    });
+  };
+
+  const handleViewSymptom = (symptom: string) => {
+    navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE, {
+      state: {
+        symptom,
+      },
+    });
+  };
+
   return (
     <>
       <Header />
@@ -90,7 +106,7 @@ const DoctorConsultation = () => {
           <SectionHeading
             heading={"Our Specialist Doctors"}
             description={"Consult with top doctors across specialities"}
-            btnText={"View All Doctors"}
+            btnText={"View All Specialists"}
             onClick={() =>
               navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
             }
@@ -100,16 +116,20 @@ const DoctorConsultation = () => {
             <Carousel responsive={responsive}>
               {specializaionData?.map(specialization => {
                 return (
-                  <Card
-                    name={specialization.name}
-                    image={specialization.image}
-                    description={
-                      specialization?.symptom_list?.slice(0, 4) ?? []
-                    }
-                    isLoading={SpecializationDataLoading}
-                    error={specializationDataError as AxiosError}
+                  <Box
                     key={specialization.id}
-                  />
+                    onClick={() => handleViewSpecialists(specialization.name)}
+                  >
+                    <Card
+                      name={specialization.name}
+                      image={specialization.image}
+                      description={
+                        specialization?.symptom_list?.slice(0, 4) ?? []
+                      }
+                      isLoading={SpecializationDataLoading}
+                      error={specializationDataError as AxiosError}
+                    />
+                  </Box>
                 );
               })}
             </Carousel>
@@ -119,7 +139,7 @@ const DoctorConsultation = () => {
           <SectionHeading
             heading={"Common Health Concern"}
             description="Consult a doctor online for any health issue"
-            btnText={"View All Doctors"}
+            btnText={"View All Symptoms"}
             onClick={() =>
               navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
             }
@@ -129,14 +149,18 @@ const DoctorConsultation = () => {
             <Carousel responsive={responsive}>
               {symptomData?.map(symptom => {
                 return (
-                  <Card
-                    name={symptom.name}
-                    image={""}
-                    description={[]}
-                    isLoading={symptomDataLoading}
-                    error={symptomDataError as AxiosError}
+                  <Box
                     key={symptom.id}
-                  />
+                    onClick={() => handleViewSymptom(symptom.name)}
+                  >
+                    <Card
+                      name={symptom.name}
+                      image={""}
+                      description={[]}
+                      isLoading={symptomDataLoading}
+                      error={symptomDataError as AxiosError}
+                    />
+                  </Box>
                 );
               })}
             </Carousel>
