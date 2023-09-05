@@ -19,16 +19,23 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import DoctorDetailsSection from "@nepMeds/pages/Patient/DoctorList/Section/DoctorDetails";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
+import { useLocation } from "react-router-dom";
 
 const currentDate = new Date();
 const formattedDate = currentDate.toISOString().slice(0, 10);
 
 const DoctorList = () => {
+  const { state }: { state: any } = useLocation();
+
   const [doctorId, setDoctorId] = useState(0);
   const [targetDate, setTargeDate] = useState(formattedDate);
   const [gender, setGender] = useState<string[]>([]);
-  const [specialization, setSpecialization] = useState<string[]>([]);
-  const [symptom, setSymptom] = useState<string[]>([]);
+  const [specialization, setSpecialization] = useState<string[]>(
+    state?.specialization ? [state.specialization] : []
+  );
+  const [symptom, setSymptom] = useState<string[]>(
+    state?.symptom ? [state.symptom] : []
+  );
   const [search, setSearchValue] = useState("");
   const [dateParams, setDateParams] = useState({
     from_date: "",
