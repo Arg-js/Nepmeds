@@ -119,6 +119,7 @@ const DoctorConsultation = () => {
                   <Box
                     key={specialization.id}
                     onClick={() => handleViewSpecialists(specialization.name)}
+                    cursor={"pointer"}
                   >
                     <Card
                       name={specialization.name}
@@ -145,7 +146,7 @@ const DoctorConsultation = () => {
             }
           />
 
-          <Box my={10}>
+          <Box my={10} cursor={"pointer"}>
             <Carousel responsive={responsive}>
               {symptomData?.map(symptom => {
                 return (
