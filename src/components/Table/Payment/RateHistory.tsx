@@ -5,6 +5,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import { rateHistoryColumn } from "@nepMeds/components/DataTable/rateColumn";
 import PaymentAmountBox from "@nepMeds/components/Payment/PaymentRateBox";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useGetDoctorDetailRateHistory,
   useGetPaymentHistory,
@@ -12,10 +13,12 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 
 const RateHistory = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -40,8 +43,15 @@ const RateHistory = () => {
           alignContent={"center"}
           my={2}
           _hover={{ cursor: "pointer" }}
-          w={"8%"}
-          onClick={() => window.history.back()}
+          w={"150px"}
+          as={"button"}
+          onClick={() => {
+            navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PAYMENT, {
+              state: {
+                status: (location.state as { status: string | null })?.status,
+              },
+            });
+          }}
         >
           <Icon as={BackArrowIcon} fontSize={"xl"} />
           <Text ml={5} fontWeight={"semibold"}>

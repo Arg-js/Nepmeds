@@ -3,6 +3,7 @@ import {
   Box,
   Button,
   Center,
+  Flex,
   HStack,
   Input,
   InputGroup,
@@ -12,12 +13,13 @@ import {
   VStack,
   useDisclosure,
 } from "@chakra-ui/react";
-import { svgs } from "@nepMeds/assets/svgs";
+import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { allPaymentColumn } from "@nepMeds/components/DataTable/columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
+import { RejectionForm } from "@nepMeds/components/FormComponents";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useGetPaymentList } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
@@ -27,6 +29,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
 import { ISpecializationList } from "./PaymentList";
+import usePaymentStatusForm from "./usePaymentStatusForm";
 
 const AllPayment = ({
   specializationList,
@@ -41,6 +44,27 @@ const AllPayment = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
+    id: "",
+    name: "",
+  });
+  const {
+    formMethods: statusFormMethods,
+    ApprovePayment,
+    RejectPayment,
+    approveLoading,
+    rejectLoading,
+  } = usePaymentStatusForm();
+  const {
+    isOpen: isRejectModalOpen,
+    onOpen: onRejectModalOpen,
+    onClose: onRejectModalClose,
+  } = useDisclosure();
+  const {
+    isOpen: confirmationModal,
+    onOpen: onOpenConfirmation,
+    onClose: onCloseConfirmation,
+  } = useDisclosure();
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
   const { data, isLoading, isSuccess } = useGetPaymentList({
@@ -70,6 +94,24 @@ const AllPayment = ({
     }
 
     onModalClose();
+  };
+
+  const onActionClick = async (
+    isApproved: boolean,
+    doctorInfo: { id: string; name: string }
+  ) => {
+    setDoctorInfo({ name: doctorInfo.name, id: doctorInfo.id });
+    if (isApproved) {
+      onOpenConfirmation();
+      // ApproveDoctor(doctorId)
+    } else {
+      onRejectModalOpen();
+    }
+  };
+
+  const RejectPaymentModal = () => {
+    statusFormMethods.reset();
+    onRejectModalClose();
   };
 
   return (
@@ -134,6 +176,115 @@ const AllPayment = ({
         </ModalComponent>
       )}
 
+      {isRejectModalOpen && (
+        <ModalComponent
+          isOpen={isRejectModalOpen}
+          onClose={RejectPaymentModal}
+          approve
+          reject
+          size="xl"
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Remarks for rejection</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="primaryOutline"
+                flex={1}
+                onClick={RejectPaymentModal}
+              >
+                Cancel
+              </Button>
+              <Button
+                flex={1}
+                onClick={statusFormMethods.handleSubmit(value =>
+                  RejectPayment({ ...value, id: doctorInfo.id }).then(() =>
+                    RejectPaymentModal()
+                  )
+                )}
+                isLoading={rejectLoading}
+              >
+                Done
+              </Button>
+            </HStack>
+          }
+          primaryText="Done"
+          secondaryText="Cancel"
+          otherAction={onRejectModalClose}
+        >
+          <FormProvider {...statusFormMethods}>
+            <form
+              onSubmit={statusFormMethods.handleSubmit(value =>
+                RejectPayment({ ...value, id: doctorInfo.id })
+              )}
+            >
+              <RejectionForm />
+            </form>
+          </FormProvider>
+        </ModalComponent>
+      )}
+
+      {confirmationModal && (
+        <ModalComponent
+          isOpen={confirmationModal}
+          onClose={onCloseConfirmation}
+          approve
+          reject
+          size="xl"
+          heading={
+            <HStack>
+              <svgs.logo_small />
+              <Text>Dcotor Approval</Text>
+            </HStack>
+          }
+          footer={
+            <HStack w="100%" gap={3}>
+              <Button
+                variant="outline"
+                onClick={onCloseConfirmation}
+                flex={1}
+                border="2px solid"
+                borderColor={colors.primary}
+                color={colors.primary}
+                fontWeight={400}
+              >
+                Cancel
+              </Button>
+              <Button
+                flex={1}
+                onClick={statusFormMethods.handleSubmit(() =>
+                  ApprovePayment(doctorInfo.id).then(() =>
+                    onCloseConfirmation()
+                  )
+                )}
+                background={colors.primary}
+                color={colors.white}
+                isLoading={approveLoading}
+              >
+                Yes
+              </Button>
+            </HStack>
+          }
+          primaryText="Done"
+          secondaryText="Cancel"
+          otherAction={onCloseConfirmation}
+        >
+          <Flex
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+          >
+            <ConfirmationImage />
+            <Text fontWeight={"bold"} mt={4}>
+              Are you sure you want to approve payment for {doctorInfo.name}?
+            </Text>
+          </Flex>
+        </ModalComponent>
+      )}
+
       <HStack justifyContent="space-between">
         <Text fontWeight="medium">All Payment</Text>
         <HStack>
@@ -168,7 +319,7 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn(navigate)}
+          columns={allPaymentColumn(onActionClick, navigate)}
           data={data?.results ?? []}
           pagination={{
             manual: true,

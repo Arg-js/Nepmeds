@@ -1,9 +1,9 @@
 import Icon from "@chakra-ui/icon";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Badge, Box, HStack } from "@chakra-ui/layout";
+import { Box, HStack } from "@chakra-ui/layout";
 import { Tag } from "@chakra-ui/tag";
 import { Tooltip } from "@chakra-ui/tooltip";
-import { STATUSTYPE } from "@nepMeds/config/enum";
+import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
@@ -304,20 +304,13 @@ export const registeredColumns = (navigate: NavigateFunction) => {
       accessorKey: "profile_status",
       cell: ({ row }: CellContext<IGetDoctorList, any>) => {
         const { status } = row.original;
-        const isApproved =
-          status?.toString() === STATUSTYPE.approved?.toString();
+
         return (
-          <Badge
-            colorScheme={isApproved ? "green" : "red"}
-            p={1}
-            borderRadius={20}
-            fontSize={11}
-            w={24}
-            textAlign="center"
-            textTransform="capitalize"
-          >
-            {isApproved ? "Approved" : "Not approved"}
-          </Badge>
+          <StatusBadge
+            customProps={{
+              status: status?.toString() ?? "",
+            }}
+          />
         );
       },
     },

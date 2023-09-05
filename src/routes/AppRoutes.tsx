@@ -1,4 +1,5 @@
-import { Center, Spinner } from "@chakra-ui/react";
+import { Spinner } from "@chakra-ui/react";
+import CenterLoader from "@nepMeds/components/Common/Loader";
 import Layout from "@nepMeds/components/Layout";
 import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
 import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
@@ -243,11 +244,7 @@ const AppRoutes = () => {
   );
 
   if (isLoading) {
-    return (
-      <Center h="100vh">
-        <Spinner />
-      </Center>
-    );
+    return <CenterLoader h="100vh" />;
   }
 
   return <Suspense fallback={<Spinner />}>{element}</Suspense>;

@@ -253,23 +253,6 @@ const RejectedAppointments: React.FC = () => {
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
         <Text>Rejected Appointments</Text>
-        <HStack>
-          {/* Search Field */}
-          <InputGroup>
-            {/* TODO: add space between icon and the text */}
-            <InputLeftElement marginRight={3}>
-              <SearchLargeIcon />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
-          {/* ends */}
-          <Button leftIcon={<FilterIcon />} variant="outline">
-            Filter
-          </Button>
-          <Button rightIcon={<DownIcon />} variant="outline">
-            Bulk Action
-          </Button>
-        </HStack>
       </HStack>
       <DataTable
         data={appointment?.results || []}
@@ -290,3 +273,21 @@ const RejectedAppointments: React.FC = () => {
 };
 
 export default RejectedAppointments;
+
+<HStack>
+  {/* Search Field */}
+  <InputGroup>
+    {/* TODO: add space between icon and the text */}
+    <InputLeftElement marginRight={3}>
+      <SearchLargeIcon />
+    </InputLeftElement>
+    <Input placeholder="Search" />
+  </InputGroup>
+  {/* ends */}
+  <Button leftIcon={<FilterIcon />} variant="outline">
+    Filter
+  </Button>
+  <Button rightIcon={<DownIcon />} variant="outline">
+    Bulk Action
+  </Button>
+</HStack>;

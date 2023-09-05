@@ -85,6 +85,7 @@ export const colors = {
   forest_green: "#007D00",
   red_700: "#B91C1C",
   lightish_blue: "#c4d2e8",
+  dimmed_red: "#FEE2E2",
 
   // calendar
   // availability blue

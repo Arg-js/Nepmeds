@@ -1,15 +1,27 @@
 import { Box, Button, Container, Heading, Stack, Text } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import CenterLoader from "@nepMeds/components/Common/Loader";
-import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useProfileData } from "@nepMeds/context/index";
+import doctorStatus from "@nepMeds/helper/doctorStatus";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 
 const UnApprovedDoctor = () => {
   const profileData = useProfileData();
   const logoutAction = useLogoutMutation();
+  const navigate = useNavigate();
+  const data = profileData?.data;
+
+  const doctorStatusState = doctorStatus(data?.doctor?.status?.toString());
+
+  useEffect(() => {
+    if (data && doctorStatusState?.isApproved) {
+      navigate(NAVIGATION_ROUTES.DASHBOARD);
+    }
+  }, [data]);
 
   profileData?.isLoading && <CenterLoader />;
 
@@ -24,21 +36,16 @@ const UnApprovedDoctor = () => {
           flexDir={"row"}
           width={"100%"}
           mt={"30px"}
-          // bg={"red"}
         >
           <svgs.Work />
         </Box>
         <Stack justifyContent={"center"} alignItems={"center"}>
           <Heading color={"red"}>
-            Account on{" "}
-            {profileData?.data?.doctor?.status ===
-            STATUSTYPE.rejected.toString()
-              ? "Hold"
-              : "Pending"}
+            Account on {doctorStatusState.isRejected ? "Hold" : "Pending"}
           </Heading>
           <Text
             color={colors.gray_700}
-            fontSize={"18px"}
+            fontSize={"lg"}
             w={"50%"}
             textAlign={"center"}
           >
@@ -48,9 +55,8 @@ const UnApprovedDoctor = () => {
             <Button
               variant={"unstyled"}
               as={Link}
-              to={"/doctor-profile"}
-              onClick={() => {}}
-              fontSize={"16px"}
+              to={NAVIGATION_ROUTES.DOCTOR_PROFILE}
+              fontSize={"md"}
               fontWeight={"500"}
               color={colors.blue_100}
             >
@@ -58,21 +64,18 @@ const UnApprovedDoctor = () => {
             </Button>
           </Text>
 
-          {profileData?.data?.doctor?.status ===
-            STATUSTYPE.rejected.toString() && (
+          {data && doctorStatusState.isRejected && (
             <Box
               p={"18px"}
               borderRadius={"16px"}
-              bg={"#FEE2E2"}
+              bg={colors.dimmed_red}
               w={"auto"}
               display={"flex"}
             >
-              <Heading fontSize={"18px"} color={colors.red}>
+              <Heading fontSize={"lg"} color={colors.red}>
                 Rejected Reason :{" "}
               </Heading>
-              <Text color={colors.red}>
-                {profileData.data.doctor.rejected_remarks}
-              </Text>
+              <Text color={colors.red}>{data?.doctor?.rejected_remarks}</Text>
             </Box>
           )}
         </Stack>

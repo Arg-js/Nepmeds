@@ -3,12 +3,12 @@ import {
   Button,
   HStack,
   SimpleGrid,
-  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
 
 import { svgs } from "@nepMeds/assets/svgs";
+import CenterLoader from "@nepMeds/components/Common/Loader";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -90,7 +90,7 @@ const PaymentSet = () => {
 
   return (
     <Box bg={colors.white}>
-      {methodsLoading && <Spinner />}
+      {methodsLoading && <CenterLoader />}
       <Box h={"80vh"} bg={colors.white}>
         <SimpleGrid minChildWidth="420px" spacing={10}>
           {methods?.map(x => {

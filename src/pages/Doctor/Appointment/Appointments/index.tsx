@@ -5,22 +5,13 @@ import {
   Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   SkeletonCircle,
   SkeletonText,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import {
-  ConfirmationImage,
-  DownIcon,
-  FilterIcon,
-  SearchLargeIcon,
-  svgs,
-} from "@nepMeds/assets/svgs";
+import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
   ISymptom,
@@ -215,11 +206,15 @@ const Appointments: React.FC = () => {
             //   status: STATUSTYPE1.Cancelled,
             // });
           };
+
+          const isPending =
+            row.original?.status === STATUSTYPE1.Pending.toString();
+
           return (
             <TableActions
               onView={onView}
-              onAccept={onAccept}
-              onReject={onReject}
+              onAccept={isPending ? onAccept : undefined}
+              onReject={isPending ? onReject : undefined}
             />
           );
         },
@@ -489,27 +484,10 @@ const Appointments: React.FC = () => {
         </form>
       </ModalComponent>
 
-      {/* TODO: CREATE seperate table header */}
+      {/* TODO: CREATE separate table header */}
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
         <Text> Appointments</Text>
-        <HStack>
-          {/* Search Field */}
-          <InputGroup>
-            {/* TODO: add space between icon and the text */}
-            <InputLeftElement marginRight={3}>
-              <SearchLargeIcon />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
-          {/* ends */}
-          <Button leftIcon={<FilterIcon />} variant="outline">
-            Filter
-          </Button>
-          <Button rightIcon={<DownIcon />} variant="outline">
-            Bulk Action
-          </Button>
-        </HStack>
       </HStack>
       <DataTable
         data={appointment?.results || []}

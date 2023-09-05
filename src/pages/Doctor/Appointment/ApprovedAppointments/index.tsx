@@ -2,24 +2,15 @@ import {
   Avatar,
   Badge,
   Box,
-  Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   SkeletonCircle,
   SkeletonText,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import {
-  DownIcon,
-  FilterIcon,
-  SearchLargeIcon,
-  svgs,
-} from "@nepMeds/assets/svgs";
+import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
   ISymptom,
@@ -101,7 +92,6 @@ const ApprovedAppointments: React.FC = () => {
         },
       },
       { header: "Patient Name", accessorKey: "patient_name" },
-      // TODO: check for large amount of data
       {
         header: "Symptoms",
         accessorKey: "symptoms",
@@ -112,7 +102,6 @@ const ApprovedAppointments: React.FC = () => {
       {
         header: "Status",
         accessorKey: "status",
-        // TODO: why CELL somewhere and accessorfn somewhere
         // cell: ({ row }: CellProps<{ status: string }>) => {
         cell: ({ row }: CellContext<any, any>) => {
           return (
@@ -181,7 +170,6 @@ const ApprovedAppointments: React.FC = () => {
         onClose={onViewModalClose}
         footer={<></>}
       >
-        {/* TODO: add border bottom */}
         {isPatientLoading ? (
           <>
             <Flex gap={6}>
@@ -222,14 +210,12 @@ const ApprovedAppointments: React.FC = () => {
           <>
             <Flex gap={6}>
               <Avatar size="xl" />
-              {/* TODO: detail flex wrapper can be created */}
               <Flex flex={1} direction={"column"} gap={2}>
                 <InfoSection
                   label="Patient’s Name"
                   content={patient?.patient_name as string}
                 />
 
-                {/* TODO: need to get all the items from the list */}
                 <InfoSection
                   label="Symptoms"
                   content={patient?.symptoms?.[0]?.name || "N/A"}
@@ -249,27 +235,9 @@ const ApprovedAppointments: React.FC = () => {
         )}
       </ModalComponent>
 
-      {/* TODO: CREATE seperate table header */}
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
         <Text>Approved Appointments</Text>
-        <HStack>
-          {/* Search Field */}
-          <InputGroup>
-            {/* TODO: add space between icon and the text */}
-            <InputLeftElement marginRight={3}>
-              <SearchLargeIcon />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
-          {/* ends */}
-          <Button leftIcon={<FilterIcon />} variant="outline">
-            Filter
-          </Button>
-          <Button rightIcon={<DownIcon />} variant="outline">
-            Bulk Action
-          </Button>
-        </HStack>
       </HStack>
       <DataTable
         data={appointment?.results || []}

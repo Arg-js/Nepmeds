@@ -5,22 +5,13 @@ import {
   Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   SkeletonCircle,
   SkeletonText,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import { useMemo, useState } from "react";
-import {
-  ConfirmationImage,
-  DownIcon,
-  FilterIcon,
-  SearchLargeIcon,
-  svgs,
-} from "@nepMeds/assets/svgs";
+import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
   ISymptom,
@@ -152,7 +143,6 @@ const PendingAppointments: React.FC = () => {
         },
       },
       { header: "Patient Name", accessorKey: "patient_name" },
-      // TODO: check for large amount of data
       {
         header: "Symptoms",
         accessorKey: "symptoms",
@@ -163,8 +153,6 @@ const PendingAppointments: React.FC = () => {
       {
         header: "Status",
         accessorKey: "status",
-        // TODO: why CELL somewhere and accessorfn somewhere
-        // cell: ({ row }: CellProps<{ status: string }>) => {
         cell: ({ row }: CellContext<any, any>) => {
           return (
             <Badge
@@ -248,18 +236,14 @@ const PendingAppointments: React.FC = () => {
         }
         isOpen={isApproveModalOpen}
         onClose={onApproveModalClose}
-        // approve
-        // reject
         footer={
           <HStack w="100%">
             <Button
               variant={"primaryOutline"}
               w="100%"
               onClick={() => {
-                // TODO: repeated code
                 setId("");
                 onApproveModalClose();
-                //
               }}
             >
               Cancel
@@ -283,7 +267,6 @@ const PendingAppointments: React.FC = () => {
           </HStack>
         }
       >
-        {/* TODO: add border bottom */}
         <Flex direction={"column"} alignItems={"center"} gap={8}>
           <ConfirmationImage />
           <Text fontWeight={600} fontSize="18px">
@@ -304,7 +287,6 @@ const PendingAppointments: React.FC = () => {
         onClose={onViewModalClose}
         footer={<></>}
       >
-        {/* TODO: add border bottom */}
         {isPatientLoading ? (
           <>
             <Flex gap={6}>
@@ -345,14 +327,12 @@ const PendingAppointments: React.FC = () => {
           <>
             <Flex gap={6}>
               <Avatar size="xl" />
-              {/* TODO: detail flex wrapper can be created */}
               <Flex flex={1} direction={"column"} gap={2}>
                 <InfoSection
                   label="Patient’s Name"
                   content={patient?.patient_name as string}
                 />
 
-                {/* TODO: need to get all the items from the list */}
                 <InfoSection
                   label="Symptoms"
                   content={patient?.symptoms?.[0]?.name || "N/A"}
@@ -409,7 +389,6 @@ const PendingAppointments: React.FC = () => {
           </HStack>
         }
       >
-        {/* TODO: add border bottom */}
         <form>
           <Flex direction={"column"} alignItems={"center"} gap={8}>
             <FloatingLabelInput
@@ -431,27 +410,9 @@ const PendingAppointments: React.FC = () => {
         </form>
       </ModalComponent>
 
-      {/* TODO: CREATE seperate table header */}
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
         <Text>Pending Appointments</Text>
-        <HStack>
-          {/* Search Field */}
-          <InputGroup>
-            {/* TODO: add space between icon and the text */}
-            <InputLeftElement marginRight={3}>
-              <SearchLargeIcon />
-            </InputLeftElement>
-            <Input placeholder="Search" />
-          </InputGroup>
-          {/* ends */}
-          <Button leftIcon={<FilterIcon />} variant="outline">
-            Filter
-          </Button>
-          <Button rightIcon={<DownIcon />} variant="outline">
-            Bulk Action
-          </Button>
-        </HStack>
       </HStack>
       <DataTable
         data={appointment?.results || []}
