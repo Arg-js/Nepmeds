@@ -8,6 +8,8 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
+  SkeletonCircle,
+  SkeletonText,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -63,23 +65,30 @@ const statusInfo: {
 };
 
 const schema = Yup.object({
-  description: Yup.string().required("This field is requrired"),
+  reject_title: Yup.string().required("This field is required"),
+  reject_remarks: Yup.string().required("This field is required"),
 });
 
 const defaultValues = {
-  description: "",
+  reject_title: "",
+  reject_remarks: "",
 };
 
-const InstantConsult: React.FC = () => {
-  const [id, setId] = useState("");
+const Appointments: React.FC = () => {
+  const [appointmentId, setAppointmentId] = useState("");
 
   // PAGINATION
   const [pageParams, setPageParams] = useState({
-    page: 1,
-    limit: 10,
+    pageIndex: 0,
+    pageSize: 10,
   });
+  // PAGINATION ENDS
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isApproveModalOpen,
+    onOpen: onApproveModalOpen,
+    onClose: onApproveModalClose,
+  } = useDisclosure();
   const {
     isOpen: isRejectionModalOpen,
     onOpen: onRejectionModalOpen,
@@ -101,64 +110,49 @@ const InstantConsult: React.FC = () => {
     resolver: yupResolver(schema),
   });
 
-  // UPDATES page on page change
-  const pageChange = (page: number) => {
-    setPageParams({ ...pageParams, page });
-  };
+  // // UPDATES page on page change
+  // const pageChange = (pageIndex: number) => {
+  //   setPageParams({ ...pageParams, pageIndex });
+  // };
 
-  // UPDATES limit change on limit change and sets the page to page === 1
-  const pageSizeChange = (limit: number) => {
-    setPageParams({ ...pageParams, page: 1, limit });
-  };
+  // // UPDATES limit change on limit change and sets the page to page === 1
+  // const pageSizeChange = (pageSize: number) => {
+  //   setPageParams({ ...pageParams, pageIndex: 0, pageSize });
+  // };
   // PAGINATION ENDS
 
   // REACT QUERIES
   const { data: appointment, isLoading: appointmentLoading } =
-    useGetAppointmentRequest();
+    useGetAppointmentRequest({
+      page: pageParams.pageIndex + 1,
+      page_size: pageParams.pageSize,
+    });
   const { mutate: setAppointmentRequestById, isLoading } =
     useSetAppointmentRequestById();
-  const { data: patient } = useGetAppointmentRequestById({ id });
+  const { data: patient, isLoading: isPatientLoading } =
+    useGetAppointmentRequestById({ id: appointmentId });
   // REACT QUERIES END
 
   const onSubmitHandler = (data: typeof defaultValues) => {
-    setId("");
-    onRejectionModalClose();
+    setAppointmentId("");
+
     setAppointmentRequestById({
-      id,
-      status: STATUSTYPE1.Cancelled,
       ...data,
+      id: appointmentId,
+      status: STATUSTYPE1.Cancelled,
+      reject_title: 1,
     });
+    onRejectionModalClose();
     reset(defaultValues);
   };
-
-  const patientDetails = useMemo(
-    () => [
-      {
-        title: "Patient’s Name",
-        value: patient?.patient_name,
-      },
-      {
-        title: "Symptoms",
-        value: patient?.symptoms,
-      },
-      {
-        title: "Number",
-        value: patient?.patient_name,
-      },
-      {
-        title: "Doctors Name",
-        value: patient?.patient_name,
-      },
-    ],
-    [patient]
-  );
 
   const column = useMemo(
     () => [
       {
         header: "S.N",
         accessorFn: (_: any, index: number) => {
-          return `${(pageParams.page - 1) * pageParams.limit + (index + 1)}.`;
+          return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
+          // return ` ${index + 1}.`;
         },
       },
       {
@@ -206,15 +200,15 @@ const InstantConsult: React.FC = () => {
         accessorKey: "actions",
         cell: ({ row }: CellContext<any, any>) => {
           const onView = () => {
-            setId(row.original?.id);
+            setAppointmentId(row.original?.id);
             onViewModalOpen();
           };
           const onAccept = () => {
-            setId(row.original?.id);
-            onOpen();
+            setAppointmentId(row.original?.id);
+            onApproveModalOpen();
           };
           const onReject = () => {
-            setId(row.original?.id);
+            setAppointmentId(row.original?.id);
             onRejectionModalOpen();
             // setAppointmentRequestById({
             //   id: row.original?.id,
@@ -231,8 +225,27 @@ const InstantConsult: React.FC = () => {
         },
       },
     ],
-    [appointment, pageParams.page]
+    [appointment, pageParams]
   );
+
+  const InfoSection = ({
+    label,
+    content,
+  }: {
+    label: string;
+    content: string;
+  }) => {
+    return (
+      <Box>
+        <Text fontWeight={400} fontSize="xs">
+          {label}
+        </Text>
+        <Text fontWeight={400} fontSize="md">
+          {content}
+        </Text>
+      </Box>
+    );
+  };
 
   return (
     <>
@@ -244,8 +257,8 @@ const InstantConsult: React.FC = () => {
             <Text>Doctor Approval</Text>
           </HStack>
         }
-        isOpen={isOpen}
-        onClose={onClose}
+        isOpen={isApproveModalOpen}
+        onClose={onApproveModalClose}
         // approve
         // reject
         footer={
@@ -254,8 +267,10 @@ const InstantConsult: React.FC = () => {
               variant={"primaryOutline"}
               w="100%"
               onClick={() => {
-                setId("");
-                onClose();
+                // TODO: repeated code
+                setAppointmentId("");
+                onApproveModalClose();
+                //
               }}
             >
               Cancel
@@ -263,16 +278,16 @@ const InstantConsult: React.FC = () => {
             <Button
               w="100%"
               onClick={() => {
-                //
                 setAppointmentRequestById({
-                  id,
+                  id: appointmentId,
                   status: STATUSTYPE1.Confirmed,
                 });
-                setId("");
-                onClose();
+                //
+                setAppointmentId("");
+                onApproveModalClose();
+                //
               }}
               isLoading={isLoading}
-              //
             >
               Yes
             </Button>
@@ -305,8 +320,8 @@ const InstantConsult: React.FC = () => {
           //     variant={"primaryOutline"}
           //     w="100%"
           //     onClick={() => {
-          //       setApproveId("");
-          //       onClose();
+          //       setAppointmentId("");
+          //       onViewModalClose();
           //     }}
           //   >
           //     Cancel
@@ -316,11 +331,11 @@ const InstantConsult: React.FC = () => {
           //     onClick={() => {
           //       //
           //       setAppointmentRequestById({
-          //         id: approveId,
-          //         status: STATUSTYPE1.Confirmed,
+          //         id: id,
+          //         status: STATUSTYPE1.Cancelled,
           //       });
-          //       setApproveId("");
-          //       onClose();
+          //       setAppointmentId("");
+          //       onViewModalClose();
           //     }}
           //     isLoading={isLoading}
           //     //
@@ -331,53 +346,80 @@ const InstantConsult: React.FC = () => {
         }
       >
         {/* TODO: add border bottom */}
-        <Flex gap={6}>
-          <Avatar size="xl" />
-          <Flex flex={1} direction={"column"} gap={2}>
-            <Box>
-              <Text fontWeight={400} fontSize={"xs"}>
-                Patient’s Name
-              </Text>
-              <Text fontWeight={400} fontSize={"md"}>
-                {patient?.patient_name}
-              </Text>
-            </Box>
-            <Box>
-              <Text fontWeight={400} fontSize={"xs"}>
-                Symptoms
-              </Text>
-              <Text fontWeight={400} fontSize={"md"}>
-                {patient?.symptoms?.[0]?.name}
-              </Text>
-            </Box>
-          </Flex>
-          <Flex flex={1} direction={"column"} gap={2}>
-            <Box>
-              <Text fontWeight={400} fontSize={"xs"}>
-                Number
-              </Text>
-              <Text fontWeight={400} fontSize={"md"}>
-                {patient?.symptoms?.[0]?.name}
-              </Text>
-            </Box>
-            <Box>
+        {isPatientLoading ? (
+          <>
+            <Flex gap={6}>
+              <SkeletonCircle size="30" />
+              <Flex flex={1} direction={"column"} gap={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="3"
+                />
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="3"
+                />
+              </Flex>
+              <Flex flex={1} direction={"column"} gap={2}>
+                <SkeletonText
+                  mt="4"
+                  noOfLines={2}
+                  spacing="4"
+                  skeletonHeight="3"
+                />
+              </Flex>
+            </Flex>
+            <Flex mt={7} gap="0.5" direction={"column"}>
+              <SkeletonText
+                mt="4"
+                noOfLines={4}
+                spacing="4"
+                skeletonHeight="2"
+              />
+            </Flex>
+          </>
+        ) : (
+          <>
+            <Flex gap={6}>
+              <Avatar size="xl" />
+              {/* TODO: detail flex wrapper can be created */}
+              <Flex flex={1} direction={"column"} gap={2}>
+                <InfoSection
+                  label="Patient’s Name"
+                  content={patient?.patient_name as string}
+                />
+
+                {/* TODO: need to get all the items from the list */}
+                <InfoSection
+                  label="Symptoms"
+                  content={patient?.symptoms?.[0]?.name || "N/A"}
+                />
+              </Flex>
+              <Flex flex={1} direction={"column"} gap={2}>
+                <InfoSection label="Gender" content="Male" />
+                {/* TODO: ADDITION of age from BE */}
+                {/* <Box>
               <Text fontWeight={400} fontSize={"xs"}>
                 Doctors Name
               </Text>
               <Text fontWeight={400} fontSize={"md"}>
                 {patient?.symptoms?.[0]?.name}
               </Text>
-            </Box>
-          </Flex>
-        </Flex>
-        <Flex mt={7} gap="0.5" direction={"column"}>
-          <Text fontWeight={400} fontSize={"xs"}>
-            Rejected Reason
-          </Text>
-          <Text fontWeight={400} fontSize={"md"}>
-            {patient?.description}
-          </Text>
-        </Flex>
+            </Box> */}
+              </Flex>
+            </Flex>
+            <Flex mt={7} gap="0.5" direction={"column"}>
+              <InfoSection
+                label="Symptom Description"
+                content={patient?.description as string}
+              />
+            </Flex>
+          </>
+        )}
       </ModalComponent>
 
       <ModalComponent
@@ -422,7 +464,7 @@ const InstantConsult: React.FC = () => {
           <Flex direction={"column"} alignItems={"center"} gap={8}>
             <FloatingLabelInput
               label="Reason for rejection"
-              name="rejection_reason"
+              name="reject_title"
               placeholder="Enter reason for rejection"
               required
               register={register}
@@ -430,18 +472,18 @@ const InstantConsult: React.FC = () => {
               // rules={{
               //   required: "Please Enter the Instant rate",
               // }}
-              error={""}
+              error={errors.reject_title?.message || ""}
             />
             <FloatinglabelTextArea
               label="Description"
-              name="description"
+              name="reject_remarks"
               required
               register={register}
               //TODO: where is this rule used
               // rules={{
               //   required: "Please Enter the Instant rate",
               // }}
-              error={errors.description?.message || ""}
+              error={errors.reject_remarks?.message || ""}
             />
           </Flex>
         </form>
@@ -450,7 +492,7 @@ const InstantConsult: React.FC = () => {
       {/* TODO: CREATE seperate table header */}
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
-        <Text>Appointments</Text>
+        <Text> Appointments</Text>
         <HStack>
           {/* Search Field */}
           <InputGroup>
@@ -473,9 +515,18 @@ const InstantConsult: React.FC = () => {
         data={appointment?.results || []}
         columns={column}
         isLoading={appointmentLoading}
+        pagination={{
+          manual: true,
+          pageParams: {
+            pageIndex: pageParams.pageIndex,
+            pageSize: pageParams.pageSize,
+          },
+          pageCount: appointment?.page_count,
+          onChangePagination: setPageParams,
+        }}
       />
     </>
   );
 };
 
-export default InstantConsult;
+export default Appointments;

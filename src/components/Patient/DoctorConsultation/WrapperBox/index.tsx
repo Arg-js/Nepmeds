@@ -25,7 +25,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   width = "auto",
   border = "none",
   boxShadow = "none",
-  px = '{ base: "10px", md: "30" }',
+  px = '{ base: "10px", md: "10", xl: "20" }',
   style,
 }) => {
   return (
@@ -35,7 +35,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       fontFamily={"Quicksand"}
       backgroundImage={backgroundImage}
       p={padding}
-      px={{ base: "10px", md: "10", xl: "20" }}
+      px={px}
       width={width}
       border={border}
       boxShadow={boxShadow}

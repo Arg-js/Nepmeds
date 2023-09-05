@@ -6,6 +6,7 @@ import { toastFail } from "./service-toast";
 
 export interface IGetAppointmentRequest {
   count: number;
+  page_count: number;
   next: string;
   previous: string;
   results: IGetAppointmentReqRes[];
@@ -32,31 +33,55 @@ export interface Availability {
   to_time: string;
 }
 
-const getAppointmentRequest = async () => {
+const getAppointmentRequest = async ({
+  page,
+  page_size,
+  status,
+}: {
+  page: number;
+  page_size: number;
+  status?: number;
+}) => {
   const response = await HttpClient.get<
     NepMedsResponse<IGetAppointmentRequest>
-  >(api.doctor.appointments.get);
+  >(api.doctor.appointments.get, {
+    params: { page, page_size, status },
+  });
   return response;
 };
 
-const useGetAppointmentRequest = () => {
-  return useQuery([api.doctor.appointments.get], getAppointmentRequest, {
-    select: ({ data }) => data?.data,
-  });
+const useGetAppointmentRequest = ({
+  page,
+  page_size,
+  status,
+}: {
+  page: number;
+  page_size: number;
+  status?: number;
+}) => {
+  return useQuery(
+    [api.doctor.appointments.get, page, page_size, status],
+    () => getAppointmentRequest({ page, page_size, status }),
+    {
+      select: ({ data }) => data?.data,
+    }
+  );
 };
 
 const setAppointmentRequestById = async ({
   id,
   status,
-  description,
+  reject_title,
+  reject_remarks,
 }: {
   id: string;
   status: number;
-  description?: string;
+  reject_title?: number;
+  reject_remarks?: string;
 }) => {
   const response = await HttpClient.patch(
     generatePath(api.doctor.appointments.patch, { id }),
-    { status, description }
+    { status, reject_title, reject_remarks }
   );
   return response;
 };
@@ -74,7 +99,9 @@ const useSetAppointmentRequestById = () => {
 };
 
 const getAppointmentRequestById = ({ id }: { id: string }) => {
-  return HttpClient.get<NepMedsResponse<IGetAppointmentReqRes>>(generatePath(api.doctor.appointments.getById, { id }));
+  return HttpClient.get<NepMedsResponse<IGetAppointmentReqRes>>(
+    generatePath(api.doctor.appointments.getById, { id })
+  );
 };
 const useGetAppointmentRequestById = ({ id }: { id: string }) => {
   return useQuery(

@@ -7,7 +7,10 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import InstantConsult from "./InstantConsult";
+import Appointments from "./Appointments";
+import ApprovedAppointments from "./ApprovedAppointments";
+import PendingAppointments from "./PendingAppointments";
+import RejectedAppointments from "./RejectedAppointments";
 
 const Appointment: React.FC = () => {
   return (
@@ -27,10 +30,17 @@ const Appointment: React.FC = () => {
         />
         <TabPanels>
           <TabPanel px={0}>
-            <InstantConsult />
+            <Appointments />
           </TabPanel>
-          <TabPanel></TabPanel>
-          <TabPanel></TabPanel>
+          <TabPanel>
+            <PendingAppointments />
+          </TabPanel>
+          <TabPanel>
+            <ApprovedAppointments />
+          </TabPanel>
+          <TabPanel>
+            <RejectedAppointments />
+          </TabPanel>
         </TabPanels>
       </Tabs>
     </WrapperBox>
