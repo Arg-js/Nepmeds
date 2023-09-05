@@ -13,11 +13,11 @@ import "react-calendar/dist/Calendar.css";
 
 import { images } from "@nepMeds/assets/images";
 import { useProfileData } from "@nepMeds/context/index";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
+import { useNavigate } from "react-router-dom";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "../Table/Doctor/PendingDocList";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useNavigate } from "react-router-dom";
 
 interface IDashboardData {
   title: string;
@@ -57,7 +57,7 @@ const DashboardBody = () => {
         !profileData?.data?.doctor?.set_payment_status && (
           <Flex
             width={"99%"}
-            bg={"#FEE2E2"}
+            bg={colors.dimmed_red}
             h={"70px"}
             // alignItems={"start"}
             borderRadius={"16px"}

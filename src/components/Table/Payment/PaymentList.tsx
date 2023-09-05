@@ -8,8 +8,10 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import AllPayment from "./AllPayment";
 import ApprovedPayment from "./ApprovedPayment";
 import PendingPayment from "./PendingPayment";
@@ -23,14 +25,27 @@ export interface ISpecializationList {
   value: number;
 }
 
+interface LocationState {
+  status: STATUSTYPE;
+}
+
+const tabObj = {
+  [STATUSTYPE.approved]: 2,
+  [STATUSTYPE.pending]: 1,
+  [STATUSTYPE.rejected]: 3,
+};
+
 const PaymentList = () => {
-  const [tabIndex, setTabIndex] = useState<number>(0);
+  const location = useLocation();
+  const state = location.state as LocationState;
+  const [tabIndex, setTabIndex] = useState<number>(tabObj[state?.status] ?? 0);
   const { data: specialization = [] } = useSpecializationRegisterData();
 
   const specializationList = specialization.map(s => ({
     label: s.name,
     value: s.id,
   }));
+
   return (
     <BoxWrapper>
       <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>

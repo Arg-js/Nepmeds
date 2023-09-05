@@ -63,8 +63,7 @@ export const useUpdateAcademicInfo = () => {
     { id: number; data: AcademicInfo }
   >(variables => updateAcademicData(variables.id, variables.data), {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.doctor_profile);
-      queryClient.fetchQuery(api.doctor_profile);
+      queryClient.invalidateQueries([api.doctor_profile]);
     },
   });
 
