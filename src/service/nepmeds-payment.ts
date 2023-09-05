@@ -163,7 +163,7 @@ export interface IAllPaymentResponse {
     id: number;
     name: string;
   }[];
-  status: number;
+  payment_status: number;
   rejected_remarks: null | string;
   payment_rejected_remark: string;
   payment_modes: { id: string; image: string }[];
@@ -334,6 +334,7 @@ export const useAddDoctorAmount = () => {
   return useMutation(addAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
+      queryClient.invalidateQueries([api.basicProfile]);
     },
   });
 };

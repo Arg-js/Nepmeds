@@ -1,9 +1,11 @@
 import Icon from "@chakra-ui/icon";
 import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Image } from "@chakra-ui/image";
-import { Badge, Box, Flex, HStack, Text } from "@chakra-ui/layout";
+import { Box, Flex, HStack, Text } from "@chakra-ui/layout";
+import { Link as ChakraLink } from "@chakra-ui/react";
 import { Tag } from "@chakra-ui/tag";
 import { Tooltip } from "@chakra-ui/tooltip";
+import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
@@ -13,16 +15,15 @@ import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { CellContext } from "@tanstack/table-core";
 import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
+import { Link } from "react-router-dom";
 
-interface PendingCellContextSearch {
-  user: {
-    first_name: string;
-    middle_name: string;
-    last_name: string;
-  };
-}
-
-export const allPaymentColumn = (navigate: NavigateFunction) => {
+export const allPaymentColumn = (
+  onClick: (
+    isApproved: boolean,
+    doctorInfo: { id: string; name: string }
+  ) => void,
+  navigate: NavigateFunction
+) => {
   return [
     {
       header: "S.N",
@@ -34,8 +35,23 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
     {
       header: "Doctor's Name",
       accessorKey: "first_name",
-      accessorFn: (_cell: PendingCellContextSearch) => {
-        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <ChakraLink
+            color={colors.primary}
+            _hover={{
+              textDecoration: "underline",
+            }}
+            as={Link}
+            to={generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              id: row?.original?.id.toString(),
+            })}
+          >
+            {row?.original?.user?.first_name +
+              " " +
+              row?.original?.user?.last_name}
+          </ChakraLink>
+        );
       },
     },
 
@@ -112,31 +128,13 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
       accessorKey: "payment_status",
       cell: ({ row }: CellContext<any, any>) => {
         const { payment_status: status } = row.original;
-        const isApproved =
-          STATUSTYPE[status?.toString() as keyof typeof STATUSTYPE]?.toString();
 
         return (
-          <Badge
-            colorScheme={
-              isApproved === "pending"
-                ? "yellow"
-                : isApproved === "approved"
-                ? "green"
-                : "red"
-            }
-            p={1}
-            borderRadius={20}
-            fontSize={11}
-            w={24}
-            textAlign="center"
-            textTransform="capitalize"
-          >
-            {isApproved === "pending"
-              ? "Pending"
-              : isApproved === "approved"
-              ? "Approved"
-              : "Not approved"}
-          </Badge>
+          <StatusBadge
+            customProps={{
+              status,
+            }}
+          />
         );
       },
     },
@@ -152,6 +150,7 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
                   as={Show}
                   fontSize={20}
                   cursor="pointer"
+                  mt={2}
                   onClick={() => {
                     navigate(
                       generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
@@ -162,6 +161,49 @@ export const allPaymentColumn = (navigate: NavigateFunction) => {
                 />
               </span>
             </Tooltip>
+            {row?.original?.payment_status?.toString() !==
+              STATUSTYPE.approved.toString() && (
+              <Flex gap={2} justifyContent={"center"} alignContent={"center"}>
+                <Tooltip label="Approve Payment">
+                  <span>
+                    <Icon
+                      as={CheckIcon}
+                      fontSize={16}
+                      cursor="pointer"
+                      color={colors.green_light}
+                      onClick={() => {
+                        onClick(true, {
+                          id: row.original.doctor_amount_detail?.id?.toString(),
+                          name:
+                            row.original.user.first_name +
+                            " " +
+                            row.original.user.last_name,
+                        });
+                      }}
+                    />
+                  </span>
+                </Tooltip>
+                <Tooltip label="Reject Payment">
+                  <span>
+                    <Icon
+                      as={CloseIcon}
+                      fontSize={14}
+                      color={colors.red}
+                      cursor="pointer"
+                      onClick={() => {
+                        onClick(false, {
+                          id: row.original.doctor_amount_detail?.id?.toString(),
+                          name:
+                            row.original.user.first_name +
+                            " " +
+                            row.original.user.last_name,
+                        });
+                      }}
+                    />
+                  </span>
+                </Tooltip>
+              </Flex>
+            )}
           </HStack>
         );
       },
@@ -186,8 +228,23 @@ export const pendingPaymentColumn = (
     {
       header: "Doctor's Name",
       accessorKey: "first_name",
-      accessorFn: (_cell: PendingCellContextSearch) => {
-        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <ChakraLink
+            color={colors.primary}
+            _hover={{
+              textDecoration: "underline",
+            }}
+            as={Link}
+            to={generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              id: row?.original?.id.toString(),
+            })}
+          >
+            {row?.original?.user?.first_name +
+              " " +
+              row?.original?.user?.last_name}
+          </ChakraLink>
+        );
       },
     },
     {
@@ -279,7 +336,7 @@ export const pendingPaymentColumn = (
       cell: (cell: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Doctor">
+            <Tooltip label="View Rate History">
               <span>
                 <Icon
                   as={Show}
@@ -288,9 +345,10 @@ export const pendingPaymentColumn = (
                   cursor="pointer"
                   onClick={() => {
                     navigate(
-                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                        id: cell.row.original.id?.toString(),
-                      })
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: cell?.row?.original?.id?.toString(),
+                      }),
+                      { state: { status: cell?.row?.original?.payment_status } }
                     );
                   }}
                 />
@@ -353,8 +411,23 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
     {
       header: "Doctor's Name",
       accessorKey: "first_name",
-      accessorFn: (_cell: PendingCellContextSearch) => {
-        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <ChakraLink
+            color={colors.primary}
+            _hover={{
+              textDecoration: "underline",
+            }}
+            as={Link}
+            to={generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              id: row?.original?.id.toString(),
+            })}
+          >
+            {row?.original?.user?.first_name +
+              " " +
+              row?.original?.user?.last_name}
+          </ChakraLink>
+        );
       },
     },
 
@@ -434,17 +507,19 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Doctor">
+            <Tooltip label="View Rate History">
               <span>
                 <Icon
                   as={Show}
                   fontSize={20}
                   cursor="pointer"
+                  mt={2}
                   onClick={() => {
                     navigate(
-                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                        id: cell.row.original.id,
-                      })
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: cell?.row?.original?.id?.toString(),
+                      }),
+                      { state: { status: cell?.row?.original?.payment_status } }
                     );
                   }}
                 />
@@ -468,8 +543,23 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
     {
       header: "Doctor's Name",
       accessorKey: "first_name",
-      accessorFn: (_cell: PendingCellContextSearch) => {
-        return _cell?.user?.first_name + " " + _cell?.user?.last_name;
+      cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
+        return (
+          <ChakraLink
+            color={colors.primary}
+            _hover={{
+              textDecoration: "underline",
+            }}
+            as={Link}
+            to={generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              id: row?.original?.id.toString(),
+            })}
+          >
+            {row?.original?.user?.first_name +
+              " " +
+              row?.original?.user?.last_name}
+          </ChakraLink>
+        );
       },
     },
 
@@ -544,17 +634,19 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Doctor">
+            <Tooltip label="View Rate History">
               <span>
                 <Icon
                   as={Show}
                   fontSize={20}
                   cursor="pointer"
+                  mt={2}
                   onClick={() => {
                     navigate(
-                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                        id: cell.row.original.id,
-                      })
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: cell?.row?.original?.id?.toString(),
+                      }),
+                      { state: { status: cell?.row?.original?.payment_status } }
                     );
                   }}
                 />

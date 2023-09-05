@@ -86,7 +86,7 @@ export const useUpdatePersonalInfoRegister = () => {
   const queryClient = useQueryClient();
   return useMutation(editPersonalData, {
     onSuccess() {
-      queryClient.invalidateQueries(api.doctordetails);
+      queryClient.invalidateQueries([api.doctor_profile]);
     },
   });
 };
