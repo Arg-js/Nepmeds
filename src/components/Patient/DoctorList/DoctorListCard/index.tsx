@@ -44,7 +44,7 @@ const DoctorListCard: React.FC<{
       {
         id: 2,
         icon: <StethoscopeIcon />,
-        description: `${data.experience} years experience`,
+        description: data.experience && `${data.experience} years experience`,
       },
       {
         id: 3,
@@ -68,7 +68,7 @@ const DoctorListCard: React.FC<{
           ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
           : "none"
       }
-      w={"550px"}
+      w={{ base: "inherit", xl: "550px" }}
     >
       <Card
         sx={{
@@ -79,11 +79,6 @@ const DoctorListCard: React.FC<{
             }`,
           },
         }}
-        // boxShadow={
-        //   doctorId === data.id
-        //     ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
-        //     : "none"
-        // }
         variant={"elevated"}
         w={size === Size.sm ? "238px" : "550px"}
       >
@@ -149,16 +144,18 @@ const DoctorListCard: React.FC<{
             >
               {doctorDetails.map(doctorDetail => {
                 return (
-                  <Flex gap={2} key={doctorDetail.id}>
-                    <Box>{doctorDetail.icon}</Box>
-                    <Text
-                      fontWeight={400}
-                      fontSize={`${size === Size.sm ? "11px" : "13px"}`}
-                      color={colors.gray_text}
-                    >
-                      {doctorDetail.description}
-                    </Text>
-                  </Flex>
+                  !!doctorDetail.description && (
+                    <Flex gap={2} key={doctorDetail.id}>
+                      <Box>{doctorDetail.icon}</Box>
+                      <Text
+                        fontWeight={400}
+                        fontSize={`${size === Size.sm ? "11px" : "13px"}`}
+                        color={colors.gray_text}
+                      >
+                        {doctorDetail.description}
+                      </Text>
+                    </Flex>
+                  )
                 );
               })}
             </Flex>

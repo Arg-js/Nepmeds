@@ -33,6 +33,7 @@ export { ReactComponent as BackArrowIcon } from "./backArrow.svg";
 export { ReactComponent as SearchIcon } from "./search.svg";
 export { ReactComponent as StethoscopeIcon } from "./stethoscope.svg";
 export { ReactComponent as TimeSquareIcon } from "./timeSquare.svg";
+export { ReactComponent as SearchLargeIcon } from "./searchLarge.svg";
 export { ReactComponent as UploadImageIcon } from "./uploadImage.svg";
 export { ReactComponent as WhyChooseUs1Icon } from "./whyChoose1.svg";
 export { ReactComponent as WhyChooseUs2Icon } from "./whyChoose2.svg";

@@ -9,7 +9,7 @@ const ReadMoreComponent = ({ bio_detail }: { bio_detail: string }) => {
   const displayedText = isReadMore
     ? bio_detail.slice(0, calMaxLen(bio_detail, 20))
     : bio_detail;
-  const buttonText = isReadMore ? "Read More ..." : "Show Less";
+  const buttonText = isReadMore ? "Read More..." : "Show Less";
 
   return (
     <Box>
