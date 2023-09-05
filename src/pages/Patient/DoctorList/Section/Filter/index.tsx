@@ -121,7 +121,7 @@ const DoctorListFilter: React.FC<{
             setPageParams({ ...pageParams, page: 1 });
           }}
           placeholder="Search by doctors name"
-          fontSize={"sm"}
+          fontSize={"xs"}
         />
       </InputGroup>
       <Box border={`0.5px solid ${colors.gray_border}`} p={6}>

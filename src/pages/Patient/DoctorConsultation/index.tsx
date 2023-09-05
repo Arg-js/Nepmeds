@@ -221,10 +221,9 @@ const DoctorConsultation = () => {
 
           {/* WHY CHOOSE US SECTION */}
           <ChooseUsSection />
-
-          {/* FOOTER SECTION */}
         </>
       </WrapperBox>
+      {/* FOOTER SECTION */}
       <Box bg={colors.background_blue}>
         <PatientFooter />
       </Box>

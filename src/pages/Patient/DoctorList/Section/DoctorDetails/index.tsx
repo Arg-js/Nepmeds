@@ -160,7 +160,7 @@ const DoctorDetails: React.FC<{
               >
                 <>
                   <Flex direction={"column"} gap={5}>
-                    <Flex direction={"column"} alignItems={"center"} gap={4}>
+                    <Flex direction={"column"} alignItems={"center"} gap={2}>
                       <Text
                         fontWeight={600}
                         fontSize={"14px"}
@@ -269,7 +269,7 @@ const DoctorDetails: React.FC<{
                         availability?.map(data => (
                           <Button
                             variant={"primaryOutline"}
-                            width={"100px"}
+                            width={"90px"}
                             key={data.id}
                             borderRadius={3}
                             height={"34px"}

@@ -115,12 +115,12 @@ const DoctorList = () => {
           <Grid
             templateColumns={{
               base: "repeat(3, 1fr)",
-              lg: "repeat(6, 1fr)",
-              "2xl": "repeat(5, 1fr)",
+              lg: "repeat(11, 1fr)",
+              "2xl": "repeat(10, 1fr)",
             }}
             columnGap={{ base: 2, lg: 4, xl: 10 }}
           >
-            <GridItem colSpan={1}>
+            <GridItem colSpan={2}>
               <DoctorListFilter
                 setGender={setGender}
                 setSpecialization={setSpecialization}
@@ -133,7 +133,7 @@ const DoctorList = () => {
               />
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 3, "2xl": 2 }}>
+            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 4 }}>
               <Box w={"full"}>
                 <>
                   {isLoading && <Skeleton height="215px" width="inherit" />}
@@ -173,7 +173,7 @@ const DoctorList = () => {
               </Box>
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <GridItem colSpan={{ base: 1, lg: 4 }}>
               <Box>
                 <DoctorDetailsSection
                   doctorInfo={doctorInfo}

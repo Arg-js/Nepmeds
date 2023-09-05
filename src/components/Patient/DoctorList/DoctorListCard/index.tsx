@@ -63,6 +63,12 @@ const DoctorListCard: React.FC<{
         setDoctorId && setDoctorId(data.id);
       }}
       cursor={`${size === Size.sm ? "auto" : "pointer"}`}
+      boxShadow={
+        doctorId === data.id
+          ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
+          : "none"
+      }
+      w={"550px"}
     >
       <Card
         sx={{
@@ -73,30 +79,29 @@ const DoctorListCard: React.FC<{
             }`,
           },
         }}
-        boxShadow={
-          doctorId === data.id
-            ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
-            : "none"
-        }
+        // boxShadow={
+        //   doctorId === data.id
+        //     ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
+        //     : "none"
+        // }
         variant={"elevated"}
-        w={"full"}
+        w={size === Size.sm ? "238px" : "550px"}
       >
         <Grid
-          templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
+          templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           columnGap={4}
-          h={size === Size.sm ? "302px" : "150px"}
-          borderRadius={4}
+          h={size === Size.sm ? "310px" : "176px"}
+          borderRadius={0.5}
         >
-          <GridItem colSpan={2} h={size === Size.sm ? "151px" : "inherit"}>
+          <GridItem colSpan={2} h={size === Size.sm ? "159px" : "inherit"}>
             {/* TODO: what happens when width and height not provided in image */}
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              w={"full"}
-              h={size === Size.sm ? "151px" : "182px"}
+              w={size === Size.sm ? "238px" : "296px"}
+              h={size === Size.sm ? "159px" : "176px"}
               objectFit={"cover"}
-              borderRadius={"6px 0 0 6px"}
             />
           </GridItem>
 
