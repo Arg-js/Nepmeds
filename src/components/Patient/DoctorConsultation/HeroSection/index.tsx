@@ -6,10 +6,10 @@ import { colors } from "@nepMeds/theme/colors";
 const HeroSection = () => {
   return (
     <Flex direction={"column"} gap={4}>
-      <Text color={colors.dark_blue} fontWeight={600} fontSize={"16px"}>
+      <Text color={colors.dark_blue} fontWeight={600} fontSize={"md"}>
         The right care, is wherever you are.
       </Text>
-      <Text fontWeight={700} fontSize={"36px"} maxWidth={"391px"}>
+      <Text fontWeight={700} fontSize={"4xl"} maxWidth={"391px"}>
         Consult Nepal’s Top Doctors Online, Safely From Home.
       </Text>
 
@@ -38,7 +38,7 @@ const HeroSection = () => {
           position="absolute"
           />
         </Flex> */}
-      <Flex gap={"5"} alignItems={"center"}>
+      <Flex gap={"4"} alignItems={"center"}>
         <AvatarGroup size="md" max={2}>
           <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
           <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
@@ -47,13 +47,13 @@ const HeroSection = () => {
           <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
         </AvatarGroup>
 
-        <Text fontWeight={500} fontSize={"16px"} fontFamily={"Quicksand"}>
+        <Text fontWeight={500} fontSize={"md"} fontFamily={"Quicksand"}>
           +128 Doctors enlisted
         </Text>
       </Flex>
       <Button
         fontWeight={600}
-        fontSize={"16px"}
+        fontSize={"md"}
         width={"max-content"}
         bg={colors.primary}
         color={colors.white}

@@ -35,7 +35,7 @@ const responsive = {
     slidesToSlide: 3,
     items: 5.5,
   },
-  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
+  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 5.5 },
   laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
   tablet: { breakpoint: { max: 768, min: 464 }, items: 2 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
@@ -112,7 +112,7 @@ const DoctorConsultation = () => {
             }
           />
 
-          <Box my={10}>
+          <Box my={7.5}>
             <Carousel responsive={responsive}>
               {specializaionData?.map(specialization => {
                 return (
@@ -146,7 +146,7 @@ const DoctorConsultation = () => {
             }
           />
 
-          <Box my={10} cursor={"pointer"}>
+          <Box my={7.5} cursor={"pointer"}>
             <Carousel responsive={responsive}>
               {symptomData?.map(symptom => {
                 return (

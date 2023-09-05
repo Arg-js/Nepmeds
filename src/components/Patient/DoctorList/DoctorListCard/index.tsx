@@ -104,7 +104,7 @@ const DoctorListCard: React.FC<{
             <Text
               size="md"
               fontWeight={700}
-              fontSize={"16px"}
+              fontSize={"sm"}
               color={colors.dark_blue}
               textTransform={"capitalize"}
             >
@@ -114,7 +114,7 @@ const DoctorListCard: React.FC<{
             <Flex gap={`${size === Size.sm ? "0" : "1"}`} direction={"column"}>
               <Text
                 fontWeight={400}
-                fontSize={`${size === Size.sm ? "11px" : "12px"}`}
+                fontSize={`${size === Size.sm ? "10px" : "xs"}`}
               >
                 {data &&
                   data.specialization_names &&
@@ -130,8 +130,8 @@ const DoctorListCard: React.FC<{
                   )}
               </Text>
               <Text
-                fontWeight={500}
-                fontSize={`${size === Size.sm ? "11px" : "12px"}`}
+                fontWeight={400}
+                fontSize={`${size === Size.sm ? "10px" : "xs"}`}
               >
                 {data.workplace}
               </Text>
@@ -144,7 +144,7 @@ const DoctorListCard: React.FC<{
             >
               {doctorDetails.map(doctorDetail => {
                 return (
-                  <Flex gap={4} key={doctorDetail.id}>
+                  <Flex gap={2} key={doctorDetail.id}>
                     <Box>{doctorDetail.icon}</Box>
                     <Text
                       fontWeight={400}

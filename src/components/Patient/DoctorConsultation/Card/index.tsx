@@ -22,7 +22,7 @@ const Card: React.FC<{
   ) : (
     <ChakraCard
       variant={"elevated"}
-      width={"255px"}
+      width={"219px"}
       height={"282px"}
       textAlign={"center"}
       mb={1}
@@ -40,7 +40,7 @@ const Card: React.FC<{
         <Text
           size="md"
           fontWeight={700}
-          fontSize={"14px"}
+          fontSize={"sm"}
           color={colors.dark_blue}
         >
           {name}
