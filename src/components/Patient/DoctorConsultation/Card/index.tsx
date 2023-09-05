@@ -62,9 +62,9 @@ const Card: React.FC<{
                   } `
               )}
             </Text>
-            <Text fontWeight={600} fontSize={"11px"} color={colors.primary}>
+            {/* <Text fontWeight={600} fontSize={"11px"} color={colors.primary}>
               Consult now &gt;
-            </Text>
+            </Text> */}
           </Flex>
         </CardBody>
       </Flex>
