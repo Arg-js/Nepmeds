@@ -8,7 +8,7 @@ export const NAVIGATION_ROUTES = {
     EXPERIENCE_INFO: "/register/experience-info",
   },
   LOGIN: "/",
-  DOCTOR_LOGIN: "/doctor",
+  DOCTOR_LOGIN: "/login",
   SIGNUP: "/signup",
   FORGOTPASSWORD: "/forgot-password",
   CONFIRMPASSWORD: "/reset-password",
