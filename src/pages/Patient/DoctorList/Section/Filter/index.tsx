@@ -116,7 +116,12 @@ const DoctorListFilter: React.FC<{
   };
 
   return (
-    <Box display={"flex"} gap={"2"} flexDirection={"column"}>
+    <Box
+      display={"flex"}
+      gap={"2"}
+      flexDirection={"column"}
+      bgColor={colors.white}
+    >
       <InputGroup>
         <InputLeftElement>
           <SearchIcon />

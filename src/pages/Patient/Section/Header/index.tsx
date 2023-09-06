@@ -37,7 +37,8 @@ const Header: React.FC = () => {
         {/* Search Field */}
         <Flex alignItems={"center"} justifyContent={"space-around"} gap={6}>
           <InputGroup
-            style={{ width: "561px", minWidth: "200px", height: "46px" }}
+            style={{ height: "46px" }}
+            width={{ base: "auto", lg: "561px" }}
           >
             <InputRightElement pointerEvents="none">
               <IconButton
