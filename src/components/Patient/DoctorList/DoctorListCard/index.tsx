@@ -87,7 +87,6 @@ const DoctorListCard: React.FC<{
           // templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
           templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
-          columnGap={4}
           h={size === Size.sm ? "310px" : "176px"}
           borderRadius={0.5}
         >
@@ -103,7 +102,7 @@ const DoctorListCard: React.FC<{
             />
           </GridItem>
 
-          <GridItem colSpan={3} py={4} px={2}>
+          <GridItem colSpan={3} py={4} px={3}>
             <Text
               size="md"
               fontWeight={700}
@@ -148,7 +147,7 @@ const DoctorListCard: React.FC<{
               {doctorDetails.map(doctorDetail => {
                 return (
                   !!doctorDetail.description && (
-                    <Flex gap={2} key={doctorDetail.id}>
+                    <Flex gap={2.5} key={doctorDetail.id}>
                       <Box>{doctorDetail.icon}</Box>
                       <Text
                         fontWeight={400}

@@ -12,8 +12,11 @@ import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { colors } from "@nepMeds/theme/colors";
 import { SearchIcon } from "@chakra-ui/icons";
 import { SignInIcon } from "@nepMeds/assets/svgs";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const Header: React.FC = () => {
+  const navigate = useNavigate();
   return (
     <WrapperBox
       backgroundColor={colors.white}
@@ -28,10 +31,7 @@ const Header: React.FC = () => {
         <Image
           src={NepmedsLogo}
           alt={"Nepmemds logo"}
-          onClick={() =>
-            (window.location.href =
-              import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
-          }
+          onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)}
           cursor={"pointer"}
         />
         {/* Search Field */}

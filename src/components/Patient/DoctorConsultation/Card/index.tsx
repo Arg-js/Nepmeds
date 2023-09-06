@@ -11,7 +11,7 @@ const Card: React.FC<{
   image: string;
   // TODO
   // description: Record<string, string | number>[];
-  description: Record<string, any>[];
+  description: Record<string, any>[] | string;
   isLoading: boolean;
   error: AxiosError;
 }> = ({ name, image, description, error }) => {
@@ -28,6 +28,7 @@ const Card: React.FC<{
       textAlign={"center"}
       mb={1}
       pb={4}
+      cursor={"pointer"}
     >
       <Flex gap={3} direction={"column"}>
         <Image
@@ -57,12 +58,14 @@ const Card: React.FC<{
               height={"35px"}
             >
               {/* TODO: remove any */}
-              {description?.map(
-                (symptom: any, index: number) =>
-                  `${symptom.name}${
-                    description.length - 1 !== index ? "," : ""
-                  } `
-              )}
+              {typeof description === "string"
+                ? description.split(", ").slice(0, 4).join(", ")
+                : description?.map(
+                    (symptom: any, index: number) =>
+                      `${symptom.name}${
+                        description.length - 1 !== index ? "," : ""
+                      } `
+                  )}
             </Text>
             <Button
               variant={"link"}

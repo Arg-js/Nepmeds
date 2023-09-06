@@ -116,12 +116,7 @@ const DoctorListFilter: React.FC<{
   };
 
   return (
-    <Box
-      display={"flex"}
-      gap={"2"}
-      flexDirection={"column"}
-      bgColor={colors.white}
-    >
+    <Box display={"flex"} gap={"2"} flexDirection={"column"}>
       <InputGroup>
         <InputLeftElement>
           <SearchIcon />
@@ -135,7 +130,11 @@ const DoctorListFilter: React.FC<{
           fontSize={"xs"}
         />
       </InputGroup>
-      <Box border={`0.5px solid ${colors.gray_border}`} p={6}>
+      <Box
+        border={`0.5px solid ${colors.gray_border}`}
+        p={6}
+        bgColor={colors.white}
+      >
         <Flex direction={"column"} gap={3}>
           {/* HEADING */}
           <Flex justifyContent={"space-between"} alignItems={"center"}>
