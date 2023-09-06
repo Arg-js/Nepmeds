@@ -36,8 +36,6 @@ interface ILocationState {
   symptom: string;
 }
 
-// const dateToday = new Date(Date.now()).toISOString().split("T")[0];
-
 const DoctorListFilter: React.FC<{
   setGender: Dispatch<SetStateAction<string[]>>;
   setSpecialization: Dispatch<SetStateAction<string[]>>;
@@ -169,7 +167,6 @@ const DoctorListFilter: React.FC<{
             <Input
               type={"date"}
               ref={dateFromRef}
-              // defaultValue={dateToday}
               onChange={e => {
                 setDateParams({ ...dateParams, from_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
@@ -188,7 +185,6 @@ const DoctorListFilter: React.FC<{
             <Input
               type={"date"}
               ref={dateToRef}
-              // defaultValue={dateToday}
               onChange={e => {
                 setDateParams({ ...dateParams, to_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
