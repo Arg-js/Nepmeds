@@ -69,6 +69,10 @@ export const api = {
   allpaymentList: "/dashboard/doctor-list-asper-payment-status/",
   getAmountHistory: "/dashboard/doctor-rate-history/:id/",
 
+  adminAppointment: {
+    appointment: "/dashboard/appointment-history/",
+  },
+
   patient: {
     doctorList: {
       get: "/patient/filter-doctor-list/",
