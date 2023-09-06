@@ -32,7 +32,7 @@ export function getHour(time: string): number {
 }
 ////
 
-// Get Hour 07:00 --> 07:00
+// Get Hour 07:30 --> 07:00
 export function removeMinutes(timeString: string): string {
   const [hours, _] = timeString.split(":");
   return `${hours}:00`;
