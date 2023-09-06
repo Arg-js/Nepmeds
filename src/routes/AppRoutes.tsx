@@ -96,6 +96,12 @@ const paientRoutes = [
         path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
         element: <DoctorList />,
       },
+      {
+        path: NAVIGATION_ROUTES.NO_MATCH,
+        element: (
+          <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />
+        ),
+      },
     ],
   },
 ];
@@ -225,7 +231,7 @@ const openRoutes = [
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} />,
+    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />,
   },
 ];
 
