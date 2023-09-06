@@ -1,4 +1,5 @@
 import { Box, Tag, Text } from "@chakra-ui/react";
+import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
@@ -26,11 +27,11 @@ export const appointmentColumn = () => {
       header: "Booking Time",
       accessorKey: "time",
       cell: ({ row }: CellContext<any, any>) => {
-        return (
-          row?.original?.availability_data?.from_time +
-            "-" +
-            row?.original?.availability_data?.to_time ?? "-"
-        );
+        return row?.original?.availability_data
+          ? removeSeconds(row?.original?.availability_data?.from_time) +
+              " - " +
+              removeSeconds(row?.original?.availability_data?.to_time)
+          : "-";
       },
     },
 

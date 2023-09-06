@@ -37,14 +37,12 @@ import { useAdminAppointment } from "@nepMeds/service/nepmeds-appointment";
 //     },
 // ]
 const Appointment = () => {
-  const appointment = useAdminAppointment();
-  console.log(appointment.data?.data?.results);
+  const { isSuccess, data } = useAdminAppointment();
   return (
     <div>
-      <DataTable
-        columns={appointmentColumn()}
-        data={appointment.data?.data?.results}
-      />
+      {isSuccess && (
+        <DataTable columns={appointmentColumn()} data={data?.data?.results} />
+      )}
     </div>
   );
 };
