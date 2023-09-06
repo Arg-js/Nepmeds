@@ -17,13 +17,16 @@ const saveSymptoms = async (symptomInfo: {
   id: string | null;
   name: string;
   keyword: string;
+  description: string;
 }) => {
+  console.log(symptomInfo);
   if (symptomInfo.id) {
-    const response = await HttpClient.patch<NepMedsResponse>(
+    const response = await HttpClient.patch(
       api.symptom + symptomInfo.id + "/",
       {
         name: symptomInfo.name,
         keyword: symptomInfo.keyword,
+        description: symptomInfo.description,
       }
     );
     return response;

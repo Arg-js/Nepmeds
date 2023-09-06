@@ -50,7 +50,6 @@ const schema = yup.object().shape({
   description: yup
     .string()
     .required("Description is required!")
-    .max(30, "Description can only be 30 characters long")
     .min(5, "Description must be 5 characters long"),
 });
 
@@ -82,7 +81,6 @@ const Symptoms = ({
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
-  // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -95,12 +93,6 @@ const Symptoms = ({
     onClose: onCloseEditModal,
     onOpen: onOpenEditModal,
   } = useDisclosure();
-
-  // const {
-  //   isOpen: isBulkOpen,
-  //   onClose: onCloseBulkModal,
-  //   onOpen: onOpenBulkModal,
-  // } = useDisclosure();
 
   const formMethods = useForm({
     defaultValues: {
@@ -213,7 +205,7 @@ const Symptoms = ({
 
   const onCloseModal = () => {
     onCloseEditModal();
-    reset();
+    reset({});
   };
 
   const onDeleteSymptom = async () => {
@@ -277,12 +269,14 @@ const Symptoms = ({
                   name="name"
                   register={register}
                   error={errors.name?.message}
+                  isRequired
                 />
 
                 <FloatinglabelTextArea
                   label="Keywords"
                   name="keyword"
                   register={register}
+                  isRequired
                   rules={{
                     maxLength: {
                       value: 30,
@@ -294,7 +288,9 @@ const Symptoms = ({
                 <FloatinglabelTextArea
                   label="Description"
                   name="description"
+                  isRequired
                   register={register}
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>
@@ -372,6 +368,8 @@ const Symptoms = ({
                   label="Description"
                   name="description"
                   register={register}
+                  isRequired
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>
