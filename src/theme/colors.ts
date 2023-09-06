@@ -93,7 +93,7 @@ export const colors = {
   sky_blue: "#EAF9FE",
   // border gray
   gray: "#D2D0D0",
-  // light blue-greem
+  // light blue-green
 
   reset: "#F57E77",
   resetHover: "#FFF0F0",
