@@ -44,7 +44,7 @@ const DoctorListCard: React.FC<{
       {
         id: 2,
         icon: <StethoscopeIcon />,
-        description: `${data.experience} years experience`,
+        description: data.experience && `${data.experience} years experience`,
       },
       {
         id: 3,
@@ -63,6 +63,12 @@ const DoctorListCard: React.FC<{
         setDoctorId && setDoctorId(data.id);
       }}
       cursor={`${size === Size.sm ? "auto" : "pointer"}`}
+      boxShadow={
+        doctorId === data.id
+          ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
+          : "none"
+      }
+      // w={{ base: "inherit", xl: "550px" }}
     >
       <Card
         sx={{
@@ -73,38 +79,34 @@ const DoctorListCard: React.FC<{
             }`,
           },
         }}
-        boxShadow={
-          doctorId === data.id
-            ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
-            : "none"
-        }
         variant={"elevated"}
+        // w={size === Size.sm ? "238px" : "550px"}
         w={"full"}
       >
         <Grid
+          // templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
           templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
-          columnGap={4}
-          h={size === Size.sm ? "302px" : "150px"}
-          borderRadius={4}
+          h={size === Size.sm ? "310px" : "176px"}
+          borderRadius={0.5}
         >
-          <GridItem colSpan={2} h={size === Size.sm ? "151px" : "inherit"}>
+          <GridItem colSpan={2} h={size === Size.sm ? "159px" : "inherit"}>
             {/* TODO: what happens when width and height not provided in image */}
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
               w={"full"}
-              h={size === Size.sm ? "151px" : "182px"}
+              // w={size === Size.sm ? "238px" : "296px"}
+              h={size === Size.sm ? "159px" : "176px"}
               objectFit={"cover"}
-              borderRadius={"6px 0 0 6px"}
             />
           </GridItem>
 
-          <GridItem colSpan={3} py={4} px={2}>
+          <GridItem colSpan={3} py={4} px={3}>
             <Text
               size="md"
               fontWeight={700}
-              fontSize={"16px"}
+              fontSize={"sm"}
               color={colors.dark_blue}
               textTransform={"capitalize"}
             >
@@ -114,7 +116,7 @@ const DoctorListCard: React.FC<{
             <Flex gap={`${size === Size.sm ? "0" : "1"}`} direction={"column"}>
               <Text
                 fontWeight={400}
-                fontSize={`${size === Size.sm ? "11px" : "12px"}`}
+                fontSize={`${size === Size.sm ? "10px" : "xs"}`}
               >
                 {data &&
                   data.specialization_names &&
@@ -130,8 +132,8 @@ const DoctorListCard: React.FC<{
                   )}
               </Text>
               <Text
-                fontWeight={500}
-                fontSize={`${size === Size.sm ? "11px" : "12px"}`}
+                fontWeight={400}
+                fontSize={`${size === Size.sm ? "10px" : "xs"}`}
               >
                 {data.workplace}
               </Text>
@@ -144,16 +146,18 @@ const DoctorListCard: React.FC<{
             >
               {doctorDetails.map(doctorDetail => {
                 return (
-                  <Flex gap={4} key={doctorDetail.id}>
-                    <Box>{doctorDetail.icon}</Box>
-                    <Text
-                      fontWeight={400}
-                      fontSize={`${size === Size.sm ? "11px" : "13px"}`}
-                      color={colors.gray_text}
-                    >
-                      {doctorDetail.description}
-                    </Text>
-                  </Flex>
+                  !!doctorDetail.description && (
+                    <Flex gap={2.5} key={doctorDetail.id}>
+                      <Box>{doctorDetail.icon}</Box>
+                      <Text
+                        fontWeight={400}
+                        fontSize={`${size === Size.sm ? "11px" : "13px"}`}
+                        color={colors.gray_text}
+                      >
+                        {doctorDetail.description}
+                      </Text>
+                    </Flex>
+                  )
                 );
               })}
             </Flex>

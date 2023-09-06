@@ -38,6 +38,7 @@ const primaryOutline = defineStyle({
   ...baseStyles,
   color: colors.primary,
   bg: "transparent",
+  // TODO
   // borderRadius: "3px",
   border: `1px solid ${colors.primary}`,
   _hover: {
