@@ -1,12 +1,4 @@
-import {
-  Grid,
-  GridItem,
-  Flex,
-  Divider,
-  Text,
-  Image,
-  VStack,
-} from "@chakra-ui/react";
+import { Grid, GridItem, Flex, Divider, Text, Image } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import googlePlay from "@nepMeds/assets/images/googlePlay.png";
@@ -94,17 +86,17 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             direction={{ base: "column", md: "row" }}
             gap={3}
           >
-            <VStack gap={3.5}>
-              <Text fontWeight={600} fontSize={"14px"}>
+            <Flex direction={"column"} gap={3.5}>
+              <Text fontWeight={600} fontSize={"sm"}>
                 Download App
               </Text>
               <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={googlePlay} />
                 <Image alt="App Store" src={appStore} />
               </Flex>
-            </VStack>
-            <VStack gap={3.5}>
-              <Text fontWeight={600} fontSize={"14px"}>
+            </Flex>
+            <Flex direction={"column"} gap={3.5}>
+              <Text fontWeight={600} fontSize={"sm"}>
                 Payment Method
               </Text>
               <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
@@ -113,9 +105,9 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
                 <Image alt="Google Play" src={visaImage} />
                 <Image alt="App Store" src={khaltiImage} />
               </Flex>
-            </VStack>
+            </Flex>
           </Flex>
-          <Text fontWeight={500} fontSize={"18px"} textAlign={"center"} mt={15}>
+          <Text fontWeight={500} fontSize={"lg"} textAlign={"center"} mt={15}>
             Copyright © NepMeds 2023. All rights reserved
           </Text>
         </>

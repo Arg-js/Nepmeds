@@ -73,19 +73,25 @@ const DoctorListFilter: React.FC<{
 
   // TODO: LOGIC IS REDUNDANT IN BOTH USE EFFECT, TRY TO MAKE A CONCISE FUNCTION FOR REUSABILITY
   useEffect(() => {
-    if (state?.specialization && specializationData) {
+    if (state?.specialization && specializationData?.length) {
       for (let i = 0; i < specializationData.length; i++) {
-        if (specializationData[i].name === state.specialization)
+        if (specializationData[i].name === state.specialization) {
           specializationFiltersRef.current[i].checked = true;
+        } else {
+          specializationFiltersRef.current[i].checked = false;
+        }
       }
     }
   }, [state?.specialization, specializationData]);
 
   useEffect(() => {
-    if (state?.symptom && symptomData) {
+    if (state?.symptom && symptomData?.length) {
       for (let i = 0; i < symptomData.length; i++) {
-        if (symptomData[i].name === state.symptom)
-          specializationFiltersRef.current[i].checked = true;
+        if (symptomData[i].name === state.symptom) {
+          symptomFiltersRef.current[i].checked = true;
+        } else {
+          symptomFiltersRef.current[i].checked = false;
+        }
       }
     }
   }, [state?.symptom, symptomData]);
@@ -121,10 +127,14 @@ const DoctorListFilter: React.FC<{
             setPageParams({ ...pageParams, page: 1 });
           }}
           placeholder="Search by doctors name"
-          fontSize={"sm"}
+          fontSize={"xs"}
         />
       </InputGroup>
-      <Box border={`0.5px solid ${colors.gray_border}`} p={6}>
+      <Box
+        border={`0.5px solid ${colors.gray_border}`}
+        p={6}
+        bgColor={colors.white}
+      >
         <Flex direction={"column"} gap={3}>
           {/* HEADING */}
           <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -152,7 +162,10 @@ const DoctorListFilter: React.FC<{
             </Text>
           </Flex>
           <Divider />
-          <Flex gap={2} justifyContent="center" wrap={"wrap"}>
+          <Box>
+            <Text fontWeight={600} fontSize={"sm"} mb={3}>
+              From Date:
+            </Text>
             <Input
               type={"date"}
               ref={dateFromRef}
@@ -161,8 +174,17 @@ const DoctorListFilter: React.FC<{
                 setDateParams({ ...dateParams, from_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
               }}
+              // w={"min-content"}
+              // size={"sm"}
+              borderRadius={"6px"}
             />
-            <Text>-</Text>
+          </Box>
+          {/* <Text>-</Text> */}
+          <Box>
+            <Text fontWeight={600} fontSize={"sm"} mb={3}>
+              To Date:
+            </Text>
+
             <Input
               type={"date"}
               ref={dateToRef}
@@ -171,8 +193,12 @@ const DoctorListFilter: React.FC<{
                 setDateParams({ ...dateParams, to_date: e.target.value });
                 setPageParams({ ...pageParams, page: 1 });
               }}
+              // w={"min-content"}
+              // size={"sm"}
+              borderRadius={"6px"}
             />
-          </Flex>
+          </Box>
+          <Flex gap={2} justifyContent="center" wrap={"wrap"}></Flex>
           <Box>
             <Text fontWeight={600} fontSize={"16px"} mb={3}>
               Gender

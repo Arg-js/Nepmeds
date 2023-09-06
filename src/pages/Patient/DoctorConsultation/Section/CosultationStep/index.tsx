@@ -20,8 +20,13 @@ const ConsultationStepSection = () => {
             <GridItem
               width={{ base: "350px", md: "600px" }}
               key={consultationStep.id}
+              mt={4}
             >
-              <Grid templateColumns="min-content 1fr " gap={8}>
+              <Grid
+                templateColumns="min-content 1fr "
+                gap={8}
+                alignItems={"center"}
+              >
                 <GridItem>{consultationStep.image}</GridItem>
                 <GridItem>
                   <Flex direction={"column"}>

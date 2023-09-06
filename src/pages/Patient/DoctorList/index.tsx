@@ -109,18 +109,19 @@ const DoctorList = () => {
           />
           <SectionHeading
             heading="Doctors List"
-            description="Book Appointment with top doctors across various speciality"
+            description="Book Appointment with top doctors across various specialty"
           />
 
           <Grid
             templateColumns={{
               base: "repeat(3, 1fr)",
-              lg: "repeat(6, 1fr)",
-              "2xl": "repeat(5, 1fr)",
+              md: "repeat(11, 1fr)",
+              "2xl": "repeat(10, 1fr)",
             }}
             columnGap={{ base: 2, lg: 4, xl: 10 }}
           >
-            <GridItem colSpan={1}>
+            {/* FILTER */}
+            <GridItem colSpan={{ base: 1, md: 2 }}>
               <DoctorListFilter
                 setGender={setGender}
                 setSpecialization={setSpecialization}
@@ -133,8 +134,8 @@ const DoctorList = () => {
               />
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 3, "2xl": 2 }}>
-              <Box w={"full"}>
+            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 4 }}>
+              <Box>
                 <>
                   {isLoading && <Skeleton height="215px" width="inherit" />}
                   {doctorData && !doctorData?.results.length && (
@@ -173,7 +174,7 @@ const DoctorList = () => {
               </Box>
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <GridItem colSpan={{ base: 1, lg: 4, "2xl": 4 }}>
               <Box>
                 <DoctorDetailsSection
                   doctorInfo={doctorInfo}

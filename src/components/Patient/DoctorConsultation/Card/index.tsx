@@ -1,6 +1,6 @@
 import { CardBody, Card as ChakraCard } from "@chakra-ui/card";
 import { Flex, Text } from "@chakra-ui/layout";
-import { Image } from "@chakra-ui/react";
+import { Button, Image } from "@chakra-ui/react";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
@@ -11,7 +11,7 @@ const Card: React.FC<{
   image: string;
   // TODO
   // description: Record<string, string | number>[];
-  description: Record<string, any>[];
+  description: Record<string, any>[] | string;
   isLoading: boolean;
   error: AxiosError;
 }> = ({ name, image, description, error }) => {
@@ -22,11 +22,13 @@ const Card: React.FC<{
   ) : (
     <ChakraCard
       variant={"elevated"}
-      width={"255px"}
+      // width={"219px"}
+      width={"90%"}
       height={"282px"}
       textAlign={"center"}
       mb={1}
       pb={4}
+      cursor={"pointer"}
     >
       <Flex gap={3} direction={"column"}>
         <Image
@@ -40,8 +42,9 @@ const Card: React.FC<{
         <Text
           size="md"
           fontWeight={700}
-          fontSize={"14px"}
+          fontSize={"sm"}
           color={colors.dark_blue}
+          textTransform={"capitalize"}
         >
           {name}
         </Text>
@@ -55,16 +58,23 @@ const Card: React.FC<{
               height={"35px"}
             >
               {/* TODO: remove any */}
-              {description?.map(
-                (symptom: any, index: number) =>
-                  `${symptom.name}${
-                    description.length - 1 !== index ? "," : ""
-                  } `
-              )}
+              {typeof description === "string"
+                ? description.split(", ").slice(0, 4).join(", ")
+                : description?.map(
+                    (symptom: any, index: number) =>
+                      `${symptom.name}${
+                        description.length - 1 !== index ? "," : ""
+                      } `
+                  )}
             </Text>
-            {/* <Text fontWeight={600} fontSize={"11px"} color={colors.primary}>
+            <Button
+              variant={"link"}
+              fontWeight={600}
+              fontSize={"11px"}
+              color={colors.primary}
+            >
               Consult now &gt;
-            </Text> */}
+            </Button>
           </Flex>
         </CardBody>
       </Flex>

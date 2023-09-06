@@ -1,7 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
 import { Box, Divider, Flex, Text, VStack } from "@chakra-ui/layout";
-import { FormLabel, HStack, Image } from "@chakra-ui/react";
+import { FormLabel, HStack, Image, SimpleGrid } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
@@ -29,6 +29,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import TokenService from "@nepMeds/service/service-token";
+import { formatTimeToMeridian } from "@nepMeds/utils/time";
 
 type IOptionItem = { label: string; value: string };
 
@@ -50,7 +51,7 @@ const defaultValues = {
   // symptoms: [{ label: "", value: "" }],
   description: "",
   // status: "",
-  availabilityDate: "",
+  availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
 };
 
 const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
@@ -160,7 +161,7 @@ const DoctorDetails: React.FC<{
               >
                 <>
                   <Flex direction={"column"} gap={5}>
-                    <Flex direction={"column"} alignItems={"center"} gap={4}>
+                    <Flex direction={"column"} alignItems={"center"} gap={2}>
                       <Text
                         fontWeight={600}
                         fontSize={"14px"}
@@ -266,32 +267,41 @@ const DoctorDetails: React.FC<{
                           <Spinner />
                         </Box>
                       ) : (
-                        availability?.map(data => (
-                          <Button
-                            variant={"primaryOutline"}
-                            width={"100px"}
-                            key={data.id}
-                            borderRadius={3}
-                            height={"34px"}
-                            m={1}
-                            sx={{
-                              bg: `${
-                                selectedAvailability.includes(data.id)
-                                  ? colors.sky_blue
-                                  : "transparent"
-                              }`,
-                            }}
-                            onClick={() =>
-                              setSelectedAvailability(prev =>
-                                prev.includes(data.id)
-                                  ? prev.filter(item => item !== data.id)
-                                  : [...prev, data.id]
-                              )
-                            }
-                          >
-                            {data?.from_time?.substr(0, 5)}
-                          </Button>
-                        ))
+                        <SimpleGrid
+                          gridTemplateColumns={
+                            "repeat(auto-fit, minmax(90px, 1fr))"
+                          }
+                        >
+                          {availability?.map(data => (
+                            <Button
+                              variant={"primaryOutline"}
+                              // width={"100px"}
+                              key={data.id}
+                              borderRadius={3}
+                              height={"34px"}
+                              m={1}
+                              sx={{
+                                bg: `${
+                                  selectedAvailability.includes(data.id)
+                                    ? colors.sky_blue
+                                    : "transparent"
+                                }`,
+                              }}
+                              onClick={() =>
+                                setSelectedAvailability(prev =>
+                                  prev.includes(data.id)
+                                    ? prev.filter(item => item !== data.id)
+                                    : [...prev, data.id]
+                                )
+                              }
+                            >
+                              {formatTimeToMeridian(
+                                data?.from_time?.slice(0, 5)
+                              )}
+                              {/* {data?.from_time?.slice(0, 5)} */}
+                            </Button>
+                          ))}
+                        </SimpleGrid>
                       )}
                       {!isAvailabilityFetching && (
                         <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
@@ -521,7 +531,7 @@ const DoctorDetails: React.FC<{
                 <Text fontWeight={700} fontSize={"16px"} color={colors.red_700}>
                   There are no details here.
                 </Text>
-                <Text fontWeight={400} fontSize={"12px"}>
+                <Text fontWeight={400} fontSize={"12px"} textAlign="center">
                   Please Click on the doctor list to view detail doctor’s
                   profile.
                 </Text>
