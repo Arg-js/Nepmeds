@@ -42,11 +42,16 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("Symptom name is required!")
-    .max(30, "Symptom name can be 30 characters long"),
+    .max(30, "Symptom name can only be 30 characters long"),
   keyword: yup
     .string()
-    .required("Symptom keyword is required")
-    .max(30, "Keyword can be 30 characters long"),
+    .required("Symptom keyword is required!")
+    .max(30, "Keyword can only be  30 characters long"),
+  description: yup
+    .string()
+    .required("Description is required!")
+    .max(30, "Description can only be 30 characters long")
+    .min(5, "Description must be 5 characters long"),
 });
 
 type OnOpenFunction = () => void;
@@ -102,6 +107,7 @@ const Symptoms = ({
       id: null as number | null,
       name: "",
       keyword: "",
+      description: "",
     },
 
     resolver: yupResolver(schema),
@@ -168,9 +174,8 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: formMethods.getValues("id")?.toString() || null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
       onCloseEditModal();
       toastSuccess("Symptom saved successfully!");
@@ -186,9 +191,8 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
       onCloseSymptoms();
       toastSuccess("Symptom saved successfully!");
@@ -287,6 +291,11 @@ const Symptoms = ({
                   }}
                   error={errors.keyword?.message}
                 />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
+                />
               </VStack>
             </form>
           </FormProvider>
@@ -358,6 +367,11 @@ const Symptoms = ({
                   name="keyword"
                   register={register}
                   error={errors.keyword?.message}
+                />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
                 />
               </VStack>
             </form>
