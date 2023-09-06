@@ -68,7 +68,7 @@ const DoctorListCard: React.FC<{
           ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
           : "none"
       }
-      w={{ base: "inherit", xl: "550px" }}
+      // w={{ base: "inherit", xl: "550px" }}
     >
       <Card
         sx={{
@@ -80,10 +80,12 @@ const DoctorListCard: React.FC<{
           },
         }}
         variant={"elevated"}
-        w={size === Size.sm ? "238px" : "550px"}
+        // w={size === Size.sm ? "238px" : "550px"}
+        w={"full"}
       >
         <Grid
-          templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
+          // templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
+          templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           columnGap={4}
           h={size === Size.sm ? "310px" : "176px"}
@@ -94,7 +96,8 @@ const DoctorListCard: React.FC<{
             <Image
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
-              w={size === Size.sm ? "238px" : "296px"}
+              w={"full"}
+              // w={size === Size.sm ? "238px" : "296px"}
               h={size === Size.sm ? "159px" : "176px"}
               objectFit={"cover"}
             />

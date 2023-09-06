@@ -73,7 +73,7 @@ const DoctorListFilter: React.FC<{
 
   // TODO: LOGIC IS REDUNDANT IN BOTH USE EFFECT, TRY TO MAKE A CONCISE FUNCTION FOR REUSABILITY
   useEffect(() => {
-    if (state?.specialization && specializationData.length) {
+    if (state?.specialization && specializationData?.length) {
       for (let i = 0; i < specializationData.length; i++) {
         if (specializationData[i].name === state.specialization) {
           specializationFiltersRef.current[i].checked = true;
@@ -85,7 +85,7 @@ const DoctorListFilter: React.FC<{
   }, [state?.specialization, specializationData]);
 
   useEffect(() => {
-    if (state?.symptom && symptomData.length) {
+    if (state?.symptom && symptomData?.length) {
       for (let i = 0; i < symptomData.length; i++) {
         if (symptomData[i].name === state.symptom) {
           symptomFiltersRef.current[i].checked = true;

@@ -22,7 +22,8 @@ const Card: React.FC<{
   ) : (
     <ChakraCard
       variant={"elevated"}
-      width={"219px"}
+      // width={"219px"}
+      width={"90%"}
       height={"282px"}
       textAlign={"center"}
       mb={1}
