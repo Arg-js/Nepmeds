@@ -4,7 +4,7 @@ import { queryStringGenerator } from "../utils";
 import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-interface IAppointmentAdmin {
+export interface IAppointmentAdmin {
   id: number;
   doctor_name: string;
   patient_name: string;
@@ -22,7 +22,7 @@ interface IAppointmentAdmin {
     date: string;
     from_time: string;
     to_time: string;
-  }[];
+  };
 }
 
 // Get List of appointment for doctors
@@ -34,7 +34,7 @@ const getAdminAppointment = async (qs: string) => {
 };
 
 export const useAdminAppointment = (filter: IFilterSearch) => {
-  const qs = queryStringGenerator(filter);
+  const qs = queryStringGenerator({ ...filter, page: filter.page_no });
   return useQuery(
     [api.adminAppointment.appointment, qs],
     () => getAdminAppointment(qs),

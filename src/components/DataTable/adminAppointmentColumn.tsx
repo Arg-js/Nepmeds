@@ -1,5 +1,6 @@
 import { Box, Tag, Text } from "@chakra-ui/react";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
+import { IAppointmentAdmin } from "@nepMeds/service/nepmeds-appointment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
@@ -10,7 +11,10 @@ export const appointmentColumn = () => {
   return [
     {
       header: "S.N",
-      accessorFn: (_cell: CellContext<any, any>, index: number) => {
+      accessorFn: (
+        _cell: CellContext<IAppointmentAdmin, any>,
+        index: number
+      ) => {
         return index + 1;
       },
       size: 2,
@@ -18,7 +22,7 @@ export const appointmentColumn = () => {
     {
       header: "Date",
       accessorKey: "date",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return row?.original?.availability_data?.date ?? "-";
       },
     },
@@ -26,7 +30,7 @@ export const appointmentColumn = () => {
     {
       header: "Booking Time",
       accessorKey: "time",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return row?.original?.availability_data
           ? removeSeconds(row?.original?.availability_data?.from_time) +
               " - " +
@@ -38,7 +42,7 @@ export const appointmentColumn = () => {
     {
       header: "Doctor's Name",
       accessorKey: "doctor_name",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>{row?.original?.doctor_name}</Text>;
       },
     },
@@ -75,20 +79,20 @@ export const appointmentColumn = () => {
     {
       header: "Patient's Name",
       accessorKey: "patient_name",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>{row?.original?.patient_name}</Text>;
       },
     },
 
     {
       header: "Payment Rate",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>Rs. {row?.original?.rate}</Text>;
       },
     },
     {
       header: "Status",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return (
           <StatusBadge
             customProps={{
@@ -118,7 +122,10 @@ export const instantConsultantColumn = () => {
   return [
     {
       header: "S.N",
-      accessorFn: (_cell: CellContext<any, any>, index: number) => {
+      accessorFn: (
+        _cell: CellContext<IAppointmentAdmin, any>,
+        index: number
+      ) => {
         return index + 1;
       },
       size: 2,
@@ -126,7 +133,7 @@ export const instantConsultantColumn = () => {
     {
       header: "Date",
       accessorKey: "date",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return row?.original?.availability_data?.date ?? "-";
       },
     },
@@ -134,7 +141,7 @@ export const instantConsultantColumn = () => {
     {
       header: "Booking Time",
       accessorKey: "time",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return row?.original?.availability_data
           ? removeSeconds(row?.original?.availability_data?.from_time) +
               " - " +
@@ -146,7 +153,7 @@ export const instantConsultantColumn = () => {
     {
       header: "Doctor's Name",
       accessorKey: "doctor_name",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>{row?.original?.doctor_name}</Text>;
       },
     },
@@ -183,20 +190,20 @@ export const instantConsultantColumn = () => {
     {
       header: "Patient's Name",
       accessorKey: "patient_name",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>{row?.original?.patient_name}</Text>;
       },
     },
 
     {
       header: "Payment Rate",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return <Text pl={"12px"}>Rs. {row?.original?.rate}</Text>;
       },
     },
     {
       header: "Status",
-      cell: ({ row }: CellContext<any, any>) => {
+      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return (
           <StatusBadge
             customProps={{

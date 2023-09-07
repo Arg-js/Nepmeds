@@ -6,6 +6,7 @@ import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
 import RateHistory from "@nepMeds/components/Table/Payment/RateHistory";
 import AdminAppointment from "@nepMeds/pages/Admin/Appointments";
 import MasterData from "@nepMeds/pages/Admin/MasterData";
+import UserRole from "@nepMeds/pages/Admin/UserRole";
 import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
 import Dashboard from "@nepMeds/pages/Dashboard";
 import UnApprovedDoctor from "@nepMeds/pages/Dashboard/UnApproved";
@@ -141,7 +142,7 @@ const adminRoutes = [
       },
       {
         path: NAVIGATION_ROUTES.USER_ROLE,
-        element: <>User Role</>,
+        element: <UserRole />,
       },
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,

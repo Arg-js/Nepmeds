@@ -72,6 +72,7 @@ export const api = {
   adminAppointment: {
     appointment: "/dashboard/appointment-history/",
   },
+  adminUserRole: "/dashboard/user-management/",
 
   patient: {
     doctorList: {
