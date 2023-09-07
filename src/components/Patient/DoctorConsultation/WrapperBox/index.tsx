@@ -12,6 +12,7 @@ interface IWrapperBox {
   border?: string;
   borderRadius?: string;
   boxShadow?: string;
+  // TODO: remove any
   style?: Record<string, any>;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({
