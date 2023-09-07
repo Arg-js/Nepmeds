@@ -58,7 +58,7 @@ const HeroSection = () => {
         bg={colors.primary}
         color={colors.white}
         // TODO: same make button component
-        borderRadius={"3px"}
+        borderRadius={6}
         height={"42px"}
         px={7}
       >
