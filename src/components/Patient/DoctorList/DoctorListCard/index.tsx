@@ -97,7 +97,7 @@ const DoctorListCard: React.FC<{
               alt="doctorImage"
               w={"full"}
               // w={size === Size.sm ? "238px" : "296px"}
-              h={size === Size.sm ? "159px" : "176px"}
+              h={size === Size.sm ? "159px" : "180px"}
               objectFit={"cover"}
             />
           </GridItem>
