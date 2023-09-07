@@ -1,4 +1,11 @@
-import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Skeleton,
+  SkeletonText,
+} from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
@@ -137,7 +144,39 @@ const DoctorList = () => {
             <GridItem colSpan={{ base: 1, lg: 5, "2xl": 4 }}>
               <Box>
                 <>
-                  {isLoading && <Skeleton height="215px" width="inherit" />}
+                  {isLoading && (
+                    <Grid templateColumns={"repeat(5,1fr)"}>
+                      <GridItem colSpan={2}>
+                        <Skeleton height="176px" />
+                      </GridItem>
+                      <GridItem colSpan={3} m={4}>
+                        <Grid templateColumns={"repeat(2, 1fr)"} gap={5}>
+                          <GridItem colSpan={2}>
+                            <SkeletonText
+                              noOfLines={2}
+                              spacing="4"
+                              skeletonHeight="2"
+                            />
+                          </GridItem>
+                          <GridItem colStart={1}>
+                            <Flex direction={"column"} gap={3}>
+                              <SkeletonText
+                                noOfLines={2}
+                                spacing="4"
+                                skeletonHeight="2"
+                              />
+                              <SkeletonText
+                                noOfLines={2}
+                                spacing="4"
+                                skeletonHeight="2"
+                              />
+                            </Flex>
+                          </GridItem>
+                        </Grid>
+                      </GridItem>
+                    </Grid>
+                  )}
+
                   {doctorData && !doctorData?.results.length && (
                     <Box width="673px" height="215px">
                       No Data to be shown!
