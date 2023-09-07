@@ -19,7 +19,6 @@ const saveSymptoms = async (symptomInfo: {
   keyword: string;
   description: string;
 }) => {
-  console.log(symptomInfo);
   if (symptomInfo.id) {
     const response = await HttpClient.patch(
       api.symptom + symptomInfo.id + "/",

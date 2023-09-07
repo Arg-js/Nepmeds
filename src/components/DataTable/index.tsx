@@ -233,9 +233,12 @@ export function DataTable({
             ))}
           </Tbody>
         </Table>
+        {table.getRowModel().rows.length === 0 && (
+          <Box mt={3}>No Result Found!</Box>
+        )}
       </Box>
 
-      {pagination ? (
+      {pagination && pagination?.pageCount !== 1 ? (
         <HStack justifyContent={"flex-end"} float={"right"} flexWrap="wrap">
           <HStack>
             <FormControl variant={"floating"}>

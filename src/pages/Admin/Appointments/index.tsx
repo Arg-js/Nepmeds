@@ -2,6 +2,7 @@ import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { useState } from "react";
 import Appointment from "./appointment";
+import InstantConsultant from "./instantConsultant";
 
 const AdminAppointment = () => {
   const [activeTab, setActiveTab] = useState(0);
@@ -12,12 +13,12 @@ const AdminAppointment = () => {
         <TabList border={"none"}>
           <Tab>Instant Consultant</Tab>
           <Tab>Appointment</Tab>
-          <Tab>Consultant</Tab>
+          <Tab>Follow Up</Tab>
           <Tab>Instant Consultant Request</Tab>
         </TabList>
 
         <TabPanels>
-          <TabPanel>{activeTab === 0 && <p>Instant Consultant</p>}</TabPanel>
+          <TabPanel>{activeTab === 0 && <InstantConsultant />}</TabPanel>
           <TabPanel>{activeTab === 1 && <Appointment />}</TabPanel>
           <TabPanel>{activeTab === 2 && <p>Consultant</p>}</TabPanel>
           <TabPanel>

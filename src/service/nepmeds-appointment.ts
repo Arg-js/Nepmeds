@@ -1,15 +1,45 @@
+import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useQuery } from "react-query";
-import { api } from "./service-api";
+import { queryStringGenerator } from "../utils";
+import { PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
+interface IAppointmentAdmin {
+  id: number;
+  doctor_name: string;
+  patient_name: string;
+  type: string;
+  status: string;
+  specialization: {
+    id: number;
+    name: string;
+  }[];
+  symptoms_name: {
+    name: string;
+  }[];
+  rate: number;
+  availability_data: {
+    date: string;
+    from_time: string;
+    to_time: string;
+  }[];
+}
+
 // Get List of appointment for doctors
-const getAdminAppointment = async () => {
-  const response = await HttpClient.get(`${api.adminAppointment.appointment}`);
+const getAdminAppointment = async (qs: string) => {
+  const response = await HttpClient.get<PaginatedResponse<IAppointmentAdmin>>(
+    `${api.adminAppointment.appointment}?${qs}`
+  );
   return response;
 };
 
-export const useAdminAppointment = () => {
-  return useQuery([api.adminAppointment.appointment], getAdminAppointment, {
-    select: data => data.data,
-  });
+export const useAdminAppointment = (filter: IFilterSearch) => {
+  const qs = queryStringGenerator(filter);
+  return useQuery(
+    [api.adminAppointment.appointment, qs],
+    () => getAdminAppointment(qs),
+    {
+      select: data => data.data.data,
+    }
+  );
 };
