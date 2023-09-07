@@ -18,7 +18,7 @@ const ConsultationStepSection = () => {
         {ConsultationSteps.map(consultationStep => {
           return (
             <GridItem
-              width={{ base: "350px", md: "600px" }}
+              width={{ base: "100%", md: "600px" }}
               key={consultationStep.id}
               mt={4}
             >
@@ -27,8 +27,10 @@ const ConsultationStepSection = () => {
                 gap={8}
                 alignItems={"center"}
               >
-                <GridItem>{consultationStep.image}</GridItem>
-                <GridItem>
+                <GridItem colSpan={{ base: 2, md: 1 }}>
+                  {consultationStep.image}
+                </GridItem>
+                <GridItem colSpan={{ base: 2, md: 1 }}>
                   <Flex direction={"column"}>
                     <Text
                       fontWeight={700}

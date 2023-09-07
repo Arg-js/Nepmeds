@@ -39,6 +39,7 @@ const Header: React.FC = () => {
           <InputGroup
             style={{ height: "46px" }}
             width={{ base: "auto", lg: "561px" }}
+            display={{ base: "none", md: "auto" }}
           >
             <InputRightElement pointerEvents="none">
               <IconButton
@@ -68,6 +69,7 @@ const Header: React.FC = () => {
               (window.location.href =
                 import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
             }
+            display={{ base: "none", md: "auto" }}
           >
             <SignInIcon />
             <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
