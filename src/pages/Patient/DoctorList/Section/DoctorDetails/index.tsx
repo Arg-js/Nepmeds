@@ -29,7 +29,6 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import TokenService from "@nepMeds/service/service-token";
-import { formatTimeToMeridian } from "@nepMeds/utils/time";
 
 type IOptionItem = { label: string; value: string };
 
@@ -275,7 +274,6 @@ const DoctorDetails: React.FC<{
                           {availability?.map(data => (
                             <Button
                               variant={"primaryOutline"}
-                              // width={"100px"}
                               key={data.id}
                               borderRadius={3}
                               height={"34px"}
@@ -295,10 +293,8 @@ const DoctorDetails: React.FC<{
                                 )
                               }
                             >
-                              {formatTimeToMeridian(
-                                data?.from_time?.slice(0, 5)
-                              )}
-                              {/* {data?.from_time?.slice(0, 5)} */}
+                              {data?.from_time?.slice(0, 5)} -
+                              {data?.to_time?.slice(0, 5)}
                             </Button>
                           ))}
                         </SimpleGrid>
