@@ -1,35 +1,57 @@
-import { Spinner } from "@chakra-ui/react";
 import CenterLoader from "@nepMeds/components/Common/Loader";
-import Layout from "@nepMeds/components/Layout";
-import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
-import PaymentList from "@nepMeds/components/Table/Payment/PaymentList";
-import RateHistory from "@nepMeds/components/Table/Payment/RateHistory";
-import MasterData from "@nepMeds/pages/Admin/MasterData";
-import ConfirmPassword from "@nepMeds/pages/ConfirmPassword/ConfirmPassword";
-import Dashboard from "@nepMeds/pages/Dashboard";
-import UnApprovedDoctor from "@nepMeds/pages/Dashboard/UnApproved";
-import DoctorProfile from "@nepMeds/pages/DoctorList/DoctorProfile";
-import DocProfileAdmin from "@nepMeds/pages/DoctorProfile/DocProfileAdmin";
-import ForgotPassword from "@nepMeds/pages/ForgotPassword/ForgotPassword";
-import Login from "@nepMeds/pages/Login/Login";
-import Calendar from "@nepMeds/pages/NewCalendar";
-import DoctorConsultation from "@nepMeds/pages/Patient/DoctorConsultation";
-import DoctorList from "@nepMeds/pages/Patient/DoctorList";
-import PaymentDetails from "@nepMeds/pages/Payment";
-import Register from "@nepMeds/pages/Register";
-import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
-import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
-import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
-import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
-import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
-import SignUp from "@nepMeds/pages/SignUp/SignUp";
 import {
   useAuthentication,
   useLoginTokenDetailQuery,
 } from "@nepMeds/service/nepmeds-auth";
-import { Suspense } from "react";
+import { lazy, Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+
+const Layout = lazy(() => import("@nepMeds/components/Layout"));
+const DoctorsList = lazy(
+  () => import("@nepMeds/components/Table/Doctor/DoctorsList")
+);
+const PaymentList = lazy(
+  () => import("@nepMeds/components/Table/Payment/PaymentList")
+);
+const RateHistory = lazy(
+  () => import("@nepMeds/components/Table/Payment/RateHistory")
+);
+const MasterData = lazy(() => import("@nepMeds/pages/Admin/MasterData"));
+const ConfirmPassword = lazy(
+  () => import("@nepMeds/pages/ConfirmPassword/ConfirmPassword")
+);
+const Dashboard = lazy(() => import("@nepMeds/pages/Dashboard"));
+const UnApprovedDoctor = lazy(
+  () => import("@nepMeds/pages/Dashboard/UnApproved")
+);
+const DoctorProfile = lazy(
+  () => import("@nepMeds/pages/DoctorList/DoctorProfile")
+);
+const DocProfileAdmin = lazy(
+  () => import("@nepMeds/pages/DoctorProfile/DocProfileAdmin")
+);
+const ForgotPassword = lazy(
+  () => import("@nepMeds/pages/ForgotPassword/ForgotPassword")
+);
+const Login = lazy(() => import("@nepMeds/pages/Login/Login"));
+const Calendar = lazy(() => import("@nepMeds/pages/NewCalendar"));
+const DoctorConsultation = lazy(
+  () => import("@nepMeds/pages/Patient/DoctorConsultation")
+);
+const DoctorList = lazy(() => import("@nepMeds/pages/Patient/DoctorList"));
+const PaymentDetails = lazy(() => import("@nepMeds/pages/Payment"));
+const Register = lazy(() => import("@nepMeds/pages/Register"));
+const AcademicInfo = lazy(() => import("@nepMeds/pages/Register/AcademicInfo"));
+const BasicInfo = lazy(() => import("@nepMeds/pages/Register/BasicInfo"));
+const CertificationInfo = lazy(
+  () => import("@nepMeds/pages/Register/CertificationInfo")
+);
+const ExperienceInfo = lazy(
+  () => import("@nepMeds/pages/Register/ExperienceInfo")
+);
+const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
+const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
 
 const routes = [
   {
@@ -249,10 +271,14 @@ const AppRoutes = () => {
   );
 
   if (isLoading) {
-    return <CenterLoader h="100vh" />;
+    return <CenterLoader h="100vh" alignItems={"center"} />;
   }
 
-  return <Suspense fallback={<Spinner />}>{element}</Suspense>;
+  return (
+    <Suspense fallback={<CenterLoader h={"100vh"} alignItems={"center"} />}>
+      {element}
+    </Suspense>
+  );
 };
 
 export default AppRoutes;
