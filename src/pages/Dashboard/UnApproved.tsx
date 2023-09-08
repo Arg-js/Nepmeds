@@ -49,9 +49,9 @@ const UnApprovedDoctor = () => {
             w={"50%"}
             textAlign={"center"}
           >
-            Since, your application has been put on hold due to insufficient
-            details provided.{"\n"} To resubmit the application for verification
-            please{" "}
+            Your application is{" "}
+            {doctorStatusState.isRejected ? "on Hold" : "Pending"}.{"\n"} To
+            resubmit the application for verification please{" "}
             <Button
               variant={"unstyled"}
               as={Link}
@@ -73,9 +73,11 @@ const UnApprovedDoctor = () => {
               display={"flex"}
             >
               <Heading fontSize={"lg"} color={colors.red}>
-                Rejected Reason :{" "}
+                Rejected Reason{" "}
               </Heading>
-              <Text color={colors.red}>{data?.doctor?.rejected_remarks}</Text>
+              <Text color={colors.red} ml={1}>
+                {data?.doctor?.rejected_remarks}
+              </Text>
             </Box>
           )}
         </Stack>
