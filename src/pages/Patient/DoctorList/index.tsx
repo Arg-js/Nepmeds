@@ -92,22 +92,25 @@ const DoctorList = () => {
       <Header />
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
-          <BreadCrumb
-            items={[
-              {
-                name: "Doctor Consultation",
+          {/* TODO: design discussion with UI for breadcrumb in mobile */}
+          <Box display={{ base: "none", md: "block" }}>
+            <BreadCrumb
+              items={[
+                {
+                  name: "Doctor Consultation",
+                  route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
+                },
+                {
+                  name: "Doctor Lists",
+                  route: `${NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE}`,
+                },
+              ]}
+              title={{
+                name: "Home",
                 route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
-              },
-              {
-                name: "Doctor Lists",
-                route: `${NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE}`,
-              },
-            ]}
-            title={{
-              name: "Home",
-              route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
-            }}
-          />
+              }}
+            />
+          </Box>
           <SectionHeading
             heading="Doctors List"
             description="Book Appointment with top doctors across various specialty"
@@ -115,14 +118,18 @@ const DoctorList = () => {
 
           <Grid
             templateColumns={{
-              base: "repeat(3, 1fr)",
-              md: "repeat(11, 1fr)",
-              "2xl": "repeat(10, 1fr)",
+              base: "1fr",
+              md: "repeat(12, 1fr)",
+              "2xl": "repeat(12, 1fr)",
             }}
             columnGap={{ base: 2, lg: 4, xl: 10 }}
           >
             {/* FILTER */}
-            <GridItem colSpan={{ base: 1, md: 2 }}>
+            <GridItem
+              colSpan={{ base: 3, md: 3, "2xl": 2 }}
+              display={{ base: "none", md: "grid" }}
+            >
+              {/* <GridItem colSpan={{ base: 1, md: 2 }}> */}
               <DoctorListFilter
                 setGender={setGender}
                 setSpecialization={setSpecialization}
@@ -135,11 +142,14 @@ const DoctorList = () => {
               />
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 4 }}>
+            {/* Doctor card */}
+            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 5 }}>
               <Box>
                 <>
                   {isLoading &&
-                    [1, 2, 3].map(item => <DoctorCardSkeleton key={item} />)}
+                    Array.from({ length: 5 }, (_, index) => (
+                      <DoctorCardSkeleton key={index} />
+                    ))}
 
                   {doctorData && !doctorData?.results.length && (
                     <Box width="673px" height="215px">
@@ -176,8 +186,13 @@ const DoctorList = () => {
                 </>
               </Box>
             </GridItem>
+            {/* Doctor card ends */}
 
-            <GridItem colSpan={{ base: 1, lg: 4, "2xl": 4 }}>
+            {/* Doctor details section */}
+            <GridItem
+              colSpan={{ base: 1, lg: 4, "2xl": 5 }}
+              display={{ base: "none", md: "grid" }}
+            >
               <Box>
                 <DoctorDetailsSection
                   doctorInfo={doctorInfo}
@@ -188,6 +203,7 @@ const DoctorList = () => {
                 />
               </Box>
             </GridItem>
+            {/* Doctor detail section ends */}
           </Grid>
         </>
       </WrapperBox>

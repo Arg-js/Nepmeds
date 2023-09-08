@@ -1,9 +1,12 @@
 import { Button } from "@chakra-ui/button";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Avatar, AvatarGroup } from "@chakra-ui/react";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
+import { useNavigate } from "react-router-dom";
 
 const HeroSection = () => {
+  const navigate = useNavigate();
   return (
     <Flex direction={"column"} gap={4}>
       <Text color={colors.dark_blue} fontWeight={600} fontSize={"md"}>
@@ -55,12 +58,9 @@ const HeroSection = () => {
         fontWeight={600}
         fontSize={"md"}
         width={"max-content"}
-        bg={colors.primary}
-        color={colors.white}
         // TODO: same make button component
         borderRadius={6}
-        height={"42px"}
-        px={7}
+        onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)}
       >
         Consult Now
       </Button>

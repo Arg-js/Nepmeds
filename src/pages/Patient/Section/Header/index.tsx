@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   IconButton,
   Image,
@@ -11,7 +12,7 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { colors } from "@nepMeds/theme/colors";
 import { SearchIcon } from "@chakra-ui/icons";
-import { SignInIcon } from "@nepMeds/assets/svgs";
+import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
@@ -34,12 +35,12 @@ const Header: React.FC = () => {
           onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)}
           cursor={"pointer"}
         />
-        {/* Search Field */}
         <Flex alignItems={"center"} justifyContent={"space-around"} gap={6}>
+          {/* Search Field */}
           <InputGroup
             style={{ height: "46px" }}
             width={{ base: "auto", lg: "561px" }}
-            display={{ base: "none", md: "auto" }}
+            display={{ base: "none", md: "block" }}
           >
             <InputRightElement pointerEvents="none">
               <IconButton
@@ -62,6 +63,9 @@ const Header: React.FC = () => {
               color={colors.gray_text_header}
             />
           </InputGroup>
+          {/* Search Field ends */}
+
+          {/* Login icon */}
           <Flex
             gap={1}
             cursor={"pointer"}
@@ -69,14 +73,22 @@ const Header: React.FC = () => {
               (window.location.href =
                 import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
             }
-            display={{ base: "none", md: "auto" }}
+            display={{ base: "none", md: "flex" }}
           >
             <SignInIcon />
             <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
               Login/SignUp
             </Text>
           </Flex>
+          {/* Login icon ENDS*/}
         </Flex>
+
+        {/* DRAWER that triggers Filter*/}
+        {/* i need to display this only on the second page */}
+        <Box display={{ base: "block", md: "none" }}>
+          <HamburgerMenuIcon />
+        </Box>
+        {/* ENDS */}
       </Flex>
     </WrapperBox>
   );

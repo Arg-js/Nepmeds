@@ -37,6 +37,7 @@ const Card: React.FC<{
           width={"255px"}
           height={"160px"}
           objectFit={"cover"}
+          objectPosition={"top"}
         />
 
         <Text

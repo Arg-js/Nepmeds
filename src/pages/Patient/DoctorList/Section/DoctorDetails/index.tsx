@@ -53,7 +53,7 @@ const defaultValues = {
   availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
 };
 
-const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
+// const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
 
 const schema = Yup.object({
   full_name: Yup.string().required("This field is requried"),
@@ -151,7 +151,8 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                boxShadow={boxShadow}
+                // boxShadow={boxShadow}
+                border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   height: "auto",
@@ -324,7 +325,8 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                boxShadow={boxShadow}
+                // boxShadow={boxShadow}
+                border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
@@ -503,7 +505,8 @@ const DoctorDetails: React.FC<{
         <WrapperBox
           // width={"560px"}
           backgroundColor={colors.white}
-          boxShadow={boxShadow}
+          // boxShadow={boxShadow}
+          border={`2px solid ${colors.gray_border}`}
           style={{
             px: 4,
             py: 48,

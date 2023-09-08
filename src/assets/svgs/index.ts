@@ -39,3 +39,4 @@ export { ReactComponent as UploadImageIcon } from "./uploadImage.svg";
 export { ReactComponent as WhyChooseUs1Icon } from "./whyChoose1.svg";
 export { ReactComponent as WhyChooseUs2Icon } from "./whyChoose2.svg";
 export { ReactComponent as WhyChooseUs3Icon } from "./whyChoose3.svg";
+export { ReactComponent as HamburgerMenuIcon } from "./hamburgerMenu.svg";
