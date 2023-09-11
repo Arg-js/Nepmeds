@@ -29,7 +29,9 @@ const LayoutComponent = () => {
         profileData?.data?.is_doctor &&
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
-        navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED);
+        navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED, {
+          replace: true,
+        });
       }
     }
   }, [profileData?.data]);

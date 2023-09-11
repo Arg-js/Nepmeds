@@ -23,19 +23,19 @@ const ChooseUsSection = () => {
               key={WhyChooseUsStep.id}
             >
               <Flex gap={{ base: 4, md: 8 }}>
-                {WhyChooseUsStep.image}
+                <Box>{WhyChooseUsStep.image}</Box>
                 <Box>
                   <Flex direction={"column"}>
                     <Text
                       fontWeight={700}
-                      fontSize={"22px"}
+                      fontSize={"xl"}
                       color={colors.dark_blue}
                     >
                       {WhyChooseUsStep.title}
                     </Text>
                     <Text
                       fontWeight={400}
-                      fontSize={{ base: "15px", md: "18px" }}
+                      fontSize={{ base: "15px", md: "md" }}
                     >
                       {WhyChooseUsStep.description}
                     </Text>

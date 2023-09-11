@@ -23,7 +23,7 @@ const SectionHeading: React.FC<ISectionHeading> = ({
     >
       <Box>
         {heading && (
-          <Text fontWeight={600} fontSize={"20px"}>
+          <Text fontWeight={600} fontSize={"xl"}>
             {heading}
           </Text>
         )}

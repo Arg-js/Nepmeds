@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Skeleton } from "@chakra-ui/react";
+import { Box, Grid, GridItem } from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
@@ -20,6 +20,7 @@ import DoctorDetailsSection from "@nepMeds/pages/Patient/DoctorList/Section/Doct
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useLocation } from "react-router-dom";
+import DoctorCardSkeleton from "@nepMeds/components/Patient/DoctorList/Skeleton";
 
 const currentDate = new Date();
 const formattedDate = currentDate.toISOString().slice(0, 10);
@@ -109,18 +110,19 @@ const DoctorList = () => {
           />
           <SectionHeading
             heading="Doctors List"
-            description="Book Appointment with top doctors across various speciality"
+            description="Book Appointment with top doctors across various specialty"
           />
 
           <Grid
             templateColumns={{
               base: "repeat(3, 1fr)",
-              lg: "repeat(6, 1fr)",
-              "2xl": "repeat(5, 1fr)",
+              md: "repeat(11, 1fr)",
+              "2xl": "repeat(10, 1fr)",
             }}
             columnGap={{ base: 2, lg: 4, xl: 10 }}
           >
-            <GridItem colSpan={1}>
+            {/* FILTER */}
+            <GridItem colSpan={{ base: 1, md: 2 }}>
               <DoctorListFilter
                 setGender={setGender}
                 setSpecialization={setSpecialization}
@@ -133,10 +135,12 @@ const DoctorList = () => {
               />
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 3, "2xl": 2 }}>
-              <Box w={"full"}>
+            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 4 }}>
+              <Box>
                 <>
-                  {isLoading && <Skeleton height="215px" width="inherit" />}
+                  {isLoading &&
+                    [1, 2, 3].map(item => <DoctorCardSkeleton key={item} />)}
+
                   {doctorData && !doctorData?.results.length && (
                     <Box width="673px" height="215px">
                       No Data to be shown!
@@ -173,7 +177,7 @@ const DoctorList = () => {
               </Box>
             </GridItem>
 
-            <GridItem colSpan={{ base: 1, lg: 2 }}>
+            <GridItem colSpan={{ base: 1, lg: 4, "2xl": 4 }}>
               <Box>
                 <DoctorDetailsSection
                   doctorInfo={doctorInfo}

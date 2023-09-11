@@ -21,11 +21,11 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   backgroundColor = colors.white,
   backgroundImage = "none",
   height = "auto",
-  padding = "10",
+  padding = "4",
   width = "auto",
   border = "none",
   boxShadow = "none",
-  px = '{ base: "10px", md: "10", xl: "20" }',
+  px = '{ base: "10px", md: "15", xl: "15" }',
   style,
 }) => {
   return (

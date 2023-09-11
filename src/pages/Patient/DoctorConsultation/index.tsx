@@ -33,18 +33,18 @@ const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1440 },
     slidesToSlide: 3,
-    items: 5.5,
+    items: 7.5,
   },
-  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 4 },
-  laptop: { breakpoint: { max: 1024, min: 768 }, items: 3 },
+  laptopLarge: { breakpoint: { max: 1440, min: 1024 }, items: 5.5 },
+  laptop: { breakpoint: { max: 1024, min: 768 }, items: 3.5 },
   tablet: { breakpoint: { max: 768, min: 464 }, items: 2 },
   mobile: { breakpoint: { max: 464, min: 0 }, items: 1 },
 };
 const responsiveDoctorCard = {
   ...responsive,
-  desktop: { ...responsive.desktop, items: 5 },
+  desktop: { ...responsive.desktop, items: 6.5 },
   laptopLarge: { ...responsive.laptopLarge, items: 5 },
-  laptop: { ...responsive.laptop, items: 4 },
+  laptop: { ...responsive.laptop, items: 3.2 },
   tablet: { breakpoint: { max: 768, min: 464 }, slidesToSlide: 1, items: 2 },
 };
 const DoctorConsultation = () => {
@@ -105,14 +105,14 @@ const DoctorConsultation = () => {
           {/* Specialist Doctors SECTION*/}
           <SectionHeading
             heading={"Our Specialist Doctors"}
-            description={"Consult with top doctors across specialities"}
+            description={"Consult with top doctors across specialties"}
             btnText={"View All Specialists"}
             onClick={() =>
               navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
             }
           />
 
-          <Box my={10}>
+          <Box my={7.5}>
             <Carousel responsive={responsive}>
               {specializaionData?.map(specialization => {
                 return (
@@ -124,7 +124,7 @@ const DoctorConsultation = () => {
                       name={specialization.name}
                       image={specialization.image}
                       description={
-                        specialization?.symptom_list?.slice(0, 4) ?? []
+                        specialization?.symptom_list?.slice(0, 5) ?? []
                       }
                       isLoading={SpecializationDataLoading}
                       error={specializationDataError as AxiosError}
@@ -145,7 +145,7 @@ const DoctorConsultation = () => {
             }
           />
 
-          <Box my={10}>
+          <Box my={7.5}>
             <Carousel responsive={responsive}>
               {symptomData?.map(symptom => {
                 return (
@@ -155,8 +155,8 @@ const DoctorConsultation = () => {
                   >
                     <Card
                       name={symptom.name}
-                      image={""}
-                      description={[]}
+                      image={symptom.image}
+                      description={symptom.description}
                       isLoading={symptomDataLoading}
                       error={symptomDataError as AxiosError}
                     />
@@ -220,10 +220,9 @@ const DoctorConsultation = () => {
 
           {/* WHY CHOOSE US SECTION */}
           <ChooseUsSection />
-
-          {/* FOOTER SECTION */}
         </>
       </WrapperBox>
+      {/* FOOTER SECTION */}
       <Box bg={colors.background_blue}>
         <PatientFooter />
       </Box>
