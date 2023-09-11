@@ -44,7 +44,7 @@ export function MultiImageUpload({
         });
       });
 
-      const tempArray = [];
+      const tempArray = [...files];
       tempArray[dataIndex] = imagesFile.concat(newFiles);
 
       setFiles(tempArray);
@@ -67,7 +67,6 @@ export function MultiImageUpload({
   useEffect(() => {
     // Make sure to revoke the data uris to avoid memory leaks, will run on unmount
     return () => {
-      setFiles([]);
       imagesFile.forEach(file => URL.revokeObjectURL(file.preview));
     };
   }, []);

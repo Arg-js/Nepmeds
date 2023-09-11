@@ -3,6 +3,13 @@ import { IUserRoleAdmin } from "@nepMeds/service/nepmeds-admin-userrole";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 
+interface IUserPatient {
+  id: string;
+  patient_name: string;
+  mobile_number: number;
+  email: string;
+}
+
 //Appointment Column
 export const doctorRoleColumn = () => {
   return [
@@ -52,7 +59,7 @@ export const doctorRoleColumn = () => {
       },
     },
     {
-      header: "Approval Date",
+      header: "Payment Approval Date",
       accessorKey: "patient_name",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
         return (
@@ -83,6 +90,37 @@ export const doctorRoleColumn = () => {
       header: "Action",
       cell: () => {
         return "-";
+      },
+    },
+  ];
+};
+export const patientRoleColumn = () => {
+  return [
+    {
+      header: "S.N",
+      accessorFn: (_cell: CellContext<IUserPatient, any>, index: number) => {
+        return index + 1;
+      },
+      size: 2,
+    },
+    {
+      header: "Patient's Name",
+      accessorKey: "name",
+      cell: ({ row }: CellContext<IUserPatient, any>) => {
+        return row?.original?.patient_name;
+      },
+    },
+
+    {
+      header: "Contact No.",
+      cell: ({ row }: CellContext<IUserPatient, any>) => {
+        return <Text pl={"12px"}>{row?.original?.mobile_number}</Text>;
+      },
+    },
+    {
+      header: "Email",
+      cell: ({ row }: CellContext<IUserPatient, any>) => {
+        return <Text pl={"12px"}>{row?.original?.email}</Text>;
       },
     },
   ];

@@ -17,17 +17,38 @@ export interface IUserRoleAdmin {
   status: boolean;
 }
 
-// Get user according to user role
-const getUserRoleAdmin = async (qs: string) => {
+// Get user according to user role for Doctor
+const getUserRoleDoctor = async (qs: string) => {
   const response = await HttpClient.get<PaginatedResponse<IUserRoleAdmin>>(
-    `${api.adminUserRole}?${qs}`
+    `${api.doctorUserRole}?${qs}`
   );
   return response;
 };
 
-export const useGetUserRoleAdmin = (filter: IFilterSearch) => {
-  const qs = queryStringGenerator({ ...filter, page: filter.page_no });
-  return useQuery([api.adminUserRole, qs], () => getUserRoleAdmin(qs), {
+export const useGetUserRoleDoctor = (filter: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page: filter.page_no,
+    page_size: filter.page_size,
+  });
+  return useQuery([api.doctorUserRole, qs], () => getUserRoleDoctor(qs), {
+    select: data => data.data.data,
+  });
+};
+
+// Get user according to user role for patient
+const getUserRolePatient = async (qs: string) => {
+  const response = await HttpClient.get<PaginatedResponse<IUserRoleAdmin>>(
+    `${api.patientUserRole}?${qs}`
+  );
+  return response;
+};
+
+export const useGetUserRolePatient = (filter: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page_size: filter.page_size,
+    page: filter.page_no,
+  });
+  return useQuery([api.patientUserRole, qs], () => getUserRolePatient(qs), {
     select: data => data.data.data,
   });
 };
