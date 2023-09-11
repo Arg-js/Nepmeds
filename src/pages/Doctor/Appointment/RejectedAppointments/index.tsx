@@ -29,7 +29,7 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
-import { STATUSTYPE1 } from "@nepMeds/config/enum";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 
 const statusInfo: {
@@ -40,21 +40,21 @@ const statusInfo: {
   };
 } = {
   "1": {
+    label: "Approved",
+    color: "green",
+    textColor: colors.dark_green,
+  },
+  "2": {
     label: "Pending",
     color: "orange",
     textColor: colors.maroon,
   },
-  "2": {
-    label: "Confirmed",
-    color: "green",
-    textColor: colors.dark_green,
-  },
-  "3": {
+  "3": { label: "Rejected", color: "red", textColor: colors.maroon },
+  "4": {
     label: "Completed",
     color: "green",
     textColor: colors.dark_green,
   },
-  "4": { label: "Cancelled", color: "red", textColor: colors.maroon },
 };
 
 const RejectedAppointments: React.FC = () => {
@@ -78,7 +78,7 @@ const RejectedAppointments: React.FC = () => {
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
-      status: STATUSTYPE1.Cancelled,
+      status: STATUSTYPE.rejected,
     });
 
   const { data: patient, isLoading: isPatientLoading } =

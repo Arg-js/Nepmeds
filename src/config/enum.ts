@@ -7,14 +7,7 @@ export enum STATUSTYPE {
   approved = 1,
   pending = 2,
   rejected = 3,
-}
-
-// TODO: this will change from backend
-export enum STATUSTYPE1 {
-  Pending = 1,
-  Confirmed = 2,
-  Completed = 3,
-  Cancelled = 4,
+  completed = 4,
 }
 
 export enum AVAILABILITYFREQUENCY {
