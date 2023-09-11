@@ -163,10 +163,10 @@ const DoctorListFilter: React.FC<{
           </Flex>
           <Divider />
           {/* TODO: the content will overflow with max-content */}
-          <Grid templateColumns={"max-content 1fr"} gap={2}>
+          <Grid templateColumns={{ md: "1fr", xl: "max-content 1fr" }} gap={4}>
             <GridItem>
-              <Text fontWeight={600} fontSize={"sm"} mb={3}>
-                From Date:
+              <Text fontWeight={600} fontSize={"sm"}>
+                From :
               </Text>
             </GridItem>
             <GridItem>
@@ -183,8 +183,8 @@ const DoctorListFilter: React.FC<{
               />
             </GridItem>
             <GridItem>
-              <Text fontWeight={600} fontSize={"sm"} mb={3}>
-                To Date:
+              <Text fontWeight={600} fontSize={"sm"}>
+                To :
               </Text>
             </GridItem>
 

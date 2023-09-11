@@ -11,14 +11,15 @@ const ConsultationStepSection = () => {
         templateColumns={{
           base: "repeat(1, 1fr)",
           md: "repeat(1, 1fr)",
-          xl: "repeat(2, 1fr)",
+          lg: "repeat(2, 1fr)",
         }}
         gap={10}
       >
         {ConsultationSteps.map(consultationStep => {
           return (
             <GridItem
-              width={{ base: "100%", md: "600px" }}
+              // width={{ base: "100%", lg: "600px" }}
+              colSpan={{ base: 1, md: 2, lg: 1 }}
               key={consultationStep.id}
               mt={4}
             >

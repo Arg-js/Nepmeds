@@ -9,6 +9,8 @@ export const normalURL = import.meta.env.VITE_APP_NORMAL_API;
  * Axios HTTP Client
  * {@link https://github.com/axios/axios#request-config Axios Request Config}
  */
+
+// CUSTOM INSTANCE
 const HttpClient = axios.create({
   baseURL,
   timeout: THREE_MINUTES,

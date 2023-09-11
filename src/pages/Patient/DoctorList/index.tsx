@@ -119,14 +119,15 @@ const DoctorList = () => {
           <Grid
             templateColumns={{
               base: "1fr",
-              md: "repeat(12, 1fr)",
+              md: "repeat(5, 1fr)",
+              lg: "repeat(12, 1fr)",
               "2xl": "repeat(12, 1fr)",
             }}
-            columnGap={{ base: 2, lg: 4, xl: 10 }}
+            columnGap={{ base: 2, md: 8, lg: 4, xl: 10 }}
           >
             {/* FILTER */}
             <GridItem
-              colSpan={{ base: 3, md: 3, "2xl": 2 }}
+              colSpan={{ base: 3, md: 2, lg: 3, "2xl": 2 }}
               display={{ base: "none", md: "grid" }}
             >
               {/* <GridItem colSpan={{ base: 1, md: 2 }}> */}
@@ -143,7 +144,7 @@ const DoctorList = () => {
             </GridItem>
 
             {/* Doctor card */}
-            <GridItem colSpan={{ base: 1, lg: 5, "2xl": 5 }}>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 5 }}>
               <Box>
                 <>
                   {isLoading &&
@@ -175,13 +176,16 @@ const DoctorList = () => {
                       );
                     })}
                   {doctorData && doctorData.count > 5 && (
-                    <Pagination
-                      enabled={true}
-                      queryPageSize={pageParams.limit}
-                      queryPageIndex={pageParams.page}
-                      pageChange={pageChange}
-                      totalCount={doctorData?.count ?? 0}
-                    />
+                    // TODO: discuss with UI for pagination in mobile view
+                    <Box display={{ base: "none", md: "block" }}>
+                      <Pagination
+                        enabled={true}
+                        queryPageSize={pageParams.limit}
+                        queryPageIndex={pageParams.page}
+                        pageChange={pageChange}
+                        totalCount={doctorData?.count ?? 0}
+                      />
+                    </Box>
                   )}
                 </>
               </Box>
@@ -191,7 +195,7 @@ const DoctorList = () => {
             {/* Doctor details section */}
             <GridItem
               colSpan={{ base: 1, lg: 4, "2xl": 5 }}
-              display={{ base: "none", md: "grid" }}
+              display={{ base: "none", lg: "grid" }}
             >
               <Box>
                 <DoctorDetailsSection
