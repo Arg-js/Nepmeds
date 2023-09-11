@@ -40,7 +40,11 @@ const Checkbox = <T extends FieldValues>({
               {label}:
             </FormLabel>
           )}
-          {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
+          {error && (
+            <FormErrorMessage fontSize={"10px"}>
+              {error?.message}
+            </FormErrorMessage>
+          )}
         </FormControl>
       )}
     />

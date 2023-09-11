@@ -643,7 +643,12 @@ const RegistrationForm = () => {
               h="75vh"
             >
               <Box>
-                <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
+                <Heading
+                  fontSize="2xl"
+                  fontWeight={400}
+                  color={colors.white}
+                  mb={"15px"}
+                >
                   Step {activeStep + 1}
                 </Heading>
                 {steps[activeStep + 1] && (

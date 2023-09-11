@@ -213,11 +213,11 @@ const PrimaryInfo = ({
               required: "Basic Information is required.",
               minLength: {
                 value: 50,
-                message: "Basic Information must be 50 charaters.",
+                message: "Basic Information must be atleast 50 characters.",
               },
               maxLength: {
                 value: 250,
-                message: "Basic Information must be less than 250 charateras.",
+                message: "Basic Information must be less than 250 characters.",
               },
             }}
             error={errors.bio_detail?.message}
@@ -226,14 +226,23 @@ const PrimaryInfo = ({
       )}
       <GridItem colSpan={{ base: 2, lg: 1 }}>
         <Input
+          py={"28px"}
+          pl={"20"}
           name="phone"
           register={register}
           defaultValue={"+977"}
           isReadOnly
           startIcon={
-            <img src={NepalFlag} style={{ height: "25px" }} alt="Nepal Flag" />
+            <img
+              src={NepalFlag}
+              style={{ height: "45px", marginTop: "15px" }}
+              alt="Nepal Flag"
+            />
           }
-          style={{ background: colors.forminput, border: "none" }}
+          style={{
+            background: colors.forminput,
+            border: "none",
+          }}
           error={errors.phone?.message}
         />
       </GridItem>
@@ -352,14 +361,14 @@ const PrimaryInfo = ({
             border: "none",
           }}
           rules={{
-            required: "Pan no is required.",
+            required: "Pan Number is required.",
             minLength: {
               value: 9,
-              message: "Pan no can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long.",
             },
             maxLength: {
               value: 9,
-              message: "Pan no can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long.",
             },
           }}
           error={errors.pan_number?.message}
