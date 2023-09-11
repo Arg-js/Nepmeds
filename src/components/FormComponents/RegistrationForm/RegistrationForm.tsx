@@ -675,8 +675,7 @@ const RegistrationForm = () => {
                   >
                     <StepIndicator
                       style={{
-                        color:
-                          activeStep === index ? colors.white : colors.blue_30,
+                        color: colors.white,
                       }}
                     >
                       <StepStatus
