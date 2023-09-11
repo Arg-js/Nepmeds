@@ -97,6 +97,10 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "First name is required.",
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: "First name should contain only alphabets.",
+            },
           }}
           error={errors.first_name?.message}
         />
@@ -107,7 +111,14 @@ export const BasicInfoForm = ({
           name="middle_name"
           register={register}
           defaultValue={doctorProfileData?.user?.middle_name}
+          rules={{
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: "Middle name should contain only alphabets.",
+            },
+          }}
           style={{ background: colors.forminput, border: "none" }}
+          error={errors.middle_name?.message}
         />
       </GridItem>
       <GridItem colSpan={{ base: 4, md: 2, xlg: 1 }}>
@@ -120,6 +131,10 @@ export const BasicInfoForm = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "Last name is required.",
+            pattern: {
+              value: /^[a-zA-Z]+$/,
+              message: "Last name should contain only alphabets.",
+            },
           }}
           error={errors.last_name?.message}
         />
