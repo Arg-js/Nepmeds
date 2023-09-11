@@ -6,7 +6,7 @@ const Wrapper = ({ children, title, subtitle }: IWrapper) => {
     <Box
       bg={colors.grey}
       boxShadow={"0px 4px 32px rgba(61, 70, 112, 0.08)"}
-      borderRadius={6}
+      // borderRadius={6}
       overflow={"auto"}
       background="#fff"
       h="inherit"

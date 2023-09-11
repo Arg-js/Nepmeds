@@ -85,7 +85,7 @@ const FloatingLabelInput = ({
       )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"10px"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
