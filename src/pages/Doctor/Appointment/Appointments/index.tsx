@@ -29,6 +29,7 @@ import { useForm } from "react-hook-form";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { CellProps } from "react-table";
 
 type StatusType =
   | STATUSTYPE.approved
@@ -143,23 +144,39 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       status: STATUSTYPE.rejected,
     });
 
-  const { mutate: setAppointmentRequestById, isLoading } =
+  const { mutateAsync: setAppointmentRequestById, isLoading } =
     useSetAppointmentRequestById();
   const { data: patient, isLoading: isPatientLoading } =
     useGetAppointmentRequestById({ id: appointmentId });
   // REACT QUERIES END
 
-  const onSubmitHandler = (data: typeof defaultValues) => {
-    setAppointmentId("");
+  const appointmentData = {
+    0: appointment?.results,
+    [STATUSTYPE.pending]: pendingAppointment?.results,
+    [STATUSTYPE.approved]: approvedAppointment?.results,
+    [STATUSTYPE.rejected]: rejectedAppointment?.results,
+    [STATUSTYPE.completed]: [],
+  };
 
-    setAppointmentRequestById({
-      ...data,
-      id: appointmentId,
-      status: STATUSTYPE.rejected,
-      reject_title: 1,
-    });
+  const onModalClose = () => {
+    setAppointmentId("");
+    onApproveModalClose();
     onRejectionModalClose();
     reset(defaultValues);
+  };
+
+  const onSubmitHandler = async (data: typeof defaultValues) => {
+    try {
+      await setAppointmentRequestById({
+        ...data,
+        id: appointmentId,
+        status: STATUSTYPE.rejected,
+        reject_title: 1,
+      });
+      onModalClose();
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const column = useMemo(
@@ -168,7 +185,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         header: "S.N",
         accessorFn: (_: any, index: number) => {
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-          // return ` ${index + 1}.`;
         },
       },
       {
@@ -179,7 +195,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         },
       },
       { header: "Patient Name", accessorKey: "patient_name" },
-      // TODO: check for large amount of data
       {
         header: "Symptoms",
         accessorKey: "symptoms",
@@ -190,9 +205,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {
         header: "Status",
         accessorKey: "status",
-        // TODO: why CELL somewhere and accessorfn somewhere
-        // cell: ({ row }: CellProps<{ status: string }>) => {
-        cell: ({ row }: CellContext<any, any>) => {
+        cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <Badge
               colorScheme={statusInfo[row.original?.status].color}
@@ -226,10 +239,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           const onReject = () => {
             setAppointmentId(row.original?.id);
             onRejectionModalOpen();
-            // setAppointmentRequestById({
-            //   id: row.original?.id,
-            //   status: STATUSTYPE.rejected,
-            // });
           };
 
           const isPending =
@@ -269,6 +278,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 
   return (
     <>
+      {/* Approval Modal */}
       <ModalComponent
         size={"2xl"}
         heading={
@@ -287,25 +297,19 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               variant={"primaryOutline"}
               w="100%"
               onClick={() => {
-                // TODO: repeated code
-                setAppointmentId("");
-                onApproveModalClose();
-                //
+                onModalClose();
               }}
             >
               Cancel
             </Button>
             <Button
               w="100%"
-              onClick={() => {
-                setAppointmentRequestById({
+              onClick={async () => {
+                await setAppointmentRequestById({
                   id: appointmentId,
                   status: STATUSTYPE.approved,
                 });
-                //
-                setAppointmentId("");
-                onApproveModalClose();
-                //
+                onModalClose();
               }}
               isLoading={isLoading}
             >
@@ -314,7 +318,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           </HStack>
         }
       >
-        {/* TODO: add border bottom */}
         <Flex direction={"column"} alignItems={"center"} gap={8}>
           <ConfirmationImage />
           <Text fontWeight={600} fontSize="18px">
@@ -322,7 +325,9 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           </Text>
         </Flex>
       </ModalComponent>
+      {/* Approval Modal ENDS*/}
 
+      {/* View Modal */}
       <ModalComponent
         size={"2xl"}
         heading={
@@ -333,39 +338,8 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         }
         isOpen={isViewModalOpen}
         onClose={onViewModalClose}
-        footer={
-          <></>
-          // <HStack w="100%">
-          //   <Button
-          //     variant={"primaryOutline"}
-          //     w="100%"
-          //     onClick={() => {
-          //       setAppointmentId("");
-          //       onViewModalClose();
-          //     }}
-          //   >
-          //     Cancel
-          //   </Button>
-          //   <Button
-          //     w="100%"
-          //     onClick={() => {
-          //       //
-          //       setAppointmentRequestById({
-          //         id: id,
-          //         status: STATUSTYPE.Cancelled,
-          //       });
-          //       setAppointmentId("");
-          //       onViewModalClose();
-          //     }}
-          //     isLoading={isLoading}
-          //     //
-          //   >
-          //     Yes
-          //   </Button>
-          // </HStack>
-        }
+        footer={<></>}
       >
-        {/* TODO: add border bottom */}
         {isPatientLoading ? (
           <>
             <Flex gap={6}>
@@ -412,7 +386,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
                   content={patient?.patient_name as string}
                 />
 
-                {/* TODO: need to get all the items from the list needs discussion from UI/UX*/}
                 <InfoSection
                   label="Symptoms"
                   content={patient?.symptoms?.[0]?.name || "N/A"}
@@ -420,7 +393,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Flex>
               <Flex flex={1} direction={"column"} gap={2}>
                 <InfoSection label="Gender" content="Male" />
-                {/* TODO: ADDITION of age from BE */}
                 {/* <Box>
                 <Text fontWeight={400} fontSize={"xs"}>
                   Doctors Name
@@ -446,6 +418,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           </>
         )}
       </ModalComponent>
+      {/* View Modal ENDS */}
 
       {/* Rejection Modal */}
       <ModalComponent
@@ -458,34 +431,27 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         }
         isOpen={isRejectionModalOpen}
         onClose={() => {
-          {
-            reset(defaultValues);
-            onRejectionModalClose();
-          }
+          onModalClose();
         }}
         footer={
           <HStack w="100%">
             <Button
               variant={"primaryOutline"}
               w="100%"
-              onClick={() => {
-                reset(defaultValues);
-                onRejectionModalClose();
-              }}
+              onClick={() => onModalClose()}
             >
               Cancel
             </Button>
             <Button
               w="100%"
-              onClick={handleSubmit(onSubmitHandler)}
               isLoading={isLoading}
+              onClick={handleSubmit(onSubmitHandler)}
             >
               Yes
             </Button>
           </HStack>
         }
       >
-        {/* TODO: add border bottom */}
         <form>
           <Flex direction={"column"} alignItems={"center"} gap={8}>
             <FloatingLabelInput
@@ -494,10 +460,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               placeholder="Enter reason for rejection"
               required
               register={register}
-              //TODO: where is this rule used
-              // rules={{
-              //   required: "Please Enter the Instant rate",
-              // }}
               error={errors.reject_title?.message || ""}
             />
             <FloatinglabelTextArea
@@ -505,10 +467,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               name="reject_remarks"
               required
               register={register}
-              //TODO: where is this rule used
-              // rules={{
-              //   required: "Please Enter the Instant rate",
-              // }}
               error={errors.reject_remarks?.message || ""}
             />
           </Flex>
@@ -525,15 +483,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {/* TABLE HEADER ENDS*/}
 
       <DataTable
-        data={
-          type === 0
-            ? appointment?.results || []
-            : type === STATUSTYPE.pending
-            ? pendingAppointment?.results || []
-            : type === STATUSTYPE.approved
-            ? approvedAppointment?.results || []
-            : rejectedAppointment?.results || []
-        }
+        data={appointmentData[type] || []}
         columns={column}
         isLoading={
           appointmentLoading ||

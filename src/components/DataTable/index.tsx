@@ -13,7 +13,6 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import {
-  ColumnDef,
   GroupingState,
   PaginationState,
   SortingState,
@@ -31,7 +30,8 @@ import Pagination from "./Pagination";
 
 export type DataTableProps = {
   data: Record<string, any>[];
-  columns: ColumnDef<any, any>[];
+  // columns: ColumnDef<any, any>[];
+  columns: any;
   isLoading?: boolean;
   pinColumnAccess?: boolean;
   pagination?: {
