@@ -37,7 +37,7 @@ const dashboardDatas: IDashboardData[] = [
     path: images?.dashboard2,
   },
   {
-    title: "Pending Appointments",
+    title: "Pending",
     no: 232,
     path: images?.dashboard3,
   },

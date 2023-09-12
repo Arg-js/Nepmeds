@@ -36,6 +36,8 @@ export const colors = {
   black_40: "#6E7079",
   /**black-50*/
   black_50: "#53545C",
+  /**black-60*/
+  black_60: "#45464E",
 
   /**blue-100*/
   blue_100: "#5593F1",

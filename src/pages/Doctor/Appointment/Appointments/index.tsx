@@ -30,6 +30,13 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
+type StatusType =
+  | STATUSTYPE.approved
+  | STATUSTYPE.pending
+  | STATUSTYPE.rejected
+  | STATUSTYPE.completed
+  | 0;
+
 const statusInfo: {
   [key: string]: {
     label: string;
@@ -65,15 +72,11 @@ const defaultValues = {
   reject_remarks: "",
 };
 
-const Appointments: React.FC = () => {
+const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
+  type,
+  heading,
+}) => {
   const [appointmentId, setAppointmentId] = useState("");
-
-  // PAGINATION
-  const [pageParams, setPageParams] = useState({
-    pageIndex: 0,
-    pageSize: 10,
-  });
-  // PAGINATION ENDS
 
   const {
     isOpen: isApproveModalOpen,
@@ -101,23 +104,45 @@ const Appointments: React.FC = () => {
     resolver: yupResolver(schema),
   });
 
-  // // UPDATES page on page change
-  // const pageChange = (pageIndex: number) => {
-  //   setPageParams({ ...pageParams, pageIndex });
-  // };
-
-  // // UPDATES limit change on limit change and sets the page to page === 1
-  // const pageSizeChange = (pageSize: number) => {
-  //   setPageParams({ ...pageParams, pageIndex: 0, pageSize });
-  // };
+  // PAGINATION
+  const [pageParams, setPageParams] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
   // PAGINATION ENDS
 
   // REACT QUERIES
+
   const { data: appointment, isLoading: appointmentLoading } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
     });
+
+  // PENDING
+  const { data: pendingAppointment, isLoading: pendingAppointmentLoading } =
+    useGetAppointmentRequest({
+      page: pageParams.pageIndex + 1,
+      page_size: pageParams.pageSize,
+      status: STATUSTYPE.pending as number,
+    });
+
+  // APPROVED
+  const { data: approvedAppointment, isLoading: approvedAppointmentLoading } =
+    useGetAppointmentRequest({
+      page: pageParams.pageIndex + 1,
+      page_size: pageParams.pageSize,
+      status: STATUSTYPE.approved,
+    });
+
+  // REJECTED
+  const { data: rejectedAppointment, isLoading: rejectedAppointmentLoading } =
+    useGetAppointmentRequest({
+      page: pageParams.pageIndex + 1,
+      page_size: pageParams.pageSize,
+      status: STATUSTYPE.rejected,
+    });
+
   const { mutate: setAppointmentRequestById, isLoading } =
     useSetAppointmentRequestById();
   const { data: patient, isLoading: isPatientLoading } =
@@ -381,14 +406,13 @@ const Appointments: React.FC = () => {
           <>
             <Flex gap={6}>
               <Avatar size="xl" />
-              {/* TODO: detail flex wrapper can be created */}
               <Flex flex={1} direction={"column"} gap={2}>
                 <InfoSection
                   label="Patient’s Name"
                   content={patient?.patient_name as string}
                 />
 
-                {/* TODO: need to get all the items from the list */}
+                {/* TODO: need to get all the items from the list needs discussion from UI/UX*/}
                 <InfoSection
                   label="Symptoms"
                   content={patient?.symptoms?.[0]?.name || "N/A"}
@@ -398,25 +422,32 @@ const Appointments: React.FC = () => {
                 <InfoSection label="Gender" content="Male" />
                 {/* TODO: ADDITION of age from BE */}
                 {/* <Box>
-              <Text fontWeight={400} fontSize={"xs"}>
-                Doctors Name
-              </Text>
-              <Text fontWeight={400} fontSize={"md"}>
-                {patient?.symptoms?.[0]?.name}
-              </Text>
-            </Box> */}
+                <Text fontWeight={400} fontSize={"xs"}>
+                  Doctors Name
+                </Text>
+                <Text fontWeight={400} fontSize={"md"}>
+                  {patient?.symptoms?.[0]?.name}
+                </Text>
+              </Box> */}
               </Flex>
             </Flex>
-            <Flex mt={7} gap="0.5" direction={"column"}>
+            <Flex mt={7} gap="4" direction={"column"}>
               <InfoSection
                 label="Symptom Description"
                 content={patient?.description as string}
               />
+              {patient?.reject_remarks && (
+                <InfoSection
+                  label="Rejected Reason"
+                  content={patient?.reject_remarks as string}
+                />
+              )}
             </Flex>
           </>
         )}
       </ModalComponent>
 
+      {/* Rejection Modal */}
       <ModalComponent
         size={"2xl"}
         heading={
@@ -483,16 +514,33 @@ const Appointments: React.FC = () => {
           </Flex>
         </form>
       </ModalComponent>
+      {/* Rejection Modal ENDS*/}
 
-      {/* TODO: CREATE separate table header */}
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
-        <Text> Appointments</Text>
+        <Text fontSize="16px" fontWeight="500" color={colors.black_60}>
+          {heading}
+        </Text>
       </HStack>
+      {/* TABLE HEADER ENDS*/}
+
       <DataTable
-        data={appointment?.results || []}
+        data={
+          type === 0
+            ? appointment?.results || []
+            : type === STATUSTYPE.pending
+            ? pendingAppointment?.results || []
+            : type === STATUSTYPE.approved
+            ? approvedAppointment?.results || []
+            : rejectedAppointment?.results || []
+        }
         columns={column}
-        isLoading={appointmentLoading}
+        isLoading={
+          appointmentLoading ||
+          pendingAppointmentLoading ||
+          approvedAppointmentLoading ||
+          rejectedAppointmentLoading
+        }
         pagination={{
           manual: true,
           pageParams: {
@@ -507,4 +555,4 @@ const Appointments: React.FC = () => {
   );
 };
 
-export default Appointments;
+export default AppointmentTab;

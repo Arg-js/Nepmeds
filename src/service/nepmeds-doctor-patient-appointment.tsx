@@ -20,6 +20,7 @@ export interface IGetAppointmentReqRes {
   availability: Availability[];
   status: string;
   description: string;
+  reject_remarks: string;
 }
 
 export interface ISymptom {

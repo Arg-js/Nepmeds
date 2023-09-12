@@ -7,15 +7,19 @@ import {
   Tabs,
 } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import Appointments from "./Appointments";
-import ApprovedAppointments from "./ApprovedAppointments";
-import PendingAppointments from "./PendingAppointments";
-import RejectedAppointments from "./RejectedAppointments";
+import { STATUSTYPE } from "@nepMeds/config/enum";
+import AppointmentTab from "./Appointments";
 
 const Appointment: React.FC = () => {
   return (
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
-      <Tabs variant="unstyled" fontSize="16px" fontWeight="400">
+      <Tabs
+        variant="unstyled"
+        fontSize="16px"
+        fontWeight="400"
+        // TODO: fix this issue
+        fontFamily={"Inter"}
+      >
         <TabList>
           <Tab>All</Tab>
           <Tab>Pending Appointment</Tab>
@@ -29,17 +33,26 @@ const Appointment: React.FC = () => {
           borderRadius="1px"
         />
         <TabPanels>
-          <TabPanel px={0} pb={0}>
-            <Appointments />
+          <TabPanel px={0} pb={0} pt={6}>
+            <AppointmentTab type={0} heading={"Appointments"} />
           </TabPanel>
-          <TabPanel>
-            <PendingAppointments />
+          <TabPanel px={0} pb={0} pt={6}>
+            <AppointmentTab
+              type={STATUSTYPE.pending}
+              heading={"Pending Appointments"}
+            />
           </TabPanel>
-          <TabPanel>
-            <ApprovedAppointments />
+          <TabPanel px={0} pb={0} pt={6}>
+            <AppointmentTab
+              type={STATUSTYPE.approved}
+              heading={"Approved Appointments"}
+            />
           </TabPanel>
-          <TabPanel>
-            <RejectedAppointments />
+          <TabPanel px={0} pb={0} pt={6}>
+            <AppointmentTab
+              type={STATUSTYPE.rejected}
+              heading={"Rejected Appointments"}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>
