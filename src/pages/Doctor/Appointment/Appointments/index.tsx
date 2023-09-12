@@ -20,7 +20,6 @@ import {
   useSetAppointmentRequestById,
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -227,7 +226,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {
         header: "Actions",
         accessorKey: "actions",
-        cell: ({ row }: CellContext<any, any>) => {
+        cell: ({ row }: CellProps<{ id: string; status: string }>) => {
           const onView = () => {
             setAppointmentId(row.original?.id);
             onViewModalOpen();
