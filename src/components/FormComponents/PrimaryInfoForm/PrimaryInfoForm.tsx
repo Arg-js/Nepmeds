@@ -199,6 +199,12 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
 
+  const checkPictureSize = (image: File[] | undefined) => {
+    if (image?.length !== 0 && (image as File[])?.[0]?.size / 1048576 > 1) {
+      return "Image is greater than 1MB";
+    }
+  };
+
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
       {!isEditable && (
@@ -407,10 +413,14 @@ const PrimaryInfo = ({
           name="id_front_image"
           helperText={true}
           upload_text="Upload Front Side of your Id "
-          error={errors.id_front_image?.message}
+          error={
+            errors.id_front_image?.message ||
+            checkPictureSize(watch("id_front_image"))
+          }
           rules={{
             required: "Front Side  of your id is required",
           }}
+          setValue={setValue}
         />
       </GridItem>
       <GridItem colSpan={{ base: 4, lg: 2 }}>
@@ -421,10 +431,14 @@ const PrimaryInfo = ({
           name="id_back_image"
           upload_text="Upload Back side of your Id "
           helperText={true}
-          error={errors.id_back_image?.message}
+          error={
+            errors.id_back_image?.message ||
+            checkPictureSize(watch("id_back_image"))
+          }
           rules={{
             required: "Back Side of your id is required",
           }}
+          setValue={setValue}
         />
       </GridItem>
       <GridItem colSpan={2}>

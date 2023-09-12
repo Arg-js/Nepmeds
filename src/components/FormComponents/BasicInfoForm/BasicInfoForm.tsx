@@ -27,6 +27,8 @@ export const BasicInfoForm = ({
     register,
     formState: { errors },
     getValues,
+    setValue,
+    watch,
   } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
@@ -53,6 +55,14 @@ export const BasicInfoForm = ({
     return value === password || "Passwords do not match.";
   };
 
+  const uploadedImage = watch("profile_picture");
+  const checkPictureSize = () => {
+    if (uploadedImage && uploadedImage[0].size / 1048576 > 1) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Grid templateColumns={"repeat(4, 1fr)"} gap={4}>
       <GridItem
@@ -69,6 +79,10 @@ export const BasicInfoForm = ({
           upload_text="Upload Image"
           background="#F9FAFB"
           helperText={false}
+          error={
+            selectedImage && checkPictureSize() && "File is greater than 1 MB"
+          }
+          setValue={setValue}
         />
       </GridItem>
 
