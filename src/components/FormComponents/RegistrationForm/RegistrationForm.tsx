@@ -65,10 +65,10 @@ const registerDefaultValues = {
   tole: "",
   municipality: (0 as number) || null,
   province: (0 as number) || null,
-  gender: "Male",
+  gender: "",
   date_of_birth: "",
   email: "",
-  title: "Dr",
+  title: "",
   password: "",
   confirm_password: "",
   bio_detail: "",
@@ -653,7 +653,7 @@ const RegistrationForm = () => {
                 </Heading>
                 {steps[activeStep + 1] && (
                   <Text fontSize="sm" color={colors.blue_30}>
-                    Next -{steps[activeStep + 1].title}
+                    Next - {steps[activeStep + 1].title}
                   </Text>
                 )}
               </Box>
@@ -691,6 +691,7 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "default",
                       }}
+                      onClick={() => setActiveStep(index)}
                     >
                       {step?.title}
                     </StepTitle>

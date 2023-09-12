@@ -119,7 +119,7 @@ const ImageUpload = ({
             />
           </Box>
         )}
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
       </FormControl>
     </>
   );

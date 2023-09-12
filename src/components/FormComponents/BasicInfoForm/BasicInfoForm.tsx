@@ -1,12 +1,12 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
-import Select from "@nepMeds/components/Form/Select";
+// import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { title } from "@nepMeds/utils/index";
+// import { title } from "@nepMeds/utils/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
@@ -73,14 +73,17 @@ export const BasicInfoForm = ({
       </GridItem>
 
       <GridItem colSpan={3}>
-        <Select
+        <FloatingLabelInput
           label="Title"
           name="title"
           required
           register={register}
-          defaultValue={doctorProfileData?.title ?? "Mr"}
-          options={title}
-          style={{ background: colors.forminput, border: "none" }}
+          defaultValue={doctorProfileData?.title}
+          // options={title}
+          style={{
+            background: colors.forminput,
+            border: "none",
+          }}
           error={errors.title?.message}
           rules={{
             required: "Title is required.",
