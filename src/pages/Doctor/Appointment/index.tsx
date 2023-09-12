@@ -29,7 +29,7 @@ const Appointment: React.FC = () => {
           borderRadius="1px"
         />
         <TabPanels>
-          <TabPanel px={0}>
+          <TabPanel px={0} pb={0}>
             <Appointments />
           </TabPanel>
           <TabPanel>

@@ -131,7 +131,6 @@ export function DataTable({
       <Box
         overflowX={isLoading ? "hidden" : "scroll"}
         mt={5}
-        pb={2}
         css={{
           scrollbarGutter: "stable",
           "&::-webkit-scrollbar": {
@@ -233,46 +232,50 @@ export function DataTable({
             ))}
           </Tbody>
         </Table>
-      </Box>
-
-      {pagination ? (
-        <HStack justifyContent={"flex-end"} float={"right"} flexWrap="wrap">
-          <HStack>
-            <FormControl variant={"floating"}>
-              <Select
-                w="70px"
-                colorScheme={"purple"}
-                value={table.getState().pagination.pageSize}
-                onChange={e => {
-                  table.setPageIndex(0);
-                  table.setPageSize(Number(e.target.value));
-                }}
-              >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </option>
-                ))}
-              </Select>
-              {/* <FormLabel
+        {pagination?.pageCount && pagination?.pageCount > 1 ? (
+          <HStack
+            justifyContent={"flex-end"}
+            float={"right"}
+            flexWrap="wrap"
+            pt={5}
+          >
+            <HStack>
+              <FormControl variant={"floating"}>
+                <Select
+                  w="70px"
+                  colorScheme={"purple"}
+                  value={table.getState().pagination.pageSize}
+                  onChange={e => {
+                    table.setPageIndex(0);
+                    table.setPageSize(Number(e.target.value));
+                  }}
+                >
+                  {[10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                      {pageSize}
+                    </option>
+                  ))}
+                </Select>
+                {/* <FormLabel
                 marginInlineStart={"5% !important"}
                 marginStart={"5% !important"}
                 marginTop={"10% !important"}
               >
                 Items
               </FormLabel> */}
-            </FormControl>
+              </FormControl>
+            </HStack>
+            <Pagination
+              isBackendPaginated={true}
+              table={table}
+              pageIndex={pagination?.pageParams?.pageIndex}
+              pageCount={pagination?.pageCount}
+            />
           </HStack>
-          <Pagination
-            isBackendPaginated={true}
-            table={table}
-            pageIndex={pagination?.pageParams?.pageIndex}
-            pageCount={pagination?.pageCount}
-          />
-        </HStack>
-      ) : (
-        ""
-      )}
+        ) : (
+          ""
+        )}
+      </Box>
     </>
   );
 }
