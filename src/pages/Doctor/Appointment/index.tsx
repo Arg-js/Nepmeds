@@ -17,7 +17,6 @@ const Appointment: React.FC = () => {
         variant="unstyled"
         fontSize="16px"
         fontWeight="400"
-        // TODO: fix this issue
         fontFamily={"Inter"}
       >
         <TabList>

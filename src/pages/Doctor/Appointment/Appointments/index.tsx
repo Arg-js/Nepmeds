@@ -150,6 +150,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     useGetAppointmentRequestById({ id: appointmentId });
   // REACT QUERIES END
 
+  // TODO: similar code in another module
   const appointmentData = {
     0: appointment?.results,
     [STATUSTYPE.pending]: pendingAppointment?.results,
@@ -195,6 +196,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         },
       },
       { header: "Patient Name", accessorKey: "patient_name" },
+      // TODO: check for large amount of data
       {
         header: "Symptoms",
         accessorKey: "symptoms",
@@ -205,7 +207,9 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {
         header: "Status",
         accessorKey: "status",
+        // TODO: why CELL somewhere and accessorfn somewhere
         cell: ({ row }: CellProps<{ status: string }>) => {
+          // cell: ({ row }: CellContext<any, any>) => {
           return (
             <Badge
               colorScheme={statusInfo[row.original?.status].color}
@@ -338,6 +342,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         }
         isOpen={isViewModalOpen}
         onClose={onViewModalClose}
+        // TODO: check this
         footer={<></>}
       >
         {isPatientLoading ? (
@@ -386,6 +391,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
                   content={patient?.patient_name as string}
                 />
 
+                {/* TODO: need to get all the items from the list needs discussion from UI/UX*/}
                 <InfoSection
                   label="Symptoms"
                   content={patient?.symptoms?.[0]?.name || "N/A"}
@@ -393,6 +399,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Flex>
               <Flex flex={1} direction={"column"} gap={2}>
                 <InfoSection label="Gender" content="Male" />
+                {/* TODO: ADDITION of age from BE */}
                 {/* <Box>
                 <Text fontWeight={400} fontSize={"xs"}>
                   Doctors Name
