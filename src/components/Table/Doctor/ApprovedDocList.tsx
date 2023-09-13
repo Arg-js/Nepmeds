@@ -15,10 +15,10 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import { approvedColumns } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 
-import { approvedColumns } from "@nepMeds/components/DataTable/columns";
 import Select from "@nepMeds/components/Form/Select";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";

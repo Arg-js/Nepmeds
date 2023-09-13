@@ -1,8 +1,8 @@
 import { Text } from "@chakra-ui/react";
+import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { getFullDate } from "@nepMeds/helper/dateTImeConverter";
 import { IAmountListDoctor } from "@nepMeds/service/nepmeds-payment";
 import { CellContext } from "@tanstack/react-table";
-import StatusBadge from "../Common/StatusBadge";
 
 //Rate Column
 export const paymentRateColumn = () => {
