@@ -45,10 +45,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
 }) => {
   return (
     <>
-      <WrapperBox
-        backgroundColor={colors.white}
-        style={{ ...style, height: { base: "auto", xl: "517px" } }}
-      >
+      <WrapperBox style={{ ...style, height: { base: "auto", xl: "517px" } }}>
         <>
           <Grid
             templateColumns={{

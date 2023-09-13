@@ -528,7 +528,7 @@ const DoctorDetails: React.FC<{
                   There are no details here.
                 </Text>
                 <Text fontWeight={400} fontSize={"12px"} textAlign="center">
-                  Please Click on the doctor list to view detail doctor’s
+                  Please Click on the doctor list to view detail doctor`&apos;`s
                   profile.
                 </Text>
               </>

@@ -36,6 +36,8 @@ export const colors = {
   black_40: "#6E7079",
   /**black-50*/
   black_50: "#53545C",
+  /**black-60*/
+  black_60: "#45464E",
 
   /**blue-100*/
   blue_100: "#5593F1",
@@ -97,4 +99,8 @@ export const colors = {
 
   reset: "#F57E77",
   resetHover: "#FFF0F0",
+
+  dark_green: "#065F46",
+  yellow: "#FEF3C7",
+  maroon: "#92400E",
 };

@@ -44,12 +44,22 @@ const ModalComponent = ({
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
           <Divider mb={3} />
-          <ModalBody style={{ textAlign: alignment }}>{children}</ModalBody>
+          <ModalBody
+            sx={{
+              textAlign: alignment,
+              py: "0",
+            }}
+          >
+            {children}
+          </ModalBody>
+          <Divider my={6} />
 
           <ModalFooter
             justifyContent="center"
             gap={3}
             flexDirection={approve ? "row-reverse" : "row"}
+            pt={0}
+            pb={5}
           >
             {footer || (
               <>

@@ -6,6 +6,7 @@ import {
 import { lazy, Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import Appointment from "@nepMeds/pages/Doctor/Appointment";
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(
@@ -64,7 +65,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,
-        element: <>Appointments</>,
+        element: <Appointment />,
       },
       {
         path: NAVIGATION_ROUTES.FOLLOWUP,
