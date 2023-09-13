@@ -55,7 +55,7 @@ const Radio = ({
         </Flex>
       </RadioGroup>
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage fontSize={"10px"}>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

@@ -33,6 +33,7 @@ const FloatinglabelTextArea = ({
           background: colors.forminput,
           border: "none",
           borderRadius: "md",
+          color: colors.black_50,
         }}
         id={name}
         size="xl"
@@ -41,14 +42,19 @@ const FloatinglabelTextArea = ({
         {...rest}
       />
       {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+        <FormLabel
+          htmlFor={name}
+          fontWeight={400}
+          fontSize={"sm"}
+          color={colors.black_50}
+        >
           {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
       )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage fontSize={"10px"}>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };
