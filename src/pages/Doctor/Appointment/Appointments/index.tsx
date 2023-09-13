@@ -1,12 +1,13 @@
 import {
-  Avatar,
   Badge,
   Box,
   Button,
+  Divider,
   Flex,
   HStack,
-  SkeletonCircle,
+  Skeleton,
   SkeletonText,
+  Tag,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -124,7 +125,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
-      status: STATUSTYPE.pending as number,
+      status: STATUSTYPE.pending,
     });
 
   // APPROVED
@@ -264,8 +265,8 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     content: string;
   }) => {
     return (
-      <Box>
-        <Text fontWeight={400} fontSize="xs">
+      <Box flex={0.5}>
+        <Text fontWeight={500} fontSize="xs">
           {label}
         </Text>
         <Text fontWeight={400} fontSize="md">
@@ -340,81 +341,75 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         footer={<></>}
       >
         {isPatientLoading ? (
-          <>
-            <Flex gap={6}>
-              <SkeletonCircle size="30" />
-              <Flex flex={1} direction={"column"} gap={2}>
-                <SkeletonText
-                  mt="4"
-                  noOfLines={2}
-                  spacing="4"
-                  skeletonHeight="3"
-                />
-                <SkeletonText
-                  mt="4"
-                  noOfLines={2}
-                  spacing="4"
-                  skeletonHeight="3"
-                />
-              </Flex>
-              <Flex flex={1} direction={"column"} gap={2}>
-                <SkeletonText
-                  mt="4"
-                  noOfLines={2}
-                  spacing="4"
-                  skeletonHeight="3"
-                />
+          <Flex gap={4} direction={"column"}>
+            <Flex>
+              {Array.from({ length: 2 }, (_, i) => (
+                <Flex flex={0.5} gap={4} direction={"column"} key={i}>
+                  {Array.from({ length: 2 }, (_, i) => (
+                    <Skeleton
+                      height={"8px"}
+                      width={i ? "80%" : "50%"}
+                      key={i}
+                    />
+                  ))}
+                </Flex>
+              ))}
+            </Flex>
+            <Divider />
+            <Flex flex={0.5} gap={4} direction={"column"}>
+              <Skeleton height={"8px"} width={"30%"} />
+              <Flex gap={2}>
+                {Array.from({ length: 5 }, (_, i) => (
+                  <Skeleton height={"8px"} width={"10%"} key={i} />
+                ))}
               </Flex>
             </Flex>
-            <Flex mt={7} gap="0.5" direction={"column"}>
-              <SkeletonText
-                mt="4"
-                noOfLines={4}
-                spacing="4"
-                skeletonHeight="2"
-              />
+            <Divider />
+            <Flex flex={0.5} gap={4} direction={"column"}>
+              <Skeleton height={"8px"} width={"30%"} />
+              <SkeletonText noOfLines={4} spacing="4" skeletonHeight="2" />
             </Flex>
-          </>
+          </Flex>
         ) : (
-          <>
-            <Flex gap={6}>
-              <Avatar size="xl" />
-              <Flex flex={1} direction={"column"} gap={2}>
-                <InfoSection
-                  label="Patient’s Name"
-                  content={patient?.patient_name as string}
-                />
-
-                <InfoSection
-                  label="Symptoms"
-                  content={patient?.symptoms?.[0]?.name || "N/A"}
-                />
-              </Flex>
-              <Flex flex={1} direction={"column"} gap={2}>
-                <InfoSection label="Gender" content="Male" />
-                {/* <Box>
-                <Text fontWeight={400} fontSize={"xs"}>
-                  Doctors Name
-                </Text>
-                <Text fontWeight={400} fontSize={"md"}>
-                  {patient?.symptoms?.[0]?.name}
-                </Text>
-              </Box> */}
+          <Flex gap={4} direction={"column"}>
+            <Flex>
+              <InfoSection
+                label={"Patient’s Name"}
+                content={patient?.patient_name as string}
+              />
+              <InfoSection
+                label={"Gender"}
+                content={patient?.patient_name as string}
+              />
+            </Flex>
+            <Divider />
+            <Flex direction={"column"} gap={2}>
+              <Text fontWeight={500} fontSize="xs">
+                Health Issues
+              </Text>
+              <Flex gap={2}>
+                {patient?.symptoms?.map(({ name }) => (
+                  <Tag colorScheme="linkedin" key={name}>
+                    {name}
+                  </Tag>
+                ))}
               </Flex>
             </Flex>
-            <Flex mt={7} gap="4" direction={"column"}>
-              <InfoSection
-                label="Symptom Description"
-                content={patient?.description as string}
-              />
-              {patient?.reject_remarks && (
+            <Divider />
+            <InfoSection
+              label={"Symptom Description"}
+              content={patient?.description as string}
+            />
+            {patient?.reject_remarks && (
+              <>
+                <Divider />
                 <InfoSection
                   label="Rejected Reason"
                   content={patient?.reject_remarks as string}
                 />
-              )}
-            </Flex>
-          </>
+              </>
+            )}
+          </Flex>
         )}
       </ModalComponent>
       {/* View Modal ENDS */}

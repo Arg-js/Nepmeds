@@ -8,6 +8,7 @@ import {
 } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { STATUSTYPE } from "@nepMeds/config/enum";
+import { colors } from "@nepMeds/theme/colors";
 import AppointmentTab from "./Appointments";
 
 const Appointment: React.FC = () => {
@@ -28,7 +29,7 @@ const Appointment: React.FC = () => {
         <TabIndicator
           mt="-1.5px"
           height="4px"
-          bg="blue.500"
+          bg={colors.main}
           borderRadius="1px"
         />
         <TabPanels>
