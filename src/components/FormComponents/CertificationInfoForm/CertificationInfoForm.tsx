@@ -223,25 +223,27 @@ export const CertificationInfoForm = ({
                 name={`certification.${index}.certificate_issued_date`}
                 control={control}
               />
-              <Button
-                type="button"
-                position={"absolute"}
-                right="-15"
-                top="150px"
-                variant={"ghost"}
-                _hover={{ background: "transparent" }}
-                onClick={() => handleRemoveCertificate(index)}
-              >
-                <Icon
-                  as={
-                    deleteCertificateInfoRegister.isLoading
-                      ? Spinner
-                      : DeleteIcon
-                  }
-                  fontSize={28}
-                  color={colors.error}
-                />
-              </Button>
+              {fields.length !== 1 && (
+                <Button
+                  type="button"
+                  position={"absolute"}
+                  right="-15"
+                  top="150px"
+                  variant={"ghost"}
+                  _hover={{ background: "transparent" }}
+                  onClick={() => handleRemoveCertificate(index)}
+                >
+                  <Icon
+                    as={
+                      deleteCertificateInfoRegister.isLoading
+                        ? Spinner
+                        : DeleteIcon
+                    }
+                    fontSize={28}
+                    color={colors.error}
+                  />
+                </Button>
+              )}
             </SimpleGrid>
           </Box>
         );

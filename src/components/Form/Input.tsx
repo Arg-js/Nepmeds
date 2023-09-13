@@ -79,7 +79,7 @@ const Input = ({
       >
         {startIcon && (
           <InputLeftElement
-            top="12%"
+            // top="12%"
             left={"-1%"}
             pointerEvents="none"
             onClick={onIconClick}
@@ -98,14 +98,17 @@ const Input = ({
         />
 
         {endIcons && (
-          <InputRightElement onClick={onIconClick} top="12%">
+          <InputRightElement
+            onClick={onIconClick}
+            // top="12%"
+          >
             {endIcons}
           </InputRightElement>
         )}
       </InputGroup>
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

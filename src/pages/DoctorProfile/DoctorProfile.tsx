@@ -67,7 +67,6 @@ const DoctorProfile = () => {
               onClick={onSavePersonalInfo}
               background={colors.primary}
               color={colors.white}
-              //   isLoading={saveSymptomAction.isLoading}
             >
               Save
             </Button>

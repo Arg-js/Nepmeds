@@ -6,9 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { NepMedsResponse, api } from "./service-api";
 import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { BroadcastChannel } from "broadcast-channel";
 import { HttpClient } from "./service-axios";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const logoutChannel = new BroadcastChannel("logout");
 const loginChannel = new BroadcastChannel("login");
@@ -64,7 +64,7 @@ const useLoginMutation = () => {
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
-      navigate("/dashboard");
+      navigate(`/${NAVIGATION_ROUTES.DASHBOARD}`, { replace: true });
       toastSuccess("Login Successful!!");
     },
     onError: error => {
