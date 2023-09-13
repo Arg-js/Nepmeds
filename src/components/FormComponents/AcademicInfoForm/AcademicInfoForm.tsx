@@ -210,26 +210,6 @@ export const AcademicInfoForm = ({
                 name={`academic.${index}.university`}
                 control={control}
               />
-              {watch(`academic.${index}.university`).toString() !== "6" && (
-                <Controller
-                  render={({ field: { ref, ...field } }) => (
-                    <FloatingLabelInput
-                      required
-                      label="College/University"
-                      register={register}
-                      rules={{
-                        required: "College/University is required.",
-                      }}
-                      error={errors?.academic?.[index]?.university?.message}
-                      style={{ background: colors.forminput, border: "none" }}
-                      {...field}
-                    />
-                  )}
-                  name={`academic.${index}.university`}
-                  control={control}
-                />
-              )}
-
               <Controller
                 render={({ field: { ref, ...field } }) => (
                   <Select

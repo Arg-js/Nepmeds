@@ -109,7 +109,7 @@ const SignupForm = () => {
         <Button
           type="submit"
           width="180px"
-          fontSize={"20px"}
+          fontSize={"xl"}
           isLoading={singUpAction.isLoading}
         >
           Sign Up

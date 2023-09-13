@@ -45,7 +45,7 @@ const FloatinglabelTextArea = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           color={colors.black_50}
         >
           {label}
