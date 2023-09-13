@@ -599,7 +599,14 @@ const RegistrationForm = () => {
       }
     }
   };
+  const profileImage = formMethods.getValues().profile_picture as File[];
+  const docFrontImage = formMethods.getValues().id_front_image as File[];
+  const docBackImage = formMethods.getValues().id_back_image as File[];
 
+  const disableButton =
+    (activeStep === 0 && profileImage?.[0]?.size / 1048576 > 1) ||
+    (activeStep === 1 && docFrontImage?.[0]?.size / 1048576 > 1) ||
+    docBackImage?.[0]?.size / 1048576 > 1;
   const handleNextButtonClick = () => {
     formMethods.handleSubmit(onSubmitForm)();
   };
@@ -768,6 +775,7 @@ const RegistrationForm = () => {
                     certificationInfoRegister.isLoading ||
                     experienceInfoRegister.isLoading
                   }
+                  isDisabled={disableButton}
                   background={colors.primary}
                   color={colors.white}
                   fontWeight={400}

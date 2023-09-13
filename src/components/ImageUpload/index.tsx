@@ -23,9 +23,11 @@ const ImageUpload = ({
   helperText,
   rules,
   error,
+  setValue,
 }: ImageUploadProps) => {
   const handleRemoveImage = () => {
     setSelectedImage(null);
+    setValue(name, undefined as undefined | File[]);
   };
 
   const { register } = useFormContext();
@@ -136,5 +138,7 @@ interface ImageUploadProps {
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   setSelectedImage: (image: File | string | null) => void;
   rules?: RegisterOptions;
-  error?: string;
+  error?: string | boolean | null;
+  //   setValue?: UseFormSetValue<IRegisterFields>;
+  setValue?: any;
 }
