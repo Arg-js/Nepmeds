@@ -27,7 +27,16 @@ const UnApprovedDoctor = () => {
 
   return (
     <Container maxW="100%">
-      <Box m={"auto"} mt={"7%"}>
+      <Box
+        display={"flex"}
+        justifyContent={"flex-start"}
+        pb={"15px"}
+        pr={"50px"}
+        mt={"1%"}
+      >
+        <svgs.logo />
+      </Box>
+      <Box m={"auto"}>
         <Box
           justifyContent={"center"}
           alignItems={"center"}
@@ -84,15 +93,6 @@ const UnApprovedDoctor = () => {
         <Stack pt={"15px"} justifyContent={"center"} alignItems={"center"}>
           <Button onClick={() => logoutAction.mutate()}>Logout</Button>
         </Stack>
-      </Box>
-      <Box
-        display={"flex"}
-        justifyContent={"flex-end"}
-        pb={"15px"}
-        pr={"50px"}
-        mt={"3%"}
-      >
-        <svgs.logo />
       </Box>
     </Container>
   );
