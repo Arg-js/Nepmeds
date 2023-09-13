@@ -3,10 +3,11 @@ import { AcceptIcon, RejectIcon, ViewIcon } from "@nepMeds/assets/svgs";
 
 const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
   return (
-    <Flex>
+    <Flex alignItems={"center"}>
       {!!onView && (
         <Tooltip hasArrow label="view">
           <IconButton
+            height={"min-content"}
             aria-label="view"
             icon={<ViewIcon />}
             onClick={onView}
@@ -22,6 +23,7 @@ const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
       {!!onAccept && (
         <Tooltip hasArrow label="accept">
           <IconButton
+            height={"min-content"}
             aria-label="view"
             icon={<AcceptIcon />}
             onClick={onAccept}
@@ -37,6 +39,7 @@ const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
       {!!onReject && (
         <Tooltip hasArrow label="reject">
           <IconButton
+            height={"min-content"}
             aria-label="view"
             icon={<RejectIcon />}
             onClick={onReject}

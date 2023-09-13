@@ -1,7 +1,9 @@
 import {
   Box,
+  Flex,
   FormControl,
   HStack,
+  Progress,
   Select,
   Table,
   Tbody,
@@ -150,6 +152,11 @@ export function DataTable({
         }}
         borderRadius={8}
       >
+        {isLoading && (
+          <Box w={"100%"}>
+            <Progress size="xs" isIndeterminate />
+          </Box>
+        )}
         <Table bg="white">
           <Thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -175,6 +182,7 @@ export function DataTable({
                       bg={colors.table_header}
                       color={colors.primary}
                       fontSize={14}
+                      px={4}
                       style={{
                         width: `${columns[index]?.size}%` ?? header.getSize(),
                         textAlign:
@@ -185,7 +193,7 @@ export function DataTable({
                             : "left",
                       }}
                     >
-                      <HStack justifyContent={"space-between"}>
+                      <Flex direction={"column"} alignItems={"flex-start"}>
                         <Text flex={1}>
                           {header.isPlaceholder
                             ? null
@@ -194,7 +202,7 @@ export function DataTable({
                                 header.getContext()
                               )}
                         </Text>
-                      </HStack>
+                      </Flex>
                     </Th>
                   );
                 })}
@@ -232,13 +240,8 @@ export function DataTable({
             ))}
           </Tbody>
         </Table>
-        {pagination?.pageCount && pagination?.pageCount > 1 ? (
-          <HStack
-            justifyContent={"flex-end"}
-            float={"right"}
-            flexWrap="wrap"
-            pt={5}
-          >
+        {!!data.length && (
+          <HStack justifyContent={"space-between"} pt={5}>
             <HStack>
               <FormControl variant={"floating"}>
                 <Select
@@ -256,24 +259,17 @@ export function DataTable({
                     </option>
                   ))}
                 </Select>
-                {/* <FormLabel
-                marginInlineStart={"5% !important"}
-                marginStart={"5% !important"}
-                marginTop={"10% !important"}
-              >
-                Items
-              </FormLabel> */}
               </FormControl>
             </HStack>
-            <Pagination
-              isBackendPaginated={true}
-              table={table}
-              pageIndex={pagination?.pageParams?.pageIndex}
-              pageCount={pagination?.pageCount}
-            />
+            {pagination?.pageCount && pagination?.pageCount > 1 && (
+              <Pagination
+                isBackendPaginated={true}
+                table={table}
+                pageIndex={pagination?.pageParams?.pageIndex}
+                pageCount={pagination?.pageCount}
+              />
+            )}
           </HStack>
-        ) : (
-          ""
         )}
       </Box>
     </>

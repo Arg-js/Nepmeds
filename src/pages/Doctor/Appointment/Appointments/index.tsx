@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Button,
   Divider,
@@ -11,17 +10,15 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
-  ISymptom,
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
   useSetAppointmentRequestById,
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
-import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
@@ -29,7 +26,7 @@ import { useForm } from "react-hook-form";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CellProps } from "react-table";
+import { column } from "@nepMeds/components/DataTable/Columns/Doctor/Appointments";
 
 type StatusType =
   | STATUSTYPE.approved
@@ -37,31 +34,6 @@ type StatusType =
   | STATUSTYPE.rejected
   | STATUSTYPE.completed
   | 0;
-
-const statusInfo: {
-  [key: string]: {
-    label: string;
-    color: string;
-    textColor: string;
-  };
-} = {
-  "1": {
-    label: "Approved",
-    color: "green",
-    textColor: colors.dark_green,
-  },
-  "2": {
-    label: "Pending",
-    color: "orange",
-    textColor: colors.maroon,
-  },
-  "3": { label: "Rejected", color: "red", textColor: colors.maroon },
-  "4": {
-    label: "Completed",
-    color: "green",
-    textColor: colors.dark_green,
-  },
-};
 
 const schema = Yup.object({
   reject_title: Yup.string().required("This field is required"),
@@ -114,14 +86,14 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 
   // REACT QUERIES
 
-  const { data: appointment, isLoading: appointmentLoading } =
+  const { data: appointment, isFetching: appointmentFetching } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
     });
 
   // PENDING
-  const { data: pendingAppointment, isLoading: pendingAppointmentLoading } =
+  const { data: pendingAppointment, isFetching: pendingAppointmentFetching } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
@@ -129,7 +101,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     });
 
   // APPROVED
-  const { data: approvedAppointment, isLoading: approvedAppointmentLoading } =
+  const { data: approvedAppointment, isFetching: approvedAppointmentFetching } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
@@ -137,7 +109,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     });
 
   // REJECTED
-  const { data: rejectedAppointment, isLoading: rejectedAppointmentLoading } =
+  const { data: rejectedAppointment, isFetching: rejectedAppointmentFetching } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
@@ -179,84 +151,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     }
   };
 
-  const column = useMemo(
-    () => [
-      {
-        header: "S.N",
-        accessorFn: (_: any, index: number) => {
-          return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        },
-      },
-      {
-        header: "Date",
-        accessorKey: "created_at",
-        accessorFn: ({ created_at }: { created_at: string }) => {
-          return created_at.substr(0, 10);
-        },
-      },
-      { header: "Patient Name", accessorKey: "patient_name" },
-      {
-        header: "Symptoms",
-        accessorKey: "symptoms",
-        accessorFn: ({ symptoms }: { symptoms: ISymptom[] }) => {
-          return symptoms?.map(({ name }) => name);
-        },
-      },
-      {
-        header: "Status",
-        accessorKey: "status",
-        cell: ({ row }: CellProps<{ status: string }>) => {
-          return (
-            <Badge
-              colorScheme={statusInfo[row.original?.status].color}
-              borderRadius={10}
-              px={3}
-              py={0.5}
-              fontWeight={400}
-              fontSize={"xs"}
-              textTransform="capitalize"
-              sx={{
-                color: statusInfo[row.original?.status].textColor,
-              }}
-            >
-              {statusInfo[row.original?.status].label}
-            </Badge>
-          );
-        },
-      },
-      {
-        header: "Actions",
-        accessorKey: "actions",
-        cell: ({ row }: CellProps<{ id: string; status: string }>) => {
-          const onView = () => {
-            setAppointmentId(row.original?.id);
-            onViewModalOpen();
-          };
-          const onAccept = () => {
-            setAppointmentId(row.original?.id);
-            onApproveModalOpen();
-          };
-          const onReject = () => {
-            setAppointmentId(row.original?.id);
-            onRejectionModalOpen();
-          };
-
-          const isPending =
-            row.original?.status === STATUSTYPE.pending.toString();
-
-          return (
-            <TableActions
-              onView={onView}
-              onAccept={isPending ? onAccept : undefined}
-              onReject={isPending ? onReject : undefined}
-            />
-          );
-        },
-      },
-    ],
-    [appointment, pageParams]
-  );
-
   const InfoSection = ({
     label,
     content,
@@ -289,8 +183,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         }
         isOpen={isApproveModalOpen}
         onClose={onApproveModalClose}
-        // approve
-        // reject
         footer={
           <HStack w="100%">
             <Button
@@ -478,12 +370,21 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 
       <DataTable
         data={appointmentData[type] || []}
-        columns={column}
+        columns={column({
+          appointment,
+          pageParams,
+          setAppointmentId,
+          onModalOpen: {
+            onViewModalOpen,
+            onApproveModalOpen,
+            onRejectionModalOpen,
+          },
+        })}
         isLoading={
-          appointmentLoading ||
-          pendingAppointmentLoading ||
-          approvedAppointmentLoading ||
-          rejectedAppointmentLoading
+          appointmentFetching ||
+          pendingAppointmentFetching ||
+          approvedAppointmentFetching ||
+          rejectedAppointmentFetching
         }
         pagination={{
           manual: true,
