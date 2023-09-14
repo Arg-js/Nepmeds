@@ -90,30 +90,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
-    });
-
-  // PENDING
-  const { data: pendingAppointment, isFetching: pendingAppointmentFetching } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.pending,
-    });
-
-  // APPROVED
-  const { data: approvedAppointment, isFetching: approvedAppointmentFetching } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.approved,
-    });
-
-  // REJECTED
-  const { data: rejectedAppointment, isFetching: rejectedAppointmentFetching } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.rejected,
+      status: type || "",
     });
 
   const { mutateAsync: setAppointmentRequestById, isLoading } =
@@ -121,14 +98,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   const { data: patient, isLoading: isPatientLoading } =
     useGetAppointmentRequestById({ id: appointmentId });
   // REACT QUERIES END
-
-  const appointmentData = {
-    0: appointment?.results,
-    [STATUSTYPE.pending]: pendingAppointment?.results,
-    [STATUSTYPE.approved]: approvedAppointment?.results,
-    [STATUSTYPE.rejected]: rejectedAppointment?.results,
-    [STATUSTYPE.completed]: [],
-  };
 
   const onModalClose = () => {
     setAppointmentId("");
@@ -369,7 +338,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {/* TABLE HEADER ENDS*/}
 
       <DataTable
-        data={appointmentData[type] || []}
+        data={appointment?.results || []}
         columns={column({
           appointment,
           pageParams,
@@ -380,12 +349,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             onRejectionModalOpen,
           },
         })}
-        isLoading={
-          appointmentFetching ||
-          pendingAppointmentFetching ||
-          approvedAppointmentFetching ||
-          rejectedAppointmentFetching
-        }
+        isLoading={appointmentFetching}
         pagination={{
           manual: true,
           pageParams: {
