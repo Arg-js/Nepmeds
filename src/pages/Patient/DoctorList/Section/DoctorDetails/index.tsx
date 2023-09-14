@@ -61,8 +61,6 @@ const schema = Yup.object({
     .required("This field is required")
     .min(1, "This field is required"),
   description: Yup.string().required("This field is required"),
-  // old_report_file: "",
-  // status: "",
 });
 
 const DoctorDetails: React.FC<{
