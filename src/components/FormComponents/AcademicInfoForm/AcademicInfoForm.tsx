@@ -192,7 +192,7 @@ export const AcademicInfoForm = ({
                   <Select
                     required
                     placeholder="Select College/University"
-                    label="College/ University"
+                    label="College/University"
                     register={register}
                     options={collegeOptions}
                     style={{
@@ -210,7 +210,6 @@ export const AcademicInfoForm = ({
                 name={`academic.${index}.university`}
                 control={control}
               />
-
               <Controller
                 render={({ field: { ref, ...field } }) => (
                   <Select
@@ -234,17 +233,20 @@ export const AcademicInfoForm = ({
                 name={`academic.${index}.graduation_year`}
                 control={control}
               />
-              <Button
-                type="button"
-                position={"absolute"}
-                right="-15"
-                top="150px"
-                variant={"ghost"}
-                _hover={{ background: "transparent" }}
-                onClick={() => handleRemoveAcademic(index)}
-              >
-                <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
-              </Button>
+
+              {fields.length !== 1 && (
+                <Button
+                  type="button"
+                  position={"absolute"}
+                  right="-15"
+                  top="150px"
+                  variant={"ghost"}
+                  _hover={{ background: "transparent" }}
+                  onClick={() => handleRemoveAcademic(index)}
+                >
+                  <Icon as={DeleteIcon} fontSize={28} color={colors.error} />
+                </Button>
+              )}
             </SimpleGrid>
           </Box>
         );

@@ -199,6 +199,12 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
 
+  const checkPictureSize = (image: File[] | undefined) => {
+    if (image?.length !== 0 && (image as File[])?.[0]?.size / 1048576 > 1) {
+      return "Image is greater than 1MB";
+    }
+  };
+
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
       {!isEditable && (
@@ -213,11 +219,11 @@ const PrimaryInfo = ({
               required: "Basic Information is required.",
               minLength: {
                 value: 50,
-                message: "Basic Information must be 50 charaters.",
+                message: "Basic Information must be atleast 50 characters.",
               },
               maxLength: {
                 value: 250,
-                message: "Basic Information must be less than 250 charateras.",
+                message: "Basic Information must be less than 250 characters.",
               },
             }}
             error={errors.bio_detail?.message}
@@ -226,14 +232,23 @@ const PrimaryInfo = ({
       )}
       <GridItem colSpan={{ base: 2, lg: 1 }}>
         <Input
+          py={"28px"}
+          pl={"20"}
           name="phone"
           register={register}
           defaultValue={"+977"}
           isReadOnly
           startIcon={
-            <img src={NepalFlag} style={{ height: "25px" }} alt="Nepal Flag" />
+            <img
+              src={NepalFlag}
+              style={{ height: "45px", marginTop: "15px" }}
+              alt="Nepal Flag"
+            />
           }
-          style={{ background: colors.forminput, border: "none" }}
+          style={{
+            background: colors.forminput,
+            border: "none",
+          }}
           error={errors.phone?.message}
         />
       </GridItem>
@@ -251,9 +266,9 @@ const PrimaryInfo = ({
           defaultValue={doctorProfileData?.user?.mobile_number}
           style={{ background: colors.forminput, border: "none" }}
           rules={{
-            required: "Phone no is required.",
-            min: "Phone no can be only 10 digit long",
-            max: "Phone no can be only 10 digit long",
+            required: "Mobile No. is required.",
+            min: "Mobile No. can be only 10 digit long",
+            max: "Mobile No. can be only 10 digit long",
           }}
           error={errors.mobile_number?.message}
         />
@@ -273,7 +288,7 @@ const PrimaryInfo = ({
             required: "Email is required.",
             pattern: {
               value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-              message: "Email address must be a valid address",
+              message: "Email is invalid.",
             },
           }}
           error={errors.email?.message}
@@ -287,6 +302,7 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.gender}
           options={gender}
+          required
           style={{
             background: colors.forminput,
             border: "none",
@@ -301,13 +317,17 @@ const PrimaryInfo = ({
       <GridItem colSpan={{ base: 4, md: 2 }}>
         <FloatingLabelInput
           name="date_of_birth"
-          label="Date of birth"
+          label="Date of Birth"
           register={register}
           defaultValue={doctorProfileData?.user?.date_of_birth}
           type="date"
-          style={{ background: colors.forminput, border: "none" }}
+          required
+          style={{
+            background: colors.forminput,
+            border: "none",
+          }}
           rules={{
-            required: "Date of birth is required.",
+            required: "Date of Birth is required.",
             validate: validateDateOfBirth,
           }}
           error={errors.date_of_birth?.message}
@@ -329,6 +349,7 @@ const PrimaryInfo = ({
             background: colors.forminput,
             border: "none",
             paddingTop: "15px",
+            paddingLeft: "5px",
           }}
           rules={
             !isEditable
@@ -344,6 +365,8 @@ const PrimaryInfo = ({
         <FloatingLabelInput
           label="Pan Number"
           name="pan_number"
+          maxLength={9}
+          type="number"
           defaultValue={doctorProfileData?.pan_number}
           required
           register={register}
@@ -352,14 +375,14 @@ const PrimaryInfo = ({
             border: "none",
           }}
           rules={{
-            required: "Pan no is required.",
+            required: "Pan Number is required.",
             minLength: {
               value: 9,
-              message: "Pan no can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long.",
             },
             maxLength: {
               value: 9,
-              message: "Pan no can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long.",
             },
           }}
           error={errors.pan_number?.message}
@@ -398,10 +421,14 @@ const PrimaryInfo = ({
           name="id_front_image"
           helperText={true}
           upload_text="Upload Front Side of your Id "
-          error={errors.id_front_image?.message}
+          error={
+            errors.id_front_image?.message ||
+            checkPictureSize(watch("id_front_image"))
+          }
           rules={{
             required: "Front Side  of your id is required",
           }}
+          setValue={setValue}
         />
       </GridItem>
       <GridItem colSpan={{ base: 4, lg: 2 }}>
@@ -412,10 +439,14 @@ const PrimaryInfo = ({
           name="id_back_image"
           upload_text="Upload Back side of your Id "
           helperText={true}
-          error={errors.id_back_image?.message}
+          error={
+            errors.id_back_image?.message ||
+            checkPictureSize(watch("id_back_image"))
+          }
           rules={{
             required: "Back Side of your id is required",
           }}
+          setValue={setValue}
         />
       </GridItem>
       <GridItem colSpan={2}>
@@ -427,7 +458,7 @@ const PrimaryInfo = ({
           defaultValue={doctorProfileData?.id_number}
           style={{ background: colors.forminput, border: "none" }}
           rules={{
-            required: "ID no is required.",
+            required: "ID Number is required.",
           }}
           error={errors.id_number?.message}
         />
@@ -506,6 +537,7 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.district_data?.id}
           options={districtOptions}
+          isDisabled={!districtOptions.length}
           style={{
             background: colors.forminput,
             border: "none",
@@ -519,20 +551,21 @@ const PrimaryInfo = ({
       </GridItem>
       <GridItem colSpan={2}>
         <Select
-          placeholder="Select Municipality/Vdc"
-          label="Municipality/Vdc"
+          placeholder="Select Municipality/VDC"
+          label="Municipality/VDC"
           name="municipality"
           required
           register={register}
           defaultValue={doctorProfileData?.user?.municipality_data?.id}
           options={municipalityOptions}
+          isDisabled={!municipalityOptions.length}
           style={{
             background: colors.forminput,
             border: "none",
             paddingTop: "15px",
           }}
           rules={{
-            required: "Municipality is required.",
+            required: "Municipality/VDC is required.",
           }}
           error={errors.municipality?.message}
         />
@@ -542,6 +575,7 @@ const PrimaryInfo = ({
           placeholder=""
           label="Ward"
           name="ward"
+          maxLength={2}
           required
           register={register}
           defaultValue={doctorProfileData?.user?.ward}

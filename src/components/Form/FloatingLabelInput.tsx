@@ -64,11 +64,20 @@ const FloatingLabelInput = ({
         pr={8}
         pb={2}
         variant="floating"
-        style={{ background: colors.forminput, border: "none" }}
+        style={{
+          background: colors.forminput,
+          border: "none",
+          color: colors.black_50,
+        }}
       />
 
       {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+        <FormLabel
+          htmlFor={name}
+          fontWeight={400}
+          fontSize={"14px"}
+          color={colors.black_50}
+        >
           {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
@@ -85,7 +94,7 @@ const FloatingLabelInput = ({
       )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

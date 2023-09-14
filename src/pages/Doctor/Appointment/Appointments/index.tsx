@@ -205,7 +205,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           <Flex gap={4} direction={"column"}>
             <Flex>
               {Array.from({ length: 2 }, (_, i) => (
-                <Flex flex={0.5} gap={4} direction={"column"} key={i}>
+                <Flex flex={1} gap={4} direction={"column"} key={i}>
                   {Array.from({ length: 2 }, (_, i) => (
                     <Skeleton
                       height={"8px"}
@@ -217,7 +217,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               ))}
             </Flex>
             <Divider />
-            <Flex flex={0.5} gap={4} direction={"column"}>
+            <Flex gap={4} direction={"column"}>
               <Skeleton height={"8px"} width={"30%"} />
               <Flex gap={2}>
                 {Array.from({ length: 5 }, (_, i) => (
@@ -226,7 +226,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Flex>
             </Flex>
             <Divider />
-            <Flex flex={0.5} gap={4} direction={"column"}>
+            <Flex gap={4} direction={"column"}>
               <Skeleton height={"8px"} width={"30%"} />
               <SkeletonText noOfLines={4} spacing="4" skeletonHeight="2" />
             </Flex>
@@ -236,11 +236,11 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Flex>
               <InfoSection
                 label={"Patient’s Name"}
-                content={patient?.patient_name as string}
+                content={patient?.patient_name || ""}
               />
               <InfoSection
                 label={"Gender"}
-                content={patient?.patient_name as string}
+                content={patient?.patient_name || ""}
               />
             </Flex>
             <Divider />
@@ -259,14 +259,14 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Divider />
             <InfoSection
               label={"Symptom Description"}
-              content={patient?.description as string}
+              content={patient?.description || ""}
             />
             {patient?.reject_remarks && (
               <>
                 <Divider />
                 <InfoSection
                   label="Rejected Reason"
-                  content={patient?.reject_remarks as string}
+                  content={patient?.reject_remarks || ""}
                 />
               </>
             )}

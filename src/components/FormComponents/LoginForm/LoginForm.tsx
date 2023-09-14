@@ -49,6 +49,7 @@ const LoginForm = () => {
     <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={7} mb={3}>
         <Input
+          alignItems={"center"}
           name="email"
           register={register}
           startIcon={
@@ -94,7 +95,17 @@ const LoginForm = () => {
         Forgot Password
       </Link>
 
-      <Text textAlign="center" fontSize={14} color={colors.black_30}>
+      <HStack mt={10} justifyContent="center">
+        <Button
+          type="submit"
+          isLoading={loginAction.isLoading}
+          width="180px"
+          fontSize={"20px"}
+        >
+          Login
+        </Button>
+      </HStack>
+      <Text textAlign="center" mt={10} fontSize={14} color={colors.black_30}>
         Don’t have an account?
         <Link
           to="/signup"
@@ -106,18 +117,6 @@ const LoginForm = () => {
           Sign Up
         </Link>
       </Text>
-
-      <HStack mt={10} justifyContent="center">
-        <Button
-          backgroundColor={colors.primary}
-          textColor={colors.white}
-          type="submit"
-          isLoading={loginAction.isLoading}
-          variant="register"
-        >
-          Login
-        </Button>
-      </HStack>
     </form>
   );
 };
