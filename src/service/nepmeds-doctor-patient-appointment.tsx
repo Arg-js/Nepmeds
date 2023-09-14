@@ -41,7 +41,7 @@ const getAppointmentRequest = async ({
 }: {
   page: number;
   page_size: number;
-  status?: number;
+  status?: number | string;
 }) => {
   const response = await HttpClient.get<
     NepMedsResponse<IGetAppointmentRequest>
@@ -58,7 +58,7 @@ const useGetAppointmentRequest = ({
 }: {
   page: number;
   page_size: number;
-  status?: number;
+  status?: number | string;
 }) => {
   return useQuery(
     [api.doctor.appointments.get, page, page_size, status],

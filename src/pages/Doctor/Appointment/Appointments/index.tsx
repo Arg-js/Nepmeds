@@ -1,5 +1,4 @@
 import {
-  Badge,
   Box,
   Button,
   Divider,
@@ -11,17 +10,15 @@ import {
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
-  ISymptom,
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
   useSetAppointmentRequestById,
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
-import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
@@ -29,7 +26,7 @@ import { useForm } from "react-hook-form";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { CellProps } from "react-table";
+import { column } from "@nepMeds/components/DataTable/Columns/Doctor/Appointments";
 
 type StatusType =
   | STATUSTYPE.approved
@@ -37,31 +34,6 @@ type StatusType =
   | STATUSTYPE.rejected
   | STATUSTYPE.completed
   | 0;
-
-const statusInfo: {
-  [key: string]: {
-    label: string;
-    color: string;
-    textColor: string;
-  };
-} = {
-  "1": {
-    label: "Approved",
-    color: "green",
-    textColor: colors.dark_green,
-  },
-  "2": {
-    label: "Pending",
-    color: "orange",
-    textColor: colors.maroon,
-  },
-  "3": { label: "Rejected", color: "red", textColor: colors.maroon },
-  "4": {
-    label: "Completed",
-    color: "green",
-    textColor: colors.dark_green,
-  },
-};
 
 const schema = Yup.object({
   reject_title: Yup.string().required("This field is required"),
@@ -114,34 +86,11 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 
   // REACT QUERIES
 
-  const { data: appointment, isLoading: appointmentLoading } =
+  const { data: appointment, isFetching: appointmentFetching } =
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
-    });
-
-  // PENDING
-  const { data: pendingAppointment, isLoading: pendingAppointmentLoading } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.pending,
-    });
-
-  // APPROVED
-  const { data: approvedAppointment, isLoading: approvedAppointmentLoading } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.approved,
-    });
-
-  // REJECTED
-  const { data: rejectedAppointment, isLoading: rejectedAppointmentLoading } =
-    useGetAppointmentRequest({
-      page: pageParams.pageIndex + 1,
-      page_size: pageParams.pageSize,
-      status: STATUSTYPE.rejected,
+      status: type || "",
     });
 
   const { mutateAsync: setAppointmentRequestById, isLoading } =
@@ -149,14 +98,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   const { data: patient, isLoading: isPatientLoading } =
     useGetAppointmentRequestById({ id: appointmentId });
   // REACT QUERIES END
-
-  const appointmentData = {
-    0: appointment?.results,
-    [STATUSTYPE.pending]: pendingAppointment?.results,
-    [STATUSTYPE.approved]: approvedAppointment?.results,
-    [STATUSTYPE.rejected]: rejectedAppointment?.results,
-    [STATUSTYPE.completed]: [],
-  };
 
   const onModalClose = () => {
     setAppointmentId("");
@@ -178,84 +119,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       console.error(e);
     }
   };
-
-  const column = useMemo(
-    () => [
-      {
-        header: "S.N",
-        accessorFn: (_: any, index: number) => {
-          return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        },
-      },
-      {
-        header: "Date",
-        accessorKey: "created_at",
-        accessorFn: ({ created_at }: { created_at: string }) => {
-          return created_at.substr(0, 10);
-        },
-      },
-      { header: "Patient Name", accessorKey: "patient_name" },
-      {
-        header: "Symptoms",
-        accessorKey: "symptoms",
-        accessorFn: ({ symptoms }: { symptoms: ISymptom[] }) => {
-          return symptoms?.map(({ name }) => name);
-        },
-      },
-      {
-        header: "Status",
-        accessorKey: "status",
-        cell: ({ row }: CellProps<{ status: string }>) => {
-          return (
-            <Badge
-              colorScheme={statusInfo[row.original?.status].color}
-              borderRadius={10}
-              px={3}
-              py={0.5}
-              fontWeight={400}
-              fontSize={"xs"}
-              textTransform="capitalize"
-              sx={{
-                color: statusInfo[row.original?.status].textColor,
-              }}
-            >
-              {statusInfo[row.original?.status].label}
-            </Badge>
-          );
-        },
-      },
-      {
-        header: "Actions",
-        accessorKey: "actions",
-        cell: ({ row }: CellProps<{ id: string; status: string }>) => {
-          const onView = () => {
-            setAppointmentId(row.original?.id);
-            onViewModalOpen();
-          };
-          const onAccept = () => {
-            setAppointmentId(row.original?.id);
-            onApproveModalOpen();
-          };
-          const onReject = () => {
-            setAppointmentId(row.original?.id);
-            onRejectionModalOpen();
-          };
-
-          const isPending =
-            row.original?.status === STATUSTYPE.pending.toString();
-
-          return (
-            <TableActions
-              onView={onView}
-              onAccept={isPending ? onAccept : undefined}
-              onReject={isPending ? onReject : undefined}
-            />
-          );
-        },
-      },
-    ],
-    [appointment, pageParams]
-  );
 
   const InfoSection = ({
     label,
@@ -289,8 +152,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         }
         isOpen={isApproveModalOpen}
         onClose={onApproveModalClose}
-        // approve
-        // reject
         footer={
           <HStack w="100%">
             <Button
@@ -344,7 +205,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           <Flex gap={4} direction={"column"}>
             <Flex>
               {Array.from({ length: 2 }, (_, i) => (
-                <Flex flex={0.5} gap={4} direction={"column"} key={i}>
+                <Flex flex={1} gap={4} direction={"column"} key={i}>
                   {Array.from({ length: 2 }, (_, i) => (
                     <Skeleton
                       height={"8px"}
@@ -356,7 +217,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               ))}
             </Flex>
             <Divider />
-            <Flex flex={0.5} gap={4} direction={"column"}>
+            <Flex gap={4} direction={"column"}>
               <Skeleton height={"8px"} width={"30%"} />
               <Flex gap={2}>
                 {Array.from({ length: 5 }, (_, i) => (
@@ -365,7 +226,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Flex>
             </Flex>
             <Divider />
-            <Flex flex={0.5} gap={4} direction={"column"}>
+            <Flex gap={4} direction={"column"}>
               <Skeleton height={"8px"} width={"30%"} />
               <SkeletonText noOfLines={4} spacing="4" skeletonHeight="2" />
             </Flex>
@@ -375,11 +236,11 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Flex>
               <InfoSection
                 label={"Patient’s Name"}
-                content={patient?.patient_name as string}
+                content={patient?.patient_name || ""}
               />
               <InfoSection
                 label={"Gender"}
-                content={patient?.patient_name as string}
+                content={patient?.patient_name || ""}
               />
             </Flex>
             <Divider />
@@ -398,14 +259,14 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Divider />
             <InfoSection
               label={"Symptom Description"}
-              content={patient?.description as string}
+              content={patient?.description || ""}
             />
             {patient?.reject_remarks && (
               <>
                 <Divider />
                 <InfoSection
                   label="Rejected Reason"
-                  content={patient?.reject_remarks as string}
+                  content={patient?.reject_remarks || ""}
                 />
               </>
             )}
@@ -477,14 +338,18 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       {/* TABLE HEADER ENDS*/}
 
       <DataTable
-        data={appointmentData[type] || []}
-        columns={column}
-        isLoading={
-          appointmentLoading ||
-          pendingAppointmentLoading ||
-          approvedAppointmentLoading ||
-          rejectedAppointmentLoading
-        }
+        data={appointment?.results || []}
+        columns={column({
+          appointment,
+          pageParams,
+          setAppointmentId,
+          onModalOpen: {
+            onViewModalOpen,
+            onApproveModalOpen,
+            onRejectionModalOpen,
+          },
+        })}
+        isLoading={appointmentFetching}
         pagination={{
           manual: true,
           pageParams: {

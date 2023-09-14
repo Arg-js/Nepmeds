@@ -14,17 +14,12 @@ import AppointmentTab from "./Appointments";
 const Appointment: React.FC = () => {
   return (
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
-      <Tabs
-        variant="unstyled"
-        fontSize="16px"
-        fontWeight="400"
-        fontFamily={"Inter"}
-      >
+      <Tabs variant="unstyled" fontSize="16px" fontFamily={"Inter"}>
         <TabList>
-          <Tab>All</Tab>
-          <Tab>Pending Appointment</Tab>
-          <Tab>Approved</Tab>
-          <Tab>Rejected</Tab>
+          <Tab fontWeight="500">All</Tab>
+          <Tab fontWeight="500">Pending </Tab>
+          <Tab fontWeight="500">Approved </Tab>
+          <Tab fontWeight="500">Rejected</Tab>
         </TabList>
         <TabIndicator
           mt="-1.5px"
