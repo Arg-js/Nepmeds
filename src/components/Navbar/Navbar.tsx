@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Divider,
-  Flex,
   HStack,
   Icon,
   Menu,
@@ -35,40 +34,40 @@ const Navbar = () => {
   return (
     <>
       <Stack p={"15px 21px"} background="white">
-        <HStack>
-          <Box w={"55%"}>
-            <Text fontWeight={"500"} fontSize={"20px"} color={"#45464E"}>
-              Dashboard
-            </Text>
-          </Box>
-          <Box w={"20%"}>
-            <Input
-              height={"32px"}
-              borderRadius={"8px"}
-              name="search"
-              register={register}
-              type="text"
-              border="none"
-              endIcons={
-                <Icon
-                  mr={"18px"}
-                  fontSize={20}
-                  color={colors.blue_100}
-                  as={Search2Icon}
-                />
-              }
-              backgroundColor={colors.blue_10}
-              placeholder="Search"
-            />
-          </Box>
-          <Flex alignItems={"center"} w={"5%"}>
-            <Notification
-              size="large"
-              set="bulk"
-              primaryColor={colors.blue_100}
-            />
-          </Flex>
-          <Flex gap={"20px"} alignItems={"center"}>
+        <HStack justify={"space-between"} alignItems={"center"}>
+          <Text fontWeight={"500"} fontSize={"20px"} color={"#45464E"}>
+            Dashboard
+          </Text>
+          <HStack justifyContent={"end"}>
+            <Box w={"60%"}>
+              <Input
+                height={"32px"}
+                borderRadius={"8px"}
+                name="search"
+                register={register}
+                type="text"
+                border="none"
+                endIcons={
+                  <Icon
+                    mb={"8px"}
+                    fontSize={20}
+                    color={colors.blue_100}
+                    as={Search2Icon}
+                  />
+                }
+                backgroundColor={colors.blue_10}
+                placeholder="Search"
+              />
+            </Box>
+
+            <Box px={"2"}>
+              <Notification
+                size="large"
+                set="bulk"
+                primaryColor={colors.blue_100}
+              />
+            </Box>
+
             <Menu>
               <MenuButton
                 sx={{
@@ -81,10 +80,15 @@ const Navbar = () => {
                 >
                   {profileData?.data?.first_name || "Admin"}{" "}
                   {profileData?.data?.middle_name}{" "}
-                  {profileData?.data?.last_name}&nbsp;
+                  {profileData?.data?.last_name}
+                  &nbsp;
                 </Text>
 
-                <Avatar src={profileData?.data?.profile_picture} size="md" />
+                <Avatar
+                  src={profileData?.data?.profile_picture}
+                  size="sm"
+                  rounded="lg"
+                />
               </MenuButton>
               <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>
@@ -93,7 +97,7 @@ const Navbar = () => {
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
-          </Flex>
+          </HStack>
         </HStack>
         <Divider mt={"14px"} />
         <Box>

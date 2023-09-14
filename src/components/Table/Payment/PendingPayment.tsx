@@ -250,13 +250,9 @@ const PendingPayment = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
+                variant={"primaryOutline"}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                onClick={onCloseConfirmation}
               >
                 Cancel
               </Button>

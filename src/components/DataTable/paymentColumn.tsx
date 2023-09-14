@@ -144,7 +144,7 @@ export const allPaymentColumn = (
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack justifyContent={"center"}>
-            <Tooltip label="View Rate History">
+            <Tooltip hasArrow placement="top" label="View Rate History">
               <span>
                 <Icon
                   as={Show}
@@ -164,7 +164,7 @@ export const allPaymentColumn = (
             {row?.original?.payment_status?.toString() !==
               STATUSTYPE.approved.toString() && (
               <Flex gap={2} justifyContent={"center"} alignContent={"center"}>
-                <Tooltip label="Approve Payment">
+                <Tooltip hasArrow placement="top" label="Approve Payment">
                   <span>
                     <Icon
                       as={CheckIcon}
@@ -183,7 +183,7 @@ export const allPaymentColumn = (
                     />
                   </span>
                 </Tooltip>
-                <Tooltip label="Reject Payment">
+                <Tooltip hasArrow placement="top" label="Reject Payment">
                   <span>
                     <Icon
                       as={CloseIcon}
@@ -336,7 +336,7 @@ export const pendingPaymentColumn = (
       cell: (cell: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Rate History">
+            <Tooltip hasArrow placement="top" label="View Rate History">
               <span>
                 <Icon
                   as={Show}
@@ -354,7 +354,7 @@ export const pendingPaymentColumn = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Approve Payment">
+            <Tooltip hasArrow placement="top" label="Approve Payment">
               <span>
                 <Icon
                   as={CheckIcon}
@@ -373,7 +373,7 @@ export const pendingPaymentColumn = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Reject Payment">
+            <Tooltip hasArrow placement="top" label="Reject Payment">
               <span>
                 <Icon
                   as={CloseIcon}
@@ -507,7 +507,7 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Rate History">
+            <Tooltip hasArrow placement="top" label="View Rate History">
               <span>
                 <Icon
                   as={Show}
@@ -634,7 +634,7 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Rate History">
+            <Tooltip hasArrow placement="top" label="View Rate History">
               <span>
                 <Icon
                   as={Show}

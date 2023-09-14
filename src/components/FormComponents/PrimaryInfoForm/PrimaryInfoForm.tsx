@@ -204,6 +204,13 @@ const PrimaryInfo = ({
       return "Image is greater than 1MB";
     }
   };
+  //Only enabling date picker to 18 years before todays date
+  const today = new Date();
+  const maxDate = new Date(
+    today.getFullYear() - 18,
+    today.getMonth(),
+    today.getDate()
+  );
 
   return (
     <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
@@ -321,7 +328,9 @@ const PrimaryInfo = ({
           register={register}
           defaultValue={doctorProfileData?.user?.date_of_birth}
           type="date"
+          max={maxDate.toISOString().split("T")[0]}
           required
+          _hover={{ cursor: "pointer" }}
           style={{
             background: colors.forminput,
             border: "none",

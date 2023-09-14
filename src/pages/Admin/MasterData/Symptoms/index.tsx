@@ -243,21 +243,16 @@ const Symptoms = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
+                variant={"primaryOutline"}
                 onClick={onCloseModal}
                 flex={1}
-                border="1px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
               >
                 Discard
               </Button>
               <Button
                 flex={1}
+                variant={"primary"}
                 onClick={onEditHandle}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={saveSymptomAction.isLoading}
               >
                 Save
@@ -312,28 +307,25 @@ const Symptoms = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
+                variant={"primaryOutline"}
                 onClick={() => {
                   onCloseSymptoms();
                   reset();
                 }}
                 flex={1}
                 border="1px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
                 fontWeight={400}
               >
                 Discard
               </Button>
               <Button
                 flex={1}
+                variant={"primary"}
                 onClick={() => {
                   onSaveSymptom();
                   // formMethods.reset();
                 }}
-                background={colors.primary}
                 type="submit"
-                color={colors.white}
                 isLoading={saveSymptomAction.isLoading}
               >
                 Save
@@ -378,16 +370,18 @@ const Symptoms = ({
           }
           footer={
             <HStack w="100%" gap={3}>
-              <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+              <Button
+                variant={"primaryOutline"}
+                onClick={onCloseDeleteModal}
+                flex={1}
+              >
                 Cancel
               </Button>
               <Button
                 flex={1}
+                variant={"reset"}
                 onClick={onDeleteSymptom}
-                borderColor={colors.red}
-                color={colors.red}
                 isLoading={deleteSymptomAction.isLoading}
-                variant="outline"
               >
                 Delete
               </Button>

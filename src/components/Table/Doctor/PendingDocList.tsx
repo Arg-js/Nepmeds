@@ -216,6 +216,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
                 Cancel
               </Button>
               <Button
+                variant={"primary"}
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(value =>
                   RejectDoctor({ ...value, id: doctorInfo.id }).then(() =>
@@ -260,23 +261,18 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                variant={"primaryOutline"}
+                onClick={onCloseConfirmation}
               >
                 Cancel
               </Button>
               <Button
                 flex={1}
+                variant={"primary"}
                 onClick={statusFormMethods.handleSubmit(() =>
                   ApproveDoctor(doctorInfo.id).then(() => onCloseConfirmation())
                 )}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={approveLoading}
               >
                 Yes

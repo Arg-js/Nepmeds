@@ -12,7 +12,6 @@ import {
   InputGroup,
   InputLeftElement,
   Spinner,
-  Stack,
   Text,
   VStack,
   useDisclosure,
@@ -124,25 +123,20 @@ const EditModalComponent = ({
       footer={
         <HStack w="100%" gap={3}>
           <Button
-            variant="outline"
+            variant={"primaryOutline"}
             onClick={() => {
               disclosure?.onClose();
 
               form.reset({});
             }}
             flex={1}
-            border="1px solid"
-            borderColor={colors.primary}
-            color={colors.primary}
-            fontWeight={400}
           >
             Discard
           </Button>
           <Button
             flex={1}
+            variant={"primary"}
             onClick={onEditSpecialization}
-            background={colors.primary}
-            color={colors.white}
             // isLoading={onSaveSpecialistRate.isLoading}
           >
             Save
@@ -168,7 +162,7 @@ const EditModalComponent = ({
           label="Rate"
         />
 
-        <Stack
+        <HStack
           display={"flex"}
           flexDir={"row"}
           alignItems={"center"}
@@ -190,7 +184,7 @@ const EditModalComponent = ({
 
             // defaultValue={data?.results[idDoctor].is_general_rate}
           />
-        </Stack>
+        </HStack>
       </VStack>
     </ModalComponent>
   );
@@ -488,16 +482,18 @@ const SpecialistRates = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onCloseDeleteModal} flex={1}>
+            <Button
+              variant={"primaryOutline"}
+              onClick={onCloseDeleteModal}
+              flex={1}
+            >
               Cancel
             </Button>
             <Button
               flex={1}
+              variant={"reset"}
               onClick={ondeleteSpecialization}
-              borderColor={colors.red}
-              color={colors.red}
               isLoading={deleteSpecializationAction.isLoading}
-              variant="outline"
             >
               Delete
             </Button>
