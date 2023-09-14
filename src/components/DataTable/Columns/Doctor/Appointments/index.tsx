@@ -40,7 +40,7 @@ export const column = ({
   setAppointmentId,
   onModalOpen,
 }: {
-  appointment: IGetAppointmentRequest | undefined;
+  appointment?: IGetAppointmentRequest;
   pageParams: {
     pageIndex: number;
     pageSize: number;
@@ -67,7 +67,7 @@ export const column = ({
           return created_at.substr(0, 10);
         },
       },
-      { header: "Patient Name", accessorKey: "patient_name" },
+      { header: "Patient Name", accessorKey: "full_name" },
       {
         header: "Symptoms",
         accessorKey: "symptoms",

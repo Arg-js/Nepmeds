@@ -9,9 +9,10 @@ import {
   Tag,
   Text,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
+import { ConfirmationImage, DocumentIcon, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
   useGetAppointmentRequest,
@@ -236,11 +237,17 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Flex>
               <InfoSection
                 label={"Patient’s Name"}
-                content={patient?.patient_name || ""}
+                content={patient?.full_name || ""}
               />
               <InfoSection
                 label={"Gender"}
-                content={patient?.patient_name || ""}
+                content={
+                  patient?.gender === "1"
+                    ? "Male"
+                    : patient?.gender === "2"
+                    ? "Female"
+                    : "Others" || ""
+                }
               />
             </Flex>
             <Divider />
@@ -250,7 +257,18 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Text>
               <Flex gap={2}>
                 {patient?.symptoms?.map(({ name }) => (
-                  <Tag colorScheme="linkedin" key={name}>
+                  <Tag
+                    bg={colors.blue_10}
+                    key={name}
+                    color={colors.main}
+                    fontSize={"sm"}
+                    fontWeight={600}
+                    fontFamily={"Inter"}
+                    px={2.5}
+                    py={1.5}
+                    borderRadius={"8px"}
+                    textTransform={"capitalize"}
+                  >
                     {name}
                   </Tag>
                 ))}
@@ -261,6 +279,48 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               label={"Symptom Description"}
               content={patient?.description || ""}
             />
+            {patient?.old_report_file && (
+              <>
+                <Divider />
+                <Flex direction={"column"} gap={2}>
+                  <Text fontWeight={500} fontSize="xs">
+                    Old Reports
+                  </Text>
+                  <Flex gap={2}>
+                    <Tag
+                      bg={colors.blue_10}
+                      borderRadius={"8px"}
+                      size={"lg"}
+                      height={"58px"}
+                      gap={4}
+                      width={"min-content"}
+                      cursor={"pointer"}
+                      onClick={() => window.open(patient?.old_report_file)}
+                    >
+                      <DocumentIcon />
+                      <VStack alignItems={"flex-start"}>
+                        <Text
+                          color={colors.main}
+                          fontSize={"xs"}
+                          fontWeight={600}
+                          fontFamily={"Inter"}
+                        >
+                          Report
+                        </Text>
+                        <Text
+                          color={colors.main}
+                          fontSize={"sm"}
+                          fontWeight={400}
+                        >
+                          12/12/2020
+                        </Text>
+                      </VStack>
+                    </Tag>
+                  </Flex>
+                </Flex>
+              </>
+            )}
+
             {patient?.reject_remarks && (
               <>
                 <Divider />

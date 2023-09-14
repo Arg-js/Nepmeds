@@ -71,9 +71,9 @@ export const api = {
 
   doctor: {
     appointments: {
-      get: "/doctor-consult/appointment-request/",
-      patch: "/doctor-consult/appointment-request/:id/",
-      getById: "/doctor-consult/appointment-request/:id/",
+      get: "/doctor-consult/new-appointment-request/",
+      patch: "/doctor-consult/new-appointment-request/:id/",
+      getById: "/doctor-consult/new-appointment-request/:id/",
     },
   },
 
@@ -83,7 +83,7 @@ export const api = {
       getById: "/patient/doctor-details-appointment/:id/",
     },
     appointment: {
-      post: "/patient/appointment/",
+      post: "/patient/new-appointment/",
     },
     doctor_availability: {
       get: "/patient/doctor-booking-availabilities/:id/",

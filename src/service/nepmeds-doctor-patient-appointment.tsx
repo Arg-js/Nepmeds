@@ -14,13 +14,15 @@ export interface IGetAppointmentRequest {
 
 export interface IGetAppointmentReqRes {
   id: number;
-  patient_name: string;
+  full_name: string;
+  gender: string;
   symptoms: ISymptom[];
   created_at: string;
-  availability: Availability[];
+  availability: Availability;
   status: string;
   description: string;
   reject_remarks: string;
+  old_report_file: string;
 }
 
 export interface ISymptom {
