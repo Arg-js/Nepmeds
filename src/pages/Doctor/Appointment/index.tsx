@@ -16,10 +16,34 @@ const Appointment: React.FC = () => {
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
       <Tabs variant="unstyled" fontSize="16px" fontFamily={"Inter"}>
         <TabList>
-          <Tab fontWeight="500">All</Tab>
-          <Tab fontWeight="500">Pending </Tab>
-          <Tab fontWeight="500">Approved </Tab>
-          <Tab fontWeight="500">Rejected</Tab>
+          <Tab
+            fontWeight="400"
+            _selected={{ color: colors.black }}
+            color={colors.light_gray}
+          >
+            All
+          </Tab>
+          <Tab
+            fontWeight="400"
+            _selected={{ color: colors.black }}
+            color={colors.light_gray}
+          >
+            Pending{" "}
+          </Tab>
+          <Tab
+            fontWeight="400"
+            _selected={{ color: colors.black }}
+            color={colors.light_gray}
+          >
+            Approved{" "}
+          </Tab>
+          <Tab
+            fontWeight="400"
+            _selected={{ color: colors.black }}
+            color={colors.light_gray}
+          >
+            Rejected
+          </Tab>
         </TabList>
         <TabIndicator
           mt="-1.5px"

@@ -95,7 +95,7 @@ export const pendingColumns = (
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack>
-            <Tooltip label="View Doctor">
+            <Tooltip hasArrow placement="top" label="View Doctor">
               <span>
                 <Icon
                   as={Show}
@@ -112,7 +112,7 @@ export const pendingColumns = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Approve Doctor">
+            <Tooltip hasArrow placement="top" label="Approve Doctor">
               <span>
                 <Icon
                   as={CheckIcon}
@@ -131,7 +131,7 @@ export const pendingColumns = (
                 />
               </span>
             </Tooltip>
-            <Tooltip label="Reject Doctor">
+            <Tooltip hasArrow placement="top" label="Reject Doctor">
               <span>
                 <Icon
                   as={CloseIcon}

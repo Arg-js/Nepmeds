@@ -243,13 +243,9 @@ const AllPayment = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                variant={"primaryOutline"}
+                onClick={onCloseConfirmation}
               >
                 Cancel
               </Button>
