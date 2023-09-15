@@ -2,7 +2,7 @@ import { Box, Flex, Icon, Image, Text } from "@chakra-ui/react";
 import { BackArrowIcon } from "@nepMeds/assets/svgs";
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { rateHistoryColumn } from "@nepMeds/components/DataTable/rateColumn";
+import { rateHistoryColumn } from "@nepMeds/components/DataTable/Columns/rateColumn";
 import PaymentAmountBox from "@nepMeds/components/Payment/PaymentRateBox";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";

@@ -38,4 +38,10 @@ const getRejectionTitle = async () =>
     api.rejectionTitle
   );
 export const useGetRejectionTitle = () =>
-  useQuery([], getRejectionTitle, { select: data => data.data.data });
+  useQuery([api.rejectionTitle], getRejectionTitle, {
+    select: data => {
+      return data.data.data?.map(item => {
+        return { label: item.name, value: item.id };
+      });
+    },
+  });
