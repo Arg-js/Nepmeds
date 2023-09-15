@@ -285,22 +285,12 @@ const Specializations = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button
-              variant="outline"
-              onClick={closeModal}
-              flex={1}
-              border="1px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
-            >
+            <Button variant={"primaryOutline"} onClick={closeModal} flex={1}>
               Discard
             </Button>
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onEditForm)}
-              background={colors.primary}
-              color={colors.white}
               isLoading={updateSpecializationAction.isLoading}
             >
               Save
@@ -407,16 +397,14 @@ const Specializations = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={closeModal} flex={1}>
+            <Button variant={"primaryOutline"} onClick={closeModal} flex={1}>
               Cancel
             </Button>
             <Button
               flex={1}
+              variant={"reset"}
               onClick={ondeleteSpecialization}
-              borderColor={colors.red}
-              color={colors.red}
               isLoading={deleteSpecializationAction.isLoading}
-              variant="outline"
             >
               Delete
             </Button>

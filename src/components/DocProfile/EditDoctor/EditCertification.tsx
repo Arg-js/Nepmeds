@@ -68,10 +68,12 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button onClick={handleCloseForm}>Cancel</Button>
+        <Button variant={"primaryOutline"} onClick={handleCloseForm}>
+          Cancel
+        </Button>
       </GridItem>
       <GridItem colSpan={1}>
-        <Button variant={"secondary"} isLoading={isLoading} type="submit">
+        <Button isLoading={isLoading} type="submit">
           Update
         </Button>
       </GridItem>
