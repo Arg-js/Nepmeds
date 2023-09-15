@@ -46,6 +46,17 @@ const primaryOutline = defineStyle({
   },
 });
 
+const outline = defineStyle({
+  ...baseStyles,
+  fontFamily: "Poppins",
+
+  color: colors.black_50,
+  border: `1px solid ${colors.black_50}`,
+  height: "40px",
+  borderRadius: "6",
+  bg: "transparent",
+});
+
 const reset = defineStyle({
   ...baseStyles,
   bg: colors.reset,
@@ -71,14 +82,17 @@ const round = defineStyle({
 });
 
 export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
-  variants: { primary, secondary, primaryOutline, reset, round },
-  // sizes: {
-  //   lg: {
-  //     width: "auto",
-  //   },
-  // },
+  variants: { primary, secondary, primaryOutline, outline, reset, round },
+  sizes: {
+    sm: {
+      height: "44px",
+    },
+    md: {
+      height: "48px",
+    },
+  },
   defaultProps: {
-    // size: "lg",
+    size: "md",
     variant: "primary",
   },
 });

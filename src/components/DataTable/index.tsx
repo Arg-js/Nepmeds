@@ -1,7 +1,9 @@
 import {
   Box,
+  Flex,
   FormControl,
   HStack,
+  Progress,
   Select,
   Table,
   Tbody,
@@ -13,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import {
-  ColumnDef,
   GroupingState,
   PaginationState,
   SortingState,
@@ -31,7 +32,8 @@ import Pagination from "./Pagination";
 
 export type DataTableProps = {
   data: Record<string, any>[];
-  columns: ColumnDef<any, any>[];
+  // columns: ColumnDef<any, any>[];
+  columns: any;
   isLoading?: boolean;
   pinColumnAccess?: boolean;
   pagination?: {
@@ -131,7 +133,6 @@ export function DataTable({
       <Box
         overflowX={isLoading ? "hidden" : "scroll"}
         mt={5}
-        pb={2}
         css={{
           scrollbarGutter: "stable",
           "&::-webkit-scrollbar": {
@@ -151,6 +152,11 @@ export function DataTable({
         }}
         borderRadius={8}
       >
+        {isLoading && (
+          <Box w={"100%"}>
+            <Progress size="xs" isIndeterminate />
+          </Box>
+        )}
         <Table bg="white">
           <Thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -176,6 +182,7 @@ export function DataTable({
                       bg={colors.table_header}
                       color={colors.primary}
                       fontSize={14}
+                      px={4}
                       style={{
                         width: `${columns[index]?.size}%` ?? header.getSize(),
                         textAlign:
@@ -186,7 +193,7 @@ export function DataTable({
                             : "left",
                       }}
                     >
-                      <HStack justifyContent={"space-between"}>
+                      <Flex direction={"column"} alignItems={"flex-start"}>
                         <Text flex={1}>
                           {header.isPlaceholder
                             ? null
@@ -195,7 +202,7 @@ export function DataTable({
                                 header.getContext()
                               )}
                         </Text>
-                      </HStack>
+                      </Flex>
                     </Th>
                   );
                 })}
@@ -233,46 +240,38 @@ export function DataTable({
             ))}
           </Tbody>
         </Table>
-      </Box>
-
-      {pagination ? (
-        <HStack justifyContent={"flex-end"} float={"right"} flexWrap="wrap">
-          <HStack>
-            <FormControl variant={"floating"}>
-              <Select
-                w="70px"
-                colorScheme={"purple"}
-                value={table.getState().pagination.pageSize}
-                onChange={e => {
-                  table.setPageIndex(0);
-                  table.setPageSize(Number(e.target.value));
-                }}
-              >
-                {[10, 20, 30, 40, 50].map(pageSize => (
-                  <option key={pageSize} value={pageSize}>
-                    {pageSize}
-                  </option>
-                ))}
-              </Select>
-              {/* <FormLabel
-                marginInlineStart={"5% !important"}
-                marginStart={"5% !important"}
-                marginTop={"10% !important"}
-              >
-                Items
-              </FormLabel> */}
-            </FormControl>
+        {!!data.length && (
+          <HStack justifyContent={"space-between"} pt={5}>
+            <HStack>
+              <FormControl variant={"floating"}>
+                <Select
+                  w="70px"
+                  colorScheme={"purple"}
+                  value={table.getState().pagination.pageSize}
+                  onChange={e => {
+                    table.setPageIndex(0);
+                    table.setPageSize(Number(e.target.value));
+                  }}
+                >
+                  {[10, 20, 30, 40, 50].map(pageSize => (
+                    <option key={pageSize} value={pageSize}>
+                      {pageSize}
+                    </option>
+                  ))}
+                </Select>
+              </FormControl>
+            </HStack>
+            {pagination?.pageCount && pagination?.pageCount > 1 && (
+              <Pagination
+                isBackendPaginated={true}
+                table={table}
+                pageIndex={pagination?.pageParams?.pageIndex}
+                pageCount={pagination?.pageCount}
+              />
+            )}
           </HStack>
-          <Pagination
-            isBackendPaginated={true}
-            table={table}
-            pageIndex={pagination?.pageParams?.pageIndex}
-            pageCount={pagination?.pageCount}
-          />
-        </HStack>
-      ) : (
-        ""
-      )}
+        )}
+      </Box>
     </>
   );
 }
