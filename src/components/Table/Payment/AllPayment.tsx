@@ -200,7 +200,6 @@ const AllPayment = ({
               </Button>
               <Button
                 flex={1}
-                variant={"primary"}
                 onClick={statusFormMethods.handleSubmit(value =>
                   RejectPayment({ ...value, id: doctorInfo.id }).then(() =>
                     RejectPaymentModal()

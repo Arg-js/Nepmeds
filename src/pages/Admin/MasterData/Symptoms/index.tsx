@@ -251,7 +251,6 @@ const Symptoms = ({
               </Button>
               <Button
                 flex={1}
-                variant={"primary"}
                 onClick={onEditHandle}
                 isLoading={saveSymptomAction.isLoading}
               >
@@ -320,7 +319,6 @@ const Symptoms = ({
               </Button>
               <Button
                 flex={1}
-                variant={"primary"}
                 onClick={() => {
                   onSaveSymptom();
                   // formMethods.reset();

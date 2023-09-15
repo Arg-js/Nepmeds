@@ -290,7 +290,6 @@ const Specializations = ({
             </Button>
             <Button
               flex={1}
-              variant={"primary"}
               onClick={formMethods.handleSubmit(onEditForm)}
               isLoading={updateSpecializationAction.isLoading}
             >

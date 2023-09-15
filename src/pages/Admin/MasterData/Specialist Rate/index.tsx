@@ -135,7 +135,6 @@ const EditModalComponent = ({
           </Button>
           <Button
             flex={1}
-            variant={"primary"}
             onClick={onEditSpecialization}
             // isLoading={onSaveSpecialistRate.isLoading}
           >

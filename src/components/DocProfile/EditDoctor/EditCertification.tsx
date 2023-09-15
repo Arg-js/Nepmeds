@@ -73,7 +73,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
         </Button>
       </GridItem>
       <GridItem colSpan={1}>
-        <Button variant={"primary"} isLoading={isLoading} type="submit">
+        <Button isLoading={isLoading} type="submit">
           Update
         </Button>
       </GridItem>

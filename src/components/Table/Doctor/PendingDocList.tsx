@@ -216,7 +216,6 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
                 Cancel
               </Button>
               <Button
-                variant={"primary"}
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(value =>
                   RejectDoctor({ ...value, id: doctorInfo.id }).then(() =>
@@ -269,7 +268,6 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
               </Button>
               <Button
                 flex={1}
-                variant={"primary"}
                 onClick={statusFormMethods.handleSubmit(() =>
                   ApproveDoctor(doctorInfo.id).then(() => onCloseConfirmation())
                 )}
