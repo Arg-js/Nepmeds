@@ -15,6 +15,7 @@ import { useState } from "react";
 import { ConfirmationImage, DocumentIcon, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
+  Gender,
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
   useSetAppointmentRequestById,
@@ -47,6 +48,14 @@ const defaultValues = {
   reject_remarks: "",
 };
 
+const getGender = (gender: Gender) => {
+  const genderMap = {
+    "1": "Male",
+    "2": "Female",
+    "3": "Others",
+  };
+  return genderMap[gender];
+};
 const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   type,
   heading,
@@ -241,15 +250,14 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
                 label={"Patient’s Name"}
                 content={patient?.full_name || ""}
               />
-              <InfoSection
-                label={"Gender"}
-                content={
-                  patient?.gender === "1"
+              {/* patient?.gender === "1"
                     ? "Male"
                     : patient?.gender === "2"
                     ? "Female"
-                    : "Others" || ""
-                }
+                    : "Others" */}
+              <InfoSection
+                label={"Gender"}
+                content={patient?.gender ? getGender(patient.gender) : ""}
               />
             </Flex>
             <Divider />

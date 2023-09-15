@@ -12,10 +12,11 @@ export interface IGetAppointmentRequest {
   results: IGetAppointmentReqRes[];
 }
 
+export type Gender = "1" | "2" | "3";
 export interface IGetAppointmentReqRes {
   id: number;
   full_name: string;
-  gender: string;
+  gender: Gender;
   symptoms: ISymptom[];
   created_at: string;
   availability: Availability;
