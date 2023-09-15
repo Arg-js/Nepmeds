@@ -10,10 +10,7 @@ export const RejectionForm = () => {
     register,
     formState: { errors },
   } = useFormContext();
-  const { data } = useGetRejectionTitle();
-  const rejctionTitle = data?.map(item => {
-    return { label: item.name, value: item.id };
-  });
+  const { data: rejectionTitle } = useGetRejectionTitle();
 
   return (
     <>
@@ -31,7 +28,7 @@ export const RejectionForm = () => {
             border: "none",
             paddingTop: "15px",
           }}
-          options={rejctionTitle ?? []}
+          options={rejectionTitle ?? []}
         />
 
         <FloatinglabelTextArea
