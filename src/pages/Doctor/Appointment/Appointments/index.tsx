@@ -9,11 +9,13 @@ import {
   Tag,
   Text,
   useDisclosure,
+  VStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
-import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
+import { ConfirmationImage, DocumentIcon, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import {
+  Gender,
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
   useSetAppointmentRequestById,
@@ -21,12 +23,13 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { useForm } from "react-hook-form";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { column } from "@nepMeds/components/DataTable/Columns/Doctor/Appointments";
+import Select from "@nepMeds/components/Form/Select";
+import { useGetRejectionTitle } from "@nepMeds/service/nepmeds-reject-doc";
 
 type StatusType =
   | STATUSTYPE.approved
@@ -36,15 +39,23 @@ type StatusType =
   | 0;
 
 const schema = Yup.object({
-  reject_title: Yup.string().required("This field is required"),
+  reject_title: Yup.number().required("This field is required"),
   reject_remarks: Yup.string().required("This field is required"),
 });
 
 const defaultValues = {
-  reject_title: "",
+  reject_title: -1,
   reject_remarks: "",
 };
 
+const getGender = (gender: Gender) => {
+  const genderMap = {
+    "1": "Male",
+    "2": "Female",
+    "3": "Others",
+  };
+  return genderMap[gender];
+};
 const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   type,
   heading,
@@ -97,6 +108,8 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     useSetAppointmentRequestById();
   const { data: patient, isLoading: isPatientLoading } =
     useGetAppointmentRequestById({ id: appointmentId });
+
+  const { data: rejectionTitle } = useGetRejectionTitle();
   // REACT QUERIES END
 
   const onModalClose = () => {
@@ -112,7 +125,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         ...data,
         id: appointmentId,
         status: STATUSTYPE.rejected,
-        reject_title: 1,
       });
       onModalClose();
     } catch (e) {
@@ -236,11 +248,12 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Flex>
               <InfoSection
                 label={"Patient’s Name"}
-                content={patient?.patient_name || ""}
+                content={patient?.full_name || ""}
               />
+
               <InfoSection
                 label={"Gender"}
-                content={patient?.patient_name || ""}
+                content={patient?.gender ? getGender(patient.gender) : ""}
               />
             </Flex>
             <Divider />
@@ -250,7 +263,18 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               </Text>
               <Flex gap={2}>
                 {patient?.symptoms?.map(({ name }) => (
-                  <Tag colorScheme="linkedin" key={name}>
+                  <Tag
+                    bg={colors.blue_10}
+                    key={name}
+                    color={colors.main}
+                    fontSize={"sm"}
+                    fontWeight={600}
+                    fontFamily={"Inter"}
+                    px={2.5}
+                    py={1.5}
+                    borderRadius={"8px"}
+                    textTransform={"capitalize"}
+                  >
                     {name}
                   </Tag>
                 ))}
@@ -261,6 +285,48 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               label={"Symptom Description"}
               content={patient?.description || ""}
             />
+            {patient?.old_report_file && (
+              <>
+                <Divider />
+                <Flex direction={"column"} gap={2}>
+                  <Text fontWeight={500} fontSize="xs">
+                    Old Reports
+                  </Text>
+                  <Flex gap={2}>
+                    <Tag
+                      bg={colors.blue_10}
+                      borderRadius={"8px"}
+                      size={"lg"}
+                      height={"58px"}
+                      gap={4}
+                      width={"min-content"}
+                      cursor={"pointer"}
+                      onClick={() => window.open(patient?.old_report_file)}
+                    >
+                      <DocumentIcon />
+                      <VStack alignItems={"flex-start"}>
+                        <Text
+                          color={colors.main}
+                          fontSize={"xs"}
+                          fontWeight={600}
+                          fontFamily={"Inter"}
+                        >
+                          Report
+                        </Text>
+                        <Text
+                          color={colors.main}
+                          fontSize={"sm"}
+                          fontWeight={400}
+                        >
+                          12/12/2020
+                        </Text>
+                      </VStack>
+                    </Tag>
+                  </Flex>
+                </Flex>
+              </>
+            )}
+
             {patient?.reject_remarks && (
               <>
                 <Divider />
@@ -309,13 +375,19 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       >
         <form>
           <Flex direction={"column"} alignItems={"center"} gap={8}>
-            <FloatingLabelInput
-              label="Reason for rejection"
+            <Select
               name="reject_title"
+              label="Reason for Rejection"
               placeholder="Enter reason for rejection"
               required
               register={register}
               error={errors.reject_title?.message || ""}
+              options={rejectionTitle ?? []}
+              style={{
+                background: colors.forminput,
+                border: "none",
+                paddingTop: "15px",
+              }}
             />
             <FloatinglabelTextArea
               label="Description"

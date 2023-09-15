@@ -56,13 +56,11 @@ const defaultValues = {
 const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
 
 const schema = Yup.object({
-  full_name: Yup.string().required("This field is requried"),
+  full_name: Yup.string().required("This field is required"),
   symptoms: Yup.array()
     .required("This field is required")
     .min(1, "This field is required"),
-  description: Yup.string().required("This field is requried"),
-  // old_report_file: "",
-  // status: "",
+  description: Yup.string().required("This field is required"),
 });
 
 const DoctorDetails: React.FC<{
@@ -120,10 +118,13 @@ const DoctorDetails: React.FC<{
       const response = await createPatientAppointment({
         patientAppointmentDetails: {
           ...data,
-          availability: selectedAvailability,
+          availabilities: selectedAvailability,
           symptoms: data.symptoms.map(({ value }) => +value),
           old_report_file: data.old_report_file?.[0] as File,
           doctor: doctorInfo?.id as number,
+          total_amount_paid:
+            (doctorInfo?.schedule_rate ? +doctorInfo?.schedule_rate : 0) *
+            selectedAvailability.length,
         },
       });
       if (response.status === HttpStatusCode.Created) {
