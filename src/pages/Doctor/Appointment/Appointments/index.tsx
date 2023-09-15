@@ -250,11 +250,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
                 label={"Patient’s Name"}
                 content={patient?.full_name || ""}
               />
-              {/* patient?.gender === "1"
-                    ? "Male"
-                    : patient?.gender === "2"
-                    ? "Female"
-                    : "Others" */}
+
               <InfoSection
                 label={"Gender"}
                 content={patient?.gender ? getGender(patient.gender) : ""}
