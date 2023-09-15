@@ -5,7 +5,7 @@ const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
   return (
     <Flex alignItems={"center"}>
       {!!onView && (
-        <Tooltip hasArrow label="view">
+        <Tooltip hasArrow placement="top" label="View">
           <IconButton
             height={"min-content"}
             aria-label="view"
@@ -21,7 +21,7 @@ const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
         </Tooltip>
       )}
       {!!onAccept && (
-        <Tooltip hasArrow label="accept">
+        <Tooltip hasArrow placement="top" label="Accept">
           <IconButton
             height={"min-content"}
             aria-label="view"
@@ -37,7 +37,7 @@ const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
         </Tooltip>
       )}
       {!!onReject && (
-        <Tooltip hasArrow label="reject">
+        <Tooltip hasArrow placement="top" label="Reject">
           <IconButton
             height={"min-content"}
             aria-label="view"

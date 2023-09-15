@@ -51,7 +51,7 @@ const MasterData = () => {
         <GridItem>
           <TabList border="none">
             <Tab>Symptoms</Tab>
-            <Tab>Specialist</Tab>
+            <Tab>Specialization</Tab>
             <Tab>Specialist Rate</Tab>
           </TabList>
         </GridItem>
@@ -77,7 +77,7 @@ const MasterData = () => {
               backgroundColor={colors.primary}
             >
               {" "}
-              <IoAdd /> Add Speciazliation
+              <IoAdd /> Add Specialization
             </CustomButton>
           )}
           {activeTab === 2 && (
