@@ -99,7 +99,6 @@ export const column = ({
       },
       {
         header: "Actions",
-        accessorKey: "actions",
         cell: ({ row }: CellProps<{ id: string; status: string }>) => {
           const onView = () => {
             setAppointmentId(row.original?.id);

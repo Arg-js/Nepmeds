@@ -1,6 +1,5 @@
 import {
   Box,
-  Flex,
   FormControl,
   HStack,
   Progress,
@@ -29,7 +28,6 @@ import {
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import Pagination from "./Pagination";
-
 export type DataTableProps = {
   data: Record<string, any>[];
   // columns: ColumnDef<any, any>[];
@@ -193,16 +191,14 @@ export function DataTable({
                             : "left",
                       }}
                     >
-                      <Flex direction={"column"} alignItems={"flex-start"}>
-                        <Text flex={1}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </Text>
-                      </Flex>
+                      <Text flex={1}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </Text>
                     </Th>
                   );
                 })}
