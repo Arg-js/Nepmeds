@@ -27,7 +27,16 @@ const UnApprovedDoctor = () => {
 
   return (
     <Container maxW="100%">
-      <Box m={"auto"} mt={"7%"}>
+      <Box
+        display={"flex"}
+        justifyContent={"flex-start"}
+        pb={"15px"}
+        pr={"50px"}
+        mt={"1%"}
+      >
+        <svgs.logo />
+      </Box>
+      <Box m={"auto"}>
         <Box
           justifyContent={"center"}
           alignItems={"center"}
@@ -49,9 +58,9 @@ const UnApprovedDoctor = () => {
             w={"50%"}
             textAlign={"center"}
           >
-            Since, your application has been put on hold due to insufficient
-            details provided.{"\n"} To resubmit the application for verification
-            please{" "}
+            Your application is{" "}
+            {doctorStatusState.isRejected ? "on Hold" : "Pending"}.{"\n"} To
+            resubmit the application for verification please{" "}
             <Button
               variant={"unstyled"}
               as={Link}
@@ -73,24 +82,17 @@ const UnApprovedDoctor = () => {
               display={"flex"}
             >
               <Heading fontSize={"lg"} color={colors.red}>
-                Rejected Reason :{" "}
+                Rejected Reason{" "}
               </Heading>
-              <Text color={colors.red}>{data?.doctor?.rejected_remarks}</Text>
+              <Text color={colors.red} ml={1}>
+                {data?.doctor?.rejected_remarks}
+              </Text>
             </Box>
           )}
         </Stack>
         <Stack pt={"15px"} justifyContent={"center"} alignItems={"center"}>
           <Button onClick={() => logoutAction.mutate()}>Logout</Button>
         </Stack>
-      </Box>
-      <Box
-        display={"flex"}
-        justifyContent={"flex-end"}
-        pb={"15px"}
-        pr={"50px"}
-        mt={"3%"}
-      >
-        <svgs.logo />
       </Box>
     </Container>
   );

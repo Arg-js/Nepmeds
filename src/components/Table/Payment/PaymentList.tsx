@@ -33,6 +33,7 @@ const tabObj = {
   [STATUSTYPE.approved]: 2,
   [STATUSTYPE.pending]: 1,
   [STATUSTYPE.rejected]: 3,
+  [STATUSTYPE.completed]: 4,
 };
 
 const PaymentList = () => {

@@ -1,11 +1,5 @@
 import { AVAILABILITYFREQUENCY, PRIMARYIDTYPE } from "@nepMeds/config/enum";
 
-export const title = [
-  { label: "Dr", value: "Dr" },
-  { label: "Md", value: "Md" },
-  { label: "Surgeon", value: "Surgeon" },
-];
-
 export const gender = [
   { label: "Male", value: "Male" },
   { label: "Female", value: "Female" },

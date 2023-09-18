@@ -10,17 +10,16 @@ import {
 } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { colors } from "@nepMeds/theme/colors";
 import { SearchIcon } from "@chakra-ui/icons";
 import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { colors } from "@nepMeds/theme/colors";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
   return (
     <WrapperBox
-      backgroundColor={colors.white}
       height={"100px"}
       padding={"6"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 0px 10px 0px"}

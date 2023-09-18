@@ -37,7 +37,7 @@ const dashboardDatas: IDashboardData[] = [
     path: images?.dashboard2,
   },
   {
-    title: "Pending Appointments",
+    title: "Pending",
     no: 232,
     path: images?.dashboard3,
   },
@@ -138,6 +138,7 @@ const DashboardBody = () => {
         display={"flex"}
         justifyContent={"flex-end"}
       >
+        {/* To do : remove calendar border color */}
         <Calendar />
       </Box>
       {profileData?.data?.is_superuser && (

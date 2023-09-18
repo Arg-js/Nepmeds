@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { pendingPaymentColumn } from "@nepMeds/components/DataTable/columns";
+import { pendingPaymentColumn } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -250,13 +250,9 @@ const PendingPayment = ({
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
+                variant={"primaryOutline"}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                onClick={onCloseConfirmation}
               >
                 Cancel
               </Button>
@@ -302,6 +298,7 @@ const PendingPayment = ({
             <Input
               w={40}
               h={8}
+              placeholder="Search"
               onChange={({ target: { value } }) => {
                 setSearchFilter(value);
 

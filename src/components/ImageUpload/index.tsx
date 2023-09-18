@@ -23,9 +23,11 @@ const ImageUpload = ({
   helperText,
   rules,
   error,
+  setValue,
 }: ImageUploadProps) => {
   const handleRemoveImage = () => {
     setSelectedImage(null);
+    setValue(name, undefined as undefined | File[]);
   };
 
   const { register } = useFormContext();
@@ -40,6 +42,7 @@ const ImageUpload = ({
             height="160px"
             borderRadius="12px"
             overflow="hidden"
+            backgroundColor={colors.gray}
           >
             <Image
               src={
@@ -55,10 +58,10 @@ const ImageUpload = ({
               height="100%"
             />
             <CloseIcon
-              color={colors.grey_90}
+              color={colors.black_30}
               position="absolute"
-              top="1px"
-              right="4px"
+              top="6px"
+              right="10px"
               onClick={handleRemoveImage}
               cursor={"pointer"}
             />
@@ -118,7 +121,7 @@ const ImageUpload = ({
             />
           </Box>
         )}
-        {error && <FormErrorMessage>{error}</FormErrorMessage>}
+        {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
       </FormControl>
     </>
   );
@@ -135,5 +138,7 @@ interface ImageUploadProps {
   handleImageChange: (e: ChangeEvent<HTMLInputElement>) => void;
   setSelectedImage: (image: File | string | null) => void;
   rules?: RegisterOptions;
-  error?: string;
+  error?: string | boolean | null;
+  //   setValue?: UseFormSetValue<IRegisterFields>;
+  setValue?: any;
 }

@@ -14,7 +14,7 @@ import {
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { approvedPaymentColumn } from "@nepMeds/components/DataTable/columns";
+import { approvedPaymentColumn } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -150,6 +150,7 @@ const ApprovedPayment = ({
             <Input
               w={40}
               h={8}
+              placeholder="Search"
               onChange={({ target: { value } }) => {
                 setSearchFilter(value);
 

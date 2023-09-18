@@ -268,14 +268,16 @@ export const ExperienceForm = ({
                 control={control}
               />
 
-              <Icon
-                type="button"
-                cursor={"pointer"}
-                as={DeleteIcon}
-                onClick={() => handleRemoveExperience(index)}
-                fontSize={28}
-                color={colors.error}
-              />
+              {fields.length !== 1 && (
+                <Icon
+                  type="button"
+                  cursor={"pointer"}
+                  as={DeleteIcon}
+                  onClick={() => handleRemoveExperience(index)}
+                  fontSize={28}
+                  color={colors.error}
+                />
+              )}
             </Flex>
           </Box>
         );

@@ -112,7 +112,7 @@ function Pagination({ isBackendPaginated, pageIndex, table }: IPagination) {
             border="none"
             icon={<ArrowForwardIcon />}
           />
-          <Tooltip label={`Last Page: ${totalPage}`} placement="top">
+          <Tooltip hasArrow placement="top" label={`Last Page: ${totalPage}`}>
             <IconButton
               aria-label="Last Page"
               variant={"outline"}
