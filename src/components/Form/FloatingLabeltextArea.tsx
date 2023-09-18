@@ -29,6 +29,7 @@ const FloatinglabelTextArea = ({
           pl: 4,
           pr: 8,
           pb: 2,
+          mb: 1,
           height: 120,
           background: colors.forminput,
           border: "none",

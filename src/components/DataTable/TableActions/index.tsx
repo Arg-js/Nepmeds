@@ -3,7 +3,7 @@ import { AcceptIcon, RejectIcon, ViewIcon } from "@nepMeds/assets/svgs";
 
 const TableActions = ({ onView, onReject, onAccept }: ITableActions) => {
   return (
-    <Flex alignItems={"center"}>
+    <Flex alignItems={"center"} justifyContent="center">
       {!!onView && (
         <Tooltip hasArrow placement="top" label="View">
           <IconButton
