@@ -157,6 +157,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
             <Input
               w={40}
               h={8}
+              placeholder="Search"
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
