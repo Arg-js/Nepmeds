@@ -430,10 +430,10 @@ const Specializations = ({
         <GridItem display={"flex"}>
           <InputGroup>
             <InputLeftElement pointerEvents="none">
-              <SearchIcon color="gray.300" boxSize={3} />
+              <SearchIcon color={colors.black} boxSize={3} />
             </InputLeftElement>
             <Input
-              placeholder="search"
+              placeholder="Search"
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>

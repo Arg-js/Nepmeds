@@ -18,6 +18,8 @@ import {
   TimeCircle,
   Wallet,
   Work,
+  User,
+  Document,
 } from "react-iconly";
 
 import { images } from "@nepMeds/assets/images";
@@ -84,13 +86,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
     link: "/dashboard",
   },
   {
-    icon: TimeCircle,
+    icon: Document,
     set: "light",
     text: "Master Data",
     link: "/master-data",
   },
   {
-    icon: Call,
+    icon: Work,
     set: "light",
     text: "Doctors",
     link: "/doctor-list",
@@ -113,19 +115,19 @@ const AdminSidebarOptions: ISidebarOption[] = [
     link: "/patients",
   },
   {
-    icon: Calendar,
+    icon: TimeCircle,
     set: "light",
     text: "Appointments",
     link: "/appointments",
   },
   {
-    icon: Work,
+    icon: User,
     set: "light",
     text: "User Role",
     link: "/user-role",
   },
   {
-    icon: Wallet,
+    icon: Call,
     set: "light",
     text: "Instant Consult Request",
     link: "/consult-request",

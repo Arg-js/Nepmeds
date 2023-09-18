@@ -408,7 +408,7 @@ const Symptoms = ({
               <SearchIcon color={colors.black} boxSize={3} />
             </InputLeftElement>
             <Input
-              placeholder="search"
+              placeholder="Search"
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>
