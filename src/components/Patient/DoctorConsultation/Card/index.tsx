@@ -9,8 +9,6 @@ import "react-multi-carousel/lib/styles.css";
 const Card: React.FC<{
   name: string;
   image: string;
-  // TODO: remove any
-  // description: Record<string, string | number>[];
   description: Record<string, any>[] | string;
   isLoading: boolean;
   error: AxiosError;
@@ -22,7 +20,6 @@ const Card: React.FC<{
   ) : (
     <ChakraCard
       variant={"elevated"}
-      // width={"219px"}
       width={"90%"}
       height={"282px"}
       textAlign={"center"}

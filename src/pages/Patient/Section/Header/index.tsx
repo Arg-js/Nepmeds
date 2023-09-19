@@ -82,8 +82,6 @@ const Header: React.FC = () => {
           {/* Login icon ENDS*/}
         </Flex>
 
-        {/* DRAWER that triggers Filter*/}
-        {/* i need to display this only on the second page */}
         <Box display={{ base: "block", md: "none" }}>
           <HamburgerMenuIcon />
         </Box>

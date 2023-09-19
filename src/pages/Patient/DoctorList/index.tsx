@@ -130,7 +130,6 @@ const DoctorList = () => {
               colSpan={{ base: 3, md: 2, lg: 3, "2xl": 3 }}
               display={{ base: "none", md: "grid" }}
             >
-              {/* <GridItem colSpan={{ base: 1, md: 2 }}> */}
               <DoctorListFilter
                 setGender={setGender}
                 setSpecialization={setSpecialization}

@@ -13,7 +13,6 @@ interface IWrapperBox {
   border?: string;
   borderRadius?: string;
   boxShadow?: string;
-  // TODO: remove any
   px?: string;
   style?: Record<string, any>;
 }

@@ -58,7 +58,6 @@ const HeroSection = () => {
         fontWeight={600}
         fontSize={"md"}
         width={"max-content"}
-        // TODO: same make button component
         borderRadius={6}
         onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)}
       >

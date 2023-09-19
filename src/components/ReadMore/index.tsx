@@ -13,14 +13,7 @@ const ReadMoreComponent = ({ bio_detail }: { bio_detail: string }) => {
 
   return (
     <Box>
-      <Text
-        fontWeight={400}
-        fontSize={"12px"}
-        // style={{
-        //   width: "360px",
-        //   wordWrap: "break-word",
-        // }}
-      >
+      <Text fontWeight={400} fontSize={"12px"}>
         {displayedText}
         {getArray(bio_detail).length > 20 && (
           <Button

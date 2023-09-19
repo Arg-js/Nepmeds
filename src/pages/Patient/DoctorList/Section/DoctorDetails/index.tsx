@@ -53,8 +53,6 @@ const defaultValues = {
   availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
 };
 
-// const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
-
 const schema = Yup.object({
   full_name: Yup.string().required("This field is required"),
   symptoms: Yup.array()
@@ -152,7 +150,6 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                // boxShadow={boxShadow}
                 border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
@@ -239,10 +236,6 @@ const DoctorDetails: React.FC<{
                     </Flex>
                     <Divider borderWidth={"0.5px"} />
                     <Flex alignSelf={"flex-end"}>
-                      {/* TODO: add this */}
-                      {/* <Text fontWeight={700} fontSize={"13px"}>
-                      Available time
-                    </Text> */}
                       <FormControl
                         control={"input"}
                         label={""}
@@ -257,7 +250,7 @@ const DoctorDetails: React.FC<{
                           width: "180px",
                           borderRadius: "9px",
                         }}
-                        // Restricts selection of past date in Datepicker
+                        // RESTRICTS SELECTION of PAST DATE in Datepicker
                         min={today}
                         required
                       />
@@ -326,15 +319,11 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                // boxShadow={boxShadow}
                 border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
                   height: "auto",
-                  // width: { base: "auto" },
-                  // width: "clamp(200px, 100%, 100%)",
-                  // maxWidth: "400px",
                   borderTopRadius: 3,
                 }}
               >
@@ -504,9 +493,7 @@ const DoctorDetails: React.FC<{
         </form>
       ) : (
         <WrapperBox
-          // width={"560px"}
           backgroundColor={colors.white}
-          // boxShadow={boxShadow}
           border={`2px solid ${colors.gray_border}`}
           style={{
             px: 4,

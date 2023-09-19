@@ -18,7 +18,6 @@ const ConsultationStepSection = () => {
         {ConsultationSteps.map(consultationStep => {
           return (
             <GridItem
-              // width={{ base: "100%", lg: "600px" }}
               colSpan={{ base: 1, md: 2, lg: 1 }}
               key={consultationStep.id}
               mt={4}

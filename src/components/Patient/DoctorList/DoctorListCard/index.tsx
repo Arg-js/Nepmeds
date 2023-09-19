@@ -96,7 +96,6 @@ const DoctorListCard: React.FC<{
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
               w={"full"}
-              // w={size === Size.sm ? "238px" : "296px"}
               h={size === Size.sm ? "159px" : "215px"}
               objectFit={"cover"}
               objectPosition={"top"}
