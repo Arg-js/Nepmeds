@@ -81,7 +81,7 @@ const RateHistory = () => {
                 <Flex gap={{ base: 3, xl: 0 }}>
                   <Text
                     fontWeight={"500"}
-                    fontSize={"14px"}
+                    fontSize={"sm"}
                     letterSpacing={"0.4px"}
                     color={"#4D4D4D"}
                     flexBasis={{ base: "18%", xl: "24%" }}
@@ -91,7 +91,7 @@ const RateHistory = () => {
 
                   <Text
                     fontWeight={"500"}
-                    fontSize={"14px"}
+                    fontSize={"sm"}
                     color={colors?.gray_700}
                   >
                     :&nbsp;{doctorDetail?.total_experience} Years
@@ -100,7 +100,7 @@ const RateHistory = () => {
                 <Flex gap={{ base: 3, xl: 0 }}>
                   <Text
                     fontWeight={"500"}
-                    fontSize={"14px"}
+                    fontSize={"sm"}
                     letterSpacing={"0.4px"}
                     color={"#4D4D4D"}
                     flexBasis={{ base: "18%", xl: "24%" }}
@@ -110,7 +110,7 @@ const RateHistory = () => {
 
                   <Text
                     fontWeight={"500"}
-                    fontSize={"14px"}
+                    fontSize={"sm"}
                     color={colors?.black}
                   >
                     :&nbsp;

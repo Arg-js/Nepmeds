@@ -101,7 +101,7 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
         <Box
           display={"flex"}
           alignItems={"baseline"}
-          fontSize={"24px"}
+          fontSize={"2xl"}
           color={colors.grey_dark}
           lineHeight={"24px"}
         >
@@ -118,7 +118,7 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
         </Box>
         <Box onClick={onAddEventOpen} width="130px">
           <CustomButton backgroundColor={colors.primary} gap={2}>
-            <Text fontSize={"16px"} fontWeight={400}>
+            <Text fontSize={"md"} fontWeight={400}>
               Create
             </Text>
             <PlusIcon />
