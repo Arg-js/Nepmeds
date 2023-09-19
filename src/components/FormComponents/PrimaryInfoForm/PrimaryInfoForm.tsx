@@ -45,7 +45,6 @@ const PrimaryInfo = ({
   const allDistrictInfo = useGetAllDistricts();
   const { data: detailedAddress } = useGetDetailAddress();
   const { data: specialization = [] } = useSpecializationRegisterData();
-
   const getMunicipalities = (provinceId: string, districtId: string) => {
     let municipalities = [];
     const province = detailedAddress?.find(
@@ -150,7 +149,6 @@ const PrimaryInfo = ({
   const [selectedBackImage, setSelectedBackFrontImage] = useState<
     File | string | null
   >(null);
-
   useEffect(() => {
     if (isEditable && doctorProfileData?.id_front_image) {
       setSelectedFrontImage(

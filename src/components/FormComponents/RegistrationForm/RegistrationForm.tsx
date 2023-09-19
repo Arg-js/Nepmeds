@@ -23,8 +23,9 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastSuccess } from "@nepMeds/components/Toast";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
-import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
+// import CertificationInfo from "@nepMeds/pages/Register/CertificationInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
+import NmcInfo from "@nepMeds/pages/Register/NmcInfo";
 import PrimaryInfo from "@nepMeds/pages/Register/PrimaryInfo";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
@@ -33,9 +34,9 @@ import {
   useUpdateAcademicInfo,
 } from "@nepMeds/service/nepmeds-academic";
 import {
-  useCertificateFileRegister,
+  // useCertificateFileRegister,
   useCertificateInfoRegister,
-  useUpdateCertificateInfo,
+  // useUpdateCertificateInfo,
 } from "@nepMeds/service/nepmeds-certificate";
 import {
   useExperienceFileRegister,
@@ -50,6 +51,7 @@ import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
+// import { stepsOrder } from "framer-motion";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -126,8 +128,15 @@ const registerDefaultValues = {
       isSubmitted: false,
     },
   ],
+  nmc: {
+    nmc_number: 0,
+    nmc_issued_date: "",
+    nmc_expiry_date: "",
+    nmc_file: undefined as undefined | File[],
+  },
 };
 export type IRegisterFields = typeof registerDefaultValues;
+
 interface IResponseFileMap {
   file: string;
   id: string;
@@ -148,8 +157,8 @@ const RegistrationForm = () => {
   const academicFileRegister = useAcademicFileRegister();
   const updateAcademicInfoRegister = useUpdateAcademicInfo();
   const certificationInfoRegister = useCertificateInfoRegister();
-  const certificateFileRegister = useCertificateFileRegister();
-  const updateCertificateInfoRegister = useUpdateCertificateInfo();
+  // const certificateFileRegister = useCertificateFileRegister();
+  // const updateCertificateInfoRegister = useUpdateCertificateInfo();
   const experienceInfoRegister = useExperienceInfoRegister();
   const experienceFileRegister = useExperienceFileRegister();
 
@@ -207,8 +216,16 @@ const RegistrationForm = () => {
             "is_mobile_number_verified"
           ),
         },
-        title: formMethods.getValues("title"),
 
+        doctor_nmc_info: {
+          nmc_number: formMethods.getValues("nmc.nmc_number"),
+          nmc_issued_date: formMethods.getValues("nmc.nmc_issued_date"),
+          nmc_expiry_date: formMethods.getValues("nmc.nmc_expiry_date"),
+          nmc_file:
+            formMethods.getValues("nmc.nmc_file")?.[0] &&
+            (await base64(formMethods.getValues("nmc.nmc_file")?.[0] as File)),
+        },
+        title: formMethods.getValues("title"),
         bio_detail: formMethods.getValues("bio_detail"),
         specialization: specializationArray,
         age: 20,
@@ -220,6 +237,7 @@ const RegistrationForm = () => {
         id_issued_district: formMethods.getValues("id_issued_district"),
         id_issued_date: formMethods.getValues("id_issued_date"),
       };
+
       await editPrimaryInfoRegister
         .mutateAsync({ id: doctor, data: doctorData })
         .then(response => {
@@ -247,11 +265,16 @@ const RegistrationForm = () => {
         break;
       }
       case 1: {
+        setActiveStep(2);
+        break;
+      }
+      case 2: {
         try {
           const profilePicture = values.profile_picture?.[0];
           const idFontImage = values.id_front_image?.[0];
           const idBackImage = values.id_back_image?.[0];
-
+          const nmcData = values.nmc;
+          console.log(nmcData.nmc_file?.[0]);
           await primaryInfoRegister
             .mutateAsync({
               user: {
@@ -276,11 +299,18 @@ const RegistrationForm = () => {
                 is_mobile_number_verified: values.is_mobile_number_verified,
               },
               title: values.title,
-
               bio_detail: values.bio_detail,
               specialization: values.specialization_names.map(s =>
                 Number(s.value)
               ),
+              doctor_nmc_info: {
+                nmc_number: nmcData.nmc_number,
+                nmc_issued_date: nmcData.nmc_issued_date,
+                nmc_expiry_date: nmcData.nmc_expiry_date,
+                nmc_file:
+                  nmcData.nmc_file?.[0] &&
+                  (await base64(nmcData.nmc_file?.[0])),
+              },
               age: 20,
               medical_degree: "test",
               designation: "Test",
@@ -299,7 +329,7 @@ const RegistrationForm = () => {
               setName(data?.user.first_name);
               setIsPrimarySubmitted(true);
               formMethods.setValue("doctor_id", data?.id);
-              setActiveStep(2);
+              setActiveStep(3);
             });
         } catch (error) {
           const err = serverErrorResponse(
@@ -311,7 +341,7 @@ const RegistrationForm = () => {
         }
         break;
       }
-      case 2: {
+      case 3: {
         try {
           const academicArray = formMethods.getValues("academic");
 
@@ -405,114 +435,106 @@ const RegistrationForm = () => {
 
         break;
       }
-      case 3: {
-        try {
-          const certificationArray = formMethods.getValues("certification");
+      // case 4: {
+      //   try {
+      //     // const certificationArray = formMethods.getValues("certification");
+      //     // const certificationPromises = certificationArray.map(
+      //     //   async (certificationData, i) => {
+      //     //     const createCertificateFileResponse =
+      //     //       await certificateFileRegister.mutateAsync(certificationData);
+      //     //     if (createCertificateFileResponse) {
+      //     //       const certificateInfoData = {
+      //     //         ...certificationData,
+      //     //         doctor: doctor,
+      //     //         certificate_documents:
+      //     //           createCertificateFileResponse.data.data.map(
+      //     //             (file: string) => ({
+      //     //               file: file,
+      //     //             })
+      //     //           ),
+      //     //       };
+      //     //       if (certificationData.id) {
+      //     //         const certificateInfoResponse =
+      //     //           await updateCertificateInfoRegister.mutateAsync({
+      //     //             id: parseInt(certificationData.id),
+      //     //             data: certificateInfoData,
+      //     //           });
+      //     //         if (certificateInfoResponse) {
+      //     //           formMethods.setValue(
+      //     //             `certification.${i}.certificate_documents`,
+      //     //             certificateInfoResponse.data?.data?.certificate_document?.map(
+      //     //               (e: IResponseFileMap) => ({
+      //     //                 preview: getImageUrl(e?.file),
+      //     //                 id: e?.id,
+      //     //               })
+      //     //             )
+      //     //           );
+      //     //           return certificateInfoResponse.data.data;
+      //     //         } else {
+      //     //           throw new Error(
+      //     //             "Failed to update certificate information!"
+      //     //           );
+      //     //         }
+      //     //       } else {
+      //     //         const certificateInfoResponse =
+      //     //           await certificationInfoRegister.mutateAsync(
+      //     //             certificateInfoData
+      //     //           );
+      //     //         if (certificateInfoResponse) {
+      //     //           formMethods.setValue(
+      //     //             `certification.${i}.certificate_documents`,
+      //     //             certificateInfoResponse.data?.data?.certificate_document?.map(
+      //     //               (e: IResponseFileMap) => ({
+      //     //                 preview: getImageUrl(e?.file),
+      //     //                 id: e?.id,
+      //     //               })
+      //     //             )
+      //     //           );
+      //     //           return certificateInfoResponse.data.data;
+      //     //         } else {
+      //     //           throw new Error("Failed to add certificate information!");
+      //     //         }
+      //     //       }
+      //     //     } else {
+      //     //       throw new Error("Failed to upload certificate files!");
+      //     //     }
+      //     //   }
+      //     // );
+      //     // const certificateInfoResponses = await Promise.all(
+      //     //   certificationPromises
+      //     // );
+      //     // if (certificateInfoResponses) {
+      //     //   setActiveStep(4);
+      //     //   certificateInfoResponses.forEach(
+      //     //     (certificateInfoResponse, index) => {
+      //     //       if (certificateInfoResponse) {
+      //     //         formMethods.setValue(
+      //     //           `certification.${index}.id`,
+      //     //           certificateInfoResponse.id
+      //     //         );
+      //     //         formMethods.setValue(
+      //     //           `certification.${index}.isSubmitted`,
+      //     //           true
+      //     //         );
+      //     //       }
+      //     //     }
+      //     //   );
+      //     // toastSuccess("Certificate Information updated");
+      //     // } else {
+      //     //   throw new Error("Failed to add certificate information!");
+      //     // }
+      //     setActiveStep(4);
+      //   } catch (error) {
+      //     const err = serverErrorResponse(
+      //       error,
+      //       "Failed to add certificate information!"
+      //     );
 
-          const certificationPromises = certificationArray.map(
-            async (certificationData, i) => {
-              const createCertificateFileResponse =
-                await certificateFileRegister.mutateAsync(certificationData);
+      //     toastFail(err);
+      //   }
 
-              if (createCertificateFileResponse) {
-                const certificateInfoData = {
-                  ...certificationData,
-                  doctor: doctor,
-                  certificate_documents:
-                    createCertificateFileResponse.data.data.map(
-                      (file: string) => ({
-                        file: file,
-                      })
-                    ),
-                };
-
-                if (certificationData.id) {
-                  const certificateInfoResponse =
-                    await updateCertificateInfoRegister.mutateAsync({
-                      id: parseInt(certificationData.id),
-                      data: certificateInfoData,
-                    });
-
-                  if (certificateInfoResponse) {
-                    formMethods.setValue(
-                      `certification.${i}.certificate_documents`,
-                      certificateInfoResponse.data?.data?.certificate_document?.map(
-                        (e: IResponseFileMap) => ({
-                          preview: getImageUrl(e?.file),
-                          id: e?.id,
-                        })
-                      )
-                    );
-                    return certificateInfoResponse.data.data;
-                  } else {
-                    throw new Error(
-                      "Failed to update certificate information!"
-                    );
-                  }
-                } else {
-                  const certificateInfoResponse =
-                    await certificationInfoRegister.mutateAsync(
-                      certificateInfoData
-                    );
-
-                  if (certificateInfoResponse) {
-                    formMethods.setValue(
-                      `certification.${i}.certificate_documents`,
-                      certificateInfoResponse.data?.data?.certificate_document?.map(
-                        (e: IResponseFileMap) => ({
-                          preview: getImageUrl(e?.file),
-                          id: e?.id,
-                        })
-                      )
-                    );
-                    return certificateInfoResponse.data.data;
-                  } else {
-                    throw new Error("Failed to add certificate information!");
-                  }
-                }
-              } else {
-                throw new Error("Failed to upload certificate files!");
-              }
-            }
-          );
-
-          const certificateInfoResponses = await Promise.all(
-            certificationPromises
-          );
-
-          if (certificateInfoResponses) {
-            setActiveStep(4);
-
-            certificateInfoResponses.forEach(
-              (certificateInfoResponse, index) => {
-                if (certificateInfoResponse) {
-                  formMethods.setValue(
-                    `certification.${index}.id`,
-                    certificateInfoResponse.id
-                  );
-                  formMethods.setValue(
-                    `certification.${index}.isSubmitted`,
-                    true
-                  );
-                }
-              }
-            );
-
-            toastSuccess("Certificate Information updated");
-          } else {
-            throw new Error("Failed to add certificate information!");
-          }
-        } catch (error) {
-          const err = serverErrorResponse(
-            error,
-            "Failed to add certificate information!"
-          );
-
-          toastFail(err);
-        }
-
-        break;
-      }
+      //   break;
+      // }
       case 4: {
         try {
           const experienceArray = formMethods.getValues("experience");
@@ -610,6 +632,7 @@ const RegistrationForm = () => {
   const handleNextButtonClick = () => {
     formMethods.handleSubmit(onSubmitForm)();
   };
+
   const steps = [
     {
       title: "Registration",
@@ -620,13 +643,17 @@ const RegistrationForm = () => {
       content: <PrimaryInfo />,
     },
     {
+      title: "NMC Info",
+      content: <NmcInfo />,
+    },
+    {
       title: "Academic Info",
       content: <AcademicInfo />,
     },
-    {
-      title: "Certification Info",
-      content: <CertificationInfo />,
-    },
+    // {
+    //   title: "Certification Info",
+    //   content: <CertificationInfo />,
+    // },
     {
       title: "Experience",
       content: <ExperienceInfo />,

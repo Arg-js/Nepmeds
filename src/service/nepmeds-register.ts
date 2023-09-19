@@ -40,6 +40,12 @@ export type PrimaryInfo = Pick<
     is_email_verified?: boolean;
     is_mobile_number_verified?: boolean;
   };
+  doctor_nmc_info: {
+    nmc_number?: number;
+    nmc_issued_date?: string;
+    nmc_expiry_date?: string;
+    nmc_file?: File | string;
+  };
 };
 
 const signUpUser = async (data: { email_or_mobile_number: string }) => {

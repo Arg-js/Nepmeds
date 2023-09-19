@@ -62,6 +62,13 @@ const EditBasic = ({
         last_name: formMethods.getValues("last_name"),
       } as IUser;
 
+      const doctor_nmc_info = {
+        nmc_number: formMethods.getValues("nmc.nmc_number"),
+        nmc_issued_date: formMethods.getValues("nmc.nmc_issued_date"),
+        nmc_expiry_date: formMethods.getValues("nmc.nmc_expiry_date"),
+        nmc_file: formMethods.getValues("nmc.nmc_file")?.[0] as File,
+      };
+
       if (profilePicture) {
         user.profile_picture = await imageToBase64(profilePicture);
       }
@@ -69,6 +76,7 @@ const EditBasic = ({
       await updatePersonalInfo.mutateAsync({
         id: doctorProfileData.id?.toString(),
         user: user,
+        doctor_nmc_info,
         specialization: formMethods.getValues("specialization"),
         pan_number: formMethods.getValues("pan_number"),
         id_type: formMethods.getValues("id_type"),
