@@ -30,7 +30,7 @@ const SectionHeading: React.FC<ISectionHeading> = ({
         {description && (
           <Text
             fontWeight={500}
-            fontSize={"14px"}
+            fontSize={"sm"}
             color={colors.gray_text_header}
           >
             {description}

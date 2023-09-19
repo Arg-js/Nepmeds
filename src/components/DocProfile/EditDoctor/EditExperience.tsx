@@ -219,7 +219,7 @@ const EditExperience = ({
         >
           <Text
             fontWeight={"700"}
-            fontSize={"18px"}
+            fontSize={"lg"}
             lineHeight={"22px"}
             color={colors?.primary_dark1}
           >
@@ -238,7 +238,7 @@ const EditExperience = ({
                 <Text
                   color={colors?.white}
                   fontWeight={"400"}
-                  fontSize={"16px"}
+                  fontSize={"md"}
                   lineHeight={"19px"}
                 >
                   Edit
@@ -340,7 +340,7 @@ const EditExperience = ({
                         <Box display={"flex"} alignItems={"center"} gap={1}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -350,7 +350,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -364,7 +364,7 @@ const EditExperience = ({
                         <Box display={"flex"} alignItems={"center"} gap={1}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -374,7 +374,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -400,7 +400,7 @@ const EditExperience = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -415,7 +415,7 @@ const EditExperience = ({
                           {singleExperience?.currently_working !== true && (
                             <Text
                               fontWeight={"500"}
-                              fontSize={"14px"}
+                              fontSize={"sm"}
                               lineHeight={"19px"}
                               color={colors?.black}
                             >
@@ -430,7 +430,7 @@ const EditExperience = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -440,7 +440,7 @@ const EditExperience = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"

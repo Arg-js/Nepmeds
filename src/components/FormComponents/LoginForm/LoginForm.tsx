@@ -100,7 +100,7 @@ const LoginForm = () => {
           type="submit"
           isLoading={loginAction.isLoading}
           width="180px"
-          fontSize={"20px"}
+          fontSize={"xl"}
         >
           Login
         </Button>

@@ -62,13 +62,13 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
                     direction={"column"}
                     alignItems={{ base: "center", md: "start" }}
                   >
-                    <Text fontSize={"14px"} fontWeight={700}>
+                    <Text fontSize={"sm"} fontWeight={700}>
                       {footerContent.title}
                     </Text>
                     {footerContent.contents.map(content => {
                       return (
                         <Text
-                          fontSize={"14px"}
+                          fontSize={"sm"}
                           fontWeight={500}
                           key={content}
                           textAlign={{ base: "center", md: "left" }}

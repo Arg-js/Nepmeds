@@ -166,7 +166,7 @@ const CalenderWeekView = ({
           cursor={"pointer"}
           onClick={handlePreviousMonth}
         />
-        <Text fontSize={"16px"} lineHeight={"22px"} fontWeight={600}>
+        <Text fontSize={"md"} lineHeight={"22px"} fontWeight={600}>
           {format(date, "MMMM yyyy")}
         </Text>
         <IoChevronForwardCircleOutline
@@ -184,7 +184,7 @@ const CalenderWeekView = ({
         mt={3}
       >
         <Box display={"flex"} alignItems={"baseline"}>
-          <Text fontSize={"24px"} color={colors.grey_dark} fontWeight={"400"}>
+          <Text fontSize={"2xl"} color={colors.grey_dark} fontWeight={"400"}>
             This{" "}
           </Text>
           <Text fontSize={"35px"} ml={2} fontWeight={600} color={"#333333"}>
@@ -227,7 +227,7 @@ const CalenderWeekView = ({
                 height={"30px"}
               >
                 <Text
-                  fontSize={"14px"}
+                  fontSize={"sm"}
                   fontWeight={400}
                   lineHeight={"20px"}
                   color={colors.white}
@@ -250,7 +250,7 @@ const CalenderWeekView = ({
               display={"flex"}
               alignItems={"baseline"}
               mt={2}
-              fontSize={"18px"}
+              fontSize={"lg"}
               fontWeight={400}
               lineHeight={"25px"}
               color={colors.grey_dark}
@@ -258,7 +258,7 @@ const CalenderWeekView = ({
               {data.date},{" "}
               <Text
                 lineHeight={"20px"}
-                fontSize={"16px"}
+                fontSize={"md"}
                 fontWeight={700}
                 color={colors?.main}
                 ml={1}
@@ -294,7 +294,7 @@ const CalenderWeekView = ({
                 display={"flex"}
                 alignItems={"baseline"}
                 mt={2}
-                fontSize={"18px"}
+                fontSize={"lg"}
                 fontWeight={400}
                 lineHeight={"24px"}
                 color={colors.grey_dark}
@@ -419,7 +419,7 @@ const CalendarDailyDetailView = ({
           <Box
             display={"flex"}
             alignItems={"baseline"}
-            fontSize={"24px"}
+            fontSize={"2xl"}
             color={colors.grey_dark}
             lineHeight={"24px"}
           >

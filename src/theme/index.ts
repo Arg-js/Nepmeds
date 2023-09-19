@@ -107,6 +107,7 @@ export const theme = extendTheme({
     },
   },
   fontSizes: {
+    xxs: "10px",
     xs: "12px",
     sm: "14px",
     md: "16px",
