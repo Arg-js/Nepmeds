@@ -156,7 +156,7 @@ const DoctorDetails: React.FC<{
                 border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
-                  height: "auto",
+                  minHeight: "647px",
                   borderTopRadius: 3,
                 }}
               >
@@ -511,18 +511,12 @@ const DoctorDetails: React.FC<{
           style={{
             px: 4,
             py: 48,
-            // height: "567px",
+            minHeight: "647px",
             width: { base: "auto" },
           }}
           borderRadius={"3px"}
         >
-          <VStack
-            justifyContent={"center"}
-            alignContent={"center"}
-            // width={"544px"}
-            // height={"700px"}
-            // mt={30}
-          >
+          <VStack justifyContent={"center"} alignContent={"center"}>
             {isFetching ? (
               <Spinner />
             ) : (

@@ -121,13 +121,13 @@ const DoctorList = () => {
               base: "1fr",
               md: "repeat(5, 1fr)",
               lg: "repeat(12, 1fr)",
-              "2xl": "repeat(12, 1fr)",
+              "2xl": "repeat(11, 1fr)",
             }}
-            columnGap={{ base: 2, md: 8, lg: 4, xl: 10 }}
+            columnGap={{ base: 2, md: 8, lg: 4, xl: 10, "2xl": "85px" }}
           >
             {/* FILTER */}
             <GridItem
-              colSpan={{ base: 3, md: 2, lg: 3, "2xl": 2 }}
+              colSpan={{ base: 3, md: 2, lg: 3, "2xl": 3 }}
               display={{ base: "none", md: "grid" }}
             >
               {/* <GridItem colSpan={{ base: 1, md: 2 }}> */}
@@ -144,7 +144,7 @@ const DoctorList = () => {
             </GridItem>
 
             {/* Doctor card */}
-            <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 5 }}>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 4 }}>
               <Box>
                 <>
                   {isLoading &&
@@ -194,7 +194,7 @@ const DoctorList = () => {
 
             {/* Doctor details section */}
             <GridItem
-              colSpan={{ base: 1, lg: 4, "2xl": 5 }}
+              colSpan={{ base: 1, lg: 4 }}
               display={{ base: "none", lg: "grid" }}
             >
               <Box>
