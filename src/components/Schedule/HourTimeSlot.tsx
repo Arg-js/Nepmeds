@@ -5,7 +5,7 @@ const HourTimeSlot: React.FC<{ timeSlot: string }> = ({ timeSlot }) => {
   return (
     <GridItem colSpan={1} mb={"30px"}>
       <List spacing={"30px"}>
-        <ListItem fontSize={"12px"} color={colors.grey_dark} mt={-2}>
+        <ListItem fontSize={"xs"} color={colors.grey_dark} mt={-2}>
           {timeSlot}
         </ListItem>
         <ListItem>

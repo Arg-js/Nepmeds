@@ -75,10 +75,16 @@ const FloatingPassword = ({
           pr={8}
           pb={2}
           variant="floating"
+          color={colors.black_50}
         />
 
         {label && (
-          <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+          <FormLabel
+            htmlFor={name}
+            fontWeight={400}
+            fontSize={"sm"}
+            color={colors.black_50}
+          >
             {label}
             {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
           </FormLabel>
@@ -96,7 +102,7 @@ const FloatingPassword = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           opacity={"1 !important"}
         >
           {labelDisabled}
@@ -104,7 +110,7 @@ const FloatingPassword = ({
       )}
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

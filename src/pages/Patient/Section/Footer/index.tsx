@@ -45,10 +45,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
 }) => {
   return (
     <>
-      <WrapperBox
-        backgroundColor={colors.white}
-        style={{ ...style, height: { base: "auto", xl: "517px" } }}
-      >
+      <WrapperBox style={{ ...style, height: { base: "auto", xl: "517px" } }}>
         <>
           <Grid
             templateColumns={{
@@ -65,12 +62,17 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
                     direction={"column"}
                     alignItems={{ base: "center", md: "start" }}
                   >
-                    <Text fontSize={"14px"} fontWeight={700}>
+                    <Text fontSize={"sm"} fontWeight={700}>
                       {footerContent.title}
                     </Text>
                     {footerContent.contents.map(content => {
                       return (
-                        <Text fontSize={"14px"} fontWeight={500} key={content}>
+                        <Text
+                          fontSize={"sm"}
+                          fontWeight={500}
+                          key={content}
+                          textAlign={{ base: "center", md: "left" }}
+                        >
                           {content}
                         </Text>
                       );
@@ -86,7 +88,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             direction={{ base: "column", md: "row" }}
             gap={3}
           >
-            <Flex direction={"column"} gap={3.5}>
+            <Flex direction={"column"} gap={3.5} alignItems={"center"}>
               <Text fontWeight={600} fontSize={"sm"}>
                 Download App
               </Text>
@@ -95,11 +97,15 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
                 <Image alt="App Store" src={appStore} />
               </Flex>
             </Flex>
-            <Flex direction={"column"} gap={3.5}>
+            <Flex direction={"column"} gap={3.5} alignItems={"center"}>
               <Text fontWeight={600} fontSize={"sm"}>
                 Payment Method
               </Text>
-              <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
+              <Flex
+                gap={2.5}
+                direction={{ base: "column", lg: "row" }}
+                width={{ base: "30%", md: "auto" }}
+              >
                 <Image alt="Google Play" src={imePayImage} />
                 <Image alt="App Store" src={esewaImage} />
                 <Image alt="Google Play" src={visaImage} />

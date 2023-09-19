@@ -15,8 +15,9 @@ export interface IPatientAppointmentBasicDetails {
 interface IPatientAppointmentReqBody extends IPatientAppointmentBasicDetails {
   doctor: number;
   symptoms: number[];
-  availability: number[];
+  availabilities: number[];
   old_report_file?: File;
+  total_amount_paid: number;
 }
 
 const createPatientAppointment = ({
@@ -32,7 +33,7 @@ const createPatientAppointment = ({
 
 export const useCreatePatientAppointment = () => {
   return useMutation(createPatientAppointment, {
-    onSuccess: () => toastSuccess("Appointment has been successfuly created!"),
+    onSuccess: () => toastSuccess("Appointment has been successfully created!"),
     onError: (error: AxiosError<{ message: string; error: string }>) =>
       toastFail(error.message ?? "Something went wrong"),
   });

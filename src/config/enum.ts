@@ -7,6 +7,7 @@ export enum STATUSTYPE {
   approved = 1,
   pending = 2,
   rejected = 3,
+  completed = 4,
 }
 
 export enum AVAILABILITYFREQUENCY {

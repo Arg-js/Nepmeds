@@ -33,14 +33,18 @@ const Checkbox = <T extends FieldValues>({
           {label && (
             <FormLabel
               fontWeight={400}
-              fontSize={"14px"}
+              fontSize={"sm"}
               m={2}
               color={colors.grey_50}
             >
               {label}:
             </FormLabel>
           )}
-          {error && <FormErrorMessage>{error?.message}</FormErrorMessage>}
+          {error && (
+            <FormErrorMessage fontSize={"xs"}>
+              {error?.message}
+            </FormErrorMessage>
+          )}
         </FormControl>
       )}
     />

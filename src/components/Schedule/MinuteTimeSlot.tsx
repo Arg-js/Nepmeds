@@ -15,7 +15,7 @@ const MinuteTImeSlot = () => {
       //
       color={colors.black_40}
       fontWeight={500}
-      fontSize={"14px"}
+      fontSize={"sm"}
     >
       <GridItem></GridItem>
       {timeSlots.map(item => (

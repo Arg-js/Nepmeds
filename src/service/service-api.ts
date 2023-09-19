@@ -74,6 +74,13 @@ export const api = {
   },
   doctorUserRole: "/dashboard/doctor-management/",
   patientUserRole: "/dashboard/patient-management/",
+  doctor: {
+    appointments: {
+      get: "/doctor-consult/new-appointment-request/",
+      patch: "/doctor-consult/new-appointment-request/:id/",
+      getById: "/doctor-consult/new-appointment-request/:id/",
+    },
+  },
 
   patient: {
     doctorList: {
@@ -81,7 +88,7 @@ export const api = {
       getById: "/patient/doctor-details-appointment/:id/",
     },
     appointment: {
-      post: "/patient/appointment/",
+      post: "/patient/new-appointment/",
     },
     doctor_availability: {
       get: "/patient/doctor-booking-availabilities/:id/",

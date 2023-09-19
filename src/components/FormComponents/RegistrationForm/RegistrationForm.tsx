@@ -65,10 +65,10 @@ const registerDefaultValues = {
   tole: "",
   municipality: (0 as number) || null,
   province: (0 as number) || null,
-  gender: "Male",
+  gender: "",
   date_of_birth: "",
   email: "",
-  title: "Dr",
+  title: "",
   password: "",
   confirm_password: "",
   bio_detail: "",
@@ -599,7 +599,14 @@ const RegistrationForm = () => {
       }
     }
   };
+  const profileImage = formMethods.getValues().profile_picture as File[];
+  const docFrontImage = formMethods.getValues().id_front_image as File[];
+  const docBackImage = formMethods.getValues().id_back_image as File[];
 
+  const disableButton =
+    (activeStep === 0 && profileImage?.[0]?.size / 1048576 > 1) ||
+    (activeStep === 1 && docFrontImage?.[0]?.size / 1048576 > 1) ||
+    docBackImage?.[0]?.size / 1048576 > 1;
   const handleNextButtonClick = () => {
     formMethods.handleSubmit(onSubmitForm)();
   };
@@ -643,12 +650,17 @@ const RegistrationForm = () => {
               h="75vh"
             >
               <Box>
-                <Heading fontSize="2xl" fontWeight={400} color={colors.white}>
+                <Heading
+                  fontSize="2xl"
+                  fontWeight={400}
+                  color={colors.white}
+                  mb={"15px"}
+                >
                   Step {activeStep + 1}
                 </Heading>
                 {steps[activeStep + 1] && (
                   <Text fontSize="sm" color={colors.blue_30}>
-                    Next -{steps[activeStep + 1].title}
+                    Next - {steps[activeStep + 1].title}
                   </Text>
                 )}
               </Box>
@@ -686,6 +698,7 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "default",
                       }}
+                      onClick={() => setActiveStep(index)}
                     >
                       {step?.title}
                     </StepTitle>
@@ -762,6 +775,7 @@ const RegistrationForm = () => {
                     certificationInfoRegister.isLoading ||
                     experienceInfoRegister.isLoading
                   }
+                  isDisabled={disableButton}
                   background={colors.primary}
                   color={colors.white}
                   fontWeight={400}

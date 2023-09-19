@@ -17,7 +17,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { pendingColumns } from "@nepMeds/components/DataTable/columns";
+import { pendingColumns } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -260,13 +260,9 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           footer={
             <HStack w="100%" gap={3}>
               <Button
-                variant="outline"
-                onClick={onCloseConfirmation}
                 flex={1}
-                border="2px solid"
-                borderColor={colors.primary}
-                color={colors.primary}
-                fontWeight={400}
+                variant={"primaryOutline"}
+                onClick={onCloseConfirmation}
               >
                 Cancel
               </Button>
@@ -275,8 +271,6 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
                 onClick={statusFormMethods.handleSubmit(() =>
                   ApproveDoctor(doctorInfo.id).then(() => onCloseConfirmation())
                 )}
-                background={colors.primary}
-                color={colors.white}
                 isLoading={approveLoading}
               >
                 Yes
@@ -312,6 +306,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
               <Input
                 w={40}
                 h={8}
+                placeholder="Search"
                 onChange={({ target: { value } }) => setSearchFilter(value)}
               />
             </InputGroup>

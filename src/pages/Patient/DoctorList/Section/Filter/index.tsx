@@ -3,6 +3,8 @@ import {
   Checkbox,
   Divider,
   Flex,
+  Grid,
+  GridItem,
   Input,
   InputGroup,
   InputLeftElement,
@@ -136,12 +138,12 @@ const DoctorListFilter: React.FC<{
         <Flex direction={"column"} gap={3}>
           {/* HEADING */}
           <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <Text fontWeight={700} fontSize={"16px"}>
+            <Text fontWeight={700} fontSize={"md"}>
               Filters
             </Text>
             <Text
               fontWeight={500}
-              fontSize={"12px"}
+              fontSize={"xs"}
               color={colors.primary}
               textDecoration={"underline"}
               cursor={"pointer"}
@@ -160,43 +162,50 @@ const DoctorListFilter: React.FC<{
             </Text>
           </Flex>
           <Divider />
-          <Box>
-            <Text fontWeight={600} fontSize={"sm"} mb={3}>
-              From Date:
-            </Text>
-            <Input
-              type={"date"}
-              ref={dateFromRef}
-              onChange={e => {
-                setDateParams({ ...dateParams, from_date: e.target.value });
-                setPageParams({ ...pageParams, page: 1 });
-              }}
-              // w={"min-content"}
-              // size={"sm"}
-              borderRadius={"6px"}
-            />
-          </Box>
-          {/* <Text>-</Text> */}
-          <Box>
-            <Text fontWeight={600} fontSize={"sm"} mb={3}>
-              To Date:
-            </Text>
+          {/* TODO: the content will overflow with max-content */}
+          <Grid templateColumns={{ md: "1fr", xl: "max-content 1fr" }} gap={4}>
+            <GridItem>
+              <Text fontWeight={600} fontSize={"sm"}>
+                From :
+              </Text>
+            </GridItem>
+            <GridItem>
+              <Input
+                type={"date"}
+                ref={dateFromRef}
+                onChange={e => {
+                  setDateParams({ ...dateParams, from_date: e.target.value });
+                  setPageParams({ ...pageParams, page: 1 });
+                }}
+                w={"min-content"}
+                size={"sm"}
+                borderRadius={"6px"}
+              />
+            </GridItem>
+            <GridItem>
+              <Text fontWeight={600} fontSize={"sm"}>
+                To :
+              </Text>
+            </GridItem>
 
-            <Input
-              type={"date"}
-              ref={dateToRef}
-              onChange={e => {
-                setDateParams({ ...dateParams, to_date: e.target.value });
-                setPageParams({ ...pageParams, page: 1 });
-              }}
-              // w={"min-content"}
-              // size={"sm"}
-              borderRadius={"6px"}
-            />
-          </Box>
+            {/* <Text>-</Text> */}
+            <GridItem>
+              <Input
+                type={"date"}
+                ref={dateToRef}
+                onChange={e => {
+                  setDateParams({ ...dateParams, to_date: e.target.value });
+                  setPageParams({ ...pageParams, page: 1 });
+                }}
+                w={"min-content"}
+                size={"sm"}
+                borderRadius={"6px"}
+              />
+            </GridItem>
+          </Grid>
           <Flex gap={2} justifyContent="center" wrap={"wrap"}></Flex>
           <Box>
-            <Text fontWeight={600} fontSize={"16px"} mb={3}>
+            <Text fontWeight={600} fontSize={"md"} mb={3}>
               Gender
             </Text>
             {GenderList.map((gender, index) => {
@@ -224,7 +233,7 @@ const DoctorListFilter: React.FC<{
             })}
           </Box>
           <Box>
-            <Text fontWeight={600} fontSize={"16px"} mb={3}>
+            <Text fontWeight={600} fontSize={"md"} mb={3}>
               Specialization
             </Text>
             {specializationData.map((specialization, index) => {
@@ -255,7 +264,7 @@ const DoctorListFilter: React.FC<{
             })}
           </Box>
           <Box>
-            <Text fontWeight={600} fontSize={"16px"} mb={3}>
+            <Text fontWeight={600} fontSize={"md"} mb={3}>
               Health Concern
             </Text>
             {symptomData.map((symptom, index) => {

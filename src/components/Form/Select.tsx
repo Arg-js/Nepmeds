@@ -57,14 +57,21 @@ const Select = ({
         ""
       )}
       {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
-          {label}{" "}
+        <FormLabel
+          htmlFor={name}
+          fontWeight={400}
+          fontSize={"sm"}
+          zIndex={rest.isDisabled ? 0 : 1}
+          color={colors.black_50}
+        >
+          {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
       )}
       <ChakraSelect
         variant={"outline"}
         // sx={{ background: colors.forminput }}
+        color={colors.black_50}
         {...register(name, rules)}
         id={name}
         h={14}
@@ -86,7 +93,7 @@ const Select = ({
       </ChakraSelect>
 
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

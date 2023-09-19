@@ -107,10 +107,9 @@ const SignupForm = () => {
 
       <HStack mt={12} justifyContent="center">
         <Button
-          backgroundColor={colors.primary}
-          textColor={colors.white}
           type="submit"
-          variant="register"
+          width="180px"
+          fontSize={"xl"}
           isLoading={singUpAction.isLoading}
         >
           Sign Up

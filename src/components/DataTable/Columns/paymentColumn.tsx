@@ -1,21 +1,22 @@
-import Icon from "@chakra-ui/icon";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+// import Icon from "@chakra-ui/icon";
+// import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Image } from "@chakra-ui/image";
 import { Box, Flex, HStack, Text } from "@chakra-ui/layout";
 import { Link as ChakraLink } from "@chakra-ui/react";
 import { Tag } from "@chakra-ui/tag";
-import { Tooltip } from "@chakra-ui/tooltip";
+// import { Tooltip } from "@chakra-ui/tooltip";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
-import { STATUSTYPE } from "@nepMeds/config/enum";
+// import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { CellContext } from "@tanstack/table-core";
-import { Show } from "react-iconly";
+// import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
 import { Link } from "react-router-dom";
+import TableActions from "../TableActions";
 
 export const allPaymentColumn = (
   onClick: (
@@ -143,67 +144,100 @@ export const allPaymentColumn = (
       accessorKey: "actions",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
-          <HStack justifyContent={"center"}>
-            <Tooltip label="View Rate History">
-              <span>
-                <Icon
-                  as={Show}
-                  fontSize={20}
-                  cursor="pointer"
-                  mt={2}
-                  onClick={() => {
-                    navigate(
-                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-                        id: row?.original?.id?.toString(),
-                      })
-                    );
-                  }}
-                />
-              </span>
-            </Tooltip>
-            {row?.original?.payment_status?.toString() !==
-              STATUSTYPE.approved.toString() && (
-              <Flex gap={2} justifyContent={"center"} alignContent={"center"}>
-                <Tooltip label="Approve Payment">
-                  <span>
-                    <Icon
-                      as={CheckIcon}
-                      fontSize={16}
-                      cursor="pointer"
-                      color={colors.green_light}
-                      onClick={() => {
-                        onClick(true, {
-                          id: row.original.doctor_amount_detail?.id?.toString(),
-                          name:
-                            row.original.user.first_name +
-                            " " +
-                            row.original.user.last_name,
-                        });
-                      }}
-                    />
-                  </span>
-                </Tooltip>
-                <Tooltip label="Reject Payment">
-                  <span>
-                    <Icon
-                      as={CloseIcon}
-                      fontSize={14}
-                      color={colors.red}
-                      cursor="pointer"
-                      onClick={() => {
-                        onClick(false, {
-                          id: row.original.doctor_amount_detail?.id?.toString(),
-                          name:
-                            row.original.user.first_name +
-                            " " +
-                            row.original.user.last_name,
-                        });
-                      }}
-                    />
-                  </span>
-                </Tooltip>
-              </Flex>
-            )}
+          // <HStack justifyContent={"center"}>
+          //   <Tooltip hasArrow placement="top" label="View Rate History">
+          //     <span>
+          //       <Icon
+          //         as={Show}
+          //         fontSize={20}
+          //         cursor="pointer"
+          //         mt={2}
+          //         onClick={() => {
+          //           navigate(
+          //             generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+          //               id: row?.original?.id?.toString(),
+          //             })
+          //           );
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          //   {row?.original?.payment_status?.toString() !==
+          //     STATUSTYPE.approved.toString() && (
+          //     <Flex gap={2} justifyContent={"center"} alignContent={"center"}>
+          //       <Tooltip hasArrow placement="top" label="Approve Payment">
+          //         <span>
+          //           <Icon
+          //             as={CheckIcon}
+          //             fontSize={16}
+          //             cursor="pointer"
+          //             color={colors.green_light}
+          //             onClick={() => {
+          //               onClick(true, {
+          //                 id: row.original.doctor_amount_detail?.id?.toString(),
+          //                 name:
+          //                   row.original.user.first_name +
+          //                   " " +
+          //                   row.original.user.last_name,
+          //               });
+          //             }}
+          //           />
+          //         </span>
+          //       </Tooltip>
+          //       <Tooltip hasArrow placement="top" label="Reject Payment">
+          //         <span>
+          //           <Icon
+          //             as={CloseIcon}
+          //             fontSize={14}
+          //             color={colors.red}
+          //             cursor="pointer"
+          //             onClick={() => {
+          //               onClick(false, {
+          //                 id: row.original.doctor_amount_detail?.id?.toString(),
+          //                 name:
+          //                   row.original.user.first_name +
+          //                   " " +
+          //                   row.original.user.last_name,
+          //               });
+          //             }}
+          //           />
+          //         </span>
+          //       </Tooltip>
+          //     </Flex>
+          //   )}
+          // </HStack>
+          <HStack>
+            <TableActions
+              onView={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                    id: row?.original?.id?.toString(),
+                  })
+                );
+              }}
+            />
+            <TableActions
+              onAccept={() => {
+                onClick(true, {
+                  id: row.original.doctor_amount_detail?.id?.toString(),
+                  name:
+                    row.original.user.first_name +
+                    " " +
+                    row.original.user.last_name,
+                });
+              }}
+            />
+            <TableActions
+              onReject={() => {
+                onClick(false, {
+                  id: row.original.doctor_amount_detail?.id?.toString(),
+                  name:
+                    row.original.user.first_name +
+                    " " +
+                    row.original.user.last_name,
+                });
+              }}
+            />
           </HStack>
         );
       },
@@ -335,63 +369,97 @@ export const pendingPaymentColumn = (
       accessorKey: "actions",
       cell: (cell: CellContext<IAllPaymentResponse, any>) => {
         return (
+          // <HStack>
+          //   <Tooltip hasArrow placement="top" label="View Rate History">
+          //     <span>
+          //       <Icon
+          //         as={Show}
+          //         fontSize={20}
+          //         mt={2}
+          //         cursor="pointer"
+          //         onClick={() => {
+          //           navigate(
+          //             generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+          //               id: cell?.row?.original?.id?.toString(),
+          //             }),
+          //             { state: { status: cell?.row?.original?.payment_status } }
+          //           );
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          //   <Tooltip hasArrow placement="top" label="Approve Payment">
+          //     <span>
+          //       <Icon
+          //         as={CheckIcon}
+          //         fontSize={16}
+          //         cursor="pointer"
+          //         color={colors.green_light}
+          //         onClick={() => {
+          //           onClick(true, {
+          //             id: cell.row.original.doctor_amount_detail?.id?.toString(),
+          //             name:
+          //               cell.row.original.user.first_name +
+          //               " " +
+          //               cell.row.original.user.last_name,
+          //           });
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          //   <Tooltip hasArrow placement="top" label="Reject Payment">
+          //     <span>
+          //       <Icon
+          //         as={CloseIcon}
+          //         fontSize={14}
+          //         color={colors.red}
+          //         cursor="pointer"
+          //         onClick={() => {
+          //           onClick(false, {
+          //             id: cell.row.original.doctor_amount_detail?.id?.toString(),
+          //             name:
+          //               cell.row.original.user.first_name +
+          //               " " +
+          //               cell.row.original.user.last_name,
+          //           });
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          // </HStack>
           <HStack>
-            <Tooltip label="View Rate History">
-              <span>
-                <Icon
-                  as={Show}
-                  fontSize={20}
-                  mt={2}
-                  cursor="pointer"
-                  onClick={() => {
-                    navigate(
-                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-                        id: cell?.row?.original?.id?.toString(),
-                      }),
-                      { state: { status: cell?.row?.original?.payment_status } }
-                    );
-                  }}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip label="Approve Payment">
-              <span>
-                <Icon
-                  as={CheckIcon}
-                  fontSize={16}
-                  cursor="pointer"
-                  color={colors.green_light}
-                  onClick={() => {
-                    onClick(true, {
-                      id: cell.row.original.doctor_amount_detail?.id?.toString(),
-                      name:
-                        cell.row.original.user.first_name +
-                        " " +
-                        cell.row.original.user.last_name,
-                    });
-                  }}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip label="Reject Payment">
-              <span>
-                <Icon
-                  as={CloseIcon}
-                  fontSize={14}
-                  color={colors.red}
-                  cursor="pointer"
-                  onClick={() => {
-                    onClick(false, {
-                      id: cell.row.original.doctor_amount_detail?.id?.toString(),
-                      name:
-                        cell.row.original.user.first_name +
-                        " " +
-                        cell.row.original.user.last_name,
-                    });
-                  }}
-                />
-              </span>
-            </Tooltip>
+            <TableActions
+              onView={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                    id: cell?.row?.original?.id?.toString(),
+                  }),
+                  { state: { status: cell?.row?.original?.payment_status } }
+                );
+              }}
+            />
+            <TableActions
+              onAccept={() => {
+                onClick(true, {
+                  id: cell.row.original.doctor_amount_detail?.id?.toString(),
+                  name:
+                    cell.row.original.user.first_name +
+                    " " +
+                    cell.row.original.user.last_name,
+                });
+              }}
+            />
+            <TableActions
+              onReject={() => {
+                onClick(false, {
+                  id: cell.row.original.doctor_amount_detail?.id?.toString(),
+                  name:
+                    cell.row.original.user.first_name +
+                    " " +
+                    cell.row.original.user.last_name,
+                });
+              }}
+            />
           </HStack>
         );
       },
@@ -506,25 +574,37 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
+          // <HStack>
+          //   <Tooltip hasArrow placement="top" label="View Rate History">
+          //     <span>
+          //       <Icon
+          //         as={Show}
+          //         fontSize={20}
+          //         cursor="pointer"
+          //         mt={2}
+          //         onClick={() => {
+          //           navigate(
+          //             generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+          //               id: cell?.row?.original?.id?.toString(),
+          //             }),
+          //             { state: { status: cell?.row?.original?.payment_status } }
+          //           );
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          // </HStack>
           <HStack>
-            <Tooltip label="View Rate History">
-              <span>
-                <Icon
-                  as={Show}
-                  fontSize={20}
-                  cursor="pointer"
-                  mt={2}
-                  onClick={() => {
-                    navigate(
-                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-                        id: cell?.row?.original?.id?.toString(),
-                      }),
-                      { state: { status: cell?.row?.original?.payment_status } }
-                    );
-                  }}
-                />
-              </span>
-            </Tooltip>
+            <TableActions
+              onView={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                    id: cell?.row?.original?.id?.toString(),
+                  }),
+                  { state: { status: cell?.row?.original?.payment_status } }
+                );
+              }}
+            />
           </HStack>
         );
       },
@@ -633,25 +713,37 @@ export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
+          // <HStack>
+          //   <Tooltip hasArrow placement="top" label="View Rate History">
+          //     <span>
+          //       <Icon
+          //         as={Show}
+          //         fontSize={20}
+          //         cursor="pointer"
+          //         mt={2}
+          //         onClick={() => {
+          //           navigate(
+          //             generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+          //               id: cell?.row?.original?.id?.toString(),
+          //             }),
+          //             { state: { status: cell?.row?.original?.payment_status } }
+          //           );
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          // </HStack>
           <HStack>
-            <Tooltip label="View Rate History">
-              <span>
-                <Icon
-                  as={Show}
-                  fontSize={20}
-                  cursor="pointer"
-                  mt={2}
-                  onClick={() => {
-                    navigate(
-                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-                        id: cell?.row?.original?.id?.toString(),
-                      }),
-                      { state: { status: cell?.row?.original?.payment_status } }
-                    );
-                  }}
-                />
-              </span>
-            </Tooltip>
+            <TableActions
+              onView={() => {
+                navigate(
+                  generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                    id: cell?.row?.original?.id?.toString(),
+                  }),
+                  { state: { status: cell?.row?.original?.payment_status } }
+                );
+              }}
+            />
           </HStack>
         );
       },

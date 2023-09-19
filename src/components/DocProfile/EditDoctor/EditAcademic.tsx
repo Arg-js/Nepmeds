@@ -197,7 +197,7 @@ const EditAcademic = ({
         >
           <Text
             fontWeight={"700"}
-            fontSize={"18px"}
+            fontSize={"lg"}
             lineHeight={"22px"}
             color={colors?.primary_dark1}
           >
@@ -217,7 +217,7 @@ const EditAcademic = ({
                 <Text
                   color={colors?.white}
                   fontWeight={"400"}
-                  fontSize={"16px"}
+                  fontSize={"md"}
                   lineHeight={"19px"}
                 >
                   Edit
@@ -323,7 +323,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={2}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -333,7 +333,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -343,7 +343,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -353,7 +353,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -367,7 +367,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -377,7 +377,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -387,7 +387,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -397,7 +397,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -411,7 +411,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -421,7 +421,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
@@ -431,7 +431,7 @@ const EditAcademic = ({
                         <Box display={"flex"} alignItems={"center"} gap={3}>
                           <Text
                             fontWeight={"500"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
@@ -441,7 +441,7 @@ const EditAcademic = ({
                           </Text>
                           <Text
                             fontWeight={"600"}
-                            fontSize={"14px"}
+                            fontSize={"sm"}
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"
@@ -497,12 +497,13 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button onClick={handleCloseForm}>Cancel</Button>
+        <Button variant={"primaryOutline"} onClick={handleCloseForm}>
+          Cancel
+        </Button>
       </GridItem>
       <GridItem colSpan={1}>
         <Button
           // borderRadius="xl"
-          variant={"secondary"}
           type="submit"
           isLoading={isLoading}
         >

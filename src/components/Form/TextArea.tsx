@@ -23,7 +23,7 @@ const TextArea = ({
   return (
     <FormControl isInvalid={!!error} isRequired={isRequired}>
       {label && (
-        <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+        <FormLabel htmlFor={name} fontWeight={400} fontSize={"sm"}>
           {label}
           {required && <span style={{ color: colors.error }}>&nbsp;*</span>}
         </FormLabel>
@@ -37,7 +37,7 @@ const TextArea = ({
         {...rest}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
-      {error && <FormErrorMessage>{error}</FormErrorMessage>}
+      {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
     </FormControl>
   );
 };

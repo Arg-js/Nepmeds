@@ -83,15 +83,12 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       }}
     >
       <GridItem colSpan={1}>
-        <Button onClick={cancelButton}>Cancel</Button>
+        <Button variant={"primaryOutline"} onClick={cancelButton}>
+          Cancel
+        </Button>
       </GridItem>
       <GridItem colSpan={1}>
-        <Button
-          borderRadius="xl"
-          type="submit"
-          isLoading={isLoading}
-          variant={"secondary"}
-        >
+        <Button borderRadius="xl" type="submit" isLoading={isLoading}>
           Update
         </Button>
       </GridItem>
@@ -181,7 +178,7 @@ const EditPrimary = ({
         >
           <Text
             fontWeight={"700"}
-            fontSize={"18px"}
+            fontSize={"lg"}
             lineHeight={"22px"}
             color={colors?.primary_dark1}
           >
@@ -205,7 +202,7 @@ const EditPrimary = ({
               <Text
                 color={colors?.white}
                 fontWeight={"400"}
-                fontSize={"16px"}
+                fontSize={"md"}
                 lineHeight={"19px"}
               >
                 Edit
@@ -293,7 +290,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
                       flexBasis={{ base: "18%", xl: "24%" }}
@@ -303,7 +300,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       color={colors?.black}
                     >
                       :&nbsp;{doctorProfileData?.user?.mobile_number}
@@ -312,7 +309,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -322,7 +319,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -336,7 +333,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -347,7 +344,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -358,7 +355,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -368,7 +365,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -383,7 +380,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -394,7 +391,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -404,7 +401,7 @@ const EditPrimary = ({
                   <Flex gap={{ base: 3, xl: 0 }}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -415,7 +412,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                       flexBasis={"50%"}
@@ -440,7 +437,7 @@ const EditPrimary = ({
             >
               <Text
                 fontWeight={"500"}
-                fontSize={"14px"}
+                fontSize={"sm"}
                 lineHeight={"16px"}
                 letterSpacing={"0.4px"}
                 color={"#4D4D4D"}
@@ -450,7 +447,7 @@ const EditPrimary = ({
 
               <Text
                 fontWeight={"500"}
-                fontSize={"16px"}
+                fontSize={"md"}
                 lineHeight={"19px"}
                 color={colors?.black}
                 display="flex"
@@ -475,7 +472,7 @@ const EditPrimary = ({
             <Box mt={5}>
               <Text
                 fontWeight={"500"}
-                fontSize={"14px"}
+                fontSize={"sm"}
                 lineHeight={"16px"}
                 letterSpacing={"0.4px"}
                 color={"#4D4D4D"}
@@ -516,7 +513,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -532,7 +529,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -542,7 +539,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -551,7 +548,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -561,7 +558,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -570,7 +567,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -584,7 +581,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -595,7 +592,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -605,7 +602,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -614,7 +611,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -624,7 +621,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -633,7 +630,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -647,7 +644,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -657,7 +654,7 @@ const EditPrimary = ({
 
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >
@@ -667,7 +664,7 @@ const EditPrimary = ({
                   <Box display={"flex"} alignItems={"center"} gap={3}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
@@ -676,7 +673,7 @@ const EditPrimary = ({
                     </Text>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"19px"}
                       color={colors?.black}
                     >

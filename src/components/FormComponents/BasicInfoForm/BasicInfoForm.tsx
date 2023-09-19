@@ -1,16 +1,12 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
-import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
-
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { title } from "@nepMeds/utils/index";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { fileToString } from "@nepMeds/utils/fileToString";
@@ -27,6 +23,8 @@ export const BasicInfoForm = ({
     register,
     formState: { errors },
     getValues,
+    setValue,
+    watch,
   } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
@@ -53,6 +51,14 @@ export const BasicInfoForm = ({
     return value === password || "Passwords do not match.";
   };
 
+  const uploadedImage = watch("profile_picture");
+  const checkPictureSize = () => {
+    if (uploadedImage && uploadedImage[0].size / 1048576 > 1) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <Grid templateColumns={"repeat(4, 1fr)"} gap={4}>
       <GridItem
@@ -69,18 +75,24 @@ export const BasicInfoForm = ({
           upload_text="Upload Image"
           background="#F9FAFB"
           helperText={false}
+          error={
+            selectedImage && checkPictureSize() && "File is greater than 1 MB"
+          }
+          setValue={setValue}
         />
       </GridItem>
 
       <GridItem colSpan={3}>
-        <Select
+        <FloatingLabelInput
           label="Title"
           name="title"
           required
           register={register}
-          defaultValue={doctorProfileData?.title ?? "Mr"}
-          options={title}
-          style={{ background: colors.forminput, border: "none" }}
+          defaultValue={doctorProfileData?.title}
+          style={{
+            background: colors.forminput,
+            border: "none",
+          }}
           error={errors.title?.message}
           rules={{
             required: "Title is required.",

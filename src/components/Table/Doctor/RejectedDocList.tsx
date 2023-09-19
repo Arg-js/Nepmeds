@@ -15,7 +15,7 @@ import {
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { rejectedColumns } from "@nepMeds/components/DataTable/columns";
+import { rejectedColumns } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -155,6 +155,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
             <Input
               w={40}
               h={8}
+              placeholder="Search"
               onChange={({ target: { value } }) => setSearchFilter(value)}
             />
           </InputGroup>

@@ -13,9 +13,9 @@ const DoctorCardSkeleton = () => {
           </GridItem>
           <GridItem colStart={1}>
             <Flex direction="column" gap={3}>
-              {[1, 2].map(item => (
+              {Array.from({ length: 2 }, (_, index) => (
                 <SkeletonText
-                  key={item}
+                  key={index}
                   noOfLines={2}
                   spacing="4"
                   skeletonHeight="2"

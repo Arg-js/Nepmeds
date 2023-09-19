@@ -45,6 +45,7 @@ const MultiSelect = ({
   multiValue,
   variant,
   error,
+  ...rest
 }: IMultiSelect) => {
   const { t } = useTranslation();
 
@@ -69,7 +70,13 @@ const MultiSelect = ({
             variant={variant ?? "floating"}
           >
             {label && (
-              <FormLabel htmlFor={name} fontWeight={400} fontSize={"14px"}>
+              <FormLabel
+                htmlFor={name}
+                fontWeight={400}
+                fontSize={"sm"}
+                color={colors.black_50}
+                zIndex={rest.isDisabled ? 0 : 1}
+              >
                 {label}
                 {required && (
                   <span style={{ color: colors.error }}>&nbsp;*</span>
@@ -94,6 +101,7 @@ const MultiSelect = ({
                 control: baseStyles => ({
                   ...baseStyles,
                   background: colors.forminput,
+                  color: colors.black_50,
                   // paddingTop: 10,
                   minHeight: "35px",
                   borderRadius: "8px",
@@ -108,7 +116,9 @@ const MultiSelect = ({
 
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
             {fieldState.error?.message && (
-              <FormErrorMessage>{t(fieldState.error.message)}</FormErrorMessage>
+              <FormErrorMessage fontSize={"xs"}>
+                {t(fieldState.error.message)}
+              </FormErrorMessage>
             )}
           </FormControl>
         );

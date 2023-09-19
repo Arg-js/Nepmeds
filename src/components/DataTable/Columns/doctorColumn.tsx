@@ -1,16 +1,17 @@
-import Icon from "@chakra-ui/icon";
-import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
-import { Box, HStack } from "@chakra-ui/layout";
+// import Icon from "@chakra-ui/icon";
+// import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
+import { Box } from "@chakra-ui/layout";
 import { Tag } from "@chakra-ui/tag";
-import { Tooltip } from "@chakra-ui/tooltip";
+// import { Tooltip } from "@chakra-ui/tooltip";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/table-core";
-import { Show } from "react-iconly";
+// import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
+import TableActions from "../TableActions";
 
 interface PendingCellContextSearch {
   user: {
@@ -67,7 +68,7 @@ export const pendingColumns = (
             <Tag
               key={data.id}
               color={colors.main}
-              bg={colors.lightish_blue}
+              // bg={colors.lightish_blue}
               m={"1px"}
             >
               {data.name}
@@ -94,63 +95,90 @@ export const pendingColumns = (
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
-          <HStack>
-            <Tooltip label="View Doctor">
-              <span>
-                <Icon
-                  as={Show}
-                  fontSize={20}
-                  mt={2}
-                  cursor="pointer"
-                  onClick={() => {
-                    navigate(
-                      generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                        id: cell.row.original.id,
-                      })
-                    );
-                  }}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip label="Approve Doctor">
-              <span>
-                <Icon
-                  as={CheckIcon}
-                  fontSize={16}
-                  cursor="pointer"
-                  color={colors.green_light}
-                  onClick={() => {
-                    onClick(true, {
-                      id: cell.row.original.id,
-                      name:
-                        cell.row.original.user.first_name +
-                        " " +
-                        cell.row.original.user.last_name,
-                    });
-                  }}
-                />
-              </span>
-            </Tooltip>
-            <Tooltip label="Reject Doctor">
-              <span>
-                <Icon
-                  as={CloseIcon}
-                  fontSize={14}
-                  color={colors.red}
-                  cursor="pointer"
-                  onClick={() => {
-                    onClick(false, {
-                      id: cell.row.original.id,
-                      name:
-                        cell.row.original.user.first_name +
-                        " " +
-                        cell.row.original.user.last_name,
-                    });
-                  }}
-                />
-              </span>
-            </Tooltip>
-          </HStack>
+          // <HStack>
+          //   <Tooltip hasArrow placement="top" label="View Doctor">
+          //     <span>
+          //       <Icon
+          //         as={Show}
+          //         fontSize={20}
+          //         mt={2}
+          //         cursor="pointer"
+          //         onClick={() => {
+          //           navigate(
+          //             generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+          //               id: cell.row.original.id,
+          //             })
+          //           );
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          //   <Tooltip hasArrow placement="top" label="Approve Doctor">
+          //     <span>
+          //       <Icon
+          //         as={CheckIcon}
+          //         fontSize={16}
+          //         cursor="pointer"
+          //         color={colors.green_light}
+          //         onClick={() => {
+          //           onClick(true, {
+          //             id: cell.row.original.id,
+          //             name:
+          //               cell.row.original.user.first_name +
+          //               " " +
+          //               cell.row.original.user.last_name,
+          //           });
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          //   <Tooltip hasArrow placement="top" label="Reject Doctor">
+          //     <span>
+          //       <Icon
+          //         as={CloseIcon}
+          //         fontSize={14}
+          //         color={colors.red}
+          //         cursor="pointer"
+          //         onClick={() => {
+          //           onClick(false, {
+          //             id: cell.row.original.id,
+          //             name:
+          //               cell.row.original.user.first_name +
+          //               " " +
+          //               cell.row.original.user.last_name,
+          //           });
+          //         }}
+          //       />
+          //     </span>
+          //   </Tooltip>
+          // </HStack>
+          <TableActions
+            onView={() =>
+              navigate(
+                generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                  id: cell.row.original.id,
+                })
+              )
+            }
+            onAccept={() =>
+              onClick(true, {
+                id: cell.row.original.id,
+                name:
+                  cell.row.original.user.first_name +
+                  " " +
+                  cell.row.original.user.last_name,
+              })
+            }
+            onReject={() =>
+              onClick(false, {
+                id: cell.row.original.id,
+                name:
+                  cell.row.original.user.first_name +
+                  " " +
+                  cell.row.original.user.last_name,
+              })
+            }
+          />
         );
       },
     },
@@ -224,20 +252,27 @@ export const approvedColumns = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
-          <>
-            <Icon
-              as={Show}
-              fontSize={20}
-              cursor="pointer"
-              onClick={() => {
-                navigate(
-                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                    id: cell.row.original.id,
-                  })
-                );
-              }}
-            />
-          </>
+          // <Icon
+          //   as={Show}
+          //   fontSize={20}
+          //   cursor="pointer"
+          //   onClick={() => {
+          //     navigate(
+          //       generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+          //         id: cell.row.original.id,
+          //       })
+          //     );
+          //   }}
+          // />
+          <TableActions
+            onView={() => {
+              navigate(
+                generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                  id: cell.row.original.id,
+                })
+              );
+            }}
+          />
         );
       },
     },
@@ -319,20 +354,29 @@ export const registeredColumns = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
-          <HStack>
-            <Icon
-              as={Show}
-              fontSize={20}
-              cursor="pointer"
-              onClick={() => {
-                navigate(
-                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                    id: cell.row.original.id,
-                  })
-                );
-              }}
-            />
-          </HStack>
+          // <HStack>
+          //   <Icon
+          //     as={Show}
+          //     fontSize={20}
+          //     cursor="pointer"
+          //     onClick={() => {
+          //       navigate(
+          //         generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+          //           id: cell.row.original.id,
+          //         })
+          //       );
+          //     }}
+          //   />
+          // </HStack>
+          <TableActions
+            onView={() => {
+              navigate(
+                generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                  id: cell.row.original.id,
+                })
+              );
+            }}
+          />
         );
       },
     },
@@ -428,20 +472,29 @@ export const rejectedColumns = (navigate: NavigateFunction) => {
       accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
-          <HStack>
-            <Icon
-              as={Show}
-              fontSize={20}
-              cursor="pointer"
-              onClick={() => {
-                navigate(
-                  generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-                    id: cell.row.original.id,
-                  })
-                );
-              }}
-            />
-          </HStack>
+          // <HStack>
+          //   <Icon
+          //     as={Show}
+          //     fontSize={20}
+          //     cursor="pointer"
+          //     onClick={() => {
+          //       navigate(
+          //         generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+          //           id: cell.row.original.id,
+          //         })
+          //       );
+          //     }}
+          //   />
+          // </HStack>
+          <TableActions
+            onView={() => {
+              navigate(
+                generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+                  id: cell.row.original.id,
+                })
+              );
+            }}
+          />
         );
       },
     },

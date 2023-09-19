@@ -11,14 +11,14 @@ const ConsultationStepSection = () => {
         templateColumns={{
           base: "repeat(1, 1fr)",
           md: "repeat(1, 1fr)",
-          xl: "repeat(2, 1fr)",
+          lg: "repeat(2, 1fr)",
         }}
         gap={10}
       >
         {ConsultationSteps.map(consultationStep => {
           return (
             <GridItem
-              width={{ base: "350px", md: "600px" }}
+              colSpan={{ base: 1, md: 2, lg: 1 }}
               key={consultationStep.id}
               mt={4}
             >
@@ -27,8 +27,10 @@ const ConsultationStepSection = () => {
                 gap={8}
                 alignItems={"center"}
               >
-                <GridItem>{consultationStep.image}</GridItem>
-                <GridItem>
+                <GridItem colSpan={{ base: 2, md: 1 }}>
+                  {consultationStep.image}
+                </GridItem>
+                <GridItem colSpan={{ base: 2, md: 1 }}>
                   <Flex direction={"column"}>
                     <Text
                       fontWeight={700}
