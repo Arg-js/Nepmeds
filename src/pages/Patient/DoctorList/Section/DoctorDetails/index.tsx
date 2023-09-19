@@ -53,8 +53,6 @@ const defaultValues = {
   availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
 };
 
-const boxShadow = ` rgba(0, 0, 0, 0.05) 0px 10px 24px , ${colors.primary} 0px 0px 0px 0.5px`;
-
 const schema = Yup.object({
   full_name: Yup.string().required("This field is required"),
   symptoms: Yup.array()
@@ -152,10 +150,10 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                boxShadow={boxShadow}
+                border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
-                  height: "auto",
+                  minHeight: "647px",
                   borderTopRadius: 3,
                 }}
               >
@@ -164,7 +162,7 @@ const DoctorDetails: React.FC<{
                     <Flex direction={"column"} alignItems={"center"} gap={2}>
                       <Text
                         fontWeight={600}
-                        fontSize={"14px"}
+                        fontSize={"sm"}
                         color={colors.dark_blue}
                       >
                         Doctor’s Profile
@@ -175,13 +173,13 @@ const DoctorDetails: React.FC<{
                       />
                       <Text
                         fontWeight={600}
-                        fontSize={"16px"}
+                        fontSize={"md"}
                         textTransform="capitalize"
                       >
                         {doctorInfo?.name}
                       </Text>
                       <Box textAlign={"center"}>
-                        <Text fontWeight={400} fontSize={"12px"}>
+                        <Text fontWeight={400} fontSize={"xs"}>
                           {doctorInfo?.specialization_names &&
                             doctorInfo?.specialization_names.map(
                               (specializaion_name, index) => {
@@ -196,7 +194,7 @@ const DoctorDetails: React.FC<{
                               }
                             )}
                         </Text>
-                        <Text fontWeight={400} fontSize={"12px"}>
+                        <Text fontWeight={400} fontSize={"xs"}>
                           NMC No: {doctorInfo?.medical_licence_number || "N/A"}
                         </Text>
                       </Box>
@@ -230,7 +228,7 @@ const DoctorDetails: React.FC<{
                       </Text>
                       <Text
                         fontWeight={500}
-                        fontSize={"16px"}
+                        fontSize={"md"}
                         color={colors.forest_green}
                       >
                         NRs. {doctorInfo.schedule_rate}
@@ -238,10 +236,6 @@ const DoctorDetails: React.FC<{
                     </Flex>
                     <Divider borderWidth={"0.5px"} />
                     <Flex alignSelf={"flex-end"}>
-                      {/* TODO: add this */}
-                      {/* <Text fontWeight={700} fontSize={"13px"}>
-                      Available time
-                    </Text> */}
                       <FormControl
                         control={"input"}
                         label={""}
@@ -256,7 +250,7 @@ const DoctorDetails: React.FC<{
                           width: "180px",
                           borderRadius: "9px",
                         }}
-                        // Restricts selection of past date in Datepicker
+                        // RESTRICTS SELECTION of PAST DATE in Datepicker
                         min={today}
                         required
                       />
@@ -325,14 +319,11 @@ const DoctorDetails: React.FC<{
             <>
               <WrapperBox
                 backgroundColor={colors.white}
-                boxShadow={boxShadow}
+                border={`2px solid ${colors.gray_border}`}
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
                   height: "auto",
-                  // width: { base: "auto" },
-                  // width: "clamp(200px, 100%, 100%)",
-                  // maxWidth: "400px",
                   borderTopRadius: 3,
                 }}
               >
@@ -346,7 +337,7 @@ const DoctorDetails: React.FC<{
                         />
                         <Text
                           fontWeight={600}
-                          fontSize={"16px"}
+                          fontSize={"md"}
                           color={colors.dark_blue}
                         >
                           Appointment Details
@@ -355,12 +346,12 @@ const DoctorDetails: React.FC<{
                       <Flex direction={"column"} gap={1}>
                         <Text
                           fontWeight={600}
-                          fontSize={"16px"}
+                          fontSize={"md"}
                           textTransform="capitalize"
                         >
                           DR. {doctorInfo?.name}
                         </Text>
-                        <Text fontWeight={400} fontSize={"12px"}>
+                        <Text fontWeight={400} fontSize={"xs"}>
                           {doctorInfo?.specialization_names &&
                             doctorInfo?.specialization_names.map(
                               (specializaion_name, index) => {
@@ -375,14 +366,14 @@ const DoctorDetails: React.FC<{
                               }
                             )}
                         </Text>
-                        <Text fontWeight={400} fontSize={"12px"}>
+                        <Text fontWeight={400} fontSize={"xs"}>
                           NMC No: {doctorInfo?.medical_licence_number || "N/A"}
                         </Text>
                       </Flex>
                       <Divider borderWidth={"0.5px"} />
                     </Flex>
                     <Flex gap={5} direction={"column"} px={4}>
-                      <Text fontWeight={600} fontSize={"16px"}>
+                      <Text fontWeight={600} fontSize={"md"}>
                         Please enter patient information
                       </Text>
                       <FormControl
@@ -502,33 +493,26 @@ const DoctorDetails: React.FC<{
         </form>
       ) : (
         <WrapperBox
-          // width={"560px"}
           backgroundColor={colors.white}
-          boxShadow={boxShadow}
+          border={`2px solid ${colors.gray_border}`}
           style={{
             px: 4,
             py: 48,
-            // height: "567px",
+            minHeight: "647px",
             width: { base: "auto" },
           }}
           borderRadius={"3px"}
         >
-          <VStack
-            justifyContent={"center"}
-            alignContent={"center"}
-            // width={"544px"}
-            // height={"700px"}
-            // mt={30}
-          >
+          <VStack justifyContent={"center"} alignContent={"center"}>
             {isFetching ? (
               <Spinner />
             ) : (
               <>
                 <NoDataIcon width={"full"} />
-                <Text fontWeight={700} fontSize={"16px"} color={colors.red_700}>
+                <Text fontWeight={700} fontSize={"md"} color={colors.red_700}>
                   There are no details here.
                 </Text>
-                <Text fontWeight={400} fontSize={"12px"} textAlign="center">
+                <Text fontWeight={400} fontSize={"xs"} textAlign="center">
                   Please Click on the doctor list to view detail doctor`&apos;`s
                   profile.
                 </Text>

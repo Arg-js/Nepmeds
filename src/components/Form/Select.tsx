@@ -60,7 +60,7 @@ const Select = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           zIndex={rest.isDisabled ? 0 : 1}
           color={colors.black_50}
         >

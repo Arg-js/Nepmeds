@@ -416,7 +416,7 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={4}>
-        <Text fontWeight={100} fontSize={"20px"}>
+        <Text fontWeight={100} fontSize={"xl"}>
           Id Detail
         </Text>
       </GridItem>
@@ -510,7 +510,7 @@ const PrimaryInfo = ({
         />
       </GridItem>
       <GridItem colSpan={4}>
-        <Text fontWeight={100} fontSize={"20px"}>
+        <Text fontWeight={100} fontSize={"xl"}>
           Address Details
         </Text>
       </GridItem>

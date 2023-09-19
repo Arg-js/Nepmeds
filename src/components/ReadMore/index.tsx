@@ -13,14 +13,14 @@ const ReadMoreComponent = ({ bio_detail }: { bio_detail: string }) => {
 
   return (
     <Box>
-      <Text fontWeight={400} fontSize={"12px"}>
+      <Text fontWeight={400} fontSize={"xs"}>
         {displayedText}
         {getArray(bio_detail).length > 20 && (
           <Button
             variant={"link"}
             onClick={() => setIsReadMore(!isReadMore)}
             fontWeight={400}
-            fontSize={"12px"}
+            fontSize={"xs"}
             color={colors.primary}
             mx={1}
           >

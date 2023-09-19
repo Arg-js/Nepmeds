@@ -73,7 +73,7 @@ const MultiSelect = ({
               <FormLabel
                 htmlFor={name}
                 fontWeight={400}
-                fontSize={"14px"}
+                fontSize={"sm"}
                 color={colors.black_50}
                 zIndex={rest.isDisabled ? 0 : 1}
               >

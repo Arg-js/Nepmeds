@@ -149,7 +149,7 @@ const EditBasic = ({
               <Text
                 color={colors?.white}
                 fontWeight={"400"}
-                fontSize={"16px"}
+                fontSize={"md"}
                 lineHeight={"19px"}
               >
                 Edit
@@ -247,7 +247,7 @@ const EditBasic = ({
               <Box width={"80%"}>
                 <Text
                   fontWeight={"400"}
-                  fontSize={"16px"}
+                  fontSize={"md"}
                   lineHeight={"28px"}
                   color={"#5B5B5B"}
                 >

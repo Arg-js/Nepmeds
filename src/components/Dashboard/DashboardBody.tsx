@@ -66,11 +66,7 @@ const DashboardBody = () => {
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Text
-              color={colors.red}
-              fontSize={"16px"}
-              justifyContent={"center"}
-            >
+            <Text color={colors.red} fontSize={"md"} justifyContent={"center"}>
               Congratulations on the successful verification of your profile! To
               fully utilize our platform`s functionality, please set an
               estimated charge for appointments by{" "}
@@ -109,7 +105,7 @@ const DashboardBody = () => {
                   <Box pl={"18px"}>
                     <Text
                       fontWeight={"500"}
-                      fontSize={"14px"}
+                      fontSize={"sm"}
                       lineHeight={"24px"}
                       letterSpacing={"-0.02em"}
                       color={colors?.primary_blue}
@@ -118,7 +114,7 @@ const DashboardBody = () => {
                     </Text>
 
                     <Text
-                      fontSize={"24px"}
+                      fontSize={"2xl"}
                       fontWeight={"600"}
                       lineHeight={"32px"}
                       color={colors?.gray_700}

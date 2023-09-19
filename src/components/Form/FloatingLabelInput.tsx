@@ -59,6 +59,7 @@ const FloatingLabelInput = ({
         {...register(name, rules)}
         {...rest}
         placeholder=""
+        mt={1}
         h={14}
         pt={4}
         pr={8}
@@ -75,7 +76,7 @@ const FloatingLabelInput = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           color={colors.black_50}
         >
           {label}
@@ -86,7 +87,7 @@ const FloatingLabelInput = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           opacity={"1 !important"}
         >
           {labelDisabled}
