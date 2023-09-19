@@ -3,6 +3,8 @@ import {
   Checkbox,
   Divider,
   Flex,
+  Grid,
+  GridItem,
   Input,
   InputGroup,
   InputLeftElement,
@@ -160,40 +162,47 @@ const DoctorListFilter: React.FC<{
             </Text>
           </Flex>
           <Divider />
-          <Box>
-            <Text fontWeight={600} fontSize={"sm"} mb={3}>
-              From Date:
-            </Text>
-            <Input
-              type={"date"}
-              ref={dateFromRef}
-              onChange={e => {
-                setDateParams({ ...dateParams, from_date: e.target.value });
-                setPageParams({ ...pageParams, page: 1 });
-              }}
-              // w={"min-content"}
-              // size={"sm"}
-              borderRadius={"6px"}
-            />
-          </Box>
-          {/* <Text>-</Text> */}
-          <Box>
-            <Text fontWeight={600} fontSize={"sm"} mb={3}>
-              To Date:
-            </Text>
+          {/* TODO: the content will overflow with max-content */}
+          <Grid templateColumns={{ md: "1fr", xl: "max-content 1fr" }} gap={4}>
+            <GridItem>
+              <Text fontWeight={600} fontSize={"sm"}>
+                From :
+              </Text>
+            </GridItem>
+            <GridItem>
+              <Input
+                type={"date"}
+                ref={dateFromRef}
+                onChange={e => {
+                  setDateParams({ ...dateParams, from_date: e.target.value });
+                  setPageParams({ ...pageParams, page: 1 });
+                }}
+                w={"min-content"}
+                size={"sm"}
+                borderRadius={"6px"}
+              />
+            </GridItem>
+            <GridItem>
+              <Text fontWeight={600} fontSize={"sm"}>
+                To :
+              </Text>
+            </GridItem>
 
-            <Input
-              type={"date"}
-              ref={dateToRef}
-              onChange={e => {
-                setDateParams({ ...dateParams, to_date: e.target.value });
-                setPageParams({ ...pageParams, page: 1 });
-              }}
-              // w={"min-content"}
-              // size={"sm"}
-              borderRadius={"6px"}
-            />
-          </Box>
+            {/* <Text>-</Text> */}
+            <GridItem>
+              <Input
+                type={"date"}
+                ref={dateToRef}
+                onChange={e => {
+                  setDateParams({ ...dateParams, to_date: e.target.value });
+                  setPageParams({ ...pageParams, page: 1 });
+                }}
+                w={"min-content"}
+                size={"sm"}
+                borderRadius={"6px"}
+              />
+            </GridItem>
+          </Grid>
           <Flex gap={2} justifyContent="center" wrap={"wrap"}></Flex>
           <Box>
             <Text fontWeight={600} fontSize={"16px"} mb={3}>

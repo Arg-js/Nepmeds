@@ -169,9 +169,10 @@ const DoctorConsultation = () => {
           {/* ADVERTISEMENT SECTION */}
           <Box my={{ base: 5, md: 10 }}>
             <Image
+              width="100%"
               src={advertisement1}
               alt="advertisement"
-              objectFit={"cover"}
+              objectFit="contain"
             />
           </Box>
 
@@ -215,7 +216,7 @@ const DoctorConsultation = () => {
 
           {/* ADVERTISEMENT SECTION */}
           <Box my={{ base: 5, md: 10 }}>
-            <Image src={advertisement2} alt="advertisement" />
+            <Image width={"100%"} src={advertisement2} alt="advertisement" />
           </Box>
 
           {/* WHY CHOOSE US SECTION */}
