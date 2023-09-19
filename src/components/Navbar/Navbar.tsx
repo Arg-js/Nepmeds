@@ -35,7 +35,7 @@ const Navbar = () => {
     <>
       <Stack p={"15px 21px"} background="white">
         <HStack justify={"space-between"} alignItems={"center"}>
-          <Text fontWeight={"500"} fontSize={"20px"} color={colors.black_60}>
+          <Text fontWeight={"500"} fontSize={"xl"} color={colors.black_60}>
             Dashboard
           </Text>
           <HStack justifyContent={"end"}>

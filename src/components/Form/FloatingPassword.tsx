@@ -102,7 +102,7 @@ const FloatingPassword = ({
         <FormLabel
           htmlFor={name}
           fontWeight={400}
-          fontSize={"14px"}
+          fontSize={"sm"}
           opacity={"1 !important"}
         >
           {labelDisabled}

@@ -177,7 +177,7 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
             />
             <Text
               fontWeight={"400"}
-              fontSize={"14px"}
+              fontSize={"sm"}
               lineHeight={"17px"}
               color={
                 isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
@@ -197,7 +197,7 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
                   to={item?.link}
                   key={item?.text}
                   fontWeight={"400"}
-                  fontSize={"14px"}
+                  fontSize={"sm"}
                   lineHeight={"17px"}
                   color={colors?.black_50}
                   ml={"50px"}
@@ -234,7 +234,7 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
             />
             <Text
               fontWeight={"400"}
-              fontSize={"14px"}
+              fontSize={"sm"}
               lineHeight={"17px"}
               color={colors?.black_50}
               ml={"18px"}
