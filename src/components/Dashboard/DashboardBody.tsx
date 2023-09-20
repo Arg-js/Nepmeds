@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  Container,
   Flex,
   Image,
   SimpleGrid,
@@ -18,6 +17,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "../Table/Doctor/PendingDocList";
+import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 
 interface IDashboardData {
   title: string;
@@ -138,10 +138,14 @@ const DashboardBody = () => {
         <Calendar />
       </Box>
       {profileData?.data?.is_superuser && (
-        <Container maxW={"container.2xl"}>
-          <Text fontWeight={"bold"}>Pending Doctors</Text>
-          <PendingDocList showFilter={false} />
-        </Container>
+        <WrapperBox
+          style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
+        >
+          <>
+            <Text fontWeight={"bold"}>Pending Doctors</Text>
+            <PendingDocList showFilter={false} />
+          </>
+        </WrapperBox>
       )}
     </Box>
   );

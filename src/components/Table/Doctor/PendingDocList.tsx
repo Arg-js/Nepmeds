@@ -1,15 +1,12 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
-  // Badge,
   Box,
   Button,
-  Center,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -46,7 +43,7 @@ const schema = yup.object().shape({
 });
 
 const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
-  const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
+  const [pageParams, setPageParams] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
   });
@@ -72,10 +69,10 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data, isFetching, isSuccess } = useDoctorList({
+  const { data, isFetching } = useDoctorList({
     ...filterValue,
-    page_no: pageIndex + 1,
-    page_size: pageSize,
+    page_no: pageParams.pageIndex + 1,
+    page_size: pageParams.pageSize,
     name: debouncedInputValue,
     enabled: profileData?.data?.is_superuser,
   });
@@ -325,24 +322,18 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           </HStack>
         )}
       </HStack>
-      {isSuccess && !isFetching && (
-        <DataTable
-          columns={pendingColumns(navigate, onActionClick)}
-          data={data?.results ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
-      {isFetching && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
-      {data?.count === 0 && <Box>No Result Found!</Box>}
+
+      <DataTable
+        columns={pendingColumns(navigate, onActionClick, pageParams)}
+        isLoading={isFetching}
+        data={data?.results ?? []}
+        pagination={{
+          manual: true,
+          pageParams,
+          pageCount: data?.page_count,
+          onChangePagination: setPageParams,
+        }}
+      />
     </>
   );
 };

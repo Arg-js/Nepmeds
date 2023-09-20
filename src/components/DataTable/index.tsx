@@ -27,8 +27,8 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
-import NoData from "../NoData";
-import Pagination from "./Pagination";
+import NoData from "@nepMeds/components/NoData";
+import Pagination from "@nepMeds/components/DataTable/Pagination";
 export type DataTableProps = {
   data: Record<string, any>[];
   // columns: ColumnDef<any, any>[];
