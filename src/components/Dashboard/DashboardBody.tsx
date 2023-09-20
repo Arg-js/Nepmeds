@@ -134,7 +134,6 @@ const DashboardBody = () => {
         display={"flex"}
         justifyContent={"flex-end"}
       >
-        {/* To do : remove calendar border color */}
         <Calendar />
       </Box>
       {profileData?.data?.is_superuser && (
