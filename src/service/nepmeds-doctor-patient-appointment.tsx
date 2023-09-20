@@ -18,6 +18,12 @@ export interface IGetAppointmentReqRes {
   full_name: string;
   gender: Gender;
   symptoms: ISymptom[];
+  extra_data: {
+    cancelled_availability: {
+      to_time: string;
+      from_time: string;
+    };
+  };
   created_at: string;
   availability: Availability;
   status: string;
