@@ -8,6 +8,7 @@ import { CellProps } from "react-table";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { colors } from "@nepMeds/theme/colors";
 import { STATUSTYPE } from "@nepMeds/config/enum";
+import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 
 const statusInfo: {
   [key: string]: {
@@ -68,6 +69,20 @@ export const column = ({
         },
       },
       { header: "Patient Name", accessorKey: "full_name" },
+      {
+        header: "Appointment Time",
+        cell: ({
+          row,
+        }: CellProps<{
+          availability: { from_time: string; to_time: string };
+        }>) => {
+          return row.original?.availability
+            ? `${removeSeconds(
+                row.original?.availability?.from_time
+              )}-${removeSeconds(row.original?.availability?.to_time)}`
+            : "N/A";
+        },
+      },
       {
         header: "Symptoms",
         accessorKey: "symptoms",
