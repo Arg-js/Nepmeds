@@ -18,7 +18,7 @@ const Appointment: React.FC = () => {
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
       <Tabs
         variant="unstyled"
-        fontSize="16px"
+        fontSize="md"
         fontFamily={"Inter"}
         index={tabIndex}
         onChange={index => {
