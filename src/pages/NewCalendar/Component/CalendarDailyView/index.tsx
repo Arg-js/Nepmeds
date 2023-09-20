@@ -71,14 +71,12 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button variant="outline" onClick={onAddEventClose} flex={1}>
+            <Button variant="primaryOutline" onClick={onAddEventClose} flex={1}>
               Discard
             </Button>
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onSubmit)}
-              background={colors.primary}
-              color={colors.white}
               isLoading={isLoading}
             >
               Save
