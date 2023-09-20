@@ -74,6 +74,10 @@ export const api = {
   },
   doctorUserRole: "/dashboard/doctor-management/",
   patientUserRole: "/dashboard/patient-management/",
+  userRole: {
+    doctorStatus: "/dashboard/doctor-management/:id/",
+    patientStatus: "/dashboard/patient-status-update/:id/",
+  },
   doctor: {
     appointments: {
       get: "/doctor-consult/new-appointment-request/",

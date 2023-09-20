@@ -1,15 +1,20 @@
-import { Box, Switch, Tag, Text } from "@chakra-ui/react";
-import { IUserRoleAdmin } from "@nepMeds/service/nepmeds-admin-userrole";
-import { colors } from "@nepMeds/theme/colors";
+import { Switch, Text } from "@chakra-ui/react";
+import {
+  IUserRoleAdmin,
+  useUpdateDoctorStatus,
+  useUpdatePatientStatus,
+} from "@nepMeds/service/nepmeds-admin-userrole";
 import { CellContext } from "@tanstack/react-table";
+import { useState } from "react";
+import TableActions from "./TableActions";
 
 interface IUserPatient {
   id: string;
   patient_name: string;
   mobile_number: number;
   email: string;
+  status: boolean;
 }
-
 //Appointment Column
 export const doctorRoleColumn = () => {
   return [
@@ -29,37 +34,14 @@ export const doctorRoleColumn = () => {
     },
 
     {
-      header: "Specialization",
-      accessorKey: "specialization",
+      header: "NMC No.",
+      accessorKey: "nmc_no",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag
-              key={data.id}
-              color={colors.main}
-              bg={colors.lightish_blue}
-              m={"1px"}
-            >
-              {data.name}
-            </Tag>
-          )
-        );
-        return (
-          <Box
-            display={"flex"}
-            flexWrap={"wrap"}
-            width={"fit-content"}
-            p={1}
-            // background={colors.grey}
-            // borderRadius={20}
-          >
-            <p>{specialization}</p>
-          </Box>
-        );
+        return row?.original?.nmc_no;
       },
     },
     {
-      header: "Payment Approval Date",
+      header: "Regristration Approval Date",
       accessorKey: "patient_name",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
         return (
@@ -69,7 +51,13 @@ export const doctorRoleColumn = () => {
     },
 
     {
-      header: "Contact No.",
+      header: "Payment Approval Date",
+      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
+        return row?.original?.payment_approved_date;
+      },
+    },
+    {
+      header: "Contact",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
         return <Text pl={"12px"}>{row?.original?.mobile_number}</Text>;
       },
@@ -83,17 +71,66 @@ export const doctorRoleColumn = () => {
     {
       header: "Status",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return <Switch isChecked={row?.original?.status} size="sm" />;
+        const [status, setStatus] = useState(row?.original?.status);
+        const { mutate } = useUpdateDoctorStatus();
+
+        const handleStatus = (is_active: boolean) => {
+          mutate({ id: row.original?.id, is_active });
+        };
+
+        return (
+          <Switch
+            size="lg"
+            isChecked={status}
+            onChange={e => {
+              setStatus(e.target.checked);
+              handleStatus(e.target.checked);
+            }}
+          />
+        );
       },
     },
     {
-      header: "Action",
+      header: "Actions",
+      accessorKey: "actions",
       cell: () => {
-        return "-";
+        return (
+          <TableActions
+            onView={
+              () => ""
+              // navigate(
+              //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              //     id: cell.row.original.id,
+              //   })
+              // )
+            }
+            onAccept={
+              () => ""
+              // onClick(true, {
+              //   id: cell.row.original.id,
+              //   name:
+              //     cell.row.original.user.first_name +
+              //     " " +
+              //     cell.row.original.user.last_name,
+              // })
+            }
+            onReject={
+              () => ""
+              // onClick(false, {
+              //   id: cell.row.original.id,
+              //   name:
+              //     cell.row.original.user.first_name +
+              //     " " +
+              //     cell.row.original.user.last_name,
+              // })
+            }
+          />
+        );
       },
     },
   ];
 };
+
 export const patientRoleColumn = () => {
   return [
     {
@@ -121,6 +158,29 @@ export const patientRoleColumn = () => {
       header: "Email",
       cell: ({ row }: CellContext<IUserPatient, any>) => {
         return <Text pl={"12px"}>{row?.original?.email}</Text>;
+      },
+    },
+    {
+      header: "Status",
+      cell: ({ row }: CellContext<IUserPatient, any>) => {
+        const [patientStatus, setPatientStatus] = useState(
+          row?.original?.status
+        );
+
+        const { mutate } = useUpdatePatientStatus();
+        const handleStatus = (is_active: boolean) => {
+          mutate({ id: row.original?.id, is_active });
+        };
+        return (
+          <Switch
+            size="lg"
+            isChecked={patientStatus}
+            onChange={e => {
+              setPatientStatus(e.target.checked);
+              handleStatus(e.target.checked);
+            }}
+          />
+        );
       },
     },
   ];

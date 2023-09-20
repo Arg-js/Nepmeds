@@ -1,7 +1,10 @@
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { doctorRoleColumn } from "@nepMeds/components/DataTable/userRoleColumn";
-import { useGetUserRoleDoctor } from "@nepMeds/service/nepmeds-admin-userrole";
+import {
+  useGetUserRoleDoctor,
+  // useUpdateDoctorStatus,
+} from "@nepMeds/service/nepmeds-admin-userrole";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 
@@ -10,12 +13,12 @@ const RoleDoctor = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { isSuccess, data, isLoading } = useGetUserRoleDoctor({
+  const { isSuccess, data, isLoading, isFetching } = useGetUserRoleDoctor({
     page_no: pageIndex + 1,
     page_size: pageSize,
   });
 
-  if (isLoading) return <CenterLoader />;
+  if (isLoading || isFetching) return <CenterLoader />;
 
   return (
     <div>

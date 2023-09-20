@@ -11,6 +11,7 @@ import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { useState } from "react";
 import RoleDoctor from "./roleDoctor";
 import RolePatient from "./rolePatient";
+import RoleAdmin from "./roleAdmin";
 
 const UserRole = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -43,7 +44,7 @@ const UserRole = () => {
         <TabPanels>
           <TabPanel>{tabIndex === 0 && <RoleDoctor />}</TabPanel>
           <TabPanel>{tabIndex === 1 && <RolePatient />}</TabPanel>
-          <TabPanel>{tabIndex === 2 && <>Admin</>}</TabPanel>
+          <TabPanel>{tabIndex === 2 && <RoleAdmin />}</TabPanel>
         </TabPanels>
       </Tabs>
     </BoxWrapper>
