@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
-import { ISelectOption } from "./Select";
+import { ISelectOption } from "@nepMeds/components/Form/Select";
 
 interface IMultiSelect extends SelectProps {
   placeholder?: string;

@@ -5,8 +5,8 @@ import DoctorListCard, {
   Size,
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { colors } from "@nepMeds/theme/colors";
-import DoctorListFilter from "./Section/Filter";
-import PatientFooter from "../Section/Footer";
+import DoctorListFilter from "@nepMeds/pages/Patient/DoctorList/Section/Filter";
+import PatientFooter from "@nepMeds/pages/Patient/Section/Footer";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import {
   useGetDoctorList,

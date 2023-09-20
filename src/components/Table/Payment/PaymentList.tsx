@@ -12,10 +12,10 @@ import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import AllPayment from "./AllPayment";
-import ApprovedPayment from "./ApprovedPayment";
-import PendingPayment from "./PendingPayment";
-import RejectedPaymentList from "./RejectedPayment";
+import AllPayment from "@nepMeds/components/Table/Payment/AllPayment";
+import ApprovedPayment from "@nepMeds/components/Table/Payment/ApprovedPayment";
+import PendingPayment from "@nepMeds/components/Table/Payment/PendingPayment";
+import RejectedPaymentList from "@nepMeds/components/Table/Payment/RejectedPayment";
 
 // import { Link } from "react-router-dom";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";

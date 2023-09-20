@@ -8,7 +8,7 @@ import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { BroadcastChannel } from "broadcast-channel";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 const logoutChannel = new BroadcastChannel("logout");
 const loginChannel = new BroadcastChannel("login");

@@ -2,7 +2,7 @@ import { IRegisterFields } from "@nepMeds/components/FormComponents/Registration
 import { AxiosResponse, toFormData } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type PrimaryInfo = Pick<
   IRegisterFields,

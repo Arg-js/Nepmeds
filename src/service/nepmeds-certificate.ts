@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type CertificateInfo = IRegisterFields["certification"][number];
 
