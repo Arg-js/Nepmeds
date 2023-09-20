@@ -78,6 +78,9 @@ export const api = {
   },
 
   patient: {
+    login: {
+      post: "/user-management/refresh-token/",
+    },
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",

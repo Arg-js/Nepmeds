@@ -403,7 +403,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
-        <Text fontSize="16px" fontWeight="500" color={colors.black_60}>
+        <Text fontSize="md" fontWeight="500" color={colors.black_60}>
           {heading}
         </Text>
       </HStack>

@@ -429,6 +429,7 @@ const DoctorDetails: React.FC<{
                         }}
                         error={errors?.description?.message ?? ""}
                         register={register}
+                        required
                       />
                       <Box>
                         <FormLabel

@@ -131,7 +131,7 @@ const RateHistory = () => {
 
       <BoxWrapper>
         <DataTable
-          columns={rateHistoryColumn()}
+          columns={rateHistoryColumn({ pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,
