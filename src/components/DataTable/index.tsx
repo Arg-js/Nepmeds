@@ -27,6 +27,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
+import NoData from "../NoData";
 import Pagination from "./Pagination";
 export type DataTableProps = {
   data: Record<string, any>[];
@@ -205,37 +206,40 @@ export function DataTable({
               </Tr>
             ))}
           </Thead>
-          <Tbody>
-            {table.getRowModel().rows.map(row => (
-              <Tr
-                key={row.id}
-                css={{
-                  [`td:nth-of-type(${stickyColumn})`]: {
-                    position: "sticky",
-                    left: "-1px",
-                    right: "-1px",
-                    zIndex: 40,
-                    boxShadow: "inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7",
-                  },
-                  [`td:nth-of-type(${stickyColumn}) , td:not(:last-child)`]: {
-                    boxShadow: "inset 1px 0 0 #edf2f7",
-                  },
-                }}
-              >
-                {row.getVisibleCells().map(cell => {
-                  return (
-                    <Td key={cell.id} pl={4}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext()
-                      )}
-                    </Td>
-                  );
-                })}
-              </Tr>
-            ))}
-          </Tbody>
+          {!!data.length && (
+            <Tbody>
+              {table.getRowModel().rows.map(row => (
+                <Tr
+                  key={row.id}
+                  css={{
+                    [`td:nth-of-type(${stickyColumn})`]: {
+                      position: "sticky",
+                      left: "-1px",
+                      right: "-1px",
+                      zIndex: 40,
+                      boxShadow: "inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7",
+                    },
+                    [`td:nth-of-type(${stickyColumn}) , td:not(:last-child)`]: {
+                      boxShadow: "inset 1px 0 0 #edf2f7",
+                    },
+                  }}
+                >
+                  {row.getVisibleCells().map(cell => {
+                    return (
+                      <Td key={cell.id} pl={4}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </Td>
+                    );
+                  })}
+                </Tr>
+              ))}
+            </Tbody>
+          )}
         </Table>
+        {data.length < 1 && !isLoading && <NoData />}
         {!!data.length && (
           <HStack justifyContent={"space-between"} pt={5}>
             <HStack>
