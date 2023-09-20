@@ -1,15 +1,12 @@
-// import Icon from "@chakra-ui/icon";
-// import { CheckIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box } from "@chakra-ui/layout";
 import { Tag } from "@chakra-ui/tag";
-// import { Tooltip } from "@chakra-ui/tooltip";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
+import { PaginationState } from "@tanstack/react-table";
 import { CellContext } from "@tanstack/table-core";
-// import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
 import TableActions from "../TableActions";
 
@@ -26,13 +23,14 @@ export const pendingColumns = (
   onClick: (
     isApproved: boolean,
     doctorInfo: { id: string; name: string }
-  ) => void
+  ) => void,
+  pageParams: PaginationState
 ) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {
@@ -92,7 +90,6 @@ export const pendingColumns = (
 
     {
       header: "Actions",
-      accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         return (
           // <HStack>

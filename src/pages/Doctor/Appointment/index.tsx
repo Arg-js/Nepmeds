@@ -9,12 +9,22 @@ import {
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { colors } from "@nepMeds/theme/colors";
+import { useState } from "react";
 import AppointmentTab from "./Appointments";
 
 const Appointment: React.FC = () => {
+  const [tabIndex, setTabIndex] = useState(0);
   return (
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
-      <Tabs variant="unstyled" fontSize="16px" fontFamily={"Inter"}>
+      <Tabs
+        variant="unstyled"
+        fontSize="16px"
+        fontFamily={"Inter"}
+        index={tabIndex}
+        onChange={index => {
+          setTabIndex(index);
+        }}
+      >
         <TabList>
           <Tab
             fontWeight="400"
@@ -53,25 +63,33 @@ const Appointment: React.FC = () => {
         />
         <TabPanels>
           <TabPanel px={0} pb={0} pt={6}>
-            <AppointmentTab type={0} heading={"Appointments"} />
+            {tabIndex === 0 && (
+              <AppointmentTab type={0} heading={"Appointments"} />
+            )}
           </TabPanel>
           <TabPanel px={0} pb={0} pt={6}>
-            <AppointmentTab
-              type={STATUSTYPE.pending}
-              heading={"Pending Appointments"}
-            />
+            {tabIndex === 1 && (
+              <AppointmentTab
+                type={STATUSTYPE.pending}
+                heading={"Pending Appointments"}
+              />
+            )}
           </TabPanel>
           <TabPanel px={0} pb={0} pt={6}>
-            <AppointmentTab
-              type={STATUSTYPE.approved}
-              heading={"Approved Appointments"}
-            />
+            {tabIndex === 2 && (
+              <AppointmentTab
+                type={STATUSTYPE.approved}
+                heading={"Approved Appointments"}
+              />
+            )}
           </TabPanel>
           <TabPanel px={0} pb={0} pt={6}>
-            <AppointmentTab
-              type={STATUSTYPE.rejected}
-              heading={"Rejected Appointments"}
-            />
+            {tabIndex === 3 && (
+              <AppointmentTab
+                type={STATUSTYPE.rejected}
+                heading={"Rejected Appointments"}
+              />
+            )}
           </TabPanel>
         </TabPanels>
       </Tabs>
