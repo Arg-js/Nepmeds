@@ -75,11 +75,20 @@ export const column = ({
           row,
         }: CellProps<{
           availability: { from_time: string; to_time: string };
+          extra_data: {
+            cancelled_availability: { from_time: string; to_time: string };
+          };
         }>) => {
           return row.original?.availability
             ? `${removeSeconds(
                 row.original?.availability?.from_time
               )}-${removeSeconds(row.original?.availability?.to_time)}`
+            : row.original?.extra_data
+            ? `${removeSeconds(
+                row.original?.extra_data?.cancelled_availability?.from_time
+              )}-${removeSeconds(
+                row.original?.extra_data?.cancelled_availability?.to_time
+              )}`
             : "N/A";
         },
       },
