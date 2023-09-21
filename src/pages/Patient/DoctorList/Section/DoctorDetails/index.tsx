@@ -397,6 +397,7 @@ const DoctorDetails: React.FC<{
                         options={[
                           { label: "Male", value: "1" },
                           { label: "Female", value: "2" },
+                          { label: "Others", value: "3" },
                         ]}
                       />
 
@@ -429,6 +430,7 @@ const DoctorDetails: React.FC<{
                         }}
                         error={errors?.description?.message ?? ""}
                         register={register}
+                        required
                       />
                       <Box>
                         <FormLabel

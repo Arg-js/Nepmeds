@@ -9,6 +9,8 @@ import { useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { BiTime } from "react-icons/bi";
 
+const today = new Date().toISOString().split("T")[0];
+
 export const AddEvent = ({
   doctorAvailabilityData,
 }: {
@@ -75,8 +77,8 @@ export const AddEvent = ({
           type="date"
           register={register}
           required
-          min={new Date().toString()}
-          defaultValue={doctorAvailabilityData?.date}
+          min={today}
+          defaultValue={today}
           style={{
             background: colors.forminput,
             border: "none",

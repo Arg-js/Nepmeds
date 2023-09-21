@@ -143,7 +143,7 @@ const DoctorList = () => {
             </GridItem>
 
             {/* Doctor card */}
-            <GridItem colSpan={{ base: 1, md: 3, lg: 4 }}>
+            <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 4 }}>
               <Box>
                 <>
                   {isLoading &&
