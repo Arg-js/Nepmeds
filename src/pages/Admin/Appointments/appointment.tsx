@@ -1,3 +1,4 @@
+import CenterLoader from "@nepMeds/components/Common/Loader";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { appointmentColumn } from "@nepMeds/components/DataTable/adminAppointmentColumn";
 import { ADMINAPPOINTMENT } from "@nepMeds/config/enum";
@@ -10,11 +11,12 @@ const Appointment = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { isSuccess, data } = useAdminAppointment({
+  const { isSuccess, data, isLoading } = useAdminAppointment({
     page_no: pageIndex + 1,
     page_size: pageSize,
     consulting_type: ADMINAPPOINTMENT.Appointment.toString(),
   });
+  if (isLoading) return <CenterLoader />;
   return (
     <div>
       {isSuccess && (

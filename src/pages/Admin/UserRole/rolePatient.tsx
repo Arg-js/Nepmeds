@@ -10,14 +10,14 @@ const RolePatient = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const { isSuccess, data, isLoading } = useGetUserRolePatient({
+  const { isSuccess, data, isLoading, isFetching } = useGetUserRolePatient({
     page_no: pageIndex + 1,
     page_size: pageSize,
   });
 
-  console.log(data);
+  // console.log(data);
 
-  if (isLoading) return <CenterLoader />;
+  if (isLoading || isFetching) return <CenterLoader />;
 
   return (
     <div>
