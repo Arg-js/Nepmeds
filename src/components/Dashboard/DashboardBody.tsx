@@ -134,7 +134,7 @@ const DashboardBody = () => {
         display={"flex"}
         justifyContent={"flex-end"}
       >
-        <Calendar />
+        <Calendar className={"react-calendar"} />
       </Box>
       {profileData?.data?.is_superuser && (
         <WrapperBox

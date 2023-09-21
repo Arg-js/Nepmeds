@@ -2,6 +2,14 @@ import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
+export type INMC = {
+  doctor_nmc_info: {
+    nmc_number: number;
+    nmc_issued_date: string;
+    nmc_expiry_date: string;
+    nmc_file: string;
+  };
+};
 export interface IUser {
   id?: number;
   first_name: string;
@@ -22,6 +30,7 @@ export interface IUser {
   confirm_password: string;
   is_email_verified: boolean;
 }
+
 export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;

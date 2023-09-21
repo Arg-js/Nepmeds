@@ -4,3 +4,4 @@ export { CertificationInfoForm } from "./CertificationInfoForm/CertificationInfo
 export { ExperienceForm } from "./ExperienceForm/ExperienceForm";
 export { PrimaryInfoForm } from "./PrimaryInfoForm/PrimaryInfoForm";
 export { RejectionForm } from "./RejectionForm/RejectionForm";
+export { NmcForm } from "./NmcForm/NmcForm";

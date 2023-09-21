@@ -54,9 +54,9 @@ const NewCalendar: React.FC = () => {
   }
 
   return (
-    <Box m={6}>
-      <Grid templateColumns={"repeat(5,14%)"} gap={0} bg={colors.blue_10}>
-        <GridItem colSpan={2} justifySelf={"center"}>
+    <Box m={6} bg={colors.blue_10} sx={{ borderTopLeftRadius: "12px" }}>
+      <Grid templateColumns={"repeat(5,14%)"} gap={0}>
+        <GridItem colSpan={2}>
           <Calendar
             onChange={value => handleCalendarChange(value)}
             value={date}

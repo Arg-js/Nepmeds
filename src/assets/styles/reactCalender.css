@@ -1,11 +1,14 @@
 .react-calendar {
   border-radius: 12px;
-  width: 416px;
+}
+.react-calendar {
+  width: 440px;
   font-family: Inter;
   font-weight: 600;
   font-size: 14px;
   padding: 10px 20px 20px;
   border-color: white;
+  border-top-left-radius: 12px;
 }
 
 .react-calendar__tile--now {

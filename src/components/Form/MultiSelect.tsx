@@ -102,7 +102,7 @@ const MultiSelect = ({
                   ...baseStyles,
                   background: colors.forminput,
                   color: colors.black_50,
-                  // paddingTop: 10,
+                  paddingTop: 10,
                   minHeight: "35px",
                   borderRadius: "8px",
                   border: error
