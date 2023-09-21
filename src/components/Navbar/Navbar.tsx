@@ -38,7 +38,9 @@ const Navbar = () => {
             color={colors.black_60}
             textTransform={"capitalize"}
           >
-            {pathname ? "Dashboard" : pathname.split("/")[1].replace("-", " ")}
+            {pathname
+              ? pathname.split("/")[1].replaceAll("-", " ")
+              : "Dashboard"}
           </Text>
           <HStack justifyContent={"end"}>
             <Box px={"2"}>

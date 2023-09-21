@@ -84,17 +84,15 @@ const DoctorConsultation = () => {
   const location = useLocation();
   const authenticate = async () => {
     try {
-      const response = await authenticatePatient({
-        patientToken: location.search.replace("?key=", ""),
-      });
-      TokenService.setToken({
-        access: response?.data?.data?.[0]?.access,
-        refresh:
-          (TokenService &&
-            TokenService?.getToken() &&
-            TokenService?.getToken()?.refresh) ||
-          "",
-      });
+      if (location.search) {
+        const response = await authenticatePatient({
+          patientToken: location.search.replace("?key=", ""),
+        });
+        TokenService.setToken({
+          access: response?.data?.data?.[0]?.access,
+          refresh: TokenService?.getToken()?.refresh || "",
+        });
+      }
     } catch (e) {
       console.error(e);
     }

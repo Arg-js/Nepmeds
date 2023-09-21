@@ -55,13 +55,13 @@ const sidebarOptions: ISidebarOption[] = [
     icon: Call,
     set: "light",
     text: "Follow Up",
-    link: "/followup",
+    link: "/follow-up",
   },
   {
     icon: Paper,
     set: "light",
     text: "Patient's History",
-    link: "/patient-history",
+    link: "/patient's-history",
   },
   {
     icon: Calendar,
@@ -130,7 +130,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
     icon: Call,
     set: "light",
     text: "Instant Consult Request",
-    link: "/consult-request",
+    link: "/instant-consult-request",
   },
 ];
 
