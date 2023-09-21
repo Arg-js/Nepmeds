@@ -23,9 +23,6 @@ export const appointmentColumn = () => {
     {
       header: "Date",
       accessorKey: "date",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.date ?? "-";
-      },
     },
 
     {
@@ -43,9 +40,6 @@ export const appointmentColumn = () => {
     {
       header: "Doctor's Name",
       accessorKey: "doctor_name",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.doctor_name}</Text>;
-      },
     },
     {
       header: "Specialization",
@@ -80,16 +74,11 @@ export const appointmentColumn = () => {
     {
       header: "Patient's Name",
       accessorKey: "patient_name",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.patient_name}</Text>;
-      },
     },
 
     {
-      header: "Payment Rate",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>Rs. {row?.original?.rate}</Text>;
-      },
+      header: "Payment Rate (RS)",
+      accessorKey: "rate",
     },
     {
       header: "Status",
