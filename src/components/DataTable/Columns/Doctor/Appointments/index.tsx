@@ -1,9 +1,6 @@
 import { Badge } from "@chakra-ui/react";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
-import {
-  IGetAppointmentRequest,
-  ISymptom,
-} from "@nepMeds/service/nepmeds-doctor-patient-appointment";
+import { IGetAppointmentRequest } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { CellProps } from "react-table";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { colors } from "@nepMeds/theme/colors";
@@ -92,13 +89,13 @@ export const column = ({
             : "N/A";
         },
       },
-      {
-        header: "Symptoms",
-        accessorKey: "symptoms",
-        accessorFn: ({ symptoms }: { symptoms: ISymptom[] }) => {
-          return symptoms?.map(({ name }) => name);
-        },
-      },
+      // {
+      //   header: "Symptoms",
+      //   accessorKey: "symptoms",
+      //   accessorFn: ({ symptoms }: { symptoms: ISymptom[] }) => {
+      //     return symptoms?.map(({ name }) => name);
+      //   },
+      // },
       {
         header: "Status",
         accessorKey: "status",
