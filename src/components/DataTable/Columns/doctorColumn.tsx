@@ -8,7 +8,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { CellContext } from "@tanstack/table-core";
 import { NavigateFunction, generatePath } from "react-router";
-import TableActions from "../TableActions";
+import TableActions from "@nepMeds/components/DataTable/TableActions/index";
 
 interface PendingCellContextSearch {
   user: {

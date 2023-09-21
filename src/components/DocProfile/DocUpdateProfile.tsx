@@ -1,9 +1,9 @@
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import EditBasic from "./EditDoctor/EditBasic";
-import EditPrimary from "./EditDoctor/EditPrimary";
-import EditAcademic from "./EditDoctor/EditAcademic";
-import EditCertification from "./EditDoctor/EditCertification";
-import EditExperience from "./EditDoctor/EditExperience";
+import EditBasic from "@nepMeds/components/DocProfile/EditDoctor/EditBasic";
+import EditPrimary from "@nepMeds/components/DocProfile/EditDoctor/EditPrimary";
+import EditAcademic from "@nepMeds/components/DocProfile/EditDoctor/EditAcademic";
+import EditCertification from "@nepMeds/components/DocProfile/EditDoctor/EditCertification";
+import EditExperience from "@nepMeds/components/DocProfile/EditDoctor/EditExperience";
 import {
   Grid,
   GridItem,

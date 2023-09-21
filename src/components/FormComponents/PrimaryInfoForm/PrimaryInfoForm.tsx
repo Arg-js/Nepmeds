@@ -361,8 +361,8 @@ const PrimaryInfo = ({
           rules={
             !isEditable
               ? {
-                required: "Specialization is required.",
-              }
+                  required: "Specialization is required.",
+                }
               : {}
           }
           error={errors.specialization_names?.message}

@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { generatePath } from "react-router-dom";
 
 export interface IDoctorList {

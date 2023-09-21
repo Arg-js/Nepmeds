@@ -2,7 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { queryStringGenerator } from "../utils";
 import { Specialization } from "./nepmeds-specialization";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export interface SpecialistRate {
   id?: number;

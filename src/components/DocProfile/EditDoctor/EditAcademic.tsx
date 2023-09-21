@@ -105,7 +105,7 @@ const EditAcademic = ({
           if (academicData.id) {
             const academicInfoResponse =
               await updateAcademicInfoRegister.mutateAsync(
-                academicInfoData as any,
+                academicInfoData as any
               );
 
             if (academicInfoResponse) {
@@ -155,7 +155,7 @@ const EditAcademic = ({
 
       toastFail(
         firstErrorMessage?.toString() ||
-        "Failed to update academic information!"
+          "Failed to update academic information!"
       );
     }
     setShowEditForm(false);
@@ -450,7 +450,7 @@ const EditAcademic = ({
                           >
                             :&nbsp;
                             {singleAcademicInfo?.academic_document?.length ===
-                              1 ? (
+                            1 ? (
                               <>
                                 {singleAcademicInfo?.academic_document?.length}
                                 &nbsp; Image
