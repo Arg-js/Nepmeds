@@ -104,10 +104,9 @@ const EditAcademic = ({
           };
           if (academicData.id) {
             const academicInfoResponse =
-              await updateAcademicInfoRegister.mutateAsync({
-                id: parseInt(academicData.id),
-                data: academicInfoData,
-              });
+              await updateAcademicInfoRegister.mutateAsync(
+                academicInfoData as any
+              );
 
             if (academicInfoResponse) {
               return academicInfoResponse.data.data;
