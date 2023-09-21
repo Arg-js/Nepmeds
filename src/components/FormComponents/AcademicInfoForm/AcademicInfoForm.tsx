@@ -63,7 +63,7 @@ export const AcademicInfoForm = ({
     if (doctorProfileData?.doctor_academic_info.length) {
       reset({
         ...getValues(),
-        academic: doctorProfileData?.doctor_academic_info.map(a => ({
+        academic: doctorProfileData?.doctor_academic_info.map((a: any) => ({
           degree_program: a?.degree_program,
           doctor: a?.doctor,
           major: a?.major,
@@ -89,7 +89,7 @@ export const AcademicInfoForm = ({
   const handleRemoveAcademic = async (index: number) => {
     if (watch(`academic.${index}.isSubmitted`)) {
       const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
-        parseInt(getValues(`academic.${index}.id`))
+        Number(getValues(`academic.${index}.id`))
       );
 
       if (academicInfoResponse) {
@@ -262,7 +262,7 @@ export const AcademicInfoForm = ({
         leftIcon={<span color={colors.error}> + </span>}
         onClick={() => {
           append({
-            id: "",
+            id: 0,
             doctor: 0,
             degree_program: "",
             major: "",

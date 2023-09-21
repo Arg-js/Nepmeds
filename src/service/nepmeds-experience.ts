@@ -8,7 +8,7 @@ import { HttpClient } from "@nepMeds/service/service-axios";
 export type ExperienceInfo = IRegisterFields["experience"][number];
 
 const createExperienceData = async (data: ExperienceInfo) => {
-  const response = await HttpClient.post(api.experience, data);
+  const response = await HttpClient.post(api.experience, { data: data });
   return response;
 };
 
