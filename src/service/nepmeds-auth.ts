@@ -42,7 +42,7 @@ const useLogoutMutation = (noToast?: boolean) => {
       queryClient.setQueryData(authTokenKey, () => false);
       localStorage.setItem("doctor", "false");
       localStorage.setItem("admin", "false");
-      navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN, { replace: true });
+      navigate(NAVIGATION_ROUTES.LOGIN, { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
     },
   });
