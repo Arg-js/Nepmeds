@@ -22,7 +22,7 @@ import {
   IImageFileType,
   MultiImageUpload,
 } from "../../ImageUploadMulti/dropzone";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
   doctorProfileData,

@@ -22,7 +22,7 @@ import { checkNumberMatch } from "@nepMeds/utils/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -361,8 +361,8 @@ const PrimaryInfo = ({
           rules={
             !isEditable
               ? {
-                  required: "Specialization is required.",
-                }
+                required: "Specialization is required.",
+              }
               : {}
           }
           error={errors.specialization_names?.message}

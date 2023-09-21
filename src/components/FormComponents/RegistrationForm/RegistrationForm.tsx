@@ -267,7 +267,6 @@ const RegistrationForm = () => {
           const idFontImage = values.id_front_image?.[0];
           const idBackImage = values.id_back_image?.[0];
           const nmcData = values.nmc;
-
           const formatedData = {
             user: {
               first_name: values.first_name,
@@ -362,11 +361,8 @@ const RegistrationForm = () => {
           });
 
           await Promise.all(academicPromises);
-          //
-
 
           if (academicArray?.filter(data => data.id)?.length > 0) {
-
             await updateAcademicInfoRegister.mutateAsync(academicInfoData);
             toastSuccess("Academic Information updated");
             setActiveStep(4);

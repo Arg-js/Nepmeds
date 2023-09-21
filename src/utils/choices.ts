@@ -53,10 +53,3 @@ export const FrequencyType = [
   { label: "Weekend", value: AVAILABILITYFREQUENCY.Weekends },
   { label: "Does not Repeat", value: AVAILABILITYFREQUENCY.Do_Not_Repeat },
 ];
-
-export const NmcNo = [
-  { label: "12345", value: 12345 },
-  { label: "23456", value: 23456 },
-  { label: "34567", value: 34567 },
-  { label: "45678", value: 45678 },
-];

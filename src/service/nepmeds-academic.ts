@@ -32,7 +32,7 @@ const createAcademicFile = async (data: AcademicInfo) => {
   formData.append("doctor_id", data?.doctor?.toString());
   if (data.academic_documents) {
     // Append multiple files to formData
-    data.academic_documents.forEach((file: any, index: number) => {
+    data.academic_documents.forEach((file: File, index: number) => {
       if (file !== null && file instanceof File)
         formData.append(`files[${index}]`, file);
     });
@@ -44,7 +44,6 @@ const createAcademicFile = async (data: AcademicInfo) => {
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
 const updateAcademicData = async (data: AcademicInfo[]) => {
-  console.log(data);
   const response = await HttpClient.patch(api.academic, { data: data });
   return response;
 };

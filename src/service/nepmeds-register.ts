@@ -90,9 +90,7 @@ const updateNMCInfo = async (data: PrimaryInfo & { doctorId: number }) => {
 
 export const useNmcInfoUpdate = () =>
   useMutation(updateNMCInfo, {
-    onSuccess() {
-      console.log("first");
-    },
+    onSuccess() {},
   });
 
 const editPersonalData = async (data: PrimaryInfo) => {
