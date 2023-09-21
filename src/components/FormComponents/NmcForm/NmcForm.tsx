@@ -1,12 +1,10 @@
 import { Box, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import Select from "@nepMeds/components/Form/Select";
 import { colors } from "@nepMeds/theme/colors";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
-import { NmcNo } from "@nepMeds/utils/choices";
 import { fileToString } from "@nepMeds/utils/fileToString";
 
 export const NmcForm = () => {
@@ -33,7 +31,7 @@ export const NmcForm = () => {
   };
 
   //  validations
-  const checkPictureSize = (image: File | undefined) => {
+  const checkPictureSize = (image: File | null) => {
     if (image && (image as File)?.size / 1048576 > 1) {
       return "Image is greater than 1MB";
     }
@@ -57,7 +55,7 @@ export const NmcForm = () => {
             upload_text="Upload a File "
             error={
               errors.nmc?.nmc_file?.message ||
-              checkPictureSize(watch("nmc.nmc_file")?.[0])
+              checkPictureSize(watch("nmc.nmc_file")?.[0] as File)
             }
             rules={{
               required: "Cetficiate is required",
@@ -66,23 +64,17 @@ export const NmcForm = () => {
           />
         </GridItem>
         <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} mt={4} mb={8} gap={4}>
-          <Select
-            placeholder=""
+          <FloatingLabelInput
             label="NMC No."
             name="nmc.nmc_number"
             register={register}
-            options={NmcNo}
             required
-            defaultValue={1}
-            style={{
-              background: colors.forminput,
-              border: "none",
-              paddingTop: "15px",
-            }}
+            type="number"
+            style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
             }}
-            error={errors.nmc?.nmc_number?.message}
+            error={errors.first_name?.message}
           />
           <FloatingLabelInput
             name="nmc.nmc_issued_date"

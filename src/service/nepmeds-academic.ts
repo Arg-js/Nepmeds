@@ -8,7 +8,7 @@ import { HttpClient } from "./service-axios";
 export type AcademicInfo = IRegisterFields["academic"][number];
 
 const createAcademicData = async (data: AcademicInfo) => {
-  const response = await HttpClient.post(api.academic, data);
+  const response = await HttpClient.post(api.academic, { data: data });
   return response;
 };
 
@@ -29,10 +29,10 @@ export const useAcademicInfoRegister = () => {
 const createAcademicFile = async (data: AcademicInfo) => {
   const formData = new FormData();
 
-  formData.append("doctor_id", data.doctor.toString());
+  formData.append("doctor_id", data?.doctor?.toString());
   if (data.academic_documents) {
     // Append multiple files to formData
-    data.academic_documents.forEach((file, index) => {
+    data.academic_documents.forEach((file: any, index: number) => {
       if (file !== null && file instanceof File)
         formData.append(`files[${index}]`, file);
     });
@@ -43,25 +43,15 @@ const createAcademicFile = async (data: AcademicInfo) => {
 
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
-// export const useDownloadImage = () =>
-//   useMutation((filePath: string) =>
-//     HttpClient.get("http://38.242.204.217:8005/media/" + filePath, {
-//       responseType: "blob",
-//     })
-//   );
-
-const updateAcademicData = async (id: number, data: AcademicInfo) => {
-  const response = await HttpClient.patch(api.academic + `${id}/`, data);
+const updateAcademicData = async (data: AcademicInfo[]) => {
+  console.log(data);
+  const response = await HttpClient.patch(api.academic, { data: data });
   return response;
 };
 
 export const useUpdateAcademicInfo = () => {
   const queryClient = useQueryClient();
-  const mutation = useMutation<
-    AxiosResponse<any, any>,
-    unknown,
-    { id: number; data: AcademicInfo }
-  >(variables => updateAcademicData(variables.id, variables.data), {
+  const mutation = useMutation(updateAcademicData, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.doctor_profile]);
     },

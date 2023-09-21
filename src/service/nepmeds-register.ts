@@ -80,6 +80,21 @@ export const usePrimaryInfoRegister = () =>
     },
   });
 
+const updateNMCInfo = async (data: PrimaryInfo & { doctorId: number }) => {
+  const response = await HttpClient.patch(
+    `${api.edit_doctor_profile}/${data.doctorId}/`,
+    data
+  );
+  return response;
+};
+
+export const useNmcInfoUpdate = () =>
+  useMutation(updateNMCInfo, {
+    onSuccess() {
+      console.log("first");
+    },
+  });
+
 const editPersonalData = async (data: PrimaryInfo) => {
   const response = await HttpClient.patch(
     `${api.doctor_profile}?doctor_id=${data.id}`,
