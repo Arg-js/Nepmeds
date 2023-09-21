@@ -1,4 +1,4 @@
-import { Switch, Text } from "@chakra-ui/react";
+import { Switch } from "@chakra-ui/react";
 import {
   IUserRoleAdmin,
   useUpdateDoctorStatus,
@@ -28,45 +28,28 @@ export const doctorRoleColumn = () => {
     {
       header: "Doctor's Name",
       accessorKey: "name",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return row?.original?.name;
-      },
     },
 
     {
       header: "NMC No.",
       accessorKey: "nmc_no",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return row?.original?.nmc_no;
-      },
     },
     {
       header: "Regristration Approval Date",
-      accessorKey: "patient_name",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return (
-          <Text pl={"12px"}>{row?.original?.payment_approved_date ?? "-"}</Text>
-        );
-      },
+      accessorKey: "registration_approved_date",
     },
 
     {
       header: "Payment Approval Date",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return row?.original?.payment_approved_date;
-      },
+      accessorKey: "payment_approved_date",
     },
     {
       header: "Contact",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.mobile_number}</Text>;
-      },
+      accessorKey: "mobile_number",
     },
     {
       header: "Email",
-      cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.email}</Text>;
-      },
+      accessorKey: "email",
     },
     {
       header: "Status",
@@ -142,23 +125,16 @@ export const patientRoleColumn = () => {
     },
     {
       header: "Patient's Name",
-      accessorKey: "name",
-      cell: ({ row }: CellContext<IUserPatient, any>) => {
-        return row?.original?.patient_name;
-      },
+      accessorKey: "patient_name",
     },
 
     {
       header: "Contact No.",
-      cell: ({ row }: CellContext<IUserPatient, any>) => {
-        return <Text pl={"12px"}>{row?.original?.mobile_number}</Text>;
-      },
+      accessorKey: "mobile_number",
     },
     {
       header: "Email",
-      cell: ({ row }: CellContext<IUserPatient, any>) => {
-        return <Text pl={"12px"}>{row?.original?.email}</Text>;
-      },
+      accessorKey: "email",
     },
     {
       header: "Status",
@@ -166,7 +142,6 @@ export const patientRoleColumn = () => {
         const [patientStatus, setPatientStatus] = useState(
           row?.original?.status
         );
-
         const { mutate } = useUpdatePatientStatus();
         const handleStatus = (is_active: boolean) => {
           mutate({ id: row.original?.id, is_active });

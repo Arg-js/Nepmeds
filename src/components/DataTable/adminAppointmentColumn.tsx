@@ -1,4 +1,4 @@
-import { Box, Tag, Text } from "@chakra-ui/react";
+import { Box, Tag } from "@chakra-ui/react";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IAppointmentAdmin } from "@nepMeds/service/nepmeds-appointment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
@@ -135,9 +135,6 @@ export const instantConsultantColumn = () => {
     {
       header: "Date",
       accessorKey: "date",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.date ?? "-";
-      },
     },
 
     {
@@ -155,9 +152,6 @@ export const instantConsultantColumn = () => {
     {
       header: "Doctor's Name",
       accessorKey: "doctor_name",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.doctor_name}</Text>;
-      },
     },
     {
       header: "Specialization",
@@ -192,16 +186,10 @@ export const instantConsultantColumn = () => {
     {
       header: "Patient's Name",
       accessorKey: "patient_name",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>{row?.original?.patient_name}</Text>;
-      },
     },
-
     {
       header: "Payment Rate",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return <Text pl={"12px"}>Rs. {row?.original?.rate}</Text>;
-      },
+      accessorKey: "rate",
     },
     {
       header: "Status",
@@ -214,7 +202,6 @@ export const instantConsultantColumn = () => {
                 "1": "Pending",
                 "2": "Confirmed",
                 "3": "Completed",
-
                 "4": "Cancelled",
               },
             }}
