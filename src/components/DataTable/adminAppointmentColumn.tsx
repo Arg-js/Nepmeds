@@ -5,6 +5,7 @@ import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 import StatusBadge from "../Common/StatusBadge";
+import TableActions from "./TableActions";
 
 //Appointment Column
 export const appointmentColumn = () => {
@@ -23,18 +24,18 @@ export const appointmentColumn = () => {
       header: "Date",
       accessorKey: "date",
       cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.availability_data?.date ?? "-";
+        return row?.original?.date ?? "-";
       },
     },
 
     {
       header: "Booking Time",
       accessorKey: "time",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.availability_data
-          ? removeSeconds(row?.original?.availability_data?.from_time) +
+      cell: ({ row: { original } }: CellContext<IAppointmentAdmin, any>) => {
+        return original.from_time && original.to_time
+          ? removeSeconds(original?.from_time ?? "") +
               " - " +
-              removeSeconds(row?.original?.availability_data?.to_time)
+              removeSeconds(original?.to_time ?? "")
           : "-";
       },
     },
@@ -109,9 +110,21 @@ export const appointmentColumn = () => {
       },
     },
     {
-      header: "Action",
+      header: "Actions",
+      accessorKey: "actions",
       cell: () => {
-        return "-";
+        return (
+          <TableActions
+            onView={
+              () => ""
+              // navigate(
+              //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+              //     id: cell.row.original.id,
+              //   })
+              // )
+            }
+          />
+        );
       },
     },
   ];
@@ -134,7 +147,7 @@ export const instantConsultantColumn = () => {
       header: "Date",
       accessorKey: "date",
       cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.availability_data?.date ?? "-";
+        return row?.original?.date ?? "-";
       },
     },
 
@@ -142,10 +155,10 @@ export const instantConsultantColumn = () => {
       header: "Booking Time",
       accessorKey: "time",
       cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
-        return row?.original?.availability_data
-          ? removeSeconds(row?.original?.availability_data?.from_time) +
+        return row?.original
+          ? removeSeconds(row?.original?.from_time ?? "") +
               " - " +
-              removeSeconds(row?.original?.availability_data?.to_time)
+              removeSeconds(row?.original?.to_time ?? "")
           : "-";
       },
     },

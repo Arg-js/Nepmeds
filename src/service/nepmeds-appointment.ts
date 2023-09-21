@@ -18,11 +18,9 @@ export interface IAppointmentAdmin {
     name: string;
   }[];
   rate: number;
-  availability_data: {
-    date: string;
-    from_time: string;
-    to_time: string;
-  };
+  date: string;
+  from_time: string;
+  to_time: string;
 }
 
 // Get List of appointment for doctors
