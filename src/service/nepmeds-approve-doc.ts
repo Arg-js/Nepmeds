@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 const approveDoc = async (id: string) => {
   const response = await HttpClient.post<NepMedsResponse>(

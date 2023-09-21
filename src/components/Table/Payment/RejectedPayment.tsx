@@ -27,7 +27,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import { ISpecializationList } from "./PaymentList";
+import { ISpecializationList } from "@nepMeds/components/Table/Payment/PaymentList";
 
 interface Props {
   specializationList: ISpecializationList[];

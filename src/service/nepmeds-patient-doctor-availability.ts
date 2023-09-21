@@ -3,8 +3,8 @@ import { AxiosError } from "axios";
 import { useQuery } from "react-query";
 import { generatePath } from "react-router-dom";
 import { IAvailability } from "./nepmeds-patient-doctorList";
-import { api, NepMedsResponse } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { api, NepMedsResponse } from "@nepMeds/service/service-api";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 interface IGetAvailability {
   id: number;
