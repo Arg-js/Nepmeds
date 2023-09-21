@@ -38,6 +38,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
+const defaultValues = {
+  id: null as number | null,
+  name: "",
+  keyword: "",
+};
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -98,18 +104,13 @@ const Symptoms = ({
   // } = useDisclosure();
 
   const formMethods = useForm({
-    defaultValues: {
-      id: null as number | null,
-      name: "",
-      keyword: "",
-    },
+    defaultValues,
 
     resolver: yupResolver(schema),
   });
   const {
     formState: { errors },
     register,
-    reset,
   } = formMethods;
 
   const columns = [
@@ -172,9 +173,8 @@ const Symptoms = ({
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
       });
-      onCloseEditModal();
+      onCloseModal();
       toastSuccess("Symptom saved successfully!");
-      formMethods.reset({});
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
@@ -190,10 +190,8 @@ const Symptoms = ({
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
       });
-      onCloseSymptoms();
+      onCloseModal();
       toastSuccess("Symptom saved successfully!");
-      formMethods.reset();
-      // formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error, "Failed to save symptom!");
       toastFail(err);
@@ -208,8 +206,9 @@ const Symptoms = ({
   };
 
   const onCloseModal = () => {
+    onCloseSymptoms();
     onCloseEditModal();
-    reset();
+    formMethods.reset(defaultValues);
   };
 
   const onDeleteSymptom = async () => {
@@ -293,10 +292,7 @@ const Symptoms = ({
         <ModalComponent
           size="sm"
           isOpen={isSymptomsOpen}
-          onClose={() => {
-            onCloseSymptoms();
-            reset();
-          }}
+          onClose={onCloseModal}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -307,10 +303,7 @@ const Symptoms = ({
             <HStack w="100%" gap={3}>
               <Button
                 variant={"primaryOutline"}
-                onClick={() => {
-                  onCloseSymptoms();
-                  reset();
-                }}
+                onClick={onCloseModal}
                 flex={1}
                 border="1px solid"
                 fontWeight={400}
