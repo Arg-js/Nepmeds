@@ -384,7 +384,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Specialist</Text>
+            <Text>Delete Specialization</Text>
           </HStack>
         }
         footer={
@@ -404,7 +404,7 @@ const Specializations = ({
         }
       >
         <Text>
-          Are you sure you want to delete symptom{" "}
+          Are you sure you want to delete specialization{" "}
           <Text fontWeight="bold" display="inline">
             {deleteSpecialization?.name}
           </Text>
@@ -415,7 +415,7 @@ const Specializations = ({
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist
+            Specialization
           </Text>
         </GridItem>
 

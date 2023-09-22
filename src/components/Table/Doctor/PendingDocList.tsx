@@ -251,7 +251,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Dcotor Approval</Text>
+              <Text>Doctor Approval</Text>
             </HStack>
           }
           footer={
