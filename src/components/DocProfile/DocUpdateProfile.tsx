@@ -1,18 +1,18 @@
-import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import EditBasic from "@nepMeds/components/DocProfile/EditDoctor/EditBasic";
-import EditPrimary from "@nepMeds/components/DocProfile/EditDoctor/EditPrimary";
-import EditAcademic from "@nepMeds/components/DocProfile/EditDoctor/EditAcademic";
-import EditCertification from "@nepMeds/components/DocProfile/EditDoctor/EditCertification";
-import EditExperience from "@nepMeds/components/DocProfile/EditDoctor/EditExperience";
 import {
   Grid,
   GridItem,
-  Tabs,
-  TabList,
-  TabPanels,
   Tab,
+  TabList,
   TabPanel,
+  TabPanels,
+  Tabs,
 } from "@chakra-ui/react";
+import EditAcademic from "@nepMeds/components/DocProfile/EditDoctor/EditAcademic";
+import EditBasic from "@nepMeds/components/DocProfile/EditDoctor/EditBasic";
+import EditCertification from "@nepMeds/components/DocProfile/EditDoctor/EditCertification";
+import EditExperience from "@nepMeds/components/DocProfile/EditDoctor/EditExperience";
+import EditPrimary from "@nepMeds/components/DocProfile/EditDoctor/EditPrimary";
+import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 
 export const DocUpdateProfile = ({
@@ -23,8 +23,8 @@ export const DocUpdateProfile = ({
   const tabs = [
     "Profile",
     "Primary Info",
+    "NMC Info",
     "Academic Info",
-    "Certification Info",
     "Experience",
   ];
   const tabPanels = [
@@ -35,10 +35,10 @@ export const DocUpdateProfile = ({
       component: <EditPrimary doctorProfileData={doctorProfileData} />,
     },
     {
-      component: <EditAcademic doctorProfileData={doctorProfileData} />,
+      component: <EditCertification doctorProfileData={doctorProfileData} />,
     },
     {
-      component: <EditCertification doctorProfileData={doctorProfileData} />,
+      component: <EditAcademic doctorProfileData={doctorProfileData} />,
     },
     {
       component: <EditExperience doctorProfileData={doctorProfileData} />,
