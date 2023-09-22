@@ -1,8 +1,8 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse, toFormData } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type PrimaryInfo = Pick<
   IRegisterFields,
@@ -82,7 +82,7 @@ export const usePrimaryInfoRegister = () =>
 
 const updateNMCInfo = async (data: PrimaryInfo & { doctorId: number }) => {
   const response = await HttpClient.patch(
-    `${api.edit_doctor_profile}/${data.doctorId}/`,
+    `${api.edit_doctor_profile}${data.doctorId}/`,
     data
   );
   return response;

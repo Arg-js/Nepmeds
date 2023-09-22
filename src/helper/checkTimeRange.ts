@@ -163,8 +163,8 @@ export function addFifteenMinutes(timeString: string): string {
   return `${updatedHours}:${updatedMinutes.toString().padStart(2, "0")}:00`;
 }
 
-export const calculateAge = (dob: Date): number => {
-  const age = differenceInYears(new Date(), dob);
+export const calculateAge = (dob: Date, compare = new Date()): number => {
+  const age = differenceInYears(compare, dob);
   return age;
 };
 

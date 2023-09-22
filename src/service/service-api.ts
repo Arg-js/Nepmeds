@@ -13,6 +13,7 @@ export const api = {
   symptom: "core/symptom/",
   symptom_list: "/core/symptom-list/",
   academic: "/doctor-consult/register-bulk-academic-info/",
+  deleteAcademic: "/doctor-consult/academic-info/",
   certificate: "/doctor-consult/certificate-info/",
   experience: "/doctor-consult/register-bulk-experience-info/",
   nmc_update: "/doctor-consult/nmc-info/",

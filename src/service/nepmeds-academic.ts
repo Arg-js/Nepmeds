@@ -1,9 +1,9 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorAcademicInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type AcademicInfo = IRegisterFields["academic"][number];
 
@@ -60,7 +60,7 @@ export const useUpdateAcademicInfo = () => {
 };
 
 const deleteAcademicData = async (id: number) => {
-  const response = await HttpClient.delete(api.academic + `${id}/`);
+  const response = await HttpClient.delete(api.deleteAcademic + `${id}/`);
   return response;
 };
 
