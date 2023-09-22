@@ -373,7 +373,6 @@ const PrimaryInfo = ({
           label="Pan Number"
           name="pan_number"
           maxLength={9}
-          type="number"
           defaultValue={doctorProfileData?.pan_number}
           required
           register={register}
@@ -390,6 +389,10 @@ const PrimaryInfo = ({
             maxLength: {
               value: 9,
               message: "Pan Number can be only 9 digits long.",
+            },
+            pattern: {
+              value: /^[0-9]*$/,
+              message: "Please enter numbers only.",
             },
           }}
           error={errors.pan_number?.message}
@@ -589,9 +592,17 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "Ward is required.",
-            maxLength: {
-              value: 2,
-              message: "Ward can be only 2 digits long.",
+            max: {
+              value: 33,
+              message: "Invalid Ward.",
+            },
+            min: {
+              value: 1,
+              message: "Ward cannot be 0.",
+            },
+            pattern: {
+              value: /^[0-9]*$/,
+              message: "Invalid Ward. Please enter numbers only.",
             },
           }}
           error={errors.ward?.message}
