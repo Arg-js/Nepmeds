@@ -4,6 +4,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   useDeleteAcademicFile,
@@ -22,7 +23,6 @@ import {
   IImageFileType,
   MultiImageUpload,
 } from "../../ImageUploadMulti/dropzone";
-import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 export const AcademicInfoForm = ({
   doctorProfileData,
@@ -120,6 +120,7 @@ export const AcademicInfoForm = ({
 
   const getFiles = () => {
     const academic = getValues("academic") ?? [];
+
 
     const files = academic.map((item: any) => {
       return item.academic_documents;

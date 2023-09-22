@@ -360,13 +360,42 @@ const RegistrationForm = () => {
                 })
               ),
             };
+            academicInfoData.push(data);
             return data;
           });
 
           await Promise.all(academicPromises);
 
+
           if (academicArray?.filter(data => data.id)?.length > 0) {
-            await updateAcademicInfoRegister.mutateAsync(academicInfoData);
+            const res = await updateAcademicInfoRegister.mutateAsync(academicInfoData);
+            res.data?.data?.map(
+              (
+                e: {
+                  degree_program: string;
+                  major: string;
+                  id: number;
+                  university_data: {
+                    id: string;
+                  };
+                  graduation_year: string;
+                  academic_document: File | undefined | any;
+                },
+                i: number
+              ) => {
+                formMethods.setValue(`academic.${i}`, {
+                  doctor: doctor,
+                  degree_program: e?.degree_program,
+                  major: e?.major,
+                  id: e?.id,
+                  university: e?.university_data?.id,
+                  graduation_year: e?.graduation_year,
+                  academic_documents: e?.academic_document,
+                  isSubmitted: true,
+                });
+                setActiveStep(4);
+              }
+            );
             toastSuccess("Academic Information updated");
             setActiveStep(4);
           } else {
@@ -480,7 +509,7 @@ const RegistrationForm = () => {
             : null;
           toastFail(
             firstErrorMessage?.toString() ||
-              "Failed to add experience information!"
+            "Failed to add experience information!"
           );
         }
 
