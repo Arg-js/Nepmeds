@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorAcademicInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type AcademicInfo = IRegisterFields["academic"][number];
 

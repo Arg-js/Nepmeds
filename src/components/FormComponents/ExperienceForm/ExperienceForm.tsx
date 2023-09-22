@@ -25,7 +25,6 @@ import {
 } from "../../ImageUploadMulti/dropzone";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
-
 export const ExperienceForm = ({
   doctorProfileData,
 }: {

@@ -16,7 +16,7 @@ import { CellContext } from "@tanstack/table-core";
 // import { Show } from "react-iconly";
 import { NavigateFunction, generatePath } from "react-router";
 import { Link } from "react-router-dom";
-import TableActions from "../TableActions";
+import TableActions from "@nepMeds/components/DataTable/TableActions/index";
 
 export const allPaymentColumn = (
   onClick: (

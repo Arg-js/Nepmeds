@@ -38,16 +38,20 @@ import { generateHoursTimeArray } from "@nepMeds/utils/timeRange";
 import { AxiosError } from "axios";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import ModalComponent from "../Form/ModalComponent";
-import { toastFail, toastSuccess } from "../Toast";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast/index";
 import {
   formatToDate,
   formatToDayOfWeek,
   formatToMonth,
 } from "@nepMeds/helper/dateTImeConverter";
-import HourTimeSlot from "./HourTimeSlot";
-import MinuteTImeSlot from "./MinuteTimeSlot";
-import { ListOfTimeObject, boxPositions, minuteTime } from "./scheduleHelper";
+import HourTimeSlot from "@nepMeds/components/Schedule/HourTimeSlot";
+import MinuteTImeSlot from "@nepMeds/components/Schedule/MinuteTimeSlot";
+import {
+  ListOfTimeObject,
+  boxPositions,
+  minuteTime,
+} from "@nepMeds/components/Schedule/scheduleHelper";
 
 const timeData = generateHoursTimeArray();
 

@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
 import { api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { toastSuccess } from "./service-toast";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AxiosError } from "axios";

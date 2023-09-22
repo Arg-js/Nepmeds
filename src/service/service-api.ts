@@ -15,7 +15,7 @@ export const api = {
   academic: "/doctor-consult/register-bulk-academic-info/",
   certificate: "/doctor-consult/certificate-info/",
   experience: "/doctor-consult/register-bulk-experience-info/",
-  nmc_update:"/doctor-consult/nmc-info/",
+  nmc_update: "/doctor-consult/nmc-info/",
   academic_file: "/doctor-consult/academic-files-upload/",
   certificate_file: "doctor-consult/certificate-files-upload/",
   experience_file: "doctor-consult/experience-files-upload/",

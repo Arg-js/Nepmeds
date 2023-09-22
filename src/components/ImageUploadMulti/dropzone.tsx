@@ -64,8 +64,6 @@ export function MultiImageUpload({
     setFiles(tempArray);
   };
 
-
-
   return (
     <Flex
       p={2}

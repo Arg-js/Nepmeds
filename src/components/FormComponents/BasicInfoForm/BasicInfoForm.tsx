@@ -6,7 +6,7 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { normalURL } from "@nepMeds/service/service-axios";
 import { fileToString } from "@nepMeds/utils/fileToString";

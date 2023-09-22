@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { api } from "./service-api";
 
 const doctorDetail = (id: string) => async () => {
