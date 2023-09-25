@@ -6,6 +6,7 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
@@ -22,7 +23,6 @@ import { checkNumberMatch } from "@nepMeds/utils/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -149,6 +149,7 @@ const PrimaryInfo = ({
   const [selectedBackImage, setSelectedBackFrontImage] = useState<
     File | string | null
   >(null);
+
   useEffect(() => {
     if (isEditable && doctorProfileData?.id_front_image) {
       setSelectedFrontImage(
@@ -192,6 +193,12 @@ const PrimaryInfo = ({
     const idIssuedDate = getValues("id_issued_date");
     if (idIssuedDate > currentDate) {
       return "Citizenship issued date cannot be greater than the current date.";
+    }
+    if (
+      calculateAge(new Date(watch("date_of_birth")), new Date(idIssuedDate)) <
+      16
+    ) {
+      return "You must be at least 16 years old to have your card issued.";
     }
 
     return true; // Return true if the validation passes

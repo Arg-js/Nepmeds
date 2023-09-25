@@ -51,7 +51,7 @@ const schema = yup.object().shape({
   name: yup
     .string()
     .required("Symptom name is required!")
-    .max(30, "Symptom name can be 30 characters long"),
+    .max(30, "Symptom name can only be 30 characters long"),
   keyword: yup
     .string()
     .required("Symptom keyword is required")
@@ -88,7 +88,6 @@ const Symptoms = ({
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
-  // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -101,12 +100,6 @@ const Symptoms = ({
     onClose: onCloseEditModal,
     onOpen: onOpenEditModal,
   } = useDisclosure();
-
-  // const {
-  //   isOpen: isBulkOpen,
-  //   onClose: onCloseBulkModal,
-  //   onOpen: onOpenBulkModal,
-  // } = useDisclosure();
 
   const formMethods = useForm({
     defaultValues,
@@ -178,6 +171,7 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: formMethods.getValues("id")?.toString() || null,
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
@@ -197,6 +191,7 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: null,
         name: formMethods.getValues("name"),
         keyword: formMethods.getValues("keyword"),
@@ -279,12 +274,14 @@ const Symptoms = ({
                   name="name"
                   register={register}
                   error={errors.name?.message}
+                  isRequired
                 />
 
                 <FloatinglabelTextArea
                   label="Keywords"
                   name="keyword"
                   register={register}
+                  isRequired
                   rules={{
                     maxLength: {
                       value: 30,

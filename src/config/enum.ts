@@ -21,3 +21,9 @@ export enum PAYMENTMODE {
   KHALTI = 2,
   BANK = 3,
 }
+
+export enum ADMINAPPOINTMENT {
+  Instant_call = 1,
+  Appointment = 2,
+  FollowUp = 3,
+}

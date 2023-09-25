@@ -19,7 +19,7 @@ const emailRegExp = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/;
 const schema = yup.object().shape({
   email_or_mobile_number: yup
     .string()
-    .required("Mobile number or email is required!")
+    .required("Email Address/ Mobile No. is required!")
     .test(
       "is-email-or-phone",
       "Please enter a valid email or phone number",

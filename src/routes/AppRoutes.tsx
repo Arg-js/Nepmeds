@@ -3,11 +3,16 @@ import {
   useAuthentication,
   useLoginTokenDetailQuery,
 } from "@nepMeds/service/nepmeds-auth";
-import { lazy, Suspense } from "react";
+import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
 import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
+
+const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
+const AdminAppointment = lazy(
+  () => import("@nepMeds/pages/Admin/Appointments")
+);
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(
@@ -170,11 +175,11 @@ const adminRoutes = [
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,
-        element: <>Appointments</>,
+        element: <AdminAppointment />,
       },
       {
         path: NAVIGATION_ROUTES.USER_ROLE,
-        element: <>User Role</>,
+        element: <UserRole />,
       },
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,

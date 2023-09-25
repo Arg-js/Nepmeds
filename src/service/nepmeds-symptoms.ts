@@ -31,7 +31,7 @@ const saveSymptoms = async (symptomInfo: ISymptom) => {
       })
     : delete symptomInfoParam.image;
   if (symptomInfo.id) {
-    const response = await HttpClient.patch<NepMedsResponse>(
+    const response = await HttpClient.patch(
       api.symptom + symptomInfo.id + "/",
       objectToFormData(symptomInfoParam)
     );
