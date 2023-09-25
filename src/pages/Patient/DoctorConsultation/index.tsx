@@ -14,7 +14,7 @@ import DoctorListCard, {
   Size,
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useState } from "react";
 import { AxiosError } from "axios";
@@ -22,6 +22,9 @@ import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
 import Carousel from "react-multi-carousel";
+import { useAuthenticatePatient } from "@nepMeds/service/nepmeds-patient-login";
+import { useEffect } from "react";
+import TokenService from "@nepMeds/service/service-token";
 
 export enum Type {
   SPECIALIST,
@@ -58,7 +61,7 @@ const DoctorConsultation = () => {
 
   // REACT QUERIES
   const {
-    data: specializaionData = [],
+    data: specializationData = [],
     isLoading: SpecializationDataLoading,
     error: specializationDataError,
   } = useSpecializationRegisterData();
@@ -74,7 +77,30 @@ const DoctorConsultation = () => {
     page_size: pageParams.limit,
     page: pageParams.page,
   });
+
+  const { mutateAsync: authenticatePatient } = useAuthenticatePatient();
   // REACT QUERIES END
+
+  const location = useLocation();
+  const authenticate = async () => {
+    try {
+      if (location.search) {
+        const response = await authenticatePatient({
+          patientToken: location.search.replace("?key=", ""),
+        });
+        TokenService.setToken({
+          access: response?.data?.data?.[0]?.access,
+          refresh: TokenService?.getToken()?.refresh || "",
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  useEffect(() => {
+    authenticate();
+  }, []);
 
   const navigate = useNavigate();
 
@@ -114,7 +140,7 @@ const DoctorConsultation = () => {
 
           <Box my={7.5}>
             <Carousel responsive={responsive}>
-              {specializaionData?.map(specialization => {
+              {specializationData?.map(specialization => {
                 return (
                   <Box
                     key={specialization.id}

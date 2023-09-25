@@ -115,7 +115,7 @@ const ImageUpload = ({
               type="file"
               id={name}
               {...register(name, rules)}
-              accept="image/*"
+              accept="image/jpeg, image/png, image/jpg"
               style={{ display: "none" }}
               onChange={handleImageChange}
             />

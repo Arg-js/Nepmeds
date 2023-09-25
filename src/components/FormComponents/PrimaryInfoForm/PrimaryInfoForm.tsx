@@ -6,6 +6,7 @@ import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextAre
 import Input from "@nepMeds/components/Form/Input";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
 import Select from "@nepMeds/components/Form/Select";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
@@ -22,7 +23,6 @@ import { checkNumberMatch } from "@nepMeds/utils/validation";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { useLocation } from "react-router-dom";
-import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 const PrimaryInfo = ({
   doctorProfileData,
@@ -187,11 +187,15 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
 
+
   const validateDateOfCardIssued = () => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const idIssuedDate = getValues("id_issued_date");
     if (idIssuedDate > currentDate) {
       return "Citizenship issued date cannot be greater than the current date.";
+    }
+    if (calculateAge(new Date(watch('date_of_birth')), new Date(idIssuedDate)) < 16) {
+      return "You must be at least 16 years old to have your card issued.";
     }
 
     return true; // Return true if the validation passes
@@ -373,7 +377,6 @@ const PrimaryInfo = ({
           label="Pan Number"
           name="pan_number"
           maxLength={9}
-          type="number"
           defaultValue={doctorProfileData?.pan_number}
           required
           register={register}
@@ -390,6 +393,10 @@ const PrimaryInfo = ({
             maxLength: {
               value: 9,
               message: "Pan Number can be only 9 digits long.",
+            },
+            pattern: {
+              value: /^[0-9]*$/,
+              message: "Please enter numbers only.",
             },
           }}
           error={errors.pan_number?.message}
@@ -589,9 +596,17 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "Ward is required.",
-            maxLength: {
-              value: 2,
-              message: "Ward can be only 2 digits long.",
+            max: {
+              value: 33,
+              message: "Invalid Ward.",
+            },
+            min: {
+              value: 1,
+              message: "Ward cannot be 0.",
+            },
+            pattern: {
+              value: /^[0-9]*$/,
+              message: "Invalid Ward. Please enter numbers only.",
             },
           }}
           error={errors.ward?.message}

@@ -40,6 +40,12 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
+const defaultValues = {
+  id: null as number | null,
+  name: "",
+  symptom: [] as { label: string; value: string }[],
+};
+
 const schema = yup.object().shape({
   name: yup
     .string()
@@ -114,10 +120,10 @@ const Specializations = ({
   } = useDisclosure();
 
   const closeModal = () => {
+    formMethods.reset(defaultValues);
     onCloseEditModal();
     onCloseDeleteModal();
     onCloseSpecialization();
-    formMethods.reset({});
   };
 
   const symptomsOptions = symptomList?.map(s => ({
@@ -126,11 +132,7 @@ const Specializations = ({
   }));
 
   const formMethods = useForm({
-    defaultValues: {
-      id: null as number | null,
-      name: "",
-      symptom: [] as { label: string; value: string }[],
-    },
+    defaultValues,
 
     resolver: yupResolver(schema),
   });
@@ -274,7 +276,7 @@ const Specializations = ({
     <Fragment>
       {/* edit modal */}
       <ModalComponent
-        size="sm"
+        size="md"
         isOpen={isEditModalOpen}
         onClose={closeModal}
         heading={
@@ -323,7 +325,7 @@ const Specializations = ({
 
       {/* add modal */}
       <ModalComponent
-        size="sm"
+        size="md"
         isOpen={isSpecializationOpen}
         onClose={closeModal}
         heading={
@@ -334,22 +336,12 @@ const Specializations = ({
         }
         footer={
           <HStack w="100%" gap={3}>
-            <Button
-              variant="outline"
-              onClick={closeModal}
-              flex={1}
-              border="1px solid"
-              borderColor={colors.primary}
-              color={colors.primary}
-              fontWeight={400}
-            >
+            <Button variant="primaryOutline" onClick={closeModal} flex={1}>
               Discard
             </Button>
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onSubmitForm)}
-              background={colors.primary}
-              color={colors.white}
               isLoading={saveSpecializationAction.isLoading}
             >
               Save
@@ -392,7 +384,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Specialist</Text>
+            <Text>Delete Specialization</Text>
           </HStack>
         }
         footer={
@@ -412,7 +404,7 @@ const Specializations = ({
         }
       >
         <Text>
-          Are you sure you want to delete symptom{" "}
+          Are you sure you want to delete specialization{" "}
           <Text fontWeight="bold" display="inline">
             {deleteSpecialization?.name}
           </Text>
@@ -423,7 +415,7 @@ const Specializations = ({
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist
+            Specialization
           </Text>
         </GridItem>
 

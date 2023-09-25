@@ -1,5 +1,4 @@
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { AxiosError } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { useNavigate } from "react-router-dom";
 
@@ -8,7 +7,8 @@ import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { BroadcastChannel } from "broadcast-channel";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 
 const logoutChannel = new BroadcastChannel("logout");
 const loginChannel = new BroadcastChannel("login");
@@ -42,7 +42,7 @@ const useLogoutMutation = (noToast?: boolean) => {
       queryClient.setQueryData(authTokenKey, () => false);
       localStorage.setItem("doctor", "false");
       localStorage.setItem("admin", "false");
-      navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN, { replace: true });
+      navigate(NAVIGATION_ROUTES.LOGIN, { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
     },
   });
@@ -68,12 +68,8 @@ const useLoginMutation = () => {
       toastSuccess("Login Successful!!");
     },
     onError: error => {
-      const loginErr = error as AxiosError<{ message: string; error: string }>;
-      toastFail(
-        loginErr.response?.data?.message ??
-          loginErr.response?.data?.error ??
-          "Login failed !"
-      );
+      const loginErr = serverErrorResponse(error);
+      toastFail(loginErr);
     },
   });
 };

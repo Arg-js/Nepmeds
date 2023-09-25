@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
-import { ISelectOption } from "./Select";
+import { ISelectOption } from "@nepMeds/components/Form/Select";
 
 interface IMultiSelect extends SelectProps {
   placeholder?: string;
@@ -102,7 +102,7 @@ const MultiSelect = ({
                   ...baseStyles,
                   background: colors.forminput,
                   color: colors.black_50,
-                  // paddingTop: 10,
+                  paddingTop: 10,
                   minHeight: "35px",
                   borderRadius: "8px",
                   border: error

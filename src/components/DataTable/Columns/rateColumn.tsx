@@ -2,7 +2,7 @@ import { Text } from "@chakra-ui/react";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { getFullDate } from "@nepMeds/helper/dateTImeConverter";
 import { IAmountListDoctor } from "@nepMeds/service/nepmeds-payment";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 
 //Rate Column
 export const paymentRateColumn = () => {
@@ -25,7 +25,7 @@ export const paymentRateColumn = () => {
 
     {
       header: "Verified Date",
-      accessorKey: "approval_date",
+      accessorKey: "approved_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         return row?.original?.approved_date ?? "-";
       },
@@ -49,26 +49,22 @@ export const paymentRateColumn = () => {
 
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return <Text pl={"12px"}>Rs. {row?.original?.instant_amount}</Text>;
-      },
+      accessorKey: "instant_amount",
       size: 10,
     },
     {
       header: "Appointment Rate",
-      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
-      },
+      accessorKey: "schedule_amount",
       size: 10,
     },
   ];
 };
-export const rateHistoryColumn = () => {
+export const rateHistoryColumn = ({ pageIndex, pageSize }: PaginationState) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageIndex * pageSize + (index + 1)}.`;
       },
       size: 2,
     },
@@ -92,9 +88,7 @@ export const rateHistoryColumn = () => {
 
     {
       header: "Instant Rate",
-      cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return <Text pl={"12px"}>Rs. {row?.original?.instant_amount}</Text>;
-      },
+      accessorKey: "instant_amount",
       size: 10,
     },
     {

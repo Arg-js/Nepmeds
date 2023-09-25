@@ -1,9 +1,9 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorAcademicInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
 
 export type AcademicInfo = IRegisterFields["academic"][number];
 
@@ -26,6 +26,29 @@ export const useAcademicInfoRegister = () => {
 
   return mutation;
 };
+
+// Post From Profile
+
+const createAcademicDataProfile = async (data: AcademicInfo) => {
+  const response = await HttpClient.post(api.academicProfile, { data: data });
+  return response;
+};
+
+export const useAcademicInfoRegisterProfile = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<AxiosResponse<any, any>, unknown, AcademicInfo>(
+    createAcademicDataProfile,
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(api.doctor_profile);
+        queryClient.fetchQuery(api.doctor_profile);
+      },
+    }
+  );
+
+  return mutation;
+};
+
 const createAcademicFile = async (data: AcademicInfo) => {
   const formData = new FormData();
 
@@ -44,7 +67,7 @@ const createAcademicFile = async (data: AcademicInfo) => {
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
 const updateAcademicData = async (data: AcademicInfo[]) => {
-  const response = await HttpClient.patch(api.academic, { data: data });
+  const response = await HttpClient.patch(api.academicProfile, { data: data });
   return response;
 };
 
@@ -60,7 +83,7 @@ export const useUpdateAcademicInfo = () => {
 };
 
 const deleteAcademicData = async (id: number) => {
-  const response = await HttpClient.delete(api.academic + `${id}/`);
+  const response = await HttpClient.delete(api.deleteAcademic + `${id}/`);
   return response;
 };
 

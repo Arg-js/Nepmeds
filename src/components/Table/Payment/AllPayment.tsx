@@ -28,7 +28,7 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import { ISpecializationList } from "./PaymentList";
+import { ISpecializationList } from "@nepMeds/components/Table/Payment/PaymentList";
 import usePaymentStatusForm from "./usePaymentStatusForm";
 
 const AllPayment = ({
@@ -237,7 +237,7 @@ const AllPayment = ({
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Dcotor Approval</Text>
+              <Text>Doctor Approval</Text>
             </HStack>
           }
           footer={

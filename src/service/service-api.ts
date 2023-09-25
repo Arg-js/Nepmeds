@@ -13,9 +13,12 @@ export const api = {
   symptom: "core/symptom/",
   symptom_list: "/core/symptom-list/",
   academic: "/doctor-consult/register-bulk-academic-info/",
+  academicProfile: "/doctor-consult/profile-bulk-academic-info/",
+  deleteAcademic: "/doctor-consult/academic-info/",
   certificate: "/doctor-consult/certificate-info/",
   experience: "/doctor-consult/register-bulk-experience-info/",
-  nmc_update:"/doctor-consult/nmc-info/",
+  experienceProfile: "/doctor-consult/profile-bulk-experience-info/",
+  nmc_update: "/doctor-consult/nmc-info/",
   academic_file: "/doctor-consult/academic-files-upload/",
   certificate_file: "doctor-consult/certificate-files-upload/",
   experience_file: "doctor-consult/experience-files-upload/",
@@ -70,6 +73,15 @@ export const api = {
   allpaymentList: "/dashboard/doctor-list-asper-payment-status/",
   getAmountHistory: "/dashboard/doctor-rate-history/:id/",
 
+  adminAppointment: {
+    appointment: "/dashboard/appointment-history/",
+  },
+  doctorUserRole: "/dashboard/doctor-management/",
+  patientUserRole: "/dashboard/patient-management/",
+  userRole: {
+    doctorStatus: "/dashboard/doctor-management/:id/",
+    patientStatus: "/dashboard/patient-status-update/:id/",
+  },
   doctor: {
     appointments: {
       get: "/doctor-consult/new-appointment-request/",
@@ -79,6 +91,9 @@ export const api = {
   },
 
   patient: {
+    login: {
+      post: "/user-management/refresh-token/",
+    },
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",

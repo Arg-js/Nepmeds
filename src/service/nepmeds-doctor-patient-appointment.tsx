@@ -1,8 +1,8 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
-import { api, NepMedsResponse } from "./service-api";
-import { HttpClient } from "./service-axios";
-import { toastFail } from "./service-toast";
+import { api, NepMedsResponse } from "@nepMeds/service/service-api";
+import { HttpClient } from "@nepMeds/service/service-axios";
+import { toastFail } from "@nepMeds/service/service-toast";
 
 export interface IGetAppointmentRequest {
   count: number;
@@ -18,6 +18,12 @@ export interface IGetAppointmentReqRes {
   full_name: string;
   gender: Gender;
   symptoms: ISymptom[];
+  extra_data: {
+    cancelled_availability: {
+      to_time: string;
+      from_time: string;
+    };
+  };
   created_at: string;
   availability: Availability;
   status: string;

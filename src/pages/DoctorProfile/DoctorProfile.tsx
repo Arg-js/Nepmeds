@@ -4,7 +4,6 @@ import { HStack, Text, VStack } from "@chakra-ui/layout";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { colors } from "@nepMeds/theme/colors";
 import { FormProvider, useForm } from "react-hook-form";
 import * as yup from "yup";
 
@@ -62,12 +61,7 @@ const DoctorProfile = () => {
             <Button variant="outline" onClick={onClose} flex={1}>
               Discard
             </Button>
-            <Button
-              flex={1}
-              onClick={onSavePersonalInfo}
-              background={colors.primary}
-              color={colors.white}
-            >
+            <Button flex={1} onClick={onSavePersonalInfo}>
               Save
             </Button>
           </HStack>

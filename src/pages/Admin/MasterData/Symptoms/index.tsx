@@ -38,15 +38,26 @@ import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
 
+const defaultValues = {
+  id: null as number | null,
+  name: "",
+  keyword: "",
+  description: "",
+};
+
 const schema = yup.object().shape({
   name: yup
     .string()
     .required("Symptom name is required!")
-    .max(30, "Symptom name can be 30 characters long"),
+    .max(30, "Symptom name can only be 30 characters long"),
   keyword: yup
     .string()
-    .required("Symptom keyword is required")
-    .max(30, "Keyword can be 30 characters long"),
+    .required("Symptom keyword is required!")
+    .max(30, "Keyword can only be  30 characters long"),
+  description: yup
+    .string()
+    .required("Description is required!")
+    .min(5, "Description must be 5 characters long"),
 });
 
 type OnOpenFunction = () => void;
@@ -77,7 +88,6 @@ const Symptoms = ({
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
-  // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -91,25 +101,14 @@ const Symptoms = ({
     onOpen: onOpenEditModal,
   } = useDisclosure();
 
-  // const {
-  //   isOpen: isBulkOpen,
-  //   onClose: onCloseBulkModal,
-  //   onOpen: onOpenBulkModal,
-  // } = useDisclosure();
-
   const formMethods = useForm({
-    defaultValues: {
-      id: null as number | null,
-      name: "",
-      keyword: "",
-    },
+    defaultValues,
 
     resolver: yupResolver(schema),
   });
   const {
     formState: { errors },
     register,
-    reset,
   } = formMethods;
 
   const columns = [
@@ -168,13 +167,11 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: formMethods.getValues("id")?.toString() || null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
-      onCloseEditModal();
+      onCloseModal();
       toastSuccess("Symptom saved successfully!");
-      formMethods.reset({});
     } catch (error) {
       toastFail("Failed to save symptom!");
     }
@@ -186,14 +183,11 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
-      onCloseSymptoms();
+      onCloseModal();
       toastSuccess("Symptom saved successfully!");
-      formMethods.reset();
-      // formMethods.reset({});
     } catch (error) {
       const err = serverErrorResponse(error, "Failed to save symptom!");
       toastFail(err);
@@ -208,8 +202,9 @@ const Symptoms = ({
   };
 
   const onCloseModal = () => {
+    onCloseSymptoms();
     onCloseEditModal();
-    reset();
+    formMethods.reset(defaultValues);
   };
 
   const onDeleteSymptom = async () => {
@@ -267,12 +262,14 @@ const Symptoms = ({
                   name="name"
                   register={register}
                   error={errors.name?.message}
+                  isRequired
                 />
 
                 <FloatinglabelTextArea
                   label="Keywords"
                   name="keyword"
                   register={register}
+                  isRequired
                   rules={{
                     maxLength: {
                       value: 30,
@@ -280,6 +277,13 @@ const Symptoms = ({
                     },
                   }}
                   error={errors.keyword?.message}
+                />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  isRequired
+                  register={register}
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>
@@ -293,10 +297,7 @@ const Symptoms = ({
         <ModalComponent
           size="sm"
           isOpen={isSymptomsOpen}
-          onClose={() => {
-            onCloseSymptoms();
-            reset();
-          }}
+          onClose={onCloseModal}
           heading={
             <HStack>
               <svgs.logo_small />
@@ -307,10 +308,7 @@ const Symptoms = ({
             <HStack w="100%" gap={3}>
               <Button
                 variant={"primaryOutline"}
-                onClick={() => {
-                  onCloseSymptoms();
-                  reset();
-                }}
+                onClick={onCloseModal}
                 flex={1}
                 border="1px solid"
                 fontWeight={400}
@@ -348,6 +346,13 @@ const Symptoms = ({
                   name="keyword"
                   register={register}
                   error={errors.keyword?.message}
+                />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
+                  isRequired
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>

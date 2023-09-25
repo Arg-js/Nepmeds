@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 const generateForgetPasswordLink = async ({
   email_or_mobile_number,

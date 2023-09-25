@@ -1,11 +1,11 @@
 import { Box, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import { colors } from "@nepMeds/theme/colors";
-import { ChangeEvent, useEffect, useState } from "react";
-import { useFormContext } from "react-hook-form";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
+import { colors } from "@nepMeds/theme/colors";
 import { fileToString } from "@nepMeds/utils/fileToString";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useFormContext } from "react-hook-form";
 
 export const NmcForm = () => {
   // hook form

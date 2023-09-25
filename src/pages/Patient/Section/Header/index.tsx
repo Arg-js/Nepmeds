@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Flex,
   IconButton,
@@ -6,6 +7,10 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
   Text,
 } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -15,9 +20,16 @@ import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
+import TokenService from "@nepMeds/service/service-token";
+import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 
 const Header: React.FC = () => {
   const navigate = useNavigate();
+  const isAuthenticated = TokenService.isAuthenticated();
+
+  // REACT QUERY
+  const { mutate: logoutAction } = useLogoutMutation();
+  // REACT QUERY ENDS
   return (
     <WrapperBox
       height={"100px"}
@@ -65,20 +77,43 @@ const Header: React.FC = () => {
           {/* Search Field ends */}
 
           {/* Login icon */}
-          <Flex
-            gap={1}
-            cursor={"pointer"}
-            onClick={() =>
-              (window.location.href =
-                import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
-            }
-            display={{ base: "none", md: "flex" }}
-          >
-            <SignInIcon />
-            <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
-              Login/SignUp
-            </Text>
-          </Flex>
+          {!isAuthenticated ? (
+            <Flex
+              gap={1}
+              cursor={"pointer"}
+              onClick={() =>
+                (window.location.href =
+                  import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
+              }
+              display={{ base: "none", md: "flex" }}
+            >
+              <SignInIcon />
+              <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
+                Login/SignUp
+              </Text>
+            </Flex>
+          ) : (
+            <Flex
+              cursor={"pointer"}
+              display={{ base: "none", md: "flex" }}
+              alignItems={"center"}
+              gap={3}
+            >
+              <Menu>
+                <MenuButton
+                  sx={{
+                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                  }}
+                >
+                  <Avatar />
+                </MenuButton>
+                <MenuList>
+                  <MenuItem>Profile</MenuItem>
+                  <MenuItem onClick={() => logoutAction()}>Logout</MenuItem>
+                </MenuList>
+              </Menu>
+            </Flex>
+          )}
           {/* Login icon ENDS*/}
         </Flex>
 

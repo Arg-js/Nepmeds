@@ -372,8 +372,6 @@ const CalendarDailyDetailView = ({
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onSubmit)}
-              background={colors.primary}
-              color={colors.white}
               isLoading={createDoctorAvailabilityInfo.isLoading}
             >
               Save
