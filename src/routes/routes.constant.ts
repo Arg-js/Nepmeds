@@ -31,7 +31,7 @@ export const NAVIGATION_ROUTES = {
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
 
-  DOC_PROFILE: "/doc-profile/:id",
+  DOC_PROFILE: "/doctor-profile/:id",
 
   DOCTOR_LIST_REGISTRATION: "/doctor-list/registration",
   DOCTOR_LIST_PAYMENT: "/doctor-list/payment",
