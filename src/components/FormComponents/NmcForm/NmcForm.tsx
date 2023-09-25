@@ -70,6 +70,7 @@ export const NmcForm = () => {
             register={register}
             required
             type="number"
+            placeholder="12345"
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",

@@ -132,11 +132,6 @@ const registerDefaultValues = {
 };
 export type IRegisterFields = typeof registerDefaultValues;
 
-// interface IResponseFileMap {
-//   file: string;
-//   id: string;
-// }
-
 const RegistrationForm = () => {
   const navigate = useNavigate();
 
@@ -318,6 +313,10 @@ const RegistrationForm = () => {
               ...formatedData,
               doctorId: doctor,
             });
+            await primaryInfoUpdate.mutateAsync({
+              ...formatedData,
+              doctorId: doctor,
+            });
           } else {
             await primaryInfoRegister
               .mutateAsync(formatedData)
@@ -366,9 +365,10 @@ const RegistrationForm = () => {
 
           await Promise.all(academicPromises);
 
-
           if (academicArray?.filter(data => data.id)?.length > 0) {
-            const res = await updateAcademicInfoRegister.mutateAsync(academicInfoData);
+            const res = await updateAcademicInfoRegister.mutateAsync(
+              academicInfoData
+            );
             res.data?.data?.map(
               (
                 e: {
@@ -403,6 +403,33 @@ const RegistrationForm = () => {
               academicInfoData as any
             );
             if (academicRegister.data.data) {
+              academicRegister.data?.data?.map(
+                (
+                  e: {
+                    degree_program: string;
+                    major: string;
+                    id: number;
+                    university_data: {
+                      id: string;
+                    };
+                    graduation_year: string;
+                    academic_document: File | undefined | any;
+                  },
+                  i: number
+                ) => {
+                  formMethods.setValue(`academic.${i}`, {
+                    doctor: doctor,
+                    degree_program: e?.degree_program,
+                    major: e?.major,
+                    id: e?.id,
+                    university: e?.university_data?.id,
+                    graduation_year: e?.graduation_year,
+                    academic_documents: e?.academic_document,
+                    isSubmitted: true,
+                  });
+                  setActiveStep(4);
+                }
+              );
               academicRegister.data?.data?.map(
                 (
                   e: {
@@ -491,6 +518,7 @@ const RegistrationForm = () => {
               ({ id }: { id: number }, index: number) => {
                 if (id) {
                   formMethods.setValue(`experience.${index}.id`, String(id));
+                  formMethods.setValue(`experience.${index}.id`, String(id));
                   formMethods.setValue(`experience.${index}.isSubmitted`, true);
                 }
               }
@@ -509,7 +537,7 @@ const RegistrationForm = () => {
             : null;
           toastFail(
             firstErrorMessage?.toString() ||
-            "Failed to add experience information!"
+              "Failed to add experience information!"
           );
         }
 

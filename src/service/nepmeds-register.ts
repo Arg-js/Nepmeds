@@ -4,6 +4,13 @@ import { AxiosResponse, toFormData } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 
+type NMCINFO = {
+  nmc_number?: number;
+  nmc_issued_date?: string;
+  nmc_expiry_date?: string;
+  nmc_file?: File | string;
+};
+
 export type PrimaryInfo = Pick<
   IRegisterFields,
   | "title"
@@ -40,12 +47,7 @@ export type PrimaryInfo = Pick<
     is_email_verified?: boolean;
     is_mobile_number_verified?: boolean;
   };
-  doctor_nmc_info: {
-    nmc_number?: number;
-    nmc_issued_date?: string;
-    nmc_expiry_date?: string;
-    nmc_file?: File | string;
-  };
+  doctor_nmc_info: NMCINFO;
 };
 
 const signUpUser = async (data: { email_or_mobile_number: string }) => {
