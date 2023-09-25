@@ -42,17 +42,22 @@ const defaultValues = {
   id: null as number | null,
   name: "",
   keyword: "",
+  description: "",
 };
 
 const schema = yup.object().shape({
   name: yup
     .string()
     .required("Symptom name is required!")
-    .max(30, "Symptom name can be 30 characters long"),
+    .max(30, "Symptom name can only be 30 characters long"),
   keyword: yup
     .string()
-    .required("Symptom keyword is required")
-    .max(30, "Keyword can be 30 characters long"),
+    .required("Symptom keyword is required!")
+    .max(30, "Keyword can only be  30 characters long"),
+  description: yup
+    .string()
+    .required("Description is required!")
+    .min(5, "Description must be 5 characters long"),
 });
 
 type OnOpenFunction = () => void;
@@ -83,7 +88,6 @@ const Symptoms = ({
   });
   const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
   const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
-  // const deleteBulkSymptom = useDeleteBulkSymptoms();
 
   const {
     isOpen: isDeleteModalOpen,
@@ -96,12 +100,6 @@ const Symptoms = ({
     onClose: onCloseEditModal,
     onOpen: onOpenEditModal,
   } = useDisclosure();
-
-  // const {
-  //   isOpen: isBulkOpen,
-  //   onClose: onCloseBulkModal,
-  //   onOpen: onOpenBulkModal,
-  // } = useDisclosure();
 
   const formMethods = useForm({
     defaultValues,
@@ -169,9 +167,8 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: formMethods.getValues("id")?.toString() || null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
       onCloseModal();
       toastSuccess("Symptom saved successfully!");
@@ -186,9 +183,8 @@ const Symptoms = ({
       if (!isValid) return;
 
       await saveSymptomAction.mutateAsync({
+        ...formMethods.getValues(),
         id: null,
-        name: formMethods.getValues("name"),
-        keyword: formMethods.getValues("keyword"),
       });
       onCloseModal();
       toastSuccess("Symptom saved successfully!");
@@ -266,12 +262,14 @@ const Symptoms = ({
                   name="name"
                   register={register}
                   error={errors.name?.message}
+                  isRequired
                 />
 
                 <FloatinglabelTextArea
                   label="Keywords"
                   name="keyword"
                   register={register}
+                  isRequired
                   rules={{
                     maxLength: {
                       value: 30,
@@ -279,6 +277,13 @@ const Symptoms = ({
                     },
                   }}
                   error={errors.keyword?.message}
+                />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  isRequired
+                  register={register}
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>
@@ -341,6 +346,13 @@ const Symptoms = ({
                   name="keyword"
                   register={register}
                   error={errors.keyword?.message}
+                />
+                <FloatinglabelTextArea
+                  label="Description"
+                  name="description"
+                  register={register}
+                  isRequired
+                  error={errors.description?.message}
                 />
               </VStack>
             </form>
