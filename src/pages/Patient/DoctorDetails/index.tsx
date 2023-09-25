@@ -19,6 +19,7 @@ import { colors } from "@nepMeds/theme/colors";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "@nepMeds/assets/styles/reactCalender.css";
+import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -270,9 +271,7 @@ const DoctorDetails = () => {
                 </Text>
                 <Flex gap={4} direction={"column"}>
                   <Flex alignItems={"center"} justifyContent={"center"}>
-                    <Calendar
-                      className={"react-calendar__month-view__weekdays"}
-                    />
+                    <Calendar />
                   </Flex>
                   <Text
                     fontWeight={600}
