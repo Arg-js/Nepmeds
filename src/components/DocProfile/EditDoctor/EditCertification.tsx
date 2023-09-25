@@ -192,7 +192,7 @@ const EditCertification = ({
                 </Grid>
               </form>
             </FormProvider>
-          ) : (
+          ) : NMCdata ? (
             <SimpleGrid
               columns={{ base: 1, md: 1, lg: 2, xl: 3 }}
               borderBottom={`1px solid ${colors.grey_light}`}
@@ -297,6 +297,8 @@ const EditCertification = ({
                 </VStack>
               </GridItem>
             </SimpleGrid>
+          ) : (
+            <Text textAlign="center">No Data Found</Text>
           )}
         </CardBody>
       </Card>
