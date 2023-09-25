@@ -149,6 +149,7 @@ const PrimaryInfo = ({
   const [selectedBackImage, setSelectedBackFrontImage] = useState<
     File | string | null
   >(null);
+
   useEffect(() => {
     if (isEditable && doctorProfileData?.id_front_image) {
       setSelectedFrontImage(
@@ -187,14 +188,16 @@ const PrimaryInfo = ({
     return true; // Return true if the validation passes
   };
 
-
   const validateDateOfCardIssued = () => {
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const idIssuedDate = getValues("id_issued_date");
     if (idIssuedDate > currentDate) {
       return "Citizenship issued date cannot be greater than the current date.";
     }
-    if (calculateAge(new Date(watch('date_of_birth')), new Date(idIssuedDate)) < 16) {
+    if (
+      calculateAge(new Date(watch("date_of_birth")), new Date(idIssuedDate)) <
+      16
+    ) {
       return "You must be at least 16 years old to have your card issued.";
     }
 
@@ -365,8 +368,8 @@ const PrimaryInfo = ({
           rules={
             !isEditable
               ? {
-                required: "Specialization is required.",
-              }
+                  required: "Specialization is required.",
+                }
               : {}
           }
           error={errors.specialization_names?.message}

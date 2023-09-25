@@ -2,17 +2,24 @@ import { Box, GridItem, SimpleGrid, Text } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import ImageUpload from "@nepMeds/components/ImageUpload";
+import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { fileToString } from "@nepMeds/utils/fileToString";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
 
-export const NmcForm = () => {
+type INmcProp = Omit<IRegisterFields["nmc"], "isSubmitted" | "nmc_file">;
+interface IProp extends INmcProp {
+  nmc_file: File | string | null;
+}
+export const NmcForm = ({ data }: { data?: IProp }) => {
   // hook form
   const {
     register,
     watch,
+    getValues,
     setValue,
+    reset,
     formState: { errors },
   } = useFormContext<IRegisterFields>();
 
@@ -20,9 +27,29 @@ export const NmcForm = () => {
   const [nmcFile, setNmcFile] = useState<File | string | null>(null);
   //  hooks
   const { nmc: nmcData } = watch();
+
+  //  set data if data exist
   useEffect(() => {
-    setNmcFile(nmcData.nmc_file?.[0] ?? null);
-  }, [nmcData]);
+    if (data) {
+      reset({
+        ...getValues(),
+        nmc: {
+          nmc_number: data.nmc_number,
+          nmc_issued_date: data.nmc_issued_date,
+          nmc_expiry_date: data.nmc_expiry_date,
+          nmc_file: data.nmc_file as string,
+        },
+      });
+    }
+  }, [data]);
+
+  useEffect(() => {
+    if (data) {
+      setNmcFile(`${normalURL}/media/${data.nmc_file}`);
+    } else {
+      setNmcFile(nmcData?.nmc_file?.[0] ?? null);
+    }
+  }, [data]);
 
   // methods
   const handleImageChange = async (e: ChangeEvent<HTMLInputElement>) => {
@@ -70,7 +97,6 @@ export const NmcForm = () => {
             register={register}
             required
             type="number"
-            placeholder="12345"
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
