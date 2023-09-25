@@ -1,3 +1,4 @@
+import { EditIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
   Grid,
   // Grid,
   GridItem,
+  Icon,
   Image,
   SimpleGrid,
   Text,
@@ -81,8 +83,11 @@ const EditCertification = ({
   const handleFormUpdate = async () => {
     try {
       const nmc = formMethods.getValues("nmc");
-
-      await updateCertificateInfoRegister.mutateAsync(nmc);
+      const formatedData = {
+        ...nmc,
+        nmc_file: formMethods.getValues("nmc.nmc_file")?.[0],
+      };
+      await updateCertificateInfoRegister.mutateAsync(formatedData);
     } catch (error) {
       const err = serverErrorResponse(error);
       toastFail(err);
@@ -135,7 +140,7 @@ const EditCertification = ({
               onClick={() => setEditForm(true)}
               cursor="pointer"
             >
-              {/* <Button borderRadius="xl">
+              <Button borderRadius="xl">
                 <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
                 <Text
                   color={colors?.white}
@@ -145,7 +150,7 @@ const EditCertification = ({
                 >
                   Edit
                 </Text>
-              </Button> */}
+              </Button>
             </Box>
           )}
         </Box>
@@ -173,7 +178,7 @@ const EditCertification = ({
                       overflowY: "scroll",
                     }}
                   >
-                    <NmcForm />
+                    <NmcForm data={NMCdata} />
                   </GridItem>
                   <GridItem>
                     <SubmitButton
@@ -187,7 +192,7 @@ const EditCertification = ({
                 </Grid>
               </form>
             </FormProvider>
-          ) : (
+          ) : NMCdata ? (
             <SimpleGrid
               columns={{ base: 1, md: 1, lg: 2, xl: 3 }}
               borderBottom={`1px solid ${colors.grey_light}`}
@@ -292,6 +297,8 @@ const EditCertification = ({
                 </VStack>
               </GridItem>
             </SimpleGrid>
+          ) : (
+            <Text textAlign="center">No Data Found</Text>
           )}
         </CardBody>
       </Card>

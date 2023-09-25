@@ -123,10 +123,10 @@ const registerDefaultValues = {
     },
   ],
   nmc: {
-    nmc_number: 0,
+    nmc_number: 12345,
     nmc_issued_date: "",
     nmc_expiry_date: "",
-    nmc_file: null as null | File[],
+    nmc_file: null as null | File[] | string,
     isSubmitted: false,
   },
 };
@@ -235,7 +235,7 @@ const RegistrationForm = () => {
           setName(data?.user.first_name);
 
           setIsPrimarySubmitted(true);
-          setActiveStep(2);
+          setActiveStep(3);
         });
     } catch (error) {
       const err = serverErrorResponse(
@@ -294,7 +294,8 @@ const RegistrationForm = () => {
               nmc_issued_date: nmcData.nmc_issued_date,
               nmc_expiry_date: nmcData.nmc_expiry_date,
               nmc_file:
-                nmcData.nmc_file?.[0] && (await base64(nmcData.nmc_file?.[0])),
+                nmcData.nmc_file?.[0] &&
+                (await base64(nmcData.nmc_file?.[0] as File)),
             },
             age: 20,
             medical_degree: "test",
@@ -313,10 +314,7 @@ const RegistrationForm = () => {
               ...formatedData,
               doctorId: doctor,
             });
-            await primaryInfoUpdate.mutateAsync({
-              ...formatedData,
-              doctorId: doctor,
-            });
+            setActiveStep(3);
           } else {
             await primaryInfoRegister
               .mutateAsync(formatedData)
@@ -359,7 +357,6 @@ const RegistrationForm = () => {
                 })
               ),
             };
-            academicInfoData.push(data);
             return data;
           });
 
@@ -517,7 +514,6 @@ const RegistrationForm = () => {
             experienceInfoResponses.data.data.forEach(
               ({ id }: { id: number }, index: number) => {
                 if (id) {
-                  formMethods.setValue(`experience.${index}.id`, String(id));
                   formMethods.setValue(`experience.${index}.id`, String(id));
                   formMethods.setValue(`experience.${index}.isSubmitted`, true);
                 }
