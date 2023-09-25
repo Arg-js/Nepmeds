@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { Symptom } from "./nepmeds-specialization";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
 const getSymptoms = async () => {
   const response = await HttpClient.get<NepMedsResponse<Symptom[]>>(
@@ -12,25 +13,33 @@ const getSymptoms = async () => {
 
 export const useGetSymptoms = () =>
   useQuery(api.symptom_list, getSymptoms, { select: res => res.data.data });
-
-const saveSymptoms = async (symptomInfo: {
+export interface ISymptom {
   id: string | null;
   name: string;
   keyword: string;
-}) => {
+  description: string;
+  image?: string;
+}
+
+const saveSymptoms = async (symptomInfo: ISymptom) => {
+  let symptomInfoParam = symptomInfo;
+  // IF TYPE === OBJECT then ITS FILELIST => needs destructuring else no
+  typeof symptomInfo.image === "object"
+    ? (symptomInfoParam = {
+        ...symptomInfo,
+        image: symptomInfo.image?.[0],
+      })
+    : delete symptomInfoParam.image;
   if (symptomInfo.id) {
     const response = await HttpClient.patch<NepMedsResponse>(
       api.symptom + symptomInfo.id + "/",
-      {
-        name: symptomInfo.name,
-        keyword: symptomInfo.keyword,
-      }
+      objectToFormData(symptomInfoParam)
     );
     return response;
   } else {
     const response = await HttpClient.post<NepMedsResponse>(
       api.symptom,
-      symptomInfo
+      objectToFormData(symptomInfoParam)
     );
     return response;
   }

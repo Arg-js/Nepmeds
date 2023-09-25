@@ -24,7 +24,6 @@ export { ReactComponent as DeleteIcon } from "./delete.svg";
 export { ReactComponent as DeleteTrashImage } from "./delete_trash_image.svg";
 export { ReactComponent as DummyImageIcon } from "./dummyImage.svg";
 export { ReactComponent as EditIcon } from "./edit.svg";
-export { ReactComponent as ImageCancel } from "./imageCancel.svg";
 export { ReactComponent as LocationIcon } from "./location.svg";
 export { ReactComponent as PayementIcon } from "./payement.svg";
 export { ReactComponent as PlusIcon } from "./plus.svg";
