@@ -30,6 +30,8 @@ export const colors = {
   /*input background*/
   forminput: "rgba(239, 241, 249, 0.6)",
 
+  /**black-20*/
+  black_20: "#A6A8B1",
   /**black-30*/
   black_30: "#8B8D97",
   /**black-40*/

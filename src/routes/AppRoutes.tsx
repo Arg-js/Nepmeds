@@ -7,6 +7,7 @@ import { lazy, Suspense } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
+import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(
@@ -118,6 +119,10 @@ const paientRoutes = [
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
         element: <DoctorList />,
+      },
+      {
+        path: NAVIGATION_ROUTES.DOCTOR_DETAILS,
+        element: <DoctorDetails />,
       },
       {
         path: NAVIGATION_ROUTES.NO_MATCH,
@@ -251,6 +256,10 @@ const openRoutes = [
   {
     path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
     element: <DoctorList />,
+  },
+  {
+    path: NAVIGATION_ROUTES.DOCTOR_DETAILS,
+    element: <DoctorDetails />,
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,

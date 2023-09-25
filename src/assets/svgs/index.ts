@@ -48,3 +48,4 @@ export { ReactComponent as AcceptIcon } from "./accept.svg";
 export { ReactComponent as RejectIcon } from "./reject.svg";
 export { ReactComponent as DocumentIcon } from "./document.svg";
 export { ReactComponent as NoDataBoxIcon } from "./noDataBox.svg";
+export { ReactComponent as UniversityIcon } from "./university.svg";
