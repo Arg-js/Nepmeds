@@ -4,7 +4,7 @@ import {
   useUpdateDoctorStatus,
   useUpdatePatientStatus,
 } from "@nepMeds/service/nepmeds-admin-userrole";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import TableActions from "./TableActions";
 
@@ -16,12 +16,12 @@ interface IUserPatient {
   status: boolean;
 }
 //Appointment Column
-export const doctorRoleColumn = () => {
+export const doctorRoleColumn = (pageParams: PaginationState) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<IUserRoleAdmin, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
       size: 2,
     },
@@ -114,12 +114,12 @@ export const doctorRoleColumn = () => {
   ];
 };
 
-export const patientRoleColumn = () => {
+export const patientRoleColumn = (pageParams: PaginationState) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<IUserPatient, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
       size: 2,
     },
