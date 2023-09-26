@@ -58,6 +58,7 @@ const DoctorDetails = () => {
       target_date: formatDateToString(date) || currentDate,
     });
   // REACT QUERIES END
+
   return (
     <Box bg={colors.white} height={"100vh"}>
       <Header />
@@ -140,8 +141,9 @@ const DoctorDetails = () => {
                             fontWeight={500}
                             fontSize={"lg"}
                             color={colors.black_30}
+                            textTransform={"capitalize"}
                           >
-                            Cardiologist
+                            {doctorList?.specialization_names?.[0]?.name}
                           </Text>
                           <Text
                             fontWeight={600}
@@ -300,6 +302,7 @@ const DoctorDetails = () => {
                     <Calendar
                       onChange={value => handleCalendarChange(value)}
                       value={date}
+                      minDate={new Date()}
                     />
                   </Flex>
                   <Text
