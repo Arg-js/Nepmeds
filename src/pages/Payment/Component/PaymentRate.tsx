@@ -323,7 +323,7 @@ const PaymentRate = () => {
 
           {isSuccess && (
             <DataTable
-              columns={paymentRateColumn()}
+              columns={paymentRateColumn({ pageIndex, pageSize })}
               data={amountList ?? []}
               pagination={{
                 manual: true,

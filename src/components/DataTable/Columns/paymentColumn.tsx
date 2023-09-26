@@ -8,7 +8,7 @@ import { IAllPaymentResponse } from "@nepMeds/service/nepmeds-payment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
-import { CellContext } from "@tanstack/table-core";
+import { CellContext, PaginationState } from "@tanstack/table-core";
 import { NavigateFunction, generatePath } from "react-router";
 import { Link } from "react-router-dom";
 import TableActions from "@nepMeds/components/DataTable/TableActions/index";
@@ -18,13 +18,14 @@ export const allPaymentColumn = (
     isApproved: boolean,
     doctorInfo: { id: string; name: string }
   ) => void,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  pageParams: PaginationState
 ) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
 
@@ -182,13 +183,14 @@ export const pendingPaymentColumn = (
     isApproved: boolean,
     doctorInfo: { id: string; name: string }
   ) => void,
-  navigate: NavigateFunction
+  navigate: NavigateFunction,
+  pageParams: PaginationState
 ) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {
@@ -340,12 +342,15 @@ export const pendingPaymentColumn = (
   ];
 };
 
-export const approvedPaymentColumn = (navigate: NavigateFunction) => {
+export const approvedPaymentColumn = (
+  navigate: NavigateFunction,
+  pageParams: PaginationState
+) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
 
@@ -464,12 +469,15 @@ export const approvedPaymentColumn = (navigate: NavigateFunction) => {
   ];
 };
 
-export const rejectedPaymentColumns = (navigate: NavigateFunction) => {
+export const rejectedPaymentColumns = (
+  navigate: NavigateFunction,
+  pageParams: PaginationState
+) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {

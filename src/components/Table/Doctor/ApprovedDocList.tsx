@@ -176,7 +176,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={approvedColumns(navigate)}
+          columns={approvedColumns(navigate, { pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

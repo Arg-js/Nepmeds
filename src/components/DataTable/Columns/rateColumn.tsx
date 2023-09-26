@@ -5,12 +5,12 @@ import { IAmountListDoctor } from "@nepMeds/service/nepmeds-payment";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 
 //Rate Column
-export const paymentRateColumn = () => {
+export const paymentRateColumn = (pageParams: PaginationState) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
       size: 2,
     },

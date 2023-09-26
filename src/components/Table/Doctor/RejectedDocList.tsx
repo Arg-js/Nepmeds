@@ -175,7 +175,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={rejectedColumns(navigate)}
+          columns={rejectedColumns(navigate, { pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

@@ -3,12 +3,12 @@ import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IAppointmentAdmin } from "@nepMeds/service/nepmeds-appointment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
-import { CellContext } from "@tanstack/react-table";
+import { CellContext, PaginationState } from "@tanstack/react-table";
 import StatusBadge from "../Common/StatusBadge";
 import TableActions from "./TableActions";
 
 //Appointment Column
-export const appointmentColumn = () => {
+export const appointmentColumn = (pageParams: PaginationState) => {
   return [
     {
       header: "S.N",
@@ -16,7 +16,7 @@ export const appointmentColumn = () => {
         _cell: CellContext<IAppointmentAdmin, any>,
         index: number
       ) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
       size: 2,
     },
@@ -120,7 +120,7 @@ export const appointmentColumn = () => {
 };
 
 //Instant Consultant Column
-export const instantConsultantColumn = () => {
+export const instantConsultantColumn = (pageParams: PaginationState) => {
   return [
     {
       header: "S.N",
@@ -128,7 +128,7 @@ export const instantConsultantColumn = () => {
         _cell: CellContext<IAppointmentAdmin, any>,
         index: number
       ) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
       size: 2,
     },

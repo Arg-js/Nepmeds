@@ -175,7 +175,7 @@ const ApprovedPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={approvedPaymentColumn(navigate)}
+          columns={approvedPaymentColumn(navigate, { pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,
