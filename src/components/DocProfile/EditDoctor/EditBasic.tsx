@@ -25,11 +25,11 @@ import {
   IUser,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
-import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { AxiosError } from "axios";
 import { FormProvider, useForm } from "react-hook-form";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 const EditBasic = ({
   doctorProfileData,
@@ -212,7 +212,7 @@ const EditBasic = ({
               <Image
                 w={"159px"}
                 h={"159px"}
-                src={`${normalURL}/media/${imageDataUrl}`}
+                src={getImageUrl(String(imageDataUrl))}
                 objectFit="cover"
               />
             )}

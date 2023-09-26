@@ -13,6 +13,7 @@ import {
 } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMoreComponent from "@nepMeds/components/ReadMore";
 import {
   IPatientAppointmentBasicDetails,
@@ -23,12 +24,12 @@ import {
   IDoctorListById,
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
 import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import TokenService from "@nepMeds/service/service-token";
 
 type IOptionItem = { label: string; value: string };
 
@@ -78,9 +79,7 @@ const DoctorDetails: React.FC<{
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
-  const [isAvailability, setIsAvailability] = useState(false);
-  const [appointment, setAppointment] = useState(false);
-
+  const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
@@ -93,7 +92,7 @@ const DoctorDetails: React.FC<{
       value: p.id,
     })) || [];
   useEffect(() => {
-    setIsAvailability(false);
+    setIsAvailability("0");
   }, [doctorInfo]);
   const {
     register,
@@ -103,6 +102,8 @@ const DoctorDetails: React.FC<{
     setValue,
     reset,
     control,
+    trigger,
+    getValues,
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   const oldReportFileWatch = watch("old_report_file");
@@ -138,8 +139,7 @@ const DoctorDetails: React.FC<{
 
   const handleBookAppointment = () => {
     if (isAuthenticated) {
-      setAppointment(!appointment);
-      selectedAvailability?.length && setIsAvailability(!isAvailability);
+      selectedAvailability?.length && setIsAvailability("1");
     } else {
       window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
     }
@@ -149,7 +149,7 @@ const DoctorDetails: React.FC<{
     <Box>
       {doctorInfo ? (
         <form onSubmit={handleSubmit(onSubmitHandler)}>
-          {!isAvailability && (
+          {isAvailability === "0" && (
             <>
               <WrapperBox
                 backgroundColor={colors.white}
@@ -239,6 +239,10 @@ const DoctorDetails: React.FC<{
                     </Flex>
                     <Divider borderWidth={"0.5px"} />
                     <Flex alignSelf={"flex-end"}>
+                      {/* TODO: add this */}
+                      {/* <Text fontWeight={700} fontSize={"13px"}>
+                      Available time
+                    </Text> */}
                       <FormControl
                         control={"input"}
                         label={""}
@@ -253,7 +257,7 @@ const DoctorDetails: React.FC<{
                           width: "180px",
                           borderRadius: "9px",
                         }}
-                        // RESTRICTS SELECTION of PAST DATE in Datepicker
+                        // Restricts selection of past date in Datepicker
                         min={today}
                         required
                       />
@@ -299,11 +303,10 @@ const DoctorDetails: React.FC<{
                       )}
                       {!isAvailabilityFetching && (
                         <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                          {!availability?.length &&
-                            "This doctor is not available on this date, choose another date"}
-                          {appointment &&
-                            selectedAvailability?.length === 0 &&
-                            "Please Choose the availability*"}
+                          {!availability?.length
+                            ? "This doctor is not available on this date, choose another date"
+                            : selectedAvailability?.length === 0 &&
+                              "Please Choose the availability*"}
                         </FormLabel>
                       )}
                     </Box>
@@ -319,7 +322,7 @@ const DoctorDetails: React.FC<{
               </Button>
             </>
           )}
-          {isAvailability && (
+          {isAvailability === "1" && (
             <>
               <WrapperBox
                 backgroundColor={colors.white}
@@ -337,7 +340,7 @@ const DoctorDetails: React.FC<{
                       <Flex gap={4} alignItems={"center"}>
                         <BackArrowIcon
                           cursor={"pointer"}
-                          onClick={() => setIsAvailability(false)}
+                          onClick={() => setIsAvailability("0")}
                         />
                         <Text
                           fontWeight={600}
@@ -489,13 +492,71 @@ const DoctorDetails: React.FC<{
                 </>
               </WrapperBox>
               <Button
-                type="submit"
                 width="full"
                 borderRadius="none"
+                onClick={async () => {
+                  const isValid = await trigger();
+                  if (!isValid) {
+                    return;
+                  } else {
+                    window.scrollTo({
+                      top: 0,
+                      behavior: "smooth", // This adds smooth scrolling animation
+                    });
+                    setIsAvailability("2");
+                  }
+                }}
                 isLoading={isLoading}
               >
-                Confirm & Pay
+                Proceed
               </Button>
+            </>
+          )}
+
+          {isAvailability === "2" && (
+            <>
+              <WrapperBox
+                backgroundColor={colors.white}
+                border={`2px solid ${colors.gray_border}`}
+                style={{
+                  px: { base: "0", md: "2", xl: "4" },
+                  py: 4,
+                  height: "auto",
+                  borderTopRadius: 3,
+                }}
+              >
+                <>
+                  <Flex gap={4} alignItems={"center"}>
+                    <BackArrowIcon
+                      cursor={"pointer"}
+                      onClick={() => setIsAvailability("1")}
+                    />
+                    <Text
+                      fontWeight={600}
+                      fontSize={"md"}
+                      color={colors.dark_blue}
+                    >
+                      Please choose your payment method
+                    </Text>
+                  </Flex>
+                  <TransactionBox
+                    appointmentData={{
+                      ...getValues(),
+                      availabilities: selectedAvailability,
+                      total_amount_paid:
+                        (doctorInfo?.schedule_rate
+                          ? +doctorInfo?.schedule_rate
+                          : 0) * selectedAvailability.length,
+                      symptoms: getValues()?.symptoms.map(
+                        ({ value }) => +value
+                      ),
+                      old_report_file: getValues()?.old_report_file?.[0],
+                      doctor: doctorInfo?.id as number,
+                    }}
+                    doctorInfo={doctorInfo as IDoctorListById}
+                  />
+                </>
+              </WrapperBox>
             </>
           )}
         </form>
@@ -511,7 +572,13 @@ const DoctorDetails: React.FC<{
           }}
           borderRadius={"3px"}
         >
-          <VStack justifyContent={"center"} alignContent={"center"}>
+          <VStack
+            justifyContent={"center"}
+            alignContent={"center"}
+            // width={"544px"}
+            // height={"700px"}
+            // mt={30}
+          >
             {isFetching ? (
               <Spinner />
             ) : (
