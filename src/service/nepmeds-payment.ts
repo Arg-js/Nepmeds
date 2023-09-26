@@ -111,6 +111,7 @@ const getPaymentMethods = async () => {
 export const useGetPaymentMethods = () => {
   return useQuery([api.payment_methods], getPaymentMethods, {
     select: data => data.data.data,
+    staleTime: Infinity,
   });
 };
 

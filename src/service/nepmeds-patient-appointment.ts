@@ -1,10 +1,7 @@
-import { useMutation } from "react-query";
-import { api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
-import { toastSuccess } from "./service-toast";
-import { toastFail } from "@nepMeds/components/Toast";
-import { AxiosError } from "axios";
 import { objectToFormData } from "@nepMeds/utils/toFormData";
+import { useMutation } from "react-query";
+import { NepMedsResponse, api } from "./service-api";
 
 export interface IPatientAppointmentBasicDetails {
   full_name: string;
@@ -12,7 +9,19 @@ export interface IPatientAppointmentBasicDetails {
   description: string;
   status?: string;
 }
-interface IPatientAppointmentReqBody extends IPatientAppointmentBasicDetails {
+
+interface IPostPatientAppointmentResponse extends IPatientAppointmentReqBody {
+  id: string;
+  availability: {
+    id: number;
+    date: number;
+    from_time: string;
+    to_time: string;
+  };
+}
+
+export interface IPatientAppointmentReqBody
+  extends IPatientAppointmentBasicDetails {
   doctor: number;
   symptoms: number[];
   availabilities: number[];
@@ -25,16 +34,12 @@ const createPatientAppointment = ({
 }: {
   patientAppointmentDetails: IPatientAppointmentReqBody;
 }) => {
-  return HttpClient.post(
+  return HttpClient.post<NepMedsResponse<IPostPatientAppointmentResponse[]>>(
     api.patient.appointment.post,
     objectToFormData(patientAppointmentDetails)
   );
 };
 
 export const useCreatePatientAppointment = () => {
-  return useMutation(createPatientAppointment, {
-    onSuccess: () => toastSuccess("Appointment has been successfully created!"),
-    onError: (error: AxiosError<{ message: string; error: string }>) =>
-      toastFail(error.message ?? "Something went wrong"),
-  });
+  return useMutation(createPatientAppointment);
 };
