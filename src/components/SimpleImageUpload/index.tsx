@@ -1,5 +1,5 @@
 import { Flex, HStack, FormLabel, Image, Box } from "@chakra-ui/react";
-import { ImageCancelIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
+import { ImageCancelIcon } from "@nepMeds/assets/svgs";
 import { colors } from "@nepMeds/theme/colors";
 import React from "react";
 
@@ -16,8 +16,12 @@ const SimpleImageUpload: React.FC<{
           cursor={"pointer"}
           border={`1px dashed ${colors.gray}`}
           width={"76px"}
+          display={"flex"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          height={"6vh"}
         >
-          <UploadImageIcon />
+          {/* <UploadImageIcon /> */} +
         </FormLabel>
         {imgSrc && (
           <HStack>

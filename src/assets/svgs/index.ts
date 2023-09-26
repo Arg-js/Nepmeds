@@ -5,15 +5,6 @@ import { ReactComponent as logo } from "./logo.svg";
 import { ReactComponent as logo_small } from "./logosmall.svg";
 import { ReactComponent as upload } from "./upload.svg";
 import { ReactComponent as Work } from "./work.svg";
-export const svgs = {
-  image,
-  upload,
-  logo,
-  confirmed,
-  logo_small,
-  Work,
-  InCompletePayment,
-};
 
 export { ReactComponent as ConfirmationImage } from "./confirmation.svg";
 export { ReactComponent as ConsultationStep1Icon } from "./consultationStep1.svg";
@@ -48,3 +39,13 @@ export { ReactComponent as RejectIcon } from "./reject.svg";
 export { ReactComponent as DocumentIcon } from "./document.svg";
 export { ReactComponent as NoDataBoxIcon } from "./noDataBox.svg";
 export { ReactComponent as UniversityIcon } from "./university.svg";
+
+export const svgs = {
+  image,
+  upload,
+  logo,
+  confirmed,
+  logo_small,
+  Work,
+  InCompletePayment,
+};
