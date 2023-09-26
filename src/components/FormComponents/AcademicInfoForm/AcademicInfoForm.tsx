@@ -121,7 +121,6 @@ export const AcademicInfoForm = ({
   const getFiles = () => {
     const academic = getValues("academic") ?? [];
 
-
     const files = academic.map((item: any) => {
       return item.academic_documents;
     });

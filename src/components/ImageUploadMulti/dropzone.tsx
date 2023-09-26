@@ -23,7 +23,6 @@ export function MultiImageUpload({
   dataIndex,
   deleteFile,
   fieldValue,
-
 }: Props) {
   const { setValue, control } = useFormContext();
   const { remove } = useFieldArray({
@@ -32,7 +31,6 @@ export function MultiImageUpload({
   });
 
   const imagesFile = files[dataIndex] ?? [];
-
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: {
@@ -43,8 +41,9 @@ export function MultiImageUpload({
     maxFiles: 5,
 
     onDrop: acceptedFiles => {
-      const prevFile = imagesFile.filter((item,
-        index) => imagesFile.indexOf(item) === index);
+      const prevFile = imagesFile.filter(
+        (item, index) => imagesFile.indexOf(item) === index
+      );
       const newFiles = acceptedFiles.map((file, i) => {
         setValue(`${fieldValue}.${i + imagesFile.length}`, file);
 
@@ -53,7 +52,6 @@ export function MultiImageUpload({
           id: "0",
         });
       });
-
 
       const tempArray = [...files];
       tempArray[dataIndex] = prevFile.concat(newFiles);

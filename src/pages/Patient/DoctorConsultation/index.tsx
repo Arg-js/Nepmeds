@@ -222,7 +222,11 @@ const DoctorConsultation = () => {
               <Carousel responsive={responsiveDoctorCard}>
                 {doctorList.results.map(doctor => {
                   return (
-                    <Box key={doctor.id} mr={4}>
+                    <Box
+                      key={doctor.id}
+                      mr={4}
+                      onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_DETAILS)}
+                    >
                       <DoctorListCard
                         data={doctor}
                         error={doctorListError as AxiosError}

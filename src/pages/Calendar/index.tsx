@@ -43,6 +43,7 @@ import {
   IoChevronForwardCircleOutline,
 } from "react-icons/io5";
 import "../../assets/styles/fontFamily.css";
+import "@nepMeds/assets/styles/reactCalender.css";
 import { AddEvent } from "./Component/AddEvent";
 
 const CalendarView = () => {
