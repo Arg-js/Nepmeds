@@ -45,6 +45,7 @@ import {
 import "../../assets/styles/fontFamily.css";
 import "@nepMeds/assets/styles/reactCalender.css";
 import { AddEvent } from "./Component/AddEvent";
+import { Value } from "react-calendar/dist/cjs/shared/types";
 
 const CalendarView = () => {
   const currentDate = new Date();
@@ -119,8 +120,8 @@ const CalenderWeekView = ({
     ref: ref,
     handler: () => setShowCalendar(false),
   });
-  const handleCalendarChange = (value: any) => {
-    const date = new Date(value);
+  const handleCalendarChange = (value: Value) => {
+    const date = new Date(value as Date);
     setDate(date);
     setShowCalendar(false);
     setSelectedBox(getDay(date));

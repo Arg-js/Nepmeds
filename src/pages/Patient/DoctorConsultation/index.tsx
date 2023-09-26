@@ -225,7 +225,11 @@ const DoctorConsultation = () => {
                     <Box
                       key={doctor.id}
                       mr={4}
-                      onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_DETAILS)}
+                      onClick={() =>
+                        navigate(
+                          `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${doctor.id}`
+                        )
+                      }
                     >
                       <DoctorListCard
                         data={doctor}

@@ -126,7 +126,7 @@ const paientRoutes = [
         element: <DoctorList />,
       },
       {
-        path: NAVIGATION_ROUTES.DOCTOR_DETAILS,
+        path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
         element: <DoctorDetails />,
       },
       {
@@ -263,7 +263,7 @@ const openRoutes = [
     element: <DoctorList />,
   },
   {
-    path: NAVIGATION_ROUTES.DOCTOR_DETAILS,
+    path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
     element: <DoctorDetails />,
   },
   {
