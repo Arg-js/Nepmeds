@@ -67,7 +67,7 @@ const createAcademicFile = async (data: AcademicInfo) => {
 export const useAcademicFileRegister = () => useMutation(createAcademicFile);
 
 const updateAcademicData = async (data: AcademicInfo[]) => {
-  const response = await HttpClient.patch(api.academicProfile, { data: data });
+  const response = await HttpClient.patch(api.academic, { data: data });
   return response;
 };
 

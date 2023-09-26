@@ -314,6 +314,7 @@ const RegistrationForm = () => {
               ...formatedData,
               doctorId: doctor,
             });
+            toastSuccess("Nmc data updated");
             setActiveStep(3);
           } else {
             await primaryInfoRegister
@@ -357,6 +358,7 @@ const RegistrationForm = () => {
                 })
               ),
             };
+            academicInfoData.push(data);
             return data;
           });
 
