@@ -1,20 +1,20 @@
 .react-calendar__month-view__weekdays {
-  background-color: white !important;
+  background-color: white;
 }
 
 .react-calendar__tile--now {
-  background: #13ade1 !important;
+  background: #13ade1;
 }
 
 .react-calendar__navigation__label {
-  font-size: 20px !important;
-  font-weight: 500 !important;
-  color: #828282 !important;
-  line-height: 25px !important;
+  font-size: 20px;
+  font-weight: 500;
+  color: #828282;
+  line-height: 25px;
 }
 
 .react-calendar__month-view__weekdays__weekday {
-  color: #6e7079 !important;
-  font-weight: 500 !important;
-  font-size: 12px !important;
+  color: #6e7079;
+  font-weight: 500;
+  font-size: 12px;
 }
