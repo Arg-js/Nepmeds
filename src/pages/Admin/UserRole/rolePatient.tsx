@@ -23,7 +23,7 @@ const RolePatient = () => {
     <div>
       {isSuccess && (
         <DataTable
-          columns={patientRoleColumn()}
+          columns={patientRoleColumn({ pageIndex, pageSize })}
           data={data?.results}
           pagination={{
             manual: true,

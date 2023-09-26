@@ -323,7 +323,10 @@ const PendingPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={pendingPaymentColumn(onActionClick, navigate)}
+          columns={pendingPaymentColumn(onActionClick, navigate, {
+            pageIndex,
+            pageSize,
+          })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

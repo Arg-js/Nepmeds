@@ -182,7 +182,7 @@ const RegisteredDocList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={registeredColumns(navigate)}
+          columns={registeredColumns(navigate, { pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,
