@@ -47,7 +47,7 @@ const ImageUpload = ({
             <Image
               src={
                 typeof SelectedImage === "string"
-                  ? SelectedImage.replace("/backend", "")
+                  ? SelectedImage
                   : SelectedImage instanceof File
                   ? URL.createObjectURL(SelectedImage)
                   : undefined

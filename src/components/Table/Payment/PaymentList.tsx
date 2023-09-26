@@ -59,9 +59,9 @@ const PaymentList = () => {
           <GridItem>
             <TabList border="none" p={4}>
               <Tab>All</Tab>
-              <Tab>Payment Pending</Tab>
-              <Tab>Approved Payment</Tab>
-              <Tab>Rejected Payment</Tab>
+              <Tab>Rate Pending</Tab>
+              <Tab>Approved Rate</Tab>
+              <Tab>Rejected Rate</Tab>
             </TabList>
           </GridItem>
 

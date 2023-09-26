@@ -23,7 +23,6 @@ import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { AcademicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail } from "@nepMeds/components/Toast";
 import {
-  getSingleAcademicInfo,
   useAcademicFileRegister,
   useAcademicInfoRegisterProfile,
   useUpdateAcademicInfo,
@@ -34,8 +33,8 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
+import { showImagesIndexWise } from "@nepMeds/utils/getArrayWithIndex";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
-import { AxiosError } from "axios";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
@@ -54,25 +53,13 @@ const EditAcademic = ({
     onClose: onDocImgClose,
     onOpen: onDocImgOpen,
   } = useDisclosure();
-  const [academicInfo, setAcademicInfo] = useState<
-    IDoctorAcademicInfo["academic_document"]
-  >([]);
-
-  const getAcademicInfo = async (id: number) => {
-    try {
-      const res = await getSingleAcademicInfo(id);
-      setAcademicInfo(res.academic_document);
-    } catch (error) {
-      const err = serverErrorResponse(error as AxiosError);
-      toastFail(err);
-    }
-  };
 
   const [showEditForm, setShowEditForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const handleEditMode = () => {
     setShowEditForm(true);
   };
+  const [index, setIndex] = useState(0);
 
   const handleCloseForm = () => {
     setShowEditForm(false);
@@ -115,10 +102,10 @@ const EditAcademic = ({
     setShowEditForm(false);
   };
 
-  const handleDocImg = async (id: number) => {
+  const handleDocImg = async (i: number) => {
     setLoading(true);
     onDocImgOpen();
-    await getAcademicInfo(id);
+    setIndex(i);
     setLoading(false);
   };
 
@@ -203,16 +190,19 @@ const EditAcademic = ({
           >
             <VStack bg={colors.grey_90}>
               {loading && <Spinner />}
-              {!loading && academicInfo.length === 0 ? (
+              {!loading &&
+              doctorProfileData?.doctor_academic_info?.length === 0 ? (
                 <>No Images Found!</>
               ) : (
-                academicInfo.map((e: any) => (
+                showImagesIndexWise?.(
+                  doctorProfileData?.doctor_academic_info,
+                  index
+                )?.academic_document?.map((e: any) => (
                   <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
                     <Image
                       key={e?.id}
                       objectFit="cover"
-                      src={getImageUrl(e?.file)}
-                      // border={"2px solid "}
+                      src={getImageUrl(e.file)}
                       boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
                       p={"20px"}
                     />
@@ -398,9 +388,7 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"
-                            onClick={() =>
-                              handleDocImg(singleAcademicInfo.id ?? 0)
-                            }
+                            onClick={() => handleDocImg(i)}
                           >
                             :&nbsp;
                             {singleAcademicInfo?.academic_document?.length ===
