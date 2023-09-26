@@ -18,3 +18,8 @@
   font-weight: 500;
   font-size: 12px;
 }
+
+.react-calendar__tile:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+}
