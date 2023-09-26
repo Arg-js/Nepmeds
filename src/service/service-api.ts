@@ -105,6 +105,11 @@ export const api = {
       get: "/patient/doctor-booking-availabilities/:id/",
     },
   },
+
+  transaction: {
+    khalti: "/transaction/khalti-initiate/",
+    esewa: "/transaction/esewa-initiate/",
+  },
 };
 
 export interface NepMedsResponse<T = any> {
