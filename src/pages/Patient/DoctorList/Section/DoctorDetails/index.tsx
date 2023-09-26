@@ -79,6 +79,8 @@ const DoctorDetails: React.FC<{
     []
   );
   const [isAvailability, setIsAvailability] = useState(false);
+  const [appointment, setAppointment] = useState(false);
+
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
@@ -136,6 +138,7 @@ const DoctorDetails: React.FC<{
 
   const handleBookAppointment = () => {
     if (isAuthenticated) {
+      setAppointment(!appointment);
       selectedAvailability?.length && setIsAvailability(!isAvailability);
     } else {
       window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
@@ -296,10 +299,11 @@ const DoctorDetails: React.FC<{
                       )}
                       {!isAvailabilityFetching && (
                         <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                          {!availability?.length
-                            ? "This doctor is not available on this date, choose another date"
-                            : selectedAvailability?.length === 0 &&
-                              "Please Choose the availability*"}
+                          {!availability?.length &&
+                            "This doctor is not available on this date, choose another date"}
+                          {appointment &&
+                            selectedAvailability?.length === 0 &&
+                            "Please Choose the availability*"}
                         </FormLabel>
                       )}
                     </Box>

@@ -3,10 +3,12 @@ import {
   Box,
   Button,
   Flex,
+  FormLabel,
   Grid,
   GridItem,
   ListItem,
   SimpleGrid,
+  Spinner,
   Tag,
   TagLabel,
   Text,
@@ -21,13 +23,40 @@ import "react-calendar/dist/Calendar.css";
 import "@nepMeds/assets/styles/reactCalender.css";
 import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-
-const specializations = ["Cardiologist", "Orthopedics", "Urology", "Neurology"];
+import { useGetDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
+import { useState } from "react";
+import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
+const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
+  const { id = "" } = useParams();
   const navigate = useNavigate();
+
+  const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
+    []
+  );
+  const [date, setDate] = useState(new Date());
+  const [appointment, setAppointment] = useState(false);
+
+  const handleCalendarChange = (value: any) => {
+    const date = new Date(value);
+    setDate(date);
+  };
+
+  // REACT QUERIES
+  const { data: doctorList } = useGetDoctorListById({
+    id: +id,
+    target_date: formatDateToString(date) || currentDate,
+  });
+  const { data: availability, isFetching: isAvailabilityFetching } =
+    useGetAvailability({
+      id: +id,
+      target_date: formatDateToString(date) || currentDate,
+    });
+  // REACT QUERIES END
   return (
     <Box bg={colors.white} height={"100vh"}>
       <Header />
@@ -100,7 +129,7 @@ const DoctorDetails = () => {
                             alignItems={"center"}
                             transform={"skew(-15deg)"}
                           >
-                            Dr. Ramesh Poudel
+                            Dr. {doctorList?.name}
                           </Flex>
                         </Flex>
 
@@ -118,7 +147,8 @@ const DoctorDetails = () => {
                             fontSize={"sm"}
                             color={colors.black_30}
                           >
-                            NMC No : 98541
+                            NMC No :{" "}
+                            {doctorList?.medical_licence_number || "N/A"}
                           </Text>
                           <Flex gap={"12px"} alignItems={"center"}>
                             <UniversityIcon />
@@ -144,10 +174,10 @@ const DoctorDetails = () => {
                           Specializations
                         </Text>
                         <Grid templateColumns={"repeat(2, 1fr)"} gap={3}>
-                          {specializations.map(specialist => {
+                          {doctorList?.specialization_names.map(({ name }) => {
                             return (
                               <Tag
-                                key={specialist}
+                                key={name}
                                 size={"md"}
                                 variant="outline"
                                 colorScheme="blue"
@@ -155,8 +185,9 @@ const DoctorDetails = () => {
                                 justifyContent={"center"}
                                 alignItems={"center"}
                                 py={1.5}
+                                textTransform={"capitalize"}
                               >
-                                <TagLabel>{specialist}</TagLabel>
+                                <TagLabel>{name}</TagLabel>
                               </Tag>
                             );
                           })}
@@ -184,59 +215,61 @@ const DoctorDetails = () => {
                           p={3.5}
                           borderRadius={"6px"}
                         >
-                          Dr. Ramesh Poudel completed his post graduation in
-                          masters of dental surgery[ mds] in the field of
-                          Pedodontics and prove dentistry, I have past work
-                          experience of 10+ years on this field.
+                          {doctorList?.bio_detail}
                         </Text>
                       </Flex>
 
-                      <Flex direction={"column"} gap={4}>
-                        <Text
-                          fontWeight={600}
-                          fontSize={"lg"}
-                          color={colors.black_60}
-                        >
-                          Experience
-                        </Text>
-                        <Box ml={6}>
-                          <UnorderedList color={colors.black_50}>
-                            <ListItem mb={6}>
-                              <Text
-                                fontWeight={400}
-                                fontSize={"sm"}
-                                color={colors.black_50}
-                              >
-                                Lorem ipsum dolor sit amet consectetur. Dui et
-                                nibh posuere pharetra metus pretium felis sed
-                                arcu. Molestie condimentum egestas turpis.
-                              </Text>
-                            </ListItem>
-                            <ListItem mb={6}>
-                              <Text
-                                fontWeight={400}
-                                fontSize={"sm"}
-                                color={colors.black_50}
-                              >
-                                Lorem ipsum dolor sit amet consectetur. Dui et
-                                nibh posuere pharetra metus pretium felis sed
-                                arcu. Molestie condimentum egestas turpis.
-                              </Text>
-                            </ListItem>
-                            <ListItem mb={6}>
-                              <Text
-                                fontWeight={400}
-                                fontSize={"sm"}
-                                color={colors.black_50}
-                              >
-                                Lorem ipsum dolor sit amet consectetur. Dui et
-                                nibh posuere pharetra metus pretium felis sed
-                                arcu. Molestie condimentum egestas turpis.
-                              </Text>
-                            </ListItem>
-                          </UnorderedList>
-                        </Box>
-                      </Flex>
+                      {/* Experience  */}
+                      {!!doctorList?.doctor_experience.length && (
+                        <Flex direction={"column"} gap={4}>
+                          <Text
+                            fontWeight={600}
+                            fontSize={"lg"}
+                            color={colors.black_60}
+                          >
+                            Experience
+                          </Text>
+                          <Box ml={6}>
+                            <UnorderedList color={colors.black_50}>
+                              <ListItem mb={6}>
+                                <Text
+                                  fontWeight={400}
+                                  fontSize={"sm"}
+                                  color={colors.black_50}
+                                >
+                                  Lorem ipsum dolor sit amet consectetur. Dui et
+                                  nibh posuere pharetra metus pretium felis sed
+                                  arcu. Molestie condimentum egestas turpis.
+                                </Text>
+                              </ListItem>
+                              <ListItem mb={6}>
+                                <Text
+                                  fontWeight={400}
+                                  fontSize={"sm"}
+                                  color={colors.black_50}
+                                >
+                                  Lorem ipsum dolor sit amet consectetur. Dui et
+                                  nibh posuere pharetra metus pretium felis sed
+                                  arcu. Molestie condimentum egestas turpis.
+                                </Text>
+                              </ListItem>
+                              <ListItem mb={6}>
+                                <Text
+                                  fontWeight={400}
+                                  fontSize={"sm"}
+                                  color={colors.black_50}
+                                >
+                                  Lorem ipsum dolor sit amet consectetur. Dui et
+                                  nibh posuere pharetra metus pretium felis sed
+                                  arcu. Molestie condimentum egestas turpis.
+                                </Text>
+                              </ListItem>
+                            </UnorderedList>
+                          </Box>
+                        </Flex>
+                      )}
+                      {/* Experience Ends */}
+
                       <Flex
                         bg={colors.table_header}
                         color={colors.main}
@@ -250,7 +283,7 @@ const DoctorDetails = () => {
                         borderRadius={"8px"}
                         height={"48px"}
                       >
-                        Consultation Fee : Rs 500
+                        Consultation Fee : Rs {doctorList?.schedule_rate}
                       </Flex>
                     </Flex>
                   </GridItem>
@@ -271,7 +304,10 @@ const DoctorDetails = () => {
                 </Text>
                 <Flex gap={4} direction={"column"}>
                   <Flex alignItems={"center"} justifyContent={"center"}>
-                    <Calendar />
+                    <Calendar
+                      onChange={value => handleCalendarChange(value)}
+                      value={date}
+                    />
                   </Flex>
                   <Text
                     fontWeight={600}
@@ -287,10 +323,61 @@ const DoctorDetails = () => {
                   >
                     Evening
                   </Text>
-                  <SimpleGrid
+                  <Box>
+                    {isAvailabilityFetching ? (
+                      <Box textAlign={"center"}>
+                        <Spinner />
+                      </Box>
+                    ) : (
+                      <SimpleGrid
+                        gridTemplateColumns={
+                          "repeat(auto-fit, minmax(90px, 1fr))"
+                        }
+                      >
+                        {availability?.map(data => (
+                          <Button
+                            variant={"primaryOutlineFilled"}
+                            key={data.id}
+                            borderRadius={3}
+                            height={"34px"}
+                            m={1}
+                            sx={{
+                              bg: `${
+                                selectedAvailability.includes(data.id)
+                                  ? colors.sky_blue
+                                  : "transparent"
+                              }`,
+                            }}
+                            onClick={() =>
+                              setSelectedAvailability(prev =>
+                                prev.includes(data.id)
+                                  ? prev.filter(item => item !== data.id)
+                                  : [...prev, data.id]
+                              )
+                            }
+                          >
+                            {data?.from_time?.slice(0, 5)} -
+                            {data?.to_time?.slice(0, 5)}
+                          </Button>
+                        ))}
+                      </SimpleGrid>
+                    )}
+                    {!isAvailabilityFetching && (
+                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
+                        {!availability?.length &&
+                          "This doctor is not available on this date, choose another date"}
+                      </FormLabel>
+                    )}
+                    {appointment && selectedAvailability?.length === 0 && (
+                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
+                        Please Choose the availability*
+                      </FormLabel>
+                    )}
+                  </Box>
+                  {/* <SimpleGrid
                     gridTemplateColumns={"repeat(auto-fit, minmax(90px, 1fr))"}
-                  >
-                    {Array.from({ length: 4 }, (_, index) => (
+                  > */}
+                  {/* {Array.from({ length: 4 }, (_, index) => (
                       <Button
                         key={index}
                         variant={"primaryOutlineFilled"}
@@ -300,13 +387,14 @@ const DoctorDetails = () => {
                       >
                         05:30 - 05:45
                       </Button>
-                    ))}
-                  </SimpleGrid>
+                    ))} */}
+                  {/* </SimpleGrid> */}
                   <Flex justifyContent="flex-end">
                     <Button
                       variant={"secondary"}
                       height="40px"
                       borderRadius="4px"
+                      onClick={() => setAppointment(!appointment)}
                     >
                       Book Appointment
                     </Button>
