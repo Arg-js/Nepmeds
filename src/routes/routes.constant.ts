@@ -38,6 +38,7 @@ export const NAVIGATION_ROUTES = {
   AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
+  DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",
   DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
   NO_MATCH: "*",

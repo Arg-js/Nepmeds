@@ -2,7 +2,6 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
   Grid,
   GridItem,
   HStack,
@@ -10,17 +9,19 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
-  VStack,
   useDisclosure,
+  FormLabel,
+  Flex,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import SimpleImageUpload from "@nepMeds/components/SimpleImageUpload";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { Symptom } from "@nepMeds/service/nepmeds-specialization";
@@ -43,6 +44,7 @@ const defaultValues = {
   name: "",
   keyword: "",
   description: "",
+  image: "" as string | null,
 };
 
 const schema = yup.object().shape({
@@ -52,12 +54,10 @@ const schema = yup.object().shape({
     .max(30, "Symptom name can only be 30 characters long"),
   keyword: yup
     .string()
-    .required("Symptom keyword is required!")
-    .max(30, "Keyword can only be  30 characters long"),
-  description: yup
-    .string()
-    .required("Description is required!")
-    .min(5, "Description must be 5 characters long"),
+    .required("Symptom keyword is required")
+    .max(30, "Keyword can be 30 characters long"),
+  description: yup.string().required("Description is required"),
+  image: yup.string().required("Image is required"),
 });
 
 type OnOpenFunction = () => void;
@@ -80,7 +80,7 @@ const Symptoms = ({
   const [deleteSymptom, setDeleteSymptom] = useState<Symptom | null>(null);
   const [searchFilter, setSearchFilter] = useState("");
   const debouncedInputValue = useDebounce(searchFilter, 500);
-  const { data, isLoading, isSuccess } = useSymptomsDataWithPagination({
+  const { data, isFetching } = useSymptomsDataWithPagination({
     activeTab,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -103,19 +103,23 @@ const Symptoms = ({
 
   const formMethods = useForm({
     defaultValues,
-
     resolver: yupResolver(schema),
   });
+
   const {
     formState: { errors },
+    watch,
+    setValue,
     register,
   } = formMethods;
+
+  const symptomImageWatch = watch("image") || "";
 
   const columns = [
     {
       header: "S.N.",
       accessorFn: (_cell: CellContext<Symptom, any>, index: number) => {
-        return index + 1;
+        return `${pageIndex * pageSize + index + 1}.`;
       },
     },
     {
@@ -169,6 +173,10 @@ const Symptoms = ({
       await saveSymptomAction.mutateAsync({
         ...formMethods.getValues(),
         id: formMethods.getValues("id")?.toString() || null,
+        name: formMethods.getValues("name"),
+        keyword: formMethods.getValues("keyword"),
+        image: formMethods.getValues("image") as string,
+        description: formMethods.getValues("description"),
       });
       onCloseModal();
       toastSuccess("Symptom saved successfully!");
@@ -185,6 +193,10 @@ const Symptoms = ({
       await saveSymptomAction.mutateAsync({
         ...formMethods.getValues(),
         id: null,
+        name: formMethods.getValues("name"),
+        keyword: formMethods.getValues("keyword"),
+        image: formMethods.getValues("image") as string,
+        description: formMethods.getValues("description"),
       });
       onCloseModal();
       toastSuccess("Symptom saved successfully!");
@@ -226,7 +238,7 @@ const Symptoms = ({
       {/* edit modal */}
       {isEditModalOpen && (
         <ModalComponent
-          size="sm"
+          size="md"
           isOpen={isEditModalOpen}
           onClose={onCloseModal}
           heading={
@@ -256,7 +268,7 @@ const Symptoms = ({
         >
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onEditForm)}>
-              <VStack>
+              <Flex direction={"column"} gap={2}>
                 <FloatingLabelInput
                   label="Symptom"
                   name="name"
@@ -278,14 +290,35 @@ const Symptoms = ({
                   }}
                   error={errors.keyword?.message}
                 />
+
                 <FloatinglabelTextArea
                   label="Description"
                   name="description"
-                  isRequired
                   register={register}
                   error={errors.description?.message}
                 />
-              </VStack>
+
+                <Box>
+                  <FormLabel fontWeight={400} fontSize={"sm"}>
+                    <Flex>
+                      Image <Text color={colors.error}>*</Text>
+                    </Flex>
+                  </FormLabel>
+                  <FormControl
+                    register={register}
+                    type={"file"}
+                    control={"input"}
+                    name="image"
+                    display="none"
+                    id="image"
+                  />
+                  <SimpleImageUpload
+                    imgSrc={symptomImageWatch}
+                    onImageRemove={() => setValue("image", "")}
+                    errorMessage={errors.image?.message || ""}
+                  />
+                </Box>
+              </Flex>
             </form>
           </FormProvider>
         </ModalComponent>
@@ -295,7 +328,7 @@ const Symptoms = ({
 
       {isSymptomsOpen && (
         <ModalComponent
-          size="sm"
+          size="md"
           isOpen={isSymptomsOpen}
           onClose={onCloseModal}
           heading={
@@ -331,7 +364,7 @@ const Symptoms = ({
         >
           <FormProvider {...formMethods}>
             <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-              <VStack>
+              <Flex direction={"column"} gap={2}>
                 <FloatingLabelInput
                   label="Symptom"
                   name="name"
@@ -351,10 +384,30 @@ const Symptoms = ({
                   label="Description"
                   name="description"
                   register={register}
-                  isRequired
+                  required
                   error={errors.description?.message}
                 />
-              </VStack>
+                <Box>
+                  <FormLabel fontWeight={400} fontSize={"sm"}>
+                    <Flex>
+                      Image &nbsp; <Text color={colors.error}> *</Text>
+                    </Flex>
+                  </FormLabel>
+                  <FormControl
+                    register={register}
+                    type={"file"}
+                    control={"input"}
+                    name="image"
+                    display="none"
+                    id="image"
+                  />
+                  <SimpleImageUpload
+                    imgSrc={symptomImageWatch}
+                    onImageRemove={() => setValue("image", "")}
+                    errorMessage={errors.image?.message || ""}
+                  />
+                </Box>
+              </Flex>
             </form>
           </FormProvider>
         </ModalComponent>
@@ -420,25 +473,17 @@ const Symptoms = ({
         </GridItem>
       </Grid>
 
-      {isSuccess && (
-        <DataTable
-          columns={columns}
-          data={data?.results ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
-
-      {isLoading && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
-      {data?.count === 0 && <Box>No Result Found!</Box>}
+      <DataTable
+        columns={columns}
+        data={data?.results ?? []}
+        isLoading={isFetching}
+        pagination={{
+          manual: true,
+          pageParams: { pageIndex, pageSize },
+          pageCount: data?.page_count,
+          onChangePagination: setPagination,
+        }}
+      />
     </Fragment>
   );
 };

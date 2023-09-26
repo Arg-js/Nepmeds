@@ -16,6 +16,11 @@ const baseStyles = {
   transition: "all 300ms ease-in-out",
 };
 
+const primaryHoverState = {
+  bg: colors.primary,
+  color: colors.white,
+};
+
 const primary = defineStyle({
   ...baseStyles,
   color: colors.white,
@@ -44,6 +49,12 @@ const primaryOutline = defineStyle({
   _hover: {
     bg: colors.sky_blue,
   },
+});
+
+const primaryOutlineFilled = defineStyle({
+  ...primaryOutline,
+  bg: colors.blue_10,
+  _hover: primaryHoverState,
 });
 
 const outline = defineStyle({
@@ -75,14 +86,19 @@ const round = defineStyle({
   width: "40px",
   height: "40px",
   lineHeight: "40px",
-  _hover: {
-    bg: colors.primary,
-    color: colors.white,
-  },
+  _hover: primaryHoverState,
 });
 
 export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
-  variants: { primary, secondary, primaryOutline, outline, reset, round },
+  variants: {
+    primary,
+    secondary,
+    primaryOutline,
+    primaryOutlineFilled,
+    outline,
+    reset,
+    round,
+  },
   sizes: {
     sm: {
       height: "44px",

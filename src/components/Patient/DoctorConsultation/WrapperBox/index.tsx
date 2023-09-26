@@ -1,8 +1,9 @@
 import { Box } from "@chakra-ui/layout";
+import { BoxProps } from "@chakra-ui/react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { colors } from "@nepMeds/theme/colors";
 
-interface IWrapperBox {
+interface IWrapperBox extends BoxProps {
   children?: ReactJSXElement;
   backgroundColor?: string;
   backgroundImage?: string;
@@ -26,6 +27,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
   border = "none",
   boxShadow = "none",
   style,
+  ...rest
 }) => {
   return (
     <Box
@@ -39,6 +41,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({
       border={border}
       boxShadow={boxShadow}
       sx={style}
+      {...rest}
     >
       {children}
     </Box>

@@ -2,6 +2,7 @@ import {
   Grid,
   GridItem,
   Tab,
+  TabIndicator,
   TabList,
   TabPanel,
   TabPanels,
@@ -15,8 +16,8 @@ import { IoAdd } from "react-icons/io5";
 import Specializations from "./Specialist";
 import Symptoms from "./Symptoms";
 
-import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import SpecialistRates from "./Specialist Rate";
+import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 
 const MasterData = () => {
   const {
@@ -41,8 +42,14 @@ const MasterData = () => {
     setActiveTab(index);
   };
   return (
-    <BoxWrapper>
-      <Tabs onChange={handleTabChange} index={activeTab}>
+    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+      <Tabs
+        variant="unstyled"
+        fontSize="md"
+        fontFamily={"Inter"}
+        index={activeTab}
+        onChange={handleTabChange}
+      >
         <Grid
           display={"flex"}
           // templateColumns="repeat(5, 1fr)"
@@ -52,10 +59,34 @@ const MasterData = () => {
         >
           <GridItem>
             <TabList border="none">
-              <Tab>Symptoms</Tab>
-              <Tab>Specialist</Tab>
-              <Tab>Specialist Rate</Tab>
+              <Tab
+                fontWeight="400"
+                _selected={{ color: colors.black }}
+                color={colors.light_gray}
+              >
+                Symptoms
+              </Tab>
+              <Tab
+                fontWeight="400"
+                _selected={{ color: colors.black }}
+                color={colors.light_gray}
+              >
+                Specialization
+              </Tab>
+              <Tab
+                fontWeight="400"
+                _selected={{ color: colors.black }}
+                color={colors.light_gray}
+              >
+                Specialist Rate
+              </Tab>
             </TabList>
+            <TabIndicator
+              mt="-1.5px"
+              height="4px"
+              bg={colors.main}
+              borderRadius="1px"
+            />
           </GridItem>
 
           <GridItem>
@@ -79,7 +110,7 @@ const MasterData = () => {
                 backgroundColor={colors.primary}
               >
                 {" "}
-                <IoAdd /> Add Speciazliation
+                <IoAdd /> Add Specialization
               </CustomButton>
             )}
             {activeTab === 2 && (
@@ -127,7 +158,7 @@ const MasterData = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </BoxWrapper>
+    </WrapperBox>
   );
 };
 

@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import {
   BackArrowIcon,
-  ImageCancel,
+  ImageCancelIcon,
   NoDataIcon,
   UploadImageIcon,
 } from "@nepMeds/assets/svgs";
@@ -472,7 +472,9 @@ const DoctorDetails: React.FC<{
                                   setValue("old_report_file", null)
                                 }
                               >
-                                <ImageCancel style={{ cursor: "pointer" }} />
+                                <ImageCancelIcon
+                                  style={{ cursor: "pointer" }}
+                                />
                               </Box>
                             </HStack>
                           )}
