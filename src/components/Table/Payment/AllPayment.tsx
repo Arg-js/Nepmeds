@@ -316,7 +316,10 @@ const AllPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={allPaymentColumn(onActionClick, navigate)}
+          columns={allPaymentColumn(onActionClick, navigate, {
+            pageIndex,
+            pageSize,
+          })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

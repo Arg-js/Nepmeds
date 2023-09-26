@@ -177,7 +177,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
       </HStack>
       {isSuccess && (
         <DataTable
-          columns={rejectedPaymentColumns(navigate)}
+          columns={rejectedPaymentColumns(navigate, { pageIndex, pageSize })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

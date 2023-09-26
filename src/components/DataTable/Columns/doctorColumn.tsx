@@ -182,12 +182,15 @@ export const pendingColumns = (
   ];
 };
 
-export const approvedColumns = (navigate: NavigateFunction) => {
+export const approvedColumns = (
+  navigate: NavigateFunction,
+  pageParams: PaginationState
+) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {
@@ -276,12 +279,15 @@ export const approvedColumns = (navigate: NavigateFunction) => {
   ];
 };
 
-export const registeredColumns = (navigate: NavigateFunction) => {
+export const registeredColumns = (
+  navigate: NavigateFunction,
+  pageParams: PaginationState
+) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {
@@ -380,12 +386,15 @@ export const registeredColumns = (navigate: NavigateFunction) => {
   ];
 };
 
-export const rejectedColumns = (navigate: NavigateFunction) => {
+export const rejectedColumns = (
+  navigate: NavigateFunction,
+  pageParams: PaginationState
+) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
     },
     {

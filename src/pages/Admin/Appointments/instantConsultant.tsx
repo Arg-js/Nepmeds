@@ -20,7 +20,7 @@ const InstantConsultant = () => {
     <div>
       {isSuccess && (
         <DataTable
-          columns={instantConsultantColumn()}
+          columns={instantConsultantColumn({ pageIndex, pageSize })}
           data={data?.results}
           pagination={{
             manual: true,

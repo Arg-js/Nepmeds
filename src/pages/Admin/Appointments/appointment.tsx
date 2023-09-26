@@ -21,7 +21,7 @@ const Appointment = () => {
     <div>
       {isSuccess && (
         <DataTable
-          columns={appointmentColumn()}
+          columns={appointmentColumn({ pageIndex, pageSize })}
           data={data?.results}
           pagination={{
             manual: true,
