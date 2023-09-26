@@ -29,6 +29,7 @@ import { useGetDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorLis
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useState } from "react";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
+import { Value } from "react-calendar/dist/cjs/shared/types";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -41,8 +42,8 @@ const DoctorDetails = () => {
   const [date, setDate] = useState(new Date());
   const [appointment, setAppointment] = useState(false);
 
-  const handleCalendarChange = (value: any) => {
-    const date = new Date(value);
+  const handleCalendarChange = (value: Value) => {
+    const date = new Date(value as Date);
     setDate(date);
   };
 
@@ -231,39 +232,31 @@ const DoctorDetails = () => {
                           </Text>
                           <Box ml={6}>
                             <UnorderedList color={colors.black_50}>
-                              <ListItem mb={6}>
-                                <Text
-                                  fontWeight={400}
-                                  fontSize={"sm"}
-                                  color={colors.black_50}
-                                >
-                                  Lorem ipsum dolor sit amet consectetur. Dui et
-                                  nibh posuere pharetra metus pretium felis sed
-                                  arcu. Molestie condimentum egestas turpis.
-                                </Text>
-                              </ListItem>
-                              <ListItem mb={6}>
-                                <Text
-                                  fontWeight={400}
-                                  fontSize={"sm"}
-                                  color={colors.black_50}
-                                >
-                                  Lorem ipsum dolor sit amet consectetur. Dui et
-                                  nibh posuere pharetra metus pretium felis sed
-                                  arcu. Molestie condimentum egestas turpis.
-                                </Text>
-                              </ListItem>
-                              <ListItem mb={6}>
-                                <Text
-                                  fontWeight={400}
-                                  fontSize={"sm"}
-                                  color={colors.black_50}
-                                >
-                                  Lorem ipsum dolor sit amet consectetur. Dui et
-                                  nibh posuere pharetra metus pretium felis sed
-                                  arcu. Molestie condimentum egestas turpis.
-                                </Text>
-                              </ListItem>
+                              {doctorList?.doctor_experience?.map(
+                                experience => {
+                                  return (
+                                    <ListItem mb={6} key={experience.id}>
+                                      <Text
+                                        fontWeight={400}
+                                        fontSize={"sm"}
+                                        color={colors.black_50}
+                                      >
+                                        {experience?.hospital}
+                                      </Text>
+                                      <Text
+                                        fontWeight={600}
+                                        fontSize={"sm"}
+                                        color={colors.black_50}
+                                      >
+                                        {experience?.from_date} &nbsp;{" "}
+                                        {!experience?.currently_working && "to"}{" "}
+                                        &nbsp;
+                                        {experience?.to_date}
+                                      </Text>
+                                    </ListItem>
+                                  );
+                                }
+                              )}
                             </UnorderedList>
                           </Box>
                         </Flex>
@@ -374,21 +367,6 @@ const DoctorDetails = () => {
                       </FormLabel>
                     )}
                   </Box>
-                  {/* <SimpleGrid
-                    gridTemplateColumns={"repeat(auto-fit, minmax(90px, 1fr))"}
-                  > */}
-                  {/* {Array.from({ length: 4 }, (_, index) => (
-                      <Button
-                        key={index}
-                        variant={"primaryOutlineFilled"}
-                        borderRadius={3}
-                        height={"34px"}
-                        m={1}
-                      >
-                        05:30 - 05:45
-                      </Button>
-                    ))} */}
-                  {/* </SimpleGrid> */}
                   <Flex justifyContent="flex-end">
                     <Button
                       variant={"secondary"}
