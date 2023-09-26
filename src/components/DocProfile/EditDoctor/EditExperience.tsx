@@ -29,17 +29,16 @@ import {
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { ExperienceForm } from "@nepMeds/components/FormComponents";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { toastFail } from "@nepMeds/components/Toast";
 import {
   IDoctorExperience,
   IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
-  ExperienceInfo,
   getSingleExperienceInfo,
   // useDeleteExperienceInfo,
   useExperienceFileRegister,
-  useExperienceInfoRegister,
+  useExperienceInfoRegisterProfile,
   useUpdateExperienceInfo,
 } from "@nepMeds/service/nepmeds-experience";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
@@ -100,7 +99,7 @@ const EditExperience = ({
   const formMethods = useForm();
   const experienceFileRegister = useExperienceFileRegister();
   const updateExperienceFileRegister = useUpdateExperienceInfo();
-  const experienceInfoRegister = useExperienceInfoRegister();
+  const experienceInfoRegister = useExperienceInfoRegisterProfile();
   const [loading, setLoading] = useState(false);
   const [experienceInfo, setExperienceInfo] = useState<
     IDoctorExperience["experience_document"]
@@ -121,67 +120,37 @@ const EditExperience = ({
   const handleFormUpdate = async () => {
     try {
       const experienceArray = formMethods.getValues("experience");
-      const certificatePromises = experienceArray.map(
-        async (experience: ExperienceInfo) => {
-          const createExperienceFileResponse =
-            await experienceFileRegister.mutateAsync(experience);
-          const experienceInfoData = {
-            ...experience,
-            doctor: doctorProfileData.id ?? 0,
-            experience_documents: createExperienceFileResponse.data.data.map(
-              (file: string) => ({
-                file: file,
-              })
-            ),
-          };
-          if (experience.currently_working) {
-            delete experienceInfoData.to_date; // Remove 'to_date' property when currently_working is true
-          }
+      const experienceDataArray: any[] = [];
 
-          if (experience.id) {
-            const expeirenceInfoResponse =
-              await updateExperienceFileRegister.mutateAsync({
-                id: Number(experience.id),
-                data: experienceInfoData,
-              });
-            if (expeirenceInfoResponse) {
-              return expeirenceInfoResponse.data.data;
-            } else {
-              throw new Error("Failed to update academic information!");
-            }
-          } else {
-            const expeirenceInfoResponse =
-              await experienceInfoRegister.mutateAsync(experienceInfoData);
-            if (expeirenceInfoResponse) {
-              return expeirenceInfoResponse.data.data;
-            } else {
-              throw new Error("Failed to add Certificate information!");
-            }
-          }
+      for (const element of experienceArray) {
+        if (element?.currently_working) {
+          delete element?.to_date;
         }
-      );
+        const createExperienceFileResponse =
+          await experienceFileRegister.mutateAsync(element);
 
-      const experienceResponseInfos = await Promise.all(certificatePromises);
-      if (experienceResponseInfos) {
-        experienceResponseInfos.forEach((certInfoRes, i) => {
-          if (certInfoRes) {
-            experienceArray[i].id = certInfoRes.id;
-            formMethods.setValue(`experience.${i}.id`, certInfoRes.id);
-          }
-          formMethods.setValue(`experience.${i}.isSubmitted`, true);
+        experienceDataArray.push({
+          ...element,
+          doctor: doctorProfileData?.id ?? 0,
+          experience_documents: createExperienceFileResponse.data.data.map(
+            (file: string) => ({
+              file: file,
+            })
+          ),
         });
-        toastSuccess("Experience Information updated");
+      }
+
+      if (doctorProfileData?.doctor_experience?.length === 0) {
+        await experienceInfoRegister.mutateAsync(experienceDataArray as any);
       } else {
-        throw new Error("Failed to update Experience information!");
+        await updateExperienceFileRegister.mutateAsync(experienceDataArray);
       }
     } catch (error) {
       const err = serverErrorResponse(error);
-
       toastFail(err);
     }
     setEditForm(false);
   };
-
   const handleDocImg = async (id: number) => {
     setLoading(true);
     onDocImgOpen();
@@ -389,40 +358,41 @@ const EditExperience = ({
                       mt={"30px"}
                       w="100%"
                     >
-                      <VStack
-                        spacing={1}
-                        align={
-                          singleExperience?.currently_working
-                            ? "center"
-                            : "stretch"
-                        }
-                      >
-                        <Box display={"flex"} alignItems={"center"} gap={3}>
+                      <VStack spacing={1} align={"stretch"}>
+                        {singleExperience?.currently_working ? (
                           <Text
-                            fontWeight={"500"}
+                            fontWeight={"700"}
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={"#4D4D4D"}
-                            w={"20px"}
                           >
-                            {singleExperience?.currently_working ? (
-                              <Text>Currently Working</Text>
-                            ) : (
-                              <>To</>
-                            )}
+                            Currently Working
                           </Text>
-                          {singleExperience?.currently_working !== true && (
+                        ) : (
+                          <Box display={"flex"} alignItems={"center"} gap={3}>
                             <Text
                               fontWeight={"500"}
                               fontSize={"sm"}
-                              lineHeight={"19px"}
-                              color={colors?.black}
+                              lineHeight={"16px"}
+                              letterSpacing={"0.4px"}
+                              color={"#4D4D4D"}
+                              w={"20px"}
                             >
-                              :&nbsp;{singleExperience?.to_date}
+                              To
                             </Text>
-                          )}
-                        </Box>
+                            {singleExperience?.currently_working !== true && (
+                              <Text
+                                fontWeight={"500"}
+                                fontSize={"sm"}
+                                lineHeight={"19px"}
+                                color={colors?.black}
+                              >
+                                :&nbsp;{singleExperience?.to_date}
+                              </Text>
+                            )}
+                          </Box>
+                        )}
                       </VStack>
                     </GridItem>
                     <GridItem colSpan={1} mt={"30px"} w="100%">

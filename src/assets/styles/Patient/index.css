@@ -1,0 +1,25 @@
+.react-calendar__month-view__weekdays {
+  background-color: white;
+}
+
+.react-calendar__tile--now {
+  background: #13ade1;
+}
+
+.react-calendar__navigation__label {
+  font-size: 20px;
+  font-weight: 500;
+  color: #828282;
+  line-height: 25px;
+}
+
+.react-calendar__month-view__weekdays__weekday {
+  color: #6e7079;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.react-calendar__tile:disabled {
+  background-color: transparent;
+  cursor: not-allowed;
+}

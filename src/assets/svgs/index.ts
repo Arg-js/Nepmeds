@@ -5,15 +5,6 @@ import { ReactComponent as logo } from "./logo.svg";
 import { ReactComponent as logo_small } from "./logosmall.svg";
 import { ReactComponent as upload } from "./upload.svg";
 import { ReactComponent as Work } from "./work.svg";
-export const svgs = {
-  image,
-  upload,
-  logo,
-  confirmed,
-  logo_small,
-  Work,
-  InCompletePayment,
-};
 
 export { ReactComponent as ConfirmationImage } from "./confirmation.svg";
 export { ReactComponent as ConsultationStep1Icon } from "./consultationStep1.svg";
@@ -24,7 +15,6 @@ export { ReactComponent as DeleteIcon } from "./delete.svg";
 export { ReactComponent as DeleteTrashImage } from "./delete_trash_image.svg";
 export { ReactComponent as DummyImageIcon } from "./dummyImage.svg";
 export { ReactComponent as EditIcon } from "./edit.svg";
-export { ReactComponent as ImageCancel } from "./imageCancel.svg";
 export { ReactComponent as LocationIcon } from "./location.svg";
 export { ReactComponent as PayementIcon } from "./payement.svg";
 export { ReactComponent as PlusIcon } from "./plus.svg";
@@ -48,3 +38,14 @@ export { ReactComponent as AcceptIcon } from "./accept.svg";
 export { ReactComponent as RejectIcon } from "./reject.svg";
 export { ReactComponent as DocumentIcon } from "./document.svg";
 export { ReactComponent as NoDataBoxIcon } from "./noDataBox.svg";
+export { ReactComponent as UniversityIcon } from "./university.svg";
+
+export const svgs = {
+  image,
+  upload,
+  logo,
+  confirmed,
+  logo_small,
+  Work,
+  InCompletePayment,
+};

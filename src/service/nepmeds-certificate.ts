@@ -1,11 +1,12 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
-export type CertificateInfo = IRegisterFields["certification"][number];
+export type CertificateInfo = IRegisterFields["nmc"];
 
 const createCertificateData = async (data: CertificateInfo) => {
   const response = await HttpClient.post(api.certificate, data);
@@ -30,14 +31,11 @@ export const useCertificateInfoRegister = () => {
 
 const createCertificateFile = async (data: CertificateInfo) => {
   const formData = new FormData();
-  formData.append("doctor_id", data.doctor.toString());
 
-  if (data.certificate_documents) {
+  if (data) {
     // Append multiple files to formData
-    data.certificate_documents.forEach((file, index) => {
-      if (file !== null && file instanceof File)
-        formData.append(`files[${index}]`, file);
-    });
+    if (data.nmc_file !== null && data.nmc_file instanceof File)
+      formData.append(`files[0]`, data.nmc_file);
   }
   const response = await HttpClient.post(api.certificate_file, formData);
   return response;
@@ -46,21 +44,28 @@ const createCertificateFile = async (data: CertificateInfo) => {
 export const useCertificateFileRegister = () =>
   useMutation(createCertificateFile);
 
-const updateCertificateData = async (id: number, data: CertificateInfo) => {
-  const response = await HttpClient.patch(api.certificate + `${id}/`, data);
-  return response;
+const updateCertificateData = async (
+  data: CertificateInfo & { id?: number }
+) => {
+  const formatedData = objectToFormData(data);
+
+  if (data.id) {
+    const response = await HttpClient.patch(
+      `${api.nmc_update}/${data.id}`,
+      formatedData
+    );
+    return response;
+  } else {
+    const response = await HttpClient.patch(api.nmc_update, formatedData);
+    return response;
+  }
 };
 
 export const useUpdateCertificateInfo = () => {
   const queryClient = useQueryClient();
-
-  const mutation = useMutation<
-    AxiosResponse<any, any>,
-    unknown,
-    { id: number; data: CertificateInfo }
-  >(variables => updateCertificateData(variables.id, variables.data), {
+  const mutation = useMutation(updateCertificateData, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.doctor_profile);
+      queryClient.invalidateQueries([api.doctor_profile]);
       queryClient.fetchQuery(api.doctor_profile);
     },
   });
@@ -92,7 +97,7 @@ export const useDeleteCertificateInfo = () => {
 export const getSingleCertificateInfo = async (id: number) => {
   const response = await HttpClient.get<
     NepMedsResponse<IDoctorCertificationInfo>
-  >(api.certificate + `${id}/`);
+  >(api.nmc_update + `${id}/`);
   return response.data.data;
 };
 

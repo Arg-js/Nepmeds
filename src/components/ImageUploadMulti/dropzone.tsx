@@ -1,13 +1,14 @@
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { Box, Flex, IconButton, Image } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { Dispatch, SetStateAction } from "react";
 import { useDropzone } from "react-dropzone";
-import { useFormContext } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 
 export type IImageFileType =
-  | (File & { preview: string; id: string })
-  | { preview: string; id: string };
+  | (File & { preview: string; id: string; file?: string })
+  | { preview: string; id: string; file?: string };
 interface Props {
   setFiles: Dispatch<SetStateAction<Array<IImageFileType[]>>>;
   files: Array<IImageFileType[]>;
@@ -23,7 +24,12 @@ export function MultiImageUpload({
   deleteFile,
   fieldValue,
 }: Props) {
-  const { setValue } = useFormContext();
+  const { setValue, control } = useFormContext();
+  const { remove } = useFieldArray({
+    control,
+    name: fieldValue,
+  });
+
   const imagesFile = files[dataIndex] ?? [];
 
   const { getRootProps, getInputProps } = useDropzone({
@@ -35,6 +41,9 @@ export function MultiImageUpload({
     maxFiles: 5,
 
     onDrop: acceptedFiles => {
+      const prevFile = imagesFile.filter(
+        (item, index) => imagesFile.indexOf(item) === index
+      );
       const newFiles = acceptedFiles.map((file, i) => {
         setValue(`${fieldValue}.${i + imagesFile.length}`, file);
 
@@ -45,7 +54,7 @@ export function MultiImageUpload({
       });
 
       const tempArray = [...files];
-      tempArray[dataIndex] = imagesFile.concat(newFiles);
+      tempArray[dataIndex] = prevFile.concat(newFiles);
 
       setFiles(tempArray);
     },
@@ -62,9 +71,8 @@ export function MultiImageUpload({
       deleteFile(Number(file.id));
     }
     setFiles(tempArray);
+    remove(index);
   };
-
-
 
   return (
     <Flex
@@ -89,7 +97,7 @@ export function MultiImageUpload({
             {image && (
               <>
                 <Image
-                  src={image.preview}
+                  src={image.preview ?? getImageUrl(`${image.file ?? ""}`)}
                   alt="Selected Image"
                   objectFit="cover"
                   width="100%"

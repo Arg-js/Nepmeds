@@ -31,13 +31,14 @@ export const NAVIGATION_ROUTES = {
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
 
-  DOC_PROFILE: "/doc-profile/:id",
+  DOC_PROFILE: "/doctor-profile/:id",
 
   DOCTOR_LIST_REGISTRATION: "/doctor-list/registration",
   DOCTOR_LIST_PAYMENT: "/doctor-list/payment",
   AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
+  DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",
   DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
   NO_MATCH: "*",

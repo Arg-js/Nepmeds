@@ -3,7 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { queryStringGenerator } from "../utils";
 import { IGetDoctorProfile } from "./nepmeds-doctor-profile";
 import { PaginatedResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export type IGetDoctorList = Pick<
   IGetDoctorProfile,

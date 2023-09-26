@@ -1,9 +1,7 @@
 import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
-  Box,
   Button,
-  Center,
   Grid,
   GridItem,
   HStack,
@@ -11,7 +9,6 @@ import {
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -79,7 +76,7 @@ const Specializations = ({
     useState<Specialization | null>(null);
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data, isSuccess, isLoading } = useSpecializationData({
+  const { data, isFetching } = useSpecializationData({
     activeTab,
     page_no: pageIndex + 1,
     pageSize: pageSize,
@@ -145,7 +142,7 @@ const Specializations = ({
     {
       header: "S.N.",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
-        return index + 1;
+        return `${pageIndex * pageSize + (index + 1)}.`;
       },
     },
     {
@@ -384,7 +381,7 @@ const Specializations = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Specialist</Text>
+            <Text>Delete Specialization</Text>
           </HStack>
         }
         footer={
@@ -404,7 +401,7 @@ const Specializations = ({
         }
       >
         <Text>
-          Are you sure you want to delete symptom{" "}
+          Are you sure you want to delete specialization{" "}
           <Text fontWeight="bold" display="inline">
             {deleteSpecialization?.name}
           </Text>
@@ -415,7 +412,7 @@ const Specializations = ({
       <Grid display={"flex"} justifyContent={"space-between"}>
         <GridItem alignSelf={"end"}>
           <Text fontWeight="medium" fontSize={"2xl"}>
-            Specialist
+            Specialization
           </Text>
         </GridItem>
 
@@ -450,25 +447,17 @@ const Specializations = ({
           </Box> */}
         </GridItem>
       </Grid>
-      {isSuccess && (
-        <DataTable
-          columns={columns}
-          data={data?.results ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
-
-      {isLoading && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
-      {data?.count === 0 && <Box>No Result Found!</Box>}
+      <DataTable
+        columns={columns}
+        data={data?.results ?? []}
+        isLoading={isFetching}
+        pagination={{
+          manual: true,
+          pageParams: { pageIndex, pageSize },
+          pageCount: data?.page_count,
+          onChangePagination: setPagination,
+        }}
+      />
     </Fragment>
   );
 };

@@ -17,7 +17,7 @@ import { useState } from "react";
 const schema = yup.object().shape({
   email_or_mobile_number: yup
     .string()
-    .required("Mobile number or email is required!"),
+    .required("Email Address/ Mobile No. is required!"),
 });
 
 const ForgotPasswordForm = () => {

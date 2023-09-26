@@ -1,9 +1,9 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorExperience } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
 
 export type ExperienceInfo = IRegisterFields["experience"][number];
 
@@ -27,6 +27,29 @@ export const useExperienceInfoRegister = () => {
 
   return mutation;
 };
+
+// Post From Profile
+const createExperienceDataProfile = async (data: ExperienceInfo) => {
+  const response = await HttpClient.post(api.experienceProfile, { data: data });
+  return response;
+};
+
+export const useExperienceInfoRegisterProfile = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation<
+    AxiosResponse<any, any>,
+    unknown,
+    ExperienceInfo
+  >(createExperienceDataProfile, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.doctor_profile);
+      queryClient.fetchQuery(api.doctor_profile);
+    },
+  });
+
+  return mutation;
+};
+
 const createExperienceFile = async (data: ExperienceInfo) => {
   const formData = new FormData();
   formData.append("doctor_id", data.doctor.toString());
@@ -45,19 +68,15 @@ const createExperienceFile = async (data: ExperienceInfo) => {
 export const useExperienceFileRegister = () =>
   useMutation(createExperienceFile);
 
-const updateExperienceData = async (id: number, data: ExperienceInfo) => {
-  const response = await HttpClient.patch(api.experience + `${id}/`, data);
+const updateExperienceData = async (data: ExperienceInfo[]) => {
+  const response = await HttpClient.patch(api.experienceProfile, { data });
   return response;
 };
 
 export const useUpdateExperienceInfo = () => {
   const queryClient = useQueryClient();
 
-  const mutation = useMutation<
-    AxiosResponse<any, any>,
-    unknown,
-    { id: number; data: ExperienceInfo }
-  >(variables => updateExperienceData(variables.id, variables.data), {
+  const mutation = useMutation(updateExperienceData, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_profile);
       queryClient.fetchQuery(api.doctor_profile);

@@ -47,7 +47,7 @@ const ImageUpload = ({
             <Image
               src={
                 typeof SelectedImage === "string"
-                  ? SelectedImage
+                  ? SelectedImage.replace("/backend", "")
                   : SelectedImage instanceof File
                   ? URL.createObjectURL(SelectedImage)
                   : undefined
@@ -115,7 +115,7 @@ const ImageUpload = ({
               type="file"
               id={name}
               {...register(name, rules)}
-              accept="image/*"
+              accept="image/jpeg, image/png, image/jpg"
               style={{ display: "none" }}
               onChange={handleImageChange}
             />

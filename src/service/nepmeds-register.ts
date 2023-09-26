@@ -1,8 +1,15 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { AxiosResponse, toFormData } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+
+type NMCINFO = {
+  nmc_number?: number;
+  nmc_issued_date?: string;
+  nmc_expiry_date?: string;
+  nmc_file?: File | string;
+};
 
 export type PrimaryInfo = Pick<
   IRegisterFields,
@@ -40,12 +47,7 @@ export type PrimaryInfo = Pick<
     is_email_verified?: boolean;
     is_mobile_number_verified?: boolean;
   };
-  doctor_nmc_info: {
-    nmc_number?: number;
-    nmc_issued_date?: string;
-    nmc_expiry_date?: string;
-    nmc_file?: File | string;
-  };
+  doctor_nmc_info: NMCINFO;
 };
 
 const signUpUser = async (data: { email_or_mobile_number: string }) => {
@@ -82,7 +84,7 @@ export const usePrimaryInfoRegister = () =>
 
 const updateNMCInfo = async (data: PrimaryInfo & { doctorId: number }) => {
   const response = await HttpClient.patch(
-    `${api.edit_doctor_profile}/${data.doctorId}/`,
+    `${api.edit_doctor_profile}${data.doctorId}/`,
     data
   );
   return response;

@@ -5,7 +5,7 @@ import { useProfileData } from "../context";
 import { queryStringGenerator } from "../utils";
 import { IUser } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 
 export interface IPaymentMethod {
   instant_amount: number;
@@ -111,6 +111,7 @@ const getPaymentMethods = async () => {
 export const useGetPaymentMethods = () => {
   return useQuery([api.payment_methods], getPaymentMethods, {
     select: data => data.data.data,
+    staleTime: Infinity,
   });
 };
 

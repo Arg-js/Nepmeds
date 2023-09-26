@@ -1,6 +1,6 @@
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
 
 export type INMC = {
   doctor_nmc_info: {
@@ -88,6 +88,7 @@ export interface IGetDoctorProfile {
   doctor_academic_info: IDoctorAcademicInfo[] | [];
   doctor_certification_info: IDoctorCertificationInfo[] | [];
   doctor_experience: IDoctorExperience[] | [];
+  doctor_nmc_info: INMC["doctor_nmc_info"];
   profile_status: string;
   no_of_rejected_times: number;
   rejected_remarks: string;

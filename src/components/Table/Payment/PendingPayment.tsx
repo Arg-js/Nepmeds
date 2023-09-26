@@ -244,7 +244,7 @@ const PendingPayment = ({
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Dcotor Approval</Text>
+              <Text>Doctor Approval</Text>
             </HStack>
           }
           footer={
@@ -323,7 +323,10 @@ const PendingPayment = ({
 
       {isSuccess && (
         <DataTable
-          columns={pendingPaymentColumn(onActionClick, navigate)}
+          columns={pendingPaymentColumn(onActionClick, navigate, {
+            pageIndex,
+            pageSize,
+          })}
           data={data?.results ?? []}
           pagination={{
             manual: true,

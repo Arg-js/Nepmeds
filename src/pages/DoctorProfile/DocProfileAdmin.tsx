@@ -117,7 +117,7 @@ const DocProfileAdmin = () => {
                       doctorProfileData?.data?.id?.toString() ?? ""
                     );
                     toastSuccess("Doctor Approved");
-                    navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
+                    navigate(NAVIGATION_ROUTES.DOCTOR_LIST_REGISTRATION);
                   }}
                   sx={{ "&:hover": { bg: "#519C66", color: "white" } }}
                 >

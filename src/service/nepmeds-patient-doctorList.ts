@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
-import { HttpClient } from "./service-axios";
+import { HttpClient } from "@nepMeds/service/service-axios";
 import { generatePath } from "react-router-dom";
 
 export interface IDoctorList {
@@ -27,13 +27,28 @@ export interface IDoctorListResult {
 
 export interface IDoctorListById {
   id: number;
+  title: string;
   name: string;
   profile_picture: string;
   specialization_names: SpecializationName[];
-  medical_licence_number: string;
   bio_detail: string;
   schedule_rate: string;
+  medical_licence_number: string;
+  doctor_experience: DoctorExperience[];
   availability: IAvailability[];
+}
+
+export interface SpecializationName {
+  id: number;
+  name: string;
+}
+
+export interface DoctorExperience {
+  id: number;
+  hospital: string;
+  currently_working: boolean;
+  from_date: string;
+  to_date: string;
 }
 
 export interface IAvailability {
@@ -41,11 +56,6 @@ export interface IAvailability {
   date: string;
   from_time: string;
   to_time: string;
-}
-
-export interface SpecializationName {
-  id: number;
-  name: string;
 }
 
 export interface IPaginatinParams {

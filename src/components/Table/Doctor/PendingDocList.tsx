@@ -31,7 +31,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { ISpecializationList } from "./DoctorsList";
+import { ISpecializationList } from "@nepMeds/components/Table/Doctor/DoctorsList";
 
 interface Props {
   specializationList?: ISpecializationList[];
@@ -251,7 +251,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Dcotor Approval</Text>
+              <Text>Doctor Approval</Text>
             </HStack>
           }
           footer={

@@ -5,8 +5,8 @@ import DoctorListCard, {
   Size,
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { colors } from "@nepMeds/theme/colors";
-import DoctorListFilter from "./Section/Filter";
-import PatientFooter from "../Section/Footer";
+import DoctorListFilter from "@nepMeds/pages/Patient/DoctorList/Section/Filter";
+import PatientFooter from "@nepMeds/pages/Patient/Section/Footer";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import {
   useGetDoctorList,
@@ -21,15 +21,15 @@ import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useLocation } from "react-router-dom";
 import DoctorCardSkeleton from "@nepMeds/components/Patient/DoctorList/Skeleton";
+import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 
-const currentDate = new Date();
-const formattedDate = currentDate.toISOString().slice(0, 10);
+const currentDate = formatDateToString(new Date());
 
 const DoctorList = () => {
   const { state }: { state: any } = useLocation();
 
   const [doctorId, setDoctorId] = useState(0);
-  const [targetDate, setTargeDate] = useState(formattedDate);
+  const [targetDate, setTargeDate] = useState(currentDate);
   const [gender, setGender] = useState<string[]>([]);
   const [specialization, setSpecialization] = useState<string[]>(
     state?.specialization ? [state.specialization] : []
@@ -78,12 +78,12 @@ const DoctorList = () => {
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({
     id: doctorId,
-    target_date: targetDate || formattedDate,
+    target_date: targetDate || currentDate,
   });
   const { data: availability, isFetching: isAvailabilityFetching } =
     useGetAvailability({
       id: doctorId,
-      target_date: targetDate || formattedDate,
+      target_date: targetDate || currentDate,
     });
   // REACT QUERIES END
 

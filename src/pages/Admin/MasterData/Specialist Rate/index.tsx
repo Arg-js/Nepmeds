@@ -476,7 +476,7 @@ const SpecialistRates = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Delete Symptom</Text>
+            <Text>Delete Specialist Rate</Text>
           </HStack>
         }
         footer={
@@ -500,7 +500,7 @@ const SpecialistRates = ({
         }
       >
         <Text>
-          Are you sure you want to delete symptom{" "}
+          Are you sure you want to delete Specialist Rate{" "}
           <Text fontWeight="bold" display="inline">
             {deleteSpecialization?.name}
           </Text>

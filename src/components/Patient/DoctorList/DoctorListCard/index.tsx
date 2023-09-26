@@ -62,7 +62,7 @@ const DoctorListCard: React.FC<{
       onClick={() => {
         setDoctorId && setDoctorId(data.id);
       }}
-      cursor={`${size === Size.sm ? "auto" : "pointer"}`}
+      cursor="pointer"
       boxShadow={
         doctorId === data.id
           ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`

@@ -29,8 +29,8 @@ import {
   useUpdatePersonalInfoRegister,
 } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
-import { normalURL } from "@nepMeds/service/service-axios";
 import { colors } from "@nepMeds/theme/colors";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import React from "react";
 import {
@@ -489,7 +489,7 @@ const EditPrimary = ({
               <GridItem colSpan={1}>
                 <AspectRatio ratio={16 / 7}>
                   <Image
-                    src={`${normalURL}/media/${doctorProfileData?.id_front_image}`}
+                    src={getImageUrl(String(doctorProfileData?.id_front_image))}
                     objectFit="cover"
                   />
                 </AspectRatio>
@@ -497,7 +497,7 @@ const EditPrimary = ({
               <GridItem colSpan={1}>
                 <AspectRatio ratio={16 / 7}>
                   <Image
-                    src={`${normalURL}/media/${doctorProfileData?.id_back_image}`}
+                    src={getImageUrl(String(doctorProfileData?.id_front_image))}
                     objectFit="cover"
                   />
                 </AspectRatio>

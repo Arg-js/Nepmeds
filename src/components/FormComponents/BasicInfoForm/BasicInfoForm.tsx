@@ -1,15 +1,15 @@
 import { Grid, GridItem } from "@chakra-ui/layout";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
-import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
-import { colors } from "@nepMeds/theme/colors";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+import ImageUpload from "@nepMeds/components/ImageUpload";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
+import { normalURL } from "@nepMeds/service/service-axios";
+import { colors } from "@nepMeds/theme/colors";
+import { fileToString } from "@nepMeds/utils/fileToString";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useFormContext } from "react-hook-form";
-import { IRegisterFields } from "../RegistrationForm/RegistrationForm";
-import ImageUpload from "@nepMeds/components/ImageUpload";
-import { normalURL } from "@nepMeds/service/service-axios";
-import { fileToString } from "@nepMeds/utils/fileToString";
 export const BasicInfoForm = ({
   isEditable,
   hidePasswordField,
@@ -53,7 +53,7 @@ export const BasicInfoForm = ({
 
   const uploadedImage = watch("profile_picture");
   const checkPictureSize = () => {
-    if (uploadedImage && uploadedImage[0].size / 1048576 > 1) {
+    if (uploadedImage && uploadedImage[0]?.size / 1048576 > 1) {
       return true;
     }
     return false;

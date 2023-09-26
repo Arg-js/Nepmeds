@@ -21,12 +21,11 @@ import {
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { AcademicInfoForm } from "@nepMeds/components/FormComponents";
-import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import { toastFail } from "@nepMeds/components/Toast";
 import {
-  AcademicInfo,
   getSingleAcademicInfo,
   useAcademicFileRegister,
-  useAcademicInfoRegister,
+  useAcademicInfoRegisterProfile,
   useUpdateAcademicInfo,
 } from "@nepMeds/service/nepmeds-academic";
 import {
@@ -83,80 +82,35 @@ const EditAcademic = ({
   // const downloadImageFile = useDownloadImage();
   const academicFileRegister = useAcademicFileRegister();
   const updateAcademicInfoRegister = useUpdateAcademicInfo();
-  const academicInfoRegister = useAcademicInfoRegister();
+  const academicInfoRegister = useAcademicInfoRegisterProfile();
+
   const handleFormUpdate = async () => {
     try {
       const academicArray = formMethods.getValues("academic");
+      const academicDataArray: any[] = [];
 
-      const academicPromises = academicArray.map(
-        async (academicData: AcademicInfo) => {
-          const createAcademicFileResponse =
-            await academicFileRegister.mutateAsync(academicData);
-
-          const academicInfoData = {
-            ...academicData,
-            doctor: doctorProfileData?.id ?? 0,
-            academic_documents: createAcademicFileResponse.data.data.map(
-              (file: string) => ({
-                file: file,
-              })
-            ),
-          };
-          if (academicData.id) {
-            const academicInfoResponse =
-              await updateAcademicInfoRegister.mutateAsync(
-                academicInfoData as any,
-              );
-
-            if (academicInfoResponse) {
-              return academicInfoResponse.data.data;
-            } else {
-              throw new Error("Failed to update academic information!");
-            }
-          } else {
-            const academicInfoResponse = await academicInfoRegister.mutateAsync(
-              academicInfoData
-            );
-            if (academicInfoResponse) {
-              return academicInfoResponse.data.data;
-            } else {
-              throw new Error("Failed to add academic information!");
-            }
-          }
-        }
-      );
-
-      const academicInfoResponses = await Promise.all(academicPromises);
-
-      if (academicInfoResponses) {
-        // Process the responses or perform any required actions
-        academicInfoResponses.forEach((academicInfoResponse, index) => {
-          if (academicInfoResponse) {
-            const lastValue = index;
-            formMethods.setValue(
-              `academic.${lastValue}.id`,
-              academicInfoResponse.id
-            );
-            formMethods.setValue(`academic.${lastValue}.isSubmitted`, true);
-          }
+      for (const element of academicArray) {
+        const createAcademicFileResponse =
+          await academicFileRegister.mutateAsync(element);
+        academicDataArray.push({
+          ...element,
+          doctor: doctorProfileData?.id ?? 0,
+          academic_documents: createAcademicFileResponse.data.data.map(
+            (file: string) => ({
+              file: file,
+            })
+          ),
         });
+      }
 
-        toastSuccess("Academic Information updated");
+      if (doctorProfileData?.doctor_academic_info?.length === 0) {
+        await academicInfoRegister.mutateAsync(academicDataArray as any);
       } else {
-        throw new Error("Failed to update academic information!");
+        await updateAcademicInfoRegister.mutateAsync(academicDataArray);
       }
     } catch (error) {
-      const err = error as AxiosError<{ errors: [0] }>;
-
-      const errorObject = err?.response?.data?.errors?.[0];
-      const firstErrorMessage = errorObject
-        ? Object.values(errorObject)[0]
-        : null;
-
-      toastFail(
-        firstErrorMessage?.toString() ||
-        "Failed to update academic information!"
-      );
+      const err = serverErrorResponse(error);
+      toastFail(err);
     }
     setShowEditForm(false);
   };
@@ -450,7 +404,7 @@ const EditAcademic = ({
                           >
                             :&nbsp;
                             {singleAcademicInfo?.academic_document?.length ===
-                              1 ? (
+                            1 ? (
                               <>
                                 {singleAcademicInfo?.academic_document?.length}
                                 &nbsp; Image

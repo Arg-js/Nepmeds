@@ -7,6 +7,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
+
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
