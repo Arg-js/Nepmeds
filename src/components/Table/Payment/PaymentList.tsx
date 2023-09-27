@@ -59,7 +59,7 @@ const PaymentList = () => {
           <GridItem>
             <TabList border="none" p={4}>
               <Tab>All</Tab>
-              <Tab>Rate Pending</Tab>
+              <Tab>Pending Rate</Tab>
               <Tab>Approved Rate</Tab>
               <Tab>Rejected Rate</Tab>
             </TabList>

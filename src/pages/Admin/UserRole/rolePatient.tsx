@@ -15,8 +15,6 @@ const RolePatient = () => {
     page_size: pageSize,
   });
 
-  // console.log(data);
-
   if (isLoading || isFetching) return <CenterLoader />;
 
   return (

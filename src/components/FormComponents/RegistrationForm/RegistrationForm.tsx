@@ -123,7 +123,7 @@ const registerDefaultValues = {
     },
   ],
   nmc: {
-    nmc_number: 12345,
+    nmc_number: null as any | number,
     nmc_issued_date: "",
     nmc_expiry_date: "",
     nmc_file: null as null | File[] | string,
@@ -246,6 +246,7 @@ const RegistrationForm = () => {
       toastFail(err);
     }
   };
+
   const onSubmitForm = async (values: IRegisterFields) => {
     switch (activeStep) {
       case 0: {
@@ -699,7 +700,7 @@ const RegistrationForm = () => {
                   Skip
                 </Button>
               )}
-              {activeStep === 1 && isPrimarySubmitted === true ? (
+              {activeStep === 2 && isPrimarySubmitted === true ? (
                 <Button
                   isLoading={
                     primaryInfoRegister.isLoading ||
@@ -730,7 +731,7 @@ const RegistrationForm = () => {
                   onClick={handleNextButtonClick}
                   variant="register"
                 >
-                  Next Step
+                  {activeStep === 4 ? "Submit" : "  Next Step"}
                 </Button>
               )}
             </Flex>

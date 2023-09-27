@@ -145,7 +145,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
       </ModalComponent>
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Rejected Payments</Text>
+        <Text fontWeight="medium">Rejected Rate</Text>
 
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>

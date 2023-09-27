@@ -29,9 +29,7 @@ const ImageUpload = ({
     setSelectedImage(null);
     setValue(name, undefined as undefined | File[]);
   };
-
   const { register } = useFormContext();
-  console.log(SelectedImage);
   return (
     <>
       <FormControl isInvalid={!!error}>

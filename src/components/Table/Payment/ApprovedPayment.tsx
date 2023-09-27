@@ -139,7 +139,7 @@ const ApprovedPayment = ({
         </ModalComponent>
       )}
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Approved Payments</Text>
+        <Text fontWeight="medium">Approved Rate</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>

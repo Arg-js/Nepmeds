@@ -197,17 +197,19 @@ const EditAcademic = ({
                 showImagesIndexWise?.(
                   doctorProfileData?.doctor_academic_info,
                   index
-                )?.academic_document?.map((e: any) => (
-                  <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
-                    <Image
-                      key={e?.id}
-                      objectFit="cover"
-                      src={getImageUrl(e.file)}
-                      boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
-                      p={"20px"}
-                    />
-                  </AspectRatio>
-                ))
+                )?.academic_document?.map(
+                  ({ file, id }: { file: string; id: number }) => (
+                    <AspectRatio width={"100%"} key={id} ratio={16 / 9}>
+                      <Image
+                        key={id}
+                        objectFit="cover"
+                        src={getImageUrl(file)}
+                        boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
+                        p={"20px"}
+                      />
+                    </AspectRatio>
+                  )
+                )
               )}
             </VStack>
           </ModalComponent>

@@ -140,7 +140,7 @@ export const allPaymentColumn = (
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
-            {Number(row?.original?.payment_status) === Number(1) && (
+            {+row?.original?.payment_status === +1 && (
               <TableActions
                 onView={() => {
                   navigate(

@@ -287,7 +287,7 @@ const PendingPayment = ({
       )}
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Pending Payments</Text>
+        <Text fontWeight="medium">Pending Rate</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>

@@ -280,7 +280,7 @@ const AllPayment = ({
       )}
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">All Payment</Text>
+        <Text fontWeight="medium">All Rate</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
