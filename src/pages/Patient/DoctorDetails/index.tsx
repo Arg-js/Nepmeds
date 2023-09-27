@@ -2,10 +2,13 @@ import {
   Avatar,
   Box,
   Button,
+  Divider,
   Flex,
   FormLabel,
   Grid,
   GridItem,
+  HStack,
+  Image,
   ListItem,
   SimpleGrid,
   Spinner,
@@ -15,7 +18,12 @@ import {
   UnorderedList,
   VStack,
 } from "@chakra-ui/react";
-import { BackArrowIcon, UniversityIcon } from "@nepMeds/assets/svgs";
+import {
+  BackArrowIcon,
+  ImageCancelIcon,
+  UniversityIcon,
+  UploadImageIcon,
+} from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import Calendar from "react-calendar";
@@ -23,30 +31,73 @@ import "react-calendar/dist/Calendar.css";
 import "@nepMeds/assets/styles/reactCalender.css";
 import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useGetDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useState } from "react";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import { Value } from "react-calendar/dist/cjs/shared/types";
+import TokenService from "@nepMeds/service/service-token";
+import FormControl from "@nepMeds/components/Form/FormControl";
+import { useForm } from "react-hook-form";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+
 const currentDate = formatDateToString(new Date());
 
+const defaultValues = {
+  full_name: "",
+  contact: "",
+  age: "",
+  gender: [{ label: "Male", value: "1" }],
+  healthIssue: [],
+  symptom: "",
+  image: null,
+};
+
+const schema = Yup.object({
+  full_name: Yup.string().required("This field is required"),
+  contact: Yup.number().typeError("contact must be a number"),
+  age: Yup.number()
+    .max(115, "You must be at most 115 years")
+    .positive("age must be greater than zero")
+    .typeError("age must be a number"),
+});
 const DoctorDetails = () => {
   const { id = "" } = useParams();
+  const location = useLocation();
+  const activeForm = (location.state as { formState: number }).formState;
+
   const navigate = useNavigate();
 
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+
   const [date, setDate] = useState(new Date());
   const [appointment, setAppointment] = useState(false);
+  const isAuthenticated = TokenService.isAuthenticated();
+  const { data: symptomData } = useGetSymptoms();
 
   const handleCalendarChange = (value: Value) => {
     const date = new Date(value as Date);
     setDate(date);
   };
 
+  const handleBookAppointment = () => {
+    if (isAuthenticated) {
+      if (selectedAvailability?.length !== 0) {
+        setAppointment(!appointment);
+        navigate(location.pathname, {
+          state: { formState: 1, selectedAvailability },
+        });
+      }
+    } else {
+      window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
+    }
+  };
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
     id: +id,
@@ -58,7 +109,27 @@ const DoctorDetails = () => {
       target_date: formatDateToString(date) || currentDate,
     });
   // REACT QUERIES END
+  const symptomDataOption =
+    symptomData?.map(p => ({
+      label: p.name,
+      value: p.id,
+    })) || [];
 
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+    reset,
+    watch,
+    setValue,
+    control,
+  } = useForm({ defaultValues, resolver: yupResolver(schema) });
+  const oldReportFileWatch = watch("image");
+
+  const onSubmitHandler = (data: typeof defaultValues) => {
+    console.log(data, "here");
+  };
+  console.log(availability, "availability");
   return (
     <Box bg={colors.white} height={"100vh"}>
       <Header />
@@ -288,101 +359,335 @@ const DoctorDetails = () => {
           </GridItem>
 
           <GridItem colSpan={{ lg: 1, xl: 5 }}>
-            <WrapperBox
-              p={{ base: 5, md: 10, lg: 5, xl: 10 }}
-              boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-              borderRadius="2"
-            >
-              <>
-                <Text fontWeight={600} fontSize={"xl"} color={colors.black_60}>
-                  Select Date and Time
-                </Text>
-                <Flex gap={4} direction={"column"}>
-                  <Flex alignItems={"center"} justifyContent={"center"}>
-                    <Calendar
-                      onChange={value => handleCalendarChange(value)}
-                      value={date}
-                      minDate={new Date()}
-                    />
-                  </Flex>
+            {activeForm === 0 && (
+              <WrapperBox
+                p={{ base: 5, md: 10, lg: 5, xl: 10 }}
+                boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+                borderRadius="2"
+              >
+                <>
                   <Text
                     fontWeight={600}
-                    fontSize={"lg"}
+                    fontSize={"xl"}
                     color={colors.black_60}
                   >
-                    Available Time
+                    Select Date and Time
                   </Text>
-                  <Text
-                    fontWeight={600}
-                    fontSize={"md"}
-                    color={colors.black_60}
-                  >
-                    Evening
-                  </Text>
-                  <Box>
-                    {isAvailabilityFetching ? (
-                      <Box textAlign={"center"}>
-                        <Spinner />
-                      </Box>
-                    ) : (
-                      <SimpleGrid
-                        gridTemplateColumns={
-                          "repeat(auto-fit, minmax(90px, 1fr))"
-                        }
-                      >
-                        {availability?.map(data => (
-                          <Button
-                            variant={"primaryOutlineFilled"}
-                            key={data.id}
-                            borderRadius={3}
-                            height={"34px"}
-                            m={1}
-                            sx={{
-                              bg: `${
-                                selectedAvailability.includes(data.id)
-                                  ? colors.sky_blue
-                                  : "transparent"
-                              }`,
-                            }}
-                            onClick={() =>
-                              setSelectedAvailability(prev =>
-                                prev.includes(data.id)
-                                  ? prev.filter(item => item !== data.id)
-                                  : [...prev, data.id]
-                              )
-                            }
-                          >
-                            {data?.from_time?.slice(0, 5)} -
-                            {data?.to_time?.slice(0, 5)}
-                          </Button>
-                        ))}
-                      </SimpleGrid>
-                    )}
-                    {!isAvailabilityFetching && (
-                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                        {!availability?.length &&
-                          "This doctor is not available on this date, choose another date"}
-                      </FormLabel>
-                    )}
-                    {appointment && selectedAvailability?.length === 0 && (
-                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                        Please Choose the availability*
-                      </FormLabel>
-                    )}
-                  </Box>
-                  <Flex justifyContent="flex-end">
-                    <Button
-                      variant={"secondary"}
-                      height="40px"
-                      borderRadius="4px"
-                      onClick={() => setAppointment(!appointment)}
+                  <Flex gap={4} direction={"column"}>
+                    <Flex alignItems={"center"} justifyContent={"center"}>
+                      <Calendar
+                        onChange={value => handleCalendarChange(value)}
+                        value={date}
+                        minDate={new Date()}
+                      />
+                    </Flex>
+                    <Text
+                      fontWeight={600}
+                      fontSize={"lg"}
+                      color={colors.black_60}
                     >
-                      Book Appointment
-                    </Button>
+                      Available Time
+                    </Text>
+                    <Text
+                      fontWeight={600}
+                      fontSize={"md"}
+                      color={colors.black_60}
+                    >
+                      Evening
+                    </Text>
+                    <Box>
+                      {isAvailabilityFetching ? (
+                        <Box textAlign={"center"}>
+                          <Spinner />
+                        </Box>
+                      ) : (
+                        <SimpleGrid
+                          gridTemplateColumns={
+                            "repeat(auto-fit, minmax(90px, 1fr))"
+                          }
+                        >
+                          {availability?.map(data => (
+                            <Button
+                              variant={"primaryOutlineFilled"}
+                              key={data.id}
+                              borderRadius={3}
+                              height={"34px"}
+                              m={1}
+                              sx={{
+                                bg: `${
+                                  selectedAvailability.includes(data.id)
+                                    ? colors.sky_blue
+                                    : "transparent"
+                                }`,
+                              }}
+                              onClick={() =>
+                                setSelectedAvailability(prev =>
+                                  prev.includes(data.id)
+                                    ? prev.filter(item => item !== data.id)
+                                    : [...prev, data.id]
+                                )
+                              }
+                            >
+                              {data?.from_time?.slice(0, 5)} -
+                              {data?.to_time?.slice(0, 5)}
+                            </Button>
+                          ))}
+                        </SimpleGrid>
+                      )}
+                      {!isAvailabilityFetching && (
+                        <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
+                          {!availability?.length &&
+                            "This doctor is not available on this date, choose another date"}
+                        </FormLabel>
+                      )}
+                      {appointment && selectedAvailability?.length === 0 && (
+                        <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
+                          Please Choose the availability*
+                        </FormLabel>
+                      )}
+                    </Box>
+                    <Flex justifyContent="flex-end">
+                      <Button
+                        variant={"secondary"}
+                        height="40px"
+                        borderRadius="4px"
+                        onClick={handleBookAppointment}
+                      >
+                        Book Appointment
+                      </Button>
+                    </Flex>
                   </Flex>
-                </Flex>
-              </>
-            </WrapperBox>
+                </>
+              </WrapperBox>
+            )}
+            {activeForm === 1 && (
+              <WrapperBox
+                px={"5"}
+                boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+                borderRadius="2"
+              >
+                <>
+                  <Flex
+                    alignItems={"flex-start"}
+                    gap={2}
+                    mb={6}
+                    cursor={"pointer"}
+                    onClick={() =>
+                      navigate(location.pathname, { state: { formState: 0 } })
+                    }
+                  >
+                    <BackArrowIcon />
+                    <Text
+                      fontWeight={600}
+                      fontSize={"md"}
+                      color={colors.dark_blue}
+                    >
+                      Appointment Details
+                    </Text>
+                  </Flex>
+                  <VStack display={"start"}>
+                    <Box marginBottom={"12px"}>
+                      <Text fontWeight={600} fontSize="md" mb="4px">
+                        {doctorList?.title}. {doctorList?.name}
+                      </Text>
+                      <Flex>
+                        {doctorList?.specialization_names.map(
+                          (speciality, index) => {
+                            return (
+                              <Text
+                                key={speciality.id}
+                                fontSize={"sm"}
+                                fontWeight={500}
+                              >
+                                {speciality.name}{" "}
+                                {index !==
+                                  doctorList?.specialization_names.length - 1 &&
+                                  ` - `}
+                              </Text>
+                            );
+                          }
+                        )}
+                      </Flex>
+                      <Flex my={"3px"}>
+                        <Text fontSize={"sm"} fontWeight={500}>
+                          NMC No:
+                        </Text>
+                        <Text
+                          color={colors.primary}
+                          fontSize={"sm"}
+                          fontWeight={500}
+                        >
+                          {doctorList?.medical_licence_number ?? " N/A"}
+                        </Text>
+                      </Flex>
+                      <Text fontWeight={600} fontSize="sm" my="4px">
+                        Selected Date
+                      </Text>
+                      <Text
+                        color={colors.primary}
+                        fontSize={"sm"}
+                        fontWeight={500}
+                      >
+                        9:00 PM, November 8 2022, Wednesday (After 2 days)
+                      </Text>
+                    </Box>
+                    <Divider borderWidth="1px" />
+                    <VStack display={"flex-start"}>
+                      <Text fontWeight={600} fontSize={"md"}>
+                        Please enter patient information
+                      </Text>
+                      <form onSubmit={handleSubmit(onSubmitHandler)}>
+                        <Box mb={4}>
+                          <FormControl
+                            control={"input"}
+                            label={"Full Name"}
+                            name={"full_name"}
+                            placeholder={"Enter patient name"}
+                            error={errors?.full_name?.message ?? ""}
+                            register={register}
+                            variant={"outline"}
+                            style={{
+                              minHeight: "35px",
+                            }}
+                            required
+                          />
+                        </Box>
+                        <Box mb={4}>
+                          <FormControl
+                            control={"input"}
+                            label={"Enter Contact Number"}
+                            name={"contact"}
+                            placeholder={"Enter contact number"}
+                            error={errors?.contact?.message ?? ""}
+                            register={register}
+                            variant={"outline"}
+                            style={{
+                              minHeight: "35px",
+                            }}
+                          />
+                        </Box>
+                        <Flex gap={4} mb={4}>
+                          <Box flex={0.3}>
+                            <FormControl
+                              control={"input"}
+                              label={"Age"}
+                              name={"age"}
+                              placeholder={"Enter age"}
+                              error={errors?.age?.message ?? ""}
+                              register={register}
+                              variant={"outline"}
+                              style={{
+                                minHeight: "35px",
+                              }}
+                            />
+                          </Box>
+                          <Box flex={0.7}>
+                            <FormControl
+                              control={"radio"}
+                              label={"Choose Gender"}
+                              name={"gender"}
+                              register={register}
+                              options={[
+                                { label: "Male", value: "1" },
+                                { label: "Female", value: "2" },
+                              ]}
+                            />
+                          </Box>
+                        </Flex>
+                        <Box mb={4}>
+                          <FormControl
+                            control={"multiSelect"}
+                            label={"Select Health Issue"}
+                            name={"healthIssue"}
+                            placeholder={"Select health issue"}
+                            variant={"outline"}
+                            size={"sm"}
+                            error={errors?.healthIssue?.message ?? ""}
+                            register={register}
+                            selectControl={control}
+                            options={symptomDataOption}
+                            style={{
+                              background: colors.white,
+                              minHeight: "35px",
+                            }}
+                            required
+                          />
+                        </Box>
+                        <Box mb={4}>
+                          <FormControl
+                            control={"textArea"}
+                            label={"Tell us about your symptoms"}
+                            name={"symptom"}
+                            placeholder={"Type your symptoms here"}
+                            sx={{
+                              borderRadius: "8px",
+                              p: "3",
+                              minHeight: "200px",
+                            }}
+                            error={errors?.symptom?.message ?? ""}
+                            register={register}
+                          />
+                        </Box>
+                        <Box mb={4}>
+                          <FormLabel
+                            fontWeight={"500"}
+                            fontSize={"13px"}
+                            fontFamily={"Quicksand"}
+                          >
+                            Upload Older Reports or Prescription (if any)
+                          </FormLabel>
+                          <FormControl
+                            register={register}
+                            control={"input"}
+                            type={"file"}
+                            id={"image"}
+                            name={"image"}
+                            display={"none"}
+                          />
+                          <Flex>
+                            <FormLabel
+                              htmlFor="image"
+                              cursor={"pointer"}
+                              border={`1px dashed ${colors.gray}`}
+                              width={"76px"}
+                            >
+                              <UploadImageIcon />
+                            </FormLabel>
+
+                            {oldReportFileWatch && (
+                              <HStack>
+                                <Image
+                                  src={URL.createObjectURL(
+                                    oldReportFileWatch[0] as unknown as Blob
+                                  )}
+                                  width={"76px"}
+                                  objectFit={"cover"}
+                                />
+                                <Box onClick={() => setValue("image", null)}>
+                                  <ImageCancelIcon
+                                    style={{ cursor: "pointer" }}
+                                  />
+                                </Box>
+                              </HStack>
+                            )}
+                          </Flex>
+                        </Box>
+                        <Button
+                          width="full"
+                          variant={"primary"}
+                          type="submit"
+                          sx={{
+                            backgroundColor: colors.main,
+                          }}
+                        >
+                          Confirm & pay
+                        </Button>
+                      </form>
+                    </VStack>
+                  </VStack>
+                </>
+              </WrapperBox>
+            )}
           </GridItem>
         </Grid>
       </WrapperBox>
