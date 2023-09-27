@@ -2,12 +2,10 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -54,7 +52,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
   const [searchFilter, setSearchFilter] = useState("");
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data, isLoading, isSuccess } = useGetPaymentList({
+  const { data, isFetching } = useGetPaymentList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -175,24 +173,18 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
           </Button>
         </HStack>
       </HStack>
-      {isSuccess && (
-        <DataTable
-          columns={rejectedPaymentColumns(navigate, { pageIndex, pageSize })}
-          data={data?.results ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
+      <DataTable
+        columns={rejectedPaymentColumns(navigate, { pageIndex, pageSize })}
+        data={data?.results ?? []}
+        isLoading={isFetching}
+        pagination={{
+          manual: true,
+          pageParams: { pageIndex, pageSize },
+          pageCount: data?.page_count,
+          onChangePagination: setPagination,
+        }}
+      />
 
-      {isLoading && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
       {data?.count === 0 && <Box>No Result Found!</Box>}
     </>
   );
