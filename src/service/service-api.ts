@@ -89,7 +89,11 @@ export const api = {
       getById: "/doctor-consult/new-appointment-request/:id/",
     },
   },
-
+  admin: {
+    patient: {
+      get: "/dashboard/patient-all-data/",
+    },
+  },
   patient: {
     login: {
       post: "/user-management/refresh-token/",

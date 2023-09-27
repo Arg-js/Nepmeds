@@ -160,7 +160,7 @@ const DoctorDetails = () => {
                               fontSize={"sm"}
                               color={colors.black_30}
                             >
-                              University of Abcdf
+                              N/A
                             </Text>
                           </Flex>
                         </Flex>

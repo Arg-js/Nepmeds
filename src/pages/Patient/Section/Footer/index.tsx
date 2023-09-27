@@ -2,8 +2,6 @@ import { Grid, GridItem, Flex, Divider, Text, Image } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import googlePlay from "@nepMeds/assets/images/googlePlay.png";
-import appStore from "@nepMeds/assets/images/appStore.png";
-import visaImage from "@nepMeds/assets/images/visa.png";
 import esewaImage from "@nepMeds/assets/images/esewaImage.png";
 import khaltiImage from "@nepMeds/assets/images/khaltiImage.png";
 import imePayImage from "@nepMeds/assets/images/IMEpay.png";
@@ -11,7 +9,7 @@ import imePayImage from "@nepMeds/assets/images/IMEpay.png";
 const FooterContents = [
   {
     title: "How can we help you?",
-    contents: ["Refer & Earn", "FAQ’s", "Track My Order", "Shipping"],
+    contents: ["Refer & Earn", "FAQ’s"],
   },
   {
     title: "For Doctor & Nurse",
@@ -22,22 +20,21 @@ const FooterContents = [
     contents: [
       "About Us",
       "Contact Us",
-      "Press",
       "Careers",
       "Terms and condition",
       "Privacy Policy",
     ],
   },
-  {
-    title: "Social",
-    contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],
-  },
-  {
-    title: "Don’t miss updates from us !",
-    contents: [
-      "Get an email subscription and lots of interesting news and other updates on health will be sent to you regularly.",
-    ],
-  },
+  // {
+  //   title: "Social",
+  //   contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],
+  // },
+  // {
+  //   title: "Don’t miss updates from us !",
+  //   contents: [
+  //     "Get an email subscription and lots of interesting news and other updates on health will be sent to you regularly.",
+  //   ],
+  // },
 ];
 
 const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
@@ -94,7 +91,7 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               </Text>
               <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <Image alt="Google Play" src={googlePlay} />
-                <Image alt="App Store" src={appStore} />
+                {/* <Image alt="App Store" src={appStore} /> */}
               </Flex>
             </Flex>
             <Flex direction={"column"} gap={3.5} alignItems={"center"}>
@@ -108,7 +105,6 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
               >
                 <Image alt="Google Play" src={imePayImage} />
                 <Image alt="App Store" src={esewaImage} />
-                <Image alt="Google Play" src={visaImage} />
                 <Image alt="App Store" src={khaltiImage} />
               </Flex>
             </Flex>
