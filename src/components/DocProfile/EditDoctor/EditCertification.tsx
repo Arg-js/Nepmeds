@@ -22,6 +22,7 @@ import {
 } from "@chakra-ui/react";
 import { NmcForm } from "@nepMeds/components/FormComponents";
 import { toastFail } from "@nepMeds/components/Toast";
+import { useProfileData } from "@nepMeds/context/index";
 import {
   useCertificateFileRegister,
   useUpdateCertificateInfo,
@@ -80,16 +81,24 @@ const EditCertification = ({
 
   const [editForm, setEditForm] = useState(false);
 
+  const user = useProfileData();
   const handleFormUpdate = async () => {
     try {
       const nmc = formMethods.getValues("nmc");
       const formatedData = {
         ...nmc,
+        is_superuser: user?.data?.is_superuser,
+        id: doctorProfileData.id,
         nmc_file:
-          typeof formMethods.getValues("nmc.nmc_file") === "string"
-            ? formMethods.getValues("nmc.nmc_file")
-            : formMethods.getValues("nmc.nmc_file")?.[0],
+          typeof formMethods.getValues("nmc.nmc_file") !== "string"
+            ? formMethods.getValues("nmc.nmc_file")?.[0]
+            : doctorProfileData.doctor_nmc_info.nmc_file,
       };
+
+      if (typeof formatedData.nmc_file === "string") {
+        delete formatedData["nmc_file"];
+      }
+
       await updateCertificateInfoRegister.mutateAsync(formatedData);
     } catch (error) {
       const err = serverErrorResponse(error);
