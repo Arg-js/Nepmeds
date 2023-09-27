@@ -103,9 +103,15 @@ export const useDeleteAcademicInfo = () => {
 };
 
 //Get Single Academic Info
-export const getSingleAcademicInfo = async (id: number) => {
+export const getSingleAcademicInfo = async (id: number, isDoctor?: boolean) => {
+  if (!isDoctor) {
+    const response = await HttpClient.get<NepMedsResponse<IDoctorAcademicInfo>>(
+      `${api.doctor_profile}/doctor_id=${id}/`
+    );
+    return response.data.data;
+  }
   const response = await HttpClient.get<NepMedsResponse<IDoctorAcademicInfo>>(
-    api.academic + `${id}/`
+    api.doctor_profile
   );
   return response.data.data;
 };

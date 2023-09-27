@@ -35,7 +35,6 @@ import {
   IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
-  getSingleExperienceInfo,
   // useDeleteExperienceInfo,
   useExperienceFileRegister,
   useExperienceInfoRegisterProfile,
@@ -43,8 +42,8 @@ import {
 } from "@nepMeds/service/nepmeds-experience";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
+import { showImagesIndexWise } from "@nepMeds/utils/getArrayWithIndex";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
-import { AxiosError } from "axios";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 // import { AiOutlineMore } from "react-icons/ai";
@@ -101,21 +100,9 @@ const EditExperience = ({
   const updateExperienceFileRegister = useUpdateExperienceInfo();
   const experienceInfoRegister = useExperienceInfoRegisterProfile();
   const [loading, setLoading] = useState(false);
-  const [experienceInfo, setExperienceInfo] = useState<
-    IDoctorExperience["experience_document"]
-  >([]);
-  const [editForm, setEditForm] = useState(false);
+  const [index, setIndex] = useState(0);
 
-  const getExperienceInfo = async (id: number) => {
-    try {
-      const res = await getSingleExperienceInfo(id);
-      setExperienceInfo(res.experience_document);
-    } catch (error) {
-      const err = serverErrorResponse(error);
-      error as AxiosError;
-      toastFail(err);
-    }
-  };
+  const [editForm, setEditForm] = useState(false);
 
   const handleFormUpdate = async () => {
     try {
@@ -151,10 +138,10 @@ const EditExperience = ({
     }
     setEditForm(false);
   };
-  const handleDocImg = async (id: number) => {
+  const handleDocImg = async (ind: number) => {
     setLoading(true);
     onDocImgOpen();
-    await getExperienceInfo(id);
+    setIndex(ind);
     setLoading(false);
   };
 
@@ -242,12 +229,16 @@ const EditExperience = ({
               {loading ? (
                 <Spinner />
               ) : (
-                experienceInfo.map((e: any) => (
+                showImagesIndexWise?.(
+                  doctorProfileData?.doctor_experience,
+                  index
+                )?.experience_document?.map((e: any) => (
                   <AspectRatio width={"100%"} key={e?.id} ratio={16 / 9}>
                     <Image
                       key={e?.id}
                       objectFit="cover"
-                      src={getImageUrl(e?.file)}
+                      src={getImageUrl(e.file)}
+                      boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
                       p={"20px"}
                     />
                   </AspectRatio>
@@ -414,9 +405,7 @@ const EditExperience = ({
                             lineHeight={"19px"}
                             color={colors?.main}
                             cursor="pointer"
-                            onClick={() =>
-                              handleDocImg(singleExperience.id ?? 0)
-                            }
+                            onClick={() => handleDocImg(i)}
                           >
                             :&nbsp;
                             {singleExperience?.experience_document?.length ===

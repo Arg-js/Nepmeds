@@ -103,7 +103,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
         link: "/doctor-list/registration",
       },
       {
-        text: "Payment",
+        text: "Rate",
         link: "/doctor-list/payment",
       },
     ],
