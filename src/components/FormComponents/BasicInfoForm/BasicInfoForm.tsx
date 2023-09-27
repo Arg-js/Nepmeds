@@ -36,7 +36,9 @@ export const BasicInfoForm = ({
   useEffect(() => {
     if (isEditable && doctorProfileData?.user?.profile_picture) {
       setSelectedImage(
-        `${normalURL}/media/${doctorProfileData.user.profile_picture}`
+        `${normalURL.replace("/backend", "")}/media/${
+          doctorProfileData.user.profile_picture
+        }`
       );
     } else setSelectedImage(getValues("profile_picture")?.[0] ?? null);
   }, [doctorProfileData]);

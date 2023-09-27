@@ -31,7 +31,7 @@ const ImageUpload = ({
   };
 
   const { register } = useFormContext();
-
+  console.log(SelectedImage);
   return (
     <>
       <FormControl isInvalid={!!error}>
