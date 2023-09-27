@@ -73,13 +73,13 @@ const MasterData = () => {
               >
                 Specialization
               </Tab>
-              <Tab
+              {/* <Tab
                 fontWeight="400"
                 _selected={{ color: colors.black }}
                 color={colors.light_gray}
               >
                 Specialist Rate
-              </Tab>
+              </Tab> */}
             </TabList>
             <TabIndicator
               mt="-1.5px"

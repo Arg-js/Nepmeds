@@ -29,9 +29,7 @@ const ImageUpload = ({
     setSelectedImage(null);
     setValue(name, undefined as undefined | File[]);
   };
-
   const { register } = useFormContext();
-
   return (
     <>
       <FormControl isInvalid={!!error}>
@@ -47,7 +45,7 @@ const ImageUpload = ({
             <Image
               src={
                 typeof SelectedImage === "string"
-                  ? SelectedImage.replace("/backend", "")
+                  ? SelectedImage
                   : SelectedImage instanceof File
                   ? URL.createObjectURL(SelectedImage)
                   : undefined

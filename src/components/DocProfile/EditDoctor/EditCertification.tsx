@@ -85,7 +85,10 @@ const EditCertification = ({
       const nmc = formMethods.getValues("nmc");
       const formatedData = {
         ...nmc,
-        nmc_file: formMethods.getValues("nmc.nmc_file")?.[0],
+        nmc_file:
+          typeof formMethods.getValues("nmc.nmc_file") === "string"
+            ? formMethods.getValues("nmc.nmc_file")
+            : formMethods.getValues("nmc.nmc_file")?.[0],
       };
       await updateCertificateInfoRegister.mutateAsync(formatedData);
     } catch (error) {
