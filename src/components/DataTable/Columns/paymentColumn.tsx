@@ -155,6 +155,15 @@ export const allPaymentColumn = (
             {Number(row?.original?.payment_status) !== Number(1) && (
               <>
                 <TableActions
+                  onView={() => {
+                    navigate(
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: row?.original?.id?.toString(),
+                      })
+                    );
+                  }}
+                />
+                <TableActions
                   onAccept={() => {
                     onClick(true, {
                       id: row.original.doctor_amount_detail?.id?.toString(),

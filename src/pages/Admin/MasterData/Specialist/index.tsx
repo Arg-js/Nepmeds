@@ -154,7 +154,7 @@ const Specializations = ({
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack>
-            {cell.row.original.symptom_list?.map(s => (
+            {cell.row.original.symptom_list?.slice(0, 6)?.map(s => (
               <Badge key={s.keyword} textTransform="initial" fontWeight="light">
                 {s.name}
               </Badge>
