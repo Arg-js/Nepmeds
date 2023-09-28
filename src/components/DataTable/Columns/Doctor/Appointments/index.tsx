@@ -98,7 +98,7 @@ export const column = ({
       // },
       {
         header: "Status",
-        accessorKey: "status",
+        accessorKey: "Status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <Badge
