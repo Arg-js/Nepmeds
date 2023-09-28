@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
-import { api, NepMedsResponse } from "@nepMeds/service/service-api";
+import { api, PaginatedResponse } from "@nepMeds/service/service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { toastFail } from "@nepMeds/service/service-toast";
 
@@ -12,7 +12,7 @@ export interface IPatientDetails {
 }
 
 const getPatientDetails = async () => {
-  const response = await HttpClient.get<NepMedsResponse<IPatientDetails[]>>(
+  const response = await HttpClient.get<PaginatedResponse<IPatientDetails>>(
     api.admin.patient.get
   );
   return response;

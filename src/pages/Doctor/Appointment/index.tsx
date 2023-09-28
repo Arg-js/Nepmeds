@@ -12,7 +12,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import AppointmentTab from "@nepMeds/pages/Doctor/Appointment/AppointmentTab/index";
 
-const AppointmentTabConfig = [
+const appointmentTabConfig = [
   { type: 0, heading: "All" },
   {
     type: STATUSTYPE.pending,
@@ -42,7 +42,7 @@ const Appointment: React.FC = () => {
         }}
       >
         <TabList>
-          {AppointmentTabConfig.map(({ heading }) => (
+          {appointmentTabConfig.map(({ heading }) => (
             <Tab
               fontWeight="400"
               _selected={{ color: colors.black }}
@@ -60,7 +60,7 @@ const Appointment: React.FC = () => {
           borderRadius="1px"
         />
         <TabPanels>
-          {AppointmentTabConfig.map(({ type, heading }, index) => (
+          {appointmentTabConfig.map(({ type, heading }, index) => (
             <TabPanel px={0} pb={0} pt={6} key={type}>
               {tabIndex === index && (
                 <AppointmentTab

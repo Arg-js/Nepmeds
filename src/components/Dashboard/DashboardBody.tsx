@@ -16,9 +16,8 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
 import "../../assets/styles/reactCalender.css";
-import PendingDocList from "../Table/Doctor/PendingDocList";
+import PendingDocList from "@nepMeds/components/Table/Doctor/PendingDocList";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import TableHeader from "@nepMeds/components/DataTable/TableHeader";
 
 interface IDashboardData {
   title: string;
@@ -142,7 +141,7 @@ const DashboardBody = () => {
           style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
         >
           <>
-            <TableHeader heading="Pending Doctors" />
+            <Text variant="tableHeading">Pending Doctors</Text>
             <PendingDocList showFilter={false} />
           </>
         </WrapperBox>

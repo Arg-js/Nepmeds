@@ -8,20 +8,18 @@ interface IWrapperBox extends BoxProps {
   style?: Record<string, any>;
 }
 const WrapperBox: React.FC<IWrapperBox> = ({ children, style, ...rest }) => {
-  const sx = {
-    backgroundColor: colors.white,
-    backgroundImage: "none",
-    height: "auto",
-    padding: "4",
-    width: "auto",
-    border: "none",
-    boxShadow: "none",
-    fontFamily: "Quicksand",
-  };
   return (
     <Box
+      backgroundColor={colors.white}
+      backgroundImage="none"
+      height="auto"
+      padding="4"
+      width="auto"
+      border="none"
+      boxShadow="none"
+      fontFamily="Quicksand"
       px={{ base: "10px", md: "15", xl: "15", "2xl": "20" }}
-      sx={{ ...sx, ...style }}
+      sx={style}
       {...rest}
     >
       {children}

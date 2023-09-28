@@ -25,6 +25,7 @@ const FooterContents = [
       "Privacy Policy",
     ],
   },
+  // TODO: add valid link to these footer elements
   // {
   //   title: "Social",
   //   contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],

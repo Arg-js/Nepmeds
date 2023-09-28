@@ -1,6 +1,6 @@
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { useQuery } from "react-query";
-import { NepMedsResponse, api } from "./service-api";
+import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 
 export type INMC = {
   doctor_nmc_info: {
