@@ -159,7 +159,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Doctor Approval</Text>
+            <Text>Approve Appointment</Text>
           </HStack>
         }
         isOpen={isApproveModalOpen}
@@ -194,7 +194,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         <Flex direction={"column"} alignItems={"center"} gap={8}>
           <ConfirmationImage />
           <Text fontWeight={600} fontSize="18px">
-            Are you sure you want to Approve Patient?
+            Are you sure you want to Approve Appointment?
           </Text>
         </Flex>
       </ModalComponent>
@@ -206,7 +206,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Appointment</Text>
+            <Text>Appointment Detail</Text>
           </HStack>
         }
         isOpen={isViewModalOpen}

@@ -27,6 +27,7 @@ import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { NavLink, useMatch, useResolvedPath } from "react-router-dom";
+import { useProfileData } from "@nepMeds/context/index";
 // import { STATUSTYPE } from "@nepMeds/config/enum";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
@@ -143,6 +144,16 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
     return match;
   };
 
+  //  USER DATA
+  const userInfo = useProfileData();
+  //  destructure userInfo data
+  const isAdmin = userInfo?.data?.is_superuser;
+  const isDoctor = userInfo?.data?.is_doctor;
+  const isPayment = userInfo?.data?.doctor?.set_payment_status;
+  const payment_status = userInfo?.data?.doctor?.payment_status;
+  // permisions
+  const showSideBarNavigation = isDoctor && isPayment && payment_status === "1";
+
   return (
     <Box key={sidebarOption.text.trim()}>
       {sidebarOption?.isOpenable ? (
@@ -214,35 +225,101 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
         </>
       ) : (
         <>
-          <ListItem
-            display={"flex"}
-            alignItems={"center"}
-            as={NavLink}
-            height="56px"
-            pl={4}
-            borderRadius={12}
-            _activeLink={{
-              background: colors.blue_100,
-              color: colors.white,
-            }}
-            to={sidebarOption.link}
-          >
-            <sidebarOption.icon
-              set={sidebarOption.set}
-              color={colors?.black_50}
-              size={20}
-            />
-            <Text
-              fontWeight={"400"}
-              fontSize={"sm"}
-              lineHeight={"17px"}
-              color={colors?.black_50}
-              ml={"18px"}
-              w="140px"
+          {isAdmin && (
+            <ListItem
+              display={"flex"}
+              alignItems={"center"}
+              as={NavLink}
+              height="56px"
+              pl={4}
+              borderRadius={12}
+              _activeLink={{
+                background: colors.blue_100,
+                color: colors.white,
+              }}
+              to={sidebarOption.link}
             >
-              {sidebarOption?.text}
-            </Text>
-          </ListItem>
+              <sidebarOption.icon
+                set={sidebarOption.set}
+                color={colors?.black_50}
+                size={20}
+              />
+              <Text
+                fontWeight={"400"}
+                fontSize={"sm"}
+                lineHeight={"17px"}
+                color={colors?.black_50}
+                ml={"18px"}
+                w="140px"
+              >
+                {sidebarOption?.text}
+              </Text>
+            </ListItem>
+          )}
+          {showSideBarNavigation && (
+            <ListItem
+              display={"flex"}
+              alignItems={"center"}
+              as={NavLink}
+              height="56px"
+              pl={4}
+              borderRadius={12}
+              _activeLink={{
+                background: colors.blue_100,
+                color: colors.white,
+              }}
+              to={sidebarOption.link}
+            >
+              <sidebarOption.icon
+                set={sidebarOption.set}
+                color={colors?.black_50}
+                size={20}
+              />
+              <Text
+                fontWeight={"400"}
+                fontSize={"sm"}
+                lineHeight={"17px"}
+                color={colors?.black_50}
+                ml={"18px"}
+                w="140px"
+              >
+                {sidebarOption?.text}
+              </Text>
+            </ListItem>
+          )}
+          {!showSideBarNavigation &&
+            (sidebarOption.text === "Dashboard" ||
+              sidebarOption.text === "Payment") && (
+              <ListItem
+                display={"flex"}
+                alignItems={"center"}
+                as={NavLink}
+                height="56px"
+                pl={4}
+                borderRadius={12}
+                _activeLink={{
+                  background: colors.blue_100,
+                  color: colors.white,
+                }}
+                to={sidebarOption.link}
+              >
+                <sidebarOption.icon
+                  set={sidebarOption.set}
+                  color={colors?.black_50}
+                  size={20}
+                />
+                <Text
+                  fontWeight={"400"}
+                  fontSize={"sm"}
+                  lineHeight={"17px"}
+                  color={colors?.black_50}
+                  ml={"18px"}
+                  w="140px"
+                >
+                  {sidebarOption?.text}
+                </Text>
+              </ListItem>
+            )}
         </>
       )}
     </Box>
