@@ -235,7 +235,7 @@ const AllPayment = ({
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Doctor Approval</Text>
+              <Text>Rate Approval</Text>
             </HStack>
           }
           footer={
@@ -273,7 +273,7 @@ const AllPayment = ({
           >
             <ConfirmationImage />
             <Text fontWeight={"bold"} mt={4}>
-              Are you sure you want to approve payment for {doctorInfo.name}?
+              Are you sure you want to approve rate for {doctorInfo.name}?
             </Text>
           </Flex>
         </ModalComponent>

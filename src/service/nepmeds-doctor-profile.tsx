@@ -98,6 +98,7 @@ export interface IGetDoctorBasicProfile {
   id: number;
   doctor?: {
     id: number;
+    payment_status?: string;
     rejected_remarks?: string;
     specialization?: IResponseSpecialization[];
     status: string;

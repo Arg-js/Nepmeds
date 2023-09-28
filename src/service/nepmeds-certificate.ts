@@ -45,13 +45,13 @@ export const useCertificateFileRegister = () =>
   useMutation(createCertificateFile);
 
 const updateCertificateData = async (
-  data: CertificateInfo & { id?: number }
+  data: CertificateInfo & { id?: number; is_superuser?: boolean }
 ) => {
   const formatedData = objectToFormData(data);
 
-  if (data.id) {
+  if (data.is_superuser) {
     const response = await HttpClient.patch(
-      `${api.nmc_update}/${data.id}`,
+      `${api.nmc_update}?doctor_id=${data.id}`,
       formatedData
     );
     return response;
@@ -66,6 +66,7 @@ export const useUpdateCertificateInfo = () => {
   const mutation = useMutation(updateCertificateData, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.doctor_profile]);
+      queryClient.invalidateQueries([api.doctordetails]);
       queryClient.fetchQuery(api.doctor_profile);
     },
   });
