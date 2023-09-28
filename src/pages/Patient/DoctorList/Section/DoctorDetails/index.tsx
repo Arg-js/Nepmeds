@@ -114,29 +114,6 @@ const DoctorDetails: React.FC<{
     setValue("availability", []);
   }, [availabilityDateWatch]);
 
-  const onSubmitHandler = async (data: IPatientAppointment) => {
-    try {
-      const response = await createPatientAppointment({
-        patientAppointmentDetails: {
-          ...data,
-          availabilities: selectedAvailability,
-          symptoms: data.symptoms.map(({ value }) => +value),
-          old_report_file: data.old_report_file?.[0] as File,
-          doctor: doctorInfo?.id as number,
-          total_amount_paid:
-            (doctorInfo?.schedule_rate ? +doctorInfo?.schedule_rate : 0) *
-            selectedAvailability.length,
-        },
-      });
-      if (response.status === HttpStatusCode.Created) {
-        setSelectedAvailability([]);
-        reset(defaultValues);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   const handleBookAppointment = () => {
     if (isAuthenticated) {
       selectedAvailability?.length && setIsAvailability("1");
@@ -148,7 +125,7 @@ const DoctorDetails: React.FC<{
   return (
     <Box>
       {doctorInfo ? (
-        <form onSubmit={handleSubmit(onSubmitHandler)}>
+        <>
           {isAvailability === "0" && (
             <>
               <WrapperBox
@@ -559,7 +536,7 @@ const DoctorDetails: React.FC<{
               </WrapperBox>
             </>
           )}
-        </form>
+        </>
       ) : (
         <WrapperBox
           backgroundColor={colors.white}

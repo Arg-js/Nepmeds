@@ -10,7 +10,23 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import AppointmentTab from "./Appointments";
+import AppointmentTab from "@nepMeds/pages/Doctor/Appointment/AppointmentTab/index";
+
+const appointmentTabConfig = [
+  { type: 0, heading: "All" },
+  {
+    type: STATUSTYPE.pending,
+    heading: "Pending",
+  },
+  {
+    type: STATUSTYPE.approved,
+    heading: "Approved",
+  },
+  {
+    type: STATUSTYPE.rejected,
+    heading: "Rejected",
+  },
+];
 
 const Appointment: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
@@ -26,34 +42,16 @@ const Appointment: React.FC = () => {
         }}
       >
         <TabList>
-          <Tab
-            fontWeight="400"
-            _selected={{ color: colors.black }}
-            color={colors.light_gray}
-          >
-            All
-          </Tab>
-          <Tab
-            fontWeight="400"
-            _selected={{ color: colors.black }}
-            color={colors.light_gray}
-          >
-            Pending{" "}
-          </Tab>
-          <Tab
-            fontWeight="400"
-            _selected={{ color: colors.black }}
-            color={colors.light_gray}
-          >
-            Approved{" "}
-          </Tab>
-          <Tab
-            fontWeight="400"
-            _selected={{ color: colors.black }}
-            color={colors.light_gray}
-          >
-            Rejected
-          </Tab>
+          {appointmentTabConfig.map(({ heading }) => (
+            <Tab
+              fontWeight="400"
+              _selected={{ color: colors.black }}
+              color={colors.light_gray}
+              key={heading}
+            >
+              {heading}
+            </Tab>
+          ))}
         </TabList>
         <TabIndicator
           mt="-1.5px"
@@ -62,35 +60,16 @@ const Appointment: React.FC = () => {
           borderRadius="1px"
         />
         <TabPanels>
-          <TabPanel px={0} pb={0} pt={6}>
-            {tabIndex === 0 && (
-              <AppointmentTab type={0} heading={"Appointments"} />
-            )}
-          </TabPanel>
-          <TabPanel px={0} pb={0} pt={6}>
-            {tabIndex === 1 && (
-              <AppointmentTab
-                type={STATUSTYPE.pending}
-                heading={"Pending Appointments"}
-              />
-            )}
-          </TabPanel>
-          <TabPanel px={0} pb={0} pt={6}>
-            {tabIndex === 2 && (
-              <AppointmentTab
-                type={STATUSTYPE.approved}
-                heading={"Approved Appointments"}
-              />
-            )}
-          </TabPanel>
-          <TabPanel px={0} pb={0} pt={6}>
-            {tabIndex === 3 && (
-              <AppointmentTab
-                type={STATUSTYPE.rejected}
-                heading={"Rejected Appointments"}
-              />
-            )}
-          </TabPanel>
+          {appointmentTabConfig.map(({ type, heading }, index) => (
+            <TabPanel px={0} pb={0} pt={6} key={type}>
+              {tabIndex === index && (
+                <AppointmentTab
+                  type={type}
+                  heading={`${heading}${index ? " Appointments" : ""}`}
+                />
+              )}
+            </TabPanel>
+          ))}
         </TabPanels>
       </Tabs>
     </WrapperBox>

@@ -3,12 +3,9 @@ import {
   Box,
   Button,
   Flex,
-  FormLabel,
   Grid,
   GridItem,
   ListItem,
-  SimpleGrid,
-  Spinner,
   Tag,
   TagLabel,
   Text,
@@ -18,35 +15,35 @@ import {
 import { BackArrowIcon, UniversityIcon } from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
-import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 import "@nepMeds/assets/styles/reactCalender.css";
 import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import { useParams, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useGetDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
+import {
+  IDoctorListById,
+  useGetDoctorListById,
+} from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useState } from "react";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
-import { Value } from "react-calendar/dist/cjs/shared/types";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import PatientDetail, { defaultValues } from "./components/PatientDetail";
+import DoctorAvailability from "./components/DoctorAvailability";
+import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
+import { useForm } from "react-hook-form";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
   const { id = "" } = useParams();
   const navigate = useNavigate();
-
+  const [formState, setFormState] = useState(0);
+  const [date, setDate] = useState(new Date());
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
-  const [date, setDate] = useState(new Date());
-  const [appointment, setAppointment] = useState(false);
-
-  const handleCalendarChange = (value: Value) => {
-    const date = new Date(value as Date);
-    setDate(date);
-  };
-
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
     id: +id,
@@ -58,6 +55,20 @@ const DoctorDetails = () => {
       target_date: formatDateToString(date) || currentDate,
     });
   // REACT QUERIES END
+  const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
+
+  const schema = Yup.object({
+    full_name: Yup.string().required("This field is required"),
+    contact: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
+    age: Yup.number()
+      .max(115, "You must be at most 115 years")
+      .positive("age must be greater than zero")
+      .typeError("age must be a number"),
+    symptoms: Yup.array()
+      .required("This field is required")
+      .min(1, "This field is required"),
+  });
+  const formProps = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   return (
     <Box bg={colors.white} height={"100vh"}>
@@ -160,7 +171,7 @@ const DoctorDetails = () => {
                               fontSize={"sm"}
                               color={colors.black_30}
                             >
-                              University of Abcdf
+                              N/A
                             </Text>
                           </Flex>
                         </Flex>
@@ -288,101 +299,69 @@ const DoctorDetails = () => {
           </GridItem>
 
           <GridItem colSpan={{ lg: 1, xl: 5 }}>
-            <WrapperBox
-              p={{ base: 5, md: 10, lg: 5, xl: 10 }}
-              boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-              borderRadius="2"
-            >
-              <>
-                <Text fontWeight={600} fontSize={"xl"} color={colors.black_60}>
-                  Select Date and Time
-                </Text>
-                <Flex gap={4} direction={"column"}>
-                  <Flex alignItems={"center"} justifyContent={"center"}>
-                    <Calendar
-                      onChange={value => handleCalendarChange(value)}
-                      value={date}
-                      minDate={new Date()}
+            {formState === 0 && (
+              <DoctorAvailability
+                setFormState={setFormState}
+                setDate={setDate}
+                date={date}
+                isAvailabilityFetching={isAvailabilityFetching}
+                availability={availability}
+                selectedAvailability={selectedAvailability}
+                setSelectedAvailability={setSelectedAvailability}
+              />
+            )}
+            {formState === 1 && (
+              <PatientDetail
+                doctorList={doctorList}
+                setFormState={setFormState}
+                formProps={formProps}
+              />
+            )}
+            {formState === 2 && (
+              <WrapperBox
+                backgroundColor={colors.white}
+                border={`2px solid ${colors.gray_border}`}
+                style={{
+                  px: { base: "0", md: "2", xl: "4" },
+                  py: 4,
+                  height: "auto",
+                  borderTopRadius: 3,
+                }}
+              >
+                <>
+                  <Flex gap={4} alignItems={"center"}>
+                    <BackArrowIcon
+                      cursor={"pointer"}
+                      onClick={() => setFormState(1)}
                     />
-                  </Flex>
-                  <Text
-                    fontWeight={600}
-                    fontSize={"lg"}
-                    color={colors.black_60}
-                  >
-                    Available Time
-                  </Text>
-                  <Text
-                    fontWeight={600}
-                    fontSize={"md"}
-                    color={colors.black_60}
-                  >
-                    Evening
-                  </Text>
-                  <Box>
-                    {isAvailabilityFetching ? (
-                      <Box textAlign={"center"}>
-                        <Spinner />
-                      </Box>
-                    ) : (
-                      <SimpleGrid
-                        gridTemplateColumns={
-                          "repeat(auto-fit, minmax(90px, 1fr))"
-                        }
-                      >
-                        {availability?.map(data => (
-                          <Button
-                            variant={"primaryOutlineFilled"}
-                            key={data.id}
-                            borderRadius={3}
-                            height={"34px"}
-                            m={1}
-                            sx={{
-                              bg: `${
-                                selectedAvailability.includes(data.id)
-                                  ? colors.sky_blue
-                                  : "transparent"
-                              }`,
-                            }}
-                            onClick={() =>
-                              setSelectedAvailability(prev =>
-                                prev.includes(data.id)
-                                  ? prev.filter(item => item !== data.id)
-                                  : [...prev, data.id]
-                              )
-                            }
-                          >
-                            {data?.from_time?.slice(0, 5)} -
-                            {data?.to_time?.slice(0, 5)}
-                          </Button>
-                        ))}
-                      </SimpleGrid>
-                    )}
-                    {!isAvailabilityFetching && (
-                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                        {!availability?.length &&
-                          "This doctor is not available on this date, choose another date"}
-                      </FormLabel>
-                    )}
-                    {appointment && selectedAvailability?.length === 0 && (
-                      <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                        Please Choose the availability*
-                      </FormLabel>
-                    )}
-                  </Box>
-                  <Flex justifyContent="flex-end">
-                    <Button
-                      variant={"secondary"}
-                      height="40px"
-                      borderRadius="4px"
-                      onClick={() => setAppointment(!appointment)}
+                    <Text
+                      fontWeight={600}
+                      fontSize={"md"}
+                      color={colors.dark_blue}
                     >
-                      Book Appointment
-                    </Button>
+                      Please choose your payment method
+                    </Text>
                   </Flex>
-                </Flex>
-              </>
-            </WrapperBox>
+                  <TransactionBox
+                    appointmentData={{
+                      ...formProps.getValues(),
+                      availabilities: selectedAvailability,
+                      total_amount_paid:
+                        (doctorList?.schedule_rate
+                          ? +doctorList?.schedule_rate
+                          : 0) * selectedAvailability.length,
+                      symptoms: formProps
+                        .getValues()
+                        ?.symptoms.map(({ value }) => +value),
+                      old_report_file:
+                        formProps.getValues()?.old_report_file?.[0],
+                      doctor: doctorList?.id as number,
+                    }}
+                    doctorInfo={doctorList as IDoctorListById}
+                  />
+                </>
+              </WrapperBox>
+            )}
           </GridItem>
         </Grid>
       </WrapperBox>
