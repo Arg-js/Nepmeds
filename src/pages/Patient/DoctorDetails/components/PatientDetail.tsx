@@ -20,7 +20,7 @@ import FormControl from "@nepMeds/components/Form/FormControl";
 import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction } from "react";
-
+import { UseFormReturn } from "react-hook-form";
 export const defaultValues = {
   full_name: "",
   contact: "",
@@ -34,7 +34,7 @@ export const defaultValues = {
 interface PatientDetailProps {
   doctorList: IDoctorListById | undefined;
   setFormState: Dispatch<SetStateAction<number>>;
-  formProps: any; // type change this later
+  formProps: UseFormReturn<typeof defaultValues>;
 }
 
 const PatientDetail = ({

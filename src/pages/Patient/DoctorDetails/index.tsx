@@ -26,15 +26,15 @@ import {
   useGetDoctorListById,
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PatientDetail, { defaultValues } from "./components/PatientDetail";
 import DoctorAvailability from "./components/DoctorAvailability";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
-const currentDate = formatDateToString(new Date());
 import { useForm } from "react-hook-form";
+const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
   const { id = "" } = useParams();
