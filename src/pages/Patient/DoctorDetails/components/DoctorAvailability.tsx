@@ -32,7 +32,6 @@ const DoctorAvailability = ({
   selectedAvailability: number[];
   setSelectedAvailability: Dispatch<SetStateAction<number[]>>;
 }) => {
-  console.log(availability, "avai");
   const isAuthenticated = TokenService.isAuthenticated();
   const [appointment, setAppointment] = useState(false);
   const handleCalendarChange = (value: Value) => {
