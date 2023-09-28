@@ -227,7 +227,7 @@ const DoctorConsultation = () => {
                       mr={4}
                       onClick={() =>
                         navigate(
-                          `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${doctor.id}`,{state:{formState:0}}
+                          `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${doctor.id}`
                         )
                       }
                     >
