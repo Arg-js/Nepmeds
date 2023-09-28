@@ -458,19 +458,3 @@ export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
     }
   );
 };
-
-//appointment payment
-const appointmentPayment = async (paymentMethods: IPaymentFormType) => {
-  const response = await HttpClient.post(api.appointment_pay, paymentMethods);
-  return response;
-};
-
-export const useAppointmentPayment = () => {
-  const queryClient = useQueryClient();
-  return useMutation(appointmentPayment, {
-    onSuccess: () => {
-      // queryClient.invalidateQueries([api.added_payment_methods]);
-      // queryClient.invalidateQueries([api.payment_methods_create]);
-    },
-  });
-};
