@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
 export interface Specialization {
   id: number;
@@ -65,23 +66,29 @@ export const useSpecializationRegisterData = () =>
 const saveSpecialization = async (specializationInfo: {
   id?: string | null;
   name: string;
+  image?: string;
   symptom: string[];
   consultation_fees: string;
 }) => {
+  let specializationInfoParam = specializationInfo;
+  // IF TYPE === OBJECT then ITS FILELIST => needs destructuring else no
+  typeof specializationInfo.image === "object"
+    ? (specializationInfoParam = {
+        ...specializationInfo,
+        image: specializationInfo.image?.[0],
+      })
+    : delete specializationInfoParam.image;
+
   if (specializationInfo.id) {
     const response = await HttpClient.post<NepMedsResponse>(
       api.specialization + "/" + specializationInfo.id,
-      {
-        name: specializationInfo.name,
-        symptom: specializationInfo.symptom,
-        consultation_fees: specializationInfo.consultation_fees,
-      }
+      objectToFormData(specializationInfoParam)
     );
     return response;
   } else {
     const response = await HttpClient.post<NepMedsResponse>(
       api.specialization,
-      specializationInfo
+      objectToFormData(specializationInfoParam)
     );
     return response;
   }
@@ -156,14 +163,19 @@ const updateSpecialization = async (specializationInfo: {
   name: string;
   symptom: string[];
   consultation_fees: number;
+  image?: string;
 }) => {
+  let specializationInfoParam = specializationInfo;
+  // IF TYPE === OBJECT then ITS FILELIST => needs destructuring else no
+  typeof specializationInfo.image === "object"
+    ? (specializationInfoParam = {
+        ...specializationInfo,
+        image: specializationInfo.image?.[0],
+      })
+    : delete specializationInfoParam.image;
   const response = await HttpClient.patch<NepMedsResponse>(
     api.specialization + specializationInfo.id + "/",
-    {
-      name: specializationInfo.name,
-      symptom: specializationInfo.symptom,
-      consultation_fees: specializationInfo.consultation_fees,
-    }
+    objectToFormData(specializationInfoParam)
   );
   return response;
 };
