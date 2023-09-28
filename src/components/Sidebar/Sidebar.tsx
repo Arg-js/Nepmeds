@@ -151,8 +151,26 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
   const isDoctor = userInfo?.data?.is_doctor;
   const isPayment = userInfo?.data?.doctor?.set_payment_status;
   const payment_status = userInfo?.data?.doctor?.payment_status;
-  // permisions
-  const showSideBarNavigation = isDoctor && isPayment && payment_status === "1";
+
+  //  check side bar role
+  const checkSideBarRole = ({
+    isAdmin,
+    isDoctor,
+    isPayment,
+    payment_status,
+    text,
+  }: {
+    isAdmin: boolean | undefined;
+    isDoctor: boolean | undefined;
+    isPayment: boolean | undefined;
+    payment_status: string | undefined;
+    text: string;
+  }) => {
+    if (isAdmin) return true;
+    if (isDoctor && isPayment && payment_status === "1") return true;
+    if (text === "Dashboard" || text === "Payment") return true;
+    return false;
+  };
 
   return (
     <Box key={sidebarOption.text.trim()}>
@@ -225,7 +243,13 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
         </>
       ) : (
         <>
-          {isAdmin && (
+          {checkSideBarRole({
+            isAdmin,
+            isDoctor,
+            isPayment,
+            payment_status,
+            text: sidebarOption?.text,
+          }) && (
             <ListItem
               display={"flex"}
               alignItems={"center"}
@@ -256,70 +280,6 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
               </Text>
             </ListItem>
           )}
-          {showSideBarNavigation && (
-            <ListItem
-              display={"flex"}
-              alignItems={"center"}
-              as={NavLink}
-              height="56px"
-              pl={4}
-              borderRadius={12}
-              _activeLink={{
-                background: colors.blue_100,
-                color: colors.white,
-              }}
-              to={sidebarOption.link}
-            >
-              <sidebarOption.icon
-                set={sidebarOption.set}
-                color={colors?.black_50}
-                size={20}
-              />
-              <Text
-                fontWeight={"400"}
-                fontSize={"sm"}
-                lineHeight={"17px"}
-                color={colors?.black_50}
-                ml={"18px"}
-                w="140px"
-              >
-                {sidebarOption?.text}
-              </Text>
-            </ListItem>
-          )}
-          {!showSideBarNavigation &&
-            (sidebarOption.text === "Dashboard" ||
-              sidebarOption.text === "Payment") && (
-              <ListItem
-                display={"flex"}
-                alignItems={"center"}
-                as={NavLink}
-                height="56px"
-                pl={4}
-                borderRadius={12}
-                _activeLink={{
-                  background: colors.blue_100,
-                  color: colors.white,
-                }}
-                to={sidebarOption.link}
-              >
-                <sidebarOption.icon
-                  set={sidebarOption.set}
-                  color={colors?.black_50}
-                  size={20}
-                />
-                <Text
-                  fontWeight={"400"}
-                  fontSize={"sm"}
-                  lineHeight={"17px"}
-                  color={colors?.black_50}
-                  ml={"18px"}
-                  w="140px"
-                >
-                  {sidebarOption?.text}
-                </Text>
-              </ListItem>
-            )}
         </>
       )}
     </Box>
