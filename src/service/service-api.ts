@@ -63,7 +63,6 @@ export const api = {
   approve_payment_methods: "/dashboard/approve-doctor-payment/:id/",
   reject_payment_methods: "/dashboard/reject-doctor-payment/:id/",
   doctor_detail_history: "/dashboard/doctor-detail-rate-history/:id/",
-
   //amount
   add_amount_create: "/doctor-consult/doctor-amount-set/",
   edit_amount: "/doctor-consult/doctor-amount-set/:id/",
