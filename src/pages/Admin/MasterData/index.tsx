@@ -42,7 +42,7 @@ const MasterData = () => {
     setActiveTab(index);
   };
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <WrapperBox margin="5" borderRadius="12px" py="4" px="9">
       <Tabs
         variant="unstyled"
         fontSize="md"

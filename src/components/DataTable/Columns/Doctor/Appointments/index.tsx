@@ -60,7 +60,6 @@ export const column = ({
       },
       {
         header: "Date",
-        accessorKey: "created_at",
         accessorFn: ({ created_at }: { created_at: string }) => {
           return created_at.substr(0, 10);
         },
@@ -98,7 +97,6 @@ export const column = ({
       // },
       {
         header: "Status",
-        accessorKey: "Status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <Badge

@@ -2,6 +2,7 @@ import { extendTheme } from "@chakra-ui/react";
 import { ButtonTheme } from "./Button";
 import { InputTheme } from "./Input";
 import { colors } from "./colors";
+import { TextTheme } from "./Text";
 
 const space = {
   px: "1px",
@@ -183,5 +184,6 @@ export const theme = extendTheme({
       },
     },
     Button: ButtonTheme,
+    Text: TextTheme,
   },
 });
