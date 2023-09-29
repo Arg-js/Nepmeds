@@ -5,7 +5,6 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
-import advertisement2 from "@nepMeds/assets/images/advertisement2.png";
 import { Box, Flex, Image } from "@chakra-ui/react";
 import PatientFooter from "../Section/Footer";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
@@ -25,6 +24,7 @@ import Carousel from "react-multi-carousel";
 import { useAuthenticatePatient } from "@nepMeds/service/nepmeds-patient-login";
 import { useEffect } from "react";
 import TokenService from "@nepMeds/service/service-token";
+import AdvertisementBanner from "./Section/Advertisement";
 
 export enum Type {
   SPECIALIST,
@@ -247,15 +247,15 @@ const DoctorConsultation = () => {
           <Box mt={10}>
             <ConsultationStepSection />
           </Box>
-
-          {/* ADVERTISEMENT SECTION */}
-          <Box my={{ base: 5, md: 10 }}>
-            <Image width={"100%"} src={advertisement2} alt="advertisement" />
-          </Box>
-
-          {/* WHY CHOOSE US SECTION */}
-          <ChooseUsSection />
         </>
+      </WrapperBox>
+      {/* ADVERTISEMENT SECTION */}
+      <AdvertisementBanner />
+      {/* ADVERTISEMENT SECTION ENDS*/}
+
+      <WrapperBox backgroundColor={colors.background_blue}>
+        {/* WHY CHOOSE US SECTION */}
+        <ChooseUsSection />
       </WrapperBox>
       {/* FOOTER SECTION */}
       <Box bg={colors.background_blue}>
