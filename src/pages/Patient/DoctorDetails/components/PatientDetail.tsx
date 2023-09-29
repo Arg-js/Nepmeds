@@ -245,7 +245,11 @@ const PatientDetail = ({
                         width={"76px"}
                         objectFit={"cover"}
                       />
-                      <Box onClick={() => formProps.setValue("image", null)}>
+                      <Box
+                        onClick={() =>
+                          formProps.setValue("old_report_file", null)
+                        }
+                      >
                         <ImageCancelIcon style={{ cursor: "pointer" }} />
                       </Box>
                     </HStack>
