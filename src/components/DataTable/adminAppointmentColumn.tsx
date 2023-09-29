@@ -82,6 +82,7 @@ export const appointmentColumn = (pageParams: PaginationState) => {
     },
     {
       header: "Status",
+      accessorKey: "Status",
       cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return (
           <StatusBadge

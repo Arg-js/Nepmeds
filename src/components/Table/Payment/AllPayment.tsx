@@ -2,13 +2,11 @@ import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  Center,
   Flex,
   HStack,
   Input,
   InputGroup,
   InputLeftElement,
-  Spinner,
   Text,
   VStack,
   useDisclosure,
@@ -67,7 +65,7 @@ const AllPayment = ({
   } = useDisclosure();
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const { data, isLoading, isSuccess } = useGetPaymentList({
+  const { data, isFetching } = useGetPaymentList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
@@ -237,7 +235,7 @@ const AllPayment = ({
           heading={
             <HStack>
               <svgs.logo_small />
-              <Text>Doctor Approval</Text>
+              <Text>Rate Approval</Text>
             </HStack>
           }
           footer={
@@ -275,14 +273,14 @@ const AllPayment = ({
           >
             <ConfirmationImage />
             <Text fontWeight={"bold"} mt={4}>
-              Are you sure you want to approve payment for {doctorInfo.name}?
+              Are you sure you want to approve rate for {doctorInfo.name}?
             </Text>
           </Flex>
         </ModalComponent>
       )}
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">All Payment</Text>
+        <Text fontWeight="medium">All Rate</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
@@ -314,27 +312,21 @@ const AllPayment = ({
         </HStack>
       </HStack>
 
-      {isSuccess && (
-        <DataTable
-          columns={allPaymentColumn(onActionClick, navigate, {
-            pageIndex,
-            pageSize,
-          })}
-          data={data?.results ?? []}
-          pagination={{
-            manual: true,
-            pageParams: { pageIndex, pageSize },
-            pageCount: data?.page_count,
-            onChangePagination: setPagination,
-          }}
-        />
-      )}
+      <DataTable
+        columns={allPaymentColumn(onActionClick, navigate, {
+          pageIndex,
+          pageSize,
+        })}
+        isLoading={isFetching}
+        data={data?.results ?? []}
+        pagination={{
+          manual: true,
+          pageParams: { pageIndex, pageSize },
+          pageCount: data?.page_count,
+          onChangePagination: setPagination,
+        }}
+      />
 
-      {isLoading && (
-        <Center>
-          <Spinner />
-        </Center>
-      )}
       {data?.count === 0 && <Box>No Result Found!</Box>}
     </div>
   );

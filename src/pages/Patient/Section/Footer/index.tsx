@@ -1,17 +1,15 @@
 import { Grid, GridItem, Flex, Divider, Text, Image } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
-import googlePlay from "@nepMeds/assets/images/googlePlay.png";
-import appStore from "@nepMeds/assets/images/appStore.png";
-import visaImage from "@nepMeds/assets/images/visa.png";
 import esewaImage from "@nepMeds/assets/images/esewaImage.png";
 import khaltiImage from "@nepMeds/assets/images/khaltiImage.png";
-import imePayImage from "@nepMeds/assets/images/IMEpay.png";
+import { AppStoreIcon, BankTransferIcon } from "@nepMeds/assets/svgs";
+import { images } from "@nepMeds/assets/images";
 
 const FooterContents = [
   {
     title: "How can we help you?",
-    contents: ["Refer & Earn", "FAQ’s", "Track My Order", "Shipping"],
+    contents: ["Return & Cancelation", "FAQ’s"],
   },
   {
     title: "For Doctor & Nurse",
@@ -22,47 +20,56 @@ const FooterContents = [
     contents: [
       "About Us",
       "Contact Us",
-      "Press",
       "Careers",
       "Terms and condition",
       "Privacy Policy",
     ],
   },
-  {
-    title: "Social",
-    contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],
-  },
-  {
-    title: "Don’t miss updates from us !",
-    contents: [
-      "Get an email subscription and lots of interesting news and other updates on health will be sent to you regularly.",
-    ],
-  },
+  // TODO: add valid link to these footer elements
+  // {
+  //   title: "Social",
+  //   contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],
+  // },
+  // {
+  //   title: "Don’t miss updates from us !",
+  //   contents: [
+  //     "Get an email subscription and lots of interesting news and other updates on health will be sent to you regularly.",
+  //   ],
+  // },
 ];
 
-const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
-  style,
-}) => {
+const PatientFooter: React.FC = () => {
   return (
     <>
-      <WrapperBox style={{ ...style, height: { base: "auto", xl: "517px" } }}>
+      <WrapperBox py={10} height={{ base: "auto", xl: "517px" }}>
         <>
           <Grid
             templateColumns={{
               base: `1fr`,
-              md: `repeat(5,1fr)`,
-              xl: `repeat(5,200px) 1fr`,
+              md: `repeat(4,1fr)`,
             }}
             gap={10}
           >
+            <GridItem
+              cursor={"pointer"}
+              justifySelf={{ base: "center", md: "start" }}
+            >
+              <Image alt={"nepmeds logo"} src={images.logo} />
+            </GridItem>
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
                   <Flex
                     direction={"column"}
                     alignItems={{ base: "center", md: "start" }}
+                    gap={1}
                   >
-                    <Text fontSize={"sm"} fontWeight={700}>
+                    <Text
+                      fontSize={"sm"}
+                      fontWeight={700}
+                      color={colors.main}
+                      mb={1}
+                    >
                       {footerContent.title}
                     </Text>
                     {footerContent.contents.map(content => {
@@ -89,26 +96,25 @@ const PatientFooter: React.FC<{ style?: Record<string, string> }> = ({
             gap={3}
           >
             <Flex direction={"column"} gap={3.5} alignItems={"center"}>
-              <Text fontWeight={600} fontSize={"sm"}>
+              <Text fontWeight={600} fontSize={"sm"} color={colors.primary}>
                 Download App
               </Text>
               <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
-                <Image alt="Google Play" src={googlePlay} />
-                <Image alt="App Store" src={appStore} />
+                <AppStoreIcon />
               </Flex>
             </Flex>
             <Flex direction={"column"} gap={3.5} alignItems={"center"}>
-              <Text fontWeight={600} fontSize={"sm"}>
+              <Text fontWeight={600} fontSize={"sm"} color={colors.primary}>
                 Payment Method
               </Text>
               <Flex
-                gap={2.5}
+                gap={4}
                 direction={{ base: "column", lg: "row" }}
                 width={{ base: "30%", md: "auto" }}
+                alignItems={"center"}
               >
-                <Image alt="Google Play" src={imePayImage} />
+                <BankTransferIcon />
                 <Image alt="App Store" src={esewaImage} />
-                <Image alt="Google Play" src={visaImage} />
                 <Image alt="App Store" src={khaltiImage} />
               </Flex>
             </Flex>

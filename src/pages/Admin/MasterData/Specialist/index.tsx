@@ -10,15 +10,19 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  VStack,
   useDisclosure,
+  Box,
+  Flex,
+  FormLabel,
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+import SimpleImageUpload from "@nepMeds/components/SimpleImageUpload";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
@@ -40,6 +44,7 @@ import * as yup from "yup";
 const defaultValues = {
   id: null as number | null,
   name: "",
+  image: "" as string | null,
   symptom: [] as { label: string; value: string }[],
 };
 
@@ -49,6 +54,7 @@ const schema = yup.object().shape({
     .required("Specialist name is required!")
 
     .max(30, "Specialist name can be 30 characters long"),
+  image: yup.string().required("Image is required"),
   symptom: yup.array().min(1, "Symptom keyword is required"),
 });
 
@@ -138,6 +144,8 @@ const Specializations = ({
     formState: { errors },
   } = formMethods;
 
+  const specializationImageWatch = formMethods.watch("image") || "";
+
   const columns = [
     {
       header: "S.N.",
@@ -154,7 +162,7 @@ const Specializations = ({
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack>
-            {cell.row.original.symptom_list?.map(s => (
+            {cell.row.original.symptom_list?.slice(0, 6)?.map(s => (
               <Badge key={s.keyword} textTransform="initial" fontWeight="light">
                 {s.name}
               </Badge>
@@ -216,6 +224,7 @@ const Specializations = ({
         id: formMethods.getValues("id") ?? 0,
 
         name: formMethods.getValues("name"),
+        image: formMethods.getValues("image") as string,
         consultation_fees: 3213123,
         symptom: symptoms,
       });
@@ -234,6 +243,7 @@ const Specializations = ({
         name: formMethods.getValues("name"),
         consultation_fees: "3213123",
         symptom: symptoms,
+        image: formMethods.getValues("image") as string,
       });
       closeModal();
       toastSuccess("Specialization saved successfully!");
@@ -299,7 +309,7 @@ const Specializations = ({
       >
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onEditForm)}>
-            <VStack>
+            <Flex direction={"column"} gap={3}>
               <FloatingLabelInput
                 label="Specialization"
                 name="name"
@@ -315,7 +325,28 @@ const Specializations = ({
                 options={symptomsOptions}
                 selectControl={formMethods.control}
               />
-            </VStack>
+
+              <Box>
+                <FormLabel fontWeight={400} fontSize={"sm"}>
+                  <Flex>
+                    Image <Text color={colors.error}>*</Text>
+                  </Flex>
+                </FormLabel>
+                <FormControl
+                  register={formMethods.register}
+                  type={"file"}
+                  control={"input"}
+                  name="image"
+                  display="none"
+                  id="image"
+                />
+                <SimpleImageUpload
+                  imgSrc={specializationImageWatch}
+                  onImageRemove={() => formMethods.setValue("image", "")}
+                  errorMessage={errors.image?.message || ""}
+                />
+              </Box>
+            </Flex>
           </form>
         </FormProvider>
       </ModalComponent>
@@ -348,7 +379,7 @@ const Specializations = ({
       >
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-            <VStack>
+            <Flex direction={"column"} gap={3}>
               <FloatingLabelInput
                 label="Specialization"
                 name="name"
@@ -367,7 +398,27 @@ const Specializations = ({
                 options={symptomsOptions}
                 selectControl={formMethods.control}
               />
-            </VStack>
+              <Box>
+                <FormLabel fontWeight={400} fontSize={"sm"}>
+                  <Flex>
+                    Image <Text color={colors.error}>*</Text>
+                  </Flex>
+                </FormLabel>
+                <FormControl
+                  register={formMethods.register}
+                  type={"file"}
+                  control={"input"}
+                  name="image"
+                  display="none"
+                  id="image"
+                />
+                <SimpleImageUpload
+                  imgSrc={specializationImageWatch}
+                  onImageRemove={() => formMethods.setValue("image", "")}
+                  errorMessage={errors.image?.message || ""}
+                />
+              </Box>
+            </Flex>
           </form>
         </FormProvider>
       </ModalComponent>

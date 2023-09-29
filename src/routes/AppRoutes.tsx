@@ -9,6 +9,7 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
 import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 
+const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
 const AdminAppointment = lazy(
   () => import("@nepMeds/pages/Admin/Appointments")
@@ -171,7 +172,7 @@ const adminRoutes = [
 
       {
         path: NAVIGATION_ROUTES.PATIENTS,
-        element: <>Patients</>,
+        element: <Patients />,
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,

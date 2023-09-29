@@ -4,11 +4,13 @@ export interface ServerError {
   success: boolean;
 }
 
+// TODO: handleError instead of serverErrorResponse
+
 const serverErrorResponse = (error: any, customMessage?: string) => {
   if (axios.isAxiosError(error)) {
-    const err = error as AxiosError<{ errors: [0] }>;
+    const err = (error as AxiosError<{ errors: [0] }>) ?? [];
 
-    const errorObject = err?.response?.data?.errors?.[0];
+    const errorObject = err?.response?.data?.errors?.[0] ?? {};
     const firstErrorMessage = errorObject
       ? Object.values(errorObject)[0]
       : null;

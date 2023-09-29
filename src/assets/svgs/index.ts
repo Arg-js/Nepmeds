@@ -39,6 +39,12 @@ export { ReactComponent as RejectIcon } from "./reject.svg";
 export { ReactComponent as DocumentIcon } from "./document.svg";
 export { ReactComponent as NoDataBoxIcon } from "./noDataBox.svg";
 export { ReactComponent as UniversityIcon } from "./university.svg";
+export { ReactComponent as ClockIcon } from "./clock.svg";
+export { ReactComponent as PaymentIcon } from "./payment.svg";
+export { ReactComponent as PriceTagIcon } from "./priceTag.svg";
+export { ReactComponent as ShieldIcon } from "./shield.svg";
+export { ReactComponent as AppStoreIcon } from "./appStore.svg";
+export { ReactComponent as BankTransferIcon } from "./bankTransfer.svg";
 
 export const svgs = {
   image,

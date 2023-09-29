@@ -140,37 +140,53 @@ export const allPaymentColumn = (
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <HStack>
-            <TableActions
-              onView={() => {
-                navigate(
-                  generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-                    id: row?.original?.id?.toString(),
-                  })
-                );
-              }}
-            />
-            <TableActions
-              onAccept={() => {
-                onClick(true, {
-                  id: row.original.doctor_amount_detail?.id?.toString(),
-                  name:
-                    row.original.user.first_name +
-                    " " +
-                    row.original.user.last_name,
-                });
-              }}
-            />
-            <TableActions
-              onReject={() => {
-                onClick(false, {
-                  id: row.original.doctor_amount_detail?.id?.toString(),
-                  name:
-                    row.original.user.first_name +
-                    " " +
-                    row.original.user.last_name,
-                });
-              }}
-            />
+            {+row?.original?.payment_status === +1 && (
+              <TableActions
+                onView={() => {
+                  navigate(
+                    generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                      id: row?.original?.id?.toString(),
+                    })
+                  );
+                }}
+              />
+            )}
+
+            {Number(row?.original?.payment_status) !== Number(1) && (
+              <>
+                <TableActions
+                  onView={() => {
+                    navigate(
+                      generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
+                        id: row?.original?.id?.toString(),
+                      })
+                    );
+                  }}
+                />
+                <TableActions
+                  onAccept={() => {
+                    onClick(true, {
+                      id: row.original.doctor_amount_detail?.id?.toString(),
+                      name:
+                        row.original.user.first_name +
+                        " " +
+                        row.original.user.last_name,
+                    });
+                  }}
+                />
+                <TableActions
+                  onReject={() => {
+                    onClick(false, {
+                      id: row.original.doctor_amount_detail?.id?.toString(),
+                      name:
+                        row.original.user.first_name +
+                        " " +
+                        row.original.user.last_name,
+                    });
+                  }}
+                />
+              </>
+            )}
           </HStack>
         );
       },

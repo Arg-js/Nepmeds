@@ -42,7 +42,7 @@ const MasterData = () => {
     setActiveTab(index);
   };
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <WrapperBox margin="5" borderRadius="12px" py="4" px="9">
       <Tabs
         variant="unstyled"
         fontSize="md"
@@ -73,13 +73,13 @@ const MasterData = () => {
               >
                 Specialization
               </Tab>
-              <Tab
+              {/* <Tab
                 fontWeight="400"
                 _selected={{ color: colors.black }}
                 color={colors.light_gray}
               >
                 Specialist Rate
-              </Tab>
+              </Tab> */}
             </TabList>
             <TabIndicator
               mt="-1.5px"

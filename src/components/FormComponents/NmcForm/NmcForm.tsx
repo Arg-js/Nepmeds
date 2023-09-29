@@ -45,7 +45,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
 
   useEffect(() => {
     if (data) {
-      setNmcFile(`${normalURL}/media/${data.nmc_file}`);
+      setNmcFile(`${normalURL.replace("/backend", "")}/media/${data.nmc_file}`);
     } else {
       setNmcFile(nmcData?.nmc_file?.[0] ?? null);
     }

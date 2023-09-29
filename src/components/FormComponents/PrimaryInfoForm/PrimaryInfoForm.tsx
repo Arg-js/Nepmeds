@@ -153,13 +153,17 @@ const PrimaryInfo = ({
   useEffect(() => {
     if (isEditable && doctorProfileData?.id_front_image) {
       setSelectedFrontImage(
-        `${normalURL}/media/${doctorProfileData.id_front_image}`
+        `${normalURL.replace("/backend", "")}/media/${
+          doctorProfileData.id_front_image
+        }`
       );
     } else setSelectedFrontImage(getValues("id_front_image")?.[0] ?? null);
 
     if (isEditable && doctorProfileData?.id_back_image) {
       setSelectedBackFrontImage(
-        `${normalURL}/media/${doctorProfileData.id_back_image}`
+        `${normalURL.replace("/backend", "")}/media/${
+          doctorProfileData.id_back_image
+        }`
       );
     } else setSelectedBackFrontImage(getValues("id_back_image")?.[0] ?? null);
   }, [doctorProfileData]);
