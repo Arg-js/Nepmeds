@@ -1,7 +1,8 @@
 import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useQuery } from "react-query";
+import { generatePath } from "react-router-dom";
 import { queryStringGenerator } from "../utils";
-import { PaginatedResponse, api } from "./service-api";
+import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
 export interface IAppointmentAdmin {
@@ -37,6 +38,40 @@ export const useAdminAppointment = (filter: IFilterSearch) => {
     [api.adminAppointment.appointment, qs],
     () => getAdminAppointment(qs),
     {
+      select: data => data.data.data,
+    }
+  );
+};
+
+export interface IAppointmentDetail {
+  id: number;
+  full_name: string;
+  doctor_detail: {
+    title: string;
+    doctor_name: string;
+    nmc_no: number;
+  };
+  patient_detail: {
+    patient_contact: string;
+    patient_email: string;
+  };
+  doctor_rate: number;
+}
+
+// Single appointment detail
+const getAdminAppointmentDetail = async (id: string) => {
+  const response = await HttpClient.get<NepMedsResponse<IAppointmentDetail>>(
+    generatePath(api.appointmentDetail, { id })
+  );
+  return response;
+};
+
+export const useAdminAppointmentDetail = (id: string) => {
+  return useQuery(
+    [api.adminAppointment.appointment, id],
+    () => getAdminAppointmentDetail(id),
+    {
+      enabled: !!id,
       select: data => data.data.data,
     }
   );
