@@ -11,6 +11,10 @@ import logo from "./logo.png";
 import profileUser from "./profileUser.png";
 import verified from "./verified.png";
 import userAvatar from "./userAvatar.png";
+import advertisementBackground from "./advertisementBg.png";
+import doctorImage from "./doctorImage.png";
+import bannerPhoneImage from "./bannerPhoneImage.png";
+import bannerPhoneImageBack from "./bannerPhoneImageBack.png";
 export const images = {
   logo,
   dashboard1,
@@ -25,4 +29,8 @@ export const images = {
   khalti,
   bank,
   userAvatar,
+  advertisementBackground,
+  doctorImage,
+  bannerPhoneImage,
+  bannerPhoneImageBack,
 };
