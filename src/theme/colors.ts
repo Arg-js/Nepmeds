@@ -27,6 +27,9 @@ export const colors = {
   /* primary/dark 1 */
   primary_dark1: "#242731",
 
+  // green-ish yellow color
+  greenish_yellow: "#B6B913",
+
   /*input background*/
   forminput: "rgba(239, 241, 249, 0.6)",
 

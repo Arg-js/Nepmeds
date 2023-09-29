@@ -6,9 +6,9 @@ import { NepMedsResponse, api } from "./service-api";
 import TokenService, { TokenDetails, TokenInfo } from "./service-token";
 
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { BroadcastChannel } from "broadcast-channel";
-import { HttpClient } from "@nepMeds/service/service-axios";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { HttpClient } from "@nepMeds/service/service-axios";
+import { BroadcastChannel } from "broadcast-channel";
 
 const logoutChannel = new BroadcastChannel("logout");
 const loginChannel = new BroadcastChannel("login");

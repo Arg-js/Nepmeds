@@ -75,7 +75,11 @@ const FloatingPassword = ({
           pr={8}
           pb={2}
           variant="floating"
-          color={colors.black_50}
+          style={{
+            background: colors.forminput,
+            border: "none",
+            color: colors.black_50,
+          }}
         />
 
         {label && (

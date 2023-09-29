@@ -1,12 +1,11 @@
-import { toastSuccess } from "@nepMeds/components/Toast";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
-import { toastFail } from "@nepMeds/components/Toast";
 // import { toast } from "react-hot-toast";
-import { generatePath } from "react-router-dom";
 import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useMutation, useQuery, useQueryClient } from "react-query";
+import { generatePath } from "react-router-dom";
 import { queryStringGenerator } from "../utils";
-import { PaginatedResponse, api } from "./service-api";
+import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 // import { AxiosResponse } from "axios";
 
@@ -108,6 +107,138 @@ export const useUpdatePatientStatus = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.patientUserRole]);
       toastSuccess("Status Changed Successfully.");
+    },
+    onError: e => {
+      const error = serverErrorResponse(e);
+      toastFail(error);
+    },
+  });
+  return mutation;
+};
+
+export interface IAdminUserList {
+  id: number;
+  email: string;
+  name: string;
+  mobile_number: number;
+  created_at: string;
+}
+
+// Get Admin User List
+const getAdminUser = async (qs: string) => {
+  const response = await HttpClient.get<PaginatedResponse<IAdminUserList>>(
+    `${api.adminUserRole}?${qs}`
+  );
+  return response;
+};
+
+export const useGetUserRoleAdmin = (filter: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page_size: filter.page_size,
+    page: filter.page_no,
+  });
+  return useQuery([api.adminUserRole, qs], () => getAdminUser(qs), {
+    select: data => data.data.data,
+  });
+};
+
+//Delete Admin User
+const deleteAdminUser = async (id: string) => {
+  const response = await HttpClient.delete(
+    generatePath(api.userRole.adminStatus, { id })
+  );
+  return response;
+};
+
+export const useDeleteAdminUser = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(deleteAdminUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.adminUserRole]);
+      toastSuccess("Deleted Successfully.");
+    },
+    onError: e => {
+      const error = serverErrorResponse(e);
+      toastFail(error);
+    },
+  });
+  return mutation;
+};
+
+export interface IAdminSingleDetail {
+  id: number;
+  email: string;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  mobile_number: string;
+  gender: string;
+  date_of_birth: string;
+}
+
+//Get single admin user detail
+const getSingleAdminUser = async (id: string) => {
+  const response = await HttpClient.get<NepMedsResponse<IAdminSingleDetail>>(
+    generatePath(api.userRole.adminStatus, { id })
+  );
+  return response;
+};
+
+export const useGetSingleAdminUser = ({
+  id,
+  enabled,
+}: {
+  id: string;
+  enabled: boolean;
+}) => {
+  return useQuery([api.adminUserRole, id], () => getSingleAdminUser(id), {
+    select: data => data.data,
+    enabled: !!id && enabled,
+  });
+};
+
+// Update Admin User
+const updateAdminUser = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: IAdminSingleDetail;
+}) => {
+  const response = await HttpClient.patch(
+    generatePath(api.userRole.adminStatus, { id }),
+    { data }
+  );
+  return response;
+};
+
+export const useUpdateAdminUser = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(updateAdminUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.adminUserRole]);
+      toastSuccess("Updated Successfully.");
+    },
+    onError: e => {
+      const error = serverErrorResponse(e);
+      toastFail(error);
+    },
+  });
+  return mutation;
+};
+
+// Add Admin User
+const addAdminUser = async (data: IAdminSingleDetail) => {
+  const response = await HttpClient.post(api.adminRegister, data);
+  return response;
+};
+
+export const useAddAdminUser = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(addAdminUser, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.adminUserRole]);
+      toastSuccess("Added Successfully.");
     },
     onError: e => {
       const error = serverErrorResponse(e);
