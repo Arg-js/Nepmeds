@@ -43,7 +43,7 @@ const AdvertisementBanner = () => {
       >
         <GridItem
           colSpan={{ base: 4, xl: 2 }}
-          alignItems={{ base: "center", lg: "flex-end" }}
+          alignSelf={{ base: "center", lg: "flex-end" }}
         >
           <Image src={images.doctorImage} />
         </GridItem>
