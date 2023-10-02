@@ -1,11 +1,13 @@
 import { Switch } from "@chakra-ui/react";
 import {
+  IAdminUserList,
   IUserRoleAdmin,
   useUpdateDoctorStatus,
   useUpdatePatientStatus,
 } from "@nepMeds/service/nepmeds-admin-userrole";
 import { CellContext, PaginationState } from "@tanstack/react-table";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { CellProps } from "react-table";
 import TableActions from "./TableActions";
 
 interface IUserPatient {
@@ -23,7 +25,6 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
       accessorFn: (_cell: CellContext<IUserRoleAdmin, any>, index: number) => {
         return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
-      size: 2,
     },
     {
       header: "Doctor's Name",
@@ -35,7 +36,7 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
       accessorKey: "nmc_no",
     },
     {
-      header: "Regristration Approval Date",
+      header: "Registration Approval Date",
       accessorKey: "registration_approved_date",
     },
 
@@ -153,6 +154,70 @@ export const patientRoleColumn = (pageParams: PaginationState) => {
             onChange={e => {
               setPatientStatus(e.target.checked);
               handleStatus(e.target.checked);
+            }}
+          />
+        );
+      },
+    },
+  ];
+};
+
+export const adminRoleColumn = ({
+  pageParams,
+  onModalOpen,
+  setAdminUser,
+}: {
+  pageParams: PaginationState;
+  onModalOpen: {
+    onChangePasswordModalOpen: () => void;
+    onDeleteModalOpen: () => void;
+    onEditModalOpen: () => void;
+  };
+  setAdminUser: Dispatch<SetStateAction<IAdminUserList | undefined>>;
+}) => {
+  return [
+    {
+      header: "S.N",
+      accessorFn: (_cell: CellContext<IAdminUserList, any>, index: number) => {
+        return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
+      },
+      size: 2,
+    },
+    {
+      header: "Admin's Name",
+      accessorKey: "name",
+    },
+    {
+      header: "Selected Aproval Date",
+      accessorFn: ({ created_at }: { created_at: string }) => {
+        return created_at.substr(0, 10);
+      },
+    },
+
+    {
+      header: "Contact No.",
+      accessorKey: "mobile_number",
+    },
+    {
+      header: "Email",
+      accessorKey: "email",
+    },
+    {
+      header: "Actions",
+      cell: ({ row }: CellProps<IAdminUserList>) => {
+        return (
+          <TableActions
+            onChangePassword={() => {
+              setAdminUser(row.original);
+              onModalOpen.onChangePasswordModalOpen();
+            }}
+            onEdit={() => {
+              setAdminUser(row.original);
+              onModalOpen.onEditModalOpen();
+            }}
+            onDelete={() => {
+              setAdminUser(row.original);
+              onModalOpen.onDeleteModalOpen();
             }}
           />
         );

@@ -1,4 +1,5 @@
 import {
+  Button,
   Grid,
   GridItem,
   Tab,
@@ -6,18 +7,46 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
+  useDisclosure,
 } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
+import {
+  IAdminSingleDetail,
+  useAddAdminUser,
+} from "@nepMeds/service/nepmeds-admin-userrole";
+import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
+import { IoAdd } from "react-icons/io5";
+import AdminModal from "./AdminModal";
+import RoleAdmin from "./roleAdmin";
 import RoleDoctor from "./roleDoctor";
 import RolePatient from "./rolePatient";
-import RoleAdmin from "./roleAdmin";
 
 const UserRole = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
+  const addAdmin = useAddAdminUser();
+  const {
+    isOpen: isAddModalOpen,
+    onOpen: onAddModalOpen,
+    onClose: onAddModalClose,
+  } = useDisclosure();
+
+  const onSubmitHandler = (data: IAdminSingleDetail) => {
+    addAdmin.mutate(data, {
+      onSuccess: () => {
+        onAddModalClose();
+      },
+    });
+  };
 
   return (
     <BoxWrapper>
+      <AdminModal
+        isLoading={addAdmin.isLoading}
+        isOpen={isAddModalOpen}
+        onClose={onAddModalClose}
+        onSubmitHandler={onSubmitHandler}
+      />
       <Tabs onChange={index => setTabIndex(index)} index={tabIndex}>
         <Grid
           display={"flex"}
@@ -33,12 +62,17 @@ const UserRole = () => {
             </TabList>
           </GridItem>
 
-          {/* <GridItem width={"15%"}>
-              <CustomButton backgroundColor={colors.primary}>
-                {" "}
-                <IoAdd /> Add Doctor
-              </CustomButton>
-            </GridItem> */}
+          {tabIndex === 2 && (
+            <GridItem width={"15%"}>
+              <Button
+                h={10}
+                backgroundColor={colors.primary}
+                onClick={onAddModalOpen}
+              >
+                <IoAdd /> Create Admin
+              </Button>
+            </GridItem>
+          )}
         </Grid>
 
         <TabPanels>

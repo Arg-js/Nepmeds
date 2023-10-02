@@ -82,8 +82,8 @@ const AdvertisementBanner = () => {
             </GridItem>
             <GridItem>
               <Text fontWeight={400} fontSize={"sm"} color={colors.dark}>
-                Lorem ipsum dolor sit amet consectetur. Faucibus id vulputate
-                dolor sapien quam viverra.
+                Get faster health services online.
+                <br /> Make instant connection or book appointment.
               </Text>
             </GridItem>
           </Grid>
