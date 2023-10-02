@@ -52,7 +52,7 @@ export const ConsultationSteps = [
     id: "01",
     title: "Select Consultation",
     description:
-      "This includes paid/free consultation and consultation mode i.e. audio/video/text.",
+      "This includes the type of consultation such as instant or booking. Both the consultation provides the video consultation method.",
     image: <ConsultationStep1Icon />,
   },
   {
@@ -65,16 +65,16 @@ export const ConsultationSteps = [
   },
   {
     id: "03",
-    title: "Select Consultation",
+    title: "Secure Payment",
     description:
-      "This includes paid/free consultation and consultation mode i.e. audio/video/text.",
+      "You can pay for your consultation with different e-payment options",
     image: <ConsultationStep3Icon />,
   },
   {
     id: "04",
-    title: "Follow up with your doctor",
+    title: "Consult Doctor",
     description:
-      "If you still have unclear doubts you can follow up with the doctor.",
+      "Consult with the doctor at chosen time period and discuss your health concerns to get a solutions.",
     image: <ConsultationStep4Icon />,
   },
 ];

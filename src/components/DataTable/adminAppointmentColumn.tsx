@@ -1,14 +1,21 @@
 import { Box, Tag } from "@chakra-ui/react";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
-import { IAppointmentAdmin } from "@nepMeds/service/nepmeds-appointment";
+import {
+  IAppointmentAdmin,
+  IAppointmentDetail,
+} from "@nepMeds/service/nepmeds-appointment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
+import { CellProps } from "react-table";
 import StatusBadge from "../Common/StatusBadge";
 import TableActions from "./TableActions";
 
 //Appointment Column
-export const appointmentColumn = (pageParams: PaginationState) => {
+export const appointmentColumn = (
+  pageParams: PaginationState,
+  onOpen: (id: string) => void
+) => {
   return [
     {
       header: "S.N",
@@ -102,17 +109,12 @@ export const appointmentColumn = (pageParams: PaginationState) => {
     {
       header: "Actions",
       accessorKey: "actions",
-      cell: () => {
+      cell: ({ row }: CellProps<IAppointmentDetail>) => {
         return (
           <TableActions
-            onView={
-              () => ""
-              // navigate(
-              //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-              //     id: cell.row.original.id,
-              //   })
-              // )
-            }
+            onView={() => {
+              onOpen(row.original.id?.toString());
+            }}
           />
         );
       },
