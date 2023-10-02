@@ -8,7 +8,7 @@ import {
   Stack,
   StackDivider,
   Text,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import CenterLoader from "@nepMeds/components/Common/Loader";
@@ -36,7 +36,7 @@ const Appointment = () => {
     onOpen: openModal,
     onClose: closeModal,
   } = useDisclosure();
-  const { isSuccess, data, isLoading } = useAdminAppointment({
+  const { data, isFetching } = useAdminAppointment({
     page_no: pageIndex + 1,
     page_size: pageSize,
     consulting_type: ADMINAPPOINTMENT.Appointment.toString(),
@@ -169,9 +169,8 @@ const Appointment = () => {
         )}
       </ModalComponent>
 
-
       <DataTable
-        isLoading={isLoading}
+        isLoading={isFetching}
         columns={appointmentColumn({ pageIndex, pageSize }, openModalHandler)}
         data={data?.results ?? []}
         pagination={{
