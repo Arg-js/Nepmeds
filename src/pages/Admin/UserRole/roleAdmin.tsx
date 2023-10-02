@@ -89,7 +89,6 @@ const RoleAdmin = () => {
     onChangePasswordModalClose();
   };
 
-
   return (
     <div>
       {/* delete modal */}
@@ -239,7 +238,6 @@ const RoleAdmin = () => {
           onChangePagination: setPagination,
         }}
       />
-
     </div>
   );
 };

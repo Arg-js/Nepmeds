@@ -88,10 +88,7 @@ const TableActions = ({
           <IconButton
             height={"min-content"}
             aria-label="view"
-            icon={
-
-              <AiOutlineEdit size={20} fill={colors.blue_100} />
-            }
+            icon={<AiOutlineEdit size={20} fill={colors.blue_100} />}
             onClick={onEdit}
             sx={{
               bg: "transparent",
@@ -116,7 +113,6 @@ const TableActions = ({
               },
             }}
           />
-
         </Tooltip>
       )}
     </Flex>

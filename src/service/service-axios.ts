@@ -1,4 +1,7 @@
+import useNavigateLogin from "@nepMeds/hooks/useNavigateLogin";
 import axios from "axios";
+import httpStatus from "http-status";
+import { api } from "./service-api";
 
 import TokenService from "./service-token";
 
@@ -73,3 +76,38 @@ function buildFormData(
     formData.append(parentKey, value);
   }
 }
+
+HttpClient.interceptors.response.use(
+  response => response,
+  async error => {
+    if (
+      error.response.status === httpStatus.UNAUTHORIZED &&
+      TokenService.getToken()?.refresh !== ""
+    ) {
+      try {
+        const refreshToken = TokenService.getToken()?.refresh || "";
+        const response = await HttpClient.post<{
+          data: { access: string }[];
+        }>(api.refresh_token.post, {
+          refresh: refreshToken,
+        });
+        const tokens = {
+          access: response?.data?.data?.[0]?.access,
+          refresh: refreshToken,
+        };
+        TokenService.setToken(tokens);
+        return axios({
+          ...error.config,
+          headers: {
+            Authorization: `Bearer ${tokens.access}`,
+          },
+        });
+      } catch (_error) {
+        TokenService.clearToken();
+        useNavigateLogin();
+        return Promise.reject(_error);
+      }
+    }
+    return Promise.reject(error.response);
+  }
+);

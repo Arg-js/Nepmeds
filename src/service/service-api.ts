@@ -92,6 +92,9 @@ export const api = {
       getById: "/doctor-consult/new-appointment-request/:id/",
     },
   },
+  refresh_token: {
+    post: "/user-management/refresh-token/",
+  },
   admin: {
     patient: {
       get: "/dashboard/patient-all-data/",

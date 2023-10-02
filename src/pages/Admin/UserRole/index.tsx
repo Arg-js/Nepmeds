@@ -10,7 +10,10 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
-import { IAdminSingleDetail, useAddAdminUser } from "@nepMeds/service/nepmeds-admin-userrole";
+import {
+  IAdminSingleDetail,
+  useAddAdminUser,
+} from "@nepMeds/service/nepmeds-admin-userrole";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { IoAdd } from "react-icons/io5";
