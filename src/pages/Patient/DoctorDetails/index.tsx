@@ -1,9 +1,9 @@
 import {
-  Avatar,
   Box,
   Flex,
   Grid,
   GridItem,
+  Image,
   ListItem,
   Tag,
   TagLabel,
@@ -74,11 +74,11 @@ const DoctorDetails = () => {
       <Header />
       <WrapperBox style={{ px: 5 }}>
         <Grid
-          templateColumns={{ lg: "repeat(2,1fr)", xl: "repeat(12,1fr)" }}
+          templateColumns={{ lg: "repeat(3,1fr)", xl: "repeat(12,1fr)" }}
           justifyContent={"center"}
           gap={5}
         >
-          <GridItem colSpan={{ lg: 1, xl: 7 }}>
+          <GridItem colSpan={{ lg: 2, xl: 7 }}>
             <WrapperBox
               style={{
                 boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
@@ -96,6 +96,11 @@ const DoctorDetails = () => {
                   onClick={() =>
                     navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)
                   }
+                  sx={{
+                    "svg path": {
+                      stroke: colors.black_20,
+                    },
+                  }}
                 >
                   <BackArrowIcon />
                   <Text
@@ -111,7 +116,7 @@ const DoctorDetails = () => {
                 <Grid
                   templateColumns={{
                     md: "repeat(2, 1fr)",
-                    lg: "repeat(7, 1fr)",
+                    lg: "repeat(8, 1fr)",
                   }}
                   gap={7}
                 >
@@ -128,7 +133,13 @@ const DoctorDetails = () => {
                       <Box>
                         <Flex direction={"column"} gap={6} mt={6}>
                           <VStack>
-                            <Avatar size={"2xl"} />
+                            <Image
+                              boxSize="120px"
+                              src={doctorList?.profile_picture}
+                              objectFit={"cover"}
+                              objectPosition={"top"}
+                              borderRadius={"full"}
+                            />
                           </VStack>
                           <Flex
                             mx={2}
@@ -136,10 +147,12 @@ const DoctorDetails = () => {
                             color={colors.white}
                             fontWeight={600}
                             fontSize={"md"}
-                            height={"41px"}
+                            height={"auto"}
+                            py={1}
                             justifyContent={"center"}
                             alignItems={"center"}
                             transform={"skew(-15deg)"}
+                            textAlign={"center"}
                           >
                             Dr. {doctorList?.name}
                           </Flex>
@@ -186,7 +199,14 @@ const DoctorDetails = () => {
                         >
                           Specializations
                         </Text>
-                        <Grid templateColumns={"repeat(2, 1fr)"} gap={3}>
+                        <Grid
+                          templateColumns={{
+                            base: "repeat(2, 1fr)",
+                            lg: "repeat(1, 1fr)",
+                            xl: "repeat(2, 1fr)",
+                          }}
+                          gap={3}
+                        >
                           {doctorList?.specialization_names.map(({ name }) => {
                             return (
                               <Tag
@@ -197,7 +217,7 @@ const DoctorDetails = () => {
                                 borderRadius="full"
                                 justifyContent={"center"}
                                 alignItems={"center"}
-                                py={1.5}
+                                py={{ base: 1.5, lg: 3, xl: 1.5 }}
                                 textTransform={"capitalize"}
                               >
                                 <TagLabel>{name}</TagLabel>
@@ -210,7 +230,7 @@ const DoctorDetails = () => {
                     </Flex>
                   </GridItem>
 
-                  <GridItem colSpan={{ md: 1, lg: 4 }}>
+                  <GridItem colSpan={{ md: 1, lg: 5 }}>
                     <Flex direction={"column"} gap={6}>
                       <Flex direction={"column"} gap={4}>
                         <Text
