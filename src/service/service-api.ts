@@ -84,6 +84,7 @@ export const api = {
     doctorStatus: "/dashboard/doctor-management/:id/",
     patientStatus: "/dashboard/patient-status-update/:id/",
     adminStatus: "/dashboard/admin/:id/",
+    changeAdminPassword: "/dashboard/admin-change-password/:id/",
   },
   doctor: {
     appointments: {

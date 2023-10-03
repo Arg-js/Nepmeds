@@ -12,8 +12,10 @@ import { adminRoleColumn } from "@nepMeds/components/DataTable/userRoleColumn";
 import FloatingPassword from "@nepMeds/components/Form/FloatingPassword";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import {
+  IAdminChangePassword,
   IAdminSingleDetail,
   IAdminUserList,
+  useChangePassword,
   useDeleteAdminUser,
   useGetSingleAdminUser,
   useGetUserRoleAdmin,
@@ -57,6 +59,7 @@ const RoleAdmin = () => {
     enabled: isEditModalOpen,
   });
   const updateAdmin = useUpdateAdminUser();
+  const changePassword = useChangePassword();
   const {
     passwordFormMethods: {
       reset,
@@ -79,6 +82,20 @@ const RoleAdmin = () => {
         onSuccess: () => {
           setAdminUser(undefined);
           onEditModalClose();
+        },
+      }
+    );
+  };
+
+  const onChangePassword = (data: IAdminChangePassword) => {
+    changePassword.mutate(
+      {
+        id: adminUser?.id?.toString() ?? "",
+        data,
+      },
+      {
+        onSuccess: () => {
+          resetAndClose();
         },
       }
     );
@@ -165,9 +182,12 @@ const RoleAdmin = () => {
             </Button>
             <Button
               w="100%"
-              isLoading={isLoading}
+              isLoading={changePassword.isLoading}
               onClick={handleSubmit(() => {
-                //TODO: API call after api is made
+                onChangePassword({
+                  password: getValues("password"),
+                  confirm_password: getValues("confirm_password"),
+                });
               })}
             >
               Confirm
