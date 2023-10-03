@@ -2,7 +2,6 @@ import axios from "axios";
 import httpStatus from "http-status";
 import { api } from "./service-api";
 import TokenService from "./service-token";
-
 const THREE_MINUTES = 3 * 60 * 1000;
 export const baseURL = import.meta.env.VITE_APP_BACKEND_API;
 export const normalURL = import.meta.env.VITE_APP_NORMAL_API;
@@ -107,6 +106,7 @@ HttpClient.interceptors.response.use(
         }
       }
     }
+    location.href = "/login";
     return Promise.reject(error.response);
   }
 );

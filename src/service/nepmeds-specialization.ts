@@ -15,9 +15,9 @@ export interface Symptom {
   id: number;
   name: string;
   keyword?: string;
-  file?: string;
-  image: string;
   description: string;
+  image: string;
+  file?: string;
 }
 
 const getSpecializationData = async (

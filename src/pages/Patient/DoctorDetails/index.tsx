@@ -43,6 +43,7 @@ const DoctorDetails = () => {
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
     id: +id,
@@ -56,11 +57,15 @@ const DoctorDetails = () => {
   // REACT QUERIES END
   const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
 
+  const bookedDates = availability?.filter(data => {
+    return selectedAvailability.includes(data.id);
+  });
+
   const schema = Yup.object({
     full_name: Yup.string().required("This field is required"),
     contact: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
     age: Yup.number()
-      .max(115, "You must be at most 115 years")
+      .max(115, "age must be at most 115 years")
       .positive("age must be greater than zero")
       .typeError("age must be a number"),
     symptoms: Yup.array()
@@ -153,6 +158,7 @@ const DoctorDetails = () => {
                             alignItems={"center"}
                             transform={"skew(-15deg)"}
                             textAlign={"center"}
+                            textTransform={"capitalize"}
                           >
                             Dr. {doctorList?.name}
                           </Flex>
@@ -329,9 +335,10 @@ const DoctorDetails = () => {
                 setSelectedAvailability={setSelectedAvailability}
               />
             )}
-            {formState === 1 && (
+            {bookedDates && formState === 1 && (
               <PatientDetail
                 doctorList={doctorList}
+                bookedDates={bookedDates}
                 setFormState={setFormState}
                 formProps={formProps}
               />
