@@ -23,10 +23,12 @@ const primaryHoverState = {
 
 const primary = defineStyle({
   ...baseStyles,
-  color: colors.white,
-  bg: `${colors.primary}`,
+  ...primaryHoverState,
   _hover: {
     bg: colors.primary_blue,
+    "&:disabled": {
+      ...primaryHoverState,
+    },
   },
 });
 
