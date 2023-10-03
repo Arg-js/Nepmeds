@@ -4,6 +4,8 @@ import {
   Divider,
   Flex,
   FormLabel,
+  Grid,
+  GridItem,
   HStack,
   Image,
   Text,
@@ -69,7 +71,7 @@ const PatientDetail = ({
     >
       <>
         <Flex
-          alignItems={"flex-start"}
+          alignItems={"center"}
           gap={2}
           mb={6}
           cursor={"pointer"}
@@ -96,12 +98,10 @@ const PatientDetail = ({
                 );
               })}
             </Flex>
-            <Flex my={"3px"}>
-              <Text fontSize={"sm"} fontWeight={500}>
-                NMC No:
-              </Text>
-              <Text color={colors.primary} fontSize={"sm"} fontWeight={500}>
-                {doctorList?.medical_licence_number ?? " N/A"}
+            <Flex my={"3px"} fontSize={"sm"} fontWeight={500}>
+              <Text>NMC No: &nbsp;</Text>
+              <Text color={colors.primary}>
+                {doctorList?.medical_licence_number ?? "N/A"}
               </Text>
             </Flex>
             <Text fontWeight={600} fontSize="sm" my="4px">
@@ -147,8 +147,8 @@ const PatientDetail = ({
                   required
                 />
               </Box>
-              <Flex gap={4} mb={4}>
-                <Box flex={0.3}>
+              <Grid gap={4} mb={4} templateColumns={"repeat(5,1fr)"}>
+                <GridItem colSpan={{ base: 5, sm: 2, lg: 5, xl: 2 }}>
                   <FormControl
                     control={"input"}
                     label={"Age"}
@@ -161,8 +161,15 @@ const PatientDetail = ({
                       minHeight: "35px",
                     }}
                   />
-                </Box>
-                <Box flex={0.7}>
+                </GridItem>
+                <GridItem
+                  gridColumn={{
+                    base: "1 / span 1",
+                    sm: "4 / span 1",
+                    lg: "1 / span 1",
+                    xl: "4 / span 1",
+                  }}
+                >
                   <FormControl
                     control={"radio"}
                     label={"Choose Gender"}
@@ -174,8 +181,8 @@ const PatientDetail = ({
                       { label: "Others", value: "3" },
                     ]}
                   />
-                </Box>
-              </Flex>
+                </GridItem>
+              </Grid>
               <Box mb={4}>
                 <FormControl
                   control={"multiSelect"}
