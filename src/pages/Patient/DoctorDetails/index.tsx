@@ -19,7 +19,6 @@ import "@nepMeds/assets/styles/reactCalender.css";
 import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   IDoctorListById,
   useGetDoctorListById,
@@ -33,6 +32,7 @@ import PatientDetail, { defaultValues } from "./components/PatientDetail";
 import DoctorAvailability from "./components/DoctorAvailability";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -98,9 +98,10 @@ const DoctorDetails = () => {
                   gap={2}
                   mb={6}
                   cursor={"pointer"}
-                  onClick={() =>
-                    navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)
-                  }
+                  onClick={() => {
+                    scrollToTop();
+                    navigate(-1);
+                  }}
                   sx={{
                     "svg path": {
                       stroke: colors.black_20,

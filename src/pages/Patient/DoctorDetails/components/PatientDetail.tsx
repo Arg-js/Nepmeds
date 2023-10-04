@@ -27,6 +27,7 @@ import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { dateFormatter } from "@nepMeds/utils/index";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 export const defaultValues = {
   full_name: "",
   contact: "",
@@ -62,11 +63,7 @@ const PatientDetail = ({
 
   const onSubmitHandler = () => {
     setFormState(2);
-    //   setFormData(data);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollToTop();
   };
 
   return (

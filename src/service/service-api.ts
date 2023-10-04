@@ -108,6 +108,9 @@ export const api = {
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",
+      un_paginated: {
+        get: "/patient/unpaginated-doctor-list/",
+      },
     },
     appointment: {
       post: "/patient/new-appointment/",
