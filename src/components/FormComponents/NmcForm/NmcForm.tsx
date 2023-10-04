@@ -100,8 +100,13 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
+
+              minLength: {
+                value: 5,
+                message: "NMC No. should be 5 digits.",
+              },
             }}
-            error={errors.first_name?.message}
+            error={errors.nmc?.nmc_number?.message?.toString()}
           />
           <FloatingLabelInput
             name="nmc.nmc_issued_date"
