@@ -27,8 +27,11 @@ import Carousel from "react-multi-carousel";
 import { useAuthenticatePatient } from "@nepMeds/service/nepmeds-patient-login";
 import { useEffect } from "react";
 import TokenService from "@nepMeds/service/service-token";
-import AdvertisementBanner from "./Section/Advertisement";
-import { responsive, responsiveDoctorCard } from "./carouselBreakpoint";
+import AdvertisementBanner from "@nepMeds/pages/Patient/DoctorConsultation/Section/Advertisement";
+import {
+  responsive,
+  responsiveDoctorCard,
+} from "@nepMeds/pages/Patient/DoctorConsultation/carouselBreakpoint";
 
 export enum Type {
   SPECIALIST,

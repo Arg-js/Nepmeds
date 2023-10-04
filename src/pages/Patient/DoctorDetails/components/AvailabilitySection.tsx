@@ -3,15 +3,25 @@ import { IAvailability } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { colors } from "@nepMeds/theme/colors";
 import { Dispatch, SetStateAction } from "react";
 
+interface IAvailabilitySection {
+  title: string;
+  availability: IAvailability[];
+  selectedAvailability: number[];
+  setSelectedAvailability: Dispatch<SetStateAction<number[]>>;
+}
+
+// CHECKS AMIABILITY
 const hasAvailability = ({
   availability,
-  isMorning,
+  isMorningBlock,
 }: {
   availability: IAvailability[];
-  isMorning: boolean;
+  isMorningBlock: boolean;
 }) => {
   return availability?.some(({ from_time }) =>
-    isMorning ? +from_time.split(":")[0] <= 11 : +from_time.split(":")[0] > 11
+    isMorningBlock
+      ? +from_time.split(":")[0] <= 11
+      : +from_time.split(":")[0] > 11
   );
 };
 
@@ -20,16 +30,11 @@ const AvailabilitySection = ({
   availability,
   selectedAvailability,
   setSelectedAvailability,
-}: {
-  title: string;
-  availability: IAvailability[];
-  selectedAvailability: number[];
-  setSelectedAvailability: Dispatch<SetStateAction<number[]>>;
-}) => {
-  const isMorning = title === "Morning";
+}: IAvailabilitySection) => {
+  const isMorningBlock = title === "Morning";
   return (
     <>
-      {hasAvailability({ availability, isMorning }) && (
+      {hasAvailability({ availability, isMorningBlock }) && (
         <Text fontWeight={600} fontSize={"md"} color={colors.black_60}>
           {title}
         </Text>
@@ -37,9 +42,11 @@ const AvailabilitySection = ({
 
       <SimpleGrid gridTemplateColumns={"repeat(auto-fit, minmax(90px, 1fr))"}>
         {availability?.map(data => {
-          const isMorningTime = +data?.from_time.split(":")[0] <= 11;
+          // isMorning === true ---> ie. time < 12:00
+          // isMorning === false ---> ie. time > 12:00
+          const isMorning = +data?.from_time.split(":")[0] <= 11;
 
-          if (isMorningTime || !isMorning) {
+          if (isMorning || !isMorningBlock) {
             return (
               <Button
                 variant={"primaryOutlineFilled"}
@@ -62,7 +69,7 @@ const AvailabilitySection = ({
                   )
                 }
               >
-                {data?.from_time?.slice(0, 5)} -{data?.to_time?.slice(0, 5)}
+                {data?.from_time?.slice(0, 5)} - {data?.to_time?.slice(0, 5)}
               </Button>
             );
           }
