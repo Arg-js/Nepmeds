@@ -247,3 +247,38 @@ export const useAddAdminUser = () => {
   });
   return mutation;
 };
+
+export interface IAdminChangePassword {
+  password: string;
+  confirm_password: string;
+}
+
+// Change password for admin user
+const changePassword = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: IAdminChangePassword;
+}) => {
+  const response = await HttpClient.patch(
+    generatePath(api.userRole.changeAdminPassword, { id }),
+    data
+  );
+  return response;
+};
+
+export const useChangePassword = () => {
+  const queryClient = useQueryClient();
+  const mutation = useMutation(changePassword, {
+    onSuccess: () => {
+      queryClient.invalidateQueries([api.adminUserRole]);
+      toastSuccess("Password Changed Successfully.");
+    },
+    onError: e => {
+      const error = serverErrorResponse(e);
+      toastFail(error);
+    },
+  });
+  return mutation;
+};
