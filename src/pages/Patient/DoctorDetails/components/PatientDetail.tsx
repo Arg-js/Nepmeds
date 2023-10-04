@@ -19,10 +19,14 @@ import {
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import FormControl from "@nepMeds/components/Form/FormControl";
-import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
+import {
+  IAvailability,
+  IDoctorListById,
+} from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { dateFormatter } from "@nepMeds/utils/index";
 export const defaultValues = {
   full_name: "",
   contact: "",
@@ -35,6 +39,7 @@ export const defaultValues = {
 
 interface PatientDetailProps {
   doctorList: IDoctorListById | undefined;
+  bookedDates: IAvailability[];
   setFormState: Dispatch<SetStateAction<number>>;
   formProps: UseFormReturn<typeof defaultValues>;
 }
@@ -43,6 +48,7 @@ const PatientDetail = ({
   doctorList,
   setFormState,
   formProps,
+  bookedDates,
 }: PatientDetailProps) => {
   const { data: symptomData } = useGetSymptoms();
 
@@ -84,7 +90,12 @@ const PatientDetail = ({
         </Flex>
         <VStack display={"start"}>
           <Box marginBottom={"12px"}>
-            <Text fontWeight={600} fontSize="md" mb="4px">
+            <Text
+              fontWeight={600}
+              fontSize="md"
+              mb="4px"
+              textTransform={"capitalize"}
+            >
               {doctorList?.title}. {doctorList?.name}
             </Text>
             <Flex>
@@ -107,9 +118,20 @@ const PatientDetail = ({
             <Text fontWeight={600} fontSize="sm" my="4px">
               Selected Date
             </Text>
-            <Text color={colors.primary} fontSize={"sm"} fontWeight={500}>
-              9:00 PM, November 8 2022, Wednesday (After 2 days)
-            </Text>
+
+            {bookedDates.map(bookedDate => (
+              <Text
+                color={colors.primary}
+                fontSize={"sm"}
+                fontWeight={500}
+                key={bookedDate.id}
+              >
+                {dateFormatter({
+                  date: bookedDate?.date,
+                  time: bookedDate?.from_time,
+                })}
+              </Text>
+            ))}
           </Box>
           <Divider borderWidth="1px" />
           <VStack display={"flex-start"}>
@@ -164,10 +186,10 @@ const PatientDetail = ({
                 </GridItem>
                 <GridItem
                   gridColumn={{
-                    base: "1 / span 1",
-                    sm: "4 / span 1",
-                    lg: "1 / span 1",
-                    xl: "4 / span 1",
+                    base: "1",
+                    sm: "4",
+                    lg: "1",
+                    xl: "4",
                   }}
                 >
                   <FormControl
@@ -263,6 +285,7 @@ const PatientDetail = ({
                   )}
                 </Flex>
               </Box>
+              {/* TODO: align this design*/}
               <Button
                 width="full"
                 variant={"primary"}

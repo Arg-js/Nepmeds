@@ -8,3 +8,4 @@ export {
   generateYearRange,
 } from "./timeRange";
 export { checkNumberMatch } from "./validation";
+export { dateFormatter } from "./dateFormatter";

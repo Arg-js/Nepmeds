@@ -26,6 +26,7 @@ import {
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
+import { dateFormatter } from "@nepMeds/utils/index";
 import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -144,6 +145,10 @@ const DoctorDetails: React.FC<{
       window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
     }
   };
+
+  const bookedDates = availability?.filter(data => {
+    return selectedAvailability.includes(data.id);
+  });
 
   return (
     <Box>
@@ -347,10 +352,10 @@ const DoctorDetails: React.FC<{
                           fontSize={"md"}
                           color={colors.dark_blue}
                         >
-                          Appointment Details
+                          Appointment Detail
                         </Text>
                       </Flex>
-                      <Flex direction={"column"} gap={1}>
+                      <Flex direction={"column"} gap={2}>
                         <Text
                           fontWeight={600}
                           fontSize={"md"}
@@ -376,6 +381,21 @@ const DoctorDetails: React.FC<{
                         <Text fontWeight={400} fontSize={"xs"}>
                           NMC No: {doctorInfo?.medical_licence_number || "N/A"}
                         </Text>
+                        <Box>
+                          {bookedDates?.map(bookedDate => (
+                            <Text
+                              key={bookedDate.id}
+                              color={colors.primary}
+                              fontSize={"sm"}
+                              fontWeight={500}
+                            >
+                              {dateFormatter({
+                                date: bookedDate?.date,
+                                time: bookedDate?.from_time,
+                              })}
+                            </Text>
+                          ))}
+                        </Box>
                       </Flex>
                       <Divider borderWidth={"0.5px"} />
                     </Flex>
