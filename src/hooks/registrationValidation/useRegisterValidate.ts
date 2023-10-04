@@ -14,18 +14,18 @@ const useRegisterValidate = () => {
 
   const validateBasicInfo = async (values: IRegisterFields) => {
     try {
-      const profilePicture = values.profile_picture?.[0];
+      const profilePicture = values?.profile_picture?.[0];
 
       await validateBasic.mutateAsync({
-        confirm_password: values.confirm_password,
-        password: values.password,
-        first_name: values.first_name,
-        last_name: values.last_name,
-        middle_name: values.middle_name,
+        confirm_password: values?.confirm_password,
+        password: values?.password,
+        first_name: values?.first_name,
+        last_name: values?.last_name,
+        middle_name: values?.middle_name,
         profile_picture: profilePicture
           ? await imageToBase64(profilePicture)
           : "",
-        title: values.title,
+        title: values?.title,
       });
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -36,28 +36,28 @@ const useRegisterValidate = () => {
 
   const validatePrimaryInfo = async (values: IRegisterFields) => {
     try {
-      const idFontImage = values.id_front_image?.[0];
-      const idBackImage = values.id_back_image?.[0];
+      const idFontImage = values?.id_front_image?.[0];
+      const idBackImage = values?.id_back_image?.[0];
 
       await validatePrimary.mutateAsync({
-        bio_detail: values.bio_detail,
-        date_of_birth: values.date_of_birth,
-        district: values.district,
-        email: values.email,
-        gender: values.gender,
+        bio_detail: values?.bio_detail,
+        date_of_birth: values?.date_of_birth,
+        district: values?.district,
+        email: values?.email,
+        gender: values?.gender,
         id_back_image: idBackImage ? await imageToBase64(idBackImage) : "",
         id_front_image: idFontImage ? await imageToBase64(idFontImage) : "",
-        id_issued_date: values.id_issued_date,
-        id_issued_district: values.id_issued_district,
-        id_number: values.id_number,
-        id_type: values.id_type,
-        mobile_number: values.mobile_number,
-        municipality: values.municipality,
-        pan_number: values.pan_number,
-        province: values.province,
-        specialization: values.specialization_names.map(s => Number(s.value)),
-        tole: values.tole,
-        ward: values.ward,
+        id_issued_date: values?.id_issued_date,
+        id_issued_district: values?.id_issued_district,
+        id_number: values?.id_number,
+        id_type: values?.id_type,
+        mobile_number: values?.mobile_number,
+        municipality: values?.municipality,
+        pan_number: values?.pan_number,
+        province: values?.province,
+        specialization: values?.specialization_names.map(s => Number(s.value)),
+        tole: values?.tole,
+        ward: values?.ward,
       });
     } catch (error) {
       const err = serverErrorResponse(error);
