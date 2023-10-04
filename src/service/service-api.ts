@@ -4,6 +4,11 @@ export const api = {
   forgotPassword: "user-management/request-reset-password/",
   resetPassword: "user-management/reset-password/",
   basicProfile: "/doctor-consult/doctor-basic-info/",
+
+  //validate basic info API
+  validateBasicInfo: "/doctor-consult/validate-basic-info/",
+  validatePrimaryInfo: "/doctor-consult/validate-primary-info/",
+
   signup: "user-management/otp-send/",
   otp_verify: "user-management/otp-verify/",
   register: "/doctor-consult/register/",

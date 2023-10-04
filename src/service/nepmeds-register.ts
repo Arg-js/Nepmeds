@@ -135,3 +135,56 @@ export const useUpdatePrimaryInfoRegister = () => {
 
   return mutation;
 };
+
+export type BasicInfo = Pick<
+  IRegisterFields,
+  | "title"
+  | "first_name"
+  | "middle_name"
+  | "last_name"
+  | "password"
+  | "confirm_password"
+>;
+
+//Validate basic info API
+const validateBasicInfo = async (
+  data: BasicInfo & { profile_picture: File | string }
+) => {
+  const response = await HttpClient.post(api.validateBasicInfo, data);
+  return response;
+};
+
+export const useValidateBasicInfo = () => {
+  return useMutation(validateBasicInfo);
+};
+
+export type PrimaryInfoValidate = Pick<
+  IRegisterFields,
+  | "bio_detail"
+  | "mobile_number"
+  | "email"
+  | "gender"
+  | "date_of_birth"
+  | "pan_number"
+  | "id_type"
+  | "id_number"
+  | "id_issued_district"
+  | "id_issued_date"
+  | "province"
+  | "district"
+  | "municipality"
+  | "ward"
+  | "tole"
+> & {
+  id_back_image?: File | string;
+  id_front_image?: File | string;
+  specialization: number[];
+};
+
+//Validate primary info API
+const validatePrimaryInfo = async (data: PrimaryInfoValidate) => {
+  const response = await HttpClient.post(api.validatePrimaryInfo, data);
+  return response;
+};
+
+export const useValidatePrimaryInfo = () => useMutation(validatePrimaryInfo);
