@@ -2,6 +2,7 @@ import { CardBody, Card as ChakraCard } from "@chakra-ui/card";
 import { Flex, Text } from "@chakra-ui/layout";
 import { Button, Image } from "@chakra-ui/react";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
+import { Symptom } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { AxiosError } from "axios";
 import "react-multi-carousel/lib/styles.css";
@@ -9,7 +10,7 @@ import "react-multi-carousel/lib/styles.css";
 const Card: React.FC<{
   name: string;
   image: string;
-  description: Record<string, any>[] | string;
+  description: Symptom[] | string;
   isLoading: boolean;
   error: AxiosError;
 }> = ({ name, image, description, error }) => {
@@ -55,11 +56,10 @@ const Card: React.FC<{
               fontSize={"11px"}
               height={"35px"}
             >
-              {/* TODO: remove any */}
               {typeof description === "string"
                 ? description.split(", ").slice(0, 4).join(", ")
                 : description?.map(
-                    (symptom: any, index: number) =>
+                    (symptom: Symptom, index: number) =>
                       `${symptom.name}${
                         description.length - 1 !== index ? "," : ""
                       } `

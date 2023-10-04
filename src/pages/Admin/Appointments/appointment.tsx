@@ -83,7 +83,7 @@ const Appointment = () => {
                   <Box fontSize={"sm"}>
                     <Flex gap={2}>
                       <Text>Name :</Text>
-                      <Text color={colors.primary}>
+                      <Text color={colors.primary} textTransform={"capitalize"}>
                         Dr. {appointmentDetail?.doctor_detail?.doctor_name}
                       </Text>
                     </Flex>
