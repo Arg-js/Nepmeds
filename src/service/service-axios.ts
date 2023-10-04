@@ -1,3 +1,4 @@
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import axios from "axios";
 import httpStatus from "http-status";
 import { api } from "./service-api";
@@ -77,7 +78,10 @@ function buildFormData(
 HttpClient.interceptors.response.use(
   response => response,
   async error => {
-    if (error?.config?.url !== "/" || error?.config?.url !== "/login") {
+    if (
+      error?.config?.url !== NAVIGATION_ROUTES.DOCTOR_LOGIN ||
+      error?.config?.url !== NAVIGATION_ROUTES.LOGIN
+    ) {
       if (
         error.response.status === httpStatus.UNAUTHORIZED &&
         TokenService.getToken()?.refresh !== ""
@@ -106,7 +110,7 @@ HttpClient.interceptors.response.use(
         }
       }
     }
-    location.href = "/login";
+    location.href = NAVIGATION_ROUTES.LOGIN;
     return Promise.reject(error.response);
   }
 );
