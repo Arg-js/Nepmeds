@@ -2,11 +2,11 @@ import { Button } from "@chakra-ui/button";
 import { Icon } from "@chakra-ui/icon";
 import { Box, SimpleGrid, Spinner } from "@chakra-ui/react";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
-import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 import { DeleteIcon } from "@chakra-ui/icons";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
@@ -270,7 +270,7 @@ export const CertificationInfoForm = ({
           });
         }}
       >
-        Add Another Certification Detail
+        Add Certification Detail
       </Button>
     </>
   );

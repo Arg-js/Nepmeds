@@ -29,7 +29,7 @@ import {
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { ExperienceForm } from "@nepMeds/components/FormComponents";
-import { toastFail } from "@nepMeds/components/Toast";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   IDoctorExperience,
   IGetDoctorProfile,
@@ -132,6 +132,8 @@ const EditExperience = ({
       } else {
         await updateExperienceFileRegister.mutateAsync(experienceDataArray);
       }
+
+      toastSuccess("Experience data updated successfully");
     } catch (error) {
       const err = serverErrorResponse(error);
       toastFail(err);
@@ -409,7 +411,7 @@ const EditExperience = ({
                           >
                             :&nbsp;
                             {singleExperience?.experience_document?.length ===
-                            1 ? (
+                              1 ? (
                               <>
                                 {singleExperience?.experience_document?.length}
                                 &nbsp; Image

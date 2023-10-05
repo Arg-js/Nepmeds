@@ -534,7 +534,7 @@ const RegistrationForm = () => {
             : null;
           toastFail(
             firstErrorMessage?.toString() ||
-              "Failed to add experience information!"
+            "Failed to add experience information!"
           );
         }
 

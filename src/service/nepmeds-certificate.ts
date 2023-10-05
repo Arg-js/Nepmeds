@@ -1,10 +1,10 @@
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 import { AxiosResponse } from "axios";
 import { useMutation, useQueryClient } from "react-query";
 import { IDoctorCertificationInfo } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, api } from "./service-api";
-import { objectToFormData } from "@nepMeds/utils/toFormData";
 
 export type CertificateInfo = IRegisterFields["nmc"];
 
@@ -67,7 +67,6 @@ export const useUpdateCertificateInfo = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.doctor_profile]);
       queryClient.invalidateQueries([api.doctordetails]);
-      queryClient.fetchQuery(api.doctor_profile);
     },
   });
 
