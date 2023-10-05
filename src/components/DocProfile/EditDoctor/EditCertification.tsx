@@ -21,7 +21,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { NmcForm } from "@nepMeds/components/FormComponents";
-import { toastFail } from "@nepMeds/components/Toast";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useProfileData } from "@nepMeds/context/index";
 import {
   useCertificateFileRegister,
@@ -100,6 +100,7 @@ const EditCertification = ({
       }
 
       await updateCertificateInfoRegister.mutateAsync(formatedData);
+      toastSuccess("NMC data updated successfully");
     } catch (error) {
       const err = serverErrorResponse(error);
       toastFail(err);

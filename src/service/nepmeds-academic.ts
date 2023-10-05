@@ -76,6 +76,7 @@ export const useUpdateAcademicInfo = () => {
   const mutation = useMutation(updateAcademicData, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.doctor_profile]);
+      queryClient.invalidateQueries([api.doctordetails]);
     },
   });
 
