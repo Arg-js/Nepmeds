@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 
 import { DeleteIcon } from "@chakra-ui/icons";
+import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
 import {
@@ -23,7 +24,6 @@ import {
   IImageFileType,
   MultiImageUpload,
 } from "../../ImageUploadMulti/dropzone";
-import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 
 export const ExperienceForm = ({
   doctorProfileData,
@@ -305,7 +305,7 @@ export const ExperienceForm = ({
           });
         }}
       >
-        Add Another experience Detail
+        Add experience Detail
       </Button>
     </>
   );

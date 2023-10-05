@@ -68,8 +68,9 @@ export const AcademicInfoForm = ({
           degree_program: a?.degree_program,
           doctor: a?.doctor,
           major: a?.major,
-          university: a?.university_data.id,
+          university: a?.university || "0",
           id: a?.id?.toString(),
+          other_university: a?.other_university,
           academic_documents: a?.academic_document,
           isSubmitted: true,
           graduation_year: a?.graduation_year?.toString(),
@@ -292,7 +293,7 @@ export const AcademicInfoForm = ({
           });
         }}
       >
-        Add Another Academic Detail
+        Add Academic Detail
       </Button>
     </>
   );
