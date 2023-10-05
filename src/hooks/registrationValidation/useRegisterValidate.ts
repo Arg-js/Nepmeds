@@ -58,6 +58,10 @@ const useRegisterValidate = () => {
         specialization: values?.specialization_names.map(s => Number(s.value)),
         tole: values?.tole,
         ward: values?.ward,
+        verified_id:
+          values?.doctor_id?.toString() === "0"
+            ? ""
+            : values?.doctor_id?.toString(),
       });
     } catch (error) {
       const err = serverErrorResponse(error);

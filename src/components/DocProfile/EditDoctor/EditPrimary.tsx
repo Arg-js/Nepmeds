@@ -117,15 +117,15 @@ const EditPrimary = ({
       const backImage = getValues("id_back_image")?.[0];
 
       const user = {
-        first_name: getValues("first_name"),
-        middle_name: getValues("middle_name"),
-        last_name: getValues("last_name"),
         province: getValues("province"),
         district: getValues("district"),
         municipality: getValues("municipality"),
         ward: getValues("ward"),
         tole: getValues("tole"),
+        gender: getValues("gender"),
+        mobile_number: getValues("mobile_number"),
       };
+
 
       const doctorProfile = {
         id: doctorProfileData?.id,
@@ -174,7 +174,7 @@ const EditPrimary = ({
           display={"flex"}
           alignItems="center"
           justifyContent={"space-between"}
-          // bg={"red"}
+        // bg={"red"}
         >
           <Text
             fontWeight={"700"}
@@ -420,7 +420,7 @@ const EditPrimary = ({
                       :&nbsp;
                       {
                         PRIMARYIDTYPE[
-                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }
                     </Text>
@@ -479,7 +479,7 @@ const EditPrimary = ({
               >
                 {
                   PRIMARYIDTYPE[
-                    doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                  doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                   ]
                 }{" "}
                 Detail
@@ -517,11 +517,11 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                      //
+                    //
                     >
                       {
                         PRIMARYIDTYPE[
-                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }{" "}
                       No.
@@ -585,7 +585,7 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                      //
+                    //
                     >
                       Issued District
                     </Text>
