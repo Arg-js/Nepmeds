@@ -38,10 +38,11 @@ export const AcademicInfoForm = ({
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteAcademicFile = useDeleteAcademicFile();
-  const collegeInfo = useGetAllCollege();
+  const { data = [] } = useGetAllCollege();
+  const allCollegeName = [...data, { id: "0", name: "Others" }];
 
   const collegeOptions =
-    collegeInfo.data?.map(p => ({
+    allCollegeName?.map(p => ({
       label: p.name,
       value: p.id,
     })) || [];
@@ -85,7 +86,6 @@ export const AcademicInfoForm = ({
       value: year.toString(),
     };
   });
-
   const handleRemoveAcademic = async (index: number) => {
     if (watch(`academic.${index}.isSubmitted`)) {
       const academicInfoResponse = await deleteAcademicInfoRegister.mutateAsync(
@@ -127,7 +127,6 @@ export const AcademicInfoForm = ({
 
     return files;
   };
-
   return (
     <>
       {fields.map((item, index) => {
@@ -210,6 +209,25 @@ export const AcademicInfoForm = ({
                 name={`academic.${index}.university`}
                 control={control}
               />
+              {watch(`academic.${index}.university`) === "0" && (
+                <Controller
+                  render={({ field: { ref, ...field } }) => (
+                    <FloatingLabelInput
+                      required
+                      label="Please Enter College/University"
+                      register={register}
+                      rules={{
+                        required: "College/University is required.",
+                      }}
+                      error={errors?.academic?.[index]?.university?.message}
+                      style={{ background: colors.forminput, border: "none" }}
+                      {...field}
+                    />
+                  )}
+                  name={`academic.${index}.other_university`}
+                  control={control}
+                />
+              )}
               <Controller
                 render={({ field: { ref, ...field } }) => (
                   <Select
@@ -267,6 +285,7 @@ export const AcademicInfoForm = ({
             degree_program: "",
             major: "",
             university: "",
+            other_university: "",
             graduation_year: "2023",
             academic_documents: undefined,
             isSubmitted: false,
