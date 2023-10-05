@@ -38,7 +38,6 @@ export const AcademicInfoForm = ({
     formState: { errors },
   } = useFormContext<IRegisterFields>();
   const deleteAcademicFile = useDeleteAcademicFile();
-  // const collegeInfo = useGetAllCollege();
   const { data = [] } = useGetAllCollege();
   const allCollegeName = [...data, { id: "0", name: "Others" }];
 
