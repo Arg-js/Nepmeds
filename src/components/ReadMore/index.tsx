@@ -3,11 +3,17 @@ import { colors } from "@nepMeds/theme/colors";
 import { calMaxLen, getArray } from "@nepMeds/utils/index";
 import React from "react";
 
-const ReadMoreComponent = ({ bio_detail }: { bio_detail: string }) => {
+const ReadMoreComponent = ({
+  bio_detail,
+  maxWords,
+}: {
+  bio_detail: string;
+  maxWords: number;
+}) => {
   const [isReadMore, setIsReadMore] = React.useState(true);
 
   const displayedText = isReadMore
-    ? bio_detail.slice(0, calMaxLen(bio_detail, 20))
+    ? bio_detail.slice(0, calMaxLen({ inputString: bio_detail, maxWords }))
     : bio_detail;
   const buttonText = isReadMore ? "Read More..." : "Show Less";
 
@@ -15,7 +21,7 @@ const ReadMoreComponent = ({ bio_detail }: { bio_detail: string }) => {
     <Box>
       <Text fontWeight={400} fontSize={"xs"}>
         {displayedText}
-        {getArray(bio_detail).length > 20 && (
+        {getArray(bio_detail).length > maxWords && (
           <Button
             variant={"link"}
             onClick={() => setIsReadMore(!isReadMore)}
