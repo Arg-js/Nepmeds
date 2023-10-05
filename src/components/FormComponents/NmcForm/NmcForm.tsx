@@ -96,10 +96,14 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             name="nmc.nmc_number"
             register={register}
             required
-            type="number"
+            maxLength={5}
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "Please enter numbers only.",
+              },
             }}
             error={errors.first_name?.message}
           />

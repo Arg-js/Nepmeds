@@ -92,6 +92,7 @@ const registerDefaultValues = {
       major: "",
       id: 0,
       university: "",
+      other_university: "",
       graduation_year: "2023",
       academic_documents: undefined as undefined | File[],
       isSubmitted: false,
@@ -352,15 +353,43 @@ const RegistrationForm = () => {
 
             const data = {
               ...academicData,
-              doctor: doctor,
+              doctor,
               academic_documents: createAcademicFileResponse.data.data.map(
                 (file: string) => ({
                   file: file,
                 })
               ),
             };
-            academicInfoData.push(data);
-            return data;
+
+            const partialData: Partial<{
+              doctor: number;
+              academic_documents: any;
+              degree_program: string;
+              major: string;
+              id: number;
+              university: string;
+              other_university: string;
+              graduation_year: string;
+              isSubmitted: boolean;
+            }> = data;
+            data?.university === "0"
+              ? delete partialData?.university
+              : delete partialData?.other_university;
+
+            academicInfoData.push(
+              partialData as {
+                doctor: number;
+                academic_documents: any;
+                degree_program: string;
+                major: string;
+                id: number;
+                university: string;
+                other_university: string;
+                graduation_year: string;
+                isSubmitted: boolean;
+              }
+            );
+            return partialData;
           });
 
           await Promise.all(academicPromises);
@@ -375,11 +404,10 @@ const RegistrationForm = () => {
                   degree_program: string;
                   major: string;
                   id: number;
-                  university_data: {
-                    id: string;
-                  };
+                  university: string;
                   graduation_year: string;
                   academic_document: File | undefined | any;
+                  other_university: string;
                 },
                 i: number
               ) => {
@@ -388,10 +416,11 @@ const RegistrationForm = () => {
                   degree_program: e?.degree_program,
                   major: e?.major,
                   id: e?.id,
-                  university: e?.university_data?.id,
+                  university: e?.university || "0",
                   graduation_year: e?.graduation_year,
                   academic_documents: e?.academic_document,
                   isSubmitted: true,
+                  other_university: e?.other_university,
                 });
                 setActiveStep(4);
               }
@@ -409,11 +438,10 @@ const RegistrationForm = () => {
                     degree_program: string;
                     major: string;
                     id: number;
-                    university_data: {
-                      id: string;
-                    };
+                    university: string;
                     graduation_year: string;
                     academic_document: File | undefined | any;
+                    other_university: string;
                   },
                   i: number
                 ) => {
@@ -422,41 +450,16 @@ const RegistrationForm = () => {
                     degree_program: e?.degree_program,
                     major: e?.major,
                     id: e?.id,
-                    university: e?.university_data?.id,
+                    university: e?.university || "0",
                     graduation_year: e?.graduation_year,
                     academic_documents: e?.academic_document,
                     isSubmitted: true,
+                    other_university: e?.other_university,
                   });
                   setActiveStep(4);
                 }
               );
-              academicRegister.data?.data?.map(
-                (
-                  e: {
-                    degree_program: string;
-                    major: string;
-                    id: number;
-                    university_data: {
-                      id: string;
-                    };
-                    graduation_year: string;
-                    academic_document: File | undefined | any;
-                  },
-                  i: number
-                ) => {
-                  formMethods.setValue(`academic.${i}`, {
-                    doctor: doctor,
-                    degree_program: e?.degree_program,
-                    major: e?.major,
-                    id: e?.id,
-                    university: e?.university_data?.id,
-                    graduation_year: e?.graduation_year,
-                    academic_documents: e?.academic_document,
-                    isSubmitted: true,
-                  });
-                  setActiveStep(4);
-                }
-              );
+
               toastSuccess("Academic Information created");
               return academicRegister.data.data;
             } else {
@@ -648,6 +651,7 @@ const RegistrationForm = () => {
                           activeStep === index ? colors.white : colors.blue_30,
                         cursor: "default",
                       }}
+                      onClick={() => setActiveStep(index)}
                     >
                       {step?.title}
                     </StepTitle>
