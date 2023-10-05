@@ -96,7 +96,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             name="nmc.nmc_number"
             register={register}
             required
-            type="number"
+            maxLength={5}
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
