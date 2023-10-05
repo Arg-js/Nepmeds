@@ -21,6 +21,7 @@ import {
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { toastSuccess } from "@nepMeds/components/Toast";
+import useRegisterValidate from "@nepMeds/hooks/registrationValidation/useRegisterValidate";
 import AcademicInfo from "@nepMeds/pages/Register/AcademicInfo";
 import BasicInfo from "@nepMeds/pages/Register/BasicInfo";
 import ExperienceInfo from "@nepMeds/pages/Register/ExperienceInfo";
@@ -45,6 +46,7 @@ import {
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
+import { imageToBase64 } from "@nepMeds/utils/imgToBase64";
 import { AxiosError } from "axios";
 import React from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -154,24 +156,13 @@ const RegistrationForm = () => {
 
   const editPrimaryInfoRegister = useUpdatePrimaryInfoRegister();
 
+  // Validate form
+  const { validateBasicInfo, validatePrimaryInfo, validateLoading } =
+    useRegisterValidate();
+
   const formMethods = useForm({
     defaultValues: registerDefaultValues,
   });
-
-  const base64 = async (image: File): Promise<string> => {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(image);
-      reader.onloadend = (): void => {
-        const base64String: string = (reader.result as string).split(",")[1];
-        resolve(base64String);
-      };
-      reader.onerror = (): void => {
-        console.error("Failed to convert the image to base64.");
-        reject(new Error("Failed to convert the image to base64."));
-      };
-    });
-  };
 
   const editPrimaryInfoRegisterHandler: React.MouseEventHandler<
     HTMLButtonElement
@@ -190,7 +181,9 @@ const RegistrationForm = () => {
           first_name: formMethods.getValues("first_name"),
           middle_name: formMethods.getValues("middle_name"),
           last_name: formMethods.getValues("last_name"),
-          profile_picture: profilePicture ? await base64(profilePicture) : "",
+          profile_picture: profilePicture
+            ? await imageToBase64(profilePicture)
+            : "",
 
           district: formMethods.getValues("district"),
           ward: formMethods.getValues("ward"),
@@ -213,7 +206,9 @@ const RegistrationForm = () => {
           nmc_expiry_date: formMethods.getValues("nmc.nmc_expiry_date"),
           nmc_file:
             formMethods.getValues("nmc.nmc_file")?.[0] &&
-            (await base64(formMethods.getValues("nmc.nmc_file")?.[0] as File)),
+            (await imageToBase64(
+              formMethods.getValues("nmc.nmc_file")?.[0] as File
+            )),
         },
         title: formMethods.getValues("title"),
         bio_detail: formMethods.getValues("bio_detail"),
@@ -251,11 +246,11 @@ const RegistrationForm = () => {
   const onSubmitForm = async (values: IRegisterFields) => {
     switch (activeStep) {
       case 0: {
-        setActiveStep(1);
+        validateBasicInfo(values).then(() => setActiveStep(1));
         break;
       }
       case 1: {
-        setActiveStep(2);
+        validatePrimaryInfo(values).then(() => setActiveStep(2));
         break;
       }
       case 2: {
@@ -270,7 +265,7 @@ const RegistrationForm = () => {
               middle_name: values.middle_name,
               last_name: values.last_name,
               profile_picture: profilePicture
-                ? await base64(profilePicture)
+                ? await imageToBase64(profilePicture)
                 : "",
               mobile_number: values.mobile_number,
               district: values.district,
@@ -297,7 +292,7 @@ const RegistrationForm = () => {
               nmc_expiry_date: nmcData.nmc_expiry_date,
               nmc_file:
                 nmcData.nmc_file?.[0] &&
-                (await base64(nmcData.nmc_file?.[0] as File)),
+                (await imageToBase64(nmcData.nmc_file?.[0] as File)),
             },
             age: 20,
             medical_degree: "test",
@@ -306,8 +301,8 @@ const RegistrationForm = () => {
             id_number: values.id_number,
             id_type: values.id_type,
             id_issued_district: values.id_issued_district,
-            id_back_image: idBackImage ? await base64(idBackImage) : "",
-            id_front_image: idFontImage ? await base64(idFontImage) : "",
+            id_back_image: idBackImage ? await imageToBase64(idBackImage) : "",
+            id_front_image: idFontImage ? await imageToBase64(idFontImage) : "",
 
             id_issued_date: values.id_issued_date,
           };
@@ -710,7 +705,8 @@ const RegistrationForm = () => {
                     primaryInfoRegister.isLoading ||
                     academicInfoRegister.isLoading ||
                     certificationInfoRegister.isLoading ||
-                    experienceInfoRegister.isLoading
+                    experienceInfoRegister.isLoading ||
+                    validateLoading
                   }
                   background={colors.primary}
                   color={colors.white}
@@ -726,7 +722,8 @@ const RegistrationForm = () => {
                     primaryInfoRegister.isLoading ||
                     academicInfoRegister.isLoading ||
                     certificationInfoRegister.isLoading ||
-                    experienceInfoRegister.isLoading
+                    experienceInfoRegister.isLoading ||
+                    validateLoading
                   }
                   isDisabled={disableButton}
                   background={colors.primary}

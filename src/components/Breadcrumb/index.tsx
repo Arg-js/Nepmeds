@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { colors } from "@nepMeds/theme/colors";
 interface IBreadCrumb {
   items: { name: string; route: string }[];
-  goBack?: string;
   title: { name: string; route: string };
 }
 

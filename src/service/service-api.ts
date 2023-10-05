@@ -4,6 +4,11 @@ export const api = {
   forgotPassword: "user-management/request-reset-password/",
   resetPassword: "user-management/reset-password/",
   basicProfile: "/doctor-consult/doctor-basic-info/",
+
+  //validate basic info API
+  validateBasicInfo: "/doctor-consult/validate-basic-info/",
+  validatePrimaryInfo: "/doctor-consult/validate-primary-info/",
+
   signup: "user-management/otp-send/",
   otp_verify: "user-management/otp-verify/",
   register: "/doctor-consult/register/",
@@ -84,6 +89,7 @@ export const api = {
     doctorStatus: "/dashboard/doctor-management/:id/",
     patientStatus: "/dashboard/patient-status-update/:id/",
     adminStatus: "/dashboard/admin/:id/",
+    changeAdminPassword: "/dashboard/admin-change-password/:id/",
   },
   doctor: {
     appointments: {
@@ -107,6 +113,9 @@ export const api = {
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",
+      un_paginated: {
+        get: "/patient/unpaginated-doctor-list/",
+      },
     },
     appointment: {
       post: "/patient/new-appointment/",

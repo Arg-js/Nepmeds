@@ -19,7 +19,6 @@ import "@nepMeds/assets/styles/reactCalender.css";
 import "@nepMeds/assets/styles/Patient/index.css";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import { useParams, useNavigate } from "react-router-dom";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   IDoctorListById,
   useGetDoctorListById,
@@ -31,8 +30,10 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PatientDetail, { defaultValues } from "./components/PatientDetail";
 import DoctorAvailability from "./components/DoctorAvailability";
+import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -43,6 +44,7 @@ const DoctorDetails = () => {
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
     id: +id,
@@ -56,11 +58,15 @@ const DoctorDetails = () => {
   // REACT QUERIES END
   const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
 
+  const bookedDates = availability?.filter(data => {
+    return selectedAvailability.includes(data.id);
+  });
+
   const schema = Yup.object({
     full_name: Yup.string().required("This field is required"),
     contact: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
     age: Yup.number()
-      .max(115, "You must be at most 115 years")
+      .max(115, "age must be at most 115 years")
       .positive("age must be greater than zero")
       .typeError("age must be a number"),
     symptoms: Yup.array()
@@ -93,9 +99,10 @@ const DoctorDetails = () => {
                   gap={2}
                   mb={6}
                   cursor={"pointer"}
-                  onClick={() =>
-                    navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)
-                  }
+                  onClick={() => {
+                    scrollToTop();
+                    navigate(-1);
+                  }}
                   sx={{
                     "svg path": {
                       stroke: colors.black_20,
@@ -135,7 +142,7 @@ const DoctorDetails = () => {
                           <VStack>
                             <Image
                               boxSize="120px"
-                              src={doctorList?.profile_picture}
+                              src={doctorList?.profile_picture ?? userAvatar}
                               objectFit={"cover"}
                               objectPosition={"top"}
                               borderRadius={"full"}
@@ -153,6 +160,7 @@ const DoctorDetails = () => {
                             alignItems={"center"}
                             transform={"skew(-15deg)"}
                             textAlign={"center"}
+                            textTransform={"capitalize"}
                           >
                             Dr. {doctorList?.name}
                           </Flex>
@@ -329,9 +337,10 @@ const DoctorDetails = () => {
                 setSelectedAvailability={setSelectedAvailability}
               />
             )}
-            {formState === 1 && (
+            {bookedDates && formState === 1 && (
               <PatientDetail
                 doctorList={doctorList}
+                bookedDates={bookedDates}
                 setFormState={setFormState}
                 formProps={formProps}
               />

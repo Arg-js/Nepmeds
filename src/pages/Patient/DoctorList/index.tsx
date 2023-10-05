@@ -1,4 +1,16 @@
-import { Box, Grid, GridItem } from "@chakra-ui/react";
+import {
+  Box,
+  Drawer,
+  DrawerBody,
+  DrawerCloseButton,
+  DrawerContent,
+  DrawerHeader,
+  DrawerOverlay,
+  Flex,
+  Grid,
+  GridItem,
+  useDisclosure,
+} from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
@@ -13,7 +25,7 @@ import {
   useGetDoctorListById,
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import Pagination from "@nepMeds/components/Pagination";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { BreadCrumb } from "@nepMeds/components/Breadcrumb";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import DoctorDetailsSection from "@nepMeds/pages/Patient/DoctorList/Section/DoctorDetails";
@@ -22,7 +34,8 @@ import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-avai
 import { useLocation } from "react-router-dom";
 import DoctorCardSkeleton from "@nepMeds/components/Patient/DoctorList/Skeleton";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
-
+import NoData from "@nepMeds/components/NoData";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 const currentDate = formatDateToString(new Date());
 
 const DoctorList = () => {
@@ -43,20 +56,20 @@ const DoctorList = () => {
     to_date: "",
   });
 
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const btnRef = useRef(null);
+
   // PAGINATION
   const [pageParams, setPageParams] = useState({
     page: 1,
     limit: 5,
   });
+  // PAGINATION ENDS
 
   const pageChange = (page: number) => {
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth", // This adds smooth scrolling animation
-    });
+    scrollToTop();
     setPageParams({ ...pageParams, page });
   };
-  // PAGINATION ENDS
 
   const debouncedInputValue = useDebounce(search, 500);
 
@@ -89,11 +102,11 @@ const DoctorList = () => {
 
   return (
     <>
-      <Header />
+      <Header onClick={onOpen} btnRef={btnRef} />
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
           {/* TODO: design discussion with UI for breadcrumb in mobile */}
-          <Box display={{ base: "none", md: "block" }}>
+          <Box display={{ base: "block" }}>
             <BreadCrumb
               items={[
                 {
@@ -152,9 +165,9 @@ const DoctorList = () => {
                     ))}
 
                   {doctorData && !doctorData?.results.length && (
-                    <Box width="673px" height="215px">
-                      No Data to be shown!
-                    </Box>
+                    <Flex width="673px" height="215px" alignItems={"center"}>
+                      <NoData />
+                    </Flex>
                   )}
                   {DoctorListError && (
                     <Box width="673px" height="215px">
@@ -176,7 +189,7 @@ const DoctorList = () => {
                     })}
                   {doctorData && doctorData.count > 5 && (
                     // TODO: discuss with UI for pagination in mobile view
-                    <Box display={{ base: "none", md: "block" }}>
+                    <Box display={{ base: "block" }}>
                       <Pagination
                         enabled={true}
                         queryPageSize={pageParams.limit}
@@ -211,6 +224,32 @@ const DoctorList = () => {
         </>
       </WrapperBox>
       <PatientFooter />
+
+      {/* TODO: check if drawer can be made a different component */}
+      <Drawer
+        isOpen={isOpen}
+        placement="right"
+        onClose={onClose}
+        finalFocusRef={btnRef}
+      >
+        <DrawerOverlay />
+        <DrawerContent>
+          <DrawerCloseButton />
+          <DrawerHeader>Filter</DrawerHeader>
+          <DrawerBody overflowY={"auto"}>
+            <DoctorListFilter
+              setGender={setGender}
+              setSpecialization={setSpecialization}
+              setSymptom={setSymptom}
+              setSearchValue={setSearchValue}
+              setDateParams={setDateParams}
+              dateParams={dateParams}
+              setPageParams={setPageParams}
+              pageParams={pageParams}
+            />
+          </DrawerBody>
+        </DrawerContent>
+      </Drawer>
     </>
   );
 };

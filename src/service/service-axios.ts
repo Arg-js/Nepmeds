@@ -1,8 +1,8 @@
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import axios from "axios";
 import httpStatus from "http-status";
 import { api } from "./service-api";
 import TokenService from "./service-token";
-
 const THREE_MINUTES = 3 * 60 * 1000;
 export const baseURL = import.meta.env.VITE_APP_BACKEND_API;
 export const normalURL = import.meta.env.VITE_APP_NORMAL_API;
@@ -78,7 +78,10 @@ function buildFormData(
 HttpClient.interceptors.response.use(
   response => response,
   async error => {
-    if (error?.config?.url !== "/" || error?.config?.url !== "/login") {
+    if (
+      error?.config?.url !== NAVIGATION_ROUTES.DOCTOR_LOGIN ||
+      error?.config?.url !== NAVIGATION_ROUTES.LOGIN
+    ) {
       if (
         error.response.status === httpStatus.UNAUTHORIZED &&
         TokenService.getToken()?.refresh !== ""
@@ -107,6 +110,7 @@ HttpClient.interceptors.response.use(
         }
       }
     }
+    // location.href = "/login";
     return Promise.reject(error.response);
   }
 );

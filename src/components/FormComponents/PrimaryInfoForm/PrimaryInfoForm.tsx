@@ -43,7 +43,8 @@ const PrimaryInfo = ({
   const location = useLocation();
   const [validField, setValidField] = useState<"mobile" | "email">();
   const allDistrictInfo = useGetAllDistricts();
-  const { data: detailedAddress } = useGetDetailAddress();
+  const { data: detailedAddress, isLoading: detailedAddressLoading } =
+    useGetDetailAddress();
   const { data: specialization = [] } = useSpecializationRegisterData();
   const getMunicipalities = (provinceId: string, districtId: string) => {
     let municipalities = [];
@@ -529,68 +530,72 @@ const PrimaryInfo = ({
         </Text>
       </GridItem>
 
-      <GridItem colSpan={2}>
-        <Select
-          placeholder="Select Province"
-          label="Province"
-          name="province"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.user?.province_data?.id || 0}
-          options={provinceOptions ?? []}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Province is required.",
-          }}
-          error={errors.province?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <Select
-          placeholder="Select District"
-          label="District"
-          name="district"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.user?.district_data?.id}
-          options={districtOptions}
-          isDisabled={!districtOptions.length}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "District is required.",
-          }}
-          error={errors.district?.message}
-        />
-      </GridItem>
-      <GridItem colSpan={2}>
-        <Select
-          placeholder="Select Municipality/VDC"
-          label="Municipality/VDC"
-          name="municipality"
-          required
-          register={register}
-          defaultValue={doctorProfileData?.user?.municipality_data?.id}
-          options={municipalityOptions}
-          isDisabled={!municipalityOptions.length}
-          style={{
-            background: colors.forminput,
-            border: "none",
-            paddingTop: "15px",
-          }}
-          rules={{
-            required: "Municipality/VDC is required.",
-          }}
-          error={errors.municipality?.message}
-        />
-      </GridItem>
+      {!detailedAddressLoading && (
+        <>
+          <GridItem colSpan={2}>
+            <Select
+              placeholder="Select Province"
+              label="Province"
+              name="province"
+              required
+              register={register}
+              defaultValue={doctorProfileData?.user?.province_data?.id || 0}
+              options={provinceOptions ?? []}
+              style={{
+                background: colors.forminput,
+                border: "none",
+                paddingTop: "15px",
+              }}
+              rules={{
+                required: "Province is required.",
+              }}
+              error={errors.province?.message}
+            />
+          </GridItem>
+          <GridItem colSpan={2}>
+            <Select
+              placeholder="Select District"
+              label="District"
+              name="district"
+              required
+              register={register}
+              defaultValue={doctorProfileData?.user?.district_data?.id}
+              options={districtOptions}
+              isDisabled={!districtOptions.length}
+              style={{
+                background: colors.forminput,
+                border: "none",
+                paddingTop: "15px",
+              }}
+              rules={{
+                required: "District is required.",
+              }}
+              error={errors.district?.message}
+            />
+          </GridItem>
+          <GridItem colSpan={2}>
+            <Select
+              placeholder="Select Municipality/VDC"
+              label="Municipality/VDC"
+              name="municipality"
+              required
+              register={register}
+              defaultValue={doctorProfileData?.user?.municipality_data?.id}
+              options={municipalityOptions}
+              isDisabled={!municipalityOptions.length}
+              style={{
+                background: colors.forminput,
+                border: "none",
+                paddingTop: "15px",
+              }}
+              rules={{
+                required: "Municipality/VDC is required.",
+              }}
+              error={errors.municipality?.message}
+            />
+          </GridItem>
+        </>
+      )}
       <GridItem colSpan={isEditable ? 1 : 1}>
         <FloatingLabelInput
           placeholder=""
