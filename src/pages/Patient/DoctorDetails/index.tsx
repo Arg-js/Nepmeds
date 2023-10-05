@@ -30,6 +30,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import PatientDetail, { defaultValues } from "./components/PatientDetail";
 import DoctorAvailability from "./components/DoctorAvailability";
+import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
@@ -141,7 +142,7 @@ const DoctorDetails = () => {
                           <VStack>
                             <Image
                               boxSize="120px"
-                              src={doctorList?.profile_picture}
+                              src={doctorList?.profile_picture ?? userAvatar}
                               objectFit={"cover"}
                               objectPosition={"top"}
                               borderRadius={"full"}
