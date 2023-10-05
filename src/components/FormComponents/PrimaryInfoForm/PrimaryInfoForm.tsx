@@ -274,6 +274,7 @@ const PrimaryInfo = ({
           label="Mobile No."
           name="mobile_number"
           type="tel"
+          maxLength={10}
           required
           isReadOnly={validField === "mobile"}
           isDisabled={validField === "mobile"}
