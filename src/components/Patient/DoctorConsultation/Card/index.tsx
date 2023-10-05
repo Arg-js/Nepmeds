@@ -32,7 +32,7 @@ const Card: React.FC<{
         <Image
           src={image || userAvatar}
           alt="Doctor Image"
-          width={"255px"}
+          width={"full"}
           height={"160px"}
           objectFit={"cover"}
           objectPosition={"top"}

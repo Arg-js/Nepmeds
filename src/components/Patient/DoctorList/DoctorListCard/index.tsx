@@ -9,6 +9,9 @@ import doctorImage from "@nepMeds/assets/images/userAvatar.png";
 import { Dispatch, SetStateAction, useMemo } from "react";
 import { IDoctorListResult } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 
 export enum Size {
   sm,
@@ -22,17 +25,6 @@ const DoctorListCard: React.FC<{
   doctorId?: number;
   error?: AxiosError;
 }> = ({ data, size, setDoctorId, doctorId }) => {
-  // const widthBase = size === Size.sm ? "285px" : "150px";
-  // const widthMd = size === Size.sm ? "302px" : "296px";
-
-  // const pyBase = size === Size.sm ? "3" : "5";
-  // const pyMd = size === Size.sm ? "3" : "5";
-
-  // const pxBase = size === Size.sm ? "3" : "3";
-  // const pxMd = size === Size.sm ? "3" : "8";
-
-  // const cursorValue = size === Size.sm ? "auto" : "pointer";
-
   const doctorDetails = useMemo(
     () => [
       {
@@ -55,20 +47,24 @@ const DoctorListCard: React.FC<{
     [data]
   );
 
+  const navigate = useNavigate();
+  const onDoctorSelected = () => {
+    setDoctorId && setDoctorId(data.id);
+    scrollToTop();
+    window.innerWidth <= 768 &&
+      navigate(`${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${data.id}`);
+  };
   return (
     <Flex
       gap={5}
       mb={3}
-      onClick={() => {
-        setDoctorId && setDoctorId(data.id);
-      }}
+      onClick={onDoctorSelected}
       cursor="pointer"
       boxShadow={
         doctorId === data.id
           ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
           : "none"
       }
-      // w={{ base: "inherit", xl: "550px" }}
     >
       <Card
         sx={{
@@ -80,11 +76,9 @@ const DoctorListCard: React.FC<{
           },
         }}
         variant={"elevated"}
-        // w={size === Size.sm ? "238px" : "550px"}
         w={"full"}
       >
         <Grid
-          // templateColumns={size === Size.sm ? "238px" : "repeat(5, 1fr)}"}
           templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           h={size === Size.sm ? "310px" : "176px"}
