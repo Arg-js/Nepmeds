@@ -1,6 +1,6 @@
+import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { useQuery } from "react-query";
-import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 
 export type INMC = {
   doctor_nmc_info: {
@@ -34,7 +34,7 @@ export interface IUser {
 export interface IDoctorAcademicInfo {
   degree_program: string;
   graduation_year: number;
-  university_data: { id: string; name: string };
+  university: string;
   major: string;
   academic_document: File[];
   doctor: number;

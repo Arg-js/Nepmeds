@@ -68,7 +68,7 @@ export const AcademicInfoForm = ({
           degree_program: a?.degree_program,
           doctor: a?.doctor,
           major: a?.major,
-          university: a?.university_data.id,
+          university: a?.university,
           id: a?.id?.toString(),
           academic_documents: a?.academic_document,
           isSubmitted: true,

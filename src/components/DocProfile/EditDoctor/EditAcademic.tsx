@@ -191,7 +191,7 @@ const EditAcademic = ({
             <VStack bg={colors.grey_90}>
               {loading && <Spinner />}
               {!loading &&
-              doctorProfileData?.doctor_academic_info?.length === 0 ? (
+                doctorProfileData?.doctor_academic_info?.length === 0 ? (
                 <>No Images Found!</>
               ) : (
                 showImagesIndexWise?.(
@@ -326,7 +326,7 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleAcademicInfo?.university_data?.name}
+                            :&nbsp;{singleAcademicInfo?.university}
                           </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -394,7 +394,7 @@ const EditAcademic = ({
                           >
                             :&nbsp;
                             {singleAcademicInfo?.academic_document?.length ===
-                            1 ? (
+                              1 ? (
                               <>
                                 {singleAcademicInfo?.academic_document?.length}
                                 &nbsp; Image
