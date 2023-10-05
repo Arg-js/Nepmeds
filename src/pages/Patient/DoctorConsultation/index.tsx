@@ -15,10 +15,9 @@ import Header from "@nepMeds/pages/Patient/Section/Header";
 import DoctorListCard, {
   Size,
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
-import { useGetDoctorList } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useLocation, useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { useState } from "react";
 import { AxiosError } from "axios";
 import { colors } from "@nepMeds/theme/colors";
 import ChooseUsSection from "./Section/ChooseUs";
@@ -32,6 +31,7 @@ import {
   responsive,
   responsiveDoctorCard,
 } from "@nepMeds/pages/Patient/DoctorConsultation/carouselBreakpoint";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 
 export enum Type {
   SPECIALIST,
@@ -40,14 +40,6 @@ export enum Type {
 }
 
 const DoctorConsultation = () => {
-  // Pagination
-  const [pageParams, _setPageParams] = useState({
-    search: "",
-    page: 1,
-    limit: 10,
-  });
-  // Pagination ends
-
   // REACT QUERIES
   const {
     data: specializationData = [],
@@ -61,11 +53,8 @@ const DoctorConsultation = () => {
     error: symptomDataError,
   } = useGetSymptoms();
 
-  const { data: doctorList, error: doctorListError } = useGetDoctorList({
-    search: pageParams.search,
-    page_size: pageParams.limit,
-    page: pageParams.page,
-  });
+  const { data: doctorList, error: doctorListError } =
+    useGetDoctorListUnpaginated();
 
   const { mutateAsync: authenticatePatient } = useAuthenticatePatient();
   // REACT QUERIES END
@@ -99,6 +88,7 @@ const DoctorConsultation = () => {
         specialization,
       },
     });
+    scrollToTop();
   };
 
   const handleViewSymptom = (symptom: string) => {
@@ -107,6 +97,7 @@ const DoctorConsultation = () => {
         symptom,
       },
     });
+    scrollToTop();
   };
 
   return (
@@ -213,9 +204,9 @@ const DoctorConsultation = () => {
               Oops something went wrong!!
             </Flex>
           ) : (
-            doctorList?.results && (
+            doctorList && (
               <Carousel responsive={responsiveDoctorCard}>
-                {doctorList.results.map(doctor => {
+                {doctorList.map(doctor => {
                   return (
                     <Box
                       key={doctor.id}

@@ -2,6 +2,8 @@ import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { generatePath } from "react-router-dom";
+import { toastFail } from "./service-toast";
+import serverErrorResponse from "./serverErrorResponse";
 
 export interface IDoctorList {
   count: number;
@@ -132,6 +134,10 @@ export const useGetDoctorList = ({
       }),
     {
       select: data => data?.data?.data,
+      onError: e => {
+        const error = serverErrorResponse(e);
+        toastFail(error);
+      },
     }
   );
 };
@@ -168,6 +174,26 @@ export const useGetDoctorListById = ({
     {
       enabled: !!id,
       select: data => data?.data?.data,
+    }
+  );
+};
+
+const getDoctorListUnpaginated = () => {
+  return HttpClient.get<NepMedsResponse<IDoctorListResult[]>>(
+    api.patient.doctorList.un_paginated.get
+  );
+};
+
+export const useGetDoctorListUnpaginated = () => {
+  return useQuery(
+    api.patient.doctorList.un_paginated.get,
+    getDoctorListUnpaginated,
+    {
+      select: data => data?.data?.data,
+      onError: e => {
+        const error = serverErrorResponse(e);
+        toastFail(error);
+      },
     }
   );
 };

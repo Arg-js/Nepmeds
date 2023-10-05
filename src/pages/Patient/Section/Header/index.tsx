@@ -22,8 +22,12 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import TokenService from "@nepMeds/service/service-token";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
+import { MutableRefObject } from "react";
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+  onClick?: () => void;
+  btnRef?: MutableRefObject<null>;
+}> = ({ onClick, btnRef }) => {
   const navigate = useNavigate();
   const isAuthenticated = TokenService.isAuthenticated();
 
@@ -117,9 +121,16 @@ const Header: React.FC = () => {
           {/* Login icon ENDS*/}
         </Flex>
 
-        <Box display={{ base: "block", md: "none" }}>
-          <HamburgerMenuIcon />
-        </Box>
+        {/\/patient\/doctor-list/.test(window.location.href) && (
+          <Box
+            display={{ base: "block", md: "none" }}
+            ref={btnRef}
+            onClick={onClick}
+            cursor={"pointer"}
+          >
+            <HamburgerMenuIcon />
+          </Box>
+        )}
         {/* ENDS */}
       </Flex>
     </WrapperBox>

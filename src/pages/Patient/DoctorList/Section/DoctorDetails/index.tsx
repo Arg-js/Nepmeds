@@ -27,6 +27,7 @@ import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
 import { dateFormatter } from "@nepMeds/utils/index";
+import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -519,10 +520,7 @@ const DoctorDetails: React.FC<{
                   if (!isValid) {
                     return;
                   } else {
-                    window.scrollTo({
-                      top: 0,
-                      behavior: "smooth", // This adds smooth scrolling animation
-                    });
+                    scrollToTop();
                     setIsAvailability("2");
                   }
                 }}

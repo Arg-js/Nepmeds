@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Divider,
   HStack,
   Menu,
   MenuButton,
@@ -10,7 +9,7 @@ import {
   Stack,
   Text,
 } from "@chakra-ui/react";
-import { Home, Notification } from "react-iconly";
+import { Notification } from "react-iconly";
 
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
@@ -82,10 +81,11 @@ const Navbar = () => {
             </Menu>
           </HStack>
         </HStack>
-        <Divider mt={"14px"} />
+        {/* TODO: consult with design */}
+        {/* <Divider mt={"14px"} />
         <Box>
           <Home set="bulk" primaryColor={colors.blue_100} />
-        </Box>
+        </Box> */}
       </Stack>
     </>
   );

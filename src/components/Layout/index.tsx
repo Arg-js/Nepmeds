@@ -87,9 +87,7 @@ const LayoutComponent = () => {
 
         <GridItem bg={colors.bg} area={"nav"}>
           {!hideNav && <Navbar />}
-          <Box
-          //  m={2}
-          >
+          <Box>
             <Outlet />
           </Box>
         </GridItem>
