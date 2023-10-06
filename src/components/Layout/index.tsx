@@ -68,17 +68,16 @@ const LayoutComponent = () => {
             ? !isSmallScreen
               ? "78px 1fr"
               : // "minmax(78px 236px) 1fr"
-                "236px 1fr"
+                "225px 1fr"
             : "1fr"
         }
         gap="1"
         // overflowX={"hidden"}
       >
+        {/* TODO: remove this code after QA testing approval */}
         {/* <GridItem area={"side"}>
           <Sidebar />
         </GridItem> */}
-
-        {/* TODO: remove this code after QA testing approval */}
         {/* {profileData?.data?.is_superuser ? (
           <GridItem area={"side"}>
             <Sidebar />
