@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Box,
   Flex,
   HStack,
   Menu,
@@ -43,6 +42,7 @@ const Navbar = ({
               cursor={"pointer"}
               onClick={() => setIsSmallScreen((prev: boolean) => !prev)}
             />
+
             <Text
               fontWeight={"500"}
               fontSize={"xl"}
@@ -57,13 +57,11 @@ const Navbar = ({
           </Flex>
 
           <HStack justifyContent={"end"}>
-            <Box px={"2"}>
-              <Notification
-                size="large"
-                set="bulk"
-                primaryColor={colors.blue_100}
-              />
-            </Box>
+            <Notification
+              size="large"
+              set="bulk"
+              primaryColor={colors.blue_100}
+            />
 
             <Menu>
               <MenuButton
@@ -88,7 +86,7 @@ const Navbar = ({
                 />
               </MenuButton>
               {/* TODO: UPDATE THIS UI fix*/}
-              <MenuList>
+              <MenuList minWidth="240px">
                 <MenuItem as={Link} to={"/doctor-profile"}>
                   Profile
                 </MenuItem>

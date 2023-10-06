@@ -66,8 +66,9 @@ const LayoutComponent = () => {
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
             ? !isSmallScreen
-              ? "4% 1fr"
-              : "minmax(100px, 250px) 1fr"
+              ? "78px 1fr"
+              : // "minmax(78px 236px) 1fr"
+                "236px 1fr"
             : "1fr"
         }
         gap="1"
@@ -77,6 +78,7 @@ const LayoutComponent = () => {
           <Sidebar />
         </GridItem> */}
 
+        {/* TODO: remove this code after QA testing approval */}
         {/* {profileData?.data?.is_superuser ? (
           <GridItem area={"side"}>
             <Sidebar />

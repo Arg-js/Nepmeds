@@ -1,12 +1,4 @@
-import {
-  Box,
-  Flex,
-  Image,
-  List,
-  ListItem,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Flex, Image, List, ListItem, Text } from "@chakra-ui/react";
 import {
   Calendar,
   Call,
@@ -311,7 +303,7 @@ const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
     (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
 
   return (
-    <Box
+    <Flex
       // w={"300px"}
       display="flex"
       flexDirection="column"
@@ -320,27 +312,29 @@ const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
       px={3.75}
       background="white"
       position="fixed"
-      justifyContent="space-between"
+      gap={6}
     >
-      <Stack>
-        <Image
-          mb={"47px"}
-          src={window.innerWidth >= 768 && isSmallScreen ? images?.logo : ""}
-          alt="logo"
-          h={65}
-        />
-        <List>
-          {menuOptions?.map((sidebarOption: ISidebarOption) => {
-            return (
-              <MenuOption
-                key={sidebarOption.text}
-                sidebarOption={sidebarOption}
-                isSmallScreen={isSmallScreen}
-              />
-            );
-          })}
-        </List>
-      </Stack>
+      <Image
+        // mb={"47px"}
+        src={
+          window.innerWidth >= 768 && isSmallScreen
+            ? images?.logo
+            : images?.smallLogo
+        }
+        alt="logo"
+        // h={65}
+      />
+      <List>
+        {menuOptions?.map((sidebarOption: ISidebarOption) => {
+          return (
+            <MenuOption
+              key={sidebarOption.text}
+              sidebarOption={sidebarOption}
+              isSmallScreen={isSmallScreen}
+            />
+          );
+        })}
+      </List>
       {/* <Box
         display="flex"
         gap={3}
@@ -354,7 +348,7 @@ const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
         <Icon as={Logout} fontSize={20} color={colors.error} />
         <span>Logout</span>
       </Box> */}
-    </Box>
+    </Flex>
   );
 };
 

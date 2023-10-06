@@ -55,7 +55,7 @@ const DashboardBody = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   return (
-    <Container maxW="container.xl">
+    <Container maxW="container.2xl">
       {profileData?.data?.is_doctor &&
         !profileData?.data?.doctor?.set_payment_status && (
           <Flex
