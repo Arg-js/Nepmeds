@@ -117,14 +117,13 @@ const EditPrimary = ({
       const backImage = getValues("id_back_image")?.[0];
 
       const user = {
-        first_name: getValues("first_name"),
-        middle_name: getValues("middle_name"),
-        last_name: getValues("last_name"),
         province: getValues("province"),
         district: getValues("district"),
         municipality: getValues("municipality"),
         ward: getValues("ward"),
         tole: getValues("tole"),
+        gender: getValues("gender"),
+        mobile_number: getValues("mobile_number"),
       };
 
       const doctorProfile = {

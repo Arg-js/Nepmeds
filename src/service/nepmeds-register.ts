@@ -108,6 +108,7 @@ export const useUpdatePersonalInfoRegister = () => {
   return useMutation(editPersonalData, {
     onSuccess() {
       queryClient.invalidateQueries([api.doctor_profile]);
+      queryClient.invalidateQueries([api.doctordetails]);
     },
   });
 };
@@ -179,11 +180,15 @@ export type PrimaryInfoValidate = Pick<
   id_back_image?: File | string;
   id_front_image?: File | string;
   specialization: number[];
+  verified_id: string | null;
 };
 
 //Validate primary info API
 const validatePrimaryInfo = async (data: PrimaryInfoValidate) => {
-  const response = await HttpClient.post(api.validatePrimaryInfo, data);
+  const response = await HttpClient.post(
+    `${api.validatePrimaryInfo}?doctor_id=${data?.verified_id}`,
+    data
+  );
   return response;
 };
 

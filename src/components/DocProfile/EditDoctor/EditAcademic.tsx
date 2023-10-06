@@ -79,7 +79,7 @@ const EditAcademic = ({
       for (const element of academicArray) {
         const createAcademicFileResponse =
           await academicFileRegister.mutateAsync(element);
-        academicDataArray.push({
+        const data = {
           ...element,
           doctor: doctorProfileData?.id ?? 0,
           academic_documents: createAcademicFileResponse.data.data.map(
@@ -87,7 +87,36 @@ const EditAcademic = ({
               file: file,
             })
           ),
-        });
+        };
+
+        const partialData: Partial<{
+          doctor: number;
+          academic_documents: any;
+          degree_program: string;
+          major: string;
+          id: number;
+          university: string;
+          other_university: string;
+          graduation_year: string;
+          isSubmitted: boolean;
+        }> = data;
+        data?.university === "0"
+          ? delete partialData?.university
+          : delete partialData?.other_university;
+
+        academicDataArray.push(
+          partialData as {
+            doctor: number;
+            academic_documents: any;
+            degree_program: string;
+            major: string;
+            id: number;
+            university: string;
+            other_university: string;
+            graduation_year: string;
+            isSubmitted: boolean;
+          }
+        );
       }
 
       if (doctorProfileData?.doctor_academic_info?.length === 0) {
@@ -326,7 +355,9 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleAcademicInfo?.university_data?.name}
+                            :&nbsp;
+                            {singleAcademicInfo?.other_university ||
+                              singleAcademicInfo?.university_name}
                           </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"} gap={3}>
