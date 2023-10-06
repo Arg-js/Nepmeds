@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Grid, GridItem, Spinner } from "@chakra-ui/react";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import AuthDataProvider from "@nepMeds/context/AuthDataContext";
 import { useProfileData } from "@nepMeds/context/index";
@@ -27,6 +27,7 @@ const LayoutComponent = () => {
     if (profileData?.data) {
       if (
         profileData?.data?.is_doctor &&
+        // TODO: convert enum to string
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
         navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED, {
@@ -62,16 +63,18 @@ const LayoutComponent = () => {
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? "296px 1fr"
-            : "1fr"
+            ? "minmax(100px, 263px) 1fr"
+            : // ? "minmax(max-width, 263px) 1fr"
+              "1fr"
         }
         gap="1"
-        overflowX={"hidden"}
+        // overflowX={"hidden"}
       >
-        <GridItem area={"side"}>
+        {/* <GridItem area={"side"}>
           <Sidebar />
-        </GridItem>
-        {profileData?.data?.is_superuser ? (
+        </GridItem> */}
+
+        {/* {profileData?.data?.is_superuser ? (
           <GridItem area={"side"}>
             <Sidebar />
           </GridItem>
@@ -83,13 +86,20 @@ const LayoutComponent = () => {
               <Sidebar />
             </GridItem>
           )
+        )} */}
+
+        {(profileData?.data?.is_superuser ||
+          (profileData?.data?.is_doctor &&
+            profileData?.data?.doctor?.status ===
+              STATUSTYPE.approved.toString())) && (
+          <GridItem area={"side"}>
+            <Sidebar />
+          </GridItem>
         )}
 
         <GridItem bg={colors.bg} area={"nav"}>
           {!hideNav && <Navbar />}
-          <Box>
-            <Outlet />
-          </Box>
+          <Outlet />
         </GridItem>
       </Grid>
     </AuthDataProvider>

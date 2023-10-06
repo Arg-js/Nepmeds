@@ -1,6 +1,6 @@
 import { Box, Button, Text } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { calMaxLen, getArray } from "@nepMeds/utils/index";
+import { calcMaxWordsLen, getArray } from "@nepMeds/utils/index";
 import React from "react";
 
 const ReadMoreComponent = ({
@@ -13,7 +13,10 @@ const ReadMoreComponent = ({
   const [isReadMore, setIsReadMore] = React.useState(true);
 
   const displayedText = isReadMore
-    ? bio_detail.slice(0, calMaxLen({ inputString: bio_detail, maxWords }))
+    ? bio_detail.slice(
+        0,
+        calcMaxWordsLen({ inputString: bio_detail, maxWords })
+      )
     : bio_detail;
   const buttonText = isReadMore ? "Read More..." : "Show Less";
 
