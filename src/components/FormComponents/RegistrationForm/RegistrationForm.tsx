@@ -323,6 +323,7 @@ const RegistrationForm = () => {
                 setIsPrimarySubmitted(true);
                 formMethods.setValue("doctor_id", data?.id);
                 formMethods.setValue("nmc.isSubmitted", true);
+                toastSuccess("Account created successfully!");
                 setActiveStep(3);
               });
           }
