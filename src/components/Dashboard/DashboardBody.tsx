@@ -2,7 +2,6 @@ import {
   Box,
   Button,
   Card,
-  Container,
   Flex,
   Grid,
   GridItem,
@@ -55,7 +54,7 @@ const DashboardBody = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   return (
-    <Container maxW="container.2xl">
+    <Box m={4}>
       {profileData?.data?.is_doctor &&
         !profileData?.data?.doctor?.set_payment_status && (
           <Flex
@@ -145,7 +144,7 @@ const DashboardBody = () => {
           </>
         </WrapperBox>
       )}
-    </Container>
+    </Box>
   );
 };
 
