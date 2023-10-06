@@ -36,6 +36,13 @@ interface Props {
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
 });
+
+const defaultValues = {
+  Specialization: "",
+  toDate: "",
+  fromDate: "",
+};
+
 const RejectedDocList = ({ specializationList }: Props) => {
   const {
     isOpen: isModalOpen,
@@ -70,14 +77,13 @@ const RejectedDocList = ({ specializationList }: Props) => {
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.rejected,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   const formMethods = useForm({ resolver: yupResolver(schema) });
@@ -103,11 +109,8 @@ const RejectedDocList = ({ specializationList }: Props) => {
             >
               Reset
             </Button>
-            <Button variant={"primaryOutline"} w={"150px"}>
-              Cancel
-            </Button>
             <Button w={"150px"} onClick={() => handleFilter(false)}>
-              Done
+              Filter
             </Button>
           </HStack>
         }
@@ -115,7 +118,7 @@ const RejectedDocList = ({ specializationList }: Props) => {
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
             <Select
-              placeholder="select specialization"
+              placeholder="Select Specialization"
               label="Specialization"
               name="Specialization"
               required

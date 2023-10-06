@@ -36,6 +36,12 @@ const schema = yup.object().shape({
   remarks: yup.string().required("Remarks is required!"),
 });
 
+const defaultValues = {
+  Specialization: "",
+  toDate: "",
+  fromDate: "",
+};
+
 const RegisteredDocList = ({ specializationList }: Props) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -52,6 +58,7 @@ const RegisteredDocList = ({ specializationList }: Props) => {
 
   const formMethods = useForm({
     resolver: yupResolver(schema),
+    defaultValues,
   });
   const navigate = useNavigate();
 
@@ -73,12 +80,11 @@ const RegisteredDocList = ({ specializationList }: Props) => {
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({});
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   return (
@@ -103,15 +109,8 @@ const RegisteredDocList = ({ specializationList }: Props) => {
               >
                 Reset
               </Button>
-              <Button
-                variant={"primaryOutline"}
-                w={"150px"}
-                onClick={() => handleFilterData(true)}
-              >
-                Cancel
-              </Button>
               <Button w={"150px"} onClick={() => handleFilterData(false)}>
-                Done
+                Filter
               </Button>
             </HStack>
           }

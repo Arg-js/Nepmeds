@@ -21,29 +21,29 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 
 interface IDashboardData {
   title: string;
-  no: number;
+  no: number | string;
   path: string;
 }
 
 const dashboardDatas: IDashboardData[] = [
   {
     title: "No. of Patient",
-    no: 232,
+    no: "-",
     path: images?.dashboard1,
   },
   {
     title: "Appointments",
-    no: 232,
+    no: "-",
     path: images?.dashboard2,
   },
   {
     title: "Pending",
-    no: 232,
+    no: "-",
     path: images?.dashboard3,
   },
   {
     title: "Follow - Ups",
-    no: 232,
+    no: "-",
     path: images?.dashboard4,
   },
 ];

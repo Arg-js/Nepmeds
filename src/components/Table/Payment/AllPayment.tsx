@@ -79,6 +79,12 @@ const AllPayment = ({
     onClose: onModalClose,
   } = useDisclosure();
 
+  const defaultValues = {
+    Specialization: "",
+    toDate: "",
+    fromDate: "",
+  };
+
   const handleFilterData = (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
@@ -86,12 +92,11 @@ const AllPayment = ({
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({});
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   const onActionClick = async (
@@ -134,11 +139,8 @@ const AllPayment = ({
               >
                 Reset
               </Button>
-              <Button variant={"primaryOutline"} w={"150px"}>
-                Cancel
-              </Button>
               <Button w={"150px"} onClick={() => handleFilterData(false)}>
-                Done
+                Filter
               </Button>
             </HStack>
           }

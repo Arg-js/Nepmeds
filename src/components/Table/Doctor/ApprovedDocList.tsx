@@ -33,6 +33,12 @@ interface Props {
   specializationList: ISpecializationList[];
 }
 
+const defaultValues = {
+  Specialization: "",
+  toDate: "",
+  fromDate: "",
+};
+
 const ApprovedDocList = ({ specializationList }: Props) => {
   const navigate = useNavigate();
   const {
@@ -69,14 +75,13 @@ const ApprovedDocList = ({ specializationList }: Props) => {
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.approved,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   return (
@@ -100,15 +105,8 @@ const ApprovedDocList = ({ specializationList }: Props) => {
             >
               Reset
             </Button>
-            <Button
-              variant={"primaryOutline"}
-              w={"150px"}
-              onClick={() => handleFilter(true)}
-            >
-              Cancel
-            </Button>
             <Button w={"150px"} onClick={() => handleFilter(false)}>
-              Done
+              Filter
             </Button>
           </HStack>
         }
@@ -116,7 +114,7 @@ const ApprovedDocList = ({ specializationList }: Props) => {
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
             <Select
-              placeholder="select specialization"
+              placeholder="Select Specialization"
               label="Specialization"
               name="Specialization"
               required
