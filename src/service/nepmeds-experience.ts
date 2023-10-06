@@ -79,6 +79,7 @@ export const useUpdateExperienceInfo = () => {
   const mutation = useMutation(updateExperienceData, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.doctordetails]);
+      queryClient.invalidateQueries([api.doctor_profile]);
     },
   });
 

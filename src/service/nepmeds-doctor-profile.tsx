@@ -37,6 +37,8 @@ export interface IDoctorAcademicInfo {
   university: string;
   major: string;
   academic_document: File[];
+  other_university?: string;
+  university_name?: string;
   doctor: number;
   id?: number;
 }
