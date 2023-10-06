@@ -126,7 +126,6 @@ const EditPrimary = ({
         mobile_number: getValues("mobile_number"),
       };
 
-
       const doctorProfile = {
         id: doctorProfileData?.id,
         user: user,
@@ -174,7 +173,7 @@ const EditPrimary = ({
           display={"flex"}
           alignItems="center"
           justifyContent={"space-between"}
-        // bg={"red"}
+          // bg={"red"}
         >
           <Text
             fontWeight={"700"}
@@ -420,7 +419,7 @@ const EditPrimary = ({
                       :&nbsp;
                       {
                         PRIMARYIDTYPE[
-                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }
                     </Text>
@@ -479,7 +478,7 @@ const EditPrimary = ({
               >
                 {
                   PRIMARYIDTYPE[
-                  doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                    doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                   ]
                 }{" "}
                 Detail
@@ -497,7 +496,7 @@ const EditPrimary = ({
               <GridItem colSpan={1}>
                 <AspectRatio ratio={16 / 7}>
                   <Image
-                    src={getImageUrl(String(doctorProfileData?.id_front_image))}
+                    src={getImageUrl(String(doctorProfileData?.id_back_image))}
                     objectFit="cover"
                   />
                 </AspectRatio>
@@ -517,11 +516,11 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                    //
+                      //
                     >
                       {
                         PRIMARYIDTYPE[
-                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }{" "}
                       No.
@@ -585,7 +584,7 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                    //
+                      //
                     >
                       Issued District
                     </Text>

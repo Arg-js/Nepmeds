@@ -215,7 +215,7 @@ export const AcademicInfoForm = ({
                   render={({ field: { ref, ...field } }) => (
                     <FloatingLabelInput
                       required
-                      label="Please Enter College/University"
+                      label="College/University"
                       register={register}
                       rules={{
                         required: "College/University is required.",
