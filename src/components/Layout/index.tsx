@@ -5,7 +5,7 @@ import { useProfileData } from "@nepMeds/context/index";
 import useShouldHideNavBar from "@nepMeds/hooks/useShouldHideNavBar";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -22,6 +22,7 @@ const LayoutComponent = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   const hideNav = useShouldHideNavBar();
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
 
   useEffect(() => {
     if (profileData?.data) {
@@ -60,12 +61,14 @@ const LayoutComponent = () => {
             ? `"side nav"`
             : `"nav"`
         }
+        // TODO: fix this logic
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? "minmax(100px, 263px) 1fr"
-            : // ? "minmax(max-width, 263px) 1fr"
-              "1fr"
+            ? !isSmallScreen
+              ? "4% 1fr"
+              : "minmax(100px, 250px) 1fr"
+            : "1fr"
         }
         gap="1"
         // overflowX={"hidden"}
@@ -93,12 +96,12 @@ const LayoutComponent = () => {
             profileData?.data?.doctor?.status ===
               STATUSTYPE.approved.toString())) && (
           <GridItem area={"side"}>
-            <Sidebar />
+            <Sidebar isSmallScreen={isSmallScreen} />
           </GridItem>
         )}
 
         <GridItem bg={colors.bg} area={"nav"}>
-          {!hideNav && <Navbar />}
+          {!hideNav && <Navbar setIsSmallScreen={setIsSmallScreen} />}
           <Outlet />
         </GridItem>
       </Grid>

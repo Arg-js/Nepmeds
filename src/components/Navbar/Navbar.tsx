@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Flex,
   HStack,
   Menu,
   MenuButton,
@@ -16,8 +17,14 @@ import { colors } from "@nepMeds/theme/colors";
 
 import { useProfileData } from "@nepMeds/context/index";
 import { Link, useLocation } from "react-router-dom";
+import { HamburgerMenuIcon } from "@nepMeds/assets/svgs";
+import { Dispatch, SetStateAction } from "react";
 
-const Navbar = () => {
+const Navbar = ({
+  setIsSmallScreen,
+}: {
+  setIsSmallScreen: Dispatch<SetStateAction<boolean>>;
+}) => {
   const logoutAction = useLogoutMutation();
   const logout = () => {
     logoutAction.mutate();
@@ -31,16 +38,24 @@ const Navbar = () => {
     <>
       <Stack p={"15px 21px"} background="white">
         <HStack justify={"space-between"} alignItems={"center"}>
-          <Text
-            fontWeight={"500"}
-            fontSize={"xl"}
-            color={colors.black_60}
-            textTransform={"capitalize"}
-          >
-            {pathname
-              ? pathname.split("/")[1].replaceAll("-", " ")
-              : "Dashboard"}
-          </Text>
+          <Flex alignItems={"center"} gap={4}>
+            <HamburgerMenuIcon
+              cursor={"pointer"}
+              onClick={() => setIsSmallScreen((prev: boolean) => !prev)}
+            />
+            <Text
+              fontWeight={"500"}
+              fontSize={"xl"}
+              color={colors.black_60}
+              textTransform={"capitalize"}
+            >
+              {/* TODO: keep this in utils */}
+              {pathname
+                ? pathname.split("/")[1].replaceAll("-", " ")
+                : "Dashboard"}
+            </Text>
+          </Flex>
+
           <HStack justifyContent={"end"}>
             <Box px={"2"}>
               <Notification
@@ -72,6 +87,7 @@ const Navbar = () => {
                   rounded="lg"
                 />
               </MenuButton>
+              {/* TODO: UPDATE THIS UI fix*/}
               <MenuList>
                 <MenuItem as={Link} to={"/doctor-profile"}>
                   Profile

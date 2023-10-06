@@ -135,7 +135,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 ];
 
-const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
+const MenuOption = ({
+  sidebarOption,
+  isSmallScreen,
+}: {
+  sidebarOption: any;
+  isSmallScreen: boolean;
+}) => {
   const [isActive, setIsActive] = useState(false);
 
   const isActiveFn = (to: string) => {
@@ -166,9 +172,18 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
     payment_status: string | undefined;
     text: string;
   }) => {
-    if (isAdmin) return true;
-    if (isDoctor && isPayment && payment_status === "1") return true;
-    if (text === "Dashboard" || text === "Payment") return true;
+    if (
+      isAdmin ||
+      (isDoctor && isPayment && payment_status === "1") ||
+      text === "Dashboard" ||
+      text === "Payment"
+    )
+      return true;
+
+    // if (isAdmin) return true;
+    // if (isDoctor && isPayment && payment_status === "1") return true;
+    // if (text === "Dashboard" || text === "Payment") return true;
+
     return false;
   };
 
@@ -255,10 +270,10 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
               alignItems={"center"}
               as={NavLink}
               height="56px"
-              pl={4}
+              p={4}
               borderRadius={12}
               _activeLink={{
-                background: colors.blue_100,
+                background: colors.red,
                 color: colors.white,
               }}
               to={sidebarOption.link}
@@ -268,16 +283,19 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
                 color={colors?.black_50}
                 size={20}
               />
-              <Text
-                fontWeight={"400"}
-                fontSize={"sm"}
-                lineHeight={"17px"}
-                color={colors?.black_50}
-                ml={"18px"}
-                w="140px"
-              >
-                {sidebarOption?.text}
-              </Text>
+              {/* TODO: need to reload page for the calculation to happen */}
+              {window.innerWidth >= 768 && isSmallScreen && (
+                <Text
+                  fontWeight={"400"}
+                  fontSize={"sm"}
+                  lineHeight={"17px"}
+                  color={colors?.black_50}
+                  ml={"18px"}
+                  w="140px"
+                >
+                  {sidebarOption?.text}
+                </Text>
+              )}
             </ListItem>
           )}
         </>
@@ -286,7 +304,7 @@ const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
   );
 };
 
-const Sidebar = () => {
+const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
   const { data: userInfo } = useLoginTokenDetailQuery();
 
   const menuOptions =
@@ -294,7 +312,7 @@ const Sidebar = () => {
 
   return (
     <Box
-      w={"300px"}
+      // w={"300px"}
       display="flex"
       flexDirection="column"
       h="100vh"
@@ -305,19 +323,23 @@ const Sidebar = () => {
       justifyContent="space-between"
     >
       <Stack>
-        <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={65} />
-        <Box p={"0 8px"}>
-          <List pl={3}>
-            {menuOptions?.map((sidebarOption: any) => {
-              return (
-                <MenuOption
-                  key={sidebarOption.text}
-                  sidebarOption={sidebarOption}
-                />
-              );
-            })}
-          </List>
-        </Box>
+        <Image
+          mb={"47px"}
+          src={window.innerWidth >= 768 && isSmallScreen ? images?.logo : ""}
+          alt="logo"
+          h={65}
+        />
+        <List>
+          {menuOptions?.map((sidebarOption: ISidebarOption) => {
+            return (
+              <MenuOption
+                key={sidebarOption.text}
+                sidebarOption={sidebarOption}
+                isSmallScreen={isSmallScreen}
+              />
+            );
+          })}
+        </List>
       </Stack>
       {/* <Box
         display="flex"
