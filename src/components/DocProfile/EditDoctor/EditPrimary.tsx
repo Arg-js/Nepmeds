@@ -126,6 +126,7 @@ const EditPrimary = ({
         mobile_number: getValues("mobile_number"),
       };
 
+
       const doctorProfile = {
         id: doctorProfileData?.id,
         user: user,
@@ -173,7 +174,7 @@ const EditPrimary = ({
           display={"flex"}
           alignItems="center"
           justifyContent={"space-between"}
-          // bg={"red"}
+        // bg={"red"}
         >
           <Text
             fontWeight={"700"}
@@ -419,7 +420,7 @@ const EditPrimary = ({
                       :&nbsp;
                       {
                         PRIMARYIDTYPE[
-                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }
                     </Text>
@@ -478,7 +479,7 @@ const EditPrimary = ({
               >
                 {
                   PRIMARYIDTYPE[
-                    doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                  doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                   ]
                 }{" "}
                 Detail
@@ -516,11 +517,11 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                      //
+                    //
                     >
                       {
                         PRIMARYIDTYPE[
-                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }{" "}
                       No.
@@ -584,7 +585,7 @@ const EditPrimary = ({
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
                       color={"#4D4D4D"}
-                      //
+                    //
                     >
                       Issued District
                     </Text>
