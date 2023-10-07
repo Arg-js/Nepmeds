@@ -3,7 +3,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { calcMaxWordsLen, getArray } from "@nepMeds/utils/index";
 import React from "react";
 
-const ReadMoreComponent = ({
+const ReadMore = ({
   bio_detail,
   maxWords,
 }: {
@@ -41,4 +41,4 @@ const ReadMoreComponent = ({
   );
 };
 
-export default ReadMoreComponent;
+export default ReadMore;

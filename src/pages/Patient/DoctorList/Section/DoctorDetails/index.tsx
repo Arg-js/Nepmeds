@@ -14,7 +14,7 @@ import {
 import FormControl from "@nepMeds/components/Form/FormControl";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
-import ReadMoreComponent from "@nepMeds/components/ReadMore";
+import ReadMore from "@nepMeds/components/ReadMore";
 import {
   IPatientAppointmentBasicDetails,
   useCreatePatientAppointment,
@@ -219,7 +219,7 @@ const DoctorDetails: React.FC<{
                       <Text fontWeight={700} fontSize={"13px"}>
                         About
                       </Text>
-                      <ReadMoreComponent
+                      <ReadMore
                         bio_detail={doctorInfo?.bio_detail}
                         maxWords={20}
                       />

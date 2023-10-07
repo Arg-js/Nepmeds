@@ -22,7 +22,7 @@ const LayoutComponent = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   const hideNav = useShouldHideNavBar();
-  const [isSmallScreen, setIsSmallScreen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (profileData?.data) {
@@ -65,7 +65,7 @@ const LayoutComponent = () => {
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? !isSmallScreen
+            ? !sidebarCollapsed
               ? "78px 1fr"
               : // "minmax(78px 236px) 1fr"
                 "225px 1fr"
@@ -97,12 +97,12 @@ const LayoutComponent = () => {
             profileData?.data?.doctor?.status ===
               STATUSTYPE.approved.toString())) && (
           <GridItem area={"side"}>
-            <Sidebar isSmallScreen={isSmallScreen} />
+            <Sidebar sidebarCollapsed={sidebarCollapsed} />
           </GridItem>
         )}
 
         <GridItem bg={colors.bg} area={"nav"}>
-          {!hideNav && <Navbar setIsSmallScreen={setIsSmallScreen} />}
+          {!hideNav && <Navbar setSidebarCollapsed={setSidebarCollapsed} />}
           <Outlet />
         </GridItem>
       </Grid>

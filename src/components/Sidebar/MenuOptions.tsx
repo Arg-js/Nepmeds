@@ -8,10 +8,10 @@ import { ISidebarOption } from "@nepMeds/components/Sidebar/Sidebar";
 
 const MenuOption = ({
   sidebarOption,
-  isSmallScreen,
+  sidebarCollapsed,
 }: {
   sidebarOption: ISidebarOption;
-  isSmallScreen: boolean;
+  sidebarCollapsed: boolean;
 }) => {
   const [isActive, setIsActive] = useState(false);
 
@@ -156,7 +156,7 @@ const MenuOption = ({
                 size={20}
               />
               {/* TODO: need to reload page for the calculation to happen */}
-              {window.innerWidth >= 768 && isSmallScreen && (
+              {window.innerWidth >= 768 && sidebarCollapsed && (
                 <Text
                   fontWeight={"400"}
                   fontSize={"sm"}

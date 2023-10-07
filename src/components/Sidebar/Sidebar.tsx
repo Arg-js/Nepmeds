@@ -120,7 +120,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 ];
 
-const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
+const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
   const { data: userInfo } = useLoginTokenDetailQuery();
 
   const menuOptions =
@@ -141,7 +141,7 @@ const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
       <Image
         src={
           // TODO: consult with UI/UX for design update
-          window.innerWidth >= 768 && isSmallScreen
+          window.innerWidth >= 768 && sidebarCollapsed
             ? images?.logo
             : images?.smallLogo
         }
@@ -153,7 +153,7 @@ const Sidebar = ({ isSmallScreen }: { isSmallScreen: boolean }) => {
             <MenuOption
               key={sidebarOption.text}
               sidebarOption={sidebarOption}
-              isSmallScreen={isSmallScreen}
+              sidebarCollapsed={sidebarCollapsed}
             />
           );
         })}

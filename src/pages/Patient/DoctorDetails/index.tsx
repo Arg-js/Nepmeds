@@ -34,7 +34,7 @@ import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
-import ReadMoreComponent from "@nepMeds/components/ReadMore";
+import ReadMore from "@nepMeds/components/ReadMore";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -257,7 +257,7 @@ const DoctorDetails = () => {
                           p={3.5}
                           borderRadius={"6px"}
                         >
-                          <ReadMoreComponent
+                          <ReadMore
                             bio_detail={doctorList?.bio_detail ?? ""}
                             maxWords={50}
                           />

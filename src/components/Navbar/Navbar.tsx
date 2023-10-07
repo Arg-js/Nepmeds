@@ -20,9 +20,9 @@ import { HamburgerMenuIcon } from "@nepMeds/assets/svgs";
 import { Dispatch, SetStateAction } from "react";
 
 const Navbar = ({
-  setIsSmallScreen,
+  setSidebarCollapsed,
 }: {
-  setIsSmallScreen: Dispatch<SetStateAction<boolean>>;
+  setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
   const logoutAction = useLogoutMutation();
   const logout = () => {
@@ -40,7 +40,7 @@ const Navbar = ({
           <Flex alignItems={"center"} gap={4}>
             <HamburgerMenuIcon
               cursor={"pointer"}
-              onClick={() => setIsSmallScreen((prev: boolean) => !prev)}
+              onClick={() => setSidebarCollapsed((prev: boolean) => !prev)}
             />
 
             <Text
