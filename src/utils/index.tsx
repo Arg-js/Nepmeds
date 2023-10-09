@@ -1,4 +1,4 @@
-export { calMaxLen, getArray } from "./ReadMore/arrayFunctions";
+export { calcMaxWordsLen, getArray } from "./ReadMore/arrayFunctions";
 // export { title } from "./choices";
 export { appendServerUrl, getImageUrl } from "./getImageUrl";
 export { queryStringGenerator } from "./queryStringGenerator";

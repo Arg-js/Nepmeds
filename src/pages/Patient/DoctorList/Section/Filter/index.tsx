@@ -14,7 +14,13 @@ import { SearchIcon } from "@nepMeds/assets/svgs";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
-import React, { Dispatch, SetStateAction, useEffect, useRef } from "react";
+import React, {
+  Dispatch,
+  MutableRefObject,
+  RefObject,
+  SetStateAction,
+  useEffect,
+} from "react";
 import { useLocation } from "react-router-dom";
 
 const GenderList = [
@@ -39,24 +45,26 @@ interface ILocationState {
 }
 
 const DoctorListFilter: React.FC<{
-  setGender: Dispatch<SetStateAction<string[]>>;
-  setSpecialization: Dispatch<SetStateAction<string[]>>;
-  setSymptom: Dispatch<SetStateAction<string[]>>;
-  setSearchValue: Dispatch<SetStateAction<string>>;
-  setDateParams: Dispatch<SetStateAction<IDateParams>>;
-  setPageParams: Dispatch<SetStateAction<IPageParams>>;
+  filterParams: {
+    setGender: Dispatch<SetStateAction<string[]>>;
+    setSpecialization: Dispatch<SetStateAction<string[]>>;
+    setSymptom: Dispatch<SetStateAction<string[]>>;
+    setSearchValue: Dispatch<SetStateAction<string>>;
+    setDateParams: Dispatch<SetStateAction<IDateParams>>;
+  };
+  paginationParams: {
+    setPageParams: Dispatch<SetStateAction<IPageParams>>;
+    pageParams: IPageParams;
+  };
   dateParams: IDateParams;
-  pageParams: IPageParams;
-}> = ({
-  setGender,
-  setSpecialization,
-  setSymptom,
-  setSearchValue,
-  setDateParams,
-  dateParams,
-  setPageParams,
-  pageParams,
-}) => {
+  reference: {
+    genderFiltersRef: MutableRefObject<HTMLInputElement[]>;
+    specializationFiltersRef: MutableRefObject<HTMLInputElement[]>;
+    symptomFiltersRef: MutableRefObject<HTMLInputElement[]>;
+    dateFromRef: RefObject<HTMLInputElement>;
+    dateToRef: RefObject<HTMLInputElement>;
+  };
+}> = ({ filterParams, dateParams, paginationParams, reference }) => {
   const location = useLocation();
   const state = location.state as ILocationState;
 
@@ -65,20 +73,14 @@ const DoctorListFilter: React.FC<{
   const { data: specializationData = [] } = useSpecializationRegisterData();
   // REACT QUERIES END
 
-  const genderFiltersRef = useRef<HTMLInputElement[]>([]);
-  const specializationFiltersRef = useRef<HTMLInputElement[]>([]);
-  const symptomFiltersRef = useRef<HTMLInputElement[]>([]);
-  const dateFromRef = useRef<HTMLInputElement>(null);
-  const dateToRef = useRef<HTMLInputElement>(null);
-
   // TODO: LOGIC IS REDUNDANT IN BOTH USE EFFECT, TRY TO MAKE A CONCISE FUNCTION FOR REUSABILITY
   useEffect(() => {
     if (state?.specialization && specializationData?.length) {
       for (let i = 0; i < specializationData.length; i++) {
         if (specializationData[i].name === state.specialization) {
-          specializationFiltersRef.current[i].checked = true;
+          reference.specializationFiltersRef.current[i].checked = true;
         } else {
-          specializationFiltersRef.current[i].checked = false;
+          reference.specializationFiltersRef.current[i].checked = false;
         }
       }
     }
@@ -88,30 +90,34 @@ const DoctorListFilter: React.FC<{
     if (state?.symptom && symptomData?.length) {
       for (let i = 0; i < symptomData.length; i++) {
         if (symptomData[i].name === state.symptom) {
-          symptomFiltersRef.current[i].checked = true;
+          reference.symptomFiltersRef.current[i].checked = true;
         } else {
-          symptomFiltersRef.current[i].checked = false;
+          reference.symptomFiltersRef.current[i].checked = false;
         }
       }
     }
   }, [state?.symptom, symptomData]);
 
   const clearAllFilter = () => {
-    for (let i = 0; i < genderFiltersRef.current.length; i++) {
-      genderFiltersRef.current[i].checked = false;
+    for (let i = 0; i < reference?.genderFiltersRef.current.length; i++) {
+      reference.genderFiltersRef.current[i].checked = false;
     }
 
-    for (let i = 0; i < specializationFiltersRef.current.length; i++) {
-      specializationFiltersRef.current[i].checked = false;
+    for (
+      let i = 0;
+      i < reference?.specializationFiltersRef.current.length;
+      i++
+    ) {
+      reference.specializationFiltersRef.current[i].checked = false;
     }
 
-    for (let i = 0; i < symptomFiltersRef.current.length; i++) {
-      symptomFiltersRef.current[i].checked = false;
+    for (let i = 0; i < reference?.symptomFiltersRef.current.length; i++) {
+      reference.symptomFiltersRef.current[i].checked = false;
     }
 
-    if (dateFromRef.current && dateToRef.current) {
-      dateFromRef.current.value = "";
-      dateToRef.current.value = "";
+    if (reference?.dateFromRef.current && reference?.dateToRef.current) {
+      reference.dateFromRef.current.value = "";
+      reference.dateToRef.current.value = "";
     }
   };
 
@@ -123,8 +129,11 @@ const DoctorListFilter: React.FC<{
         </InputLeftElement>
         <Input
           onChange={e => {
-            setSearchValue(e.target.value);
-            setPageParams({ ...pageParams, page: 1 });
+            filterParams.setSearchValue(e.target.value);
+            paginationParams.setPageParams({
+              ...paginationParams.pageParams,
+              page: 1,
+            });
           }}
           placeholder="Search by doctors name"
           fontSize={"xs"}
@@ -149,10 +158,10 @@ const DoctorListFilter: React.FC<{
               cursor={"pointer"}
               onClick={() => {
                 clearAllFilter();
-                setGender([]);
-                setSpecialization([]);
-                setSymptom([]);
-                setDateParams({
+                filterParams.setGender([]);
+                filterParams.setSpecialization([]);
+                filterParams.setSymptom([]);
+                filterParams.setDateParams({
                   from_date: "",
                   to_date: "",
                 });
@@ -172,10 +181,16 @@ const DoctorListFilter: React.FC<{
             <GridItem>
               <Input
                 type={"date"}
-                ref={dateFromRef}
+                ref={reference?.dateFromRef}
                 onChange={e => {
-                  setDateParams({ ...dateParams, from_date: e.target.value });
-                  setPageParams({ ...pageParams, page: 1 });
+                  filterParams.setDateParams({
+                    ...dateParams,
+                    from_date: e.target.value,
+                  });
+                  paginationParams.setPageParams({
+                    ...paginationParams.pageParams,
+                    page: 1,
+                  });
                 }}
                 w={"min-content"}
                 size={"sm"}
@@ -192,10 +207,16 @@ const DoctorListFilter: React.FC<{
             <GridItem>
               <Input
                 type={"date"}
-                ref={dateToRef}
+                ref={reference?.dateToRef}
                 onChange={e => {
-                  setDateParams({ ...dateParams, to_date: e.target.value });
-                  setPageParams({ ...pageParams, page: 1 });
+                  filterParams.setDateParams({
+                    ...dateParams,
+                    to_date: e.target.value,
+                  });
+                  paginationParams.setPageParams({
+                    ...paginationParams.pageParams,
+                    page: 1,
+                  });
                 }}
                 w={"min-content"}
                 size={"sm"}
@@ -213,16 +234,22 @@ const DoctorListFilter: React.FC<{
                 <Flex gap={4} key={gender.value} mb={2}>
                   <Checkbox
                     ref={element => {
-                      if (element) genderFiltersRef.current[index] = element;
+                      if (element)
+                        reference.genderFiltersRef.current[index] = element;
                     }}
-                    isChecked={genderFiltersRef?.current[index]?.checked}
+                    isChecked={
+                      reference?.genderFiltersRef?.current[index]?.checked
+                    }
                     onChange={e => {
-                      setGender(prev =>
+                      filterParams.setGender(prev =>
                         e.target.checked
                           ? [...prev, gender.value]
                           : prev.filter(item => item !== gender.value)
                       );
-                      setPageParams({ ...pageParams, page: 1 });
+                      paginationParams.setPageParams({
+                        ...paginationParams.pageParams,
+                        page: 1,
+                      });
                     }}
                   />
                   <Text fontWeight={500} fontSize={"13px"}>
@@ -242,18 +269,23 @@ const DoctorListFilter: React.FC<{
                   <Checkbox
                     ref={element => {
                       if (element)
-                        specializationFiltersRef.current[index] = element;
+                        reference.specializationFiltersRef.current[index] =
+                          element;
                     }}
                     isChecked={
-                      specializationFiltersRef?.current[index]?.checked
+                      reference?.specializationFiltersRef?.current[index]
+                        ?.checked
                     }
                     onChange={e => {
-                      setSpecialization(prev =>
+                      filterParams.setSpecialization(prev =>
                         e.target.checked
                           ? [...prev, specialization.name]
                           : prev.filter(item => item !== specialization.name)
                       );
-                      setPageParams({ ...pageParams, page: 1 });
+                      paginationParams.setPageParams({
+                        ...paginationParams.pageParams,
+                        page: 1,
+                      });
                     }}
                   />
                   <Text fontWeight={500} fontSize={"13px"}>
@@ -272,16 +304,22 @@ const DoctorListFilter: React.FC<{
                 <Flex gap={4} key={symptom.id} mb={2}>
                   <Checkbox
                     ref={element => {
-                      if (element) symptomFiltersRef.current[index] = element;
+                      if (element)
+                        reference.symptomFiltersRef.current[index] = element;
                     }}
-                    isChecked={symptomFiltersRef?.current[index]?.checked}
+                    isChecked={
+                      reference?.symptomFiltersRef?.current[index]?.checked
+                    }
                     onChange={e => {
-                      setSymptom(prev =>
+                      filterParams.setSymptom(prev =>
                         e.target.checked
                           ? [...prev, symptom.name]
                           : prev.filter(item => item !== symptom.name)
                       );
-                      setPageParams({ ...pageParams, page: 1 });
+                      paginationParams.setPageParams({
+                        ...paginationParams.pageParams,
+                        page: 1,
+                      });
                     }}
                   />
                   <Text fontWeight={500} fontSize={"13px"}>

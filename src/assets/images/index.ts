@@ -8,6 +8,7 @@ import esewa from "./esewa.png";
 import NepalFlag from "./flag-nepal.png";
 import khalti from "./khalti.png";
 import logo from "./logo.png";
+import smallLogo from "./smallLogo.png";
 import profileUser from "./profileUser.png";
 import verified from "./verified.png";
 import userAvatar from "./userAvatar.png";
@@ -17,6 +18,7 @@ import bannerPhoneImage from "./bannerPhoneImage.png";
 import bannerPhoneImageBack from "./bannerPhoneImageBack.png";
 export const images = {
   logo,
+  smallLogo,
   dashboard1,
   dashboard2,
   dashboard3,

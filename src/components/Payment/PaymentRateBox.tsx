@@ -14,6 +14,11 @@ const PaymentAmountBox = ({
   data?: IAmountListDoctor | undefined;
   onOpen?: () => void;
 }) => {
+  const rateDetails = [
+    { rateType: "Instant Rate", rate: data?.instant_amount },
+    { rateType: "Schedule Rate", rate: data?.schedule_amount },
+  ];
+
   const styles = {
     backgroundColor: isPending ? "" : colors.primary,
     color: isPending ? "" : colors.white,
@@ -54,14 +59,12 @@ const PaymentAmountBox = ({
         </Flex>
         {data ? (
           <Box>
-            <Flex my={3}>
-              <Text width={"40%"}>Instant Rate</Text>
-              <Text ml={4}>Rs. {data?.instant_amount ?? "-"}</Text>
-            </Flex>
-            <Flex>
-              <Text width={"40%"}>Schedule Rate</Text>
-              <Text ml={4}>Rs. {data?.schedule_amount ?? "-"}</Text>
-            </Flex>
+            {rateDetails.map(rateDetail => (
+              <Flex my={2} key={rateDetail.rateType}>
+                <Text width={"40%"}>{rateDetail.rateType}</Text>
+                <Text ml={4}>Rs. {rateDetail.rate ?? "-"}</Text>
+              </Flex>
+            ))}
           </Box>
         ) : (
           <Text color={isPending ? colors.green_button : ""}>

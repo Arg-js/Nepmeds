@@ -46,7 +46,7 @@ const AvailabilitySection = ({
           // isMorning === false ---> ie. time > 12:00
           const isMorning = +data?.from_time.split(":")[0] <= 11;
 
-          if (isMorning || !isMorningBlock) {
+          if (isMorning === isMorningBlock) {
             return (
               <Button
                 variant={"primaryOutlineFilled"}
