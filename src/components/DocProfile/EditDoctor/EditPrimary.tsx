@@ -496,7 +496,7 @@ const EditPrimary = ({
               <GridItem colSpan={1}>
                 <AspectRatio ratio={16 / 7}>
                   <Image
-                    src={getImageUrl(String(doctorProfileData?.id_front_image))}
+                    src={getImageUrl(String(doctorProfileData?.id_back_image))}
                     objectFit="cover"
                   />
                 </AspectRatio>
