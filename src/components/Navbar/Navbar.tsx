@@ -1,6 +1,6 @@
 import {
   Avatar,
-  Box,
+  Flex,
   HStack,
   Menu,
   MenuButton,
@@ -16,8 +16,14 @@ import { colors } from "@nepMeds/theme/colors";
 
 import { useProfileData } from "@nepMeds/context/index";
 import { Link, useLocation } from "react-router-dom";
+import { HamburgerMenuIcon } from "@nepMeds/assets/svgs";
+import { Dispatch, SetStateAction } from "react";
 
-const Navbar = () => {
+const Navbar = ({
+  setSidebarCollapsed,
+}: {
+  setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
+}) => {
   const logoutAction = useLogoutMutation();
   const logout = () => {
     logoutAction.mutate();
@@ -31,24 +37,31 @@ const Navbar = () => {
     <>
       <Stack p={"15px 21px"} background="white">
         <HStack justify={"space-between"} alignItems={"center"}>
-          <Text
-            fontWeight={"500"}
-            fontSize={"xl"}
-            color={colors.black_60}
-            textTransform={"capitalize"}
-          >
-            {pathname
-              ? pathname.split("/")[1].replaceAll("-", " ")
-              : "Dashboard"}
-          </Text>
+          <Flex alignItems={"center"} gap={4}>
+            <HamburgerMenuIcon
+              cursor={"pointer"}
+              onClick={() => setSidebarCollapsed((prev: boolean) => !prev)}
+            />
+
+            <Text
+              fontWeight={"500"}
+              fontSize={"xl"}
+              color={colors.black_60}
+              textTransform={"capitalize"}
+            >
+              {/* TODO: keep this in utils */}
+              {pathname
+                ? pathname.split("/")[1].replaceAll("-", " ")
+                : "Dashboard"}
+            </Text>
+          </Flex>
+
           <HStack justifyContent={"end"}>
-            <Box px={"2"}>
-              <Notification
-                size="large"
-                set="bulk"
-                primaryColor={colors.blue_100}
-              />
-            </Box>
+            <Notification
+              size="large"
+              set="bulk"
+              primaryColor={colors.blue_100}
+            />
 
             <Menu>
               <MenuButton
@@ -72,7 +85,8 @@ const Navbar = () => {
                   rounded="lg"
                 />
               </MenuButton>
-              <MenuList>
+              {/* TODO: UPDATE THIS UI fix*/}
+              <MenuList minWidth="240px">
                 <MenuItem as={Link} to={"/doctor-profile"}>
                   Profile
                 </MenuItem>

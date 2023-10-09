@@ -106,11 +106,11 @@ HttpClient.interceptors.response.use(
           });
         } catch (_error) {
           TokenService.clearToken();
+          // location.href = "/login";
           return Promise.reject(_error);
         }
       }
     }
-    // location.href = "/login";
     return Promise.reject(error.response);
   }
 );

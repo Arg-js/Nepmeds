@@ -10,7 +10,7 @@ const Wrapper = ({ children, title, subtitle }: IWrapper) => {
       alignItems="center"
       justifyContent="center"
       direction="column"
-      w={443}
+      w={"auto"}
       margin="0 auto"
       p={8}
       gap={12}

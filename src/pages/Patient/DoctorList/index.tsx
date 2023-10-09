@@ -100,6 +100,33 @@ const DoctorList = () => {
     });
   // REACT QUERIES END
 
+  const genderFiltersRef = useRef<HTMLInputElement[]>([]);
+  const specializationFiltersRef = useRef<HTMLInputElement[]>([]);
+  const symptomFiltersRef = useRef<HTMLInputElement[]>([]);
+  const dateFromRef = useRef<HTMLInputElement>(null);
+  const dateToRef = useRef<HTMLInputElement>(null);
+
+  const filterParams = {
+    setGender,
+    setSpecialization,
+    setSymptom,
+    setSearchValue,
+    setDateParams,
+  };
+
+  const referenceParams = {
+    genderFiltersRef,
+    specializationFiltersRef,
+    symptomFiltersRef,
+    dateFromRef,
+    dateToRef,
+  };
+
+  const paginationParams = {
+    setPageParams,
+    pageParams,
+  };
+
   return (
     <>
       <Header onClick={onOpen} btnRef={btnRef} />
@@ -144,14 +171,10 @@ const DoctorList = () => {
               display={{ base: "none", md: "grid" }}
             >
               <DoctorListFilter
-                setGender={setGender}
-                setSpecialization={setSpecialization}
-                setSymptom={setSymptom}
-                setSearchValue={setSearchValue}
-                setDateParams={setDateParams}
+                filterParams={filterParams}
+                paginationParams={paginationParams}
+                reference={referenceParams}
                 dateParams={dateParams}
-                setPageParams={setPageParams}
-                pageParams={pageParams}
               />
             </GridItem>
 
@@ -188,7 +211,6 @@ const DoctorList = () => {
                       );
                     })}
                   {doctorData && doctorData.count > 5 && (
-                    // TODO: discuss with UI for pagination in mobile view
                     <Box display={{ base: "block" }}>
                       <Pagination
                         enabled={true}
@@ -236,14 +258,10 @@ const DoctorList = () => {
           <DrawerHeader>Filter</DrawerHeader>
           <DrawerBody overflowY={"auto"}>
             <DoctorListFilter
-              setGender={setGender}
-              setSpecialization={setSpecialization}
-              setSymptom={setSymptom}
-              setSearchValue={setSearchValue}
-              setDateParams={setDateParams}
+              filterParams={filterParams}
+              paginationParams={paginationParams}
+              reference={referenceParams}
               dateParams={dateParams}
-              setPageParams={setPageParams}
-              pageParams={pageParams}
             />
           </DrawerBody>
         </DrawerContent>
