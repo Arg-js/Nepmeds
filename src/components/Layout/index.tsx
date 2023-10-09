@@ -1,11 +1,11 @@
-import { Box, Grid, GridItem, Spinner } from "@chakra-ui/react";
+import { Grid, GridItem, Spinner } from "@chakra-ui/react";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import AuthDataProvider from "@nepMeds/context/AuthDataContext";
 import { useProfileData } from "@nepMeds/context/index";
 import useShouldHideNavBar from "@nepMeds/hooks/useShouldHideNavBar";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import Navbar from "../Navbar/Navbar";
 import Sidebar from "../Sidebar/Sidebar";
@@ -22,11 +22,13 @@ const LayoutComponent = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   const hideNav = useShouldHideNavBar();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   useEffect(() => {
     if (profileData?.data) {
       if (
         profileData?.data?.is_doctor &&
+        // TODO: convert enum to string
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
         navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED, {
@@ -59,19 +61,24 @@ const LayoutComponent = () => {
             ? `"side nav"`
             : `"nav"`
         }
+        // TODO: fix this logic
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? "296px 1fr"
+            ? !sidebarCollapsed
+              ? "78px 1fr"
+              : // "minmax(78px 236px) 1fr"
+                "225px 1fr"
             : "1fr"
         }
         gap="1"
-        overflowX={"hidden"}
+        // overflowX={"hidden"}
       >
-        <GridItem area={"side"}>
+        {/* TODO: remove this code after QA testing approval */}
+        {/* <GridItem area={"side"}>
           <Sidebar />
-        </GridItem>
-        {profileData?.data?.is_superuser ? (
+        </GridItem> */}
+        {/* {profileData?.data?.is_superuser ? (
           <GridItem area={"side"}>
             <Sidebar />
           </GridItem>
@@ -83,13 +90,20 @@ const LayoutComponent = () => {
               <Sidebar />
             </GridItem>
           )
+        )} */}
+
+        {(profileData?.data?.is_superuser ||
+          (profileData?.data?.is_doctor &&
+            profileData?.data?.doctor?.status ===
+              STATUSTYPE.approved.toString())) && (
+          <GridItem area={"side"}>
+            <Sidebar sidebarCollapsed={sidebarCollapsed} />
+          </GridItem>
         )}
 
         <GridItem bg={colors.bg} area={"nav"}>
-          {!hideNav && <Navbar />}
-          <Box>
-            <Outlet />
-          </Box>
+          {!hideNav && <Navbar setSidebarCollapsed={setSidebarCollapsed} />}
+          <Outlet />
         </GridItem>
       </Grid>
     </AuthDataProvider>

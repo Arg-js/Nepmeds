@@ -14,7 +14,7 @@ import {
 import FormControl from "@nepMeds/components/Form/FormControl";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
-import ReadMoreComponent from "@nepMeds/components/ReadMore";
+import ReadMore from "@nepMeds/components/ReadMore";
 import {
   IPatientAppointmentBasicDetails,
   useCreatePatientAppointment,
@@ -214,11 +214,15 @@ const DoctorDetails: React.FC<{
                       justifyContent={"flex-start"}
                       gap={1}
                       px={4}
+                      wordBreak={"break-all"}
                     >
                       <Text fontWeight={700} fontSize={"13px"}>
                         About
                       </Text>
-                      <ReadMoreComponent bio_detail={doctorInfo?.bio_detail} />
+                      <ReadMore
+                        bio_detail={doctorInfo?.bio_detail}
+                        maxWords={20}
+                      />
                     </Flex>
                     <Flex
                       bg={colors.sky_blue}
@@ -579,6 +583,7 @@ const DoctorDetails: React.FC<{
           )}
         </form>
       ) : (
+        // INITIAL STATE WHEN NO DOCTOR IS SELECTED
         <WrapperBox
           backgroundColor={colors.white}
           border={`2px solid ${colors.gray_border}`}

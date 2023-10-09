@@ -83,10 +83,11 @@ const reset = defineStyle({
 const round = defineStyle({
   ...baseStyles,
   px: 0,
-  fontSize: "22px",
+  fontSize: { base: "20px", md: "22px" },
   borderRadius: "50%",
-  width: "40px",
-  height: "40px",
+  minWidth: "30px",
+  width: { base: "30px", md: "40px" },
+  height: { base: "30px", md: "40px" },
   lineHeight: "40px",
   _hover: primaryHoverState,
 });
