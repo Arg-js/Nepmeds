@@ -22,7 +22,7 @@ const LayoutComponent = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   const hideNav = useShouldHideNavBar();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
 
   useEffect(() => {
     if (profileData?.data) {
@@ -61,18 +61,16 @@ const LayoutComponent = () => {
             ? `"side nav"`
             : `"nav"`
         }
-        // TODO: fix this logic
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? !sidebarCollapsed
+            ? sidebarCollapsed
               ? "78px 1fr"
               : // "minmax(78px 236px) 1fr"
-                "225px 1fr"
+                "205px 1fr"
             : "1fr"
         }
         gap="1"
-        // overflowX={"hidden"}
       >
         {/* TODO: remove this code after QA testing approval */}
         {/* <GridItem area={"side"}>

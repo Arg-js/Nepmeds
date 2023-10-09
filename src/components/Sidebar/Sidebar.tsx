@@ -141,11 +141,12 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       <Image
         src={
           // TODO: consult with UI/UX for design update
-          window.innerWidth >= 768 && sidebarCollapsed
-            ? images?.logo
-            : images?.smallLogo
+          !sidebarCollapsed ? images?.logo : images?.smallLogo
         }
         alt="logo"
+        height={sidebarCollapsed ? "60px" : "auto"}
+        width={sidebarCollapsed ? "60px" : "180px"}
+        alignSelf={"center"}
       />
       <List>
         {menuOptions?.map((sidebarOption: ISidebarOption) => {
