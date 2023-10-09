@@ -3,6 +3,7 @@ export {
   pendingColumns,
   registeredColumns,
   rejectedColumns,
+  columns,
 } from "./doctorColumn";
 export {
   allPaymentColumn,
