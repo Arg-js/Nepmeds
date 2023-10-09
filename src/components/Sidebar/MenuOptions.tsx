@@ -156,7 +156,7 @@ const MenuOption = ({
                 size={20}
               />
               {/* TODO: need to reload page for the calculation to happen */}
-              {window.innerWidth >= 768 && sidebarCollapsed && (
+              {!sidebarCollapsed && (
                 <Text
                   fontWeight={"400"}
                   fontSize={"sm"}
