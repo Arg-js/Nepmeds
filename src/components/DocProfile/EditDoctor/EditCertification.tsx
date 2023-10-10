@@ -219,7 +219,7 @@ const EditCertification = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       w={"100px"}
                     >
                       NMC Number
@@ -244,7 +244,7 @@ const EditCertification = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       w={"90px"}
                     >
                       Issued Date
@@ -269,7 +269,7 @@ const EditCertification = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       w={"100px"}
                     >
                       Expiry Date
@@ -295,7 +295,7 @@ const EditCertification = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       w={"100px"}
                     >
                       NMC File:

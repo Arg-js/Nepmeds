@@ -1,4 +1,4 @@
-import DoctorsList from "@nepMeds/components/Table/Doctor/DoctorsList";
+import DoctorsList from "@nepMeds/components/Table/Doctor";
 
 const AllDoctors = () => {
   return <DoctorsList />;

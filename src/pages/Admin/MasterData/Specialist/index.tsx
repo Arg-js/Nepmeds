@@ -51,7 +51,7 @@ const defaultValues = {
 const schema = yup.object().shape({
   name: yup
     .string()
-    .required("Specialist name is required!")
+    .required("Specialization is required!")
 
     .max(30, "Specialist name can be 30 characters long"),
   image: yup.string().required("Image is required"),

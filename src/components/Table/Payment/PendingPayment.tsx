@@ -84,6 +84,12 @@ const PendingPayment = ({
     payment_status: "2",
   });
 
+  const defaultValues = {
+    Specialization: "",
+    toDate: "",
+    fromDate: "",
+  };
+
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
@@ -92,14 +98,13 @@ const PendingPayment = ({
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.rejected,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   const onActionClick = async (
@@ -141,10 +146,6 @@ const PendingPayment = ({
             >
               Reset
             </Button>
-
-            <Button variant={"primaryOutline"} w={"150px"}>
-              Cancel
-            </Button>
             <Button w={"150px"} onClick={() => handleFilter(false)}>
               Done
             </Button>
@@ -154,7 +155,7 @@ const PendingPayment = ({
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
             <Select
-              placeholder="select specialization"
+              placeholder="Select Specialization"
               label="Specialization"
               name="Specialization"
               required
@@ -212,7 +213,7 @@ const PendingPayment = ({
                 )}
                 isLoading={rejectLoading}
               >
-                Done
+                Filter
               </Button>
             </HStack>
           }

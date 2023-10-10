@@ -305,7 +305,7 @@ const EditExperience = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"180px"}
                           >
                             Hospital/ Clinic Name
@@ -329,7 +329,7 @@ const EditExperience = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"50px"}
                           >
                             From
@@ -358,7 +358,7 @@ const EditExperience = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                           >
                             Currently Working
                           </Text>
@@ -369,7 +369,7 @@ const EditExperience = ({
                               fontSize={"sm"}
                               lineHeight={"16px"}
                               letterSpacing={"0.4px"}
-                              color={"#4D4D4D"}
+                              color={colors.grey_100}
                               w={"20px"}
                             >
                               To
@@ -396,7 +396,7 @@ const EditExperience = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Document
@@ -411,7 +411,7 @@ const EditExperience = ({
                           >
                             :&nbsp;
                             {singleExperience?.experience_document?.length ===
-                              1 ? (
+                            1 ? (
                               <>
                                 {singleExperience?.experience_document?.length}
                                 &nbsp; Image

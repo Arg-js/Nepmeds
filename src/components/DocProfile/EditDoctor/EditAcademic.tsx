@@ -87,7 +87,7 @@ const EditAcademic = ({
               file: file,
             })
           ),
-        }
+        };
 
         const partialData: Partial<{
           doctor: number;
@@ -117,8 +117,6 @@ const EditAcademic = ({
             isSubmitted: boolean;
           }
         );
-
-
       }
 
       if (doctorProfileData?.doctor_academic_info?.length === 0) {
@@ -222,7 +220,7 @@ const EditAcademic = ({
             <VStack bg={colors.grey_90}>
               {loading && <Spinner />}
               {!loading &&
-                doctorProfileData?.doctor_academic_info?.length === 0 ? (
+              doctorProfileData?.doctor_academic_info?.length === 0 ? (
                 <>No Images Found!</>
               ) : (
                 showImagesIndexWise?.(
@@ -302,7 +300,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Degree
@@ -322,7 +320,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Passed Year
@@ -346,7 +344,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             College/ Uni
@@ -357,7 +355,9 @@ const EditAcademic = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleAcademicInfo?.other_university || singleAcademicInfo?.university_name}
+                            :&nbsp;
+                            {singleAcademicInfo?.other_university ||
+                              singleAcademicInfo?.university_name}
                           </Text>
                         </Box>
                         <Box display={"flex"} alignItems={"center"} gap={3}>
@@ -366,7 +366,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Tole
@@ -390,7 +390,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Major
@@ -410,7 +410,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Document
@@ -425,7 +425,7 @@ const EditAcademic = ({
                           >
                             :&nbsp;
                             {singleAcademicInfo?.academic_document?.length ===
-                              1 ? (
+                            1 ? (
                               <>
                                 {singleAcademicInfo?.academic_document?.length}
                                 &nbsp; Image
