@@ -1,6 +1,5 @@
 import { Grid, GridItem, Flex } from "@chakra-ui/react";
-import Skeleton from "@nepMeds/components/Skeleton";
-import SkeletonText from "@nepMeds/components/Table/Doctor/ndex";
+import { Skeleton, SkeletonText } from "@nepMeds/components/Loader";
 
 const DoctorCardSkeleton = () => {
   return (

@@ -1,6 +1,6 @@
 import { Button, Flex, FormLabel, Text } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import Skeleton from "@nepMeds/components/Skeleton";
+import { Skeleton } from "@nepMeds/components/Loader";
 import { IAvailability } from "@nepMeds/service/nepmeds-patient-doctorList";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
