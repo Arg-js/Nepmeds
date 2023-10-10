@@ -45,7 +45,7 @@ const schema = yup.object().shape({
 });
 
 const defaultValues = {
-  Specialization: "",
+  specialization: "",
   toDate: "",
   fromDate: "",
 };
@@ -113,7 +113,7 @@ const PendingDocList = ({
         status: type || "",
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
-        specialization: formMethods.getValues("Specialization"),
+        specialization: formMethods.getValues("specialization"),
       });
       onModalClose();
     } else {
@@ -173,7 +173,7 @@ const PendingDocList = ({
               <Select
                 placeholder="Select Specialization"
                 label="Specialization"
-                name="Specialization"
+                name="specialization"
                 required
                 register={formMethods.register}
                 options={specializationList ?? []}
