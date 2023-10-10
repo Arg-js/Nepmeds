@@ -1,4 +1,6 @@
-import { Flex, Skeleton, Divider, SkeletonText } from "@chakra-ui/react";
+import { Flex, Skeleton as ChakraSkeleton, Divider } from "@chakra-ui/react";
+import Skeleton from "@nepMeds/components/Skeleton";
+import SkeletonText from "@nepMeds/components/Table/Doctor/ndex";
 
 const ViewModalSkeleton = () => {
   return (
@@ -7,7 +9,11 @@ const ViewModalSkeleton = () => {
         {Array.from({ length: 2 }, (_, i) => (
           <Flex flex={1} gap={4} direction={"column"} key={i}>
             {Array.from({ length: 2 }, (_, i) => (
-              <Skeleton height={"8px"} width={i ? "80%" : "50%"} key={i} />
+              <ChakraSkeleton
+                height={"8px"}
+                width={i ? "80%" : "50%"}
+                key={i}
+              />
             ))}
           </Flex>
         ))}
@@ -16,15 +22,13 @@ const ViewModalSkeleton = () => {
       <Flex gap={4} direction={"column"}>
         <Skeleton height={"8px"} width={"30%"} />
         <Flex gap={2}>
-          {Array.from({ length: 5 }, (_, i) => (
-            <Skeleton height={"8px"} width={"10%"} key={i} />
-          ))}
+          <Skeleton height={"8px"} width={"10%"} length={5} />
         </Flex>
       </Flex>
       <Divider />
       <Flex gap={4} direction={"column"}>
         <Skeleton height={"8px"} width={"30%"} />
-        <SkeletonText noOfLines={4} spacing="4" skeletonHeight="2" />
+        <SkeletonText noOfLines={4} />
       </Flex>
     </Flex>
   );

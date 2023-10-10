@@ -1,4 +1,6 @@
-import { Grid, GridItem, Skeleton, SkeletonText, Flex } from "@chakra-ui/react";
+import { Grid, GridItem, Flex } from "@chakra-ui/react";
+import Skeleton from "@nepMeds/components/Skeleton";
+import SkeletonText from "@nepMeds/components/Table/Doctor/ndex";
 
 const DoctorCardSkeleton = () => {
   return (
@@ -9,18 +11,11 @@ const DoctorCardSkeleton = () => {
       <GridItem colSpan={3} m={4}>
         <Grid templateColumns="repeat(2, 1fr)" gap={5}>
           <GridItem colSpan={2}>
-            <SkeletonText noOfLines={2} spacing="4" skeletonHeight="2" />
+            <SkeletonText />
           </GridItem>
           <GridItem colStart={1}>
             <Flex direction="column" gap={3}>
-              {Array.from({ length: 2 }, (_, index) => (
-                <SkeletonText
-                  key={index}
-                  noOfLines={2}
-                  spacing="4"
-                  skeletonHeight="2"
-                />
-              ))}
+              <SkeletonText length={2} />
             </Flex>
           </GridItem>
         </Grid>
