@@ -300,7 +300,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Degree
@@ -320,7 +320,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Passed Year
@@ -344,7 +344,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             College/ Uni
@@ -366,7 +366,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Tole
@@ -390,7 +390,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Major
@@ -410,7 +410,7 @@ const EditAcademic = ({
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
-                            color={"#4D4D4D"}
+                            color={colors.grey_100}
                             w={"94px"}
                           >
                             Document
