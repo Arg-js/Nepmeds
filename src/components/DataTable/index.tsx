@@ -156,6 +156,7 @@ export function DataTable({
             <Progress size="xs" isIndeterminate />
           </Box>
         )}
+
         <Table bg="white">
           <Thead>
             {table.getHeaderGroups().map(headerGroup => (
@@ -206,6 +207,7 @@ export function DataTable({
               </Tr>
             ))}
           </Thead>
+
           {!!data.length && (
             <Tbody>
               {table.getRowModel().rows.map(row => (
@@ -261,6 +263,7 @@ export function DataTable({
                 </Select>
               </FormControl>
             </HStack>
+
             {pagination?.pageCount && pagination?.pageCount > 1 && (
               <Pagination
                 isBackendPaginated={true}
