@@ -67,16 +67,9 @@ const schema = Yup.object({
 const DoctorDetails: React.FC<{
   doctorInfo: IDoctorListById | undefined;
   isFetching: boolean;
-  isAvailabilityFetching: boolean;
   availability: IAvailability[] | undefined;
   setTargeDate: Dispatch<SetStateAction<string>>;
-}> = ({
-  doctorInfo,
-  availability,
-  isFetching,
-  isAvailabilityFetching,
-  setTargeDate,
-}) => {
+}> = ({ doctorInfo, availability, isFetching, setTargeDate }) => {
   const isAuthenticated = TokenService.isAuthenticated();
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
@@ -273,7 +266,7 @@ const DoctorDetails: React.FC<{
                       />
                     </Flex>
                     <Box>
-                      {isAvailabilityFetching ? (
+                      {isFetching ? (
                         <Box textAlign={"center"}>
                           <Spinner />
                         </Box>
@@ -311,7 +304,7 @@ const DoctorDetails: React.FC<{
                           ))}
                         </SimpleGrid>
                       )}
-                      {!isAvailabilityFetching && (
+                      {!isFetching && (
                         <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
                           {!availability?.length
                             ? "This doctor is not available on this date, choose another date"

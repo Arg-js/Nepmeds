@@ -234,8 +234,7 @@ const DoctorList = () => {
               <DoctorDetailsSection
                 doctorInfo={doctorInfo}
                 availability={availability}
-                isAvailabilityFetching={isAvailabilityFetching}
-                isFetching={isFetching}
+                isFetching={isFetching || isAvailabilityFetching}
                 setTargeDate={setTargeDate}
               />
             </GridItem>
