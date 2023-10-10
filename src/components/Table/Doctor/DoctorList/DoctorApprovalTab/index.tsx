@@ -301,7 +301,7 @@ const PendingDocList = ({
       )}
 
       <HStack justifyContent="space-between">
-        {showFilter && <Text fontWeight="medium">Pending Doctors</Text>}
+        {showFilter && <Text fontWeight="medium">{heading}</Text>}
 
         {showFilter && (
           <HStack>
