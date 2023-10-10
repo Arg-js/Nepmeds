@@ -22,7 +22,7 @@ export interface ISidebarOption {
   text: string;
   link: string;
   isOpenable?: boolean;
-  data?: { link: string; text: string }[];
+  data?: { link: string; text: string; icon?: React.ElementType }[];
 }
 const sidebarOptions: ISidebarOption[] = [
   {
@@ -87,10 +87,12 @@ const AdminSidebarOptions: ISidebarOption[] = [
       {
         text: "Registration",
         link: "/doctor-list/registration",
+        icon: Document,
       },
       {
         text: "Rate",
         link: "/doctor-list/payment",
+        icon: Wallet,
       },
     ],
   },
@@ -115,7 +117,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
   {
     icon: Call,
     set: "light",
-    text: "Instant Consult Request",
+    text: "Instant Consult",
     link: "/instant-consult-request",
   },
 ];
