@@ -3,6 +3,8 @@ import {
   Button,
   Card,
   Flex,
+  Grid,
+  GridItem,
   Image,
   SimpleGrid,
   Text,
@@ -52,21 +54,21 @@ const DashboardBody = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   return (
-    <Box>
+    <Box m={4}>
       {profileData?.data?.is_doctor &&
         !profileData?.data?.doctor?.set_payment_status && (
           <Flex
             width={"99%"}
             bg={colors.dimmed_red}
-            h={"70px"}
-            // alignItems={"start"}
+            h={"auto"}
             borderRadius={"16px"}
-            p={"10px"}
-            m={"10px"}
+            px={"2"}
+            py={"1"}
+            m={"4"}
             justifyContent={"space-between"}
             alignItems={"center"}
           >
-            <Text color={colors.red} fontSize={"md"} justifyContent={"center"}>
+            <Text color={colors.red} fontSize={"sm"} justifyContent={"center"}>
               Congratulations on the successful verification of your profile! To
               fully utilize our platform`s functionality, please set an
               estimated charge for appointments by{" "}
@@ -82,11 +84,7 @@ const DashboardBody = () => {
           </Flex>
         )}
 
-      <SimpleGrid
-        spacing={8}
-        templateColumns="repeat(4, 1fr)"
-        margin={"28px 19px 20px"}
-      >
+      <SimpleGrid spacing={8} minChildWidth="252px" my={"28px"}>
         {dashboardDatas.map(dashboardData => {
           return (
             <Card
@@ -97,46 +95,46 @@ const DashboardBody = () => {
               padding={"20px"}
               height={"96px"}
             >
-              <Box>
-                <Flex>
-                  <Box>
-                    <Image src={dashboardData?.path} />
-                  </Box>
-                  <Box pl={"18px"}>
-                    <Text
-                      fontWeight={"500"}
-                      fontSize={"sm"}
-                      lineHeight={"24px"}
-                      letterSpacing={"-0.02em"}
-                      color={colors?.primary_blue}
-                    >
-                      {dashboardData?.title}
-                    </Text>
+              <Flex gap={2}>
+                <Image src={dashboardData?.path} />
+                <Box>
+                  <Text
+                    fontSize={"sm"}
+                    fontWeight={"500"}
+                    color={colors?.primary_blue}
+                  >
+                    {dashboardData?.title}
+                  </Text>
 
-                    <Text
-                      fontSize={"2xl"}
-                      fontWeight={"600"}
-                      lineHeight={"32px"}
-                      color={colors?.gray_700}
-                    >
-                      {dashboardData?.no}
-                    </Text>
-                  </Box>
-                </Flex>
-              </Box>
+                  <Text
+                    fontSize={"2xl"}
+                    fontWeight={"600"}
+                    color={colors?.gray_700}
+                  >
+                    {dashboardData?.no}
+                  </Text>
+                </Box>
+              </Flex>
             </Card>
           );
         })}
       </SimpleGrid>
+      <Grid templateColumns={"repeat(2, 1fr)"}>
+        <GridItem></GridItem>
+        <GridItem justifySelf={"flex-end"}>
+          <Calendar className={"react-calendar"} />
+        </GridItem>
+      </Grid>
       <Box
         borderRadius={"12px"}
         marginRight={"20px"}
         display={"flex"}
         justifyContent={"flex-end"}
-      >
-        <Calendar className={"react-calendar"} />
-      </Box>
+      ></Box>
+
+      {/* ADMIN */}
       {profileData?.data?.is_superuser && (
+        // TODO: check the wrapper
         <WrapperBox
           style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
         >

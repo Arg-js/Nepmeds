@@ -1,19 +1,8 @@
-import {
-  Box,
-  Flex,
-  Image,
-  List,
-  ListItem,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Flex, Image, List } from "@chakra-ui/react";
 import {
   Calendar,
   Call,
   Category,
-  ChevronDown,
-  ChevronUp,
-  // Logout,
   Paper,
   TimeCircle,
   Wallet,
@@ -24,14 +13,10 @@ import {
 
 import { images } from "@nepMeds/assets/images";
 import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
-import { colors } from "@nepMeds/theme/colors";
-import { useState } from "react";
-import { NavLink, useMatch, useResolvedPath } from "react-router-dom";
-import { useProfileData } from "@nepMeds/context/index";
-// import { STATUSTYPE } from "@nepMeds/config/enum";
+import MenuOption from "@nepMeds/components/Sidebar/MenuOptions";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
-interface ISidebarOption {
+export interface ISidebarOption {
   icon: React.ElementType;
   set: IconSet;
   text: string;
@@ -135,166 +120,14 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 ];
 
-const MenuOption = ({ sidebarOption }: { sidebarOption: any }) => {
-  const [isActive, setIsActive] = useState(false);
-
-  const isActiveFn = (to: string) => {
-    const resolved = useResolvedPath(to);
-    const match = useMatch({ path: resolved.pathname, end: true });
-    return match;
-  };
-
-  //  USER DATA
-  const userInfo = useProfileData();
-  //  destructure userInfo data
-  const isAdmin = userInfo?.data?.is_superuser;
-  const isDoctor = userInfo?.data?.is_doctor;
-  const isPayment = userInfo?.data?.doctor?.set_payment_status;
-  const payment_status = userInfo?.data?.doctor?.payment_status;
-
-  //  check side bar role
-  const checkSideBarRole = ({
-    isAdmin,
-    isDoctor,
-    isPayment,
-    payment_status,
-    text,
-  }: {
-    isAdmin: boolean | undefined;
-    isDoctor: boolean | undefined;
-    isPayment: boolean | undefined;
-    payment_status: string | undefined;
-    text: string;
-  }) => {
-    if (isAdmin) return true;
-    if (isDoctor && isPayment && payment_status === "1") return true;
-    if (text === "Dashboard" || text === "Payment") return true;
-    return false;
-  };
-
-  return (
-    <Box key={sidebarOption.text.trim()}>
-      {sidebarOption?.isOpenable ? (
-        <>
-          <ListItem
-            display={"flex"}
-            alignItems={"center"}
-            height="56px"
-            pl={4}
-            borderRadius={12}
-            _activeLink={{
-              background: colors.blue_100,
-              color: colors.white,
-            }}
-            style={
-              isActiveFn("/doctor-list/*")
-                ? {
-                    background: colors.blue_100,
-                    color: colors.white,
-                  }
-                : {}
-            }
-            _hover={{ cursor: "pointer" }}
-            onClick={() => setIsActive(!isActive)}
-          >
-            <sidebarOption.icon
-              set={sidebarOption.set}
-              color={
-                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
-              }
-              size={20}
-            />
-            <Text
-              fontWeight={"400"}
-              fontSize={"sm"}
-              lineHeight={"17px"}
-              color={
-                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
-              }
-              ml={"18px"}
-              w="140px"
-            >
-              {sidebarOption?.text}
-            </Text>
-            {isActive ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </ListItem>
-          {isActive && (
-            <Flex flexDirection={"column"} gap={6} my={3}>
-              {sidebarOption?.data?.map((item: any) => (
-                <Text
-                  as={NavLink}
-                  to={item?.link}
-                  key={item?.text}
-                  fontWeight={"400"}
-                  fontSize={"sm"}
-                  lineHeight={"17px"}
-                  color={colors?.black_50}
-                  ml={"50px"}
-                  w="140px"
-                  _activeLink={{
-                    color: colors.blue_100,
-                  }}
-                >
-                  {item?.text}
-                </Text>
-              ))}
-            </Flex>
-          )}
-        </>
-      ) : (
-        <>
-          {checkSideBarRole({
-            isAdmin,
-            isDoctor,
-            isPayment,
-            payment_status,
-            text: sidebarOption?.text,
-          }) && (
-            <ListItem
-              display={"flex"}
-              alignItems={"center"}
-              as={NavLink}
-              height="56px"
-              pl={4}
-              borderRadius={12}
-              _activeLink={{
-                background: colors.blue_100,
-                color: colors.white,
-              }}
-              to={sidebarOption.link}
-            >
-              <sidebarOption.icon
-                set={sidebarOption.set}
-                color={colors?.black_50}
-                size={20}
-              />
-              <Text
-                fontWeight={"400"}
-                fontSize={"sm"}
-                lineHeight={"17px"}
-                color={colors?.black_50}
-                ml={"18px"}
-                w="140px"
-              >
-                {sidebarOption?.text}
-              </Text>
-            </ListItem>
-          )}
-        </>
-      )}
-    </Box>
-  );
-};
-
-const Sidebar = () => {
+const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
   const { data: userInfo } = useLoginTokenDetailQuery();
 
   const menuOptions =
     (userInfo?.is_superuser ? AdminSidebarOptions : sidebarOptions) || [];
 
   return (
-    <Box
-      w={"300px"}
+    <Flex
       display="flex"
       flexDirection="column"
       h="100vh"
@@ -302,23 +135,30 @@ const Sidebar = () => {
       px={3.75}
       background="white"
       position="fixed"
-      justifyContent="space-between"
+      gap={6}
+      zIndex={1}
     >
-      <Stack>
-        <Image mb={"47px"} src={images?.logo} alt="nepmeds logo" h={65} />
-        <Box p={"0 8px"}>
-          <List pl={3}>
-            {menuOptions?.map((sidebarOption: any) => {
-              return (
-                <MenuOption
-                  key={sidebarOption.text}
-                  sidebarOption={sidebarOption}
-                />
-              );
-            })}
-          </List>
-        </Box>
-      </Stack>
+      <Image
+        src={
+          // TODO: consult with UI/UX for design update
+          !sidebarCollapsed ? images?.logo : images?.smallLogo
+        }
+        alt="logo"
+        height={sidebarCollapsed ? "60px" : "auto"}
+        width={sidebarCollapsed ? "60px" : "180px"}
+        alignSelf={"center"}
+      />
+      <List>
+        {menuOptions?.map((sidebarOption: ISidebarOption) => {
+          return (
+            <MenuOption
+              key={sidebarOption.text}
+              sidebarOption={sidebarOption}
+              sidebarCollapsed={sidebarCollapsed}
+            />
+          );
+        })}
+      </List>
       {/* <Box
         display="flex"
         gap={3}
@@ -332,7 +172,7 @@ const Sidebar = () => {
         <Icon as={Logout} fontSize={20} color={colors.error} />
         <span>Logout</span>
       </Box> */}
-    </Box>
+    </Flex>
   );
 };
 

@@ -585,7 +585,7 @@ const RegistrationForm = () => {
   const { content } = steps[activeStep];
 
   return (
-    <Container maxW={"container.xl"} m="auto">
+    <Container maxW={"container.2xl"} m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
           <HStack pt={8} spacing={0} alignItems="flex-start">
