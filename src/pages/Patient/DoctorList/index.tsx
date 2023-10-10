@@ -231,15 +231,12 @@ const DoctorList = () => {
               colSpan={{ base: 1, lg: 4 }}
               display={{ base: "none", lg: "grid" }}
             >
-              <Box>
-                <DoctorDetailsSection
-                  doctorInfo={doctorInfo}
-                  availability={availability}
-                  isAvailabilityFetching={isAvailabilityFetching}
-                  isFetching={isFetching}
-                  setTargeDate={setTargeDate}
-                />
-              </Box>
+              <DoctorDetailsSection
+                doctorInfo={doctorInfo}
+                availability={availability}
+                isFetching={isFetching || isAvailabilityFetching}
+                setTargeDate={setTargeDate}
+              />
             </GridItem>
             {/* Doctor detail section ends */}
           </Grid>

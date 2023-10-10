@@ -46,7 +46,7 @@ const LoginForm = () => {
   };
 
   return (
-    <form style={{ width: "100%" }} onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <VStack gap={7} mb={3}>
         <Input
           alignItems={"center"}
