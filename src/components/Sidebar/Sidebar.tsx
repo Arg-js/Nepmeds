@@ -16,13 +16,15 @@ import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import MenuOption from "@nepMeds/components/Sidebar/MenuOptions";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
-export interface ISidebarOption {
-  icon: React.ElementType;
-  set: IconSet;
-  text: string;
+interface ISidebarItem {
   link: string;
+  text: string;
+  icon: React.ElementType;
+}
+export interface ISidebarOption extends ISidebarItem {
+  set: IconSet;
   isOpenable?: boolean;
-  data?: { link: string; text: string }[];
+  child?: ISidebarItem[];
 }
 const sidebarOptions: ISidebarOption[] = [
   {
@@ -83,14 +85,16 @@ const AdminSidebarOptions: ISidebarOption[] = [
     text: "Doctors",
     link: "/doctor-list",
     isOpenable: true,
-    data: [
+    child: [
       {
         text: "Registration",
         link: "/doctor-list/registration",
+        icon: Document,
       },
       {
         text: "Rate",
         link: "/doctor-list/payment",
+        icon: Wallet,
       },
     ],
   },
@@ -115,7 +119,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
   {
     icon: Call,
     set: "light",
-    text: "Instant Consult Request",
+    text: "Instant Consult",
     link: "/instant-consult-request",
   },
 ];
@@ -139,13 +143,10 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       zIndex={1}
     >
       <Image
-        src={
-          // TODO: consult with UI/UX for design update
-          !sidebarCollapsed ? images?.logo : images?.smallLogo
-        }
+        src={!sidebarCollapsed ? images?.logo : images?.smallLogo}
         alt="logo"
-        height={sidebarCollapsed ? "60px" : "auto"}
-        width={sidebarCollapsed ? "60px" : "180px"}
+        height={sidebarCollapsed ? "40px" : "auto"}
+        width={sidebarCollapsed ? "50px" : "180px"}
         alignSelf={"center"}
       />
       <List>

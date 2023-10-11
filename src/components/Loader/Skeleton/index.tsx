@@ -1,7 +1,7 @@
 import { Skeleton as ChakraSkeleton } from "@chakra-ui/react";
 import { ISkeleton } from "..";
 
-const Skeleton: React.FC<ISkeleton> = ({ length = 1, ...rest }) => {
+const Skeleton = ({ length = 1, ...rest }: ISkeleton) => {
   return (
     <>
       {Array.from({ length }, (_, i) => (

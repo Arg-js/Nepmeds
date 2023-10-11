@@ -3,6 +3,7 @@ import { STATUSTYPE } from "@nepMeds/config/enum";
 import AuthDataProvider from "@nepMeds/context/AuthDataContext";
 import { useProfileData } from "@nepMeds/context/index";
 import useShouldHideNavBar from "@nepMeds/hooks/useShouldHideNavBar";
+import useWindowResize from "@nepMeds/hooks/useWindowResize";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { useEffect, useState } from "react";
@@ -22,7 +23,10 @@ const LayoutComponent = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
   const hideNav = useShouldHideNavBar();
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+
+  const sidebarCollapsed = useWindowResize();
+  const [isSidebarCollapsed, setIsSidebarCollapsed] =
+    useState(sidebarCollapsed);
 
   useEffect(() => {
     if (profileData?.data) {
@@ -64,7 +68,7 @@ const LayoutComponent = () => {
         gridTemplateColumns={
           profileData?.data?.is_superuser ||
           profileData?.data?.doctor?.status === STATUSTYPE.approved.toString()
-            ? sidebarCollapsed
+            ? isSidebarCollapsed
               ? "78px 1fr"
               : // "minmax(78px 236px) 1fr"
                 "205px 1fr"
@@ -95,12 +99,12 @@ const LayoutComponent = () => {
             profileData?.data?.doctor?.status ===
               STATUSTYPE.approved.toString())) && (
           <GridItem area={"side"}>
-            <Sidebar sidebarCollapsed={sidebarCollapsed} />
+            <Sidebar sidebarCollapsed={isSidebarCollapsed} />
           </GridItem>
         )}
 
         <GridItem bg={colors.bg} area={"nav"}>
-          {!hideNav && <Navbar setSidebarCollapsed={setSidebarCollapsed} />}
+          {!hideNav && <Navbar setSidebarCollapsed={setIsSidebarCollapsed} />}
           <Outlet />
         </GridItem>
       </Grid>

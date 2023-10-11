@@ -3,7 +3,7 @@ import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { ChevronUp, ChevronDown } from "react-iconly";
-import { useResolvedPath, useMatch, NavLink } from "react-router-dom";
+import { useMatch, NavLink } from "react-router-dom";
 import { ISidebarOption } from "@nepMeds/components/Sidebar/Sidebar";
 
 const MenuOption = ({
@@ -16,8 +16,7 @@ const MenuOption = ({
   const [isActive, setIsActive] = useState(false);
 
   const isActiveFn = (to: string) => {
-    const resolved = useResolvedPath(to);
-    const match = useMatch({ path: resolved.pathname, end: true });
+    const match = useMatch({ path: to, end: true });
     return match;
   };
 
@@ -91,39 +90,57 @@ const MenuOption = ({
               }
               size={20}
             />
-            <Text
-              fontWeight={"400"}
-              fontSize={"sm"}
-              lineHeight={"17px"}
-              color={
-                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
-              }
-              ml={"18px"}
-              w="140px"
-            >
-              {sidebarOption?.text}
-            </Text>
-            {isActive ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </ListItem>
-          {isActive && (
-            <Flex flexDirection={"column"} gap={6} my={3}>
-              {sidebarOption?.data?.map((item: any) => (
+            {!sidebarCollapsed && (
+              <>
                 <Text
-                  as={NavLink}
-                  to={item?.link}
-                  key={item?.text}
                   fontWeight={"400"}
                   fontSize={"sm"}
                   lineHeight={"17px"}
-                  color={colors?.black_50}
-                  ml={"50px"}
-                  w="140px"
+                  mx={"18px"}
+                  w="min-content"
+                >
+                  {sidebarOption?.text}
+                </Text>
+                {isActive ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              </>
+            )}
+          </ListItem>
+          {isActive && (
+            <Flex flexDirection={"column"} gap={6} my={3}>
+              {sidebarOption?.child?.map((item: any) => (
+                <ListItem
+                  key={item.text}
+                  display={"flex"}
+                  alignItems={"center"}
+                  as={NavLink}
+                  px={4}
+                  borderRadius={12}
                   _activeLink={{
                     color: colors.blue_100,
+                    bg: colors.background_blue,
                   }}
+                  to={item.link}
                 >
-                  {item?.text}
-                </Text>
+                  {sidebarCollapsed && (
+                    <item.icon
+                      set={item.set}
+                      color={colors?.black_50}
+                      size={15}
+                    />
+                  )}
+                  {/* TODO: need to reload page for the calculation to happen */}
+                  {!sidebarCollapsed && (
+                    <Text
+                      fontWeight={"400"}
+                      fontSize={"sm"}
+                      lineHeight={"17px"}
+                      color={colors?.black_50}
+                      ml={"18px"}
+                    >
+                      {item.text}
+                    </Text>
+                  )}
+                </ListItem>
               ))}
             </Flex>
           )}
