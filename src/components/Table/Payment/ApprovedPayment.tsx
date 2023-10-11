@@ -58,6 +58,12 @@ const ApprovedPayment = ({
     payment_status: "1",
   });
 
+  const defaultValues = {
+    Specialization: "",
+    toDate: "",
+    fromDate: "",
+  };
+
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
@@ -66,14 +72,13 @@ const ApprovedPayment = ({
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.rejected,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   return (
@@ -98,12 +103,8 @@ const ApprovedPayment = ({
               >
                 Reset
               </Button>
-
-              <Button variant={"primaryOutline"} w={"150px"}>
-                Cancel
-              </Button>
               <Button w={"150px"} onClick={() => handleFilter(false)}>
-                Done
+                Filter
               </Button>
             </HStack>
           }
@@ -111,7 +112,7 @@ const ApprovedPayment = ({
           <VStack h={"auto"}>
             <FormProvider {...formMethods}>
               <Select
-                placeholder="select specialization"
+                placeholder="Select Specialization"
                 label="Specialization"
                 name="Specialization"
                 required

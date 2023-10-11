@@ -16,9 +16,7 @@ const AdminAppointment = lazy(
 );
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
-const DoctorsList = lazy(
-  () => import("@nepMeds/components/Table/Doctor/DoctorsList")
-);
+const DoctorsList = lazy(() => import("@nepMeds/components/Table/Doctor"));
 const PaymentList = lazy(
   () => import("@nepMeds/components/Table/Payment/PaymentList")
 );

@@ -167,6 +167,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         footer={<></>}
       >
         {isPatientLoading ? (
+          // SKELETON FOR modal thats being used to view the appointment details
           <ViewModalSkeleton />
         ) : (
           <ViewModal patient={patient} />

@@ -31,7 +31,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { ISpecializationList } from "@nepMeds/components/Table/Doctor/DoctorsList";
+import { ISpecializationList } from "../Payment/PaymentList";
 
 interface Props {
   specializationList?: ISpecializationList[];
@@ -41,6 +41,12 @@ interface Props {
 const schema = yup.object().shape({
   remarks: yup.string().required("Remarks  is required!"),
 });
+
+const defaultValues = {
+  Specialization: "",
+  toDate: "",
+  fromDate: "",
+};
 
 const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
   const [pageParams, setPageParams] = useState<PaginationState>({
@@ -100,14 +106,13 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.pending,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   const onActionClick = async (
@@ -150,11 +155,8 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
               >
                 Reset
               </Button>
-              <Button variant={"primaryOutline"} w={"150px"}>
-                Cancel
-              </Button>
               <Button w={"150px"} onClick={() => handleFilter(false)}>
-                Done
+                Filter
               </Button>
             </HStack>
           }
@@ -162,7 +164,7 @@ const PendingDocList = ({ specializationList, showFilter = true }: Props) => {
           <VStack h={"auto"}>
             <FormProvider {...formMethods}>
               <Select
-                placeholder="select specialization"
+                placeholder="Select Specialization"
                 label="Specialization"
                 name="Specialization"
                 required

@@ -61,6 +61,12 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
     payment_status: "3",
   });
 
+  const defaultValues = {
+    Specialization: "",
+    toDate: "",
+    fromDate: "",
+  };
+
   const handleFilter = async (isReset: boolean) => {
     if (!isReset) {
       setFilterValue({
@@ -69,14 +75,13 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
         to_date: formMethods.getValues("toDate"),
         specialization: formMethods.getValues("Specialization"),
       });
+      onModalClose();
     } else {
       setFilterValue({
         status: STATUSTYPE.rejected,
       });
-      formMethods.reset({});
+      formMethods.reset(defaultValues);
     }
-
-    onModalClose();
   };
 
   return (
@@ -100,16 +105,8 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
             >
               Reset
             </Button>
-
-            <Button
-              variant={"primaryOutline"}
-              onClick={() => handleFilter(true)}
-              w={"150px"}
-            >
-              Cancel
-            </Button>
             <Button w={"150px"} onClick={() => handleFilter(false)}>
-              Done
+              Filter
             </Button>
           </HStack>
         }
@@ -117,7 +114,7 @@ const RejectedPaymentList = ({ specializationList }: Props) => {
         <VStack h={"auto"}>
           <FormProvider {...formMethods}>
             <Select
-              placeholder="select specialization"
+              placeholder="Select Specialization"
               label="Specialization"
               name="Specialization"
               required

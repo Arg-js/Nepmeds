@@ -16,10 +16,6 @@ const baseStyles = {
   transition: "all 300ms ease-in-out",
 };
 
-// const primaryHoverState = {
-//   bg: colors.sky_blue,
-//   color: colors.primary,
-// };
 const primaryHoverState = {
   bg: colors.primary,
   color: colors.white,
