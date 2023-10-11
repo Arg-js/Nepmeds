@@ -1,5 +1,6 @@
-import { Button, Flex, FormLabel, Skeleton, Text } from "@chakra-ui/react";
+import { Button, Flex, FormLabel, Text } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import SkeletonControl from "@nepMeds/components/Loader";
 import { IAvailability } from "@nepMeds/service/nepmeds-patient-doctorList";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
@@ -66,9 +67,12 @@ const DoctorAvailability = ({
           {/* AVAILABLE TIME */}
           {isAvailabilityFetching && (
             <Flex textAlign={"center"} gap={2}>
-              {Array.from({ length: 5 }, (_, index) => (
-                <Skeleton key={index} height={"30px"} flex={0.19} />
-              ))}
+              <SkeletonControl
+                variant={"skeleton"}
+                height={"30px"}
+                flex={0.19}
+                length={5}
+              />
             </Flex>
           )}
           {!!availability?.length && (
