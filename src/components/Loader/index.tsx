@@ -1,8 +1,8 @@
-import { SkeletonProps } from "@chakra-ui/react";
+import { SkeletonProps, SkeletonTextProps } from "@chakra-ui/react";
 import Skeleton from "./Skeleton";
 import SkeletonText from "./SkeletonText";
 
-interface ISkeletonProps extends SkeletonProps {
+interface ISkeletonProps extends SkeletonProps, SkeletonTextProps {
   length?: number;
   variant: string;
 }
