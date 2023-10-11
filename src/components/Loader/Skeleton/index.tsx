@@ -1,8 +1,5 @@
-import { Skeleton as ChakraSkeleton, SkeletonProps } from "@chakra-ui/react";
-
-interface ISkeleton extends SkeletonProps {
-  length?: number;
-}
+import { Skeleton as ChakraSkeleton } from "@chakra-ui/react";
+import { ISkeleton } from "..";
 
 const Skeleton: React.FC<ISkeleton> = ({ length = 1, ...rest }) => {
   return (

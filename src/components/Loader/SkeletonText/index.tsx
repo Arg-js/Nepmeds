@@ -1,10 +1,6 @@
-import {
-  SkeletonText as ChakraSkeletonText,
-  SkeletonTextProps,
-} from "@chakra-ui/react";
-interface ISkeletonText extends SkeletonTextProps {
-  length?: number;
-}
+import { SkeletonText as ChakraSkeletonText } from "@chakra-ui/react";
+import { ISkeletonText } from "..";
+
 const SkeletonText: React.FC<ISkeletonText> = ({ length = 1, ...rest }) => {
   return (
     <>
