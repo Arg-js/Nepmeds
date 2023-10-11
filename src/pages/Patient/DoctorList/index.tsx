@@ -6,9 +6,9 @@ import {
   DrawerContent,
   DrawerHeader,
   DrawerOverlay,
-  Flex,
   Grid,
   GridItem,
+  Text,
   useDisclosure,
 } from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
@@ -187,16 +187,8 @@ const DoctorList = () => {
                       <DoctorCardSkeleton key={index} />
                     ))}
 
-                  {doctorData && !doctorData?.results.length && (
-                    <Flex width="673px" height="215px" alignItems={"center"}>
-                      <NoData />
-                    </Flex>
-                  )}
-                  {DoctorListError && (
-                    <Box width="673px" height="215px">
-                      Oops something went wrong!!
-                    </Box>
-                  )}
+                  {!doctorData?.results.length && <NoData />}
+                  {DoctorListError && <Text>Oops something went wrong!!</Text>}
                   {doctorData &&
                     doctorData?.results.map(doctorData => {
                       return (
