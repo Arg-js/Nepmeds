@@ -12,6 +12,7 @@ import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
+import useWindowResize from "@nepMeds/hooks/useWindowResize";
 
 export enum Size {
   sm,
@@ -47,11 +48,12 @@ const DoctorListCard: React.FC<{
     [data]
   );
 
+  const isSidebarCollapsed = useWindowResize();
   const navigate = useNavigate();
   const onDoctorSelected = () => {
     setDoctorId && setDoctorId(data.id);
     scrollToTop();
-    window.innerWidth <= 768 &&
+    isSidebarCollapsed &&
       navigate(`${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${data.id}`);
   };
   return (
