@@ -1,5 +1,5 @@
 import { Flex, Skeleton as ChakraSkeleton, Divider } from "@chakra-ui/react";
-import { Skeleton, SkeletonText } from "@nepMeds/components/Loader";
+import SkeletonControl from "@nepMeds/components/Loader";
 
 const ViewModalSkeleton = () => {
   return (
@@ -19,15 +19,20 @@ const ViewModalSkeleton = () => {
       </Flex>
       <Divider />
       <Flex gap={4} direction={"column"}>
-        <Skeleton height={"8px"} width={"30%"} />
+        <SkeletonControl variant={"skeleton"} height={"8px"} width={"30%"} />
         <Flex gap={2}>
-          <Skeleton height={"8px"} width={"10%"} length={5} />
+          <SkeletonControl
+            variant={"skeleton"}
+            height={"8px"}
+            width={"10%"}
+            length={5}
+          />
         </Flex>
       </Flex>
       <Divider />
       <Flex gap={4} direction={"column"}>
-        <Skeleton height={"8px"} width={"30%"} />
-        <SkeletonText noOfLines={4} />
+        <SkeletonControl variant={"skeleton"} height={"8px"} width={"30%"} />
+        <SkeletonControl variant={"skeletonText"} noOfLines={4} />
       </Flex>
     </Flex>
   );
