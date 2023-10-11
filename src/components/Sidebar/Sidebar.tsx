@@ -16,13 +16,15 @@ import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import MenuOption from "@nepMeds/components/Sidebar/MenuOptions";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
-export interface ISidebarOption {
-  icon: React.ElementType;
-  set: IconSet;
-  text: string;
+interface ISidebarItem {
   link: string;
+  text: string;
+  icon: React.ElementType;
+}
+export interface ISidebarOption extends ISidebarItem {
+  set: IconSet;
   isOpenable?: boolean;
-  data?: { link: string; text: string; icon?: React.ElementType }[];
+  child?: ISidebarItem[];
 }
 const sidebarOptions: ISidebarOption[] = [
   {
@@ -83,7 +85,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
     text: "Doctors",
     link: "/doctor-list",
     isOpenable: true,
-    data: [
+    child: [
       {
         text: "Registration",
         link: "/doctor-list/registration",

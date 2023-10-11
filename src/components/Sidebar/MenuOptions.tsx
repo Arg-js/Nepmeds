@@ -96,11 +96,6 @@ const MenuOption = ({
                   fontWeight={"400"}
                   fontSize={"sm"}
                   lineHeight={"17px"}
-                  // color={
-                  //   isActiveFn("/doctor-list/*")
-                  //     ? colors?.white
-                  //     : colors?.black_50
-                  // }
                   mx={"18px"}
                   w="min-content"
                 >
@@ -112,7 +107,7 @@ const MenuOption = ({
           </ListItem>
           {isActive && (
             <Flex flexDirection={"column"} gap={6} my={3}>
-              {sidebarOption?.data?.map((item: any) => (
+              {sidebarOption?.child?.map((item: any) => (
                 <ListItem
                   key={item.text}
                   display={"flex"}
@@ -142,7 +137,7 @@ const MenuOption = ({
                       color={colors?.black_50}
                       ml={"18px"}
                     >
-                      {item?.text}
+                      {item.text}
                     </Text>
                   )}
                 </ListItem>
