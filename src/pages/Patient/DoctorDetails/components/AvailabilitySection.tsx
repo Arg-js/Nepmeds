@@ -45,6 +45,7 @@ const AvailabilitySection = ({
           // isMorning === true ---> ie. time < 12:00
           // isMorning === false ---> ie. time > 12:00
           const isMorning = +data?.from_time.split(":")[0] <= 11;
+          const isSelected = selectedAvailability.includes(data.id);
 
           if (isMorning === isMorningBlock) {
             return (
@@ -55,11 +56,8 @@ const AvailabilitySection = ({
                 height={"34px"}
                 m={1}
                 sx={{
-                  bg: `${
-                    selectedAvailability.includes(data.id)
-                      ? colors.sky_blue
-                      : "transparent"
-                  }`,
+                  bg: `${isSelected ? colors.primary : "transparent"}`,
+                  color: `${isSelected ? colors.white : colors.primary}`,
                 }}
                 onClick={() =>
                   setSelectedAvailability(prev =>

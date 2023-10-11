@@ -1,7 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
 import { Box, Divider, Flex, Text, VStack } from "@chakra-ui/layout";
-import { FormLabel, HStack, Image, SimpleGrid } from "@chakra-ui/react";
+import { FormLabel, HStack, Image } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
@@ -15,6 +15,7 @@ import FormControl from "@nepMeds/components/Form/FormControl";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMore from "@nepMeds/components/ReadMore";
+import AvailabilitySection from "@nepMeds/pages/Patient/DoctorDetails/components/AvailabilitySection";
 import {
   IPatientAppointmentBasicDetails,
   useCreatePatientAppointment,
@@ -82,6 +83,8 @@ const DoctorDetails: React.FC<{
     []
   );
   const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
+  const [appointment, setAppointment] = useState(true);
+
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
@@ -142,6 +145,7 @@ const DoctorDetails: React.FC<{
   const handleBookAppointment = () => {
     if (isAuthenticated) {
       selectedAvailability?.length && setIsAvailability("1");
+      setAppointment(false);
     } else {
       window.location.href = import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE;
     }
@@ -272,54 +276,36 @@ const DoctorDetails: React.FC<{
                         required
                       />
                     </Flex>
-                    <Box>
-                      {isAvailabilityFetching ? (
-                        <Box textAlign={"center"}>
-                          <Spinner />
-                        </Box>
-                      ) : (
-                        <SimpleGrid
-                          gridTemplateColumns={
-                            "repeat(auto-fit, minmax(90px, 1fr))"
-                          }
-                        >
-                          {availability?.map(data => (
-                            <Button
-                              variant={"primaryOutline"}
-                              key={data.id}
-                              borderRadius={3}
-                              height={"34px"}
-                              m={1}
-                              sx={{
-                                bg: `${
-                                  selectedAvailability.includes(data.id)
-                                    ? colors.sky_blue
-                                    : "transparent"
-                                }`,
-                              }}
-                              onClick={() =>
-                                setSelectedAvailability(prev =>
-                                  prev.includes(data.id)
-                                    ? prev.filter(item => item !== data.id)
-                                    : [...prev, data.id]
-                                )
-                              }
-                            >
-                              {data?.from_time?.slice(0, 5)} -
-                              {data?.to_time?.slice(0, 5)}
-                            </Button>
-                          ))}
-                        </SimpleGrid>
-                      )}
-                      {!isAvailabilityFetching && (
-                        <FormLabel color={colors.error} fontSize={"xs"} mt={4}>
-                          {!availability?.length
-                            ? "This doctor is not available on this date, choose another date"
-                            : selectedAvailability?.length === 0 &&
-                              "Please Choose the availability*"}
-                        </FormLabel>
-                      )}
-                    </Box>
+
+                    {!!availability?.length && (
+                      <>
+                        <AvailabilitySection
+                          title="Morning"
+                          availability={availability}
+                          selectedAvailability={selectedAvailability}
+                          setSelectedAvailability={setSelectedAvailability}
+                        />
+                        <AvailabilitySection
+                          title="Evening"
+                          availability={availability}
+                          selectedAvailability={selectedAvailability}
+                          setSelectedAvailability={setSelectedAvailability}
+                        />
+                      </>
+                    )}
+                    {!isAvailabilityFetching && (
+                      <FormLabel
+                        color={colors.error}
+                        fontSize={"xs"}
+                        textAlign={"center"}
+                      >
+                        {!availability?.length
+                          ? "This doctor is not available on this date, choose another date"
+                          : selectedAvailability?.length === 0 &&
+                            !appointment &&
+                            "Please Choose the availability*"}
+                      </FormLabel>
+                    )}
                   </Flex>
                 </>
               </WrapperBox>
