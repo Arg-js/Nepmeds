@@ -58,7 +58,6 @@ const primaryOutlineFilled = defineStyle({
   bg: colors.blue_10,
   _hover: primaryHoverState,
 });
-
 const outline = defineStyle({
   ...baseStyles,
   fontFamily: "Poppins",

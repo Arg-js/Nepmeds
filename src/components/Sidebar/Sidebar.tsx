@@ -143,13 +143,10 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       zIndex={1}
     >
       <Image
-        src={
-          // TODO: consult with UI/UX for design update
-          !sidebarCollapsed ? images?.logo : images?.smallLogo
-        }
+        src={!sidebarCollapsed ? images?.logo : images?.smallLogo}
         alt="logo"
-        height={sidebarCollapsed ? "60px" : "auto"}
-        width={sidebarCollapsed ? "60px" : "180px"}
+        height={sidebarCollapsed ? "40px" : "auto"}
+        width={sidebarCollapsed ? "50px" : "180px"}
         alignSelf={"center"}
       />
       <List>
