@@ -12,6 +12,8 @@ export const colors = {
   dark_1: "#1A1A1A",
   /**grey-50*/
   grey_50: "#808080",
+  /**grey-100*/
+  grey_100: "#4D4D4D",
   /** grey_dark */
   grey_dark: "#999999",
   /* grey_light */

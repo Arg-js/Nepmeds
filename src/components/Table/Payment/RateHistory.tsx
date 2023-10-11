@@ -83,7 +83,7 @@ const RateHistory = () => {
                     fontWeight={"500"}
                     fontSize={"sm"}
                     letterSpacing={"0.4px"}
-                    color={"#4D4D4D"}
+                    color={colors.grey_100}
                     flexBasis={{ base: "18%", xl: "24%" }}
                   >
                     Experience
@@ -102,7 +102,7 @@ const RateHistory = () => {
                     fontWeight={"500"}
                     fontSize={"sm"}
                     letterSpacing={"0.4px"}
-                    color={"#4D4D4D"}
+                    color={colors.grey_100}
                     flexBasis={{ base: "18%", xl: "24%" }}
                   >
                     Specialization

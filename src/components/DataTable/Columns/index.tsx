@@ -1,9 +1,4 @@
-export {
-  approvedColumns,
-  pendingColumns,
-  registeredColumns,
-  rejectedColumns,
-} from "./doctorColumn";
+export { pendingColumns, rejectedColumns, columns } from "./doctorColumn";
 export {
   allPaymentColumn,
   approvedPaymentColumn,

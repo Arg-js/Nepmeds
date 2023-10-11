@@ -126,7 +126,6 @@ const EditPrimary = ({
         mobile_number: getValues("mobile_number"),
       };
 
-
       const doctorProfile = {
         id: doctorProfileData?.id,
         user: user,
@@ -174,7 +173,6 @@ const EditPrimary = ({
           display={"flex"}
           alignItems="center"
           justifyContent={"space-between"}
-        // bg={"red"}
         >
           <Text
             fontWeight={"700"}
@@ -292,7 +290,7 @@ const EditPrimary = ({
                       fontWeight={"500"}
                       fontSize={"sm"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "18%", xl: "24%" }}
                     >
                       Mobile No
@@ -312,7 +310,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "18%", xl: "24%" }}
                     >
                       Email
@@ -336,7 +334,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "28%", xl: "50%" }}
                     >
                       Gender
@@ -358,7 +356,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "28%", xl: "50%" }}
                     >
                       Date of Birth
@@ -383,7 +381,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "37%", xl: "50%" }}
                     >
                       Pan No.
@@ -404,7 +402,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                       flexBasis={{ base: "37%", xl: "50%" }}
                     >
                       ID Type
@@ -420,7 +418,7 @@ const EditPrimary = ({
                       :&nbsp;
                       {
                         PRIMARYIDTYPE[
-                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }
                     </Text>
@@ -440,7 +438,7 @@ const EditPrimary = ({
                 fontSize={"sm"}
                 lineHeight={"16px"}
                 letterSpacing={"0.4px"}
-                color={"#4D4D4D"}
+                color={colors.grey_100}
               >
                 Specialization
               </Text>
@@ -475,11 +473,11 @@ const EditPrimary = ({
                 fontSize={"sm"}
                 lineHeight={"16px"}
                 letterSpacing={"0.4px"}
-                color={"#4D4D4D"}
+                color={colors.grey_100}
               >
                 {
                   PRIMARYIDTYPE[
-                  doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                    doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                   ]
                 }{" "}
                 Detail
@@ -516,12 +514,11 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
-                    //
+                      color={colors.grey_100}
                     >
                       {
                         PRIMARYIDTYPE[
-                        doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
+                          doctorProfileData.id_type as keyof typeof PRIMARYIDTYPE
                         ]
                       }{" "}
                       No.
@@ -542,7 +539,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       Province
                     </Text>
@@ -561,7 +558,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       Ward
                     </Text>
@@ -584,8 +581,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
-                    //
+                      color={colors.grey_100}
                     >
                       Issued District
                     </Text>
@@ -605,7 +601,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       District
                     </Text>
@@ -624,7 +620,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       Tole
                     </Text>
@@ -647,7 +643,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       Issued Date
                     </Text>
@@ -667,7 +663,7 @@ const EditPrimary = ({
                       fontSize={"sm"}
                       lineHeight={"16px"}
                       letterSpacing={"0.4px"}
-                      color={"#4D4D4D"}
+                      color={colors.grey_100}
                     >
                       Municipality
                     </Text>
