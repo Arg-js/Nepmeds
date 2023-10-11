@@ -187,7 +187,7 @@ const DoctorList = () => {
                       <DoctorCardSkeleton key={index} />
                     ))}
 
-                  {doctorData && !doctorData?.results.length && <NoData />}
+                  {!doctorData?.results.length && <NoData />}
                   {DoctorListError && <Text>Oops something went wrong!!</Text>}
                   {doctorData &&
                     doctorData?.results.map(doctorData => {
