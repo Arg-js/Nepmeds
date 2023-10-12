@@ -1,4 +1,7 @@
 import CenterLoader from "@nepMeds/components/Common/Loader";
+import Appointment from "@nepMeds/pages/Doctor/Appointment";
+import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
+import VideoCall from "@nepMeds/pages/VideoCall";
 import {
   useAuthentication,
   useLoginTokenDetailQuery,
@@ -6,8 +9,6 @@ import {
 import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
-import Appointment from "@nepMeds/pages/Doctor/Appointment";
-import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
@@ -108,6 +109,10 @@ const routes = [
     ],
   },
   {
+    path: NAVIGATION_ROUTES.VIDEOCALL,
+    element: <VideoCall />,
+  },
+  {
     path: NAVIGATION_ROUTES.NO_MATCH,
     element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
   },
@@ -127,6 +132,10 @@ const paientRoutes = [
       {
         path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
         element: <DoctorDetails />,
+      },
+      {
+        path: NAVIGATION_ROUTES.VIDEOCALL,
+        element: <VideoCall />,
       },
       {
         path: NAVIGATION_ROUTES.NO_MATCH,
@@ -279,8 +288,8 @@ const AppRoutes = () => {
       ? userInfo?.is_superuser
         ? adminRoutes
         : userInfo?.is_patient
-        ? paientRoutes
-        : routes
+          ? paientRoutes
+          : routes
       : openRoutes
   );
 
