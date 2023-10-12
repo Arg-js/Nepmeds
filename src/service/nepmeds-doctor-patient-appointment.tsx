@@ -30,6 +30,8 @@ export interface IGetAppointmentReqRes {
   description: string;
   reject_remarks: string;
   old_report_file: string;
+  doctor_user_id: string;
+  patient_user_id: string;
 }
 
 export interface ISymptom {

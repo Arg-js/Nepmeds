@@ -8,7 +8,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
-import { useTimer } from "@nepMeds/hooks/Usetimer";
+import { useTimerCountDown } from "@nepMeds/hooks/useTimer";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useGenerateForgetPasswordOTP,
@@ -92,7 +92,7 @@ const OtpForm = ({
   }, [otpCode.length]);
   const WAITING_TIME_IN_SECONDS = 5 * 60;
 
-  const { time, startTimer, pauseTimer, resetTimer } = useTimer({
+  const { time, startTimer, pauseTimer, resetTimer } = useTimerCountDown({
     seconds: WAITING_TIME_IN_SECONDS,
   });
   useEffect(() => {

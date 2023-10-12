@@ -1,37 +1,37 @@
-import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
-import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
-import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
-import {
-  Symptom,
-  useSpecializationRegisterData,
-} from "@nepMeds/service/nepmeds-specialization";
-import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
-import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
 import { Box, Flex, Image } from "@chakra-ui/react";
-import PatientFooter from "../Section/Footer";
-import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
-import Header from "@nepMeds/pages/Patient/Section/Header";
+import advertisement1 from "@nepMeds/assets/images/advertisement1.png";
+import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
+import Card from "@nepMeds/components/Patient/DoctorConsultation/Card";
+import HeroSection from "@nepMeds/components/Patient/DoctorConsultation/HeroSection";
+import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
+import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
   Size,
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
-import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-doctorList";
-import { useLocation, useNavigate } from "react-router-dom";
-import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { AxiosError } from "axios";
-import { colors } from "@nepMeds/theme/colors";
-import ChooseUsSection from "./Section/ChooseUs";
-import ConsultationStepSection from "./Section/CosultationStep";
-import Carousel from "react-multi-carousel";
-import { useAuthenticatePatient } from "@nepMeds/service/nepmeds-patient-login";
-import { useEffect } from "react";
-import TokenService from "@nepMeds/service/service-token";
 import AdvertisementBanner from "@nepMeds/pages/Patient/DoctorConsultation/Section/Advertisement";
 import {
   responsive,
   responsiveDoctorCard,
 } from "@nepMeds/pages/Patient/DoctorConsultation/carouselBreakpoint";
+import Header from "@nepMeds/pages/Patient/Section/Header";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
+import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-doctorList";
+import { useAuthenticatePatient } from "@nepMeds/service/nepmeds-patient-login";
+import {
+  Symptom,
+  useSpecializationRegisterData,
+} from "@nepMeds/service/nepmeds-specialization";
+import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
+import TokenService from "@nepMeds/service/service-token";
+import { colors } from "@nepMeds/theme/colors";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
+import { AxiosError } from "axios";
+import { useEffect } from "react";
+import Carousel from "react-multi-carousel";
+import { useLocation, useNavigate } from "react-router-dom";
+import PatientFooter from "../Section/Footer";
+import ChooseUsSection from "./Section/ChooseUs";
+import ConsultationStepSection from "./Section/CosultationStep";
 
 export enum Type {
   SPECIALIST,
@@ -157,14 +157,13 @@ const DoctorConsultation = () => {
               {symptomData?.map(symptom => {
                 return (
                   <Box
-                    key={symptom.id}
-                    onClick={() => handleViewSymptom(symptom.name)}
+                    key={symptom?.id}
+                    onClick={() => handleViewSymptom(symptom?.name)}
                   >
                     <Card
-                      name={symptom.name}
-                      image={symptom.image}
-                      description={symptom.description
-                        .split(",")
+                      name={symptom?.name}
+                      image={symptom?.image}
+                      description={symptom?.description?.split(",")
                         .slice(0, 4)
                         .join()}
                       isLoading={symptomDataLoading}

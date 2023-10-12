@@ -4,7 +4,6 @@ export const api = {
   forgotPassword: "user-management/request-reset-password/",
   resetPassword: "user-management/reset-password/",
   basicProfile: "/doctor-consult/doctor-basic-info/",
-
   //validate basic info API
   validateBasicInfo: "/doctor-consult/validate-basic-info/",
   validatePrimaryInfo: "/doctor-consult/validate-primary-info/",
@@ -110,6 +109,8 @@ export const api = {
     login: {
       post: "/user-management/refresh-token/",
     },
+    basicProfile: "/patient/patient-basic-info/",
+
     doctorList: {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",
@@ -128,6 +129,27 @@ export const api = {
   transaction: {
     khalti: "/transaction/khalti-initiate/",
     esewa: "/transaction/esewa-initiate/",
+  },
+  videoCall: {
+    base: "/video-chat",
+    initiate: function () {
+      return this.base + "/video-call-initiate/";
+    },
+    receive: function () {
+      return this.base + "/video-call-receive/";
+    },
+    end: function () {
+      return this.base + "/video-call-end/";
+    },
+    reject: function () {
+      return this.base + "/video-call-reject/";
+    },
+  },
+  notification: {
+    base: "/notification",
+    sendCallNotification: function () {
+      return this.base + "/send-call-notification/";
+    },
   },
 };
 
