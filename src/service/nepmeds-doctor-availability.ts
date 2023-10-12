@@ -19,6 +19,7 @@ export interface IGetDoctorAvailability {
   from_time?: string;
   to_time?: string;
   frequency?: string;
+  is_all_related_child?: boolean;
   child_time_frames?: IChildTimeFrames[];
 }
 
@@ -87,16 +88,19 @@ export const useUpdateDoctorAvailability = () => {
   });
 };
 
-const deleteAvailability = async (availabilityId: { id: number }) => {
+const deleteAvailability = async (deleteAvailabilityParams: {
+  id: number;
+  is_all_related_child: boolean;
+}) => {
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.doctor_availability + availabilityId.id + "/"
+    api.doctor_availability + deleteAvailabilityParams.id + "/",
+    { data: deleteAvailabilityParams }
   );
   return response;
 };
 
 export const useDeleteAvailability = () => {
   const queryClient = useQueryClient();
-
   return useMutation(deleteAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);

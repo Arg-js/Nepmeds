@@ -164,7 +164,7 @@ const DoctorConsultation = () => {
                       name={symptom.name}
                       image={symptom.image}
                       description={symptom.description
-                        .split(",")
+                        ?.split(",")
                         .slice(0, 4)
                         .join()}
                       isLoading={symptomDataLoading}
