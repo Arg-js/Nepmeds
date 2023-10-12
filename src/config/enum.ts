@@ -27,3 +27,18 @@ export enum ADMINAPPOINTMENT {
   Appointment = 2,
   FollowUp = 3,
 }
+
+//Enum for call state
+export enum CallState {
+  INITIATE = 1,
+  ACCEPTED = 2,
+  REJECTED = 3,
+  COMPLETED = 4,
+}
+
+//Notification Type
+export enum NotificationType {
+  VIDEOCALL = 1,
+  ADMIN = 2,
+  GENERAL = 3,
+}

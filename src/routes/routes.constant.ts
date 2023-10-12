@@ -41,6 +41,7 @@ export const NAVIGATION_ROUTES = {
   DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",
   DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
+  VIDEOCALL: "/video-call",
   NO_MATCH: "*",
 
   PAYMENTS: "/payment",

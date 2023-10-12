@@ -1,23 +1,29 @@
-import { Button, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
-import { useState } from "react";
+import {
+  Button,
+  Flex,
+  HStack,
+  Text,
+  useDisclosure
+} from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import { column } from "@nepMeds/components/DataTable/Columns/Doctor/Appointments";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import {
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
   useSetAppointmentRequestById,
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
-import { STATUSTYPE } from "@nepMeds/config/enum";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { column } from "@nepMeds/components/DataTable/Columns/Doctor/Appointments";
 import RejectionModalForm from "./ModalForm/RejectionModalForm";
 import {
-  defaultValues,
   IRejectionData,
+  defaultValues,
 } from "./ModalForm/RejectionModalForm/defaultValues";
 import ViewModal from "./ModalForm/ViewModal";
 import ViewModalSkeleton from "./ModalForm/ViewModal/ViewModalSkeleton";
@@ -39,6 +45,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   heading,
 }) => {
   const [appointmentId, setAppointmentId] = useState("");
+
 
   const {
     isOpen: isApproveModalOpen,
@@ -103,6 +110,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       console.error(e);
     }
   };
+
 
   return (
     <>
