@@ -1,7 +1,10 @@
+import { CheckIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Flex,
+  HStack,
   IconButton,
   Image,
   Input,
@@ -12,17 +15,29 @@ import {
   MenuItem,
   MenuList,
   Text,
+  useDisclosure,
 } from "@chakra-ui/react";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { SearchIcon } from "@chakra-ui/icons";
-import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
-import { useNavigate } from "react-router-dom";
+import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
+import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import { toastFail } from "@nepMeds/components/Toast";
+import { CallState, NotificationType } from "@nepMeds/config/enum";
+import { PUSHER_SUBSCRIBE_EVENT } from "@nepMeds/config/index";
+import {
+  IPusherNotification,
+  useNotification,
+} from "@nepMeds/hooks/useNotification";
+import useVideoCall from "@nepMeds/hooks/useVideoCall";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
-import { colors } from "@nepMeds/theme/colors";
-import TokenService from "@nepMeds/service/service-token";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
-import { MutableRefObject } from "react";
+import { usePatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details";
+import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import TokenService from "@nepMeds/service/service-token";
+import { colors } from "@nepMeds/theme/colors";
+import { MutableRefObject, useState } from "react";
+import { RxCrossCircled } from "react-icons/rx";
+import { Link, useNavigate } from "react-router-dom";
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -30,6 +45,48 @@ const Header: React.FC<{
 }> = ({ onClick, btnRef }) => {
   const navigate = useNavigate();
   const isAuthenticated = TokenService.isAuthenticated();
+  const { data } = usePatientBasicProfile(isAuthenticated);
+  const { isOpen, onClose, onOpen } = useDisclosure();
+  const { rejectCall } = useVideoCall();
+  const [roomName, setRoomName] = useState("");
+  const [declineLoading, setDeclineLoading] = useState(false);
+  const [doctorInfo, setDoctorInfo] = useState<IPusherNotification["doctor"]>();
+  const channel = useNotification();
+
+  const callNotification = ({
+    is_missed,
+    doctor,
+    room_name,
+  }: IPusherNotification) => {
+    if (is_missed) {
+      onClose();
+      setDoctorInfo(undefined);
+      setRoomName("");
+    } else {
+      onOpen();
+      setDoctorInfo(doctor);
+      setRoomName(room_name ?? "");
+    }
+  };
+
+  {
+    isAuthenticated &&
+      channel.bind(
+        `${PUSHER_SUBSCRIBE_EVENT}-${data?.user}`,
+        (data: IPusherNotification) => {
+          data?.notification_type.toString() ===
+            NotificationType.VIDEOCALL.toString() && callNotification(data);
+        }
+      );
+  }
+
+  const rejectCallFN = async () => {
+    await rejectCall({
+      call_state: CallState.REJECTED,
+      room_name: roomName,
+    });
+    onClose();
+  };
 
   // REACT QUERY
   const { mutate: logoutAction } = useLogoutMutation();
@@ -44,6 +101,71 @@ const Header: React.FC<{
       }}
     >
       <Flex justifyContent={"space-between"}>
+        <ModalComponent
+          closeOnOverlayClick={false}
+          heading={
+            <Flex alignItems={"center"} gap={4}>
+              <svgs.logo_small />
+              Doctor&apos;s Call
+            </Flex>
+          }
+          isOpen={isOpen}
+          onClose={onClose}
+          footer={
+            <HStack w="100%" gap={3} justifyContent={"space-between"}>
+              <Button
+                flex={1}
+                bg={colors.reset}
+                leftIcon={<RxCrossCircled />}
+                isLoading={declineLoading}
+                onClick={async () => {
+                  try {
+                    setDeclineLoading(true);
+                    await rejectCallFN();
+                  } catch (error) {
+                    const err = serverErrorResponse(error);
+                    toastFail(err);
+                  }
+                  setDeclineLoading(false);
+                }}
+              >
+                Decline
+              </Button>
+
+              <Button
+                flex={1}
+                as={Link}
+                leftIcon={<CheckIcon />}
+                bg={colors.green_button}
+                state={{
+                  receiver_user: data?.user,
+                  room_name: roomName,
+                  call_state: CallState.ACCEPTED,
+                }}
+                to={"/video-call"}
+              >
+                Answer
+              </Button>
+            </HStack>
+          }
+        >
+          <Flex
+            gap={3}
+            direction={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            {doctorInfo?.doctor_image && (
+              <Image
+                src="https://image.pngaaa.com/909/2676909-middle.png"
+                width={"150px"}
+              />
+            )}
+            <Text fontWeight={"bold"} fontSize={"xl"}>
+              {doctorInfo?.doctor_name}
+            </Text>
+          </Flex>
+        </ModalComponent>
         <Image
           src={NepmedsLogo}
           alt={"Nepmemds logo"}

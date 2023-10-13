@@ -30,7 +30,8 @@ const ModalComponent = ({
   alignment,
   approve,
   reject,
-}: IModalProps) => {
+  ...props
+}: IModalProps & ModalProps) => {
   return (
     <>
       <Modal
@@ -38,6 +39,7 @@ const ModalComponent = ({
         onClose={onClose}
         size={size}
         scrollBehavior="inside"
+        {...props}
       >
         <ModalOverlay />
         <ModalContent borderRadius={"12px"}>

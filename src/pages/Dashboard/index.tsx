@@ -1,10 +1,5 @@
 import DashboardBody from "@nepMeds/components/Dashboard/DashboardBody";
-
 const Dashboard = () => {
-  return (
-    <>
-      <DashboardBody />
-    </>
-  );
+  return <DashboardBody />;
 };
 export default Dashboard;
