@@ -61,7 +61,6 @@ export const DocUpdateProfile = ({
                     borderRadius="md"
                     key={idx}
                     my={1}
-                    px={16}
                     py={3}
                     _selected={{ color: "white", bg: colors.main }}
                   >

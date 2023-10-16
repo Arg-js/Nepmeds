@@ -148,7 +148,13 @@ export const ExperienceForm = ({
     <>
       {fields.map((item, index) => {
         return (
-          <Box key={item.id} position="relative">
+          <Box
+            key={item.id}
+            position="relative"
+            border={`0.5px solid ${colors.primary}`}
+            p={2}
+            mb={2}
+          >
             <SimpleGrid mb={4}>
               <MultiImageUpload
                 setFiles={setFiles}

@@ -588,7 +588,12 @@ const RegistrationForm = () => {
     <Container maxW={"container.2xl"} m="auto">
       <FormProvider {...formMethods}>
         <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-          <HStack pt={8} spacing={0} alignItems="flex-start">
+          <Flex
+            direction={{ base: "column", md: "row" }}
+            pt={8}
+            // spacing={0}
+            alignItems="flex-start"
+          >
             <VStack
               bg={colors.main}
               alignItems="flex-start"
@@ -661,7 +666,7 @@ const RegistrationForm = () => {
             <Flex flexGrow={1} h="75vh">
               {content}
             </Flex>
-          </HStack>
+          </Flex>
 
           <Flex
             justifyContent={activeStep === 0 ? "flex-end" : "space-between"}
