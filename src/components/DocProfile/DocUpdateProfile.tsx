@@ -52,7 +52,7 @@ export const DocUpdateProfile = ({
         flexDirection={"column"}
       >
         <Grid templateColumns="repeat(11, 1fr)" gap={0}>
-          <GridItem colSpan={3}>
+          <GridItem colSpan={{ base: 3, md: 2, lg: 3 }}>
             <TabList borderInlineStart={""}>
               {tabs.map((tab, idx) => {
                 return (
@@ -70,7 +70,7 @@ export const DocUpdateProfile = ({
               })}
             </TabList>
           </GridItem>
-          <GridItem colSpan={8}>
+          <GridItem colSpan={{ base: 8, md: 9, lg: 8 }}>
             <TabPanels>
               {tabPanels.map((tabPanel, idx) => {
                 return (

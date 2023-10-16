@@ -61,7 +61,6 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
     <Grid
       borderTop={`1px solid ${colors.grey_light}`}
       py={5}
-      px={6}
       className="test"
       style={{
         display: "flex",
@@ -153,8 +152,7 @@ const EditExperience = ({
   return (
     <>
       <Card
-        minHeight={"77vh"}
-        maxHeight={"77vh"}
+        height={"auto"}
         css={{
           "&::-webkit-scrollbar": {
             width: "4px",
@@ -299,14 +297,14 @@ const EditExperience = ({
                   >
                     <GridItem colSpan={1} mt={"30px"} w="100%">
                       <VStack spacing={5} align="flex-start">
-                        <Box display={"flex"} alignItems={"center"} gap={1}>
+                        <Box display={"flex"} alignItems={"center"} gap={2}>
                           <Text
                             fontWeight={"500"}
                             fontSize={"sm"}
                             lineHeight={"16px"}
                             letterSpacing={"0.4px"}
                             color={colors.grey_100}
-                            w={"180px"}
+                            w={"auto"}
                           >
                             Hospital/ Clinic Name
                           </Text>

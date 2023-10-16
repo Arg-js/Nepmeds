@@ -47,7 +47,6 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
     <Grid
       borderTop={`1px solid ${colors.grey_light}`}
       py={5}
-      px={6}
       className="test"
       style={{
         display: "flex",
