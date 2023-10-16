@@ -52,6 +52,7 @@ import {
   boxPositions,
   minuteTime,
 } from "@nepMeds/components/Schedule/scheduleHelper";
+import Checkbox from "../Form/Checkbox";
 
 const timeData = generateHoursTimeArray();
 
@@ -89,6 +90,8 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   const deleteDoctorAvailability = useDeleteAvailability();
   const updateDoctorAvailability = useUpdateDoctorAvailability();
   const formMethods = useForm();
+
+  const checkbox = formMethods.watch("is_all_related_child");
 
   const [availabilityId, setAvailabilityId] = useState(0);
   const onSubmit = async (data: IGetDoctorAvailability) => {
@@ -150,6 +153,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
       if (!availabilityId) return;
 
       await deleteDoctorAvailability.mutateAsync({
+        is_all_related_child: checkbox ?? false,
         id: availabilityId,
       });
 
@@ -361,7 +365,16 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           </HStack>
         }
       >
-        <Text>Are you sure you want to this availability ?</Text>
+        <Text mb={3}>Are you sure you want to this availability ?</Text>
+        <FormProvider {...formMethods}>
+          <Checkbox
+            label="Do you want to delete all the instances"
+            name={"is_all_related_child"}
+            control={formMethods.control}
+            justifyContent={"center"}
+            alignItems={"center"}
+          />
+        </FormProvider>
       </ModalComponent>
     </Box>
   );

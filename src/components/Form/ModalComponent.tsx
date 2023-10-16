@@ -35,13 +35,11 @@ const ModalComponent = ({
   return (
     <>
       <Modal
-
         isOpen={isOpen}
         onClose={onClose}
         size={size}
         scrollBehavior="inside"
         {...props}
-
       >
         <ModalOverlay />
         <ModalContent borderRadius={"12px"}>

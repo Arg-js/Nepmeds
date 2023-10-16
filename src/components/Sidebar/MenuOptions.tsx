@@ -50,11 +50,6 @@ const MenuOption = ({
     )
       return true;
 
-    // TODO: REMOVE THIS CODE AFTER QA testing
-    // if (isAdmin) return true;
-    // if (isDoctor && isPayment && payment_status === "1") return true;
-    // if (text === "Dashboard" || text === "Payment") return true;
-
     return false;
   };
 
@@ -68,56 +63,60 @@ const MenuOption = ({
             height="56px"
             pl={4}
             borderRadius={12}
-            _activeLink={{
-              background: colors.blue_100,
-              color: colors.white,
-            }}
-            style={
+            sx={
               isActiveFn("/doctor-list/*")
                 ? {
-                    background: colors.blue_100,
+                    background: colors.primary,
                     color: colors.white,
                   }
                 : {}
             }
             _hover={{ cursor: "pointer" }}
-            onClick={() => setIsActive(!isActive)}
+            onClick={() => setIsActive(prev => !prev)}
+            mb={2}
           >
-            <sidebarOption.icon
-              set={sidebarOption.set}
-              color={
-                isActiveFn("/doctor-list/*") ? colors?.white : colors?.black_50
-              }
-              size={20}
-            />
-            {!sidebarCollapsed && (
-              <>
-                <Text
-                  fontWeight={"400"}
-                  fontSize={"sm"}
-                  lineHeight={"17px"}
-                  mx={"18px"}
-                  w="min-content"
-                >
-                  {sidebarOption?.text}
-                </Text>
-                {isActive ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-              </>
-            )}
+            <Flex justifyContent={"space-around"} alignItems={"center"} gap={8}>
+              <sidebarOption.icon
+                set={sidebarOption.set}
+                color={
+                  isActiveFn("/doctor-list/*")
+                    ? colors?.white
+                    : colors?.black_50
+                }
+                size={20}
+              />
+              {!sidebarCollapsed && (
+                <>
+                  <Text
+                    fontWeight={"400"}
+                    fontSize={"sm"}
+                    lineHeight={"17px"}
+                    w="min-content"
+                  >
+                    {sidebarOption?.text}
+                  </Text>
+                  {isActive ? (
+                    <ChevronUp size={20} />
+                  ) : (
+                    <ChevronDown size={20} />
+                  )}
+                </>
+              )}
+            </Flex>
           </ListItem>
           {isActive && (
-            <Flex flexDirection={"column"} gap={6} my={3}>
+            <Flex flexDirection={"column"} gap={2} my={3}>
               {sidebarOption?.child?.map((item: any) => (
                 <ListItem
                   key={item.text}
                   display={"flex"}
                   alignItems={"center"}
                   as={NavLink}
-                  px={4}
-                  borderRadius={12}
+                  p={2}
+                  borderRadius={8}
                   _activeLink={{
                     color: colors.blue_100,
-                    bg: colors.background_blue,
+                    bg: colors.primary,
                   }}
                   to={item.link}
                 >
@@ -166,6 +165,7 @@ const MenuOption = ({
                 color: colors.white,
               }}
               to={sidebarOption.link}
+              mb={2}
             >
               <sidebarOption.icon
                 set={sidebarOption.set}

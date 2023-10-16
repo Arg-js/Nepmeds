@@ -1,10 +1,4 @@
-import {
-  Button,
-  Flex,
-  HStack,
-  Text,
-  useDisclosure
-} from "@chakra-ui/react";
+import { Button, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -18,7 +12,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 import * as Yup from "yup";
 import RejectionModalForm from "./ModalForm/RejectionModalForm";
 import {
@@ -46,7 +40,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
 }) => {
   const [appointmentId, setAppointmentId] = useState("");
 
-
   const {
     isOpen: isApproveModalOpen,
     onOpen: onApproveModalOpen,
@@ -63,7 +56,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     onClose: onViewModalClose,
   } = useDisclosure();
 
-  const { handleSubmit, reset } = useForm({
+  const formMethods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
   });
@@ -95,7 +88,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     setAppointmentId("");
     onApproveModalClose();
     onRejectionModalClose();
-    reset(defaultValues);
+    formMethods.reset(defaultValues);
   };
 
   const onSubmitHandler = async (data: IRejectionData) => {
@@ -110,7 +103,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       console.error(e);
     }
   };
-
 
   return (
     <>
@@ -206,14 +198,18 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             <Button
               w="100%"
               isLoading={isLoading}
-              onClick={handleSubmit(onSubmitHandler)}
+              onClick={formMethods.handleSubmit(onSubmitHandler)}
             >
               Yes
             </Button>
           </HStack>
         }
       >
-        <RejectionModalForm />
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onSubmitHandler)}>
+            <RejectionModalForm />
+          </form>
+        </FormProvider>
       </ModalComponent>
       {/* Rejection Modal ENDS*/}
 

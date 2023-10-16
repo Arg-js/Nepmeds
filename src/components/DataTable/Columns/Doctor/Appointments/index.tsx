@@ -9,8 +9,6 @@ import { MdCall } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { CellProps } from "react-table";
 
-
-
 const statusInfo: {
   [key: string]: {
     label: string;
@@ -81,15 +79,15 @@ export const column = ({
         }>) => {
           return row.original?.availability
             ? `${removeSeconds(
-              row.original?.availability?.from_time
-            )}-${removeSeconds(row.original?.availability?.to_time)}`
+                row.original?.availability?.from_time
+              )}-${removeSeconds(row.original?.availability?.to_time)}`
             : row.original?.extra_data
-              ? `${removeSeconds(
+            ? `${removeSeconds(
                 row.original?.extra_data?.cancelled_availability?.from_time
               )}-${removeSeconds(
                 row.original?.extra_data?.cancelled_availability?.to_time
               )}`
-              : "N/A";
+            : "N/A";
         },
       },
 
@@ -116,7 +114,15 @@ export const column = ({
       },
       {
         header: "Actions",
-        cell: ({ row }: CellProps<{ id: string; status: string, patient_user_id: string, doctor_user_id: string; is_callable: boolean }>) => {
+        cell: ({
+          row,
+        }: CellProps<{
+          id: string;
+          status: string;
+          patient_user_id: string;
+          doctor_user_id: string;
+          is_callable: boolean;
+        }>) => {
           const onView = () => {
             setAppointmentId(row.original?.id);
             onModalOpen.onViewModalOpen();
@@ -134,26 +140,22 @@ export const column = ({
             row.original?.status === STATUSTYPE.pending.toString();
 
           return (
-            <Flex justifyContent={'center'} alignItems={'center'} gap={1}>
-              {row?.original?.is_callable && <Tooltip hasArrow placement="top" label="Call">
-
-                <Link
-                  to={'/video-call'}
-                  state={{
-                    caller_user: row.original?.doctor_user_id,
-                    receiver_user: row.original?.patient_user_id,
-                    appointment_id: row.original?.id,
-                    call_state: CallState.INITIATE
-                  }}
-                >
-                  <MdCall
-                    size={'20'}
-                    color={colors.green_button}
-                  />
-
-                </Link>
-              </Tooltip>}
-
+            <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
+              {row?.original?.is_callable && (
+                <Tooltip hasArrow placement="top" label="Call">
+                  <Link
+                    to={"/video-call"}
+                    state={{
+                      caller_user: row.original?.doctor_user_id,
+                      receiver_user: row.original?.patient_user_id,
+                      appointment_id: row.original?.id,
+                      call_state: CallState.INITIATE,
+                    }}
+                  >
+                    <MdCall size={"20"} color={colors.green_button} />
+                  </Link>
+                </Tooltip>
+              )}
 
               <TableActions
                 onView={onView}

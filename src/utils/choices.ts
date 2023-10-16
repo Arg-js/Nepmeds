@@ -52,4 +52,5 @@ export const FrequencyType = [
   { label: "Everyday", value: AVAILABILITYFREQUENCY.Everyday },
   { label: "Weekend", value: AVAILABILITYFREQUENCY.Weekends },
   { label: "Does not Repeat", value: AVAILABILITYFREQUENCY.Do_Not_Repeat },
+  { label: "Custom", value: AVAILABILITYFREQUENCY.Custom },
 ];
