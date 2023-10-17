@@ -14,6 +14,7 @@ export enum AVAILABILITYFREQUENCY {
   Do_Not_Repeat = 1,
   Everyday = 2,
   Weekends = 3,
+  Custom = 4,
 }
 
 export enum PAYMENTMODE {

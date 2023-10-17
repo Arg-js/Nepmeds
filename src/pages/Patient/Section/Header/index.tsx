@@ -24,7 +24,10 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { toastFail } from "@nepMeds/components/Toast";
 import { CallState, NotificationType } from "@nepMeds/config/enum";
 import { PUSHER_SUBSCRIBE_EVENT } from "@nepMeds/config/index";
-import { IPusherNotification, useNotification } from "@nepMeds/hooks/useNotification";
+import {
+  IPusherNotification,
+  useNotification,
+} from "@nepMeds/hooks/useNotification";
 import useVideoCall from "@nepMeds/hooks/useVideoCall";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
@@ -32,11 +35,9 @@ import { usePatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
-import { MutableRefObject, useState } from 'react';
-import { RxCrossCircled } from 'react-icons/rx';
+import { MutableRefObject, useState } from "react";
+import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
-
-
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -44,50 +45,48 @@ const Header: React.FC<{
 }> = ({ onClick, btnRef }) => {
   const navigate = useNavigate();
   const isAuthenticated = TokenService.isAuthenticated();
-  const { data } = usePatientBasicProfile(isAuthenticated)
-  const {
-    isOpen,
-    onClose,
-    onOpen,
-  } = useDisclosure();
+  const { data } = usePatientBasicProfile(isAuthenticated);
+  const { isOpen, onClose, onOpen } = useDisclosure();
   const { rejectCall } = useVideoCall();
-  const [roomName, setRoomName] = useState("")
-  const [declineLoading, setDeclineLoading] = useState(false)
-  const [doctorInfo, setDoctorInfo] = useState<IPusherNotification['doctor']>()
-  const channel = useNotification()
+  const [roomName, setRoomName] = useState("");
+  const [declineLoading, setDeclineLoading] = useState(false);
+  const [doctorInfo, setDoctorInfo] = useState<IPusherNotification["doctor"]>();
+  const channel = useNotification();
 
-
-
-  const callNotification = ({ is_missed, doctor, room_name }: IPusherNotification) => {
+  const callNotification = ({
+    is_missed,
+    doctor,
+    room_name,
+  }: IPusherNotification) => {
     if (is_missed) {
-      onClose()
-      setDoctorInfo(undefined)
-      setRoomName("")
+      onClose();
+      setDoctorInfo(undefined);
+      setRoomName("");
     } else {
-      onOpen()
-      setDoctorInfo(doctor)
-      setRoomName(room_name ?? "")
+      onOpen();
+      setDoctorInfo(doctor);
+      setRoomName(room_name ?? "");
     }
-  }
-
+  };
 
   {
-    isAuthenticated && channel.bind(`${PUSHER_SUBSCRIBE_EVENT}-${data?.user}`, (data: IPusherNotification) => {
-      data?.notification_type.toString() === NotificationType.VIDEOCALL.toString() && callNotification(data)
-
-    })
+    isAuthenticated &&
+      channel.bind(
+        `${PUSHER_SUBSCRIBE_EVENT}-${data?.user}`,
+        (data: IPusherNotification) => {
+          data?.notification_type.toString() ===
+            NotificationType.VIDEOCALL.toString() && callNotification(data);
+        }
+      );
   }
-
-
-
 
   const rejectCallFN = async () => {
     await rejectCall({
       call_state: CallState.REJECTED,
       room_name: roomName,
-    })
-    onClose()
-  }
+    });
+    onClose();
+  };
 
   // REACT QUERY
   const { mutate: logoutAction } = useLogoutMutation();
@@ -102,22 +101,18 @@ const Header: React.FC<{
       }}
     >
       <Flex justifyContent={"space-between"}>
-
         <ModalComponent
           closeOnOverlayClick={false}
           heading={
-            <Flex alignItems={'center'} gap={4}>
+            <Flex alignItems={"center"} gap={4}>
               <svgs.logo_small />
-
-
               Doctor&apos;s Call
             </Flex>
           }
           isOpen={isOpen}
           onClose={onClose}
           footer={
-            <HStack w="100%" gap={3} justifyContent={'space-between'}>
-
+            <HStack w="100%" gap={3} justifyContent={"space-between"}>
               <Button
                 flex={1}
                 bg={colors.reset}
@@ -125,14 +120,13 @@ const Header: React.FC<{
                 isLoading={declineLoading}
                 onClick={async () => {
                   try {
-                    setDeclineLoading(true)
-                    await rejectCallFN()
-
+                    setDeclineLoading(true);
+                    await rejectCallFN();
                   } catch (error) {
-                    const err = serverErrorResponse(error)
-                    toastFail(err)
+                    const err = serverErrorResponse(error);
+                    toastFail(err);
                   }
-                  setDeclineLoading(false)
+                  setDeclineLoading(false);
                 }}
               >
                 Decline
@@ -144,23 +138,32 @@ const Header: React.FC<{
                 leftIcon={<CheckIcon />}
                 bg={colors.green_button}
                 state={{
-
                   receiver_user: data?.user,
                   room_name: roomName,
-                  call_state: CallState.ACCEPTED
+                  call_state: CallState.ACCEPTED,
                 }}
-                to={'/video-call'}
-              >Answer</Button>
+                to={"/video-call"}
+              >
+                Answer
+              </Button>
             </HStack>
           }
         >
-
-          <Flex gap={3} direction={'column'} alignItems={'center'} justifyContent={'center'}>
-            {doctorInfo?.doctor_image && <Image
-              src="https://image.pngaaa.com/909/2676909-middle.png"
-              width={'150px'}
-            />}
-            <Text fontWeight={'bold'} fontSize={'xl'}>{doctorInfo?.doctor_name}</Text>
+          <Flex
+            gap={3}
+            direction={"column"}
+            alignItems={"center"}
+            justifyContent={"center"}
+          >
+            {doctorInfo?.doctor_image && (
+              <Image
+                src="https://image.pngaaa.com/909/2676909-middle.png"
+                width={"150px"}
+              />
+            )}
+            <Text fontWeight={"bold"} fontSize={"xl"}>
+              {doctorInfo?.doctor_name}
+            </Text>
           </Flex>
         </ModalComponent>
         <Image
@@ -205,8 +208,8 @@ const Header: React.FC<{
               gap={1}
               cursor={"pointer"}
               onClick={() =>
-              (window.location.href =
-                import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
+                (window.location.href =
+                  import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
               }
               display={{ base: "none", md: "flex" }}
             >
@@ -252,7 +255,6 @@ const Header: React.FC<{
         )}
         {/* ENDS */}
       </Flex>
-
     </WrapperBox>
   );
 };

@@ -37,7 +37,9 @@ const Checkbox = <T extends FieldValues>({
               m={2}
               color={colors.grey_50}
             >
-              {label}:
+              {/* TODO: remove this after QA test pass */}
+              {/* {label}: */}
+              {label}
             </FormLabel>
           )}
           {error && (

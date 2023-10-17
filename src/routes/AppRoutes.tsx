@@ -288,8 +288,8 @@ const AppRoutes = () => {
       ? userInfo?.is_superuser
         ? adminRoutes
         : userInfo?.is_patient
-          ? paientRoutes
-          : routes
+        ? paientRoutes
+        : routes
       : openRoutes
   );
 

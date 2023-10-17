@@ -1,6 +1,8 @@
 import { Grid, GridItem } from "@chakra-ui/react";
+import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import Select from "@nepMeds/components/Form/Select";
+import { AVAILABILITYFREQUENCY } from "@nepMeds/config/enum";
 import { IGetDoctorAvailability } from "@nepMeds/service/nepmeds-doctor-availability";
 import { colors } from "@nepMeds/theme/colors";
 import { FrequencyType } from "@nepMeds/utils/choices";
@@ -18,6 +20,8 @@ export const AddEvent = ({
 }) => {
   const {
     register,
+    watch,
+    control,
     formState: { errors },
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
@@ -35,6 +39,7 @@ export const AddEvent = ({
       : []
   );
 
+  const frequencyValue = watch("frequency");
   return (
     <Grid templateColumns="repeat(4, 1fr)" gap={6} pb={8}>
       <GridItem colSpan={4}>
@@ -91,6 +96,29 @@ export const AddEvent = ({
         />
       </GridItem>
 
+      {frequencyValue === AVAILABILITYFREQUENCY.Custom.toString() && (
+        <GridItem colSpan={4}>
+          <FloatingLabelInput
+            label="To Date"
+            name="to_date"
+            type="date"
+            register={register}
+            required
+            min={today}
+            defaultValue={today}
+            style={{
+              background: colors.forminput,
+              border: "none",
+              paddingTop: "15px",
+            }}
+            rules={{
+              required: "Date is required.",
+            }}
+            error={errors.date?.message}
+          />
+        </GridItem>
+      )}
+
       <GridItem colSpan={2}>
         <Select
           name="from_time"
@@ -116,7 +144,7 @@ export const AddEvent = ({
             setSecondOptions(first);
           }}
           icon={<BiTime />}
-        ></Select>
+        />
       </GridItem>
       <GridItem colSpan={2}>
         <Select
@@ -135,8 +163,21 @@ export const AddEvent = ({
           placeholder="--:--"
           options={secondOptions}
           icon={<BiTime />}
-        ></Select>
+        />
       </GridItem>
+      {doctorAvailabilityData &&
+        doctorAvailabilityData?.frequency !==
+          AVAILABILITYFREQUENCY.Do_Not_Repeat.toString() && (
+          <GridItem colSpan={4}>
+            <Checkbox
+              label="Do you want to edit all the instances"
+              name={"is_all_related_child"}
+              control={control}
+              justifyContent={"center"}
+              alignItems={"center"}
+            />
+          </GridItem>
+        )}
     </Grid>
   );
 };

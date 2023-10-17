@@ -163,7 +163,8 @@ const DoctorConsultation = () => {
                     <Card
                       name={symptom?.name}
                       image={symptom?.image}
-                      description={symptom?.description?.split(",")
+                      description={symptom?.description
+                        ?.split(",")
                         .slice(0, 4)
                         .join()}
                       isLoading={symptomDataLoading}
