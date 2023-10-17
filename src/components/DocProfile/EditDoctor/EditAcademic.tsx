@@ -142,7 +142,7 @@ const EditAcademic = ({
     <>
       <Card
         mb={"18px"}
-        height={"85vh"}
+        height={"85dvh"}
         css={{
           "&::-webkit-scrollbar": {
             width: "4px",

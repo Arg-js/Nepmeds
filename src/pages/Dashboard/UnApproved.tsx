@@ -41,7 +41,7 @@ const UnApprovedDoctor = () => {
           justifyContent={"center"}
           alignItems={"center"}
           display={"flex"}
-          h={"50vh"}
+          h={"50dvh"}
           flexDir={"row"}
           width={"100%"}
           mt={"30px"}
