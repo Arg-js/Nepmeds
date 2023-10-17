@@ -141,6 +141,7 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       position="fixed"
       gap={6}
       zIndex={1}
+      overflowY={"auto"}
     >
       <Image
         src={!sidebarCollapsed ? images?.logo : images?.smallLogo}
