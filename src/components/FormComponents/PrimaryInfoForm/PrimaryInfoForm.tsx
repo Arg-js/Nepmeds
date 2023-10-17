@@ -223,13 +223,9 @@ const PrimaryInfo = ({
   );
 
   return (
-    <Grid
-      gap={4}
-      pb={8}
-      templateColumns={{ base: "repeat(4, 1fr)", lg: "repeat(4, 1fr)" }}
-    >
+    <Grid gap={4} pb={8} templateColumns={"repeat(4, 1fr)"}>
       {!isEditable && (
-        <GridItem colSpan={{ base: 4, lg: 4 }}>
+        <GridItem colSpan={4}>
           <FloatinglabelTextArea
             label="Basic Information"
             name="bio_detail"
