@@ -136,6 +136,9 @@ export const AcademicInfoForm = ({
             key={item.id}
             position="relative"
             w={{ base: "100%", lg: "94%" }}
+            border={`1px solid ${colors.primary}`}
+            p={2}
+            mb={2}
           >
             <Box mb={4}>
               <MultiImageUpload
