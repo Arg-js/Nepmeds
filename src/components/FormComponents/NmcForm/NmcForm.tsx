@@ -66,10 +66,10 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
 
   return (
     <>
-      <Box position="relative" w={{ base: "100%", lg: "94%" }}>
+      <Box position="relative" m={2}>
         <GridItem colSpan={4}>
           <Text fontWeight={400} mb={"12px"} fontSize={"sm"}>
-            Upload Cetificate
+            Upload Certificate
           </Text>
         </GridItem>
         <GridItem colSpan={2}>
@@ -90,7 +90,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             setValue={setValue}
           />
         </GridItem>
-        <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} mt={4} mb={8} gap={4}>
+        <SimpleGrid columns={{ base: 1, lg: 3 }} mt={4} mb={8} gap={4}>
           <FloatingLabelInput
             label="NMC No."
             name="nmc.nmc_number"
@@ -110,7 +110,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
           />
           <FloatingLabelInput
             name="nmc.nmc_issued_date"
-            label="Date of Certificate Issue"
+            label="Date of Issue"
             register={register}
             type="date"
             required

@@ -30,8 +30,8 @@ const UnApprovedDoctor = () => {
       <Box
         display={"flex"}
         justifyContent={"flex-start"}
-        pb={"15px"}
-        pr={"50px"}
+        // pb={"15px"}
+        // pr={"50px"}
         mt={"1%"}
       >
         <svgs.logo />
@@ -41,12 +41,12 @@ const UnApprovedDoctor = () => {
           justifyContent={"center"}
           alignItems={"center"}
           display={"flex"}
-          h={"auto"}
+          h={"50dvh"}
           flexDir={"row"}
           width={"100%"}
           mt={"30px"}
         >
-          <svgs.Work />
+          <svgs.Work height={"auto"} width={"auto"} />
         </Box>
         <Stack justifyContent={"center"} alignItems={"center"}>
           <Heading color={"red"}>

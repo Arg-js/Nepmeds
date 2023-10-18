@@ -47,7 +47,6 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
     <Grid
       borderTop={`1px solid ${colors.grey_light}`}
       py={5}
-      px={6}
       className="test"
       style={{
         display: "flex",
@@ -115,8 +114,7 @@ const EditCertification = ({
     <>
       <Card
         mb={"18px"}
-        minHeight="77vh"
-        maxHeight={"77vh"}
+        height={"auto"}
         css={{
           "&::-webkit-scrollbar": {
             width: "4px",
@@ -289,7 +287,12 @@ const EditCertification = ({
               </GridItem>
               <GridItem colSpan={1} mt={"30px"} w="100%">
                 <VStack spacing={5}>
-                  <Box display={"flex"} alignItems={"center"} gap={9}>
+                  <Box
+                    display={"flex"}
+                    alignItems={{ base: "left", xl: "center" }}
+                    flexDirection={{ base: "column", xl: "row" }}
+                    gap={9}
+                  >
                     <Text
                       fontWeight={"500"}
                       fontSize={"sm"}

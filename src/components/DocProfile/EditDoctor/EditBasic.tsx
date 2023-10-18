@@ -217,7 +217,11 @@ const EditBasic = ({
               />
             )}
             <CardBody w={"100%"}>
-              <Box display={"flex"} justifyContent={"space-between"}>
+              <Box
+                display={"flex"}
+                justifyContent={"space-between"}
+                wordBreak="break-all"
+              >
                 <Text
                   fontWeight={"700"}
                   fontSize={"26.8085px"}
@@ -250,6 +254,7 @@ const EditBasic = ({
                   fontSize={"md"}
                   lineHeight={"28px"}
                   color={"#5B5B5B"}
+                  overflow={"auto"}
                 >
                   {doctorProfileData?.bio_detail}
                 </Text>
