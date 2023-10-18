@@ -62,12 +62,20 @@ export const BasicInfoForm = ({
   };
 
   return (
-    <Grid templateColumns={"repeat(4, 1fr)"} gap={4}>
+    <Grid
+      templateColumns={{
+        // todo: find alternative for this
+        base: "repeat(4, 1fr)",
+        md: "repeat(2, 1fr)",
+        lg: "repeat(4, 1fr)",
+      }}
+      gap={4}
+    >
       <GridItem
         // rowSpan={isEditable ? 3 : 2}
         rowSpan={2}
         //  colSpan={isEditable ? 3 : 1}
-        colSpan={1}
+        colSpan={{ base: 4, md: 2, lg: 1 }}
       >
         <ImageUpload
           SelectedImage={selectedImage}
@@ -84,7 +92,7 @@ export const BasicInfoForm = ({
         />
       </GridItem>
 
-      <GridItem colSpan={3}>
+      <GridItem colSpan={{ base: 4, md: 2, lg: 3 }}>
         <FloatingLabelInput
           label="Title"
           name="title"

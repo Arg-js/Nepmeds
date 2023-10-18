@@ -142,8 +142,7 @@ const EditAcademic = ({
     <>
       <Card
         mb={"18px"}
-        minHeight={"77vh"}
-        maxHeight={"77vh"}
+        height={"85dvh"}
         css={{
           "&::-webkit-scrollbar": {
             width: "4px",
@@ -463,12 +462,12 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
     <Grid
       borderTop={`1px solid ${colors.grey_light}`}
       py={5}
-      px={6}
       className="test"
       style={{
         display: "flex",
         justifyContent: "space-between",
       }}
+      gap={2}
     >
       <GridItem colSpan={1}>
         <Button variant={"primaryOutline"} onClick={handleCloseForm}>
