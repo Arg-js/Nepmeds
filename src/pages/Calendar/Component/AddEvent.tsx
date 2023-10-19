@@ -15,8 +15,10 @@ const today = new Date().toISOString().split("T")[0];
 
 export const AddEvent = ({
   doctorAvailabilityData,
+  selectedFullDate,
 }: {
   doctorAvailabilityData?: IGetDoctorAvailability;
+  selectedFullDate?: string;
 }) => {
   const {
     register,
@@ -65,6 +67,7 @@ export const AddEvent = ({
           label="Frequency"
           name="frequency"
           register={register}
+          isDisabled={!!doctorAvailabilityData}
           defaultValue={doctorAvailabilityData?.frequency}
           options={FrequencyType}
           style={{
@@ -81,9 +84,10 @@ export const AddEvent = ({
           name="date"
           type="date"
           register={register}
+          isDisabled={!!doctorAvailabilityData}
           required
           min={today}
-          defaultValue={today}
+          defaultValue={selectedFullDate ?? today}
           style={{
             background: colors.forminput,
             border: "none",

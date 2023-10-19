@@ -387,7 +387,7 @@ const CalendarDailyDetailView = ({
               onSubmit={formMethods.handleSubmit(onSubmit)}
               style={{ width: "100%" }}
             >
-              <AddEvent />
+              <AddEvent selectedFullDate={selectedFullDate} />
             </form>
           </FormProvider>
         </VStack>
