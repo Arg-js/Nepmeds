@@ -2,8 +2,10 @@ import { Box, Grid, GridItem, SimpleGrid } from "@chakra-ui/react";
 import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import Select from "@nepMeds/components/Form/Select";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
+import { useGetHospitalList } from "@nepMeds/service/nepmeds-hospital-list";
 import { colors } from "@nepMeds/theme/colors";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -14,13 +16,15 @@ const AddExperienceField = ({ index }: { index?: number }) => {
     register,
     setValue,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<IRegisterFields>();
 
   const [selectedImages, setSelectedImages] = useState<
     Array<Array<File | { url: string; id: string } | null>>
   >([]);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
+
+  const { data: hospitalList } = useGetHospitalList();
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,
@@ -33,7 +37,7 @@ const AddExperienceField = ({ index }: { index?: number }) => {
       setSelectedImages(prevImages => {
         const updatedImages = [...prevImages];
         updatedImages[experienceIndex] = [
-          ...(updatedImages[experienceIndex] || []),
+          ...(updatedImages[experienceIndex] || [])
         ];
         updatedImages[experienceIndex][imageIndex] = { url: imageUrl, id: "0" };
         return updatedImages;
@@ -42,7 +46,7 @@ const AddExperienceField = ({ index }: { index?: number }) => {
       setSelectedImagesFile(prevImages => {
         const updatedImages = [...prevImages];
         updatedImages[experienceIndex] = [
-          ...(updatedImages[experienceIndex] || []),
+          ...(updatedImages[experienceIndex] || [])
         ];
         updatedImages[experienceIndex][imageIndex] = selectedFiles[0];
         setValue(
@@ -90,16 +94,21 @@ const AddExperienceField = ({ index }: { index?: number }) => {
         <GridItem colSpan={4}>
           <Controller
             render={({ field }) => (
-              <FloatingLabelInput
+              <Select
+                placeholder=""
                 label="Hospital/ Clinic Name"
                 register={register}
+                options={hospitalList ?? []}
                 required
-                style={{ background: colors.forminput, border: "none" }}
-                {...field}
-                rules={{
-                  required: "Hospital/Clinic name is required.",
+                style={{
+                  background: colors.forminput,
+                  border: "none",
+                  paddingTop: "15px"
                 }}
-                error={errors?.experience?.[experienceIndex]?.hospital?.message}
+                rules={{
+                  required: "Hospital/ Clinic name is required."
+                }}
+                {...field}
               />
             )}
             name={`experience.${experienceIndex}.hospital`}
@@ -118,7 +127,7 @@ const AddExperienceField = ({ index }: { index?: number }) => {
                 style={{ background: colors.forminput, border: "none" }}
                 {...field}
                 rules={{
-                  required: "From date is required.",
+                  required: "From date is required."
                 }}
                 error={
                   errors?.experience?.[experienceIndex]?.from_date?.message
@@ -142,7 +151,7 @@ const AddExperienceField = ({ index }: { index?: number }) => {
                   style={{ background: colors.forminput, border: "none" }}
                   {...field}
                   rules={{
-                    required: "To date is required.",
+                    required: "To date is required."
                   }}
                   error={
                     errors?.experience?.[experienceIndex]?.to_date?.message
@@ -164,11 +173,11 @@ const AddExperienceField = ({ index }: { index?: number }) => {
                 style={{
                   background: colors.forminput,
                   border: "none",
-                  padding: "17px",
+                  padding: "17px"
                 }}
                 {...field}
                 rules={{
-                  required: "Description is required.",
+                  required: "Description is required."
                 }}
                 error={
                   errors?.experience?.[experienceIndex]?.description?.message
