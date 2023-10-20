@@ -89,7 +89,7 @@ const Header: React.FC<{
   };
 
   // REACT QUERY
-  const { mutate: logoutAction } = useLogoutMutation();
+  const { mutate: logoutAction } = useLogoutMutation({ user: "PATIENT" });
   // REACT QUERY ENDS
   return (
     <WrapperBox
@@ -235,7 +235,7 @@ const Header: React.FC<{
                 </MenuButton>
                 <MenuList>
                   <MenuItem>Profile</MenuItem>
-                  <MenuItem onClick={() => logoutAction()}>Logout</MenuItem>
+                  <MenuItem onClick={() => logoutAction({})}>Logout</MenuItem>
                 </MenuList>
               </Menu>
             </Flex>
