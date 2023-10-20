@@ -13,23 +13,27 @@ import { formatSecondsToMinuteAndSeconds } from "@nepMeds/utils/time";
 import { useEffect } from "react";
 import {
   MdCallEnd,
+  MdFullscreen,
   MdMic,
   MdMicOff,
   MdVideocam,
-  MdVideocamOff,
+  MdVideocamOff
 } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Video from "twilio-video";
 import Participant from "./Participants";
+import RemoteParticipants from "./RemoteParticipant";
+import "./VideoPlayer.css";
 
 const VideoCall = () => {
   const {
     getCallerToken,
     getReceiverToken,
     endCallForUsers,
-    sendCallNotification,
+    sendCallNotification
   } = useVideoCallToken();
   const { state }: any = useLocation();
+
   const {
     participants,
     room,
@@ -42,13 +46,26 @@ const VideoCall = () => {
     showVideo,
     setShowAudio,
     showAudio,
+    isAudioEnabled,
+    isVideoEnabled,
+    setIsAudioEnabled,
+    setIsVideoEnabled,
+    videoRef
   } = useVideoCallState({ state });
   const navigate = useNavigate();
   const second = useTimerFromTime(new Date(call_start_time));
 
   const remoteParticipants = participants.map(
     (participant: Video.RemoteParticipant, i: number) => (
-      <Participant key={participant.sid + i} participant={participant} />
+      <RemoteParticipants
+        key={participant.sid + i}
+        participant={participant}
+        isAudioEnabled={isAudioEnabled}
+        isVideoEnabled={isVideoEnabled}
+        setIsAudioEnabled={setIsAudioEnabled}
+        setIsVideoEnabled={setIsVideoEnabled}
+        videoRef={videoRef}
+      />
     )
   );
 
@@ -67,7 +84,7 @@ const VideoCall = () => {
       setParticipants([]);
       await endCallForUsers({
         call_state: CallState.COMPLETED,
-        room_name: room_name,
+        room_name: room_name
       });
       room.disconnect();
     } catch (error) {
@@ -79,7 +96,7 @@ const VideoCall = () => {
     try {
       if (state?.appointment_id) {
         const res = await getCallerToken({
-          ...state,
+          ...state
         });
 
         setRoomDetail(res.data);
@@ -87,7 +104,7 @@ const VideoCall = () => {
         const res = await getReceiverToken({
           receiver_user: state?.receiver_user,
           room_name: room_name,
-          call_state: CallState.ACCEPTED,
+          call_state: CallState.ACCEPTED
         });
         setRoomDetail(res.data);
       }
@@ -103,11 +120,22 @@ const VideoCall = () => {
       await sendCallNotification({
         caller_user: state?.caller_user,
         receiver_user: state?.receiver_user,
-        room_name: room_name,
+        room_name: room_name
       });
     } catch (error) {
       const err = serverErrorResponse(error);
       toastFail(err);
+    }
+  };
+
+  // Toggle full screen video
+  const toggleFullScreen = () => {
+    const video = videoRef.current;
+
+    if (video) {
+      if (video.requestFullscreen) {
+        video.requestFullscreen();
+      }
     }
   };
 
@@ -162,117 +190,140 @@ const VideoCall = () => {
   }, [room_name, token]);
 
   return (
-    <Box>
+    <Box
+      position={"relative"}
+      overflowX={"hidden"}
+      display={"flex"}
+      flexDirection={"column"}
+      height={"100vh"}
+    >
       <Flex justifyContent={"flex-start"} pb={"15px"} pr={"50px"} mt={"1%"}>
         <svgs.logo />
       </Flex>
-
       {!room && <CenterLoader h="100vh" alignItems={"center"} />}
-      <Flex justifyContent={"center"} gap={10}>
-        <Box>
-          {room && (
-            <Participant
-              key={room.localParticipant.sid}
-              participant={room.localParticipant}
-            />
-          )}
-        </Box>
-        <Box>{remoteParticipants}</Box>
-      </Flex>
-      <Flex justifyContent={"center"} my={"3"}>
-        <Badge
-          justifyContent={"center"}
-          textAlign={"center"}
-          rounded="2xl"
-          fontWeight={"bold"}
-          fontSize={"xl"}
-          variant="outline"
-          colorScheme="green"
-        >
-          {formatSecondsToMinuteAndSeconds(second)}
-        </Badge>
+
+      <Flex gap={5} justifyContent={"center"}>
+        {room && (
+          <Participant
+            key={room.localParticipant.sid}
+            participant={room.localParticipant}
+          />
+        )}
+        {remoteParticipants}
       </Flex>
 
-      {room && (
-        <Flex justifyContent={"center"} gap={6} mt={3}>
-          <Tooltip label="End Call" fontSize="md" hasArrow>
-            <span>
-              <Icon
-                as={MdCallEnd}
-                color={colors.white}
-                fontSize={"50"}
-                bg={"red"}
-                borderRadius={"50%"}
-                p={"2"}
-                cursor={"pointer"}
-                onClick={() => endCall(room)}
-              />
-            </span>
-          </Tooltip>
-
-          <Tooltip
-            label={showVideo ? "Turn Camera Off" : "Turn Camera On"}
-            fontSize="md"
-            hasArrow
+      <Box marginTop={"auto"}>
+        <Flex justifyContent={"center"} my={"3"}>
+          <Badge
+            justifyContent={"center"}
+            textAlign={"center"}
+            rounded="2xl"
+            fontWeight={"bold"}
+            fontSize={"xl"}
+            variant="outline"
+            colorScheme="green"
           >
-            <span>
-              <Icon
-                cursor={"pointer"}
-                as={showVideo ? MdVideocam : MdVideocamOff}
-                color={colors.white}
-                fontSize={"50"}
-                bg={colors.primary_blue}
-                borderRadius={"50%"}
-                p={"2"}
-                onClick={() => {
-                  if (showVideo) {
-                    room.localParticipant.videoTracks.forEach(publication => {
-                      publication.track.disable();
-                    });
-                    setShowVideo(false);
-                  } else {
-                    room.localParticipant.videoTracks.forEach(publication => {
-                      publication.track.enable();
-                    });
-                    setShowVideo(true);
-                  }
-                }}
-              />
-            </span>
-          </Tooltip>
-
-          <Tooltip
-            label={showAudio ? "Mute Audio" : "Unmute Audio"}
-            fontSize="md"
-            hasArrow
-          >
-            <span>
-              <Icon
-                cursor={"pointer"}
-                color={colors.white}
-                fontSize={"50"}
-                bg={colors.primary_blue}
-                borderRadius={"50%"}
-                p={"2"}
-                as={showAudio ? MdMic : MdMicOff}
-                onClick={() => {
-                  if (showAudio) {
-                    room.localParticipant.audioTracks.forEach(publication => {
-                      publication.track.disable();
-                    });
-                    setShowAudio(false);
-                  } else {
-                    room.localParticipant.audioTracks.forEach(publication => {
-                      publication.track.enable();
-                    });
-                    setShowAudio(true);
-                  }
-                }}
-              />
-            </span>
-          </Tooltip>
+            {formatSecondsToMinuteAndSeconds(second < 0 ? 0 : second)}
+          </Badge>
         </Flex>
-      )}
+
+        {room && (
+          <Flex justifyContent={"center"} gap={6} mt={3}>
+            <Tooltip label="End Call" fontSize="md" hasArrow>
+              <span>
+                <Icon
+                  as={MdCallEnd}
+                  color={colors.white}
+                  fontSize={"50"}
+                  bg={"red"}
+                  borderRadius={"50%"}
+                  p={"2"}
+                  cursor={"pointer"}
+                  onClick={() => endCall(room)}
+                />
+              </span>
+            </Tooltip>
+
+            <Tooltip
+              label={showVideo ? "Turn Camera Off" : "Turn Camera On"}
+              fontSize="md"
+              hasArrow
+            >
+              <span>
+                <Icon
+                  cursor={"pointer"}
+                  as={showVideo ? MdVideocam : MdVideocamOff}
+                  color={colors.white}
+                  fontSize={"50"}
+                  bg={colors.primary_blue}
+                  borderRadius={"50%"}
+                  p={"2"}
+                  onClick={() => {
+                    if (showVideo) {
+                      room.localParticipant.videoTracks.forEach(publication => {
+                        publication.track.disable();
+                      });
+                      setShowVideo(false);
+                    } else {
+                      room.localParticipant.videoTracks.forEach(publication => {
+                        publication.track.enable();
+                      });
+                      setShowVideo(true);
+                    }
+                  }}
+                />
+              </span>
+            </Tooltip>
+
+            <Tooltip
+              label={showAudio ? "Mute Audio" : "Unmute Audio"}
+              fontSize="md"
+              hasArrow
+            >
+              <span>
+                <Icon
+                  cursor={"pointer"}
+                  color={colors.white}
+                  fontSize={"50"}
+                  bg={colors.primary_blue}
+                  borderRadius={"50%"}
+                  p={"2"}
+                  as={showAudio ? MdMic : MdMicOff}
+                  onClick={() => {
+                    if (showAudio) {
+                      room.localParticipant.audioTracks.forEach(publication => {
+                        publication.track.disable();
+                      });
+                      setShowAudio(false);
+                    } else {
+                      room.localParticipant.audioTracks.forEach(publication => {
+                        publication.track.enable();
+                      });
+                      setShowAudio(true);
+                    }
+                  }}
+                />
+              </span>
+            </Tooltip>
+
+            {remoteParticipants.length > 0 && (
+              <Tooltip label="Full Screen" fontSize="md" hasArrow>
+                <span>
+                  <Icon
+                    as={MdFullscreen}
+                    color={colors.black}
+                    fontSize={"50"}
+                    borderRadius={"50%"}
+                    p={"2"}
+                    cursor={"pointer"}
+                    onClick={toggleFullScreen}
+                  />
+                </span>
+              </Tooltip>
+            )}
+          </Flex>
+        )}
+      </Box>
     </Box>
   );
 };

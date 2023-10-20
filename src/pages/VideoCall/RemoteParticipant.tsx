@@ -1,13 +1,39 @@
-import { AspectRatio, Badge, Box } from "@chakra-ui/react";
-import { useEffect, useRef, useState } from "react";
-import { LocalParticipant } from "twilio-video";
+import { AspectRatio, Badge, Box, Flex, Icon } from "@chakra-ui/react";
+import { colors } from "@nepMeds/theme/colors";
+import {
+  Dispatch,
+  RefObject,
+  SetStateAction,
+  useEffect,
+  useRef,
+  useState
+} from "react";
+import { MdMicOff, MdVideocamOff } from "react-icons/md";
+import { RemoteParticipant } from "twilio-video";
 
-const Participant = ({ participant }: { participant: LocalParticipant }) => {
+// Here <Participants> and <Remoteparticipant> have same code
+// It was not possible to make a common component for both of them
+// because there is no distiction between remote pariticipant and local participant
+
+const RemoteParticipants = ({
+  participant,
+  isAudioEnabled,
+  isVideoEnabled,
+  setIsAudioEnabled,
+  setIsVideoEnabled,
+  videoRef
+}: {
+  participant: RemoteParticipant;
+  isAudioEnabled: boolean;
+  isVideoEnabled: boolean;
+  videoRef: RefObject<HTMLVideoElement>;
+  setIsAudioEnabled: Dispatch<SetStateAction<boolean>>;
+  setIsVideoEnabled: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [videoTracks, setVideoTracks] = useState<any>([]);
   const [audioTracks, setAudioTracks] = useState<any>([]);
 
   //Reference to the video and audio element and attach the track to the element
-  const videoRef = useRef(null);
   const audioRef = useRef(null);
 
   // We need to handle the fact that TrackPublication objects, obtained from the participant's videoTracks and audioTracks properties,
@@ -50,6 +76,20 @@ const Participant = ({ participant }: { participant: LocalParticipant }) => {
     // Listen on the participant for the trackSubscribed and trackUnsubscribed events
     participant.on("trackSubscribed", trackSubscribed);
     participant.on("trackUnsubscribed", trackUnsubscribed);
+    participant.on("trackDisabled", e => {
+      if (e.kind === "video") {
+        setIsVideoEnabled(!isVideoEnabled);
+      } else if (e.kind === "audio") {
+        setIsAudioEnabled(!isAudioEnabled);
+      }
+    });
+    participant.on("trackEnabled", e => {
+      if (e.kind === "video") {
+        setIsVideoEnabled(true);
+      } else if (e.kind === "audio") {
+        setIsAudioEnabled(true);
+      }
+    });
 
     return () => {
       setVideoTracks([]);
@@ -91,17 +131,45 @@ const Participant = ({ participant }: { participant: LocalParticipant }) => {
       >
         <video ref={videoRef} autoPlay={true} />
       </AspectRatio>
-      <Badge
-        justifyContent={"center"}
-        textAlign={"center"}
-        fontWeight={"bold"}
-        fontSize={"xl"}
-      >
-        {participant.identity}
-      </Badge>
+      <Flex flexDirection={"column"} gap={5} alignItems={"end"}>
+        <Badge
+          justifyContent={"center"}
+          textAlign={"center"}
+          fontWeight={"bold"}
+          fontSize={"xl"}
+        >
+          {participant.identity}
+        </Badge>
+
+        <Flex gap={5}>
+          {!isVideoEnabled && (
+            <Icon
+              cursor={"pointer"}
+              as={MdVideocamOff}
+              color={colors.white}
+              fontSize={"50"}
+              bg={colors.primary_blue}
+              borderRadius={"50%"}
+              p={"2"}
+            />
+          )}
+
+          {!isAudioEnabled && (
+            <Icon
+              cursor={"pointer"}
+              as={MdMicOff}
+              color={colors.white}
+              fontSize={"50"}
+              bg={colors.primary_blue}
+              borderRadius={"50%"}
+              p={"2"}
+            />
+          )}
+        </Flex>
+      </Flex>
       <audio ref={audioRef} autoPlay={true} />
     </Box>
   );
 };
 
-export default Participant;
+export default RemoteParticipants;
