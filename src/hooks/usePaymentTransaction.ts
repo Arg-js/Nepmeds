@@ -12,23 +12,20 @@ import { ESEWA_URL, FRONT_URL, baseURL } from "@nepMeds/service/service-axios";
 
 interface KhaltiProps {
   product: IKhaltiPost;
-  availabilities: number[];
+  appointments: number[];
 }
 
 function usePaymentTransaction() {
   const khaltiPay = useCreateKhaltiPaymentMethods();
   const esewaPay = useCreateEsewaPaymentMethods();
 
-  const handleKhaltiClick = async ({
-    availabilities,
-    product,
-  }: KhaltiProps) => {
+  const handleKhaltiClick = async ({ appointments, product }: KhaltiProps) => {
     const payload = {
       ...product,
       return_url: baseURL + api.transaction.khalti + "/",
       website_url: FRONT_URL,
 
-      availabilities,
+      appointments,
     };
 
     try {
