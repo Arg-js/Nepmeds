@@ -9,5 +9,9 @@
   "quoteProps": "as-needed",
   "requirePragma": false,
   "tabWidth": 2,
-  "useTabs": false
+  "useTabs": false,
+  "singleQuote": false,
+  "endOfLine": "auto",
+  "trailingComma": "none",
+  "semi": true
 }
