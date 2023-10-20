@@ -24,9 +24,9 @@ const Navbar = ({
 }: {
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const logoutAction = useLogoutMutation();
+  const logoutAction = useLogoutMutation({});
   const logout = () => {
-    logoutAction.mutate();
+    logoutAction.mutate({});
   };
 
   const profileData = useProfileData();
