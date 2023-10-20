@@ -23,16 +23,23 @@ export const authTokenKey = "authToken";
 export const auth = "userInfo";
 const authTokenDetails = "authTokenDetails";
 
-const initLogout = () => {
+const initLogout = ({ user }: { user?: string }) => {
   try {
     TokenService.clearToken();
+    console.error(user);
     return Promise.resolve(true);
   } catch (error) {
     return Promise.resolve(false);
   }
 };
 
-const useLogoutMutation = (noToast?: boolean) => {
+const useLogoutMutation = ({
+  noToast,
+  user,
+}: {
+  noToast?: boolean;
+  user?: string;
+}) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   return useMutation(initLogout, {
@@ -42,7 +49,9 @@ const useLogoutMutation = (noToast?: boolean) => {
       queryClient.setQueryData(authTokenKey, () => false);
       localStorage.setItem("doctor", "false");
       localStorage.setItem("admin", "false");
-      navigate(NAVIGATION_ROUTES.LOGIN, { replace: true });
+      user !== "PATIENT"
+        ? navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN, { replace: true })
+        : navigate(NAVIGATION_ROUTES.LOGIN, { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
     },
   });
