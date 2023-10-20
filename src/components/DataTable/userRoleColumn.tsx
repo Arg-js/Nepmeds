@@ -36,11 +36,6 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
       accessorKey: "nmc_no",
     },
     {
-      header: "Registration Approval Date",
-      accessorKey: "registration_approved_date",
-    },
-
-    {
       header: "Payment Approval Date",
       accessorKey: "payment_approved_date",
     },
@@ -64,7 +59,7 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
 
         return (
           <Switch
-            size="lg"
+            size="md"
             isChecked={status}
             onChange={e => {
               setStatus(e.target.checked);
@@ -74,44 +69,45 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
         );
       },
     },
-    {
-      header: "Actions",
-      accessorKey: "actions",
-      cell: () => {
-        return (
-          <TableActions
-            onView={
-              () => ""
-              // navigate(
-              //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-              //     id: cell.row.original.id,
-              //   })
-              // )
-            }
-            onAccept={
-              () => ""
-              // onClick(true, {
-              //   id: cell.row.original.id,
-              //   name:
-              //     cell.row.original.user.first_name +
-              //     " " +
-              //     cell.row.original.user.last_name,
-              // })
-            }
-            onReject={
-              () => ""
-              // onClick(false, {
-              //   id: cell.row.original.id,
-              //   name:
-              //     cell.row.original.user.first_name +
-              //     " " +
-              //     cell.row.original.user.last_name,
-              // })
-            }
-          />
-        );
-      },
-    },
+    // TODO: API in progress
+    // {
+    //   header: "Actions",
+    //   accessorKey: "actions",
+    //   cell: () => {
+    //     return (
+    //       <TableActions
+    //         onView={
+    //           () => ""
+    //           // navigate(
+    //           //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+    //           //     id: cell.row.original.id,
+    //           //   })
+    //           // )
+    //         }
+    //         onAccept={
+    //           () => ""
+    //           // onClick(true, {
+    //           //   id: cell.row.original.id,
+    //           //   name:
+    //           //     cell.row.original.user.first_name +
+    //           //     " " +
+    //           //     cell.row.original.user.last_name,
+    //           // })
+    //         }
+    //         onReject={
+    //           () => ""
+    //           // onClick(false, {
+    //           //   id: cell.row.original.id,
+    //           //   name:
+    //           //     cell.row.original.user.first_name +
+    //           //     " " +
+    //           //     cell.row.original.user.last_name,
+    //           // })
+    //         }
+    //       />
+    //     );
+    //   },
+    // },
   ];
 };
 
