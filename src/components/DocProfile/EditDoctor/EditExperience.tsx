@@ -23,7 +23,7 @@ import {
   Spinner,
   Text,
   VStack,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 
 import { svgs } from "@nepMeds/assets/svgs";
@@ -32,13 +32,13 @@ import { ExperienceForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   IDoctorExperience,
-  IGetDoctorProfile,
+  IGetDoctorProfile
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import {
   // useDeleteExperienceInfo,
   useExperienceFileRegister,
   useExperienceInfoRegisterProfile,
-  useUpdateExperienceInfo,
+  useUpdateExperienceInfo
 } from "@nepMeds/service/nepmeds-experience";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -55,7 +55,7 @@ interface handleFormUpdateProps {
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
   handleCloseForm,
-  isLoading,
+  isLoading
 }) => {
   return (
     <Grid
@@ -64,7 +64,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       className="test"
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
       }}
     >
       <GridItem colSpan={1}>
@@ -85,14 +85,14 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
 };
 
 const EditExperience = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
   const {
     isOpen: isDocImgOpen,
     onClose: onDocImgClose,
-    onOpen: onDocImgOpen,
+    onOpen: onDocImgOpen
   } = useDisclosure();
   const formMethods = useForm();
   const experienceFileRegister = useExperienceFileRegister();
@@ -120,9 +120,9 @@ const EditExperience = ({
           doctor: doctorProfileData?.id ?? 0,
           experience_documents: createExperienceFileResponse.data.data.map(
             (file: string) => ({
-              file: file,
+              file: file
             })
-          ),
+          )
         });
       }
 
@@ -155,16 +155,16 @@ const EditExperience = ({
         height={"auto"}
         css={{
           "&::-webkit-scrollbar": {
-            width: "4px",
+            width: "4px"
           },
           "&::-webkit-scrollbar-track": {
-            width: "6px",
+            width: "6px"
           },
           "&::-webkit-scrollbar-thumb": {
             background: `${colors.light_gray}`,
-            borderRadius: "24px",
+            borderRadius: "24px"
           },
-          overflowY: "scroll",
+          overflowY: "scroll"
         }}
       >
         <Box
@@ -255,16 +255,16 @@ const EditExperience = ({
                     height={"60vh"}
                     css={{
                       "&::-webkit-scrollbar": {
-                        width: "4px",
+                        width: "4px"
                       },
                       "&::-webkit-scrollbar-track": {
-                        width: "6px",
+                        width: "6px"
                       },
                       "&::-webkit-scrollbar-thumb": {
                         background: `${colors.light_gray}`,
-                        borderRadius: "24px",
+                        borderRadius: "24px"
                       },
-                      overflowY: "scroll",
+                      overflowY: "scroll"
                     }}
                   >
                     <ExperienceForm doctorProfileData={doctorProfileData} />
@@ -314,7 +314,7 @@ const EditExperience = ({
                             lineHeight={"19px"}
                             color={colors?.black}
                           >
-                            :&nbsp;{singleExperience?.hospital}
+                            :&nbsp;{singleExperience?.hospital as string}
                           </Text>
                         </Box>
                       </VStack>
