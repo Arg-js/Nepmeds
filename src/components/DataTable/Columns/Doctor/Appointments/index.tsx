@@ -19,26 +19,26 @@ const statusInfo: {
   "1": {
     label: "Approved",
     color: "green",
-    textColor: colors.dark_green,
+    textColor: colors.dark_green
   },
   "2": {
     label: "Pending",
     color: "orange",
-    textColor: colors.maroon,
+    textColor: colors.maroon
   },
   "3": { label: "Rejected", color: "red", textColor: colors.maroon },
   "4": {
     label: "Completed",
     color: "green",
-    textColor: colors.dark_green,
-  },
+    textColor: colors.dark_green
+  }
 };
 
 export const column = ({
   appointment,
   pageParams,
   setAppointmentId,
-  onModalOpen,
+  onModalOpen
 }: {
   appointment?: IGetAppointmentRequest;
   pageParams: {
@@ -58,19 +58,19 @@ export const column = ({
         header: "S.N",
         accessorFn: (_: any, index: number) => {
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        },
+        }
       },
       {
         header: "Date",
         accessorFn: ({ availability }: { availability: { date: string } }) => {
           return availability?.date.substr(0, 10);
-        },
+        }
       },
       { header: "Patient Name", accessorKey: "full_name" },
       {
         header: "Appointment Time",
         cell: ({
-          row,
+          row
         }: CellProps<{
           availability: { from_time: string; to_time: string };
           extra_data: {
@@ -88,7 +88,7 @@ export const column = ({
                 row.original?.extra_data?.cancelled_availability?.to_time
               )}`
             : "N/A";
-        },
+        }
       },
 
       {
@@ -104,18 +104,18 @@ export const column = ({
               fontSize={"xs"}
               textTransform="capitalize"
               sx={{
-                color: statusInfo[row.original?.status].textColor,
+                color: statusInfo[row.original?.status].textColor
               }}
             >
               {statusInfo[row.original?.status].label}
             </Badge>
           );
-        },
+        }
       },
       {
         header: "Actions",
         cell: ({
-          row,
+          row
         }: CellProps<{
           id: string;
           status: string;
@@ -149,7 +149,7 @@ export const column = ({
                       caller_user: row.original?.doctor_user_id,
                       receiver_user: row.original?.patient_user_id,
                       appointment_id: row.original?.id,
-                      call_state: CallState.INITIATE,
+                      call_state: CallState.INITIATE
                     }}
                   >
                     <MdCall size={"20"} color={colors.green_button} />
@@ -164,8 +164,8 @@ export const column = ({
               />
             </Flex>
           );
-        },
-      },
+        }
+      }
     ],
     [appointment]
   );
