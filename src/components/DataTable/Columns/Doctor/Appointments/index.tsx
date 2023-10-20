@@ -62,8 +62,19 @@ export const column = ({
       },
       {
         header: "Date",
-        accessorFn: ({ availability }: { availability: { date: string } }) => {
-          return availability.date.substr(0, 10);
+        accessorFn: ({
+          availability,
+          extra_data
+        }: {
+          availability: { date: string };
+          extra_data: {
+            cancelled_availability: { date: string };
+          };
+        }) => {
+          return (
+            availability?.date.substr(0, 10) ||
+            extra_data?.cancelled_availability?.date
+          );
         }
       },
       { header: "Patient Name", accessorKey: "full_name" },

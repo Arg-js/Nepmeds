@@ -11,7 +11,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const UnApprovedDoctor = () => {
   const profileData = useProfileData();
-  const logoutAction = useLogoutMutation();
+  const logoutAction = useLogoutMutation({});
   const navigate = useNavigate();
   const data = profileData?.data;
 
@@ -91,7 +91,7 @@ const UnApprovedDoctor = () => {
           )}
         </Stack>
         <Stack pt={"15px"} justifyContent={"center"} alignItems={"center"}>
-          <Button onClick={() => logoutAction.mutate()}>Logout</Button>
+          <Button onClick={() => logoutAction.mutate({})}>Logout</Button>
         </Stack>
       </Box>
     </Container>
