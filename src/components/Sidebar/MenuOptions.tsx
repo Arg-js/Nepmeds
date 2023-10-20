@@ -75,7 +75,7 @@ const MenuOption = ({
             onClick={() => setIsActive(prev => !prev)}
             mb={2}
           >
-            <Flex justifyContent={"space-around"} alignItems={"center"} gap={8}>
+            <Flex justifyContent={"space-around"} alignItems={"center"}>
               <sidebarOption.icon
                 set={sidebarOption.set}
                 color={
@@ -92,14 +92,17 @@ const MenuOption = ({
                     fontSize={"sm"}
                     lineHeight={"17px"}
                     w="min-content"
+                    ml={"18px"}
                   >
                     {sidebarOption?.text}
                   </Text>
-                  {isActive ? (
-                    <ChevronUp size={20} />
-                  ) : (
-                    <ChevronDown size={20} />
-                  )}
+                  <Box ml={"18px"}>
+                    {isActive ? (
+                      <ChevronUp size={20} />
+                    ) : (
+                      <ChevronDown size={20} />
+                    )}
+                  </Box>
                 </>
               )}
             </Flex>
@@ -111,6 +114,7 @@ const MenuOption = ({
                   key={item.text}
                   display={"flex"}
                   alignItems={"center"}
+                  justifyContent={sidebarCollapsed ? "center" : "left"}
                   as={NavLink}
                   p={2}
                   borderRadius={8}
