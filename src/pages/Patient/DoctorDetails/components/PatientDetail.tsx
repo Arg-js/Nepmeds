@@ -167,28 +167,7 @@ const PatientDetail = ({
                 />
               </Box>
               <Grid gap={4} mb={4} templateColumns={"repeat(5,1fr)"}>
-                <GridItem colSpan={{ base: 5, sm: 2, lg: 5, xl: 2 }}>
-                  <FormControl
-                    control={"input"}
-                    label={"Age"}
-                    name={"age"}
-                    placeholder={"Enter age"}
-                    error={formProps.formState.errors?.age?.message ?? ""}
-                    register={formProps.register}
-                    variant={"outline"}
-                    style={{
-                      minHeight: "35px",
-                    }}
-                  />
-                </GridItem>
-                <GridItem
-                  gridColumn={{
-                    base: "1",
-                    sm: "4",
-                    lg: "1",
-                    xl: "4",
-                  }}
-                >
+                <GridItem gridColumn={1}>
                   <FormControl
                     control={"radio"}
                     label={"Choose Gender"}

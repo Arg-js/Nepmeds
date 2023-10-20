@@ -51,6 +51,7 @@ const ModalComponent = ({
               textAlign: alignment,
               py: "0",
             }}
+            overflowY="auto"
           >
             {children}
           </ModalBody>

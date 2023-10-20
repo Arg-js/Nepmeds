@@ -20,7 +20,7 @@ const ImageUpload = ({
   name,
   upload_text,
   background,
-  helperText,
+  // helperText,
   rules,
   error,
   setValue,
@@ -101,12 +101,12 @@ const ImageUpload = ({
               <Text color="#14B8A6" fontWeight={600} fontSize="sm">
                 {upload_text}
               </Text>
-
-              {helperText && (
+              {/* TODO: upload image by dragging it to the component */}
+              {/* {helperText && (
                 <Text color="#4B5563" fontWeight={400} fontSize="sm">
                   or drag and drop
                 </Text>
-              )}
+              )} */}
             </Box>
 
             <input

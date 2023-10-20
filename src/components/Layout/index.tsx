@@ -76,24 +76,6 @@ const LayoutComponent = () => {
         }
         gap="1"
       >
-        {/* TODO: remove this code after QA testing approval */}
-        {/* <GridItem area={"side"}>
-          <Sidebar />
-        </GridItem> */}
-        {/* {profileData?.data?.is_superuser ? (
-          <GridItem area={"side"}>
-            <Sidebar />
-          </GridItem>
-        ) : (
-          profileData?.data?.is_doctor &&
-          profileData?.data?.doctor?.status ===
-            STATUSTYPE.approved.toString() && (
-            <GridItem area={"side"}>
-              <Sidebar />
-            </GridItem>
-          )
-        )} */}
-
         {(profileData?.data?.is_superuser ||
           (profileData?.data?.is_doctor &&
             profileData?.data?.doctor?.status ===
