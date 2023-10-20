@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import Video from "twilio-video";
 import { IVideoCallInitiateResponse } from "./useVideoCall";
 
@@ -11,11 +11,16 @@ const useVideoCallState = ({ state }: { state?: any }) => {
   const [roomDetail, setRoomDetail] = useState<IVideoCallInitiateResponse>({
     call_start_time: "",
     room_name: state?.room_name ?? "",
-    token: "",
+    token: ""
   });
 
   const [showVideo, setShowVideo] = useState(true);
   const [showAudio, setShowAudio] = useState(true);
+
+  const [isVideoEnabled, setIsVideoEnabled] = useState(true);
+  const [isAudioEnabled, setIsAudioEnabled] = useState(true);
+
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   return {
     participants,
@@ -24,11 +29,16 @@ const useVideoCallState = ({ state }: { state?: any }) => {
     setRoom,
     roomDetail,
     setRoomDetail,
-
+    videoRef,
     showVideo,
     setShowVideo,
     showAudio,
     setShowAudio,
+
+    isAudioEnabled,
+    isVideoEnabled,
+    setIsAudioEnabled,
+    setIsVideoEnabled
   };
 };
 

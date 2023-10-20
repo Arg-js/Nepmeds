@@ -13,7 +13,7 @@ import {
   Tabs,
   Text,
   VStack,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
@@ -38,7 +38,7 @@ const DocProfileAdmin = () => {
   const {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose,
+    onClose: onRejectModalClose
   } = useDisclosure();
 
   const approvePendingDoc = useApproveDoc();
@@ -50,7 +50,7 @@ const DocProfileAdmin = () => {
       await rejectPendingDoc.mutateAsync({
         id: doctorProfileData?.data?.id?.toString() ?? "",
         title_id: formMethods.getValues("title_id"),
-        remarks: formMethods.getValues("remarks"),
+        remarks: formMethods.getValues("remarks")
       });
       onRejectModalClose();
       toastSuccess("Doctor Rejected!");
@@ -75,7 +75,7 @@ const DocProfileAdmin = () => {
           display: "block",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "25%",
+          marginTop: "25%"
         }}
       />
     );

@@ -15,7 +15,7 @@ import {
   MenuItem,
   MenuList,
   Text,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
@@ -26,7 +26,7 @@ import { CallState, NotificationType } from "@nepMeds/config/enum";
 import { PUSHER_SUBSCRIBE_EVENT } from "@nepMeds/config/index";
 import {
   IPusherNotification,
-  useNotification,
+  useNotification
 } from "@nepMeds/hooks/useNotification";
 import useVideoCall from "@nepMeds/hooks/useVideoCall";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -38,6 +38,8 @@ import { colors } from "@nepMeds/theme/colors";
 import { MutableRefObject, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
+import ring from "@nepMeds/assets/sound/ring.mp3";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -53,17 +55,22 @@ const Header: React.FC<{
   const [doctorInfo, setDoctorInfo] = useState<IPusherNotification["doctor"]>();
   const channel = useNotification();
 
+  const modalClose = () => {
+    onClose();
+  };
+
   const callNotification = ({
     is_missed,
     doctor,
-    room_name,
+    room_name
   }: IPusherNotification) => {
     if (is_missed) {
-      onClose();
+      modalClose();
       setDoctorInfo(undefined);
       setRoomName("");
     } else {
       onOpen();
+
       setDoctorInfo(doctor);
       setRoomName(room_name ?? "");
     }
@@ -81,11 +88,18 @@ const Header: React.FC<{
   }
 
   const rejectCallFN = async () => {
-    await rejectCall({
-      call_state: CallState.REJECTED,
-      room_name: roomName,
-    });
-    onClose();
+    try {
+      setDeclineLoading(true);
+      await rejectCall({
+        call_state: CallState.REJECTED,
+        room_name: roomName
+      });
+      modalClose();
+    } catch (error) {
+      const err = serverErrorResponse(error);
+      toastFail(err);
+    }
+    setDeclineLoading(false);
   };
 
   // REACT QUERY
@@ -97,7 +111,7 @@ const Header: React.FC<{
       padding={"6"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 0px 10px 0px"}
       style={{
-        mb: "2px",
+        mb: "2px"
       }}
     >
       <Flex justifyContent={"space-between"}>
@@ -110,7 +124,7 @@ const Header: React.FC<{
             </Flex>
           }
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={modalClose}
           footer={
             <HStack w="100%" gap={3} justifyContent={"space-between"}>
               <Button
@@ -118,16 +132,7 @@ const Header: React.FC<{
                 bg={colors.reset}
                 leftIcon={<RxCrossCircled />}
                 isLoading={declineLoading}
-                onClick={async () => {
-                  try {
-                    setDeclineLoading(true);
-                    await rejectCallFN();
-                  } catch (error) {
-                    const err = serverErrorResponse(error);
-                    toastFail(err);
-                  }
-                  setDeclineLoading(false);
-                }}
+                onClick={rejectCallFN}
               >
                 Decline
               </Button>
@@ -140,7 +145,7 @@ const Header: React.FC<{
                 state={{
                   receiver_user: data?.user,
                   room_name: roomName,
-                  call_state: CallState.ACCEPTED,
+                  call_state: CallState.ACCEPTED
                 }}
                 to={"/video-call"}
               >
@@ -149,22 +154,32 @@ const Header: React.FC<{
             </HStack>
           }
         >
-          <Flex
-            gap={3}
-            direction={"column"}
-            alignItems={"center"}
-            justifyContent={"center"}
-          >
-            {doctorInfo?.doctor_image && (
-              <Image
-                src="https://image.pngaaa.com/909/2676909-middle.png"
-                width={"150px"}
-              />
-            )}
-            <Text fontWeight={"bold"} fontSize={"xl"}>
-              {doctorInfo?.doctor_name}
-            </Text>
-          </Flex>
+          <>
+            <Flex
+              gap={3}
+              direction={"column"}
+              alignItems={"center"}
+              justifyContent={"center"}
+            >
+              {doctorInfo?.doctor_image && (
+                <Image
+                  src={
+                    getImageUrl(doctorInfo?.doctor_image) ??
+                    "https://image.pngaaa.com/909/2676909-middle.png"
+                  }
+                  width={"150px"}
+                />
+              )}
+
+              <Text fontWeight={"bold"} fontSize={"xl"}>
+                {doctorInfo?.doctor_name}
+              </Text>
+            </Flex>
+
+            <audio id="player" autoPlay loop style={{ display: "none" }}>
+              <source src={ring} type="audio/mp3" />
+            </audio>
+          </>
         </ModalComponent>
         <Image
           src={NepmedsLogo}
@@ -228,7 +243,7 @@ const Header: React.FC<{
               <Menu>
                 <MenuButton
                   sx={{
-                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                    "&>span": { display: "flex", alignItems: "center", gap: 2 }
                   }}
                 >
                   <Avatar />
