@@ -9,19 +9,19 @@ import {
   HStack,
   Image,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import {
   BackArrowIcon,
   ImageCancelIcon,
-  UploadImageIcon,
+  UploadImageIcon
 } from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import {
   IAvailability,
-  IDoctorListById,
+  IDoctorListById
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { Dispatch, SetStateAction } from "react";
@@ -35,7 +35,7 @@ export const defaultValues = {
   gender: "",
   symptoms: [],
   description: "",
-  old_report_file: null,
+  old_report_file: null
 };
 
 interface PatientDetailProps {
@@ -49,14 +49,14 @@ const PatientDetail = ({
   doctorList,
   setFormState,
   formProps,
-  bookedDates,
+  bookedDates
 }: PatientDetailProps) => {
   const { data: symptomData } = useGetSymptoms();
 
   const symptomDataOption =
     symptomData?.map(p => ({
       label: p.name,
-      value: p.id,
+      value: p.id
     })) || [];
 
   const oldReportFileWatch = formProps.watch("old_report_file");
@@ -125,7 +125,7 @@ const PatientDetail = ({
               >
                 {dateFormatter({
                   date: bookedDate?.date,
-                  time: bookedDate?.from_time,
+                  time: bookedDate?.from_time
                 })}
               </Text>
             ))}
@@ -146,7 +146,7 @@ const PatientDetail = ({
                   register={formProps.register}
                   variant={"outline"}
                   style={{
-                    minHeight: "35px",
+                    minHeight: "35px"
                   }}
                   required
                 />
@@ -161,34 +161,13 @@ const PatientDetail = ({
                   register={formProps.register}
                   variant={"outline"}
                   style={{
-                    minHeight: "35px",
+                    minHeight: "35px"
                   }}
                   required
                 />
               </Box>
               <Grid gap={4} mb={4} templateColumns={"repeat(5,1fr)"}>
-                <GridItem colSpan={{ base: 5, sm: 2, lg: 5, xl: 2 }}>
-                  <FormControl
-                    control={"input"}
-                    label={"Age"}
-                    name={"age"}
-                    placeholder={"Enter age"}
-                    error={formProps.formState.errors?.age?.message ?? ""}
-                    register={formProps.register}
-                    variant={"outline"}
-                    style={{
-                      minHeight: "35px",
-                    }}
-                  />
-                </GridItem>
-                <GridItem
-                  gridColumn={{
-                    base: "1",
-                    sm: "4",
-                    lg: "1",
-                    xl: "4",
-                  }}
-                >
+                <GridItem gridColumn={1}>
                   <FormControl
                     control={"radio"}
                     label={"Choose Gender"}
@@ -197,7 +176,7 @@ const PatientDetail = ({
                     options={[
                       { label: "Male", value: "1" },
                       { label: "Female", value: "2" },
-                      { label: "Others", value: "3" },
+                      { label: "Others", value: "3" }
                     ]}
                   />
                 </GridItem>
@@ -216,7 +195,7 @@ const PatientDetail = ({
                   options={symptomDataOption}
                   style={{
                     background: colors.white,
-                    minHeight: "35px",
+                    minHeight: "35px"
                   }}
                   required
                 />
@@ -230,7 +209,7 @@ const PatientDetail = ({
                   sx={{
                     borderRadius: "8px",
                     p: "3",
-                    minHeight: "200px",
+                    minHeight: "200px"
                   }}
                   error={formProps.formState.errors?.description?.message ?? ""}
                   register={formProps.register}
@@ -288,7 +267,7 @@ const PatientDetail = ({
                 variant={"primary"}
                 type="submit"
                 sx={{
-                  backgroundColor: colors.main,
+                  backgroundColor: colors.main
                 }}
               >
                 Confirm & pay

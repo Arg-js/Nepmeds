@@ -3,7 +3,7 @@ import {
   IAdminUserList,
   IUserRoleAdmin,
   useUpdateDoctorStatus,
-  useUpdatePatientStatus,
+  useUpdatePatientStatus
 } from "@nepMeds/service/nepmeds-admin-userrole";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -24,33 +24,28 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
       header: "S.N",
       accessorFn: (_cell: CellContext<IUserRoleAdmin, any>, index: number) => {
         return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-      },
+      }
     },
     {
       header: "Doctor's Name",
-      accessorKey: "name",
+      accessorKey: "name"
     },
 
     {
       header: "NMC No.",
-      accessorKey: "nmc_no",
+      accessorKey: "nmc_no"
     },
-    {
-      header: "Registration Approval Date",
-      accessorKey: "registration_approved_date",
-    },
-
     {
       header: "Payment Approval Date",
-      accessorKey: "payment_approved_date",
+      accessorKey: "payment_approved_date"
     },
     {
       header: "Contact",
-      accessorKey: "mobile_number",
+      accessorKey: "mobile_number"
     },
     {
       header: "Email",
-      accessorKey: "email",
+      accessorKey: "email"
     },
     {
       header: "Status",
@@ -64,7 +59,7 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
 
         return (
           <Switch
-            size="lg"
+            size="md"
             isChecked={status}
             onChange={e => {
               setStatus(e.target.checked);
@@ -72,46 +67,47 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
             }}
           />
         );
-      },
-    },
-    {
-      header: "Actions",
-      accessorKey: "actions",
-      cell: () => {
-        return (
-          <TableActions
-            onView={
-              () => ""
-              // navigate(
-              //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-              //     id: cell.row.original.id,
-              //   })
-              // )
-            }
-            onAccept={
-              () => ""
-              // onClick(true, {
-              //   id: cell.row.original.id,
-              //   name:
-              //     cell.row.original.user.first_name +
-              //     " " +
-              //     cell.row.original.user.last_name,
-              // })
-            }
-            onReject={
-              () => ""
-              // onClick(false, {
-              //   id: cell.row.original.id,
-              //   name:
-              //     cell.row.original.user.first_name +
-              //     " " +
-              //     cell.row.original.user.last_name,
-              // })
-            }
-          />
-        );
-      },
-    },
+      }
+    }
+    // TODO: API in progress
+    // {
+    //   header: "Actions",
+    //   accessorKey: "actions",
+    //   cell: () => {
+    //     return (
+    //       <TableActions
+    //         onView={
+    //           () => ""
+    //           // navigate(
+    //           //   generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
+    //           //     id: cell.row.original.id,
+    //           //   })
+    //           // )
+    //         }
+    //         onAccept={
+    //           () => ""
+    //           // onClick(true, {
+    //           //   id: cell.row.original.id,
+    //           //   name:
+    //           //     cell.row.original.user.first_name +
+    //           //     " " +
+    //           //     cell.row.original.user.last_name,
+    //           // })
+    //         }
+    //         onReject={
+    //           () => ""
+    //           // onClick(false, {
+    //           //   id: cell.row.original.id,
+    //           //   name:
+    //           //     cell.row.original.user.first_name +
+    //           //     " " +
+    //           //     cell.row.original.user.last_name,
+    //           // })
+    //         }
+    //       />
+    //     );
+    //   },
+    // },
   ];
 };
 
@@ -122,20 +118,20 @@ export const patientRoleColumn = (pageParams: PaginationState) => {
       accessorFn: (_cell: CellContext<IUserPatient, any>, index: number) => {
         return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
-      size: 2,
+      size: 2
     },
     {
       header: "Patient's Name",
-      accessorKey: "patient_name",
+      accessorKey: "patient_name"
     },
 
     {
       header: "Contact No.",
-      accessorKey: "mobile_number",
+      accessorKey: "mobile_number"
     },
     {
       header: "Email",
-      accessorKey: "email",
+      accessorKey: "email"
     },
     {
       header: "Status",
@@ -157,15 +153,15 @@ export const patientRoleColumn = (pageParams: PaginationState) => {
             }}
           />
         );
-      },
-    },
+      }
+    }
   ];
 };
 
 export const adminRoleColumn = ({
   pageParams,
   onModalOpen,
-  setAdminUser,
+  setAdminUser
 }: {
   pageParams: PaginationState;
   onModalOpen: {
@@ -181,26 +177,26 @@ export const adminRoleColumn = ({
       accessorFn: (_cell: CellContext<IAdminUserList, any>, index: number) => {
         return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
       },
-      size: 2,
+      size: 2
     },
     {
       header: "Admin's Name",
-      accessorKey: "name",
+      accessorKey: "name"
     },
     {
       header: "Selected Aproval Date",
       accessorFn: ({ created_at }: { created_at: string }) => {
         return created_at.substr(0, 10);
-      },
+      }
     },
 
     {
       header: "Contact No.",
-      accessorKey: "mobile_number",
+      accessorKey: "mobile_number"
     },
     {
       header: "Email",
-      accessorKey: "email",
+      accessorKey: "email"
     },
     {
       header: "Actions",
@@ -221,7 +217,7 @@ export const adminRoleColumn = ({
             }}
           />
         );
-      },
-    },
+      }
+    }
   ];
 };

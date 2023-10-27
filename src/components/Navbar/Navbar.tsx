@@ -7,7 +7,7 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { Notification } from "react-iconly";
 
@@ -20,13 +20,13 @@ import { HamburgerMenuIcon } from "@nepMeds/assets/svgs";
 import { Dispatch, SetStateAction } from "react";
 
 const Navbar = ({
-  setSidebarCollapsed,
+  setSidebarCollapsed
 }: {
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const logoutAction = useLogoutMutation();
+  const logoutAction = useLogoutMutation({});
   const logout = () => {
-    logoutAction.mutate();
+    logoutAction.mutate({});
   };
 
   const profileData = useProfileData();
@@ -66,7 +66,7 @@ const Navbar = ({
             <Menu>
               <MenuButton
                 sx={{
-                  "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                  "&>span": { display: "flex", alignItems: "center", gap: 2 }
                 }}
               >
                 <Text

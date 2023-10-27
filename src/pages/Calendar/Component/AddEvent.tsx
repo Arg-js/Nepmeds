@@ -15,14 +15,16 @@ const today = new Date().toISOString().split("T")[0];
 
 export const AddEvent = ({
   doctorAvailabilityData,
+  selectedFullDate
 }: {
   doctorAvailabilityData?: IGetDoctorAvailability;
+  selectedFullDate?: string;
 }) => {
   const {
     register,
     watch,
     control,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
     return generateTimeWith15MinutesInterval();
@@ -52,10 +54,10 @@ export const AddEvent = ({
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           rules={{
-            required: "Title is required.",
+            required: "Title is required."
           }}
           error={errors.title?.message}
         />
@@ -65,12 +67,13 @@ export const AddEvent = ({
           label="Frequency"
           name="frequency"
           register={register}
+          isDisabled={!!doctorAvailabilityData}
           defaultValue={doctorAvailabilityData?.frequency}
           options={FrequencyType}
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
         />
       </GridItem>
@@ -81,16 +84,17 @@ export const AddEvent = ({
           name="date"
           type="date"
           register={register}
+          isDisabled={!!doctorAvailabilityData}
           required
           min={today}
-          defaultValue={today}
+          defaultValue={selectedFullDate ?? today}
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           rules={{
-            required: "Date is required.",
+            required: "Date is required."
           }}
           error={errors.date?.message}
         />
@@ -109,10 +113,10 @@ export const AddEvent = ({
             style={{
               background: colors.forminput,
               border: "none",
-              paddingTop: "15px",
+              paddingTop: "15px"
             }}
             rules={{
-              required: "Date is required.",
+              required: "Date is required."
             }}
             error={errors.date?.message}
           />
@@ -133,7 +137,7 @@ export const AddEvent = ({
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           onClick={(e: any) => {
             const first = options.slice(
@@ -157,7 +161,7 @@ export const AddEvent = ({
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           defaultValue={doctorAvailabilityData?.to_time?.slice(0, 5)}
           placeholder="--:--"

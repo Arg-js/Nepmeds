@@ -8,7 +8,7 @@ import { ISidebarOption } from "@nepMeds/components/Sidebar/Sidebar";
 
 const MenuOption = ({
   sidebarOption,
-  sidebarCollapsed,
+  sidebarCollapsed
 }: {
   sidebarOption: ISidebarOption;
   sidebarCollapsed: boolean;
@@ -34,7 +34,7 @@ const MenuOption = ({
     isDoctor,
     isPayment,
     payment_status,
-    text,
+    text
   }: {
     isAdmin: boolean | undefined;
     isDoctor: boolean | undefined;
@@ -67,7 +67,7 @@ const MenuOption = ({
               isActiveFn("/doctor-list/*")
                 ? {
                     background: colors.primary,
-                    color: colors.white,
+                    color: colors.white
                   }
                 : {}
             }
@@ -75,7 +75,7 @@ const MenuOption = ({
             onClick={() => setIsActive(prev => !prev)}
             mb={2}
           >
-            <Flex justifyContent={"space-around"} alignItems={"center"} gap={8}>
+            <Flex justifyContent={"space-around"} alignItems={"center"}>
               <sidebarOption.icon
                 set={sidebarOption.set}
                 color={
@@ -92,14 +92,17 @@ const MenuOption = ({
                     fontSize={"sm"}
                     lineHeight={"17px"}
                     w="min-content"
+                    ml={"18px"}
                   >
                     {sidebarOption?.text}
                   </Text>
-                  {isActive ? (
-                    <ChevronUp size={20} />
-                  ) : (
-                    <ChevronDown size={20} />
-                  )}
+                  <Box ml={"18px"}>
+                    {isActive ? (
+                      <ChevronUp size={20} />
+                    ) : (
+                      <ChevronDown size={20} />
+                    )}
+                  </Box>
                 </>
               )}
             </Flex>
@@ -111,12 +114,13 @@ const MenuOption = ({
                   key={item.text}
                   display={"flex"}
                   alignItems={"center"}
+                  justifyContent={sidebarCollapsed ? "center" : "left"}
                   as={NavLink}
                   p={2}
                   borderRadius={8}
                   _activeLink={{
                     color: colors.blue_100,
-                    bg: colors.primary,
+                    bg: colors.primary
                   }}
                   to={item.link}
                 >
@@ -151,7 +155,7 @@ const MenuOption = ({
             isDoctor,
             isPayment,
             payment_status,
-            text: sidebarOption?.text,
+            text: sidebarOption?.text
           }) && (
             <ListItem
               display={"flex"}
@@ -162,7 +166,7 @@ const MenuOption = ({
               borderRadius={12}
               _activeLink={{
                 background: colors.primary,
-                color: colors.white,
+                color: colors.white
               }}
               to={sidebarOption.link}
               mb={2}

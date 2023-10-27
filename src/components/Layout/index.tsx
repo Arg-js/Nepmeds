@@ -36,7 +36,7 @@ const LayoutComponent = () => {
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
         navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED, {
-          replace: true,
+          replace: true
         });
       }
     }
@@ -51,7 +51,7 @@ const LayoutComponent = () => {
           display: "block",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "25%",
+          marginTop: "25%"
         }}
       />
     );
@@ -76,24 +76,6 @@ const LayoutComponent = () => {
         }
         gap="1"
       >
-        {/* TODO: remove this code after QA testing approval */}
-        {/* <GridItem area={"side"}>
-          <Sidebar />
-        </GridItem> */}
-        {/* {profileData?.data?.is_superuser ? (
-          <GridItem area={"side"}>
-            <Sidebar />
-          </GridItem>
-        ) : (
-          profileData?.data?.is_doctor &&
-          profileData?.data?.doctor?.status ===
-            STATUSTYPE.approved.toString() && (
-            <GridItem area={"side"}>
-              <Sidebar />
-            </GridItem>
-          )
-        )} */}
-
         {(profileData?.data?.is_superuser ||
           (profileData?.data?.is_doctor &&
             profileData?.data?.doctor?.status ===
