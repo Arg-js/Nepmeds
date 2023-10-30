@@ -186,11 +186,10 @@ const DoctorList = () => {
                     Array.from({ length: 5 }, (_, index) => (
                       <DoctorCardSkeleton key={index} />
                     ))}
-
-                  {!doctorData?.results.length && <NoData />}
+                  {/* TODO: check this might throw error when doctorData itself is undefined */}
                   {DoctorListError && <Text>Oops something went wrong!!</Text>}
-                  {doctorData &&
-                    doctorData?.results.map(doctorData => {
+                  {doctorData?.results?.length ? (
+                    doctorData?.results?.map(doctorData => {
                       return (
                         <Box key={doctorData.id} mb={6}>
                           <DoctorListCard
@@ -201,7 +200,11 @@ const DoctorList = () => {
                           />
                         </Box>
                       );
-                    })}
+                    })
+                  ) : (
+                    <NoData />
+                  )}
+
                   {doctorData && doctorData.count > 5 && (
                     <Box display={{ base: "block" }}>
                       <Pagination
@@ -209,7 +212,7 @@ const DoctorList = () => {
                         queryPageSize={pageParams.limit}
                         queryPageIndex={pageParams.page}
                         pageChange={pageChange}
-                        totalCount={doctorData?.count ?? 0}
+                        totalCount={doctorData.count ?? 0}
                       />
                     </Box>
                   )}
