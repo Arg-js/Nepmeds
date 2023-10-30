@@ -49,6 +49,7 @@ const DoctorListCard: React.FC<{
   );
 
   const isSidebarCollapsed = useWindowResize();
+
   const navigate = useNavigate();
   const onDoctorSelected = () => {
     setDoctorId && setDoctorId(data.id);

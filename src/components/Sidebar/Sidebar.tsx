@@ -124,6 +124,10 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 ];
 
+const height = "40px";
+const logoWidthSmall = "50px";
+const logoWidthLarge = "180px";
+
 const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
   const { data: userInfo } = useLoginTokenDetailQuery();
 
@@ -145,8 +149,8 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       <Image
         src={!sidebarCollapsed ? images?.logo : images?.smallLogo}
         alt="logo"
-        height={sidebarCollapsed ? "40px" : "auto"}
-        width={sidebarCollapsed ? "50px" : "180px"}
+        height={sidebarCollapsed ? height : "auto"}
+        width={sidebarCollapsed ? logoWidthSmall : logoWidthLarge}
         alignSelf={"center"}
       />
       <List>
