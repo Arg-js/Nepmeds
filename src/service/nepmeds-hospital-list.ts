@@ -1,18 +1,49 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
+import { generatePath } from "react-router-dom";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
-import { toastFail } from "./service-toast";
+import { toastFail, toastSuccess } from "./service-toast";
 
-const getHospitalList = () => {
-  return HttpClient.get<NepMedsResponse<{ id: number; name: string }[]>>(
-    api.hospital_list
-  );
+interface IHospitalReqBody {
+  name: string;
+  district: string;
+  province: string;
+}
+interface IHospitalUpdateReqBody extends IHospitalReqBody {
+  id: string;
+}
+
+interface IHospital {
+  id: number;
+  name: string;
+  province: string;
+  district: string;
+}
+interface IHospitalResp {
+  results: IHospital[];
+  count: number;
+  page_count: number;
+  next: string;
+  previous: string;
+}
+
+const getAllHospital = ({ page, page_size }: IPaginationParams) => {
+  return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_list.get, {
+    params: { page, page_size }
+  });
 };
-export const useGetHospitalList = () => {
-  return useQuery(api.hospital_list, getHospitalList, {
+const getHospital = () => {
+  return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_lists.get);
+};
+interface IPaginationParams {
+  page: number;
+  page_size: number;
+}
+const useGetAllHospital = () => {
+  return useQuery(api.hospital_list.get, getHospital, {
     select: ({ data }) =>
-      data?.data.map(item => ({
+      data?.data?.results?.map(item => ({
         label: item.name,
         value: item.id
       })),
@@ -21,4 +52,87 @@ export const useGetHospitalList = () => {
       toastFail(formattedError);
     }
   });
+};
+const useGetAllHospitalDetails = ({ page, page_size }: IPaginationParams) => {
+  return useQuery(
+    [api.hospital_list.get, page, page_size],
+    () => getAllHospital({ page, page_size }),
+    {
+      select: ({ data }) => data?.data,
+      onError: error => {
+        const formattedError = serverErrorResponse(error);
+        toastFail(formattedError);
+      }
+    }
+  );
+};
+
+const createHospital = (hospitalListReqBody: IHospitalReqBody) => {
+  return HttpClient.post(api.hospital_list.post, hospitalListReqBody);
+};
+const useCreateHospital = () => {
+  return useMutation(createHospital, {
+    onSuccess: () => toastSuccess("Hospital Successfully Added!"),
+    onError: error => toastFail(serverErrorResponse(error))
+  });
+};
+
+const updateHospital = (hospitalListReqBody: IHospitalUpdateReqBody) => {
+  return HttpClient.patch(
+    generatePath(api.hospital_list.patch, { id: hospitalListReqBody.id }),
+    hospitalListReqBody
+  );
+};
+const useUpdateHospital = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updateHospital, {
+    onSuccess: () => {
+      toastSuccess("Hospital Successfully Updated!");
+      queryClient.invalidateQueries(api.hospital_list.getById);
+      queryClient.invalidateQueries(api.hospital_list.get);
+    },
+    onError: error => toastFail(serverErrorResponse(error))
+  });
+};
+
+const deleteHospital = (id: string) => {
+  return HttpClient.delete(generatePath(api.hospital_list.delete, { id }));
+};
+const useDeleteHospital = () => {
+  const queryClient = useQueryClient();
+  return useMutation(deleteHospital, {
+    onSuccess: () => {
+      toastSuccess("Hospital Successfully Deleted!"),
+        queryClient.invalidateQueries(api.hospital_list.get);
+    },
+    onError: error => toastFail(serverErrorResponse(error))
+  });
+};
+
+const getHospitalById = async ({ id }: { id: string }) => {
+  const response = await HttpClient.get<NepMedsResponse<IHospital>>(
+    generatePath(api.hospital_list.getById, { id })
+  );
+  return response;
+};
+
+const useGetHospitalById = (id: string) => {
+  return useQuery(
+    [api.hospital_list.getById, id],
+    () => getHospitalById({ id }),
+    {
+      select: ({ data }) => data?.data,
+      enabled: !!id,
+      onError: error => toastFail(serverErrorResponse(error))
+    }
+  );
+};
+
+export {
+  useGetAllHospital,
+  useGetHospitalById,
+  useCreateHospital,
+  useUpdateHospital,
+  useDeleteHospital,
+  useGetAllHospitalDetails
 };
