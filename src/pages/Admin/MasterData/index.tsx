@@ -7,7 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { CustomButton } from "@nepMeds/components/Button/Button";
 import { colors } from "@nepMeds/theme/colors";
@@ -16,31 +16,88 @@ import { IoAdd } from "react-icons/io5";
 import Specializations from "./Specialist";
 import Symptoms from "./Symptoms";
 
-import SpecialistRates from "./Specialist Rate";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import CollegeTab from "./College";
+import HospitalTab from "./Hospital";
 
 const MasterData = () => {
   const {
     onOpen: onOpenSymptoms,
     onClose: onCloseSymptoms,
-    isOpen: isSymptomsOpen,
-  } = useDisclosure();
-  const {
-    onOpen: onOpenSpecialistRate,
-    onClose: onCloseSpecialistRate,
-    isOpen: isOpenSpecialistRate,
+    isOpen: isSymptomsOpen
   } = useDisclosure();
 
   const {
     onOpen: onOpenSpecialization,
     onClose: onCloseSpecialization,
-    isOpen: isSpecializationOpen,
+    isOpen: isSpecializationOpen
+  } = useDisclosure();
+  const {
+    onOpen: onOpenHospitalModal,
+    onClose: onCloseHospitalModal,
+    isOpen: isOpenHospitalModal
+  } = useDisclosure();
+  const {
+    onOpen: onOpenCollegeModal,
+    onClose: onCloseCollegeModal,
+    isOpen: isOpenCollegeModal
   } = useDisclosure();
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (index: number) => {
     setActiveTab(index);
   };
+
+  const masterDataTabConfig = [
+    {
+      id: 0,
+      title: "Symptoms",
+      onClickAction: onOpenSymptoms,
+      component: (
+        <Symptoms
+          onCloseSymptoms={onCloseSymptoms}
+          isSymptomsOpen={isSymptomsOpen}
+          activeTab={activeTab}
+        />
+      )
+    },
+    {
+      id: 1,
+      title: "Specialization",
+      onClickAction: onOpenSpecialization,
+      component: (
+        <Specializations
+          onCloseSpecialization={onCloseSpecialization}
+          isSpecializationOpen={isSpecializationOpen}
+          activeTab={activeTab}
+        />
+      )
+    },
+    {
+      id: 2,
+      title: "College",
+      onClickAction: onOpenCollegeModal,
+      component: (
+        <CollegeTab
+          onCloseCollegeModal={onCloseCollegeModal}
+          isOpenCollegeModal={isOpenCollegeModal}
+        />
+      )
+    },
+    {
+      id: 3,
+      title: "Hospital",
+      onClickAction: onOpenHospitalModal,
+      component: (
+        <HospitalTab
+          onCloseHospitalModal={onCloseHospitalModal}
+          isOpenHospitalModal={isOpenHospitalModal}
+          onOpenHospitalModal={onOpenHospitalModal}
+        />
+      )
+    }
+  ];
+
   return (
     <WrapperBox margin="5" borderRadius="12px" py="4" px="9">
       <Tabs
@@ -52,27 +109,22 @@ const MasterData = () => {
       >
         <Grid
           display={"flex"}
-          // templateColumns="repeat(5, 1fr)"
           justifyContent={"space-between"}
           alignItems={"center"}
           p={4}
         >
           <GridItem>
             <TabList border="none">
-              <Tab
-                fontWeight="400"
-                _selected={{ color: colors.black }}
-                color={colors.light_gray}
-              >
-                Symptoms
-              </Tab>
-              <Tab
-                fontWeight="400"
-                _selected={{ color: colors.black }}
-                color={colors.light_gray}
-              >
-                Specialization
-              </Tab>
+              {masterDataTabConfig.map(({ title }) => (
+                <Tab
+                  key={title}
+                  fontWeight="400"
+                  _selected={{ color: colors.black }}
+                  color={colors.light_gray}
+                >
+                  {title}
+                </Tab>
+              ))}
               {/* <Tab
                 fontWeight="400"
                 _selected={{ color: colors.black }}
@@ -88,74 +140,31 @@ const MasterData = () => {
               borderRadius="1px"
             />
           </GridItem>
-
           <GridItem>
-            {/* <Link to={NAVIGATION_ROUTES.SIGNUP}> */}
-            {activeTab === 0 && (
-              <CustomButton
-                onClick={() => {
-                  onOpenSymptoms();
-                }}
-                backgroundColor={colors.primary}
-              >
-                {" "}
-                <IoAdd /> Add Symptoms
-              </CustomButton>
-            )}{" "}
-            {activeTab === 1 && (
-              <CustomButton
-                onClick={() => {
-                  onOpenSpecialization();
-                }}
-                backgroundColor={colors.primary}
-              >
-                {" "}
-                <IoAdd /> Add Specialization
-              </CustomButton>
+            {masterDataTabConfig.map(
+              ({ id, title, onClickAction }) =>
+                activeTab === id && (
+                  <CustomButton
+                    key={id}
+                    onClick={() => {
+                      onClickAction();
+                    }}
+                    backgroundColor={colors.primary}
+                    leftIcon={<IoAdd />}
+                  >
+                    Add {title}
+                  </CustomButton>
+                )
             )}
-            {activeTab === 2 && (
-              <CustomButton
-                onClick={() => {
-                  onOpenSpecialistRate();
-                }}
-                backgroundColor={colors.primary}
-              >
-                <IoAdd />
-                Specialist Rate
-              </CustomButton>
-            )}
-            {/* </Link> */}
           </GridItem>
         </Grid>
 
         <TabPanels>
-          <TabPanel>
-            {activeTab === 0 && (
-              <Symptoms
-                onCloseSymptoms={onCloseSymptoms}
-                isSymptomsOpen={isSymptomsOpen}
-                activeTab={activeTab}
-              />
-            )}
-          </TabPanel>
-          <TabPanel>
-            {activeTab === 1 && (
-              <Specializations
-                onCloseSpecialization={onCloseSpecialization}
-                isSpecializationOpen={isSpecializationOpen}
-                activeTab={activeTab}
-              />
-            )}
-          </TabPanel>
-          <TabPanel>
-            {activeTab === 2 && (
-              <SpecialistRates
-                onCloseSpecialistRate={onCloseSpecialistRate}
-                isOpenSpecialistRate={isOpenSpecialistRate}
-                activeTab={activeTab}
-              />
-            )}
-          </TabPanel>
+          {masterDataTabConfig.map(({ id, component }) => {
+            return (
+              <TabPanel key={id}>{activeTab === id && component}</TabPanel>
+            );
+          })}
         </TabPanels>
       </Tabs>
     </WrapperBox>
