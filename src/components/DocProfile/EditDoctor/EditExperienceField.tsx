@@ -6,7 +6,7 @@ import Select from "@nepMeds/components/Form/Select";
 import { IRegisterFields } from "@nepMeds/components/FormComponents/RegistrationForm/RegistrationForm";
 import MultipleImageUpload from "@nepMeds/components/ImageUploadMulti";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useGetHospitalList } from "@nepMeds/service/nepmeds-hospital-list";
+import { useGetAllHospital } from "@nepMeds/service/nepmeds-hospital-list";
 import { colors } from "@nepMeds/theme/colors";
 import { ChangeEvent, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
@@ -31,7 +31,7 @@ const EditExperienceField = ({
   >([]);
   const [, setSelectedImagesFile] = useState<Array<Array<File | null>>>([]);
 
-  const { data: hospitalList } = useGetHospitalList();
+  const { data: hospitalList } = useGetAllHospital();
 
   const handleImageChange = async (
     e: ChangeEvent<HTMLInputElement>,

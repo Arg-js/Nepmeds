@@ -8,7 +8,7 @@ import {
   Wallet,
   Work,
   User,
-  Document,
+  Document
 } from "react-iconly";
 
 import { images } from "@nepMeds/assets/images";
@@ -31,39 +31,39 @@ const sidebarOptions: ISidebarOption[] = [
     icon: Category,
     set: "two-tone",
     text: "Dashboard",
-    link: "/dashboard",
+    link: "/dashboard"
   },
   {
     icon: TimeCircle,
     set: "light",
     text: "Appointments",
-    link: "/appointments",
+    link: "/appointments"
   },
   {
     icon: Call,
     set: "light",
     text: "Follow Up",
-    link: "/follow-up",
+    link: "/follow-up"
   },
   {
     icon: Paper,
     set: "light",
     text: "Patient's History",
-    link: "/patient's-history",
+    link: "/patient's-history"
   },
   {
     icon: Calendar,
     set: "light",
     text: "Calender",
-    link: "/calendar",
+    link: "/calendar"
   },
 
   {
     icon: Wallet,
     set: "light",
     text: "Payment",
-    link: "/payment",
-  },
+    link: "/payment"
+  }
 ];
 
 const AdminSidebarOptions: ISidebarOption[] = [
@@ -71,13 +71,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
     icon: Category,
     set: "two-tone",
     text: "Dashboard",
-    link: "/dashboard",
+    link: "/dashboard"
   },
   {
     icon: Document,
     set: "light",
     text: "Master Data",
-    link: "/master-data",
+    link: "/master-data"
   },
   {
     icon: Work,
@@ -89,40 +89,44 @@ const AdminSidebarOptions: ISidebarOption[] = [
       {
         text: "Registration",
         link: "/doctor-list/registration",
-        icon: Document,
+        icon: Document
       },
       {
         text: "Rate",
         link: "/doctor-list/payment",
-        icon: Wallet,
-      },
-    ],
+        icon: Wallet
+      }
+    ]
   },
   {
     icon: Paper,
     set: "light",
     text: "Patients",
-    link: "/patients",
+    link: "/patients"
   },
   {
     icon: TimeCircle,
     set: "light",
     text: "Appointments",
-    link: "/appointments",
+    link: "/appointments"
   },
   {
     icon: User,
     set: "light",
     text: "User Role",
-    link: "/user-role",
+    link: "/user-role"
   },
   {
     icon: Call,
     set: "light",
     text: "Instant Consult",
-    link: "/instant-consult-request",
-  },
+    link: "/instant-consult-request"
+  }
 ];
+
+const height = "40px";
+const logoWidthSmall = "50px";
+const logoWidthLarge = "180px";
 
 const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
   const { data: userInfo } = useLoginTokenDetailQuery();
@@ -146,8 +150,8 @@ const Sidebar = ({ sidebarCollapsed }: { sidebarCollapsed: boolean }) => {
       <Image
         src={!sidebarCollapsed ? images?.logo : images?.smallLogo}
         alt="logo"
-        height={sidebarCollapsed ? "40px" : "auto"}
-        width={sidebarCollapsed ? "50px" : "180px"}
+        height={sidebarCollapsed ? height : "auto"}
+        width={sidebarCollapsed ? logoWidthSmall : logoWidthLarge}
         alignSelf={"center"}
       />
       <List>

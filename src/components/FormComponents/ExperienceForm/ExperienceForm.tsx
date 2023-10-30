@@ -25,7 +25,7 @@ import {
   MultiImageUpload
 } from "../../ImageUploadMulti/dropzone";
 import Select from "@nepMeds/components/Form/Select";
-import { useGetHospitalList } from "@nepMeds/service/nepmeds-hospital-list";
+import { useGetAllHospital } from "@nepMeds/service/nepmeds-hospital-list";
 
 export const ExperienceForm = ({
   doctorProfileData
@@ -54,7 +54,7 @@ export const ExperienceForm = ({
       })
     ) ?? [];
 
-  const { data: hospitalList } = useGetHospitalList();
+  const { data: hospitalList } = useGetAllHospital();
 
   useEffect(() => {
     if (doctorProfileData?.doctor_experience?.length) {
@@ -93,6 +93,7 @@ export const ExperienceForm = ({
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const toDate = getValues(`experience.${index}.to_date`);
     const fromDate = getValues(`experience.${index}.from_date`);
+
     const daysCount = getDayDifference(
       new Date(toDate ?? ""),
       new Date(fromDate ?? "")
