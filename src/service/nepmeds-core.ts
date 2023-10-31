@@ -16,7 +16,7 @@ interface IDistrict {
   district_municipality: Municipality[];
 }
 
-interface IDetailAddress {
+export interface IDetailAddress {
   id: number;
   name: string;
   province_district: IDistrict[];

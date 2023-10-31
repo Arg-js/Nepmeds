@@ -79,8 +79,8 @@ const MasterData = () => {
       onClickAction: onOpenCollegeModal,
       component: (
         <CollegeTab
-          onCloseCollegeModal={onCloseCollegeModal}
-          isOpenCollegeModal={isOpenCollegeModal}
+          onCloseModal={onCloseCollegeModal}
+          isOpenModal={isOpenCollegeModal}
         />
       )
     },
