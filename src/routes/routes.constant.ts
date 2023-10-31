@@ -5,7 +5,7 @@ export const NAVIGATION_ROUTES = {
     PRIMARY_INFO: "/register/primary-info",
     ACADEMIC_INFO: "/register/academic-info",
     CERTIFICATION_INFO: "/register/certification-info",
-    EXPERIENCE_INFO: "/register/experience-info",
+    EXPERIENCE_INFO: "/register/experience-info"
   },
   LOGIN: "/",
   DOCTOR_LOGIN: "/login",
@@ -20,6 +20,7 @@ export const NAVIGATION_ROUTES = {
   PATIENTS: "/patients",
   USER_ROLE: "user-role",
   CONSULT_REQUEST: "/instant-consult-request",
+  FAQ: "/faq",
 
   DOCTOR_LIST: "/doctor-list",
   DOCTOR_PROFILE: "/doctor-profile",
@@ -44,5 +45,5 @@ export const NAVIGATION_ROUTES = {
   VIDEOCALL: "/video-call",
   NO_MATCH: "*",
 
-  PAYMENTS: "/payment",
+  PAYMENTS: "/payment"
 };

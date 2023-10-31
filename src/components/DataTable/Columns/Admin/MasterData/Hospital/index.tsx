@@ -20,7 +20,7 @@ export const hospitalColumns = ({
 }) => [
   {
     header: "S.N.",
-    accessorFn: (_: any, index: number) => {
+    accessorFn: (_: unknown, index: number) => {
       return `${
         paginationParams.pageIndex * paginationParams.pageSize + index + 1
       }.`;

@@ -121,6 +121,12 @@ const AdminSidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "Instant Consult",
     link: "/instant-consult-request"
+  },
+  {
+    icon: Category,
+    set: "light",
+    text: "FAQ",
+    link: "/faq"
   }
 ];
 

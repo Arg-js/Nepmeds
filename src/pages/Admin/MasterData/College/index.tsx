@@ -17,11 +17,11 @@ const schema = Yup.object().shape({
 });
 
 const CollegeTab = ({
-  onCloseCollegeModal,
-  isOpenCollegeModal
+  onCloseModal,
+  isOpenModal
 }: {
-  onCloseCollegeModal: () => void;
-  isOpenCollegeModal: boolean;
+  onCloseModal: () => void;
+  isOpenModal: boolean;
 }) => {
   const formMethods = useForm({ defaultValues, resolver: yupResolver(schema) });
   const {
@@ -37,7 +37,7 @@ const CollegeTab = ({
   // React Queries Ends
 
   const onModalClose = () => {
-    onCloseCollegeModal();
+    onCloseModal();
     reset(defaultValues);
   };
   const onSubmitHandler = async (data: { name: string }) => {
@@ -74,7 +74,7 @@ const CollegeTab = ({
             <Text>Add College</Text>
           </HStack>
         }
-        isOpen={isOpenCollegeModal}
+        isOpen={isOpenModal}
         onClose={onModalClose}
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
@@ -92,16 +92,14 @@ const CollegeTab = ({
         }
       >
         <FormProvider {...formMethods}>
-          <form>
-            <FormControl
-              control="input"
-              label="name"
-              name="name"
-              register={register}
-              required
-              error={errors.name?.message ?? ""}
-            />
-          </form>
+          <FormControl
+            control="input"
+            label="name"
+            name="name"
+            register={register}
+            required
+            error={errors.name?.message ?? ""}
+          />
         </FormProvider>
       </ModalComponent>
     </>

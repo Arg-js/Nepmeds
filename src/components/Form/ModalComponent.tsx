@@ -10,7 +10,7 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  ModalProps,
+  ModalProps
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { ReactNode } from "react";
@@ -49,7 +49,7 @@ const ModalComponent = ({
           <ModalBody
             sx={{
               textAlign: alignment,
-              py: "0",
+              py: "0"
             }}
             overflowY="auto"
           >

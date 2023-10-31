@@ -18,14 +18,14 @@ import {
   Image,
   SimpleGrid,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/react";
 import { NmcForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useProfileData } from "@nepMeds/context/index";
 import {
   useCertificateFileRegister,
-  useUpdateCertificateInfo,
+  useUpdateCertificateInfo
 } from "@nepMeds/service/nepmeds-certificate";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
@@ -41,7 +41,7 @@ interface handleFormUpdateProps {
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
   handleCloseForm,
-  isLoading,
+  isLoading
 }) => {
   return (
     <Grid
@@ -50,7 +50,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       className="test"
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
       }}
     >
       <GridItem colSpan={1}>
@@ -68,7 +68,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
 };
 
 const EditCertification = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
@@ -91,7 +91,7 @@ const EditCertification = ({
         nmc_file:
           typeof formMethods.getValues("nmc.nmc_file") !== "string"
             ? formMethods.getValues("nmc.nmc_file")?.[0]
-            : doctorProfileData.doctor_nmc_info.nmc_file,
+            : doctorProfileData.doctor_nmc_info.nmc_file
       };
 
       if (typeof formatedData.nmc_file === "string") {
@@ -117,16 +117,16 @@ const EditCertification = ({
         height={"auto"}
         css={{
           "&::-webkit-scrollbar": {
-            width: "4px",
+            width: "4px"
           },
           "&::-webkit-scrollbar-track": {
-            width: "6px",
+            width: "6px"
           },
           "&::-webkit-scrollbar-thumb": {
             background: `${colors.light_gray}`,
-            borderRadius: "24px",
+            borderRadius: "24px"
           },
-          overflowY: "scroll",
+          overflowY: "scroll"
         }}
       >
         <Box
@@ -177,16 +177,16 @@ const EditCertification = ({
                     height={"60vh"}
                     css={{
                       "&::-webkit-scrollbar": {
-                        width: "4px",
+                        width: "4px"
                       },
                       "&::-webkit-scrollbar-track": {
-                        width: "6px",
+                        width: "6px"
                       },
                       "&::-webkit-scrollbar-thumb": {
                         background: `${colors.light_gray}`,
-                        borderRadius: "24px",
+                        borderRadius: "24px"
                       },
-                      overflowY: "scroll",
+                      overflowY: "scroll"
                     }}
                   >
                     <NmcForm data={NMCdata} />
