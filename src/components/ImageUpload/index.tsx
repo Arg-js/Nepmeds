@@ -6,7 +6,7 @@ import {
   FormErrorMessage,
   IconButton,
   Image,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 
@@ -23,7 +23,7 @@ const ImageUpload = ({
   // helperText,
   rules,
   error,
-  setValue,
+  setValue
 }: ImageUploadProps) => {
   const handleRemoveImage = () => {
     setSelectedImage(null);

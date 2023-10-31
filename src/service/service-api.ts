@@ -145,6 +145,13 @@ export const api = {
     khalti: "/transaction/khalti-initiate/",
     esewa: "/transaction/esewa-initiate/"
   },
+
+  faq: {
+    create: "/dashboard/faq-create/",
+    faqList: "/dashboard/faq-list/",
+    faqDelete: "/dashboard/faq-delete/:id/"
+  },
+
   videoCall: {
     base: "/video-chat",
     initiate: function () {

@@ -4,7 +4,7 @@ import {
   Button,
   VStack,
   Text,
-  Box,
+  Box
 } from "@chakra-ui/react";
 import { PlusIcon, svgs } from "@nepMeds/assets/svgs";
 import { CustomButton } from "@nepMeds/components/Button/Button";
@@ -14,7 +14,7 @@ import { toastSuccess, toastFail } from "@nepMeds/components/Toast";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import {
   useCreateDoctorAvailability,
-  IGetDoctorAvailability,
+  IGetDoctorAvailability
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -29,14 +29,14 @@ interface ICalendarDailyDetailView {
 const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
   selectedDate,
   selectedDay,
-  selectedFullDate,
+  selectedFullDate
 }) => {
   const formMethods = useForm();
 
   const {
     isOpen: isAddEventOpen,
     onClose,
-    onOpen: onAddEventOpen,
+    onOpen: onAddEventOpen
   } = useDisclosure();
 
   const onAddEventClose = () => {
@@ -133,17 +133,17 @@ const CalendarDailyDetailView: React.FC<ICalendarDailyDetailView> = ({
           "&::-webkit-scrollbar": {
             width: "0.4rem",
             height: "0.6rem",
-            position: "absolute",
+            position: "absolute"
           },
           "&::-webkit-scrollbar-track": {
             position: "absolute",
             background: "#fff",
-            opacity: 0.1,
+            opacity: 0.1
           },
           "&::-webkit-scrollbar-thumb": {
             background: colors.gray,
-            borderRadius: 20,
-          },
+            borderRadius: 20
+          }
         }}
         className="inter-font-family"
       >

@@ -70,7 +70,6 @@ const Header: React.FC<{
       setRoomName("");
     } else {
       onOpen();
-
       setDoctorInfo(doctor);
       setRoomName(room_name ?? "");
     }

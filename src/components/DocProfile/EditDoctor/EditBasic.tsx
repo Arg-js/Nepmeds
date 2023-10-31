@@ -12,7 +12,7 @@ import {
   Icon,
   Image,
   Spinner,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import { images } from "@nepMeds/assets/images";
 import React from "react";
@@ -22,7 +22,7 @@ import { BasicInfoForm } from "@nepMeds/components/FormComponents";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   IGetDoctorProfile,
-  IUser,
+  IUser
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useUpdatePersonalInfoRegister } from "@nepMeds/service/nepmeds-register";
 import { colors } from "@nepMeds/theme/colors";
@@ -32,7 +32,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 
 const EditBasic = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
@@ -46,11 +46,11 @@ const EditBasic = ({
       Card: {
         baseStyle: {
           _focus: {
-            boxShadow: "none",
-          },
-        },
-      },
-    },
+            boxShadow: "none"
+          }
+        }
+      }
+    }
   });
 
   const handleFormUpdate = async () => {
@@ -59,14 +59,14 @@ const EditBasic = ({
       const user = {
         first_name: formMethods.getValues("first_name"),
         middle_name: formMethods.getValues("middle_name"),
-        last_name: formMethods.getValues("last_name"),
+        last_name: formMethods.getValues("last_name")
       } as IUser;
 
       const doctor_nmc_info = {
         nmc_number: formMethods.getValues("nmc.nmc_number"),
         nmc_issued_date: formMethods.getValues("nmc.nmc_issued_date"),
         nmc_expiry_date: formMethods.getValues("nmc.nmc_expiry_date"),
-        nmc_file: formMethods.getValues("nmc.nmc_file")?.[0] as File,
+        nmc_file: formMethods.getValues("nmc.nmc_file")?.[0] as File
       };
 
       if (profilePicture) {
@@ -90,7 +90,7 @@ const EditBasic = ({
         medical_degree: "test",
         designation: "Test",
         id_back_image: formMethods.getValues("id_back_image"),
-        id_front_image: formMethods.getValues("id_front_image"),
+        id_front_image: formMethods.getValues("id_front_image")
       });
       toastSuccess("Personal information updated successfully!");
       setEditBasicFormToggle(false);
@@ -170,16 +170,16 @@ const EditBasic = ({
                 height={"60vh"}
                 css={{
                   "&::-webkit-scrollbar": {
-                    width: "4px",
+                    width: "4px"
                   },
                   "&::-webkit-scrollbar-track": {
-                    width: "6px",
+                    width: "6px"
                   },
                   "&::-webkit-scrollbar-thumb": {
                     // background: scrollbarColor,
                     background: `${colors.light_gray}`,
-                    borderRadius: "24px",
-                  },
+                    borderRadius: "24px"
+                  }
                 }}
                 overflow="scroll"
               >
@@ -268,7 +268,7 @@ const EditBasic = ({
 };
 
 const EditBasicForm = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
@@ -293,7 +293,7 @@ interface handleFormUpdateProps {
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
   handleCloseForm,
-  isLoading,
+  isLoading
 }) => {
   return (
     <Grid
@@ -303,7 +303,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       className="test"
       style={{
         display: "flex",
-        justifyContent: "space-between",
+        justifyContent: "space-between"
       }}
     >
       <GridItem colSpan={1}>
