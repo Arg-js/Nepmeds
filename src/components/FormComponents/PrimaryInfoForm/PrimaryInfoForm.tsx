@@ -11,7 +11,7 @@ import ImageUpload from "@nepMeds/components/ImageUpload";
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import {
   useGetAllDistricts,
-  useGetDetailAddress,
+  useGetDetailAddress
 } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
@@ -26,7 +26,7 @@ import { useLocation } from "react-router-dom";
 
 const PrimaryInfo = ({
   doctorProfileData,
-  isEditable,
+  isEditable
 }: {
   doctorProfileData?: IGetDoctorProfile;
   isEditable?: boolean;
@@ -38,7 +38,7 @@ const PrimaryInfo = ({
     getValues,
     setValue,
     control,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<IRegisterFields>();
   const location = useLocation();
   const [validField, setValidField] = useState<"mobile" | "email">();
@@ -59,7 +59,7 @@ const PrimaryInfo = ({
     municipalities =
       district?.district_municipality.map(muni => ({
         label: muni.name,
-        value: muni.id,
+        value: muni.id
       })) ?? [];
 
     return municipalities;
@@ -77,7 +77,7 @@ const PrimaryInfo = ({
 
     districts = province.province_district.map(district => ({
       label: district.name,
-      value: district.id,
+      value: district.id
     }));
 
     return districts;
@@ -99,12 +99,12 @@ const PrimaryInfo = ({
   const allDistrictOptions =
     allDistrictInfo.data?.map(p => ({
       label: p.name,
-      value: p.id,
+      value: p.id
     })) || [];
 
   const specializationOptions = specialization.map(s => ({
     label: s.name,
-    value: s.id,
+    value: s.id
   }));
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const PrimaryInfo = ({
         id_issued_district: +doctorProfileData.issued_district?.id,
         province: doctorProfileData?.user?.province_data?.id,
         district: doctorProfileData?.user?.district_data?.id,
-        municipality: doctorProfileData?.user?.municipality_data?.id,
+        municipality: doctorProfileData?.user?.municipality_data?.id
       });
     }
   }, [doctorProfileData]);
@@ -236,12 +236,12 @@ const PrimaryInfo = ({
               required: "Basic Information is required.",
               minLength: {
                 value: 50,
-                message: "Basic Information must be atleast 50 characters.",
+                message: "Basic Information must be atleast 50 characters."
               },
               maxLength: {
                 value: 250,
-                message: "Basic Information must be less than 250 characters.",
-              },
+                message: "Basic Information must be less than 250 characters."
+              }
             }}
             error={errors.bio_detail?.message}
           />
@@ -264,7 +264,7 @@ const PrimaryInfo = ({
           }
           style={{
             background: colors.forminput,
-            border: "none",
+            border: "none"
           }}
           error={errors.phone?.message}
         />
@@ -286,7 +286,7 @@ const PrimaryInfo = ({
           rules={{
             required: "Mobile No. is required.",
             min: "Mobile No. can be only 10 digit long",
-            max: "Mobile No. can be only 10 digit long",
+            max: "Mobile No. can be only 10 digit long"
           }}
           error={errors.mobile_number?.message}
         />
@@ -306,8 +306,8 @@ const PrimaryInfo = ({
             required: "Email is required.",
             pattern: {
               value: /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/,
-              message: "Email is invalid.",
-            },
+              message: "Email is invalid."
+            }
           }}
           error={errors.email?.message}
         />
@@ -324,10 +324,10 @@ const PrimaryInfo = ({
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           rules={{
-            required: "Gender is required.",
+            required: "Gender is required."
           }}
           error={errors.gender?.message}
         />
@@ -344,11 +344,11 @@ const PrimaryInfo = ({
           _hover={{ cursor: "pointer" }}
           style={{
             background: colors.forminput,
-            border: "none",
+            border: "none"
           }}
           rules={{
             required: "Date of Birth is required.",
-            validate: validateDateOfBirth,
+            validate: validateDateOfBirth
           }}
           error={errors.date_of_birth?.message}
         />
@@ -360,7 +360,7 @@ const PrimaryInfo = ({
           name="specialization_names"
           multiValue={doctorProfileData?.specialization_names?.map(item => ({
             label: item?.name,
-            value: item?.id?.toString(),
+            value: item?.id?.toString()
           }))}
           register={register}
           options={specializationOptions}
@@ -369,12 +369,12 @@ const PrimaryInfo = ({
             background: colors.forminput,
             border: "none",
             paddingTop: "15px",
-            paddingLeft: "5px",
+            paddingLeft: "5px"
           }}
           rules={
             !isEditable
               ? {
-                  required: "Specialization is required.",
+                  required: "Specialization is required."
                 }
               : {}
           }
@@ -391,22 +391,22 @@ const PrimaryInfo = ({
           register={register}
           style={{
             background: colors.forminput,
-            border: "none",
+            border: "none"
           }}
           rules={{
             required: "Pan Number is required.",
             minLength: {
               value: 9,
-              message: "Pan Number can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long."
             },
             maxLength: {
               value: 9,
-              message: "Pan Number can be only 9 digits long.",
+              message: "Pan Number can be only 9 digits long."
             },
             pattern: {
               value: /^[0-9]*$/,
-              message: "Please enter numbers only.",
-            },
+              message: "Please enter numbers only."
+            }
           }}
           error={errors.pan_number?.message}
         />
@@ -423,10 +423,10 @@ const PrimaryInfo = ({
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px",
+            paddingTop: "15px"
           }}
           rules={{
-            required: "ID type is required.",
+            required: "ID type is required."
           }}
           error={errors.id_type?.message}
         />
@@ -449,7 +449,7 @@ const PrimaryInfo = ({
             checkPictureSize(watch("id_front_image"))
           }
           rules={{
-            required: "Front Side  of your id is required",
+            required: "Front Side  of your id is required"
           }}
           setValue={setValue}
         />
@@ -467,7 +467,7 @@ const PrimaryInfo = ({
             checkPictureSize(watch("id_back_image"))
           }
           rules={{
-            required: "Back Side of your id is required",
+            required: "Back Side of your id is required"
           }}
           setValue={setValue}
         />
@@ -481,7 +481,7 @@ const PrimaryInfo = ({
           defaultValue={doctorProfileData?.id_number}
           style={{ background: colors.forminput, border: "none" }}
           rules={{
-            required: "ID Number is required.",
+            required: "ID Number is required."
           }}
           error={errors.id_number?.message}
         />
@@ -499,10 +499,10 @@ const PrimaryInfo = ({
             style={{
               background: colors.forminput,
               border: "none",
-              paddingTop: "15px",
+              paddingTop: "15px"
             }}
             rules={{
-              required: "ID issued district is required.",
+              required: "ID issued district is required."
             }}
             error={errors.id_issued_district?.message}
           />
@@ -520,7 +520,7 @@ const PrimaryInfo = ({
           style={{ background: colors.forminput, border: "none" }}
           rules={{
             required: "ID issued date is required.",
-            validate: validateDateOfCardIssued,
+            validate: validateDateOfCardIssued
           }}
           error={errors.id_issued_date?.message}
         />
@@ -545,10 +545,10 @@ const PrimaryInfo = ({
               style={{
                 background: colors.forminput,
                 border: "none",
-                paddingTop: "15px",
+                paddingTop: "15px"
               }}
               rules={{
-                required: "Province is required.",
+                required: "Province is required."
               }}
               error={errors.province?.message}
             />
@@ -566,10 +566,10 @@ const PrimaryInfo = ({
               style={{
                 background: colors.forminput,
                 border: "none",
-                paddingTop: "15px",
+                paddingTop: "15px"
               }}
               rules={{
-                required: "District is required.",
+                required: "District is required."
               }}
               error={errors.district?.message}
             />
@@ -587,10 +587,10 @@ const PrimaryInfo = ({
               style={{
                 background: colors.forminput,
                 border: "none",
-                paddingTop: "15px",
+                paddingTop: "15px"
               }}
               rules={{
-                required: "Municipality/VDC is required.",
+                required: "Municipality/VDC is required."
               }}
               error={errors.municipality?.message}
             />
@@ -611,16 +611,16 @@ const PrimaryInfo = ({
             required: "Ward is required.",
             max: {
               value: 33,
-              message: "Invalid Ward.",
+              message: "Invalid Ward."
             },
             min: {
               value: 1,
-              message: "Ward cannot be 0.",
+              message: "Ward cannot be 0."
             },
             pattern: {
               value: /^[0-9]*$/,
-              message: "Invalid Ward. Please enter numbers only.",
-            },
+              message: "Invalid Ward. Please enter numbers only."
+            }
           }}
           error={errors.ward?.message}
         />

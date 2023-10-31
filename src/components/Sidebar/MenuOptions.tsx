@@ -8,7 +8,7 @@ import { ISidebarOption } from "@nepMeds/components/Sidebar/Sidebar";
 
 const MenuOption = ({
   sidebarOption,
-  sidebarCollapsed,
+  sidebarCollapsed
 }: {
   sidebarOption: ISidebarOption;
   sidebarCollapsed: boolean;
@@ -34,7 +34,7 @@ const MenuOption = ({
     isDoctor,
     isPayment,
     payment_status,
-    text,
+    text
   }: {
     isAdmin: boolean | undefined;
     isDoctor: boolean | undefined;
@@ -67,7 +67,7 @@ const MenuOption = ({
               isActiveFn("/doctor-list/*")
                 ? {
                     background: colors.primary,
-                    color: colors.white,
+                    color: colors.white
                   }
                 : {}
             }
@@ -120,7 +120,7 @@ const MenuOption = ({
                   borderRadius={8}
                   _activeLink={{
                     color: colors.blue_100,
-                    bg: colors.primary,
+                    bg: colors.primary
                   }}
                   to={item.link}
                 >
@@ -155,7 +155,7 @@ const MenuOption = ({
             isDoctor,
             isPayment,
             payment_status,
-            text: sidebarOption?.text,
+            text: sidebarOption?.text
           }) && (
             <ListItem
               display={"flex"}
@@ -166,7 +166,7 @@ const MenuOption = ({
               borderRadius={12}
               _activeLink={{
                 background: colors.primary,
-                color: colors.white,
+                color: colors.white
               }}
               to={sidebarOption.link}
               mb={2}

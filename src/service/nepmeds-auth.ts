@@ -35,7 +35,7 @@ const initLogout = ({ user }: { user?: string }) => {
 
 const useLogoutMutation = ({
   noToast,
-  user,
+  user
 }: {
   noToast?: boolean;
   user?: string;
@@ -53,7 +53,7 @@ const useLogoutMutation = ({
         ? navigate(NAVIGATION_ROUTES.DOCTOR_LOGIN, { replace: true })
         : navigate(NAVIGATION_ROUTES.LOGIN, { replace: true });
       !noToast && toastSuccess("Logged out Succesfully");
-    },
+    }
   });
 };
 
@@ -69,7 +69,7 @@ const useLoginMutation = () => {
       loginChannel.postMessage(loginBroadcast);
       const tokens = {
         access: response.data.data.access,
-        refresh: response.data.data.refresh,
+        refresh: response.data.data.refresh
       };
       TokenService.setToken(tokens);
       queryClient.setQueryData(authTokenKey, () => true);
@@ -79,7 +79,7 @@ const useLoginMutation = () => {
     onError: error => {
       const loginErr = serverErrorResponse(error);
       toastFail(loginErr);
-    },
+    }
   });
 };
 
@@ -133,10 +133,10 @@ const useAuthentication = () => {
       const tokenDetails = TokenService.getTokenDetails();
       if (tokenDetails) {
         queryClient.setQueryData<TokenInfo>(authTokenDetails, {
-          ...tokenDetails,
+          ...tokenDetails
         });
       }
-    },
+    }
   });
 };
 
@@ -156,5 +156,5 @@ export {
   useAuthentication,
   useLoginMutation,
   useLoginTokenDetailQuery,
-  useLogoutMutation,
+  useLogoutMutation
 };

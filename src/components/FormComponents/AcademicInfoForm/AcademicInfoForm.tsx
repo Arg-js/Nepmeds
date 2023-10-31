@@ -8,7 +8,7 @@ import { IRegisterFields } from "@nepMeds/components/FormComponents/Registration
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import {
   useDeleteAcademicFile,
-  useDeleteAcademicInfo,
+  useDeleteAcademicInfo
 } from "@nepMeds/service/nepmeds-academic";
 import { useGetAllCollege } from "@nepMeds/service/nepmeds-core";
 import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
@@ -21,11 +21,11 @@ import { useEffect, useState } from "react";
 import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import {
   IImageFileType,
-  MultiImageUpload,
+  MultiImageUpload
 } from "../../ImageUploadMulti/dropzone";
 
 export const AcademicInfoForm = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData?: IGetDoctorProfile;
 }) => {
@@ -35,7 +35,7 @@ export const AcademicInfoForm = ({
     getValues,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<IRegisterFields>();
   const deleteAcademicFile = useDeleteAcademicFile();
   const { data = [] } = useGetAllCollege();
@@ -44,7 +44,7 @@ export const AcademicInfoForm = ({
   const collegeOptions =
     allCollegeName?.map(p => ({
       label: p.name,
-      value: p.id,
+      value: p.id
     })) || [];
 
   const mappedImageInfo =
@@ -56,7 +56,7 @@ export const AcademicInfoForm = ({
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "academic",
+    name: "academic"
   });
 
   const deleteAcademicInfoRegister = useDeleteAcademicInfo();
@@ -73,8 +73,8 @@ export const AcademicInfoForm = ({
           other_university: a?.other_university,
           academic_documents: a?.academic_document,
           isSubmitted: true,
-          graduation_year: a?.graduation_year?.toString(),
-        })),
+          graduation_year: a?.graduation_year?.toString()
+        }))
       });
     }
   }, [doctorProfileData, reset]);
@@ -84,7 +84,7 @@ export const AcademicInfoForm = ({
   const years = generateYearRange(1950).map(year => {
     return {
       label: year.toString(),
-      value: year.toString(),
+      value: year.toString()
     };
   });
   const handleRemoveAcademic = async (index: number) => {
@@ -162,7 +162,7 @@ export const AcademicInfoForm = ({
                     register={register}
                     style={{ background: colors.forminput, border: "none" }}
                     rules={{
-                      required: "Degree is required.",
+                      required: "Degree is required."
                     }}
                     error={errors?.academic?.[index]?.degree_program?.message}
                     {...field}
@@ -179,7 +179,7 @@ export const AcademicInfoForm = ({
                     label="Major"
                     register={register}
                     rules={{
-                      required: "Major is required.",
+                      required: "Major is required."
                     }}
                     error={errors?.academic?.[index]?.major?.message}
                     style={{ background: colors.forminput, border: "none" }}
@@ -201,10 +201,10 @@ export const AcademicInfoForm = ({
                     style={{
                       background: colors.forminput,
                       border: "none",
-                      paddingTop: "15px",
+                      paddingTop: "15px"
                     }}
                     rules={{
-                      required: "College/University is required.",
+                      required: "College/University is required."
                     }}
                     error={errors?.academic?.[index]?.university?.message}
                     {...field}
@@ -221,7 +221,7 @@ export const AcademicInfoForm = ({
                       label="College/University"
                       register={register}
                       rules={{
-                        required: "College/University is required.",
+                        required: "College/University is required."
                       }}
                       error={errors?.academic?.[index]?.university?.message}
                       style={{ background: colors.forminput, border: "none" }}
@@ -243,10 +243,10 @@ export const AcademicInfoForm = ({
                     style={{
                       background: colors.forminput,
                       border: "none",
-                      paddingTop: "15px",
+                      paddingTop: "15px"
                     }}
                     rules={{
-                      required: "Graduation year is required.",
+                      required: "Graduation year is required."
                     }}
                     error={errors?.academic?.[index]?.graduation_year?.message}
                     {...field}
@@ -292,7 +292,7 @@ export const AcademicInfoForm = ({
             other_university: "",
             graduation_year: "2023",
             academic_documents: undefined,
-            isSubmitted: false,
+            isSubmitted: false
           });
         }}
       >

@@ -8,16 +8,16 @@ const appointmentTabConfig = [
   { type: 0, heading: "All" },
   {
     type: STATUSTYPE.pending,
-    heading: "Pending",
+    heading: "Pending"
   },
   {
     type: STATUSTYPE.approved,
-    heading: "Approved",
+    heading: "Approved"
   },
   {
     type: STATUSTYPE.rejected,
-    heading: "Rejected",
-  },
+    heading: "Rejected"
+  }
 ];
 
 const Appointment: React.FC = () => {
