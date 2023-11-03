@@ -34,7 +34,7 @@ const getAllHospital = ({ page, page_size }: IPaginationParams) => {
   });
 };
 const getHospital = () => {
-  return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_lists.get);
+  return HttpClient.get<NepMedsResponse<IHospital[]>>(api.hospital_lists.get);
 };
 interface IPaginationParams {
   page: number;
@@ -43,7 +43,7 @@ interface IPaginationParams {
 const useGetAllHospital = () => {
   return useQuery(api.hospital_list.get, getHospital, {
     select: ({ data }) =>
-      data?.data?.results?.map(item => ({
+      data?.data?.map(item => ({
         label: item.name,
         value: item.id
       })),
