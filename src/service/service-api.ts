@@ -148,7 +148,7 @@ export const api = {
 
   faq: {
     get: "/dashboard/faq-list/",
-    post: "/dashboard/faq-list/",
+    post: "/dashboard/faq/",
     getById: "/dashboard/faq/:id/",
     patch: "/dashboard/faq/:id/",
     delete: "/dashboard/faq/:id/"
