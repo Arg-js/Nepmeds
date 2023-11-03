@@ -18,7 +18,12 @@ import {
   useDisclosure
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
+import {
+  HamburgerMenuIcon,
+  NotificationWithDotIcon,
+  SignInIcon,
+  svgs
+} from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { toastFail } from "@nepMeds/components/Toast";
@@ -40,6 +45,7 @@ import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import ring from "@nepMeds/assets/sound/ring.mp3";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { Notification } from "react-iconly";
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -54,6 +60,7 @@ const Header: React.FC<{
   const [declineLoading, setDeclineLoading] = useState(false);
   const [doctorInfo, setDoctorInfo] = useState<IPusherNotification["doctor"]>();
   const channel = useNotification();
+  const [unReadNotification, setUnReadNotification] = useState(false);
 
   const modalClose = () => {
     onClose();
@@ -83,6 +90,7 @@ const Header: React.FC<{
         (data: IPusherNotification) => {
           data?.notification_type.toString() ===
             NotificationType.VIDEOCALL.toString() && callNotification(data);
+          setUnReadNotification(true);
         }
       );
   }
@@ -216,6 +224,48 @@ const Header: React.FC<{
             />
           </InputGroup>
           {/* Search Field ends */}
+
+          {isAuthenticated && (
+            <Box position="relative">
+              <Menu>
+                {({ isOpen, onClose }) => (
+                  <>
+                    <MenuButton
+                      isActive={isOpen}
+                      onClick={() => {
+                        onClose();
+                        setUnReadNotification(false);
+                      }}
+                      as={IconButton}
+                      isRound
+                      _hover={{
+                        bg: "transparent"
+                      }}
+                      icon={
+                        unReadNotification ? (
+                          <NotificationWithDotIcon />
+                        ) : (
+                          <Notification primaryColor={colors.blue_100} />
+                        )
+                      }
+                      fontSize="20px"
+                      size={"sm"}
+                      bg={colors.white}
+                    >
+                      Actions
+                    </MenuButton>
+                    <MenuList>
+                      <MenuItem>Download</MenuItem>
+                      <MenuItem>Create a Copy</MenuItem>
+                      <MenuItem>Mark as Draft</MenuItem>
+                      <MenuItem>Delete</MenuItem>
+                      <MenuItem>Attend a Workshop</MenuItem>
+                    </MenuList>
+                  </>
+                )}
+              </Menu>
+            </Box>
+          )}
 
           {/* Login icon */}
           {!isAuthenticated ? (
