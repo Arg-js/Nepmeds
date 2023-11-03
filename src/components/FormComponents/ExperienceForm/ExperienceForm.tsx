@@ -93,6 +93,7 @@ export const ExperienceForm = ({
     const currentDate = new Date().toISOString().split("T")[0]; // Get the current date in ISO format (YYYY-MM-DD)
     const toDate = getValues(`experience.${index}.to_date`);
     const fromDate = getValues(`experience.${index}.from_date`);
+
     const daysCount = getDayDifference(
       new Date(toDate ?? ""),
       new Date(fromDate ?? "")
