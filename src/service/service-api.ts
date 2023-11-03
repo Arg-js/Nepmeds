@@ -147,10 +147,11 @@ export const api = {
   },
 
   faq: {
-    post: "/dashboard/faq-create/",
-    patch: "/dashboard/faq-delete/:id/",
     get: "/dashboard/faq-list/",
-    delete: "/dashboard/faq-delete/:id/"
+    post: "/dashboard/faq-list/",
+    getById: "/dashboard/faq/:id/",
+    patch: "/dashboard/faq/:id/",
+    delete: "/dashboard/faq/:id/"
   },
 
   videoCall: {
