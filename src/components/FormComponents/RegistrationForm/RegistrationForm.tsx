@@ -6,7 +6,7 @@ import {
   HStack,
   Heading,
   Text,
-  VStack,
+  VStack
 } from "@chakra-ui/layout";
 import { useDisclosure } from "@chakra-ui/react";
 import {
@@ -16,7 +16,7 @@ import {
   StepSeparator,
   StepStatus,
   StepTitle,
-  Stepper,
+  Stepper
 } from "@chakra-ui/stepper";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -31,17 +31,17 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import {
   useAcademicFileRegister,
   useAcademicInfoRegister,
-  useUpdateAcademicInfo,
+  useUpdateAcademicInfo
 } from "@nepMeds/service/nepmeds-academic";
 import { useCertificateInfoRegister } from "@nepMeds/service/nepmeds-certificate";
 import {
   useExperienceFileRegister,
-  useExperienceInfoRegister,
+  useExperienceInfoRegister
 } from "@nepMeds/service/nepmeds-experience";
 import {
   useNmcInfoUpdate,
   usePrimaryInfoRegister,
-  useUpdatePrimaryInfoRegister,
+  useUpdatePrimaryInfoRegister
 } from "@nepMeds/service/nepmeds-register";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
@@ -97,8 +97,8 @@ const registerDefaultValues = {
       other_university: "",
       graduation_year: "2023",
       academic_documents: undefined as undefined | File[],
-      isSubmitted: false,
-    },
+      isSubmitted: false
+    }
   ],
   experience: [
     {
@@ -110,8 +110,8 @@ const registerDefaultValues = {
       currently_working: undefined as undefined | boolean, // Make 'currently_working' field optiona
       experience_documents: undefined as undefined | File[],
       id: "",
-      isSubmitted: false,
-    },
+      isSubmitted: false
+    }
   ],
   certification: [
     {
@@ -122,16 +122,16 @@ const registerDefaultValues = {
       certificate_issued_date: "",
       certificate_documents: undefined as undefined | File[],
       id: "",
-      isSubmitted: false,
-    },
+      isSubmitted: false
+    }
   ],
   nmc: {
     nmc_number: null as any | number,
     nmc_issued_date: "",
     nmc_expiry_date: "",
     nmc_file: null as null | File[] | string,
-    isSubmitted: false,
-  },
+    isSubmitted: false
+  }
 };
 export type IRegisterFields = typeof registerDefaultValues;
 
@@ -161,7 +161,7 @@ const RegistrationForm = () => {
     useRegisterValidate();
 
   const formMethods = useForm({
-    defaultValues: registerDefaultValues,
+    defaultValues: registerDefaultValues
   });
 
   const editPrimaryInfoRegisterHandler: React.MouseEventHandler<
@@ -197,7 +197,7 @@ const RegistrationForm = () => {
           is_email_verified: formMethods.getValues("is_email_verified"),
           is_mobile_number_verified: formMethods.getValues(
             "is_mobile_number_verified"
-          ),
+          )
         },
 
         doctor_nmc_info: {
@@ -208,7 +208,7 @@ const RegistrationForm = () => {
             formMethods.getValues("nmc.nmc_file")?.[0] &&
             (await imageToBase64(
               formMethods.getValues("nmc.nmc_file")?.[0] as File
-            )),
+            ))
         },
         title: formMethods.getValues("title"),
         bio_detail: formMethods.getValues("bio_detail"),
@@ -220,7 +220,7 @@ const RegistrationForm = () => {
         id_number: formMethods.getValues("id_number"),
         id_type: formMethods.getValues("id_type"),
         id_issued_district: formMethods.getValues("id_issued_district"),
-        id_issued_date: formMethods.getValues("id_issued_date"),
+        id_issued_date: formMethods.getValues("id_issued_date")
       };
 
       await editPrimaryInfoRegister
@@ -279,7 +279,7 @@ const RegistrationForm = () => {
               confirm_password: values.confirm_password,
               email: values.email,
               is_email_verified: values.is_email_verified,
-              is_mobile_number_verified: values.is_mobile_number_verified,
+              is_mobile_number_verified: values.is_mobile_number_verified
             },
             title: values.title,
             bio_detail: values.bio_detail,
@@ -292,7 +292,7 @@ const RegistrationForm = () => {
               nmc_expiry_date: nmcData.nmc_expiry_date,
               nmc_file:
                 nmcData.nmc_file?.[0] &&
-                (await imageToBase64(nmcData.nmc_file?.[0] as File)),
+                (await imageToBase64(nmcData.nmc_file?.[0] as File))
             },
             age: 20,
             medical_degree: "test",
@@ -304,12 +304,12 @@ const RegistrationForm = () => {
             id_back_image: idBackImage ? await imageToBase64(idBackImage) : "",
             id_front_image: idFontImage ? await imageToBase64(idFontImage) : "",
 
-            id_issued_date: values.id_issued_date,
+            id_issued_date: values.id_issued_date
           };
           if (nmcData.isSubmitted) {
             await primaryInfoUpdate.mutateAsync({
               ...formatedData,
-              doctorId: doctor,
+              doctorId: doctor
             });
             toastSuccess("Nmc data updated");
             setActiveStep(3);
@@ -352,9 +352,9 @@ const RegistrationForm = () => {
               doctor,
               academic_documents: createAcademicFileResponse.data.data.map(
                 (file: string) => ({
-                  file: file,
+                  file: file
                 })
-              ),
+              )
             };
 
             const partialData: Partial<{
@@ -416,7 +416,7 @@ const RegistrationForm = () => {
                   graduation_year: e?.graduation_year,
                   academic_documents: e?.academic_document,
                   isSubmitted: true,
-                  other_university: e?.other_university,
+                  other_university: e?.other_university
                 });
                 setActiveStep(4);
               }
@@ -450,7 +450,7 @@ const RegistrationForm = () => {
                     graduation_year: e?.graduation_year,
                     academic_documents: e?.academic_document,
                     isSubmitted: true,
-                    other_university: e?.other_university,
+                    other_university: e?.other_university
                   });
                   setActiveStep(4);
                 }
@@ -492,9 +492,9 @@ const RegistrationForm = () => {
                   experience_documents:
                     createExperienceFileResponse.data.data.map(
                       (file: string) => ({
-                        file: file,
+                        file: file
                       })
-                    ),
+                    )
                 };
                 if (experienceData.currently_working) {
                   delete experienceInfoDataObj.to_date; // Remove 'to_date' property when currently_working is true
@@ -558,19 +558,19 @@ const RegistrationForm = () => {
   const steps = [
     {
       title: "Registration",
-      content: <BasicInfo />,
+      content: <BasicInfo />
     },
     {
       title: "Primary Info",
-      content: <PrimaryInfo />,
+      content: <PrimaryInfo />
     },
     {
       title: "NMC Info",
-      content: <NmcInfo />,
+      content: <NmcInfo />
     },
     {
       title: "Academic Info",
-      content: <AcademicInfo />,
+      content: <AcademicInfo />
     },
     // {
     //   title: "Certification Info",
@@ -578,8 +578,8 @@ const RegistrationForm = () => {
     // },
     {
       title: "Experience",
-      content: <ExperienceInfo />,
-    },
+      content: <ExperienceInfo />
+    }
   ];
 
   const { content } = steps[activeStep];
@@ -631,12 +631,12 @@ const RegistrationForm = () => {
                   <Step
                     key={index}
                     style={{
-                      alignItems: "baseline",
+                      alignItems: "baseline"
                     }}
                   >
                     <StepIndicator
                       style={{
-                        color: colors.white,
+                        color: colors.white
                       }}
                     >
                       <StepStatus
@@ -650,7 +650,7 @@ const RegistrationForm = () => {
                       style={{
                         color:
                           activeStep === index ? colors.white : colors.blue_30,
-                        cursor: "default",
+                        cursor: "default"
                       }}
                     >
                       {step?.title}

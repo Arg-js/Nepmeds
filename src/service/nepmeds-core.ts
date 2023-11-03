@@ -1,6 +1,9 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { toastSuccess } from "@nepMeds/components/Toast";
+import { toastFail } from "./service-toast";
+import serverErrorResponse from "./serverErrorResponse";
 
 type Province = {
   id: number;
@@ -13,7 +16,7 @@ interface IDistrict {
   district_municipality: Municipality[];
 }
 
-interface IDetailAddress {
+export interface IDetailAddress {
   id: number;
   name: string;
   province_district: IDistrict[];
@@ -41,14 +44,14 @@ const getProvince = async () => {
 
 export const useGetProvince = () =>
   useQuery(api.province, getProvince, {
-    select: res => res.data.data,
+    select: res => res.data.data
   });
 
 const getDistrict = (provinceId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<District[]>>(
     api.district,
     {
-      params: { province_id: provinceId },
+      params: { province_id: provinceId }
     }
   );
   return response;
@@ -56,7 +59,7 @@ const getDistrict = (provinceId: number | null) => async () => {
 
 export const useGetDistricts = (provinceId: number | null) => {
   return useQuery([api.district, provinceId], getDistrict(provinceId), {
-    select: res => res.data.data,
+    select: res => res.data.data
   });
 };
 
@@ -69,7 +72,7 @@ const getAllDistrict = () => async () => {
 
 export const useGetAllDistricts = () =>
   useQuery([api.district], getAllDistrict(), {
-    select: res => res.data.data,
+    select: res => res.data.data
   });
 
 const getDetailAddress = () => async () => {
@@ -81,14 +84,14 @@ const getDetailAddress = () => async () => {
 
 export const useGetDetailAddress = () =>
   useQuery([api.detail_address], getDetailAddress(), {
-    select: res => res.data.data,
+    select: res => res.data.data
   });
 
 const getMunicipalities = (districtId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
     api.municipality,
     {
-      params: { district_id: districtId },
+      params: { district_id: districtId }
     }
   );
   return response;
@@ -96,17 +99,34 @@ const getMunicipalities = (districtId: number | null) => async () => {
 
 export const useGetMunicipalities = (districtId: number | null) =>
   useQuery([api.municipality, districtId], getMunicipalities(districtId), {
-    select: res => res.data.data,
+    select: res => res.data.data
   });
 
 const getAllCollege = () => async () => {
   const response = await HttpClient.get<NepMedsResponse<College[]>>(
-    api.college_list
+    api.college_list.get
   );
   return response;
 };
 
 export const useGetAllCollege = () =>
-  useQuery([api.college_list], getAllCollege(), {
-    select: res => res.data.data,
+  useQuery([api.college_list.get], getAllCollege(), {
+    select: res => res.data.data
   });
+
+const createCollege = async (collegeReqBody: { name: string }) => {
+  const response = await HttpClient.post(api.college_list.post, collegeReqBody);
+  return response;
+};
+export const useCreateCollege = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createCollege, {
+    onSuccess: () => {
+      toastSuccess("Created college successfully");
+      queryClient.invalidateQueries(api.college_list.get);
+    },
+    onError: e => {
+      toastFail(serverErrorResponse(e));
+    }
+  });
+};

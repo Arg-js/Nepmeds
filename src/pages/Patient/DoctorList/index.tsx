@@ -9,12 +9,12 @@ import {
   Grid,
   GridItem,
   Text,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import SectionHeading from "@nepMeds/components/Patient/DoctorConsultation/SectionHeading";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorListCard, {
-  Size,
+  Size
 } from "@nepMeds/components/Patient/DoctorList/DoctorListCard";
 import { colors } from "@nepMeds/theme/colors";
 import DoctorListFilter from "@nepMeds/pages/Patient/DoctorList/Section/Filter";
@@ -22,7 +22,7 @@ import PatientFooter from "@nepMeds/pages/Patient/Section/Footer";
 import Header from "@nepMeds/pages/Patient/Section/Header";
 import {
   useGetDoctorList,
-  useGetDoctorListById,
+  useGetDoctorListById
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import Pagination from "@nepMeds/components/Pagination";
 import { useState, useRef } from "react";
@@ -53,7 +53,7 @@ const DoctorList = () => {
   const [search, setSearchValue] = useState("");
   const [dateParams, setDateParams] = useState({
     from_date: "",
-    to_date: "",
+    to_date: ""
   });
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,7 +62,7 @@ const DoctorList = () => {
   // PAGINATION
   const [pageParams, setPageParams] = useState({
     page: 1,
-    limit: 5,
+    limit: 5
   });
   // PAGINATION ENDS
 
@@ -77,7 +77,7 @@ const DoctorList = () => {
   const {
     data: doctorData,
     isLoading,
-    error: DoctorListError,
+    error: DoctorListError
   } = useGetDoctorList({
     page_size: pageParams.limit,
     page: pageParams.page,
@@ -86,17 +86,17 @@ const DoctorList = () => {
     symptom: symptom?.join(","),
     search: debouncedInputValue,
     from_date: dateParams.from_date,
-    to_date: dateParams.to_date,
+    to_date: dateParams.to_date
   });
 
   const { data: doctorInfo, isFetching } = useGetDoctorListById({
     id: doctorId,
-    target_date: targetDate || currentDate,
+    target_date: targetDate || currentDate
   });
   const { data: availability, isFetching: isAvailabilityFetching } =
     useGetAvailability({
       id: doctorId,
-      target_date: targetDate || currentDate,
+      target_date: targetDate || currentDate
     });
   // REACT QUERIES END
 
@@ -111,7 +111,7 @@ const DoctorList = () => {
     setSpecialization,
     setSymptom,
     setSearchValue,
-    setDateParams,
+    setDateParams
   };
 
   const referenceParams = {
@@ -119,12 +119,12 @@ const DoctorList = () => {
     specializationFiltersRef,
     symptomFiltersRef,
     dateFromRef,
-    dateToRef,
+    dateToRef
   };
 
   const paginationParams = {
     setPageParams,
-    pageParams,
+    pageParams
   };
 
   return (
@@ -138,16 +138,16 @@ const DoctorList = () => {
               items={[
                 {
                   name: "Doctor Consultation",
-                  route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
+                  route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`
                 },
                 {
                   name: "Doctor Lists",
-                  route: `${NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE}`,
-                },
+                  route: `${NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE}`
+                }
               ]}
               title={{
                 name: "Home",
-                route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
+                route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`
               }}
             />
           </Box>
@@ -161,7 +161,7 @@ const DoctorList = () => {
               base: "1fr",
               md: "repeat(5, 1fr)",
               lg: "repeat(12, 1fr)",
-              "2xl": "repeat(11, 1fr)",
+              "2xl": "repeat(11, 1fr)"
             }}
             columnGap={{ base: 2, md: 8, lg: 4, xl: 10, "2xl": "85px" }}
           >
@@ -186,11 +186,10 @@ const DoctorList = () => {
                     Array.from({ length: 5 }, (_, index) => (
                       <DoctorCardSkeleton key={index} />
                     ))}
-
-                  {!doctorData?.results.length && <NoData />}
+                  {/* TODO: check this might throw error when doctorData itself is undefined */}
                   {DoctorListError && <Text>Oops something went wrong!!</Text>}
-                  {doctorData &&
-                    doctorData?.results.map(doctorData => {
+                  {doctorData?.results?.length ? (
+                    doctorData?.results?.map(doctorData => {
                       return (
                         <Box key={doctorData.id} mb={6}>
                           <DoctorListCard
@@ -201,7 +200,11 @@ const DoctorList = () => {
                           />
                         </Box>
                       );
-                    })}
+                    })
+                  ) : (
+                    <NoData />
+                  )}
+
                   {doctorData && doctorData.count > 5 && (
                     <Box display={{ base: "block" }}>
                       <Pagination
@@ -209,7 +212,7 @@ const DoctorList = () => {
                         queryPageSize={pageParams.limit}
                         queryPageIndex={pageParams.page}
                         pageChange={pageChange}
-                        totalCount={doctorData?.count ?? 0}
+                        totalCount={doctorData.count ?? 0}
                       />
                     </Box>
                   )}

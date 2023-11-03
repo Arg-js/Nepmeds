@@ -10,7 +10,7 @@ import {
   Text,
   Th,
   Thead,
-  Tr,
+  Tr
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import {
@@ -24,7 +24,7 @@ import {
   getGroupedRowModel,
   getPaginationRowModel,
   getSortedRowModel,
-  useReactTable,
+  useReactTable
 } from "@tanstack/react-table";
 import { useEffect, useMemo, useState } from "react";
 import NoData from "@nepMeds/components/NoData";
@@ -59,7 +59,7 @@ export function DataTable({
   setTable,
   filter,
 
-  sortingColumn,
+  sortingColumn
 }: DataTableProps) {
   const [grouping, setGrouping] = useState<GroupingState>([]);
   const [sorting, setSorting] = useState<SortingState>([]);
@@ -82,13 +82,13 @@ export function DataTable({
             state: {
               pagination: {
                 pageIndex: pagination.pageParams?.pageIndex ?? 1,
-                pageSize: pagination.pageParams?.pageSize ?? 20,
-              },
+                pageSize: pagination.pageParams?.pageSize ?? 20
+              }
             },
-            onPaginationChange: pagination?.onChangePagination,
+            onPaginationChange: pagination?.onChangePagination
           }
         : {
-            getPaginationRowModel: getPaginationRowModel(),
+            getPaginationRowModel: getPaginationRowModel()
           },
     [pagination]
   );
@@ -99,7 +99,7 @@ export function DataTable({
 
     state: {
       grouping,
-      sorting,
+      sorting
     },
     getFilteredRowModel: getFilteredRowModel(),
     onGroupingChange: setGrouping,
@@ -107,7 +107,7 @@ export function DataTable({
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     onSortingChange: setSorting,
-    ...paginationParams,
+    ...paginationParams
   });
 
   useEffect(() => {
@@ -137,17 +137,17 @@ export function DataTable({
           "&::-webkit-scrollbar": {
             width: "0.2rem",
             height: "0.6rem",
-            position: "absolute",
+            position: "absolute"
           },
           "&::-webkit-scrollbar-track": {
             position: "absolute",
             background: "#fff",
-            opacity: 0.1,
+            opacity: 0.1
           },
           "&::-webkit-scrollbar-thumb": {
             background: "#e9d8fd",
-            borderRadius: 20,
-          },
+            borderRadius: 20
+          }
         }}
         borderRadius={8}
       >
@@ -168,8 +168,8 @@ export function DataTable({
                     left: "-1px",
                     right: "-1px",
                     zIndex: 40,
-                    boxShadow: "inset 1px 0 0 white,inset -1px 0 0 white",
-                  },
+                    boxShadow: "inset 1px 0 0 white,inset -1px 0 0 white"
+                  }
                 }}
               >
                 {headerGroup.headers.map((header, index) => {
@@ -190,7 +190,7 @@ export function DataTable({
                           header.id == "Action" ||
                           header.colSpan > 1
                             ? "center"
-                            : "left",
+                            : "left"
                       }}
                     >
                       <Text flex={1}>
@@ -219,11 +219,11 @@ export function DataTable({
                       left: "-1px",
                       right: "-1px",
                       zIndex: 40,
-                      boxShadow: "inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7",
+                      boxShadow: "inset 1px 0 0 #edf2f7,inset -1px 0 0 #edf2f7"
                     },
                     [`td:nth-of-type(${stickyColumn}) , td:not(:last-child)`]: {
-                      boxShadow: "inset 1px 0 0 #edf2f7",
-                    },
+                      boxShadow: "inset 1px 0 0 #edf2f7"
+                    }
                   }}
                 >
                   {row.getVisibleCells().map(cell => {

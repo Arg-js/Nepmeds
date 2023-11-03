@@ -13,7 +13,7 @@ import { useFormContext } from "react-hook-form";
 export const BasicInfoForm = ({
   isEditable,
   hidePasswordField,
-  doctorProfileData,
+  doctorProfileData
 }: {
   isEditable?: boolean;
   hidePasswordField: boolean;
@@ -24,7 +24,7 @@ export const BasicInfoForm = ({
     formState: { errors },
     getValues,
     setValue,
-    watch,
+    watch
   } = useFormContext<IRegisterFields>();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [confirmpasswordVisible, setConfirmpasswordVisible] = useState(false);
@@ -67,7 +67,7 @@ export const BasicInfoForm = ({
         // todo: find alternative for this
         base: "repeat(4, 1fr)",
         md: "repeat(2, 1fr)",
-        lg: "repeat(4, 1fr)",
+        lg: "repeat(4, 1fr)"
       }}
       gap={4}
     >
@@ -101,11 +101,11 @@ export const BasicInfoForm = ({
           defaultValue={doctorProfileData?.title}
           style={{
             background: colors.forminput,
-            border: "none",
+            border: "none"
           }}
           error={errors.title?.message}
           rules={{
-            required: "Title is required.",
+            required: "Title is required."
           }}
         />
       </GridItem>
@@ -121,8 +121,8 @@ export const BasicInfoForm = ({
             required: "First name is required.",
             pattern: {
               value: /^[a-zA-Z]+$/,
-              message: "First name should contain only alphabets.",
-            },
+              message: "First name should contain only alphabets."
+            }
           }}
           error={errors.first_name?.message}
         />
@@ -136,8 +136,8 @@ export const BasicInfoForm = ({
           rules={{
             pattern: {
               value: /^[a-zA-Z]+$/,
-              message: "Middle name should contain only alphabets.",
-            },
+              message: "Middle name should contain only alphabets."
+            }
           }}
           style={{ background: colors.forminput, border: "none" }}
           error={errors.middle_name?.message}
@@ -155,8 +155,8 @@ export const BasicInfoForm = ({
             required: "Last name is required.",
             pattern: {
               value: /^[a-zA-Z]+$/,
-              message: "Last name should contain only alphabets.",
-            },
+              message: "Last name should contain only alphabets."
+            }
           }}
           error={errors.last_name?.message}
         />
@@ -189,8 +189,8 @@ export const BasicInfoForm = ({
                 required: "Password is required.",
                 minLength: {
                   value: 8,
-                  message: "Password must be at least 8 characters long.",
-                },
+                  message: "Password must be at least 8 characters long."
+                }
               }}
               error={errors.password?.message}
             />
@@ -208,7 +208,7 @@ export const BasicInfoForm = ({
               style={{ background: colors.forminput, border: "none" }}
               rules={{
                 required: "Confirm password is required.",
-                validate: validateConfirmPassword,
+                validate: validateConfirmPassword
               }}
               error={errors.confirm_password?.message}
             />

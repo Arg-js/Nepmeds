@@ -44,10 +44,23 @@ export const api = {
   province: "core/provinces/",
   district: "core/districts/",
   municipality: "/core/municipalities/",
-  college_list: "/core/college/",
+  college_list: {
+    get: "/core/college/",
+    post: "/core/college/"
+  },
   detail_address: "/core/detail-address/",
 
-  hospital_list: "/doctor-consult/list-hospital/",
+  hospital_lists: {
+    get: "/doctor-consult/list-hospital/"
+  },
+
+  hospital_list: {
+    get: "/core/hospital/",
+    post: "/core/hospital/",
+    getById: "/core/hospital/:id/",
+    patch: "/core/hospital/:id/",
+    delete: "/core/hospital/:id/"
+  },
 
   doctor_availability: "/doctor-consult/doctor-availability/",
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
@@ -132,6 +145,14 @@ export const api = {
     khalti: "/transaction/khalti-initiate/",
     esewa: "/transaction/esewa-initiate/"
   },
+
+  faq: {
+    post: "/dashboard/faq-create/",
+    patch: "/dashboard/faq-delete/:id/",
+    get: "/dashboard/faq-list/",
+    delete: "/dashboard/faq-delete/:id/"
+  },
+
   videoCall: {
     base: "/video-chat",
     initiate: function () {

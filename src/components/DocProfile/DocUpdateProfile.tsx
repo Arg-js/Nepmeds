@@ -5,7 +5,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs,
+  Tabs
 } from "@chakra-ui/react";
 import EditAcademic from "@nepMeds/components/DocProfile/EditDoctor/EditAcademic";
 import EditBasic from "@nepMeds/components/DocProfile/EditDoctor/EditBasic";
@@ -16,7 +16,7 @@ import { IGetDoctorProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 import { colors } from "@nepMeds/theme/colors";
 
 export const DocUpdateProfile = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
@@ -25,24 +25,24 @@ export const DocUpdateProfile = ({
     "Primary Info",
     "NMC Info",
     "Academic Info",
-    "Experience",
+    "Experience"
   ];
   const tabPanels = [
     {
-      component: <EditBasic doctorProfileData={doctorProfileData} />,
+      component: <EditBasic doctorProfileData={doctorProfileData} />
     },
     {
-      component: <EditPrimary doctorProfileData={doctorProfileData} />,
+      component: <EditPrimary doctorProfileData={doctorProfileData} />
     },
     {
-      component: <EditCertification doctorProfileData={doctorProfileData} />,
+      component: <EditCertification doctorProfileData={doctorProfileData} />
     },
     {
-      component: <EditAcademic doctorProfileData={doctorProfileData} />,
+      component: <EditAcademic doctorProfileData={doctorProfileData} />
     },
     {
-      component: <EditExperience doctorProfileData={doctorProfileData} />,
-    },
+      component: <EditExperience doctorProfileData={doctorProfileData} />
+    }
   ];
   return (
     <>
