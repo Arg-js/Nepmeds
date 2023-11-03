@@ -28,18 +28,15 @@ interface IHospitalResp {
   previous: string;
 }
 
-const getAllHospital = ({ page, page_size }: IPaginationParams) => {
-  return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_list.get, {
-    params: { page, page_size }
-  });
-};
-const getHospital = () => {
-  return HttpClient.get<NepMedsResponse<IHospital[]>>(api.hospital_lists.get);
-};
 interface IPaginationParams {
   page: number;
   page_size: number;
 }
+
+const getHospital = () => {
+  return HttpClient.get<NepMedsResponse<IHospital[]>>(api.hospital_lists.get);
+};
+
 const useGetAllHospital = () => {
   return useQuery(api.hospital_list.get, getHospital, {
     select: ({ data }) =>
@@ -51,6 +48,12 @@ const useGetAllHospital = () => {
       const formattedError = serverErrorResponse(error);
       toastFail(formattedError);
     }
+  });
+};
+
+const getAllHospital = ({ page, page_size }: IPaginationParams) => {
+  return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_list.get, {
+    params: { page, page_size }
   });
 };
 const useGetAllHospitalDetails = ({ page, page_size }: IPaginationParams) => {
