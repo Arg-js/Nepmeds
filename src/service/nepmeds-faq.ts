@@ -41,7 +41,7 @@ export const useCreateFaq = () => {
 
 const getFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
   return HttpClient.get(api.faq.get, {
-    params: { page: pageIndex + 1, page_size: pageSize, answers: search }
+    params: { page: pageIndex + 1, page_size: pageSize, search }
   });
 };
 
