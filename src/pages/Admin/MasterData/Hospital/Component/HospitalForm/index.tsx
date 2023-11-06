@@ -43,7 +43,7 @@ const HospitalForm = ({
     <form>
       <Flex gap={4} direction={"column"}>
         <FloatingLabelInput
-          label="name"
+          label="Name"
           name="name"
           register={register}
           error={errors.name?.message ?? ""}
@@ -51,7 +51,7 @@ const HospitalForm = ({
         <FormControl
           control="select"
           name="province"
-          label="province"
+          label="Province"
           options={provinceOptions}
           register={register}
           errors={errors.province?.message ?? ""}
@@ -61,7 +61,7 @@ const HospitalForm = ({
         <FormControl
           control="select"
           name="district"
-          label="district"
+          label="District"
           options={districtOptions}
           isDisabled={!districtOptions.length}
           register={register}

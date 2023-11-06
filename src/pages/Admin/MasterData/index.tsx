@@ -81,6 +81,7 @@ const MasterData = () => {
         <CollegeTab
           onCloseModal={onCloseCollegeModal}
           isOpenModal={isOpenCollegeModal}
+          onOpenCollegeModal={onOpenCollegeModal}
         />
       )
     },

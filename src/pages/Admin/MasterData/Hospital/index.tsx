@@ -120,11 +120,11 @@ const HospitalTab = ({
             <></>
           ) : (
             <HStack w={"full"} justifyContent={"flex-end"}>
-              <Button variant={"reset"} w={"150px"} onClick={onModalClose}>
+              <Button variant={"reset"} flex={1} onClick={onModalClose}>
                 Cancel
               </Button>
               <Button
-                w={"150px"}
+                flex={1}
                 isLoading={isLoading || isUpdating}
                 onClick={handleSubmit(onSubmitHandler)}
               >
@@ -158,11 +158,17 @@ const HospitalTab = ({
         onClose={onModalClose}
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
-            <Button variant={"reset"} w={"150px"} onClick={onModalClose}>
+            <Button
+              variant={"reset"}
+              flex={1}
+              // w={"150px"}
+              onClick={onModalClose}
+            >
               Cancel
             </Button>
             <Button
-              w={"150px"}
+              flex={1}
+              // w={"150px"}
               isLoading={isDeleting}
               onClick={async () => {
                 await deleteHospital(id);

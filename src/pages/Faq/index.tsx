@@ -176,7 +176,7 @@ const FAQ = () => {
             onChangePagination: setPagination
           }}
         />
-
+        {/* Add or Edit Faq */}
         <ModalComponent
           isOpen={isOpen}
           onClose={onModalClose}
