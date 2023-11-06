@@ -15,15 +15,10 @@ import {
   MenuItem,
   MenuList,
   Text,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import {
-  HamburgerMenuIcon,
-  NotificationWithDotIcon,
-  SignInIcon,
-  svgs
-} from "@nepMeds/assets/svgs";
+import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { toastFail } from "@nepMeds/components/Toast";
@@ -31,7 +26,7 @@ import { CallState, NotificationType } from "@nepMeds/config/enum";
 import { PUSHER_SUBSCRIBE_EVENT } from "@nepMeds/config/index";
 import {
   IPusherNotification,
-  useNotification
+  useNotification,
 } from "@nepMeds/hooks/useNotification";
 import useVideoCall from "@nepMeds/hooks/useVideoCall";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -45,7 +40,8 @@ import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import ring from "@nepMeds/assets/sound/ring.mp3";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
-import { Notification } from "react-iconly";
+import { useGetAllNotification } from "@nepMeds/service/nepmeds-notification";
+import NotificationDropDown from "@nepMeds/components/Notification/NotificationDropDown";
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -61,6 +57,11 @@ const Header: React.FC<{
   const [doctorInfo, setDoctorInfo] = useState<IPusherNotification["doctor"]>();
   const channel = useNotification();
   const [unReadNotification, setUnReadNotification] = useState(false);
+  const {
+    data: notificationData,
+    isLoading: notificationLoading,
+    refetch,
+  } = useGetAllNotification();
 
   const modalClose = () => {
     onClose();
@@ -69,7 +70,7 @@ const Header: React.FC<{
   const callNotification = ({
     is_missed,
     doctor,
-    room_name
+    room_name,
   }: IPusherNotification) => {
     if (is_missed) {
       modalClose();
@@ -90,7 +91,8 @@ const Header: React.FC<{
           data?.notification_type.toString() ===
             NotificationType.VIDEOCALL.toString() && callNotification(data);
           setUnReadNotification(true);
-        }
+          refetch();
+        },
       );
   }
 
@@ -99,7 +101,7 @@ const Header: React.FC<{
       setDeclineLoading(true);
       await rejectCall({
         call_state: CallState.REJECTED,
-        room_name: roomName
+        room_name: roomName,
       });
       modalClose();
     } catch (error) {
@@ -118,7 +120,7 @@ const Header: React.FC<{
       padding={"6"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 0px 10px 0px"}
       style={{
-        mb: "2px"
+        mb: "2px",
       }}
     >
       <Flex justifyContent={"space-between"}>
@@ -152,7 +154,7 @@ const Header: React.FC<{
                 state={{
                   receiver_user: data?.user,
                   room_name: roomName,
-                  call_state: CallState.ACCEPTED
+                  call_state: CallState.ACCEPTED,
                 }}
                 to={"/video-call"}
               >
@@ -224,46 +226,16 @@ const Header: React.FC<{
           </InputGroup>
           {/* Search Field ends */}
 
-          {isAuthenticated && (
-            <Box position="relative">
-              <Menu>
-                {({ isOpen, onClose }) => (
-                  <>
-                    <MenuButton
-                      isActive={isOpen}
-                      onClick={() => {
-                        onClose();
-                        setUnReadNotification(false);
-                      }}
-                      as={IconButton}
-                      isRound
-                      _hover={{
-                        bg: "transparent"
-                      }}
-                      icon={
-                        unReadNotification ? (
-                          <NotificationWithDotIcon />
-                        ) : (
-                          <Notification primaryColor={colors.blue_100} />
-                        )
-                      }
-                      fontSize="20px"
-                      size={"sm"}
-                      bg={colors.white}
-                    >
-                      Actions
-                    </MenuButton>
-                    <MenuList>
-                      <MenuItem>Download</MenuItem>
-                      <MenuItem>Create a Copy</MenuItem>
-                      <MenuItem>Mark as Draft</MenuItem>
-                      <MenuItem>Delete</MenuItem>
-                      <MenuItem>Attend a Workshop</MenuItem>
-                    </MenuList>
-                  </>
-                )}
-              </Menu>
-            </Box>
+          {/* Notificaiton Dropdown with Login */}
+          {isAuthenticated && !notificationLoading && (
+            <NotificationDropDown
+              notificationData={notificationData}
+              notificationState={{
+                setUnReadNotification,
+                unReadNotification,
+              }}
+              profileData={data}
+            />
           )}
 
           {/* Login icon */}
@@ -292,7 +264,7 @@ const Header: React.FC<{
               <Menu>
                 <MenuButton
                   sx={{
-                    "&>span": { display: "flex", alignItems: "center", gap: 2 }
+                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
                   }}
                 >
                   <Avatar />
