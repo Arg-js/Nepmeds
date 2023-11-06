@@ -154,6 +154,14 @@ export const api = {
     delete: "/dashboard/faq/:id/"
   },
 
+  college: {
+    post: "/core/college/",
+    patch: "/core/college/:id/",
+    get: "/core/college-list/",
+    delete: "/core/college/:id/",
+    getById: "/core/college/:id/"
+  },
+
   videoCall: {
     base: "/video-chat",
     initiate: function () {
