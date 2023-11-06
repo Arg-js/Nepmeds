@@ -1,4 +1,9 @@
 import {
+  Accordion,
+  AccordionButton,
+  AccordionIcon,
+  AccordionItem,
+  AccordionPanel,
   Box,
   Checkbox,
   Divider,
@@ -11,7 +16,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { SearchIcon } from "@nepMeds/assets/svgs";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import {
+  Specialization,
+  Symptom,
+  useSpecializationRegisterData,
+} from "@nepMeds/service/nepmeds-specialization";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import { colors } from "@nepMeds/theme/colors";
 import React, {
@@ -24,12 +33,12 @@ import React, {
 import { useLocation } from "react-router-dom";
 
 const GenderList = [
-  { label: "Male Doctor", value: "Male" },
-  { label: "Female Doctor", value: "Female" },
-  { label: "Others", value: "Other" },
+  { label: "Male Doctor", value: "Male", id: 0, name: "Male" },
+  { label: "Female Doctor", value: "Female", id: 1, name: "Female" },
+  { label: "Others", value: "Other", id: 2, name: "Other" },
 ];
 
-interface IDateParams {
+export interface IDateParams {
   from_date: string;
   to_date: string;
 }
@@ -44,26 +53,30 @@ interface ILocationState {
   symptom: string;
 }
 
+export interface IPaginationParams {
+  setPageParams: Dispatch<SetStateAction<IPageParams>>;
+  pageParams: IPageParams;
+}
+
+export interface IFilterParams {
+  setGender: Dispatch<SetStateAction<string[]>>;
+  setSpecialization: Dispatch<SetStateAction<string[]>>;
+  setSymptom: Dispatch<SetStateAction<string[]>>;
+  setSearchValue: Dispatch<SetStateAction<string>>;
+  setDateParams: Dispatch<SetStateAction<IDateParams>>;
+}
+interface IRefIterface {
+  genderFiltersRef: MutableRefObject<HTMLInputElement[]>;
+  specializationFiltersRef: MutableRefObject<HTMLInputElement[]>;
+  symptomFiltersRef: MutableRefObject<HTMLInputElement[]>;
+  dateFromRef: RefObject<HTMLInputElement>;
+  dateToRef: RefObject<HTMLInputElement>;
+}
 const DoctorListFilter: React.FC<{
-  filterParams: {
-    setGender: Dispatch<SetStateAction<string[]>>;
-    setSpecialization: Dispatch<SetStateAction<string[]>>;
-    setSymptom: Dispatch<SetStateAction<string[]>>;
-    setSearchValue: Dispatch<SetStateAction<string>>;
-    setDateParams: Dispatch<SetStateAction<IDateParams>>;
-  };
-  paginationParams: {
-    setPageParams: Dispatch<SetStateAction<IPageParams>>;
-    pageParams: IPageParams;
-  };
+  filterParams: IFilterParams;
+  paginationParams: IPaginationParams;
   dateParams: IDateParams;
-  reference: {
-    genderFiltersRef: MutableRefObject<HTMLInputElement[]>;
-    specializationFiltersRef: MutableRefObject<HTMLInputElement[]>;
-    symptomFiltersRef: MutableRefObject<HTMLInputElement[]>;
-    dateFromRef: RefObject<HTMLInputElement>;
-    dateToRef: RefObject<HTMLInputElement>;
-  };
+  reference: IRefIterface;
 }> = ({ filterParams, dateParams, paginationParams, reference }) => {
   const location = useLocation();
   const state = location.state as ILocationState;
@@ -72,7 +85,31 @@ const DoctorListFilter: React.FC<{
   const { data: symptomData = [] } = useGetSymptoms();
   const { data: specializationData = [] } = useSpecializationRegisterData();
   // REACT QUERIES END
+  type AccordionData = "name" | "ref" | "setterFunc";
+  interface IAPIData {
+    datas: Array<Specialization> | Array<Symptom> | typeof GenderList;
+  }
 
+  const accordionData: Array<Record<AccordionData, string> & IAPIData> = [
+    {
+      name: "Gender",
+      datas: GenderList,
+      ref: "genderFiltersRef",
+      setterFunc: "setGender",
+    },
+    {
+      name: "Specialization",
+      datas: specializationData ?? [],
+      ref: "specializationFiltersRef",
+      setterFunc: "setSpecialization",
+    },
+    {
+      name: "Health Concern",
+      datas: symptomData ?? [],
+      ref: "symptomFiltersRef",
+      setterFunc: "setSymptom",
+    },
+  ];
   // TODO: LOGIC IS REDUNDANT IN BOTH USE EFFECT, TRY TO MAKE A CONCISE FUNCTION FOR REUSABILITY
   useEffect(() => {
     if (state?.specialization && specializationData?.length) {
@@ -172,7 +209,11 @@ const DoctorListFilter: React.FC<{
           </Flex>
           <Divider />
           {/* TODO: the content will overflow with max-content */}
-          <Grid templateColumns={{ md: "1fr", xl: "max-content 1fr" }} gap={4}>
+          <Grid
+            templateColumns={{ md: "1fr", xl: "max-content 1fr" }}
+            gap={4}
+            mb={4}
+          >
             <GridItem>
               <Text fontWeight={600} fontSize={"sm"}>
                 From :
@@ -224,111 +265,110 @@ const DoctorListFilter: React.FC<{
               />
             </GridItem>
           </Grid>
+
+          {/*  */}
+          <Accordion defaultIndex={[0, 1, 2]} allowMultiple>
+            {accordionData.map(item => {
+              return (
+                <AccordionItem border={"none"} key={item.name}>
+                  <AccordionButton
+                    sx={{
+                      textAlign: "center",
+                      "&:hover": {
+                        bg: colors.blue_10,
+                      },
+                    }}
+                  >
+                    <Text
+                      fontWeight={600}
+                      fontSize={"md"}
+                      mb={3}
+                      flex="1"
+                      textAlign="left"
+                    >
+                      {item.name}
+                    </Text>
+                    <AccordionIcon />
+                  </AccordionButton>
+                  <AccordionPanel
+                    maxH={"45dvh"}
+                    overflowY={"auto"}
+                    css={{
+                      "&::-webkit-scrollbar": {
+                        width: "4px",
+                      },
+                      "&::-webkit-scrollbar-track": {
+                        width: "6px",
+                      },
+                      "&::-webkit-scrollbar-thumb": {
+                        background: `${colors.light_gray}`,
+                        borderRadius: "24px",
+                      },
+                      overflowY: "scroll",
+                    }}
+                  >
+                    {item.datas.map((data, index: number) => {
+                      return (
+                        <Flex gap={4} key={data.id} mb={2}>
+                          <Checkbox
+                            ref={element => {
+                              if (element)
+                                (
+                                  reference as unknown as Record<
+                                    string,
+                                    MutableRefObject<HTMLInputElement[]>
+                                  >
+                                )[item.ref].current[index] = element;
+                            }}
+                            isChecked={
+                              (
+                                reference as unknown as Record<
+                                  string,
+                                  MutableRefObject<HTMLInputElement[]>
+                                >
+                              )[item.ref]?.current[index]?.checked
+                            }
+                            onChange={e => {
+                              const updateFilter = (prev: string[]) =>
+                                e.target.checked
+                                  ? [...prev, data.name]
+                                  : prev.filter(item => item !== data.name);
+
+                              switch (item.name) {
+                                case "Gender":
+                                  filterParams.setGender(prev =>
+                                    updateFilter(prev),
+                                  );
+                                  break;
+                                case "Specialization":
+                                  filterParams.setSpecialization(prev =>
+                                    updateFilter(prev),
+                                  );
+                                  break;
+                                default:
+                                  filterParams.setSymptom(prev =>
+                                    updateFilter(prev),
+                                  );
+                              }
+
+                              paginationParams.setPageParams({
+                                ...paginationParams.pageParams,
+                                page: 1,
+                              });
+                            }}
+                          />
+                          <Text fontWeight={500} fontSize={"13px"}>
+                            {data.name}
+                          </Text>
+                        </Flex>
+                      );
+                    })}
+                  </AccordionPanel>
+                </AccordionItem>
+              );
+            })}
+          </Accordion>
           <Flex gap={2} justifyContent="center" wrap={"wrap"}></Flex>
-          <Box>
-            <Text fontWeight={600} fontSize={"md"} mb={3}>
-              Gender
-            </Text>
-            {GenderList.map((gender, index) => {
-              return (
-                <Flex gap={4} key={gender.value} mb={2}>
-                  <Checkbox
-                    ref={element => {
-                      if (element)
-                        reference.genderFiltersRef.current[index] = element;
-                    }}
-                    isChecked={
-                      reference?.genderFiltersRef?.current[index]?.checked
-                    }
-                    onChange={e => {
-                      filterParams.setGender(prev =>
-                        e.target.checked
-                          ? [...prev, gender.value]
-                          : prev.filter(item => item !== gender.value)
-                      );
-                      paginationParams.setPageParams({
-                        ...paginationParams.pageParams,
-                        page: 1,
-                      });
-                    }}
-                  />
-                  <Text fontWeight={500} fontSize={"13px"}>
-                    {gender.label}
-                  </Text>
-                </Flex>
-              );
-            })}
-          </Box>
-          <Box>
-            <Text fontWeight={600} fontSize={"md"} mb={3}>
-              Specialization
-            </Text>
-            {specializationData.map((specialization, index) => {
-              return (
-                <Flex gap={4} key={specialization.id} mb={2}>
-                  <Checkbox
-                    ref={element => {
-                      if (element)
-                        reference.specializationFiltersRef.current[index] =
-                          element;
-                    }}
-                    isChecked={
-                      reference?.specializationFiltersRef?.current[index]
-                        ?.checked
-                    }
-                    onChange={e => {
-                      filterParams.setSpecialization(prev =>
-                        e.target.checked
-                          ? [...prev, specialization.name]
-                          : prev.filter(item => item !== specialization.name)
-                      );
-                      paginationParams.setPageParams({
-                        ...paginationParams.pageParams,
-                        page: 1,
-                      });
-                    }}
-                  />
-                  <Text fontWeight={500} fontSize={"13px"}>
-                    {specialization.name}
-                  </Text>
-                </Flex>
-              );
-            })}
-          </Box>
-          <Box>
-            <Text fontWeight={600} fontSize={"md"} mb={3}>
-              Health Concern
-            </Text>
-            {symptomData.map((symptom, index) => {
-              return (
-                <Flex gap={4} key={symptom.id} mb={2}>
-                  <Checkbox
-                    ref={element => {
-                      if (element)
-                        reference.symptomFiltersRef.current[index] = element;
-                    }}
-                    isChecked={
-                      reference?.symptomFiltersRef?.current[index]?.checked
-                    }
-                    onChange={e => {
-                      filterParams.setSymptom(prev =>
-                        e.target.checked
-                          ? [...prev, symptom.name]
-                          : prev.filter(item => item !== symptom.name)
-                      );
-                      paginationParams.setPageParams({
-                        ...paginationParams.pageParams,
-                        page: 1,
-                      });
-                    }}
-                  />
-                  <Text fontWeight={500} fontSize={"13px"}>
-                    {symptom.name}
-                  </Text>
-                </Flex>
-              );
-            })}
-          </Box>
         </Flex>
       </Box>
     </Box>
