@@ -13,38 +13,38 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
 const AdminAppointment = lazy(
-  () => import("@nepMeds/pages/Admin/Appointments")
+  () => import("@nepMeds/pages/Admin/Appointments"),
 );
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(() => import("@nepMeds/components/Table/Doctor"));
 const PaymentList = lazy(
-  () => import("@nepMeds/components/Table/Payment/PaymentList")
+  () => import("@nepMeds/components/Table/Payment/PaymentList"),
 );
 const RateHistory = lazy(
-  () => import("@nepMeds/components/Table/Payment/RateHistory")
+  () => import("@nepMeds/components/Table/Payment/RateHistory"),
 );
 const MasterData = lazy(() => import("@nepMeds/pages/Admin/MasterData"));
 const ConfirmPassword = lazy(
-  () => import("@nepMeds/pages/ConfirmPassword/ConfirmPassword")
+  () => import("@nepMeds/pages/ConfirmPassword/ConfirmPassword"),
 );
 const Dashboard = lazy(() => import("@nepMeds/pages/Dashboard"));
 const UnApprovedDoctor = lazy(
-  () => import("@nepMeds/pages/Dashboard/UnApproved")
+  () => import("@nepMeds/pages/Dashboard/UnApproved"),
 );
 const DoctorProfile = lazy(
-  () => import("@nepMeds/pages/DoctorList/DoctorProfile")
+  () => import("@nepMeds/pages/DoctorList/DoctorProfile"),
 );
 const DocProfileAdmin = lazy(
-  () => import("@nepMeds/pages/DoctorProfile/DocProfileAdmin")
+  () => import("@nepMeds/pages/DoctorProfile/DocProfileAdmin"),
 );
 const ForgotPassword = lazy(
-  () => import("@nepMeds/pages/ForgotPassword/ForgotPassword")
+  () => import("@nepMeds/pages/ForgotPassword/ForgotPassword"),
 );
 const Login = lazy(() => import("@nepMeds/pages/Login/Login"));
 const Calendar = lazy(() => import("@nepMeds/pages/NewCalendar"));
 const DoctorConsultation = lazy(
-  () => import("@nepMeds/pages/Patient/DoctorConsultation")
+  () => import("@nepMeds/pages/Patient/DoctorConsultation"),
 );
 const DoctorList = lazy(() => import("@nepMeds/pages/Patient/DoctorList"));
 const PaymentDetails = lazy(() => import("@nepMeds/pages/Payment"));
@@ -52,10 +52,10 @@ const Register = lazy(() => import("@nepMeds/pages/Register"));
 const AcademicInfo = lazy(() => import("@nepMeds/pages/Register/AcademicInfo"));
 const BasicInfo = lazy(() => import("@nepMeds/pages/Register/BasicInfo"));
 const CertificationInfo = lazy(
-  () => import("@nepMeds/pages/Register/CertificationInfo")
+  () => import("@nepMeds/pages/Register/CertificationInfo"),
 );
 const ExperienceInfo = lazy(
-  () => import("@nepMeds/pages/Register/ExperienceInfo")
+  () => import("@nepMeds/pages/Register/ExperienceInfo"),
 );
 const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
 const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
@@ -295,7 +295,7 @@ const AppRoutes = () => {
         : userInfo?.is_patient
         ? paientRoutes
         : routes
-      : openRoutes
+      : openRoutes,
   );
 
   if (isLoading) {

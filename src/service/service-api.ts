@@ -148,10 +148,19 @@ export const api = {
   },
 
   faq: {
-    post: "/dashboard/faq-create/",
-    patch: "/dashboard/faq-delete/:id/",
     get: "/dashboard/faq-list/",
-    delete: "/dashboard/faq-delete/:id/",
+    post: "/dashboard/faq/",
+    getById: "/dashboard/faq/:id/",
+    patch: "/dashboard/faq/:id/",
+    delete: "/dashboard/faq/:id/",
+  },
+
+  college: {
+    post: "/core/college/",
+    patch: "/core/college/:id/",
+    get: "/core/college-list/",
+    delete: "/core/college/:id/",
+    getById: "/core/college/:id/",
   },
 
   videoCall: {

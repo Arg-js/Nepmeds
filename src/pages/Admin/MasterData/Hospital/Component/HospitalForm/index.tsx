@@ -5,12 +5,12 @@ import { useGetDetailAddress } from "@nepMeds/service/nepmeds-core";
 import { colors } from "@nepMeds/theme/colors";
 import {
   getDistrictsByProvince,
-  getProvinceOptions
+  getProvinceOptions,
 } from "@nepMeds/utils/Address";
 import { UseFormReturn } from "react-hook-form";
 
 const HospitalForm = ({
-  formMethods
+  formMethods,
 }: {
   formMethods: UseFormReturn<{
     name: string;
@@ -21,7 +21,7 @@ const HospitalForm = ({
   const {
     register,
     formState: { errors },
-    watch
+    watch,
   } = formMethods;
 
   // React Query
@@ -35,7 +35,7 @@ const HospitalForm = ({
   const districtOptions = detailAddress
     ? getDistrictsByProvince({
         provinceId: watch("province"),
-        detailAddress
+        detailAddress,
       })
     : [];
 
@@ -43,7 +43,7 @@ const HospitalForm = ({
     <form>
       <Flex gap={4} direction={"column"}>
         <FloatingLabelInput
-          label="name"
+          label="Name"
           name="name"
           register={register}
           error={errors.name?.message ?? ""}
@@ -51,7 +51,7 @@ const HospitalForm = ({
         <FormControl
           control="select"
           name="province"
-          label="province"
+          label="Province"
           options={provinceOptions}
           register={register}
           errors={errors.province?.message ?? ""}
@@ -61,7 +61,7 @@ const HospitalForm = ({
         <FormControl
           control="select"
           name="district"
-          label="district"
+          label="District"
           options={districtOptions}
           isDisabled={!districtOptions.length}
           register={register}
