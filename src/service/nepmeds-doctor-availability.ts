@@ -33,7 +33,7 @@ const getDoctorAvailability = async () => {
 };
 export const useDoctorAvailability = () => {
   return useQuery([api.doctor_availability], getDoctorAvailability, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
 
@@ -51,7 +51,7 @@ export const useCreateDoctorAvailability = () => {
   >(createDoctorAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);
-    }
+    },
   });
 
   return mutation;
@@ -67,7 +67,7 @@ export const getSingleAvailability = async (id: number) => {
 
 export const updateDoctorAvailability = async ({
   id,
-  data
+  data,
 }: {
   id: number;
   data: IGetDoctorAvailability;
@@ -86,7 +86,7 @@ export const useUpdateDoctorAvailability = () => {
   return useMutation(api.doctor_availability, updateDoctorAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);
-    }
+    },
   });
 };
 
@@ -106,7 +106,7 @@ export const useDeleteAvailability = () => {
   return useMutation(deleteAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);
-    }
+    },
   });
 };
 
@@ -123,6 +123,6 @@ export const useSetDoctorOnline = () => {
     // TODO: Check the requirement if basic-info api has to be recalled after the online status has been update
     onError: e => {
       toastFail(serverErrorResponse(e));
-    }
+    },
   });
 };

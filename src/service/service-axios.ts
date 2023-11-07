@@ -72,7 +72,7 @@ export function toFormData<T>(data: Record<string, any>) {
 function buildFormData(
   formData: FormData,
   data: Record<string, any>,
-  parentKey?: string,
+  parentKey?: string
 ) {
   if (
     data &&
@@ -88,7 +88,7 @@ function buildFormData(
           ? !isNaN(+key)
             ? `${parentKey}[${key}]`
             : `${parentKey}.${key}`
-          : key,
+          : key
       );
     });
     // file changed
@@ -136,5 +136,5 @@ HttpClient.interceptors.response.use(
       }
     }
     return Promise.reject(error.response);
-  },
+  }
 );

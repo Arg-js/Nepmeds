@@ -15,20 +15,20 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { getDayDifference } from "@nepMeds/helper/checkTimeRange";
 import {
   useDeleteExperienceFile,
-  useDeleteExperienceInfo,
+  useDeleteExperienceInfo
 } from "@nepMeds/service/nepmeds-experience";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { AxiosError } from "axios";
 import {
   IImageFileType,
-  MultiImageUpload,
+  MultiImageUpload
 } from "../../ImageUploadMulti/dropzone";
 import Select from "@nepMeds/components/Form/Select";
 import { useGetAllHospital } from "@nepMeds/service/nepmeds-hospital-list";
 
 export const ExperienceForm = ({
-  doctorProfileData,
+  doctorProfileData
 }: {
   doctorProfileData?: IGetDoctorProfile;
 }) => {
@@ -38,13 +38,13 @@ export const ExperienceForm = ({
     getValues,
     reset,
     watch,
-    formState: { errors },
+    formState: { errors }
   } = useFormContext<IRegisterFields>();
   const deleteExperienceInfo = useDeleteExperienceInfo();
   const deleteExperienceFile = useDeleteExperienceFile();
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "experience",
+    name: "experience"
   });
 
   const mappedImageInfo =
@@ -69,8 +69,8 @@ export const ExperienceForm = ({
           id: a.id?.toString(),
           isSubmitted: true,
           currently_working: a.currently_working,
-          experience_documents: a?.experience_document,
-        })),
+          experience_documents: a?.experience_document
+        }))
       });
     }
   }, [doctorProfileData]);
@@ -189,10 +189,10 @@ export const ExperienceForm = ({
                       style={{
                         background: colors.forminput,
                         border: "none",
-                        paddingTop: "15px",
+                        paddingTop: "15px"
                       }}
                       rules={{
-                        required: "Hospital/ Clinic name is required.",
+                        required: "Hospital/ Clinic name is required."
                       }}
                       {...field}
                     />
@@ -212,7 +212,7 @@ export const ExperienceForm = ({
                       style={{ background: colors.forminput, border: "none" }}
                       rules={{
                         required: "From date is required.",
-                        validate: () => validateFromDate(index),
+                        validate: () => validateFromDate(index)
                       }}
                       error={errors?.experience?.[index]?.from_date?.message}
                       {...field}
@@ -235,7 +235,7 @@ export const ExperienceForm = ({
                         style={{ background: colors.forminput, border: "none" }}
                         rules={{
                           required: "To date is required.",
-                          validate: () => validateToDate(index),
+                          validate: () => validateToDate(index)
                         }}
                         error={errors?.experience?.[index]?.to_date?.message}
                         {...field}
@@ -257,10 +257,10 @@ export const ExperienceForm = ({
                     style={{
                       background: colors.forminput,
                       border: "none",
-                      padding: "17px",
+                      padding: "17px"
                     }}
                     rules={{
-                      required: "Description is required.",
+                      required: "Description is required."
                     }}
                     error={errors?.experience?.[index]?.description?.message}
                     {...field}
@@ -317,7 +317,7 @@ export const ExperienceForm = ({
             currently_working: false,
             experience_documents: undefined,
             id: "",
-            isSubmitted: false,
+            isSubmitted: false
           });
         }}
       >
