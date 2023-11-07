@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { pendingPaymentColumn } from "@nepMeds/components/DataTable/Columns";
+import { paymentColumn } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -27,13 +27,16 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import { ISpecializationList } from "./PaymentList";
 import usePaymentStatusForm from "./usePaymentStatusForm";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import { StatusType } from "@nepMeds/pages/Doctor/Appointment/AppointmentTab";
 
 const PendingPayment = ({
-  specializationList,
+  type,
+  heading,
 }: {
-  specializationList: ISpecializationList[];
+  type: StatusType;
+  heading: string;
 }) => {
   const formMethods = useForm();
   const navigate = useNavigate();
@@ -68,6 +71,7 @@ const PendingPayment = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  <b></b>;
   const [filterValue, setFilterValue] = useState<any>({
     status: STATUSTYPE.rejected,
   });
@@ -75,15 +79,24 @@ const PendingPayment = ({
   const [searchFilter, setSearchFilter] = useState("");
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
+  //React Query
+
+  const { data: specialization = [] } = useSpecializationRegisterData();
+
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
+
   const { data, isFetching } = useGetPaymentList({
     ...filterValue,
     page_no: pageIndex + 1,
     page_size: pageSize,
     name: debouncedInputValue,
     enabled: true,
-    payment_status: "2",
+    payment_status: type || "",
   });
-
+  //React Query Ends
   const defaultValues = {
     Specialization: "",
     toDate: "",
@@ -109,7 +122,7 @@ const PendingPayment = ({
 
   const onActionClick = async (
     isApproved: boolean,
-    doctorInfo: { id: string; name: string }
+    doctorInfo: { id: string; name: string },
   ) => {
     setDoctorInfo({ name: doctorInfo.name, id: doctorInfo.id });
     if (isApproved) {
@@ -208,8 +221,8 @@ const PendingPayment = ({
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(value =>
                   RejectPayment({ ...value, id: doctorInfo.id }).then(() =>
-                    RejectPaymentModal()
-                  )
+                    RejectPaymentModal(),
+                  ),
                 )}
                 isLoading={rejectLoading}
               >
@@ -224,7 +237,7 @@ const PendingPayment = ({
           <FormProvider {...statusFormMethods}>
             <form
               onSubmit={statusFormMethods.handleSubmit(value =>
-                RejectPayment({ ...value, id: doctorInfo.id })
+                RejectPayment({ ...value, id: doctorInfo.id }),
               )}
             >
               <RejectionForm />
@@ -259,8 +272,8 @@ const PendingPayment = ({
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(() =>
                   ApprovePayment(doctorInfo.id).then(() =>
-                    onCloseConfirmation()
-                  )
+                    onCloseConfirmation(),
+                  ),
                 )}
                 background={colors.primary}
                 color={colors.white}
@@ -288,7 +301,7 @@ const PendingPayment = ({
       )}
 
       <HStack justifyContent="space-between">
-        <Text fontWeight="medium">Pending Rate</Text>
+        <Text fontWeight="medium">{heading} Rate</Text>
         <HStack>
           <InputGroup w="190px" borderColor={colors.grey_dark}>
             <InputLeftElement pointerEvents="none" h={8}>
@@ -321,7 +334,7 @@ const PendingPayment = ({
       </HStack>
 
       <DataTable
-        columns={pendingPaymentColumn(onActionClick, navigate, {
+        columns={paymentColumn(onActionClick, navigate, {
           pageIndex,
           pageSize,
         })}
