@@ -142,6 +142,7 @@ const FAQ = () => {
                 onChange={e => setSearchValue(e.target.value)}
               />
             </InputGroup>
+
             <Button
               color={colors.grey_dark}
               bg={colors.white}
