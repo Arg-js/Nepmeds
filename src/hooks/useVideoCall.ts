@@ -40,7 +40,7 @@ const useVideoCall = () => {
   }) => {
     await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
       api.videoCall.end(),
-      data,
+      data
     );
   };
   const rejectCall = async (data: {
@@ -49,7 +49,7 @@ const useVideoCall = () => {
   }) => {
     await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
       api.videoCall.reject(),
-      data,
+      data
     );
   };
 
@@ -58,7 +58,7 @@ const useVideoCall = () => {
     getReceiverToken,
     endCallForUsers,
     rejectCall,
-    sendCallNotification,
+    sendCallNotification
   };
 };
 
