@@ -44,7 +44,7 @@ const AccordionItem = ({
                   filterParams((prev: any) =>
                     e.target.checked
                       ? [...prev, item[itemKey]]
-                      : prev.filter((item: any) => item !== item[itemKey]),
+                      : prev.filter((item: any) => item !== item[itemKey])
                   );
                   paginationParams((prev: any) => ({
                     ...prev,

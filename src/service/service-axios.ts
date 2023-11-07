@@ -23,6 +23,7 @@ const HttpClient = axios.create({
 /**
  * Pass API Key in Header
  */
+
 HttpClient.interceptors.request.use(async config => {
   const token = TokenService.getToken()?.access;
 
@@ -39,6 +40,29 @@ HttpClient.interceptors.request.use(async config => {
 
 export { HttpClient };
 
+const axiosInstance = axios.create({
+  baseURL,
+  timeout: THREE_MINUTES,
+});
+
+/**
+ * Pass API Key in Header
+ */
+
+axiosInstance.interceptors.request.use(async config => {
+  const token = TokenService.getToken()?.access;
+
+  if (config && config.headers) {
+    if (token && config.headers["Authorization"] !== "") {
+      config.headers["Authorization"] = "Bearer " + token;
+    }
+    if (config.headers["Authorization"] === "") {
+      delete config.headers["Authorization"];
+    }
+  }
+  return config;
+});
+
 export function toFormData<T>(data: Record<string, any>) {
   const formData = new FormData();
   buildFormData(formData, data);
@@ -48,7 +72,7 @@ export function toFormData<T>(data: Record<string, any>) {
 function buildFormData(
   formData: FormData,
   data: Record<string, any>,
-  parentKey?: string
+  parentKey?: string,
 ) {
   if (
     data &&
@@ -64,7 +88,7 @@ function buildFormData(
           ? !isNaN(+key)
             ? `${parentKey}[${key}]`
             : `${parentKey}.${key}`
-          : key
+          : key,
       );
     });
     // file changed
@@ -86,9 +110,9 @@ HttpClient.interceptors.response.use(
         error.response.status === httpStatus.UNAUTHORIZED &&
         TokenService.getToken()?.refresh !== ""
       ) {
+        const refreshToken = TokenService.getToken()?.refresh || "";
         try {
-          const refreshToken = TokenService.getToken()?.refresh || "";
-          const response = await HttpClient.post<{
+          const response = await axiosInstance.post<{
             data: { access: string }[];
           }>(api.refresh_token.post, {
             refresh: refreshToken,
@@ -106,11 +130,11 @@ HttpClient.interceptors.response.use(
           });
         } catch (_error) {
           TokenService.clearToken();
-          // location.href = "/login";
+          location.href = NAVIGATION_ROUTES.DOCTOR_LOGIN;
           return Promise.reject(_error);
         }
       }
     }
     return Promise.reject(error.response);
-  }
+  },
 );

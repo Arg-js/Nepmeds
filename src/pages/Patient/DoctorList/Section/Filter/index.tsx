@@ -369,17 +369,17 @@ const DoctorListFilter: React.FC<{
                               switch (item.name) {
                                 case "Gender":
                                   filterParams.setGender(prev =>
-                                    updateFilter(prev),
+                                    updateFilter(prev)
                                   );
                                   break;
                                 case "Specialization":
                                   filterParams.setSpecialization(prev =>
-                                    updateFilter(prev),
+                                    updateFilter(prev)
                                   );
                                   break;
                                 default:
                                   filterParams.setSymptom(prev =>
-                                    updateFilter(prev),
+                                    updateFilter(prev)
                                   );
                               }
 

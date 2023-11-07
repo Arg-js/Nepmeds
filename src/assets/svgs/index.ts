@@ -56,5 +56,5 @@ export const svgs = {
   confirmed,
   logo_small,
   Work,
-  InCompletePayment
+  InCompletePayment,
 };

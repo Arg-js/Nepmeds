@@ -61,14 +61,14 @@ export const useCreatePaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.added_payment_methods]);
       queryClient.invalidateQueries([api.payment_methods_create]);
-    }
+    },
   });
 };
 
 //Edit Payment methods for doctor
 const editPaymentMethods = async ({
   paymentMethods,
-  id
+  id,
 }: {
   paymentMethods: IPaymentFormType;
   id: string;
@@ -87,10 +87,10 @@ export const useEditPaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([
         api.added_payment_methods,
-        profileData?.data?.doctor?.id.toString()
+        profileData?.data?.doctor?.id.toString(),
       ]);
       queryClient.invalidateQueries([api.payment_methods_create]);
-    }
+    },
   });
 };
 
@@ -111,7 +111,7 @@ const getPaymentMethods = async () => {
 export const useGetPaymentMethods = () => {
   return useQuery([api.payment_methods], getPaymentMethods, {
     select: data => data.data.data,
-    staleTime: Infinity
+    staleTime: Infinity,
   });
 };
 
@@ -129,7 +129,7 @@ export const useGetAddedPaymentMethods = (id: string) => {
     () => getAddedPaymentMethods(id),
     {
       select: data => data.data.data,
-      enabled: !!id
+      enabled: !!id,
     }
   );
 };
@@ -149,11 +149,11 @@ export const useDeletePaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([
         api.added_payment_methods,
-        profileData?.data?.doctor?.id.toString()
+        profileData?.data?.doctor?.id.toString(),
       ]);
 
       queryClient.invalidateQueries([api.payment_methods_create]);
-    }
+    },
   });
 };
 
@@ -183,7 +183,7 @@ const getPaymentList = async ({
   to_date,
   page_size,
   name,
-  specialization
+  specialization,
 }: IFilterSearch) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -192,7 +192,7 @@ const getPaymentList = async ({
     created_at__date__gte: from_date,
     created_at__date__lte: to_date,
     user__name__icontains: name,
-    specialization
+    specialization,
   });
   const response = await HttpClient.get<PaginatedResponse<IAllPaymentResponse>>(
     `${api.allpaymentList}?${qs}`
@@ -208,7 +208,7 @@ export const useGetPaymentList = ({
   page_size,
   name,
   enabled,
-  specialization
+  specialization,
 }: IFilterSearch & { enabled?: boolean }) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -217,7 +217,7 @@ export const useGetPaymentList = ({
     created_at__date__gte: from_date,
     created_at__date__lte: to_date,
     user__name__icontains: name,
-    specialization
+    specialization,
   });
   return useQuery(
     [api.allpaymentList, qs],
@@ -229,11 +229,11 @@ export const useGetPaymentList = ({
         to_date: to_date,
         name: name,
         page_size: page_size ?? 10,
-        specialization
+        specialization,
       }),
     {
       select: data => data.data.data,
-      enabled: !!enabled
+      enabled: !!enabled,
     }
   );
 };
@@ -242,7 +242,7 @@ export const useGetPaymentList = ({
 const rejectPayment = async ({
   id,
   remarks,
-  title_id
+  title_id,
 }: {
   id: string;
   remarks: string;
@@ -260,7 +260,7 @@ export const useRejectPayment = () => {
   return useMutation(rejectPayment, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.allpaymentList]);
-    }
+    },
   });
 };
 
@@ -277,7 +277,7 @@ export const useApprovePayment = () => {
   return useMutation(approvePayment, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.allpaymentList]);
-    }
+    },
   });
 };
 
@@ -291,14 +291,14 @@ const getPaymentMethodsList = async () => {
 
 export const useGetPaymentMethodsList = () => {
   return useQuery([api.payment_methods_create], getPaymentMethodsList, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
 
 //Edit single payment methods by Id
 const editSinglePaymentMethods = async ({
   id,
-  paymentMethods
+  paymentMethods,
 }: {
   id: string;
   paymentMethods: IPaymentFormType;
@@ -315,7 +315,7 @@ export const useEditSinglePaymentMethods = () => {
   return useMutation(editSinglePaymentMethods, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.payment_methods_create]);
-    }
+    },
   });
 };
 
@@ -336,7 +336,7 @@ export const useAddDoctorAmount = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
       queryClient.invalidateQueries([api.basicProfile]);
-    }
+    },
   });
 };
 
@@ -360,14 +360,14 @@ const getAmountList = async () => {
 
 export const useGetAmountList = () => {
   return useQuery([api.add_amount_create], getAmountList, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
 
 //Edit amount for doctor
 const editAmount = async ({
   id,
-  data
+  data,
 }: {
   id: string;
   data: IAddDoctorAmount;
@@ -384,7 +384,7 @@ export const useEditAmount = () => {
   return useMutation(editAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
-    }
+    },
   });
 };
 
@@ -401,7 +401,7 @@ export const useDeleteAmount = () => {
   return useMutation(deleteAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
-    }
+    },
   });
 };
 
@@ -416,18 +416,18 @@ const getPaymentHistory = async ({ id, qs }: { id: string; qs: string }) => {
 export const useGetPaymentHistory = ({
   id,
   page_no,
-  page_size
+  page_size,
 }: IFilterSearch & { id: string }) => {
   const qs = queryStringGenerator({
     page: page_no,
-    page_size
+    page_size,
   });
 
   return useQuery(
     [api.getAmountHistory, id, qs],
     () => getPaymentHistory({ id, qs }),
     {
-      select: data => data.data.data
+      select: data => data.data.data,
     }
   );
 };
@@ -454,7 +454,7 @@ export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
     [api.doctor_detail_history, id],
     () => getDoctorDetail({ id }),
     {
-      select: data => data.data.data
+      select: data => data.data.data,
     }
   );
 };
@@ -478,6 +478,6 @@ const getPaymentHistoryDoctor = async () => {
 
 export const useGetPaymentHistoryDoctor = () => {
   return useQuery([api.transaction.payment_history], getPaymentHistoryDoctor, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
