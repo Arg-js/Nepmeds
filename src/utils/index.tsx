@@ -9,3 +9,4 @@ export {
 } from "./timeRange";
 export { checkNumberMatch } from "./validation";
 export { dateFormatter } from "./dateFormatter";
+export { convertToTitleCase } from "./string";

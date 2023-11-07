@@ -29,11 +29,11 @@ export interface IKhaltiPost {
 export interface IEsewaToBackendPost {
   amount: number;
   purchase_order_id: string; // Doctor Id
-  availabilities: number[];
+  appointments: number[];
 }
 
 const khaltiPayment = async (
-  paymentMethods: IKhaltiPost & { availabilities: number[] }
+  paymentMethods: IKhaltiPost & { appointments: number[] }
 ) => {
   const response = await HttpClient.post(
     api.transaction.khalti,

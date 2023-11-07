@@ -35,28 +35,28 @@ export const useCreateFaq = () => {
     },
     onError: e => {
       toastFail(serverErrorResponse(e));
-    }
+    },
   });
 };
 
 const getFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
   return HttpClient.get(api.faq.get, {
-    params: { page: pageIndex + 1, page_size: pageSize, search }
+    params: { page: pageIndex + 1, page_size: pageSize, search },
   });
 };
 
 export const useGetFaqList = ({
   pageIndex,
   pageSize,
-  search
+  search,
 }: IPaginationParams) => {
   return useQuery(
     [api.faq.get, pageIndex, pageSize, search],
     () => getFaqList({ pageIndex, pageSize, search }),
     {
       select: data => data?.data?.data,
-      onError: e => toastFail(serverErrorResponse(e))
-    }
+      onError: e => toastFail(serverErrorResponse(e)),
+    },
   );
 };
 
@@ -70,14 +70,14 @@ export const useDeleteFaq = () => {
     onSuccess: () => {
       toastSuccess("FAQ deleted successfully");
       queryClient.invalidateQueries([api.faq.get]);
-    }
+    },
   });
 };
 
 const updateFaq = (faqUpdateReqBody: IFaqUpdate) => {
   return HttpClient.patch(
     generatePath(api.faq.patch, { id: faqUpdateReqBody.id.toString() }),
-    faqUpdateReqBody
+    faqUpdateReqBody,
   );
 };
 export const useUpdateFaq = () => {
@@ -89,6 +89,6 @@ export const useUpdateFaq = () => {
     },
     onError: e => {
       toastFail(serverErrorResponse(e));
-    }
+    },
   });
 };

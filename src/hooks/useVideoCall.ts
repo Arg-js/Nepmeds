@@ -1,6 +1,7 @@
 import { CallState } from "@nepMeds/config/enum";
 import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { sendCallNotification } from "@nepMeds/service/nepmeds-notification";
 
 //MOVE THESE TO SERVICE FILE
 export interface IVideoCallInitiateResponse {
@@ -39,7 +40,7 @@ const useVideoCall = () => {
   }) => {
     await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
       api.videoCall.end(),
-      data
+      data,
     );
   };
   const rejectCall = async (data: {
@@ -48,17 +49,7 @@ const useVideoCall = () => {
   }) => {
     await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
       api.videoCall.reject(),
-      data
-    );
-  };
-  const sendCallNotification = async (data: {
-    caller_user: string;
-    receiver_user: string;
-    room_name: string;
-  }) => {
-    await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
-      api.notification.sendCallNotification(),
-      data
+      data,
     );
   };
 

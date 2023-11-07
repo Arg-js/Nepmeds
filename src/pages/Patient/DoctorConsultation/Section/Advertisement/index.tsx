@@ -50,10 +50,10 @@ const AdvertisementBanner = () => {
         <GridItem colSpan={{ base: 8, xl: 4 }} alignSelf={"center"}>
           <Grid gap={{ base: 14, md: "30px", lg: "62px" }}>
             <GridItem width={"80%"}>
-              <Text fontWeight={600} fontSize={"28px"} color={colors.main}>
+              <Box fontWeight={600} fontSize={"28px"} color={colors.main}>
                 Your health is our
                 <Text color={colors.primary}>priority</Text>
-              </Text>
+              </Box>
             </GridItem>
             <GridItem>
               <Grid

@@ -47,6 +47,7 @@ export { ReactComponent as WhyChooseUs1Icon } from "./whyChoose1.svg";
 export { ReactComponent as WhyChooseUs2Icon } from "./whyChoose2.svg";
 export { ReactComponent as WhyChooseUs3Icon } from "./whyChoose3.svg";
 export { ReactComponent as WalletIcon } from "./wallet.svg";
+export { ReactComponent as NotificationWithDotIcon } from "./notificationWithDot.svg";
 
 export const svgs = {
   image,
@@ -55,5 +56,5 @@ export const svgs = {
   confirmed,
   logo_small,
   Work,
-  InCompletePayment,
+  InCompletePayment
 };
