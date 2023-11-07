@@ -57,7 +57,7 @@ const useGetAllCollegeDetails = ({ page, page_size }: IPaginationParams) => {
         const formattedError = serverErrorResponse(error);
         toastFail(formattedError);
       },
-    },
+    }
   );
 };
 
@@ -67,7 +67,7 @@ const updateCollege = (collegeUpdateRequestBody: ICollegeList) => {
     generatePath(api.college.patch, {
       id: collegeUpdateRequestBody.id.toString(),
     }),
-    collegeUpdateRequestBody,
+    collegeUpdateRequestBody
   );
 };
 
@@ -103,7 +103,7 @@ const useDeleteCollege = () => {
 //GetById
 const getCollegeById = ({ id }: { id: string }) => {
   return HttpClient.get<NepMedsResponse<ICollegeList>>(
-    generatePath(api.college.getById, { id }),
+    generatePath(api.college.getById, { id })
   );
 };
 const useGetCollegeById = ({ id }: { id: string }) => {

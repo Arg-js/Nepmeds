@@ -489,6 +489,13 @@ const EditPrimary = ({
                   <Image
                     src={getImageUrl(String(doctorProfileData?.id_front_image))}
                     objectFit="cover"
+                    cursor={"pointer"}
+                    onClick={() =>
+                      window.open(
+                        getImageUrl(String(doctorProfileData?.id_front_image)),
+                        "_blank"
+                      )
+                    }
                   />
                 </AspectRatio>
               </GridItem>
@@ -497,6 +504,13 @@ const EditPrimary = ({
                   <Image
                     src={getImageUrl(String(doctorProfileData?.id_back_image))}
                     objectFit="cover"
+                    cursor={"pointer"}
+                    onClick={() =>
+                      window.open(
+                        getImageUrl(String(doctorProfileData?.id_back_image)),
+                        "_blank"
+                      )
+                    }
                   />
                 </AspectRatio>
               </GridItem>

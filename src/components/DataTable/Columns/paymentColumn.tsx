@@ -17,17 +17,17 @@ import { STATUSTYPE } from "@nepMeds/config/enum";
 export const paymentColumn = (
   onClick: (
     isApproved: boolean,
-    doctorInfo: { id: string; name: string },
+    doctorInfo: { id: string; name: string }
   ) => void,
   navigate: NavigateFunction,
-  pageParams: PaginationState,
+  pageParams: PaginationState
 ) => {
   return [
     {
       header: "S.N",
       accessorFn: (_cell: CellContext<any, any>, index: number) => {
         return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-      },
+      }
     },
 
     {
@@ -38,11 +38,11 @@ export const paymentColumn = (
           <ChakraLink
             color={colors.primary}
             _hover={{
-              textDecoration: "underline",
+              textDecoration: "underline"
             }}
             as={Link}
             to={generatePath(NAVIGATION_ROUTES.DOC_PROFILE, {
-              id: row?.original?.id.toString(),
+              id: row?.original?.id.toString()
             })}
           >
             {row?.original?.user?.first_name +
@@ -50,14 +50,14 @@ export const paymentColumn = (
               row?.original?.user?.last_name}
           </ChakraLink>
         );
-      },
+      }
     },
 
     {
       header: "Specialization",
       accessorKey: "specialization",
       cell: ({
-        row,
+        row
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
           data => (
@@ -69,14 +69,14 @@ export const paymentColumn = (
             >
               {data.name}
             </Tag>
-          ),
+          )
         );
         return (
           <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
             <p>{specialization}</p>
           </Box>
         );
-      },
+      }
     },
     {
       header: "Instant Rate",
@@ -89,7 +89,7 @@ export const paymentColumn = (
               : "-"}
           </Text>
         );
-      },
+      }
     },
     {
       header: "Schedule Rate",
@@ -101,7 +101,7 @@ export const paymentColumn = (
               : "-"}
           </Text>
         );
-      },
+      }
     },
     {
       header: "Payment Method",
@@ -119,7 +119,7 @@ export const paymentColumn = (
             ))}
           </Flex>
         );
-      },
+      }
     },
     {
       header: "Status",
@@ -130,11 +130,11 @@ export const paymentColumn = (
         return (
           <StatusBadge
             customProps={{
-              status,
+              status
             }}
           />
         );
-      },
+      }
     },
     {
       header: "Actions",
@@ -144,22 +144,22 @@ export const paymentColumn = (
         const onView = () => {
           navigate(
             generatePath(NAVIGATION_ROUTES.AMOUNT_HISTORY, {
-              id: row?.original?.id?.toString(),
-            }),
+              id: row?.original?.id?.toString()
+            })
           );
         };
         const onAccept = () => {
           onClick(true, {
             id: row.original.doctor_amount_detail?.id?.toString(),
             name:
-              row.original.user.first_name + " " + row.original.user.last_name,
+              row.original.user.first_name + " " + row.original.user.last_name
           });
         };
         const onReject = () => {
           onClick(false, {
             id: row.original.doctor_amount_detail?.id?.toString(),
             name:
-              row.original.user.first_name + " " + row.original.user.last_name,
+              row.original.user.first_name + " " + row.original.user.last_name
           });
         };
         return (
@@ -171,7 +171,7 @@ export const paymentColumn = (
             />
           </HStack>
         );
-      },
-    },
+      }
+    }
   ];
 };

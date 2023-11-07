@@ -8,7 +8,7 @@ import { NepMedsResponse, api } from "./service-api";
 export type AcademicInfo = IRegisterFields["academic"][number];
 
 const createAcademicData = async (data: AcademicInfo) => {
-  const response = await HttpClient.post(api.academic, { data: data });
+  const response = await HttpClient.post(api.academic, { data });
   return response;
 };
 

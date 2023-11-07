@@ -15,7 +15,7 @@ import {
   MenuItem,
   MenuList,
   Text,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
@@ -26,7 +26,7 @@ import { CallState, NotificationType } from "@nepMeds/config/enum";
 import { PUSHER_SUBSCRIBE_EVENT } from "@nepMeds/config/index";
 import {
   IPusherNotification,
-  useNotification,
+  useNotification
 } from "@nepMeds/hooks/useNotification";
 import useVideoCall from "@nepMeds/hooks/useVideoCall";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -60,7 +60,7 @@ const Header: React.FC<{
   const {
     data: notificationData,
     isLoading: notificationLoading,
-    refetch,
+    refetch
   } = useGetAllNotification();
 
   const modalClose = () => {
@@ -70,7 +70,7 @@ const Header: React.FC<{
   const callNotification = ({
     is_missed,
     doctor,
-    room_name,
+    room_name
   }: IPusherNotification) => {
     if (is_missed) {
       modalClose();
@@ -92,7 +92,7 @@ const Header: React.FC<{
             NotificationType.VIDEOCALL.toString() && callNotification(data);
           setUnReadNotification(true);
           refetch();
-        },
+        }
       );
   }
 
@@ -101,7 +101,7 @@ const Header: React.FC<{
       setDeclineLoading(true);
       await rejectCall({
         call_state: CallState.REJECTED,
-        room_name: roomName,
+        room_name: roomName
       });
       modalClose();
     } catch (error) {
@@ -120,7 +120,7 @@ const Header: React.FC<{
       padding={"6"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 0px 10px 0px"}
       style={{
-        mb: "2px",
+        mb: "2px"
       }}
     >
       <Flex justifyContent={"space-between"}>
@@ -154,7 +154,7 @@ const Header: React.FC<{
                 state={{
                   receiver_user: data?.user,
                   room_name: roomName,
-                  call_state: CallState.ACCEPTED,
+                  call_state: CallState.ACCEPTED
                 }}
                 to={"/video-call"}
               >
@@ -232,7 +232,7 @@ const Header: React.FC<{
               notificationData={notificationData}
               notificationState={{
                 setUnReadNotification,
-                unReadNotification,
+                unReadNotification
               }}
               profileData={data}
             />
@@ -264,7 +264,7 @@ const Header: React.FC<{
               <Menu>
                 <MenuButton
                   sx={{
-                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                    "&>span": { display: "flex", alignItems: "center", gap: 2 }
                   }}
                 >
                   <Avatar />
