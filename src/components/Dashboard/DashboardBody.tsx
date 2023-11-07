@@ -7,6 +7,11 @@ import {
   GridItem,
   Image,
   SimpleGrid,
+  Tab,
+  TabList,
+  TabPanel,
+  TabPanels,
+  Tabs,
   Text,
 } from "@chakra-ui/react";
 import Calendar from "react-calendar";
@@ -20,6 +25,8 @@ import { useNavigate } from "react-router-dom";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "@nepMeds/components/Table/Doctor/PendingDocList";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import PendingPayment from "../Table/Payment/PendingPayment";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 
 interface IDashboardData {
   title: string;
@@ -53,6 +60,7 @@ const dashboardDatas: IDashboardData[] = [
 const DashboardBody = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
+
   return (
     <Box m={4}>
       {profileData?.data?.is_doctor &&
@@ -140,7 +148,24 @@ const DashboardBody = () => {
         >
           <>
             <Text variant="tableHeading">Pending Doctors</Text>
-            <PendingDocList showFilter={false} />
+            <Tabs>
+              <TabList border={"none"}>
+                <Tab>Registration</Tab>
+                <Tab>Rate</Tab>
+              </TabList>
+
+              <TabPanels>
+                <TabPanel>
+                  <PendingDocList showFilter={false} />
+                </TabPanel>
+                <TabPanel>
+                  <PendingPayment
+                    type={STATUSTYPE.pending}
+                    heading={"Pending"}
+                  />
+                </TabPanel>
+              </TabPanels>
+            </Tabs>
           </>
         </WrapperBox>
       )}

@@ -8,7 +8,7 @@ import { STATUSTYPE } from "@nepMeds/config/enum";
 import {
   useGetAppointmentRequest,
   useGetAppointmentRequestById,
-  useSetAppointmentRequestById
+  useSetAppointmentRequestById,
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
@@ -17,17 +17,17 @@ import * as Yup from "yup";
 import RejectionModalForm from "./ModalForm/RejectionModalForm";
 import {
   IRejectionData,
-  defaultValues
+  defaultValues,
 } from "./ModalForm/RejectionModalForm/defaultValues";
 import ViewModal from "./ModalForm/ViewModal";
 import ViewModalSkeleton from "./ModalForm/ViewModal/ViewModalSkeleton";
 
 const schema = Yup.object({
   reject_title: Yup.number().required("This field is required"),
-  reject_remarks: Yup.string().required("This field is required")
+  reject_remarks: Yup.string().required("This field is required"),
 });
 
-type StatusType =
+export type StatusType =
   | STATUSTYPE.approved
   | STATUSTYPE.pending
   | STATUSTYPE.rejected
@@ -36,35 +36,35 @@ type StatusType =
 
 const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
   type,
-  heading
+  heading,
 }) => {
   const [appointmentId, setAppointmentId] = useState("");
 
   const {
     isOpen: isApproveModalOpen,
     onOpen: onApproveModalOpen,
-    onClose: onApproveModalClose
+    onClose: onApproveModalClose,
   } = useDisclosure();
   const {
     isOpen: isRejectionModalOpen,
     onOpen: onRejectionModalOpen,
-    onClose: onRejectionModalClose
+    onClose: onRejectionModalClose,
   } = useDisclosure();
   const {
     isOpen: isViewModalOpen,
     onOpen: onViewModalOpen,
-    onClose: onViewModalClose
+    onClose: onViewModalClose,
   } = useDisclosure();
 
   const formMethods = useForm({
     defaultValues,
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   // PAGINATION
   const [pageParams, setPageParams] = useState({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
   });
   // PAGINATION ENDS
 
@@ -74,7 +74,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     useGetAppointmentRequest({
       page: pageParams.pageIndex + 1,
       page_size: pageParams.pageSize,
-      status: type || ""
+      status: type || "",
     });
 
   const { mutateAsync: setAppointmentRequestById, isLoading } =
@@ -96,7 +96,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       await setAppointmentRequestById({
         ...data,
         id: appointmentId,
-        status: STATUSTYPE.rejected
+        status: STATUSTYPE.rejected,
       });
       onModalClose();
     } catch (e) {
@@ -133,7 +133,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
               onClick={async () => {
                 await setAppointmentRequestById({
                   id: appointmentId,
-                  status: STATUSTYPE.approved
+                  status: STATUSTYPE.approved,
                 });
                 onModalClose();
               }}
@@ -230,18 +230,18 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
           onModalOpen: {
             onViewModalOpen,
             onApproveModalOpen,
-            onRejectionModalOpen
-          }
+            onRejectionModalOpen,
+          },
         })}
         isLoading={appointmentFetching}
         pagination={{
           manual: true,
           pageParams: {
             pageIndex: pageParams.pageIndex,
-            pageSize: pageParams.pageSize
+            pageSize: pageParams.pageSize,
           },
           pageCount: appointment?.page_count,
-          onChangePagination: setPageParams
+          onChangePagination: setPageParams,
         }}
       />
     </>

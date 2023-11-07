@@ -9,13 +9,9 @@ import {
 } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { STATUSTYPE } from "@nepMeds/config/enum";
-import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
-import AllPayment from "@nepMeds/components/Table/Payment/AllPayment";
-import ApprovedPayment from "@nepMeds/components/Table/Payment/ApprovedPayment";
 import PendingPayment from "@nepMeds/components/Table/Payment/PendingPayment";
-import RejectedPaymentList from "@nepMeds/components/Table/Payment/RejectedPayment";
 
 // import { Link } from "react-router-dom";
 // import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
@@ -40,12 +36,25 @@ const PaymentList = () => {
   const location = useLocation();
   const state = location.state as LocationState;
   const [tabIndex, setTabIndex] = useState<number>(tabObj[state?.status] ?? 0);
-  const { data: specialization = [] } = useSpecializationRegisterData();
 
-  const specializationList = specialization.map(s => ({
-    label: s.name,
-    value: s.id,
-  }));
+  const PaymentConfigTab = [
+    {
+      type: 0,
+      heading: "All",
+    },
+    {
+      type: STATUSTYPE.pending,
+      heading: "Pending",
+    },
+    {
+      type: STATUSTYPE.approved,
+      heading: "Approved",
+    },
+    {
+      type: STATUSTYPE.rejected,
+      heading: "Rejected",
+    },
+  ];
 
   return (
     <BoxWrapper>
@@ -58,10 +67,9 @@ const PaymentList = () => {
         >
           <GridItem>
             <TabList border="none" p={4}>
-              <Tab>All</Tab>
-              <Tab>Pending Rate</Tab>
-              <Tab>Approved Rate</Tab>
-              <Tab>Rejected Rate</Tab>
+              {PaymentConfigTab.map(({ heading }) => (
+                <Tab key={heading}>{heading}</Tab>
+              ))}
             </TabList>
           </GridItem>
 
@@ -74,26 +82,13 @@ const PaymentList = () => {
         </Grid>
 
         <TabPanels>
-          <TabPanel>
-            {tabIndex === 0 && (
-              <AllPayment specializationList={specializationList} />
-            )}
-          </TabPanel>
-          <TabPanel>
-            {tabIndex === 1 && (
-              <PendingPayment specializationList={specializationList} />
-            )}
-          </TabPanel>
-          <TabPanel>
-            {tabIndex === 2 && (
-              <ApprovedPayment specializationList={specializationList} />
-            )}
-          </TabPanel>
-          <TabPanel>
-            {tabIndex === 3 && (
-              <RejectedPaymentList specializationList={specializationList} />
-            )}
-          </TabPanel>
+          {PaymentConfigTab.map(({ type, heading }, index) => (
+            <TabPanel key={type}>
+              {tabIndex === index && (
+                <PendingPayment type={type} heading={heading} />
+              )}
+            </TabPanel>
+          ))}
         </TabPanels>
       </Tabs>
     </BoxWrapper>
