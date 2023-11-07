@@ -7,7 +7,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { CustomButton } from "@nepMeds/components/Button/Button";
 import { colors } from "@nepMeds/theme/colors";
@@ -24,23 +24,23 @@ const MasterData = () => {
   const {
     onOpen: onOpenSymptoms,
     onClose: onCloseSymptoms,
-    isOpen: isSymptomsOpen,
+    isOpen: isSymptomsOpen
   } = useDisclosure();
 
   const {
     onOpen: onOpenSpecialization,
     onClose: onCloseSpecialization,
-    isOpen: isSpecializationOpen,
+    isOpen: isSpecializationOpen
   } = useDisclosure();
   const {
     onOpen: onOpenHospitalModal,
     onClose: onCloseHospitalModal,
-    isOpen: isOpenHospitalModal,
+    isOpen: isOpenHospitalModal
   } = useDisclosure();
   const {
     onOpen: onOpenCollegeModal,
     onClose: onCloseCollegeModal,
-    isOpen: isOpenCollegeModal,
+    isOpen: isOpenCollegeModal
   } = useDisclosure();
   const [activeTab, setActiveTab] = useState(0);
 
@@ -59,7 +59,7 @@ const MasterData = () => {
           isSymptomsOpen={isSymptomsOpen}
           activeTab={activeTab}
         />
-      ),
+      )
     },
     {
       id: 1,
@@ -71,7 +71,7 @@ const MasterData = () => {
           isSpecializationOpen={isSpecializationOpen}
           activeTab={activeTab}
         />
-      ),
+      )
     },
     {
       id: 2,
@@ -83,7 +83,7 @@ const MasterData = () => {
           isOpenModal={isOpenCollegeModal}
           onOpenCollegeModal={onOpenCollegeModal}
         />
-      ),
+      )
     },
     {
       id: 3,
@@ -95,8 +95,8 @@ const MasterData = () => {
           isOpenHospitalModal={isOpenHospitalModal}
           onOpenHospitalModal={onOpenHospitalModal}
         />
-      ),
-    },
+      )
+    }
   ];
 
   return (
@@ -155,7 +155,7 @@ const MasterData = () => {
                   >
                     Add {title}
                   </CustomButton>
-                ),
+                )
             )}
           </GridItem>
         </Grid>

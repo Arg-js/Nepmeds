@@ -6,7 +6,7 @@ export const columns = ({
   onOpenDeleteModal,
   setId,
   setIsEdit,
-  onOpenCollegeModal
+  onOpenCollegeModal,
 }: {
   onOpenDeleteModal: () => void;
   setId: Dispatch<SetStateAction<string>>;
@@ -17,7 +17,7 @@ export const columns = ({
     header: "S.N.",
     accessorFn: (_: any, index: number) => {
       return `${index + 1}.`;
-    }
+    },
   },
   { header: "Name", accessorKey: "name" },
   {
@@ -33,6 +33,6 @@ export const columns = ({
         setIsEdit(true);
       };
       return <TableActions onDelete={onDelete} onEdit={onEdit} />;
-    }
-  }
+    },
+  },
 ];

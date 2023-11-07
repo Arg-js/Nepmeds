@@ -50,7 +50,7 @@ export type IPaymentFormType = Omit<
 const addPaymentMethods = async (paymentMethods: IPaymentFormType) => {
   const response = await HttpClient.post(
     api.payment_methods_create,
-    paymentMethods,
+    paymentMethods
   );
   return response;
 };
@@ -61,21 +61,21 @@ export const useCreatePaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.added_payment_methods]);
       queryClient.invalidateQueries([api.payment_methods_create]);
-    },
+    }
   });
 };
 
 //Edit Payment methods for doctor
 const editPaymentMethods = async ({
   paymentMethods,
-  id,
+  id
 }: {
   paymentMethods: IPaymentFormType;
   id: string;
 }) => {
   const response = await HttpClient.patch(
     generatePath(api.edit_payment_methods, { id }),
-    paymentMethods,
+    paymentMethods
   );
   return response;
 };
@@ -87,10 +87,10 @@ export const useEditPaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([
         api.added_payment_methods,
-        profileData?.data?.doctor?.id.toString(),
+        profileData?.data?.doctor?.id.toString()
       ]);
       queryClient.invalidateQueries([api.payment_methods_create]);
-    },
+    }
   });
 };
 
@@ -103,7 +103,7 @@ export interface IPaymentMethodType {
 // Get list of payment methods
 const getPaymentMethods = async () => {
   const response = await HttpClient.get<NepMedsResponse<IPaymentMethodType[]>>(
-    api.payment_methods,
+    api.payment_methods
   );
   return response;
 };
@@ -111,14 +111,14 @@ const getPaymentMethods = async () => {
 export const useGetPaymentMethods = () => {
   return useQuery([api.payment_methods], getPaymentMethods, {
     select: data => data.data.data,
-    staleTime: Infinity,
+    staleTime: Infinity
   });
 };
 
 //Get list of added payment methods for a doctor by doctor id
 const getAddedPaymentMethods = async (id: string) => {
   const response = await HttpClient.get<NepMedsResponse<IGetPaymentMethods>>(
-    generatePath(api.added_payment_methods, { doctor_id: id }),
+    generatePath(api.added_payment_methods, { doctor_id: id })
   );
   return response;
 };
@@ -129,15 +129,15 @@ export const useGetAddedPaymentMethods = (id: string) => {
     () => getAddedPaymentMethods(id),
     {
       select: data => data.data.data,
-      enabled: !!id,
-    },
+      enabled: !!id
+    }
   );
 };
 
 //Delete payment methods for a doctor
 const deletePaymentMethods = async (id: string) => {
   const response = await HttpClient.delete(
-    generatePath(api.delete_payment_methods, { id }),
+    generatePath(api.delete_payment_methods, { id })
   );
   return response;
 };
@@ -149,11 +149,11 @@ export const useDeletePaymentMethods = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([
         api.added_payment_methods,
-        profileData?.data?.doctor?.id.toString(),
+        profileData?.data?.doctor?.id.toString()
       ]);
 
       queryClient.invalidateQueries([api.payment_methods_create]);
-    },
+    }
   });
 };
 
@@ -183,7 +183,7 @@ const getPaymentList = async ({
   to_date,
   page_size,
   name,
-  specialization,
+  specialization
 }: IFilterSearch) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -192,10 +192,10 @@ const getPaymentList = async ({
     created_at__date__gte: from_date,
     created_at__date__lte: to_date,
     user__name__icontains: name,
-    specialization,
+    specialization
   });
   const response = await HttpClient.get<PaginatedResponse<IAllPaymentResponse>>(
-    `${api.allpaymentList}?${qs}`,
+    `${api.allpaymentList}?${qs}`
   );
   return response;
 };
@@ -208,7 +208,7 @@ export const useGetPaymentList = ({
   page_size,
   name,
   enabled,
-  specialization,
+  specialization
 }: IFilterSearch & { enabled?: boolean }) => {
   const qs = queryStringGenerator({
     page: page_no,
@@ -217,7 +217,7 @@ export const useGetPaymentList = ({
     created_at__date__gte: from_date,
     created_at__date__lte: to_date,
     user__name__icontains: name,
-    specialization,
+    specialization
   });
   return useQuery(
     [api.allpaymentList, qs],
@@ -229,12 +229,12 @@ export const useGetPaymentList = ({
         to_date: to_date,
         name: name,
         page_size: page_size ?? 10,
-        specialization,
+        specialization
       }),
     {
       select: data => data.data.data,
-      enabled: !!enabled,
-    },
+      enabled: !!enabled
+    }
   );
 };
 
@@ -242,7 +242,7 @@ export const useGetPaymentList = ({
 const rejectPayment = async ({
   id,
   remarks,
-  title_id,
+  title_id
 }: {
   id: string;
   remarks: string;
@@ -250,7 +250,7 @@ const rejectPayment = async ({
 }) => {
   const response = await HttpClient.post(
     generatePath(api.reject_payment_methods, { id }),
-    { title_id, remarks },
+    { title_id, remarks }
   );
   return response;
 };
@@ -260,14 +260,14 @@ export const useRejectPayment = () => {
   return useMutation(rejectPayment, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.allpaymentList]);
-    },
+    }
   });
 };
 
 //Approve Payment for doctor (Requires Doctor ID)
 const approvePayment = async (id: string) => {
   const response = await HttpClient.post(
-    generatePath(api.approve_payment_methods, { id }),
+    generatePath(api.approve_payment_methods, { id })
   );
   return response;
 };
@@ -277,7 +277,7 @@ export const useApprovePayment = () => {
   return useMutation(approvePayment, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.allpaymentList]);
-    },
+    }
   });
 };
 
@@ -291,21 +291,21 @@ const getPaymentMethodsList = async () => {
 
 export const useGetPaymentMethodsList = () => {
   return useQuery([api.payment_methods_create], getPaymentMethodsList, {
-    select: data => data.data.data,
+    select: data => data.data.data
   });
 };
 
 //Edit single payment methods by Id
 const editSinglePaymentMethods = async ({
   id,
-  paymentMethods,
+  paymentMethods
 }: {
   id: string;
   paymentMethods: IPaymentFormType;
 }) => {
   const response = await HttpClient.patch(
     generatePath(api.delete_payment_methods, { id }),
-    paymentMethods,
+    paymentMethods
   );
   return response;
 };
@@ -315,7 +315,7 @@ export const useEditSinglePaymentMethods = () => {
   return useMutation(editSinglePaymentMethods, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.payment_methods_create]);
-    },
+    }
   });
 };
 
@@ -336,7 +336,7 @@ export const useAddDoctorAmount = () => {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
       queryClient.invalidateQueries([api.basicProfile]);
-    },
+    }
   });
 };
 
@@ -353,28 +353,28 @@ export interface IAmountListDoctor {
 //Get list of amount for doctor (Without id)
 const getAmountList = async () => {
   const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
-    api.add_amount_create,
+    api.add_amount_create
   );
   return response;
 };
 
 export const useGetAmountList = () => {
   return useQuery([api.add_amount_create], getAmountList, {
-    select: data => data.data.data,
+    select: data => data.data.data
   });
 };
 
 //Edit amount for doctor
 const editAmount = async ({
   id,
-  data,
+  data
 }: {
   id: string;
   data: IAddDoctorAmount;
 }) => {
   const response = await HttpClient.patch(
     generatePath(api.edit_amount, { id }),
-    data,
+    data
   );
   return response;
 };
@@ -384,14 +384,14 @@ export const useEditAmount = () => {
   return useMutation(editAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
-    },
+    }
   });
 };
 
 //Delete amount rate by admin using Doctor ID
 const deleteAmount = async (id: string) => {
   const response = await HttpClient.delete(
-    generatePath(api.edit_amount, { id }),
+    generatePath(api.edit_amount, { id })
   );
   return response;
 };
@@ -401,14 +401,14 @@ export const useDeleteAmount = () => {
   return useMutation(deleteAmount, {
     onSuccess: () => {
       queryClient.invalidateQueries([api.add_amount_create]);
-    },
+    }
   });
 };
 
 //Get Payment History By Admin  by doctor Id (No Pagination or Filter)
 const getPaymentHistory = async ({ id, qs }: { id: string; qs: string }) => {
   const response = await HttpClient.get<PaginatedResponse<IAmountListDoctor>>(
-    generatePath(`${api.getAmountHistory}?${qs}`, { id }),
+    generatePath(`${api.getAmountHistory}?${qs}`, { id })
   );
   return response;
 };
@@ -416,19 +416,19 @@ const getPaymentHistory = async ({ id, qs }: { id: string; qs: string }) => {
 export const useGetPaymentHistory = ({
   id,
   page_no,
-  page_size,
+  page_size
 }: IFilterSearch & { id: string }) => {
   const qs = queryStringGenerator({
     page: page_no,
-    page_size,
+    page_size
   });
 
   return useQuery(
     [api.getAmountHistory, id, qs],
     () => getPaymentHistory({ id, qs }),
     {
-      select: data => data.data.data,
-    },
+      select: data => data.data.data
+    }
   );
 };
 
@@ -454,8 +454,8 @@ export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
     [api.doctor_detail_history, id],
     () => getDoctorDetail({ id }),
     {
-      select: data => data.data.data,
-    },
+      select: data => data.data.data
+    }
   );
 };
 
@@ -472,12 +472,12 @@ export interface IPaymentHistory {
 // Payment History for Doctor
 const getPaymentHistoryDoctor = async () => {
   return await HttpClient.get<PaginatedResponse<IPaymentHistory>>(
-    api.transaction.payment_history,
+    api.transaction.payment_history
   );
 };
 
 export const useGetPaymentHistoryDoctor = () => {
   return useQuery([api.transaction.payment_history], getPaymentHistoryDoctor, {
-    select: data => data.data.data,
+    select: data => data.data.data
   });
 };

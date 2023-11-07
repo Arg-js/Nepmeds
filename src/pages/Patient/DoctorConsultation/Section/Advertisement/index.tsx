@@ -5,7 +5,7 @@ import {
   ClockIcon,
   PaymentIcon,
   PriceTagIcon,
-  ShieldIcon,
+  ShieldIcon
 } from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
@@ -13,20 +13,20 @@ import { colors } from "@nepMeds/theme/colors";
 const advertisementDetails = [
   {
     logo: <ClockIcon />,
-    content: "24 hr service",
+    content: "24 hr service"
   },
   {
     logo: <ShieldIcon />,
-    content: "Privacy non disclosure",
+    content: "Privacy non disclosure"
   },
   {
     logo: <PriceTagIcon />,
-    content: "Affordable Price",
+    content: "Affordable Price"
   },
   {
     logo: <PaymentIcon />,
-    content: "Secure Payments",
-  },
+    content: "Secure Payments"
+  }
 ];
 
 const AdvertisementBanner = () => {
@@ -59,7 +59,7 @@ const AdvertisementBanner = () => {
               <Grid
                 templateColumns={{
                   base: "repeat(1,max-content)",
-                  md: "repeat(2,max-content)",
+                  md: "repeat(2,max-content)"
                 }}
                 alignItems={"center"}
                 gap={{ base: 4, md: 8 }}

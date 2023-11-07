@@ -11,7 +11,7 @@ const sendCallNotification = async (data: {
 }) => {
   await HttpClient.post<NepMedsResponse<IVideoCallInitiateResponse>>(
     api.notification.sendCallNotification(),
-    data,
+    data
   );
 };
 
@@ -29,14 +29,14 @@ export interface INotification {
 
 const getAllNotification = async () => {
   const response = await HttpClient.get<PaginatedResponse<INotification>>(
-    api.notification.getAll(),
+    api.notification.getAll()
   );
   return response.data;
 };
 
 const useGetAllNotification = () => {
   return useQuery([api.notification.getAll()], getAllNotification, {
-    select: data => data.data.results,
+    select: data => data.data.results
   });
 };
 
