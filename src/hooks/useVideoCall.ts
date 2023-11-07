@@ -58,7 +58,7 @@ const useVideoCall = () => {
     getReceiverToken,
     endCallForUsers,
     rejectCall,
-    sendCallNotification
+    sendCallNotification,
   };
 };
 

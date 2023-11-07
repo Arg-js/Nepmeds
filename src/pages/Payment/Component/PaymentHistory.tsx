@@ -9,7 +9,7 @@ const PaymentHistory = () => {
   const { data: history, isLoading } = useGetPaymentHistoryDoctor();
   const [pageParams, setPageParams] = useState({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
   });
   return (
     <div>
@@ -22,17 +22,17 @@ const PaymentHistory = () => {
       <DataTable
         data={history?.results || []}
         columns={paymentHistoryColumn({
-          pageParams
+          pageParams,
         })}
         isLoading={isLoading}
         pagination={{
           manual: true,
           pageParams: {
             pageIndex: pageParams.pageIndex,
-            pageSize: pageParams.pageSize
+            pageSize: pageParams.pageSize,
           },
           pageCount: history?.page_count,
-          onChangePagination: setPageParams
+          onChangePagination: setPageParams,
         }}
       />
     </div>

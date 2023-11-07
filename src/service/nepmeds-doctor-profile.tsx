@@ -105,6 +105,7 @@ export interface IGetDoctorBasicProfile {
     specialization?: IResponseSpecialization[];
     status: string;
     set_payment_status?: boolean;
+    is_online: boolean;
   };
   first_name: string;
   last_name: string;

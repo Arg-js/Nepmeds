@@ -9,7 +9,7 @@ import {
   InputLeftElement,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -36,11 +36,11 @@ const AllPayment = () => {
   const navigate = useNavigate();
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
   });
   const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
     id: "",
-    name: ""
+    name: "",
   });
 
   const {
@@ -48,17 +48,17 @@ const AllPayment = () => {
     ApprovePayment,
     RejectPayment,
     approveLoading,
-    rejectLoading
+    rejectLoading,
   } = usePaymentStatusForm();
   const {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose
+    onClose: onRejectModalClose,
   } = useDisclosure();
   const {
     isOpen: confirmationModal,
     onOpen: onOpenConfirmation,
-    onClose: onCloseConfirmation
+    onClose: onCloseConfirmation,
   } = useDisclosure();
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
@@ -68,26 +68,26 @@ const AllPayment = () => {
     page_no: pageIndex + 1,
     page_size: pageSize,
     name: debouncedInputValue,
-    enabled: true
+    enabled: true,
   });
   const { data: specialization = [] } = useSpecializationRegisterData();
 
   // React query ends
   const specializationList = specialization.map(s => ({
     label: s.name,
-    value: s.id
+    value: s.id,
   }));
 
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
-    onClose: onModalClose
+    onClose: onModalClose,
   } = useDisclosure();
 
   const defaultValues = {
     Specialization: "",
     toDate: "",
-    fromDate: ""
+    fromDate: "",
   };
 
   const handleFilterData = (isReset: boolean) => {
@@ -95,7 +95,7 @@ const AllPayment = () => {
       setFilterValue({
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
-        specialization: formMethods.getValues("Specialization")
+        specialization: formMethods.getValues("Specialization"),
       });
       onModalClose();
     } else {
@@ -322,7 +322,7 @@ const AllPayment = () => {
       <DataTable
         columns={paymentColumn(onActionClick, navigate, {
           pageIndex,
-          pageSize
+          pageSize,
         })}
         isLoading={isFetching}
         data={data?.results ?? []}
@@ -330,7 +330,7 @@ const AllPayment = () => {
           manual: true,
           pageParams: { pageIndex, pageSize },
           pageCount: data?.page_count,
-          onChangePagination: setPagination
+          onChangePagination: setPagination,
         }}
       />
 

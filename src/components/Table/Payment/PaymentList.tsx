@@ -5,7 +5,7 @@ import {
   TabList,
   TabPanel,
   TabPanels,
-  Tabs
+  Tabs,
 } from "@chakra-ui/react";
 import BoxWrapper from "@nepMeds/components/Wrapper/BoxWrapper";
 import { STATUSTYPE } from "@nepMeds/config/enum";
@@ -29,7 +29,7 @@ const tabObj = {
   [STATUSTYPE.approved]: 2,
   [STATUSTYPE.pending]: 1,
   [STATUSTYPE.rejected]: 3,
-  [STATUSTYPE.completed]: 4
+  [STATUSTYPE.completed]: 4,
 };
 
 const PaymentList = () => {
@@ -40,20 +40,20 @@ const PaymentList = () => {
   const PaymentConfigTab = [
     {
       type: 0,
-      heading: "All"
+      heading: "All",
     },
     {
       type: STATUSTYPE.pending,
-      heading: "Pending"
+      heading: "Pending",
     },
     {
       type: STATUSTYPE.approved,
-      heading: "Approved"
+      heading: "Approved",
     },
     {
       type: STATUSTYPE.rejected,
-      heading: "Rejected"
-    }
+      heading: "Rejected",
+    },
   ];
 
   return (

@@ -5,7 +5,7 @@ import {
   MenuList,
   Flex,
   Box,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { NotificationWithDotIcon } from "@nepMeds/assets/svgs";
 import { CallState } from "@nepMeds/config/enum";
@@ -21,7 +21,7 @@ import { Link } from "react-router-dom";
 const NotificationDropDown = ({
   notificationData,
   profileData,
-  notificationState: { unReadNotification, setUnReadNotification }
+  notificationState: { unReadNotification, setUnReadNotification },
 }: {
   notificationData: INotification[] | undefined;
   profileData: IGetPatientBasicProfile | undefined;
@@ -44,7 +44,7 @@ const NotificationDropDown = ({
               as={IconButton}
               isRound
               _hover={{
-                bg: "transparent"
+                bg: "transparent",
               }}
               icon={
                 unReadNotification ? (
@@ -94,7 +94,7 @@ const NotificationDropDown = ({
                             state={{
                               receiver_user: profileData?.user,
                               room_name: notification.room_name,
-                              call_state: CallState.ACCEPTED
+                              call_state: CallState.ACCEPTED,
                             }}
                             to={"/video-call"}
                           >

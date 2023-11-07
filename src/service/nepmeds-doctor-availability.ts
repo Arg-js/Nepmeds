@@ -2,6 +2,8 @@ import { AxiosResponse } from "axios";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
+import serverErrorResponse from "./serverErrorResponse";
 
 export interface IChildTimeFrames {
   id: number;
@@ -104,6 +106,23 @@ export const useDeleteAvailability = () => {
   return useMutation(deleteAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);
+    }
+  });
+};
+
+const setDoctorOnline = ({ is_online }: { is_online: boolean }) => {
+  return HttpClient.patch(api.set_doctor_availability, { is_online });
+};
+export const useSetDoctorOnline = () => {
+  return useMutation(setDoctorOnline, {
+    onSuccess: response =>
+      toastSuccess(
+        response?.data?.message ||
+          "Your availability status updated successfully."
+      ),
+    // TODO: Check the requirement if basic-info api has to be recalled after the online status has been update
+    onError: e => {
+      toastFail(serverErrorResponse(e));
     }
   });
 };

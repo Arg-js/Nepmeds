@@ -23,10 +23,10 @@ export interface Symptom {
 const getSpecializationData = async (
   page_no: number,
   pageSize: number,
-  name: string,
+  name: string
 ) => {
   const response = await HttpClient.get<PaginatedResponse<Specialization[]>>(
-    `${api.specialization}?page=${page_no}&page_size=${pageSize}&search=${name}`,
+    `${api.specialization}?page=${page_no}&page_size=${pageSize}&search=${name}`
   );
   return response;
 };
@@ -48,12 +48,12 @@ export const useSpecializationData = ({
     {
       select: res => res.data.data,
       enabled: activeTab === 1,
-    },
+    }
   );
 };
 const getSpecializationRegisterData = async () => {
   const response = await HttpClient.get<NepMedsResponse<Specialization[]>>(
-    api.specialization_register,
+    api.specialization_register
   );
   return response;
 };
@@ -82,13 +82,13 @@ const saveSpecialization = async (specializationInfo: {
   if (specializationInfo.id) {
     const response = await HttpClient.post<NepMedsResponse>(
       api.specialization + "/" + specializationInfo.id,
-      objectToFormData(specializationInfoParam),
+      objectToFormData(specializationInfoParam)
     );
     return response;
   } else {
     const response = await HttpClient.post<NepMedsResponse>(
       api.specialization,
-      objectToFormData(specializationInfoParam),
+      objectToFormData(specializationInfoParam)
     );
     return response;
   }
@@ -97,14 +97,14 @@ const saveSpecialization = async (specializationInfo: {
 export const useSaveSpecialization = (
   page_no: number,
   pageSize: number,
-  name: string,
+  name: string
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation(saveSpecialization, {
     onSuccess: () => {
       queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
       );
     },
   });
@@ -114,7 +114,7 @@ const deleteSpecialization = async (specializationInfo: {
   id: string | null;
 }) => {
   const response = await HttpClient.delete<NepMedsResponse>(
-    api.specialization + specializationInfo.id + "/",
+    api.specialization + specializationInfo.id + "/"
   );
   return response;
 };
@@ -122,14 +122,14 @@ const deleteSpecialization = async (specializationInfo: {
 export const useDeleteSpecialization = (
   page_no: number,
   pageSize: number,
-  name: string,
+  name: string
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSpecialization, {
     onSuccess: () => {
       queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
       );
     },
   });
@@ -143,7 +143,7 @@ const deleteBulkSpecialization = async (specializationInfo: {
     api.specialization,
     {
       data: payload,
-    },
+    }
   );
   return response;
 };
@@ -175,7 +175,7 @@ const updateSpecialization = async (specializationInfo: {
     : delete specializationInfoParam.image;
   const response = await HttpClient.patch<NepMedsResponse>(
     api.specialization + specializationInfo.id + "/",
-    objectToFormData(specializationInfoParam),
+    objectToFormData(specializationInfoParam)
   );
   return response;
 };
@@ -183,14 +183,14 @@ const updateSpecialization = async (specializationInfo: {
 export const useUpdateSpecialization = (
   page_no: number,
   pageSize: number,
-  name: string,
+  name: string
 ) => {
   const queryClient = useQueryClient();
 
   return useMutation(updateSpecialization, {
     onSuccess: () => {
       queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
+        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
       );
     },
   });

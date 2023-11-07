@@ -21,6 +21,6 @@ export const usePatientBasicProfile = (enabled: boolean) => {
   return useQuery([api.patient.basicProfile], getBasicProfile, {
     select: data => data.data.data,
     staleTime: Infinity,
-    enabled
+    enabled,
   });
 };
