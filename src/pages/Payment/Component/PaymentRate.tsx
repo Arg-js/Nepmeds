@@ -18,7 +18,6 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import { paymentRateColumn } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import Select from "@nepMeds/components/Form/Select";
 // import { useDebounce } from '@nepMeds/hooks/useDebounce';
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import PaymentAmountBox from "@nepMeds/components/Payment/PaymentRateBox";
@@ -27,8 +26,6 @@ import { useGetAmountList } from "@nepMeds/service/nepmeds-payment";
 import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
-import { FormProvider, useForm } from "react-hook-form";
-import { IoFunnelOutline } from "react-icons/io5";
 import useAmountForm from "../useAmountForm";
 
 const PaymentRate = () => {
@@ -38,12 +35,6 @@ const PaymentRate = () => {
   const amountList = data?.results;
   // const debouncedInputValue = useDebounce(searchFilter, 500);
 
-  const {
-    isOpen: isModalOpen,
-    onOpen: onModalOpen,
-    onClose: onModalClose,
-  } = useDisclosure();
-  const formMethods = useForm();
   const {
     formMethods: { formState, trigger, getValues, register, reset },
     handleSubmitAmount,
@@ -55,22 +46,6 @@ const PaymentRate = () => {
     pageIndex: 0,
     pageSize: 10,
   });
-  const [, setFilterValue] = useState<any>({});
-
-  const handleFilter = async (isReset: boolean) => {
-    if (!isReset) {
-      setFilterValue({
-        from_date: formMethods.getValues("fromDate"),
-        to_date: formMethods.getValues("toDate"),
-        specialization: formMethods.getValues("Specialization"),
-      });
-    } else {
-      setFilterValue({});
-      formMethods.reset({});
-    }
-
-    onModalClose();
-  };
 
   const handleFormSubmit = async () => {
     const isValid = await trigger();
@@ -109,71 +84,6 @@ const PaymentRate = () => {
   if (isLoading) return <CenterLoader />;
   return (
     <div>
-      {isModalOpen && (
-        <ModalComponent
-          isOpen={isModalOpen}
-          onClose={onModalClose}
-          size={"xl"}
-          heading={
-            <HStack>
-              <svgs.logo_small />
-              <Text>Filter</Text>
-            </HStack>
-          }
-          // TODO: Make FILTER component
-          footer={
-            <HStack w={"full"} justifyContent={"flex-end"}>
-              <Button
-                variant={"reset"}
-                w={"150px"}
-                onClick={() => handleFilter(true)}
-              >
-                Reset
-              </Button>
-              <Button
-                variant={"primaryOutline"}
-                w={"150px"}
-                onClick={() => handleFilter(true)}
-              >
-                Cancel
-              </Button>
-              <Button w={"150px"} onClick={() => handleFilter(false)}>
-                Done
-              </Button>
-            </HStack>
-          }
-        >
-          <VStack h={"auto"}>
-            <FormProvider {...formMethods}>
-              <Select
-                placeholder="select specialization"
-                label="Specialization"
-                name="Specialization"
-                required
-                register={formMethods.register}
-                options={[]}
-              />
-              <Box display={"flex"} width={"100%"}>
-                <FloatingLabelInput
-                  label="From"
-                  name="fromDate"
-                  register={formMethods.register}
-                  type="date"
-                />
-                <Box ml={1}>
-                  <FloatingLabelInput
-                    label="To"
-                    name="toDate"
-                    register={formMethods.register}
-                    type="date"
-                  />
-                </Box>
-              </Box>
-            </FormProvider>
-          </VStack>
-        </ModalComponent>
-      )}
-
       {isOpen && (
         <ModalComponent
           isOpen={isOpen}
@@ -188,25 +98,12 @@ const PaymentRate = () => {
           }
           footer={
             <HStack w={"full"} justifyContent={"space-around"}>
-              <Button
-                outlineColor={"#13ADE1"}
-                borderRadius={"12px"}
-                color={colors.primary}
-                bg={colors.white}
-                w={"150px"}
-                onClick={closeAmountModal}
-              >
+              <Button flex={1} variant={"reset"} onClick={closeAmountModal}>
                 Cancel
               </Button>
               <Button
-                borderRadius={"12px"}
-                bg={colors.primary}
-                color={colors.white}
-                w={"150px"}
+                flex={1}
                 type="submit"
-                mr={1}
-                variant={"solid"}
-                h={"45px"}
                 onClick={handleFormSubmit}
                 isLoading={loading}
               >
@@ -295,29 +192,22 @@ const PaymentRate = () => {
           <HStack justifyContent="space-between">
             <Text fontWeight="medium">Rate History</Text>
             <HStack>
-              <InputGroup w="190px" borderColor={colors.grey_dark}>
-                <InputLeftElement pointerEvents="none" h={8}>
-                  <SearchIcon color={colors.grey_dark} boxSize={4} />
+              <InputGroup borderColor={colors.grey_dark}>
+                <InputLeftElement pointerEvents="none" h={10}>
+                  <SearchIcon color={colors.grey_dark} boxSize={6} />
                 </InputLeftElement>
                 <Input
-                  w={40}
-                  h={8}
+                  w={60}
+                  h={10}
                   onChange={({ target: { value } }) => {
                     setSearchFilter(value);
                     setPagination({ pageIndex: 0, pageSize });
                   }}
+                  // TODO: MAKE this left and add gap
+                  textAlign={"center"}
+                  placeholder={"Search"}
                 />
               </InputGroup>
-              <Button
-                color={colors.grey_dark}
-                bg={colors.white}
-                outlineColor={colors.grey_dark}
-                h={8}
-                onClick={onModalOpen}
-              >
-                <IoFunnelOutline pointerEvents={"none"} />
-                &nbsp; Filter
-              </Button>
             </HStack>
           </HStack>
 

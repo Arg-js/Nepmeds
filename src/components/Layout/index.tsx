@@ -36,7 +36,7 @@ const LayoutComponent = () => {
         profileData?.data?.doctor?.status !== STATUSTYPE.approved.toString()
       ) {
         navigate(NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED, {
-          replace: true
+          replace: true,
         });
       }
     }
@@ -51,7 +51,7 @@ const LayoutComponent = () => {
           display: "block",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "25%"
+          marginTop: "25%",
         }}
       />
     );
@@ -75,6 +75,7 @@ const LayoutComponent = () => {
             : "1fr"
         }
         gap="1"
+        height={"100dvh"}
       >
         {(profileData?.data?.is_superuser ||
           (profileData?.data?.is_doctor &&

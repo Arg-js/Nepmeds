@@ -45,8 +45,6 @@ const primaryOutline = defineStyle({
   ...baseStyles,
   color: colors.primary,
   bg: "transparent",
-  // TODO
-  // borderRadius: "3px",
   border: `1px solid ${colors.primary}`,
   _hover: {
     bg: colors.sky_blue,
@@ -58,6 +56,7 @@ const primaryOutlineFilled = defineStyle({
   bg: colors.blue_10,
   _hover: primaryHoverState,
 });
+
 const outline = defineStyle({
   ...baseStyles,
   fontFamily: "Poppins",
@@ -91,6 +90,14 @@ const round = defineStyle({
   _hover: primaryHoverState,
 });
 
+const filterButton = defineStyle({
+  ...baseStyles,
+  ...outline,
+  borderRadius: "8px",
+  border: `2px solid ${colors.grey_dark}`,
+  fontSize: "md",
+});
+
 export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
   variants: {
     primary,
@@ -100,6 +107,7 @@ export const ButtonTheme: ComponentStyleConfig = defineStyleConfig({
     outline,
     reset,
     round,
+    filterButton,
   },
   sizes: {
     sm: {
