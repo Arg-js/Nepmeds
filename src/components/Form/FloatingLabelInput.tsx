@@ -6,7 +6,7 @@ import {
   FormLabel,
   InputLeftElement,
   InputProps,
-  InputRightElement,
+  InputRightElement
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { RegisterOptions, UseFormRegister } from "react-hook-form";
@@ -59,7 +59,6 @@ const FloatingLabelInput = ({
         {...register(name, rules)}
         {...rest}
         placeholder=""
-        mt={1}
         h={14}
         pt={4}
         pr={8}
@@ -68,7 +67,7 @@ const FloatingLabelInput = ({
         style={{
           background: colors.forminput,
           border: "none",
-          color: colors.black_50,
+          color: colors.black_50
         }}
       />
 
