@@ -6,6 +6,7 @@ const baseStyles = {
   fontWeight: "500",
   color: colors.black_60,
   fontFamily: "Inter",
+  mb: 3,
 };
 
 const tableHeading = {

@@ -13,7 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { allPaymentColumn } from "@nepMeds/components/DataTable/Columns";
+import { paymentColumn } from "@nepMeds/components/DataTable/Columns";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import Select from "@nepMeds/components/Form/Select";
@@ -26,14 +26,10 @@ import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router";
-import { ISpecializationList } from "@nepMeds/components/Table/Payment/PaymentList";
 import usePaymentStatusForm from "./usePaymentStatusForm";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 
-const AllPayment = ({
-  specializationList,
-}: {
-  specializationList: ISpecializationList[];
-}) => {
+const AllPayment = () => {
   const formMethods = useForm();
   const [filterValue, setFilterValue] = useState<any>({});
   const [searchFilter, setSearchFilter] = useState("");
@@ -46,6 +42,7 @@ const AllPayment = ({
     id: "",
     name: "",
   });
+
   const {
     formMethods: statusFormMethods,
     ApprovePayment,
@@ -65,6 +62,7 @@ const AllPayment = ({
   } = useDisclosure();
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
+  // React Query
   const { data, isFetching } = useGetPaymentList({
     ...filterValue,
     page_no: pageIndex + 1,
@@ -72,6 +70,13 @@ const AllPayment = ({
     name: debouncedInputValue,
     enabled: true,
   });
+  const { data: specialization = [] } = useSpecializationRegisterData();
+
+  // React query ends
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
 
   const {
     isOpen: isModalOpen,
@@ -101,7 +106,7 @@ const AllPayment = ({
 
   const onActionClick = async (
     isApproved: boolean,
-    doctorInfo: { id: string; name: string }
+    doctorInfo: { id: string; name: string },
   ) => {
     setDoctorInfo({ name: doctorInfo.name, id: doctorInfo.id });
     if (isApproved) {
@@ -202,8 +207,8 @@ const AllPayment = ({
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(value =>
                   RejectPayment({ ...value, id: doctorInfo.id }).then(() =>
-                    RejectPaymentModal()
-                  )
+                    RejectPaymentModal(),
+                  ),
                 )}
                 isLoading={rejectLoading}
               >
@@ -218,7 +223,7 @@ const AllPayment = ({
           <FormProvider {...statusFormMethods}>
             <form
               onSubmit={statusFormMethods.handleSubmit(value =>
-                RejectPayment({ ...value, id: doctorInfo.id })
+                RejectPayment({ ...value, id: doctorInfo.id }),
               )}
             >
               <RejectionForm />
@@ -253,8 +258,8 @@ const AllPayment = ({
                 flex={1}
                 onClick={statusFormMethods.handleSubmit(() =>
                   ApprovePayment(doctorInfo.id).then(() =>
-                    onCloseConfirmation()
-                  )
+                    onCloseConfirmation(),
+                  ),
                 )}
                 background={colors.primary}
                 color={colors.white}
@@ -315,7 +320,7 @@ const AllPayment = ({
       </HStack>
 
       <DataTable
-        columns={allPaymentColumn(onActionClick, navigate, {
+        columns={paymentColumn(onActionClick, navigate, {
           pageIndex,
           pageSize,
         })}
