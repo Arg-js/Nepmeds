@@ -31,10 +31,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
-import { ISpecializationList } from "@nepMeds/components/Table/Payment/PaymentList";
+import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 
 interface Props {
-  specializationList?: ISpecializationList[];
   showFilter?: boolean;
   type: number;
   heading: string;
@@ -50,12 +49,7 @@ const defaultValues = {
   fromDate: "",
 };
 
-const PendingDocList = ({
-  type,
-  heading,
-  specializationList,
-  showFilter = true,
-}: Props) => {
+const PendingDocList = ({ type, heading, showFilter = true }: Props) => {
   const [pageParams, setPageParams] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 10,
@@ -83,6 +77,13 @@ const PendingDocList = ({
 
   const debouncedInputValue = useDebounce(searchFilter, 500);
 
+  // React Query
+  const { data: specialization = [] } = useSpecializationRegisterData();
+
+  const specializationList = specialization.map(s => ({
+    label: s.name,
+    value: s.id,
+  }));
   const { data, isFetching } = useDoctorList({
     ...filterValue,
     page_no: pageParams.pageIndex + 1,
@@ -305,28 +306,31 @@ const PendingDocList = ({
 
         {showFilter && (
           <HStack>
-            <InputGroup w="190px" borderColor={colors.grey_dark}>
-              <InputLeftElement pointerEvents="none" h={8}>
-                <SearchIcon color={colors.grey_dark} boxSize={4} />
+            <InputGroup borderColor={colors.grey_dark}>
+              <InputLeftElement pointerEvents="none" h={10}>
+                <SearchIcon color={colors.grey_dark} boxSize={6} />
               </InputLeftElement>
               <Input
-                w={40}
-                h={8}
-                placeholder="Search"
-                onChange={({ target: { value } }) => setSearchFilter(value)}
+                w={60}
+                h={10}
+                onChange={({ target: { value } }) => {
+                  setSearchFilter(value);
+                  setPageParams({ pageIndex: 0, pageSize: 10 });
+                }}
+                // TODO: MAKE this left and add gap
+                textAlign={"center"}
+                placeholder={"Search"}
               />
             </InputGroup>
+
             <Button
-              color={colors.grey_dark}
-              bg={colors.white}
-              outlineColor={colors.grey_dark}
-              h={8}
-              onClick={() => {
-                onModalOpen();
-              }}
+              variant={"filterButton"}
+              onClick={onModalOpen}
+              leftIcon={
+                <IoFunnelOutline pointerEvents={"none"} fontSize={"20px"} />
+              }
             >
-              <IoFunnelOutline pointerEvents={"none"} />
-              &nbsp; Filter
+              Filter
             </Button>
           </HStack>
         )}
