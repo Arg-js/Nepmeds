@@ -8,7 +8,7 @@ import {
   MenuList,
   Stack,
   Switch,
-  Text
+  Text,
 } from "@chakra-ui/react";
 
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
@@ -21,7 +21,7 @@ import { Dispatch, SetStateAction } from "react";
 import { useSetDoctorOnline } from "@nepMeds/service/nepmeds-doctor-availability";
 
 const Navbar = ({
-  setSidebarCollapsed
+  setSidebarCollapsed,
 }: {
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
@@ -69,7 +69,7 @@ const Navbar = ({
             <Menu>
               <MenuButton
                 sx={{
-                  "&>span": { display: "flex", alignItems: "center", gap: 2 }
+                  "&>span": { display: "flex", alignItems: "center", gap: 2 },
                 }}
               >
                 <Text

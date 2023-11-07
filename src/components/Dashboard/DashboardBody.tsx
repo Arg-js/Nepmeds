@@ -12,7 +12,7 @@ import {
   TabPanel,
   TabPanels,
   Tabs,
-  Text,
+  Text
 } from "@chakra-ui/react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
@@ -38,23 +38,23 @@ const dashboardDatas: IDashboardData[] = [
   {
     title: "No. of Patient",
     no: "-",
-    path: images?.dashboard1,
+    path: images?.dashboard1
   },
   {
     title: "Appointments",
     no: "-",
-    path: images?.dashboard2,
+    path: images?.dashboard2
   },
   {
     title: "Pending",
     no: "-",
-    path: images?.dashboard3,
+    path: images?.dashboard3
   },
   {
     title: "Follow - Ups",
     no: "-",
-    path: images?.dashboard4,
-  },
+    path: images?.dashboard4
+  }
 ];
 
 const DashboardBody = () => {

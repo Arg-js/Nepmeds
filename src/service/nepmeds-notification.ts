@@ -36,7 +36,7 @@ const getAllNotification = async () => {
 
 const useGetAllNotification = () => {
   return useQuery([api.notification.getAll()], getAllNotification, {
-    select: data => data.data.results,
+    select: data => data.data.results
   });
 };
 

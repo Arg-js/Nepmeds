@@ -9,7 +9,7 @@ import {
   InputLeftElement,
   Text,
   VStack,
-  useDisclosure,
+  useDisclosure
 } from "@chakra-ui/react";
 import { ConfirmationImage, svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -33,7 +33,7 @@ import { StatusType } from "@nepMeds/pages/Doctor/Appointment/AppointmentTab";
 
 const PendingPayment = ({
   type,
-  heading,
+  heading
 }: {
   type: StatusType;
   heading: string;
@@ -42,38 +42,38 @@ const PendingPayment = ({
   const navigate = useNavigate();
   const [doctorInfo, setDoctorInfo] = useState<{ id: string; name: string }>({
     id: "",
-    name: "",
+    name: ""
   });
   const {
     formMethods: statusFormMethods,
     ApprovePayment,
     RejectPayment,
     approveLoading,
-    rejectLoading,
+    rejectLoading
   } = usePaymentStatusForm();
   const {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose,
+    onClose: onRejectModalClose
   } = useDisclosure();
   const {
     isOpen: confirmationModal,
     onOpen: onOpenConfirmation,
-    onClose: onCloseConfirmation,
+    onClose: onCloseConfirmation
   } = useDisclosure();
   const {
     isOpen: isModalOpen,
     onOpen: onModalOpen,
-    onClose: onModalClose,
+    onClose: onModalClose
   } = useDisclosure();
 
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 10
   });
   <b></b>;
   const [filterValue, setFilterValue] = useState<any>({
-    status: STATUSTYPE.rejected,
+    status: STATUSTYPE.rejected
   });
 
   const [searchFilter, setSearchFilter] = useState("");
@@ -85,7 +85,7 @@ const PendingPayment = ({
 
   const specializationList = specialization.map(s => ({
     label: s.name,
-    value: s.id,
+    value: s.id
   }));
 
   const { data, isFetching } = useGetPaymentList({
@@ -94,13 +94,13 @@ const PendingPayment = ({
     page_size: pageSize,
     name: debouncedInputValue,
     enabled: true,
-    payment_status: type || "",
+    payment_status: type || ""
   });
   //React Query Ends
   const defaultValues = {
     Specialization: "",
     toDate: "",
-    fromDate: "",
+    fromDate: ""
   };
 
   const handleFilter = async (isReset: boolean) => {
@@ -109,12 +109,12 @@ const PendingPayment = ({
         status: STATUSTYPE.rejected,
         from_date: formMethods.getValues("fromDate"),
         to_date: formMethods.getValues("toDate"),
-        specialization: formMethods.getValues("Specialization"),
+        specialization: formMethods.getValues("Specialization")
       });
       onModalClose();
     } else {
       setFilterValue({
-        status: STATUSTYPE.rejected,
+        status: STATUSTYPE.rejected
       });
       formMethods.reset(defaultValues);
     }
@@ -336,7 +336,7 @@ const PendingPayment = ({
       <DataTable
         columns={paymentColumn(onActionClick, navigate, {
           pageIndex,
-          pageSize,
+          pageSize
         })}
         isLoading={isFetching}
         data={data?.results ?? []}
@@ -344,7 +344,7 @@ const PendingPayment = ({
           manual: true,
           pageParams: { pageIndex, pageSize },
           pageCount: data?.page_count,
-          onChangePagination: setPagination,
+          onChangePagination: setPagination
         }}
       />
 

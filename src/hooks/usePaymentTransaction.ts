@@ -4,7 +4,7 @@ import {
   IEsewaToBackendRes,
   IKhaltiPost,
   useCreateEsewaPaymentMethods,
-  useCreateKhaltiPaymentMethods,
+  useCreateKhaltiPaymentMethods
 } from "@nepMeds/service/nepmeds-payment-transaction";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { api } from "@nepMeds/service/service-api";
@@ -25,12 +25,12 @@ function usePaymentTransaction() {
       return_url: baseURL + api.transaction.khalti + "/",
       website_url: FRONT_URL,
 
-      appointments,
+      appointments
     };
 
     try {
       const res = await khaltiPay.mutateAsync({
-        ...payload,
+        ...payload
       });
       if (res?.data?.data?.payment_url)
         window.location.href = `${res?.data?.data?.payment_url}`;
@@ -76,7 +76,7 @@ function usePaymentTransaction() {
     handleKhaltiClick,
     khaltiLoading: khaltiPay.isLoading,
     handleEsewaClick,
-    esewaLoading: esewaPay.isLoading,
+    esewaLoading: esewaPay.isLoading
   };
 }
 
