@@ -4,7 +4,7 @@ import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 import VideoCall from "@nepMeds/pages/VideoCall";
 import {
   useAuthentication,
-  useLoginTokenDetailQuery,
+  useLoginTokenDetailQuery
 } from "@nepMeds/service/nepmeds-auth";
 import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
@@ -13,38 +13,38 @@ import { NAVIGATION_ROUTES } from "./routes.constant";
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
 const AdminAppointment = lazy(
-  () => import("@nepMeds/pages/Admin/Appointments"),
+  () => import("@nepMeds/pages/Admin/Appointments")
 );
 
 const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(() => import("@nepMeds/components/Table/Doctor"));
 const PaymentList = lazy(
-  () => import("@nepMeds/components/Table/Payment/PaymentList"),
+  () => import("@nepMeds/components/Table/Payment/PaymentList")
 );
 const RateHistory = lazy(
-  () => import("@nepMeds/components/Table/Payment/RateHistory"),
+  () => import("@nepMeds/components/Table/Payment/RateHistory")
 );
 const MasterData = lazy(() => import("@nepMeds/pages/Admin/MasterData"));
 const ConfirmPassword = lazy(
-  () => import("@nepMeds/pages/ConfirmPassword/ConfirmPassword"),
+  () => import("@nepMeds/pages/ConfirmPassword/ConfirmPassword")
 );
 const Dashboard = lazy(() => import("@nepMeds/pages/Dashboard"));
 const UnApprovedDoctor = lazy(
-  () => import("@nepMeds/pages/Dashboard/UnApproved"),
+  () => import("@nepMeds/pages/Dashboard/UnApproved")
 );
 const DoctorProfile = lazy(
-  () => import("@nepMeds/pages/DoctorList/DoctorProfile"),
+  () => import("@nepMeds/pages/DoctorList/DoctorProfile")
 );
 const DocProfileAdmin = lazy(
-  () => import("@nepMeds/pages/DoctorProfile/DocProfileAdmin"),
+  () => import("@nepMeds/pages/DoctorProfile/DocProfileAdmin")
 );
 const ForgotPassword = lazy(
-  () => import("@nepMeds/pages/ForgotPassword/ForgotPassword"),
+  () => import("@nepMeds/pages/ForgotPassword/ForgotPassword")
 );
 const Login = lazy(() => import("@nepMeds/pages/Login/Login"));
 const Calendar = lazy(() => import("@nepMeds/pages/NewCalendar"));
 const DoctorConsultation = lazy(
-  () => import("@nepMeds/pages/Patient/DoctorConsultation"),
+  () => import("@nepMeds/pages/Patient/DoctorConsultation")
 );
 const DoctorList = lazy(() => import("@nepMeds/pages/Patient/DoctorList"));
 const PaymentDetails = lazy(() => import("@nepMeds/pages/Payment"));
@@ -52,10 +52,10 @@ const Register = lazy(() => import("@nepMeds/pages/Register"));
 const AcademicInfo = lazy(() => import("@nepMeds/pages/Register/AcademicInfo"));
 const BasicInfo = lazy(() => import("@nepMeds/pages/Register/BasicInfo"));
 const CertificationInfo = lazy(
-  () => import("@nepMeds/pages/Register/CertificationInfo"),
+  () => import("@nepMeds/pages/Register/CertificationInfo")
 );
 const ExperienceInfo = lazy(
-  () => import("@nepMeds/pages/Register/ExperienceInfo"),
+  () => import("@nepMeds/pages/Register/ExperienceInfo")
 );
 const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
 const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
@@ -68,55 +68,55 @@ const routes = [
     children: [
       {
         path: NAVIGATION_ROUTES.DASHBOARD,
-        element: <Dashboard />,
+        element: <Dashboard />
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,
-        element: <Appointment />,
+        element: <Appointment />
       },
       {
         path: NAVIGATION_ROUTES.FOLLOWUP,
-        element: <>Followup</>,
+        element: <>Followup</>
       },
       {
         path: NAVIGATION_ROUTES.PATIENT_HISTORY,
-        element: <>patient history</>,
+        element: <>patient history</>
       },
       {
         path: NAVIGATION_ROUTES.CALENDER,
-        element: <Calendar />,
+        element: <Calendar />
       },
 
       {
         path: NAVIGATION_ROUTES.PAYMENT,
-        element: <PaymentDetails />,
+        element: <PaymentDetails />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE,
-        element: <DoctorProfile />,
+        element: <DoctorProfile />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_PROFILE_UNAPPROVED,
-        element: <UnApprovedDoctor />,
+        element: <UnApprovedDoctor />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
-        element: <DoctorConsultation />,
+        element: <DoctorConsultation />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
-        element: <DoctorList />,
-      },
-    ],
+        element: <DoctorList />
+      }
+    ]
   },
   {
     path: NAVIGATION_ROUTES.VIDEOCALL,
-    element: <VideoCall />,
+    element: <VideoCall />
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
-  },
+    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />
+  }
 ];
 const paientRoutes = [
   {
@@ -124,28 +124,26 @@ const paientRoutes = [
     children: [
       {
         path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
-        element: <DoctorConsultation />,
+        element: <DoctorConsultation />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
-        element: <DoctorList />,
+        element: <DoctorList />
       },
       {
         path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
-        element: <DoctorDetails />,
+        element: <DoctorDetails />
       },
       {
         path: NAVIGATION_ROUTES.VIDEOCALL,
-        element: <VideoCall />,
+        element: <VideoCall />
       },
       {
         path: NAVIGATION_ROUTES.NO_MATCH,
-        element: (
-          <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />
-        ),
-      },
-    ],
-  },
+        element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />
+      }
+    ]
+  }
 ];
 const adminRoutes = [
   {
@@ -154,113 +152,113 @@ const adminRoutes = [
     children: [
       {
         path: NAVIGATION_ROUTES.DASHBOARD,
-        element: <Dashboard />,
+        element: <Dashboard />
       },
       {
         path: NAVIGATION_ROUTES.MASTER_DATA,
-        element: <MasterData />,
+        element: <MasterData />
       },
       {
         path: NAVIGATION_ROUTES.DOCTOR_LIST,
         children: [
           {
             path: NAVIGATION_ROUTES.DOCTOR_LIST_REGISTRATION,
-            element: <DoctorsList />,
+            element: <DoctorsList />
           },
           {
             path: NAVIGATION_ROUTES.DOCTOR_LIST_PAYMENT,
-            element: <PaymentList />,
-          },
-        ],
+            element: <PaymentList />
+          }
+        ]
       },
       {
         path: NAVIGATION_ROUTES.DOC_PROFILE,
-        element: <DocProfileAdmin />,
+        element: <DocProfileAdmin />
       },
 
       {
         path: NAVIGATION_ROUTES.PATIENTS,
-        element: <Patients />,
+        element: <Patients />
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,
-        element: <AdminAppointment />,
+        element: <AdminAppointment />
       },
       {
         path: NAVIGATION_ROUTES.USER_ROLE,
-        element: <UserRole />,
+        element: <UserRole />
       },
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
-        element: <>Consult Request</>,
+        element: <>Consult Request</>
       },
       {
         path: NAVIGATION_ROUTES.AMOUNT_HISTORY,
-        element: <RateHistory />,
+        element: <RateHistory />
       },
       {
         path: NAVIGATION_ROUTES.FAQ,
-        element: <Faq />,
-      },
-    ],
+        element: <Faq />
+      }
+    ]
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />,
-  },
+    element: <Navigate to={NAVIGATION_ROUTES.DASHBOARD} replace />
+  }
 ];
 const openRoutes = [
   {
     path: NAVIGATION_ROUTES.LOGIN,
-    element: <DoctorConsultation />,
+    element: <DoctorConsultation />
   },
   {
     path: NAVIGATION_ROUTES.DOCTOR_LOGIN,
-    element: <Login />,
+    element: <Login />
   },
   {
     path: NAVIGATION_ROUTES.SIGNUP,
-    element: <SignUp />,
+    element: <SignUp />
   },
   {
     path: NAVIGATION_ROUTES.REGISTER,
-    element: <Register />,
+    element: <Register />
   },
   {
     path: NAVIGATION_ROUTES.REGISTRATION.BASIC_INFO,
-    element: <BasicInfo />,
+    element: <BasicInfo />
   },
   {
     path: NAVIGATION_ROUTES.REGISTRATION.PRIMARY_INFO,
-    element: <PrimaryInfo />,
+    element: <PrimaryInfo />
   },
   {
     path: NAVIGATION_ROUTES.REGISTRATION.ACADEMIC_INFO,
-    element: <AcademicInfo />,
+    element: <AcademicInfo />
   },
   {
     path: NAVIGATION_ROUTES.REGISTRATION.CERTIFICATION_INFO,
-    element: <CertificationInfo />,
+    element: <CertificationInfo />
   },
   {
     path: NAVIGATION_ROUTES.REGISTRATION.EXPERIENCE_INFO,
-    element: <ExperienceInfo />,
+    element: <ExperienceInfo />
   },
   {
     path: NAVIGATION_ROUTES.LOGIN,
-    element: <Login />,
+    element: <Login />
   },
   {
     path: NAVIGATION_ROUTES.SIGNUP,
-    element: <SignUp />,
+    element: <SignUp />
   },
   {
     path: NAVIGATION_ROUTES.FORGOTPASSWORD,
-    element: <ForgotPassword />,
+    element: <ForgotPassword />
   },
   {
     path: NAVIGATION_ROUTES.CONFIRMPASSWORD,
-    element: <ConfirmPassword />,
+    element: <ConfirmPassword />
   },
 
   // {
@@ -269,20 +267,20 @@ const openRoutes = [
   // },
   {
     path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
-    element: <DoctorConsultation />,
+    element: <DoctorConsultation />
   },
   {
     path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
-    element: <DoctorList />,
+    element: <DoctorList />
   },
   {
     path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
-    element: <DoctorDetails />,
+    element: <DoctorDetails />
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />,
-  },
+    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />
+  }
 ];
 
 const AppRoutes = () => {
@@ -295,7 +293,7 @@ const AppRoutes = () => {
         : userInfo?.is_patient
         ? paientRoutes
         : routes
-      : openRoutes,
+      : openRoutes
   );
 
   if (isLoading) {

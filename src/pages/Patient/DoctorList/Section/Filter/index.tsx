@@ -243,8 +243,6 @@ const DoctorListFilter: React.FC<{
                 To :
               </Text>
             </GridItem>
-
-            {/* <Text>-</Text> */}
             <GridItem>
               <Input
                 type={"date"}
@@ -269,6 +267,18 @@ const DoctorListFilter: React.FC<{
           {/*  */}
           <Accordion defaultIndex={[0, 1, 2]} allowMultiple>
             {accordionData.map(item => {
+              const count = (
+                reference as unknown as Record<
+                  string,
+                  MutableRefObject<HTMLInputElement[]>
+                >
+              )[item.ref]?.current.reduce((count, item) => {
+                if (item.checked === true) {
+                  return count + 1;
+                }
+                return count;
+              }, 0);
+
               return (
                 <AccordionItem border={"none"} key={item.name}>
                   <AccordionButton
@@ -279,16 +289,38 @@ const DoctorListFilter: React.FC<{
                       },
                     }}
                   >
-                    <Text
-                      fontWeight={600}
-                      fontSize={"md"}
-                      mb={3}
-                      flex="1"
-                      textAlign="left"
-                    >
-                      {item.name}
-                    </Text>
-                    <AccordionIcon />
+                    <Flex justifyContent={"space-between"} width={"100%"}>
+                      <Flex>
+                        <Text
+                          fontWeight={600}
+                          fontSize={"md"}
+                          mb={3}
+                          flex="1"
+                          textAlign="left"
+                        >
+                          {item.name}
+                        </Text>
+                        <Flex>
+                          {count > 0 && (
+                            <Text
+                              fontWeight={600}
+                              fontSize={"md"}
+                              mb={3}
+                              flex="1"
+                              textAlign="center"
+                              mx={4}
+                              bgColor={colors.primary}
+                              borderRadius={"100%"}
+                              width={"20px"}
+                            >
+                              {count}
+                            </Text>
+                          )}
+                        </Flex>
+                      </Flex>
+
+                      <AccordionIcon />
+                    </Flex>
                   </AccordionButton>
                   <AccordionPanel
                     maxH={"45dvh"}

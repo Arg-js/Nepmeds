@@ -14,7 +14,7 @@ const Wrapper = ({ children, title, subtitle }: IWrapper) => {
     >
       <Box px={16} py={23} bgColor={colors.white}>
         <Box borderBottom={`1px solid ${colors.grey_90}`} mb={6}>
-          <Text fontSize={"2xl"} color={colors.dark_1} fontWeight={100} mb={2}>
+          <Text fontSize={"2xl"} color={colors.grey_50} fontWeight={400} mb={2}>
             {title}
           </Text>
           <Text pb={6} color={colors.grey_50} fontWeight={400}>

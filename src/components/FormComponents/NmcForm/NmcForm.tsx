@@ -20,7 +20,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
     getValues,
     setValue,
     reset,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext<IRegisterFields>();
 
   //  state
@@ -37,8 +37,8 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
           nmc_number: data.nmc_number,
           nmc_issued_date: data.nmc_issued_date,
           nmc_expiry_date: data.nmc_expiry_date,
-          nmc_file: data.nmc_file as string
-        }
+          nmc_file: data.nmc_file as string,
+        },
       });
     }
   }, [data]);
@@ -69,7 +69,8 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
       <Box position="relative" m={2}>
         <GridItem colSpan={4}>
           <Text fontWeight={400} mb={"12px"} fontSize={"sm"}>
-            Upload Certificate
+            Upload Certificate{" "}
+            <span style={{ color: colors.error }}>&nbsp;*</span>
           </Text>
         </GridItem>
         <GridItem colSpan={2}>
@@ -85,7 +86,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
               checkPictureSize(watch("nmc.nmc_file")?.[0] as File)
             }
             rules={{
-              required: "Cetficiate is required"
+              required: "Cetficiate is required",
             }}
             setValue={setValue}
           />
@@ -103,8 +104,8 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
 
               minLength: {
                 value: 5,
-                message: "NMC No. should be 5 digits."
-              }
+                message: "NMC No. should be 5 digits.",
+              },
             }}
             error={errors.nmc?.nmc_number?.message?.toString()}
           />
@@ -117,10 +118,10 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             _hover={{ cursor: "pointer" }}
             style={{
               background: colors.forminput,
-              border: "none"
+              border: "none",
             }}
             rules={{
-              required: "Date of Certificate Issue is required."
+              required: "Date of Certificate Issue is required.",
             }}
             error={errors.nmc?.nmc_issued_date?.message}
           />
@@ -133,10 +134,10 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             _hover={{ cursor: "pointer" }}
             style={{
               background: colors.forminput,
-              border: "none"
+              border: "none",
             }}
             rules={{
-              required: "Expire Date is required."
+              required: "Expire Date is required.",
             }}
             error={errors.nmc?.nmc_expiry_date?.message}
           />

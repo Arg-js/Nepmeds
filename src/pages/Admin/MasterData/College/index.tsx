@@ -12,20 +12,20 @@ import {
   useDeleteCollege,
   useGetAllCollegeDetails,
   useGetCollegeById,
-  useUpdateCollege
+  useUpdateCollege,
 } from "@nepMeds/service/nepmeds-college";
 import { useState, useEffect } from "react";
 import { toastFail } from "@nepMeds/components/Toast";
 import SkeletonControl from "@nepMeds/components/Loader";
 const defaultValues = { name: "" };
 const schema = Yup.object().shape({
-  name: Yup.string().required("This field is required")
+  name: Yup.string().required("This field is required"),
 });
 
 const CollegeTab = ({
   onCloseModal,
   isOpenModal,
-  onOpenCollegeModal
+  onOpenCollegeModal,
 }: {
   onCloseModal: () => void;
   isOpenModal: boolean;
@@ -38,25 +38,25 @@ const CollegeTab = ({
     register,
     formState: { errors },
     reset,
-    handleSubmit
+    handleSubmit,
   } = formMethods;
 
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
-    onOpen: onOpenDeleteModal
+    onOpen: onOpenDeleteModal,
   } = useDisclosure();
 
   const [paginationParams, setPaginationParams] = useState({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
   });
 
   // React Queries
   const { data: tableData, isFetching: isFetchingCollegeDetails } =
     useGetAllCollegeDetails({
       page: paginationParams.pageIndex + 1,
-      page_size: paginationParams.pageSize
+      page_size: paginationParams.pageSize,
     });
 
   const { mutateAsync: createCollege, isLoading } = useCreateCollege();
@@ -90,7 +90,7 @@ const CollegeTab = ({
   useEffect(() => {
     if (isEdit && collegeById) {
       reset({
-        name: collegeById?.name
+        name: collegeById?.name,
       });
     }
   }, [id, collegeById]);
@@ -103,14 +103,14 @@ const CollegeTab = ({
           onOpenDeleteModal,
           setId,
           setIsEdit,
-          onOpenCollegeModal
+          onOpenCollegeModal,
         })}
         isLoading={isFetchingCollegeDetails}
         pagination={{
           manual: true,
           pageParams: paginationParams,
           pageCount: tableData?.page_count,
-          onChangePagination: setPaginationParams
+          onChangePagination: setPaginationParams,
         }}
       />
 
