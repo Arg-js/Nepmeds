@@ -46,12 +46,12 @@ export const api = {
   municipality: "/core/municipalities/",
   college_list: {
     get: "/core/college/",
-    post: "/core/college/"
+    post: "/core/college/",
   },
   detail_address: "/core/detail-address/",
 
   hospital_lists: {
-    get: "/doctor-consult/list-hospital/"
+    get: "/doctor-consult/list-hospital/",
   },
 
   hospital_list: {
@@ -59,7 +59,7 @@ export const api = {
     post: "/core/hospital/",
     getById: "/core/hospital/:id/",
     patch: "/core/hospital/:id/",
-    delete: "/core/hospital/:id/"
+    delete: "/core/hospital/:id/",
   },
 
   doctor_availability: "/doctor-consult/doctor-availability/",
@@ -70,7 +70,7 @@ export const api = {
     fetchById: "/core/specialist-rate/{id}",
     post: "/core/specialist-rate",
     patch: "/core/specialist-rate/{id}",
-    delete: "/core/specialist-rate/{id}"
+    delete: "/core/specialist-rate/{id}",
   },
   doctorList: "/doctor-consult/doctor-list/",
 
@@ -92,7 +92,7 @@ export const api = {
   getAmountHistory: "/dashboard/doctor-rate-history/:id/",
 
   adminAppointment: {
-    appointment: "/dashboard/appointment-history/"
+    appointment: "/dashboard/appointment-history/",
   },
   appointmentDetail: "/dashboard/appointment-detail/:id",
   doctorUserRole: "/dashboard/doctor-management/",
@@ -103,26 +103,26 @@ export const api = {
     doctorStatus: "/dashboard/doctor-management/:id/",
     patientStatus: "/dashboard/patient-status-update/:id/",
     adminStatus: "/dashboard/admin/:id/",
-    changeAdminPassword: "/dashboard/admin-change-password/:id/"
+    changeAdminPassword: "/dashboard/admin-change-password/:id/",
   },
   doctor: {
     appointments: {
       get: "/doctor-consult/new-appointment-request/",
       patch: "/doctor-consult/new-appointment-request/:id/",
-      getById: "/doctor-consult/new-appointment-request/:id/"
-    }
+      getById: "/doctor-consult/new-appointment-request/:id/",
+    },
   },
   refresh_token: {
-    post: "/user-management/refresh-token/"
+    post: "/user-management/refresh-token/",
   },
   admin: {
     patient: {
-      get: "/dashboard/patient-all-data/"
-    }
+      get: "/dashboard/patient-all-data/",
+    },
   },
   patient: {
     login: {
-      post: "/user-management/refresh-token/"
+      post: "/user-management/refresh-token/",
     },
     basicProfile: "/patient/patient-basic-info/",
 
@@ -130,20 +130,20 @@ export const api = {
       get: "/patient/filter-doctor-list/",
       getById: "/patient/doctor-details-appointment/:id/",
       un_paginated: {
-        get: "/patient/unpaginated-doctor-list/"
-      }
+        get: "/patient/unpaginated-doctor-list/",
+      },
     },
     appointment: {
-      post: "/patient/new-appointment/"
+      post: "/patient/new-appointment/",
     },
     doctor_availability: {
-      get: "/patient/doctor-booking-availabilities/:id/"
-    }
+      get: "/patient/doctor-booking-availabilities/:id/",
+    },
   },
 
   transaction: {
     khalti: "/transaction/khalti-initiate/",
-    esewa: "/transaction/esewa-initiate/"
+    esewa: "/transaction/esewa-initiate/",
   },
 
   faq: {
@@ -151,7 +151,15 @@ export const api = {
     post: "/dashboard/faq/",
     getById: "/dashboard/faq/:id/",
     patch: "/dashboard/faq/:id/",
-    delete: "/dashboard/faq/:id/"
+    delete: "/dashboard/faq/:id/",
+  },
+
+  college: {
+    post: "/core/college/",
+    patch: "/core/college/:id/",
+    get: "/core/college-list/",
+    delete: "/core/college/:id/",
+    getById: "/core/college/:id/",
   },
 
   videoCall: {
@@ -167,14 +175,14 @@ export const api = {
     },
     reject: function () {
       return this.base + "/video-call-reject/";
-    }
+    },
   },
   notification: {
     base: "/notification",
     sendCallNotification: function () {
       return this.base + "/send-call-notification/";
-    }
-  }
+    },
+  },
 };
 
 export interface NepMedsResponse<T = any> {

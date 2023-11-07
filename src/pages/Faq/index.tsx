@@ -8,7 +8,7 @@ import {
   InputGroup,
   InputLeftElement,
   Text,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -21,7 +21,7 @@ import {
   useCreateFaq,
   useDeleteFaq,
   useGetFaqList,
-  useUpdateFaq
+  useUpdateFaq,
 } from "@nepMeds/service/nepmeds-faq";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -39,12 +39,12 @@ const schema = yup.object().shape({
   answer: yup
     .string()
     .required("Answer is required")
-    .max(250, "Answer can only be 250 characters long")
+    .max(250, "Answer can only be 250 characters long"),
 });
 
 const defaultValues = {
   question: "",
-  answer: ""
+  answer: "",
 };
 
 const FAQ = () => {
@@ -57,18 +57,18 @@ const FAQ = () => {
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
-    onOpen: onOpenDeleteModal
+    onOpen: onOpenDeleteModal,
   } = useDisclosure();
 
   const formMethods = useForm({
     defaultValues,
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
   const {
     register,
     reset,
     formState: { errors, isSubmitting },
-    handleSubmit
+    handleSubmit,
   } = formMethods;
 
   const debouncedInputValue = useDebounce(searchValue, 500);
@@ -78,7 +78,7 @@ const FAQ = () => {
   const { mutateAsync: updateFaq } = useUpdateFaq();
   const { data: tableData, isFetching } = useGetFaqList({
     ...pagination,
-    search: debouncedInputValue
+    search: debouncedInputValue,
   });
   const { mutateAsync: deleteFaq, isLoading: isDeleting } = useDeleteFaq();
   // React Query Ends
@@ -111,7 +111,7 @@ const FAQ = () => {
       // TODO: api development in progress
       reset({
         question: "question",
-        answer: "answer"
+        answer: "answer",
       });
     }
   }, [isEdit, tableData]);
@@ -162,7 +162,7 @@ const FAQ = () => {
             onOpenDeleteModal,
             setId,
             onOpen,
-            setIsEdit
+            setIsEdit,
           })}
           data={tableData?.results ?? []}
           isLoading={isFetching}
@@ -170,13 +170,13 @@ const FAQ = () => {
             manual: true,
             pageParams: {
               pageIndex: pagination.pageIndex,
-              pageSize: pagination.pageSize
+              pageSize: pagination.pageSize,
             },
             pageCount: tableData?.page_count,
-            onChangePagination: setPagination
+            onChangePagination: setPagination,
           }}
         />
-
+        {/* Add or Edit Faq */}
         <ModalComponent
           isOpen={isOpen}
           onClose={onModalClose}

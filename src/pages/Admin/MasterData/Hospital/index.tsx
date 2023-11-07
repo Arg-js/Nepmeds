@@ -6,7 +6,7 @@ import {
   useDeleteHospital,
   useGetAllHospitalDetails,
   useGetHospitalById,
-  useUpdateHospital
+  useUpdateHospital,
 } from "@nepMeds/service/nepmeds-hospital-list";
 import { svgs } from "@nepMeds/assets/svgs";
 import { FormProvider, useForm } from "react-hook-form";
@@ -20,19 +20,19 @@ import { hospitalColumns } from "@nepMeds/components/DataTable/Columns/Admin/Mas
 const defaultValues = {
   name: "",
   district: "",
-  province: ""
+  province: "",
 };
 
 const schema = yup.object().shape({
   name: yup.string().required("This field is required"),
   district: yup.string().required("This field is required"),
-  province: yup.string().required("This field is required")
+  province: yup.string().required("This field is required"),
 });
 
 const HospitalTab = ({
   onCloseHospitalModal,
   isOpenHospitalModal,
-  onOpenHospitalModal
+  onOpenHospitalModal,
 }: {
   onCloseHospitalModal: () => void;
   isOpenHospitalModal: boolean;
@@ -51,7 +51,7 @@ const HospitalTab = ({
 
   const [paginationParams, setPaginationParams] = useState({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
   });
   const [id, setId] = useState("");
   const [isEdit, setIsEdit] = useState(false);
@@ -59,13 +59,13 @@ const HospitalTab = ({
   const {
     onOpen: onDeleteModalOpen,
     onClose: onDeleteModalClose,
-    isOpen: isDeleteModalOpen
+    isOpen: isDeleteModalOpen,
   } = useDisclosure();
 
   // React Query
   const { data: tableData, isFetching } = useGetAllHospitalDetails({
     page: paginationParams.pageIndex + 1,
-    page_size: paginationParams.pageSize
+    page_size: paginationParams.pageSize,
   });
   const { mutateAsync: createHospital, isLoading } = useCreateHospital();
   const { mutateAsync: updateHospital, isLoading: isUpdating } =
@@ -98,7 +98,7 @@ const HospitalTab = ({
       reset({
         name: hospital?.name,
         province: hospital?.province,
-        district: hospital?.district
+        district: hospital?.district,
       });
     }
   }, [id, hospital]);
@@ -120,11 +120,11 @@ const HospitalTab = ({
             <></>
           ) : (
             <HStack w={"full"} justifyContent={"flex-end"}>
-              <Button variant={"reset"} w={"150px"} onClick={onModalClose}>
+              <Button variant={"reset"} flex={1} onClick={onModalClose}>
                 Cancel
               </Button>
               <Button
-                w={"150px"}
+                flex={1}
                 isLoading={isLoading || isUpdating}
                 onClick={handleSubmit(onSubmitHandler)}
               >
@@ -158,11 +158,17 @@ const HospitalTab = ({
         onClose={onModalClose}
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
-            <Button variant={"reset"} w={"150px"} onClick={onModalClose}>
+            <Button
+              variant={"reset"}
+              flex={1}
+              // w={"150px"}
+              onClick={onModalClose}
+            >
               Cancel
             </Button>
             <Button
-              w={"150px"}
+              flex={1}
+              // w={"150px"}
               isLoading={isDeleting}
               onClick={async () => {
                 await deleteHospital(id);
@@ -187,14 +193,14 @@ const HospitalTab = ({
           setIsEdit,
           setId,
           onOpenHospitalModal,
-          onDeleteModalOpen
+          onDeleteModalOpen,
         })}
         isLoading={isFetching}
         pagination={{
           manual: true,
           pageParams: paginationParams,
           pageCount: tableData?.page_count,
-          onChangePagination: setPaginationParams
+          onChangePagination: setPaginationParams,
         }}
       />
     </>
