@@ -2,7 +2,7 @@ import { useQuery } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 
-interface IGetPatientBasicProfile {
+export interface IGetPatientBasicProfile {
   id: string;
   email: string;
   name: string;

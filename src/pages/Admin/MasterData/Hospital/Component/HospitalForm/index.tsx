@@ -5,12 +5,12 @@ import { useGetDetailAddress } from "@nepMeds/service/nepmeds-core";
 import { colors } from "@nepMeds/theme/colors";
 import {
   getDistrictsByProvince,
-  getProvinceOptions
+  getProvinceOptions,
 } from "@nepMeds/utils/Address";
 import { UseFormReturn } from "react-hook-form";
 
 const HospitalForm = ({
-  formMethods
+  formMethods,
 }: {
   formMethods: UseFormReturn<{
     name: string;
@@ -21,7 +21,7 @@ const HospitalForm = ({
   const {
     register,
     formState: { errors },
-    watch
+    watch,
   } = formMethods;
 
   // React Query
@@ -35,7 +35,7 @@ const HospitalForm = ({
   const districtOptions = detailAddress
     ? getDistrictsByProvince({
         provinceId: watch("province"),
-        detailAddress
+        detailAddress,
       })
     : [];
 

@@ -63,12 +63,7 @@ export const useTimerFromTime = (date?: Date) => {
 
   React.useEffect(() => {
     const interval = setInterval(() => {
-      setSeconds(
-        differenceInSeconds(
-          new Date(),
-          date ?? new Date("2023-10-11T113:03:00")
-        )
-      );
+      setSeconds(differenceInSeconds(new Date(), date ?? new Date()));
     }, 1000);
 
     return () => {

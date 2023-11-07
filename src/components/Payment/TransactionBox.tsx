@@ -48,14 +48,14 @@ const TransactionBox = (data: Props) => {
           purchase_order_id: data?.doctorInfo?.id?.toString(),
           purchase_order_name: data?.doctorInfo?.name,
         },
-        availabilities: idList,
+        appointments: idList,
       });
     } else if (type === PAYMENTMODE.ESEWA.toString()) {
       handleEsewaClick({
         amount:
           +data?.doctorInfo?.schedule_rate *
           data?.appointmentData?.availabilities.length,
-        availabilities: idList,
+        appointments: idList,
         purchase_order_id: data?.doctorInfo?.id?.toString(),
       });
     }
@@ -93,7 +93,7 @@ const TransactionBox = (data: Props) => {
               },
             });
 
-            const idList = res?.data?.data?.map(e => +e.availability?.id) ?? [];
+            const idList = res?.data?.data?.map(e => +e?.id) ?? [];
 
             handlePaymentType(paymentMethod, idList);
           } catch (error) {
