@@ -54,15 +54,20 @@ const NewCalendar: React.FC = () => {
   }
 
   return (
-    <Box m={6} bg={colors.blue_10} sx={{ borderTopLeftRadius: "12px" }}>
-      <Grid templateColumns={"repeat(5,14%)"} gap={0}>
-        <GridItem colSpan={2}>
+    <Box
+      m={6}
+      bg={colors.blue_10}
+      sx={{ borderTopLeftRadius: "12px" }}
+      height={"85dvh"}
+    >
+      <Grid templateColumns={"repeat(6,1fr)"} gap={2}>
+        <GridItem colSpan={1}>
           <Calendar
             onChange={value => handleCalendarChange(value)}
             value={date}
           />
         </GridItem>
-        <GridItem colStart={3} colEnd={8} bg={colors.white}>
+        <GridItem colSpan={5} bg={colors.white}>
           <CalendarDailyDetailView
             selectedDate={formatToDateMonth(formattedDate)}
             selectedDay={formatToDayOfWeek(formattedDate)}

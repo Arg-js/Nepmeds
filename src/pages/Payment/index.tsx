@@ -3,6 +3,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import PaymentRate from "./Component/PaymentRate";
 import PaymentSet from "./Component/PaymentSet";
+import PaymentHistory from "./Component/PaymentHistory";
 
 const PaymentDetails = () => {
   const [tabIndex, setTabIndex] = useState<number>(0);
@@ -24,7 +25,7 @@ const PaymentDetails = () => {
         <TabPanels>
           <TabPanel>{tabIndex === 0 && <PaymentRate />}</TabPanel>
           <TabPanel>{tabIndex === 1 && <PaymentSet />}</TabPanel>
-          <TabPanel>History</TabPanel>
+          <TabPanel>{tabIndex === 2 && <PaymentHistory />}</TabPanel>
         </TabPanels>
       </Tabs>
     </Box>

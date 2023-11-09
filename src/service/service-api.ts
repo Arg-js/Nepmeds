@@ -63,6 +63,8 @@ export const api = {
   },
 
   doctor_availability: "/doctor-consult/doctor-availability/",
+  set_doctor_availability: "/doctor-consult/set-online-offline/",
+
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
   rejectionTitle: "/core/rejected-title/",
   specialistRate: {
@@ -144,6 +146,7 @@ export const api = {
   transaction: {
     khalti: "/transaction/khalti-initiate/",
     esewa: "/transaction/esewa-initiate/",
+    payment_history: "/transaction/get-payment-history/",
   },
 
   faq: {
@@ -181,6 +184,9 @@ export const api = {
     base: "/notification",
     sendCallNotification: function () {
       return this.base + "/send-call-notification/";
+    },
+    getAll: function () {
+      return this.base + "/get-all-notification/";
     },
   },
 };

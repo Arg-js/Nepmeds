@@ -458,3 +458,26 @@ export const useGetDoctorDetailRateHistory = ({ id }: { id: string }) => {
     }
   );
 };
+
+export interface IPaymentHistory {
+  id: string;
+  created_at: string;
+  transation_amount: number;
+  patient_name: string;
+  payment_status: string;
+  consulting_type: number;
+  payment_type: string;
+}
+
+// Payment History for Doctor
+const getPaymentHistoryDoctor = async () => {
+  return await HttpClient.get<PaginatedResponse<IPaymentHistory>>(
+    api.transaction.payment_history
+  );
+};
+
+export const useGetPaymentHistoryDoctor = () => {
+  return useQuery([api.transaction.payment_history], getPaymentHistoryDoctor, {
+    select: data => data.data.data,
+  });
+};

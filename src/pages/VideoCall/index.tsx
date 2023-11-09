@@ -17,7 +17,7 @@ import {
   MdMic,
   MdMicOff,
   MdVideocam,
-  MdVideocamOff
+  MdVideocamOff,
 } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Video from "twilio-video";
@@ -30,7 +30,7 @@ const VideoCall = () => {
     getCallerToken,
     getReceiverToken,
     endCallForUsers,
-    sendCallNotification
+    sendCallNotification,
   } = useVideoCallToken();
   const { state }: any = useLocation();
 
@@ -50,7 +50,7 @@ const VideoCall = () => {
     isVideoEnabled,
     setIsAudioEnabled,
     setIsVideoEnabled,
-    videoRef
+    videoRef,
   } = useVideoCallState({ state });
   const navigate = useNavigate();
   const second = useTimerFromTime(new Date(call_start_time));
@@ -84,7 +84,7 @@ const VideoCall = () => {
       setParticipants([]);
       await endCallForUsers({
         call_state: CallState.COMPLETED,
-        room_name: room_name
+        room_name: room_name,
       });
       room.disconnect();
     } catch (error) {
@@ -96,7 +96,7 @@ const VideoCall = () => {
     try {
       if (state?.appointment_id) {
         const res = await getCallerToken({
-          ...state
+          ...state,
         });
 
         setRoomDetail(res.data);
@@ -104,7 +104,7 @@ const VideoCall = () => {
         const res = await getReceiverToken({
           receiver_user: state?.receiver_user,
           room_name: room_name,
-          call_state: CallState.ACCEPTED
+          call_state: CallState.ACCEPTED,
         });
         setRoomDetail(res.data);
       }
@@ -120,7 +120,7 @@ const VideoCall = () => {
       await sendCallNotification({
         caller_user: state?.caller_user,
         receiver_user: state?.receiver_user,
-        room_name: room_name
+        room_name: room_name,
       });
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -223,7 +223,8 @@ const VideoCall = () => {
             variant="outline"
             colorScheme="green"
           >
-            {formatSecondsToMinuteAndSeconds(second < 0 ? 0 : second)}
+            {formatSecondsToMinuteAndSeconds(second < 0 ? 0 : second) ||
+              "00:00"}
           </Badge>
         </Flex>
 

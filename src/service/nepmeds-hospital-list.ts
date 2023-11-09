@@ -66,7 +66,7 @@ const useGetAllHospitalDetails = ({ page, page_size }: IPaginationParams) => {
         const formattedError = serverErrorResponse(error);
         toastFail(formattedError);
       },
-    },
+    }
   );
 };
 
@@ -87,7 +87,7 @@ const useCreateHospital = () => {
 const updateHospital = (hospitalListReqBody: IHospitalUpdateReqBody) => {
   return HttpClient.patch(
     generatePath(api.hospital_list.patch, { id: hospitalListReqBody.id }),
-    hospitalListReqBody,
+    hospitalListReqBody
   );
 };
 const useUpdateHospital = () => {
@@ -118,7 +118,7 @@ const useDeleteHospital = () => {
 
 const getHospitalById = async ({ id }: { id: string }) => {
   const response = await HttpClient.get<NepMedsResponse<IHospital>>(
-    generatePath(api.hospital_list.getById, { id }),
+    generatePath(api.hospital_list.getById, { id })
   );
   return response;
 };
@@ -131,7 +131,7 @@ const useGetHospitalById = (id: string) => {
       select: ({ data }) => data?.data,
       enabled: !!id,
       onError: error => toastFail(serverErrorResponse(error)),
-    },
+    }
   );
 };
 

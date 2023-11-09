@@ -105,6 +105,7 @@ export interface IGetDoctorBasicProfile {
     specialization?: IResponseSpecialization[];
     status: string;
     set_payment_status?: boolean;
+    is_online: boolean;
   };
   first_name: string;
   last_name: string;
@@ -125,7 +126,7 @@ const getDoctorProfile = async () => {
 };
 export const useDoctorProfile = () => {
   return useQuery([api.doctor_profile], getDoctorProfile, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
 
@@ -138,7 +139,7 @@ const getBasicProfile = async () => {
 
 export const useDoctorBasicProfile = () => {
   return useQuery([api.basicProfile], getBasicProfile, {
-    select: data => data.data.data
+    select: data => data.data.data,
   });
 };
 
@@ -154,7 +155,7 @@ export const fetchDoctorProfileById = (DoctorId: string) => {
     getDoctorProfileById(DoctorId ?? ""),
     {
       enabled: !!DoctorId,
-      select: ({ data }) => data
+      select: ({ data }) => data,
     }
   );
 };

@@ -59,7 +59,6 @@ const FloatingLabelInput = ({
         {...register(name, rules)}
         {...rest}
         placeholder=""
-        mt={1}
         h={14}
         pt={4}
         pr={8}
