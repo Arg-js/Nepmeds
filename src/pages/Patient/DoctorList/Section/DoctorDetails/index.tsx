@@ -420,6 +420,7 @@ const DoctorDetails: React.FC<{
                         variant={"outline"}
                         size={"sm"}
                         selectControl={control}
+                        register={register}
                         options={symptomDataOptions ?? []}
                         style={{
                           background: colors.white,
