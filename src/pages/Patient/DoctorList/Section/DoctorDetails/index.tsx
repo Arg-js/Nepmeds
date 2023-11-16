@@ -419,8 +419,6 @@ const DoctorDetails: React.FC<{
                         placeholder={"Select health issue"}
                         variant={"outline"}
                         size={"sm"}
-                        error={errors?.symptoms?.message ?? ""}
-                        register={register}
                         selectControl={control}
                         options={symptomDataOptions ?? []}
                         style={{

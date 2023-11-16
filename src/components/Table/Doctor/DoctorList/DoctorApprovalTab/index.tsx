@@ -306,12 +306,11 @@ const PendingDocList = ({ type, heading, showFilter = true }: Props) => {
 
         {showFilter && (
           <HStack>
-            <InputGroup borderColor={colors.grey_dark}>
+            <InputGroup borderColor={colors.grey_dark} w={60}>
               <InputLeftElement pointerEvents="none" h={10}>
                 <SearchIcon color={colors.grey_dark} boxSize={6} />
               </InputLeftElement>
               <Input
-                w={60}
                 h={10}
                 onChange={({ target: { value } }) => {
                   setSearchFilter(value);

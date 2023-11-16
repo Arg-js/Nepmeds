@@ -156,6 +156,13 @@ export const api = {
     patch: "/dashboard/faq/:id/",
     delete: "/dashboard/faq/:id/",
   },
+  discount: {
+    get: "/dashboard/coupon/",
+    post: "/dashboard/coupon/",
+    getById: "/dashboard/coupon/:id/",
+    patch: "/dashboard/coupon/:id/",
+    delete: "/dashboard/coupon/:id/",
+  },
 
   college: {
     post: "/core/college/",

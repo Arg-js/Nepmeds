@@ -44,12 +44,7 @@ const getFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
     params: { page: pageIndex + 1, page_size: pageSize, search },
   });
 };
-
-export const useGetFaqList = ({
-  pageIndex,
-  pageSize,
-  search,
-}: IPaginationParams) => {
+const useGetFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
   return useQuery(
     [api.faq.get, pageIndex, pageSize, search],
     () => getFaqList({ pageIndex, pageSize, search }),
@@ -64,7 +59,7 @@ const deleteFaq = ({ id }: { id: string }) => {
   return HttpClient.delete(generatePath(api.faq.delete, { id }));
 };
 
-export const useDeleteFaq = () => {
+const useDeleteFaq = () => {
   const queryClient = useQueryClient();
   return useMutation(deleteFaq, {
     onSuccess: () => {
@@ -80,15 +75,17 @@ const updateFaq = (faqUpdateReqBody: IFaqUpdate) => {
     faqUpdateReqBody
   );
 };
-export const useUpdateFaq = () => {
+const useUpdateFaq = () => {
   const queryClient = useQueryClient();
   return useMutation(updateFaq, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.faq.get);
-      toastSuccess("FAQ udpated successfully!");
+      toastSuccess("FAQ updated successfully!");
     },
     onError: e => {
       toastFail(serverErrorResponse(e));
     },
   });
 };
+
+export { useUpdateFaq, useDeleteFaq, useGetFaqList };
