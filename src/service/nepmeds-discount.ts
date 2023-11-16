@@ -72,7 +72,6 @@ const useGetDiscount = ({ page, page_size, search }: IPaginationParams) => {
     () => getDiscount({ page, page_size, search }),
     {
       select: ({ data }) => data?.data,
-      onSuccess: () => toastSuccess("Discount fetched successfully"),
       onError: e => toastFail(serverErrorResponse(e)),
     }
   );
