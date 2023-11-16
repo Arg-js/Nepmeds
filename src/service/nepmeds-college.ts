@@ -9,6 +9,7 @@ export interface ICollegeList {
   id: number;
   name?: string;
 }
+
 export interface ICollegeResp {
   count: number;
   page_count: number;
@@ -86,7 +87,6 @@ const useUpdateCollege = () => {
 
 //Delete College
 const deleteCollege = ({ id }: { id: string }) => {
-  console.log(id, "id");
   return HttpClient.delete(generatePath(api.college.delete, { id }));
 };
 
