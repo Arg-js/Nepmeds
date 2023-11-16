@@ -8,7 +8,6 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { useEffect } from "react";
 import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
-import { useTranslation } from "react-i18next";
 import ReactSelect from "react-select";
 import { ISelectOption } from "@nepMeds/components/Form/Select";
 
@@ -28,6 +27,7 @@ interface IMultiSelect extends SelectProps {
   multiValue?: { label: string; value: string }[];
   register: UseFormRegister<any>;
   variant?: string;
+  isMulti?: boolean;
 }
 
 const MultiSelect = ({
@@ -45,10 +45,9 @@ const MultiSelect = ({
   multiValue,
   variant,
   error,
+  isMulti,
   ...rest
 }: IMultiSelect) => {
-  const { t } = useTranslation();
-
   useEffect(() => {
     if (name) {
       register(name, rules); // Register the field with the validation rules when the component mounts
@@ -85,10 +84,9 @@ const MultiSelect = ({
             )}
 
             <ReactSelect
-              isMulti
+              isMulti={isMulti ?? true}
               onChange={newValue => {
                 onChange(newValue);
-                // register(name, rules);
                 // Register the value after onChange
               }}
               menuPosition="fixed"
@@ -115,9 +113,9 @@ const MultiSelect = ({
             />
 
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
-            {fieldState.error?.message && (
+            {fieldState.error && (
               <FormErrorMessage fontSize={"xs"}>
-                {t(fieldState.error.message)}
+                {fieldState.error.message}
               </FormErrorMessage>
             )}
           </FormControl>
