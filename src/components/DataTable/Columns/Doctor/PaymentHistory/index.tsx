@@ -57,7 +57,7 @@ export const paymentHistoryColumn = ({
       {
         header: "Actions",
         cell: () => {
-          return <TableActions onView={() => console.log("view")} />;
+          return <TableActions onView={() => console.error("view")} />;
         }
       }
     ],

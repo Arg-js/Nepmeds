@@ -189,7 +189,6 @@ const PatientDetail = ({
                   placeholder={"Select health issue"}
                   variant={"outline"}
                   size={"sm"}
-                  error={formProps.formState.errors?.symptoms?.message ?? ""}
                   register={formProps.register}
                   selectControl={formProps.control}
                   options={symptomDataOption}

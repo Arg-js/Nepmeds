@@ -127,6 +127,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "FAQ",
     link: "/faq"
+  },
+  {
+    // todo: CHANGE THE ICON
+    icon: Category,
+    set: "light",
+    text: "Discount",
+    link: "/discount"
   }
 ];
 
