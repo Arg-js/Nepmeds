@@ -12,5 +12,6 @@
   "useTabs": false,
   "singleQuote": false,
   "endOfLine": "auto",
-  "semi": true
+  "semi": true,
+  "trailingComma": "none"
 }

@@ -43,3 +43,8 @@ export enum NotificationType {
   ADMIN = 2,
   GENERAL = 3
 }
+
+export enum AmountType {
+  PERCENTAGE = "1",
+  AMOUNT = "2"
+}

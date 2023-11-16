@@ -60,6 +60,7 @@ const ExperienceInfo = lazy(
 const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
 const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
 const Faq = lazy(() => import("@nepMeds/pages/Faq"));
+const Discount = lazy(() => import("@nepMeds/pages/Admin/Discount"));
 
 const routes = [
   {
@@ -199,6 +200,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.FAQ,
         element: <Faq />
+      },
+      {
+        path: NAVIGATION_ROUTES.DISCOUNT,
+        element: <Discount />
       }
     ]
   },
