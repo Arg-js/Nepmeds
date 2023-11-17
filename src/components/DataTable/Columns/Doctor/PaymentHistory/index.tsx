@@ -9,7 +9,7 @@ import { CellProps } from "react-table";
 
 export const paymentHistoryColumn = ({
   paymentHistory,
-  pageParams,
+  pageParams
 }: {
   paymentHistory?: IPaymentHistory;
   pageParams: {
@@ -23,7 +23,7 @@ export const paymentHistoryColumn = ({
         header: "S.N",
         accessorFn: (_: any, index: number) => {
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        },
+        }
       },
       { header: "Patient Name", accessorKey: "patient_name" },
       {
@@ -34,12 +34,12 @@ export const paymentHistoryColumn = ({
               row.original?.consulting_type as keyof typeof ADMINAPPOINTMENT
             ].toString()
           );
-        },
+        }
       },
       {
         header: "Payment Type",
         cell: ({
-          row,
+          row
         }: CellProps<{
           payment_type: string;
         }>) => {
@@ -50,7 +50,7 @@ export const paymentHistoryColumn = ({
               w={"70px"}
             />
           );
-        },
+        }
       },
       { header: "Rate", accessorKey: "transation_amount" },
 
@@ -58,8 +58,8 @@ export const paymentHistoryColumn = ({
         header: "Actions",
         cell: () => {
           return <TableActions onView={() => console.error("view")} />;
-        },
-      },
+        }
+      }
     ],
     [paymentHistory]
   );
