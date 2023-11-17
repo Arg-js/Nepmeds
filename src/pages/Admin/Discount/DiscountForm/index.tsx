@@ -5,6 +5,7 @@ import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-do
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
 import { UseFormReturn } from "react-hook-form";
+import { IOptionItem } from "..";
 
 const discountTypeOptions = [
   { label: "Percentage", value: AmountType.PERCENTAGE },
@@ -12,14 +13,8 @@ const discountTypeOptions = [
 ];
 interface IDiscountForm {
   title: string;
-  specialization: {
-    label: string;
-    value: number;
-  }[];
-  doctor: {
-    label: string;
-    value: number;
-  }[];
+  specialization: IOptionItem[];
+  doctor: IOptionItem[];
   discount_type: {
     label: string;
     value: AmountType;

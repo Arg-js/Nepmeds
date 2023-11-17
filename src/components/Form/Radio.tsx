@@ -11,6 +11,7 @@ import {
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { RegisterOptions, UseFormRegister, FieldValues } from "react-hook-form";
+import { IOptionItem } from "./MultiSelect";
 
 const Radio = ({
   label,
@@ -62,7 +63,7 @@ const Radio = ({
 
 export interface IRadio<TFieldValues extends FieldValues = FieldValues>
   extends RadioProps {
-  options: { label: string; value: string }[];
+  options: IOptionItem[];
   label?: string;
   name: string;
   register: UseFormRegister<TFieldValues>;

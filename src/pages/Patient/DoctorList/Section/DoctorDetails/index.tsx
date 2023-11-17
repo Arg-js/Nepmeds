@@ -12,6 +12,7 @@ import {
   UploadImageIcon,
 } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
+import { IOptionItem } from "@nepMeds/components/Form/MultiSelect";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMore from "@nepMeds/components/ReadMore";
@@ -33,8 +34,6 @@ import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-
-type IOptionItem = { label: string; value: string };
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
