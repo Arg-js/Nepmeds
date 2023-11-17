@@ -36,6 +36,7 @@ export const defaultValues = {
   symptoms: [],
   description: "",
   old_report_file: null,
+  coupon: "",
 };
 
 interface PatientDetailProps {
@@ -259,6 +260,15 @@ const PatientDetail = ({
                     </HStack>
                   )}
                 </Flex>
+              </Box>
+              <Box mb={4}>
+                <FormControl
+                  control={"input"}
+                  name="coupon"
+                  label="Enter discount coupon code (if any)"
+                  placeholder={"Enter discount coupon code"}
+                  register={formProps.register}
+                />
               </Box>
               {/* TODO: align this design*/}
               <Button
