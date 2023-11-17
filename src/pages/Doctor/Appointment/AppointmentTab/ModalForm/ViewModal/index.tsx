@@ -56,6 +56,7 @@ const ViewModal: React.FC<{ patient: IGetAppointmentReqRes | undefined }> = ({
           Health Issues
         </Text>
         <Flex gap={2}>
+          {/* TODO: check if a variant of this tag can be made */}
           {patient?.symptoms?.map(({ name }) => (
             <Tag
               bg={colors.blue_10}

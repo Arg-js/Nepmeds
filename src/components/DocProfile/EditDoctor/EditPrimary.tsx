@@ -454,16 +454,7 @@ const EditPrimary = ({
                 : &nbsp;
                 {doctorProfileData &&
                   doctorProfileData?.specialization_names?.map(s => {
-                    return (
-                      <Tag
-                        key={s.id ?? s}
-                        color={colors.main}
-                        bg={colors.lightish_blue}
-                        mx={1}
-                      >
-                        {s.name ?? s}
-                      </Tag>
-                    );
+                    return <Tag key={s.id ?? s}>{s.name ?? s}</Tag>;
                   })}
               </Text>
             </Box>

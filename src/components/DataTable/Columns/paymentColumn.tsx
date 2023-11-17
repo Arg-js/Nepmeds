@@ -60,16 +60,7 @@ export const paymentColumn = (
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag
-              key={data.id}
-              color={colors.main}
-              bg={colors.lightish_blue}
-              m={"1px"}
-            >
-              {data.name}
-            </Tag>
-          )
+          data => <Tag key={data.id}>{data.name}</Tag>
         );
         return (
           <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
