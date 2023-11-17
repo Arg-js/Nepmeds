@@ -66,10 +66,11 @@ const DoctorDetails = () => {
   const schema = Yup.object({
     full_name: Yup.string().required("This field is required"),
     contact: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
-    age: Yup.number()
-      .max(115, "age must be at most 115 years")
-      .positive("age must be greater than zero")
-      .typeError("age must be a number"),
+    // TODO: need to make sure if this is required or not
+    // age: Yup.number()
+    //   .max(115, "age must be at most 115 years")
+    //   .positive("age must be greater than zero")
+    //   .typeError("age must be a number"),
     symptoms: Yup.array()
       .required("This field is required")
       .min(1, "This field is required"),
