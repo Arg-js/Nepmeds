@@ -2,7 +2,6 @@ import { Switch, Tag, Text } from "@chakra-ui/react";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { AmountType } from "@nepMeds/config/enum";
 import { IPaginationParams } from "@nepMeds/service/nepmeds-faq";
-import { colors } from "@nepMeds/theme/colors";
 import { CellContext } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
@@ -42,11 +41,7 @@ export const columns = ({
       return (
         <div>
           {doctorList.length ? (
-            doctorList.map(({ name }) => (
-              <Tag m={1} bg={colors.blue_10} key={name} color={colors.main}>
-                {name}
-              </Tag>
-            ))
+            doctorList.map(({ name }) => <Tag key={name}>{name}</Tag>)
           ) : (
             // TODO: make this dash appear in center
             <Text>---</Text>
@@ -66,12 +61,7 @@ export const columns = ({
       return (
         <div>
           {specializationList.length ? (
-            specializationList.map(({ name }) => (
-              // TODO: consult with UI/UX to finalize the tag design so that a theme can be added
-              <Tag m={1} bg={colors.blue_10} key={name} color={colors.main}>
-                {name}
-              </Tag>
-            ))
+            specializationList.map(({ name }) => <Tag key={name}>{name}</Tag>)
           ) : (
             <Text>---</Text>
           )}

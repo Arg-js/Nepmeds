@@ -3,6 +3,7 @@ import { ButtonTheme } from "./Button";
 import { InputTheme } from "./Input";
 import { colors } from "./colors";
 import { TextTheme } from "./Text";
+import { TagTheme } from "./Tag";
 
 const space = {
   px: "1px",
@@ -185,5 +186,6 @@ export const theme = extendTheme({
     },
     Button: ButtonTheme,
     Text: TextTheme,
+    Tag: TagTheme,
   },
 });
