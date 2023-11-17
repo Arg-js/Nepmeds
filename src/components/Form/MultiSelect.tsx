@@ -11,6 +11,8 @@ import { Controller, RegisterOptions, UseFormRegister } from "react-hook-form";
 import ReactSelect from "react-select";
 import { ISelectOption } from "@nepMeds/components/Form/Select";
 
+export type IOptionItem = { label: string; value: string };
+
 interface IMultiSelect extends SelectProps {
   placeholder?: string;
   options: ISelectOption[];
@@ -24,7 +26,7 @@ interface IMultiSelect extends SelectProps {
   selectControl?: any;
   style?: Record<string, string>;
   required?: boolean;
-  multiValue?: { label: string; value: string }[];
+  multiValue?: IOptionItem[];
   register: UseFormRegister<any>;
   variant?: string;
   isMulti?: boolean;

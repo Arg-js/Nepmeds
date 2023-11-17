@@ -21,7 +21,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import MultiSelect from "@nepMeds/components/Form/MultiSelect";
+import MultiSelect, { IOptionItem } from "@nepMeds/components/Form/MultiSelect";
 import SimpleImageUpload from "@nepMeds/components/SimpleImageUpload";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
@@ -45,7 +45,7 @@ const defaultValues = {
   id: null as number | null,
   name: "",
   image: "" as string | null,
-  symptom: [] as { label: string; value: string }[],
+  symptom: [] as IOptionItem[],
 };
 
 const schema = yup.object().shape({

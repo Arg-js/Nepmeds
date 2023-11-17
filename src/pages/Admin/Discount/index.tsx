@@ -32,11 +32,13 @@ import { IoAdd } from "react-icons/io5";
 import * as yup from "yup";
 import DiscountForm from "./DiscountForm";
 
+export type IOptionItem = { label: string; value: number };
+
 const defaultValues = {
   title: "",
   // TODO: check if this is the correct way
-  specialization: [] as { label: string; value: number }[],
-  doctor: [] as { label: string; value: number }[],
+  specialization: [] as IOptionItem[],
+  doctor: [] as IOptionItem[],
   discount_type: null as unknown as { label: string; value: AmountType },
   value: "",
   code: "",

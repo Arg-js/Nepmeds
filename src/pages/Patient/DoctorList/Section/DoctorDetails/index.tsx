@@ -9,20 +9,21 @@ import {
   BackArrowIcon,
   ImageCancelIcon,
   NoDataIcon,
-  UploadImageIcon
+  UploadImageIcon,
 } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
+import { IOptionItem } from "@nepMeds/components/Form/MultiSelect";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMore from "@nepMeds/components/ReadMore";
 import AvailabilitySection from "@nepMeds/pages/Patient/DoctorDetails/components/AvailabilitySection";
 import {
   IPatientAppointmentBasicDetails,
-  useCreatePatientAppointment
+  useCreatePatientAppointment,
 } from "@nepMeds/service/nepmeds-patient-appointment";
 import {
   IAvailability,
-  IDoctorListById
+  IDoctorListById,
 } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetSymptoms } from "@nepMeds/service/nepmeds-symptoms";
 import TokenService from "@nepMeds/service/service-token";
@@ -33,8 +34,6 @@ import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-
-type IOptionItem = { label: string; value: string };
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -54,7 +53,7 @@ const defaultValues = {
   // symptoms: [{ label: "", value: "" }],
   description: "",
   // status: "",
-  availabilityDate: new Date(Date.now()).toISOString().split("T")[0]
+  availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
 };
 
 const schema = Yup.object({
@@ -62,7 +61,7 @@ const schema = Yup.object({
   symptoms: Yup.array()
     .required("This field is required")
     .min(1, "This field is required"),
-  description: Yup.string().required("This field is required")
+  description: Yup.string().required("This field is required"),
 });
 
 const DoctorDetails: React.FC<{
@@ -87,7 +86,7 @@ const DoctorDetails: React.FC<{
   const symptomDataOptions =
     symptomData?.map(p => ({
       label: p.name,
-      value: p.id
+      value: p.id,
     })) || [];
   useEffect(() => {
     setIsAvailability("0");
@@ -101,7 +100,7 @@ const DoctorDetails: React.FC<{
     reset,
     control,
     trigger,
-    getValues
+    getValues,
   } = useForm({ defaultValues, resolver: yupResolver(schema) });
 
   const oldReportFileWatch = watch("old_report_file");
@@ -123,8 +122,8 @@ const DoctorDetails: React.FC<{
           doctor: doctorInfo?.id as number,
           total_amount_paid:
             (doctorInfo?.schedule_rate ? +doctorInfo?.schedule_rate : 0) *
-            selectedAvailability.length
-        }
+            selectedAvailability.length,
+        },
       });
       if (response.status === HttpStatusCode.Created) {
         setSelectedAvailability([]);
@@ -160,7 +159,7 @@ const DoctorDetails: React.FC<{
                 style={{
                   px: { base: "0", md: "2", xl: "4" },
                   minHeight: "647px",
-                  borderTopRadius: 3
+                  borderTopRadius: 3,
                 }}
               >
                 <>
@@ -262,7 +261,7 @@ const DoctorDetails: React.FC<{
                         style={{
                           minHeight: "35px",
                           width: "180px",
-                          borderRadius: "9px"
+                          borderRadius: "9px",
                         }}
                         // Restricts selection of past date in Datepicker
                         min={today}
@@ -320,7 +319,7 @@ const DoctorDetails: React.FC<{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
                   height: "auto",
-                  borderTopRadius: 3
+                  borderTopRadius: 3,
                 }}
               >
                 <>
@@ -375,7 +374,7 @@ const DoctorDetails: React.FC<{
                             >
                               {dateFormatter({
                                 date: bookedDate?.date,
-                                time: bookedDate?.from_time
+                                time: bookedDate?.from_time,
                               })}
                             </Text>
                           ))}
@@ -396,7 +395,7 @@ const DoctorDetails: React.FC<{
                         register={register}
                         variant={"outline"}
                         style={{
-                          minHeight: "35px"
+                          minHeight: "35px",
                         }}
                         required
                       />
@@ -408,7 +407,7 @@ const DoctorDetails: React.FC<{
                         options={[
                           { label: "Male", value: "1" },
                           { label: "Female", value: "2" },
-                          { label: "Others", value: "3" }
+                          { label: "Others", value: "3" },
                         ]}
                       />
 
@@ -424,7 +423,7 @@ const DoctorDetails: React.FC<{
                         options={symptomDataOptions ?? []}
                         style={{
                           background: colors.white,
-                          minHeight: "35px"
+                          minHeight: "35px",
                         }}
                         required
                       />
@@ -436,7 +435,7 @@ const DoctorDetails: React.FC<{
                         sx={{
                           borderRadius: "8px",
                           p: "3",
-                          minHeight: "200px"
+                          minHeight: "200px",
                         }}
                         error={errors?.description?.message ?? ""}
                         register={register}
@@ -522,7 +521,7 @@ const DoctorDetails: React.FC<{
                   px: { base: "0", md: "2", xl: "4" },
                   py: 4,
                   height: "auto",
-                  borderTopRadius: 3
+                  borderTopRadius: 3,
                 }}
               >
                 <>
@@ -551,7 +550,7 @@ const DoctorDetails: React.FC<{
                         ({ value }) => +value
                       ),
                       old_report_file: getValues()?.old_report_file?.[0],
-                      doctor: doctorInfo?.id as number
+                      doctor: doctorInfo?.id as number,
                     }}
                     doctorInfo={doctorInfo as IDoctorListById}
                   />
@@ -569,7 +568,7 @@ const DoctorDetails: React.FC<{
             px: 4,
             py: 48,
             minHeight: "647px",
-            width: { base: "auto" }
+            width: { base: "auto" },
           }}
           borderRadius={"3px"}
         >
