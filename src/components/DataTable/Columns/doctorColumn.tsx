@@ -4,7 +4,6 @@ import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { IGetDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
-import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { CellContext } from "@tanstack/table-core";
 import { NavigateFunction, generatePath } from "react-router";
@@ -63,11 +62,7 @@ export const pendingColumns = (
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag key={data.id} color={colors.main} m={"1px"}>
-              {data.name}
-            </Tag>
-          )
+          data => <Tag key={data.id}>{data.name}</Tag>
         );
         return (
           <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
@@ -158,16 +153,7 @@ export const columns = (
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag
-              key={data.id}
-              color={colors.main}
-              bg={colors.lightish_blue}
-              m={"1px"}
-            >
-              {data.name}
-            </Tag>
-          )
+          data => <Tag key={data.id}>{data.name}</Tag>
         );
         return (
           <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>
@@ -274,17 +260,7 @@ export const rejectedColumns = (
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization_names?.map(
-          data => (
-            <Tag
-              key={data.id}
-              mb={1}
-              color={colors.main}
-              bg={colors.lightish_blue}
-              m={"1px"}
-            >
-              {data.name}
-            </Tag>
-          )
+          data => <Tag key={data.id}>{data.name}</Tag>
         );
         return (
           <Box display={"flex"} flexWrap={"wrap"} width={"fit-content"} p={1}>

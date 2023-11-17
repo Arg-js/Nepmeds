@@ -5,7 +5,6 @@ import {
   IAppointmentDetail,
 } from "@nepMeds/service/nepmeds-appointment";
 import { Specialization } from "@nepMeds/service/nepmeds-specialization";
-import { colors } from "@nepMeds/theme/colors";
 import { CellContext, PaginationState } from "@tanstack/react-table";
 import { CellProps } from "react-table";
 import StatusBadge from "../Common/StatusBadge";
@@ -55,14 +54,7 @@ export const appointmentColumn = (
         row,
       }: CellContext<{ specialization: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization?.map(data => (
-          <Tag
-            key={data.id}
-            color={colors.main}
-            bg={colors.lightish_blue}
-            m={"1px"}
-          >
-            {data.name}
-          </Tag>
+          <Tag key={data.id}>{data.name}</Tag>
         ));
         return (
           <Box
@@ -163,14 +155,7 @@ export const instantConsultantColumn = (pageParams: PaginationState) => {
         row,
       }: CellContext<{ specialization: Specialization[] }, any>) => {
         const specialization = row?.original?.specialization?.map(data => (
-          <Tag
-            key={data.id}
-            color={colors.main}
-            bg={colors.lightish_blue}
-            m={"1px"}
-          >
-            {data.name}
-          </Tag>
+          <Tag key={data.id}>{data.name}</Tag>
         ));
         return (
           <Box

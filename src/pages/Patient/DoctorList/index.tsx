@@ -229,6 +229,7 @@ const DoctorList = () => {
               <DoctorDetailsSection
                 doctorInfo={doctorInfo}
                 availability={availability}
+                // TODO: on doing so the loader for the availability button is disappearing
                 isFetching={isFetching || isAvailabilityFetching}
                 setTargeDate={setTargeDate}
               />
