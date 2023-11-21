@@ -50,6 +50,7 @@ const DoctorAvailability = ({
       borderRadius="2"
     >
       <>
+        {/* TODO: this is being repeated */}
         <Text fontWeight={600} fontSize={"xl"} color={colors.black_60}>
           Select Date and Time
         </Text>
@@ -80,14 +81,14 @@ const DoctorAvailability = ({
               <AvailabilitySection
                 title="Morning"
                 availability={availability}
-                selectedAvailability={selectedAvailability}
-                setSelectedAvailability={setSelectedAvailability}
+                selectedAvailabilities={selectedAvailability}
+                setSelectedAvailabilities={setSelectedAvailability}
               />
               <AvailabilitySection
                 title="Evening"
                 availability={availability}
-                selectedAvailability={selectedAvailability}
-                setSelectedAvailability={setSelectedAvailability}
+                selectedAvailabilities={selectedAvailability}
+                setSelectedAvailabilities={setSelectedAvailability}
               />
             </>
           )}

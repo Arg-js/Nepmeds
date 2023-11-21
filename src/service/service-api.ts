@@ -156,6 +156,9 @@ export const api = {
     patch: "/dashboard/faq/:id/",
     delete: "/dashboard/faq/:id/",
   },
+  faqUnpaginated: {
+    get: "/dashboard/faq/",
+  },
   discount: {
     get: "/dashboard/coupon/",
     post: "/dashboard/coupon/",
@@ -170,6 +173,11 @@ export const api = {
     get: "/core/college-list/",
     delete: "/core/college/:id/",
     getById: "/core/college/:id/",
+  },
+
+  followup: {
+    get: "/doctor-consult/follow-up/",
+    patch: "/doctor-consult/follow-up/:id/",
   },
 
   videoCall: {
