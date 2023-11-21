@@ -1,5 +1,6 @@
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
+import FollowUp from "@nepMeds/pages/Doctor/FollowUp";
 import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 import VideoCall from "@nepMeds/pages/VideoCall";
 import {
@@ -77,7 +78,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.FOLLOWUP,
-        element: <>FollowUp</>,
+        element: <FollowUp />,
       },
       {
         path: NAVIGATION_ROUTES.PATIENT_HISTORY,
