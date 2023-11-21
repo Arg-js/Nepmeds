@@ -6,8 +6,10 @@ import { Dispatch, SetStateAction } from "react";
 interface IAvailabilitySection {
   title: string;
   availability: IAvailability[];
-  selectedAvailability: number[];
-  setSelectedAvailability: Dispatch<SetStateAction<number[]>>;
+  selectedAvailabilities?: number[];
+  selectedAvailability?: number;
+  setSelectedAvailabilities?: Dispatch<SetStateAction<number[]>>;
+  setSelectedAvailability?: Dispatch<SetStateAction<number>>;
 }
 
 // CHECKS AMIABILITY
@@ -21,15 +23,17 @@ const hasAvailability = ({
   return availability?.some(({ from_time }) =>
     isMorningBlock
       ? +from_time.split(":")[0] <= 11
-      : +from_time.split(":")[0] > 11
+      : +from_time.split(":")[0] > 11,
   );
 };
 
 const AvailabilitySection = ({
   title,
   availability,
-  selectedAvailability,
+  selectedAvailabilities,
+  setSelectedAvailabilities,
   setSelectedAvailability,
+  selectedAvailability,
 }: IAvailabilitySection) => {
   const isMorningBlock = title === "Morning";
   return (
@@ -45,7 +49,8 @@ const AvailabilitySection = ({
           // isMorning === true ---> ie. time < 12:00
           // isMorning === false ---> ie. time > 12:00
           const isMorning = +data?.from_time.split(":")[0] <= 11;
-          const isSelected = selectedAvailability.includes(data.id);
+          const isSelected = selectedAvailabilities?.includes(data.id);
+          const isSingleAvailabilitySelected = selectedAvailability === data.id;
 
           if (isMorning === isMorningBlock) {
             return (
@@ -56,16 +61,30 @@ const AvailabilitySection = ({
                 height={"34px"}
                 m={1}
                 sx={{
-                  bg: `${isSelected ? colors.primary : "transparent"}`,
-                  color: `${isSelected ? colors.white : colors.primary}`,
+                  bg: `${
+                    isSingleAvailabilitySelected
+                      ? colors.primary
+                      : isSelected
+                      ? colors.primary
+                      : "transparent"
+                  }`,
+                  color: `${
+                    isSingleAvailabilitySelected
+                      ? colors.white
+                      : isSelected
+                      ? colors.white
+                      : colors.primary
+                  }`,
                 }}
-                onClick={() =>
-                  setSelectedAvailability(prev =>
-                    prev.includes(data.id)
-                      ? prev.filter(item => item !== data.id)
-                      : [...prev, data.id]
-                  )
-                }
+                onClick={() => {
+                  setSelectedAvailabilities &&
+                    setSelectedAvailabilities(prev =>
+                      prev.includes(data.id)
+                        ? prev.filter(item => item !== data.id)
+                        : [...prev, data.id],
+                    );
+                  setSelectedAvailability && setSelectedAvailability(data.id);
+                }}
               >
                 {data?.from_time?.slice(0, 5)} - {data?.to_time?.slice(0, 5)}
               </Button>
