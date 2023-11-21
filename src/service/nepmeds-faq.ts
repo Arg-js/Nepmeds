@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { api } from "./service-api";
+import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
 import { toastFail, toastSuccess } from "@nepMeds/service/service-toast";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
@@ -23,10 +23,17 @@ export interface IFaqList extends IFaqUpdate {
   id: number;
   created_at: string;
 }
+interface IFaq {
+  count: number;
+  page_count: number;
+  next: string;
+  previous: string;
+  results: ICreateFaq[];
+}
 const createFaq = (data: ICreateFaq) => {
   return HttpClient.post(api.faq.post, data);
 };
-export const useCreateFaq = () => {
+const useCreateFaq = () => {
   const queryClient = useQueryClient();
   return useMutation(createFaq, {
     onSuccess: () => {
@@ -40,10 +47,11 @@ export const useCreateFaq = () => {
 };
 
 const getFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
-  return HttpClient.get(api.faq.get, {
+  return HttpClient.get<NepMedsResponse<IFaq>>(api.faq.get, {
     params: { page: pageIndex + 1, page_size: pageSize, search },
   });
 };
+
 const useGetFaqList = ({ pageIndex, pageSize, search }: IPaginationParams) => {
   return useQuery(
     [api.faq.get, pageIndex, pageSize, search],
@@ -75,6 +83,7 @@ const updateFaq = (faqUpdateReqBody: IFaqUpdate) => {
     faqUpdateReqBody
   );
 };
+
 const useUpdateFaq = () => {
   const queryClient = useQueryClient();
   return useMutation(updateFaq, {
@@ -88,4 +97,4 @@ const useUpdateFaq = () => {
   });
 };
 
-export { useUpdateFaq, useDeleteFaq, useGetFaqList };
+export { useDeleteFaq, useUpdateFaq, useGetFaqList, useCreateFaq };

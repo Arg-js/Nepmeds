@@ -77,7 +77,7 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.FOLLOWUP,
-        element: <>Followup</>
+        element: <>FollowUp</>
       },
       {
         path: NAVIGATION_ROUTES.PATIENT_HISTORY,

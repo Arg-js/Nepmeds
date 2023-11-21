@@ -274,14 +274,14 @@ const DoctorDetails: React.FC<{
                         <AvailabilitySection
                           title="Morning"
                           availability={availability}
-                          selectedAvailability={selectedAvailability}
-                          setSelectedAvailability={setSelectedAvailability}
+                          selectedAvailabilities={selectedAvailability}
+                          setSelectedAvailabilities={setSelectedAvailability}
                         />
                         <AvailabilitySection
                           title="Evening"
                           availability={availability}
-                          selectedAvailability={selectedAvailability}
-                          setSelectedAvailability={setSelectedAvailability}
+                          selectedAvailabilities={selectedAvailability}
+                          setSelectedAvailabilities={setSelectedAvailability}
                         />
                       </>
                     )}
