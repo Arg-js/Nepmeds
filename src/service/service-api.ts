@@ -195,6 +195,21 @@ export const api = {
     reject: function () {
       return this.base + "/video-call-reject/";
     },
+    getRoomInfo: function () {
+      return this.base + `/get-room-details/:id/`;
+    },
+  },
+  prescription: {
+    addPatientInfo: "/doctor-consult/patient-history-info/",
+    updatePatientInfo: "/doctor-consult/update-patient-history-info/:id/",
+    addAdditionalInfo: "/doctor-consult/patient-additional-info/",
+    updateAdditionalInfo: "/doctor-consult/update-patient-additional-info/:id/",
+    addDrugReferralInfo: "/doctor-consult/bulk-create-drug-referral/",
+    deleteDrugReferralInfo: "/doctor-consult/drug-referral/:id/",
+    uploadImages: "/doctor-consult/upload-patient-prescription-image/",
+    deleteImages: "/doctor-consult/delete-prescription-image/:id/",
+
+    getAllInfo: "/doctor-consult/get-patient-history-info/:id/",
   },
   notification: {
     base: "/notification",

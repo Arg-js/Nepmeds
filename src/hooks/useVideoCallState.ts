@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import Video from "twilio-video";
-import { IVideoCallInitiateResponse } from "./useVideoCall";
+import { IRoomUsersInfo, IVideoCallInitiateResponse } from "./useVideoCall";
 
 const useVideoCallState = ({ state }: { state?: any }) => {
   const [participants, setParticipants] = useState<Video.RemoteParticipant[]>(
@@ -20,6 +20,8 @@ const useVideoCallState = ({ state }: { state?: any }) => {
   const [isVideoEnabled, setIsVideoEnabled] = useState(true);
   const [isAudioEnabled, setIsAudioEnabled] = useState(true);
 
+  const [usersInfo, setUsersInfo] = useState<IRoomUsersInfo | undefined>();
+
   const videoRef = useRef<HTMLVideoElement>(null);
 
   return {
@@ -38,7 +40,10 @@ const useVideoCallState = ({ state }: { state?: any }) => {
     isAudioEnabled,
     isVideoEnabled,
     setIsAudioEnabled,
-    setIsVideoEnabled
+    setIsVideoEnabled,
+
+    setUsersInfo,
+    usersInfo
   };
 };
 

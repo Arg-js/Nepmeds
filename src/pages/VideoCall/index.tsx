@@ -17,20 +17,24 @@ import {
   MdMic,
   MdMicOff,
   MdVideocam,
-  MdVideocamOff
+  MdVideocamOff,
 } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Video from "twilio-video";
 import Participant from "./Participants";
-import RemoteParticipants from "./RemoteParticipant";
 import "./VideoPlayer.css";
+import RemoteParticipants from "./RemoteParticipant";
+import AddPrescriptionModal from "./Prescription/AddPrescriptionModal";
+import PrescriptionImageModal from "./Prescription/PrescriptionImageModal";
+import ViewPatientDetails from "./ViewPatientDetails";
 
 const VideoCall = () => {
   const {
     getCallerToken,
     getReceiverToken,
     endCallForUsers,
-    sendCallNotification
+    sendCallNotification,
+    getDoctorPatientInfo,
   } = useVideoCallToken();
   const { state }: any = useLocation();
 
@@ -40,7 +44,6 @@ const VideoCall = () => {
     roomDetail: { call_start_time, room_name, token },
     setRoomDetail,
     setParticipants,
-
     setRoom,
     setShowVideo,
     showVideo,
@@ -50,7 +53,9 @@ const VideoCall = () => {
     isVideoEnabled,
     setIsAudioEnabled,
     setIsVideoEnabled,
-    videoRef
+    videoRef,
+    setUsersInfo,
+    usersInfo,
   } = useVideoCallState({ state });
   const navigate = useNavigate();
   const second = useTimerFromTime(new Date(call_start_time));
@@ -65,6 +70,8 @@ const VideoCall = () => {
         setIsAudioEnabled={setIsAudioEnabled}
         setIsVideoEnabled={setIsVideoEnabled}
         videoRef={videoRef}
+        usersInfo={usersInfo}
+        isDoctor={!!state?.appointment_id}
       />
     )
   );
@@ -84,7 +91,7 @@ const VideoCall = () => {
       setParticipants([]);
       await endCallForUsers({
         call_state: CallState.COMPLETED,
-        room_name: room_name
+        room_name: room_name,
       });
       room.disconnect();
     } catch (error) {
@@ -94,20 +101,25 @@ const VideoCall = () => {
 
   const apiCall = async () => {
     try {
+      let room_detail = state?.room_name;
       if (state?.appointment_id) {
         const res = await getCallerToken({
-          ...state
+          ...state,
         });
 
-        setRoomDetail(res.data);
+        setRoomDetail(() => res.data);
+        room_detail = res.data.room_name;
       } else {
         const res = await getReceiverToken({
           receiver_user: state?.receiver_user,
           room_name: room_name,
-          call_state: CallState.ACCEPTED
+          call_state: CallState.ACCEPTED,
         });
-        setRoomDetail(res.data);
+        setRoomDetail(() => res.data);
+        room_detail = res.data.room_name;
       }
+      const res = await getDoctorPatientInfo({ room_name: room_detail });
+      setUsersInfo(res.data.data);
     } catch (error) {
       const err = serverErrorResponse(error);
       toastFail(err);
@@ -120,7 +132,7 @@ const VideoCall = () => {
       await sendCallNotification({
         caller_user: state?.caller_user,
         receiver_user: state?.receiver_user,
-        room_name: room_name
+        room_name: room_name,
       });
     } catch (error) {
       const err = serverErrorResponse(error);
@@ -150,7 +162,7 @@ const VideoCall = () => {
   }, [room, state?.appointment_id]);
 
   useEffect(() => {
-    if (second === 900 && room) {
+    if (second === 899 && room && state?.appointment_id) {
       endCall(room);
     } else if (second === 780) {
       toastInfo("Call about to end!!");
@@ -207,10 +219,23 @@ const VideoCall = () => {
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
+            usersInfo={usersInfo}
+            isDoctor={!!state?.appointment_id}
           />
         )}
         {remoteParticipants}
       </Flex>
+      {remoteParticipants.length > 0 && (
+        <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
+          {!!state?.appointment_id && <AddPrescriptionModal />}
+          {!!state?.appointment_id && (
+            <PrescriptionImageModal userDetail={usersInfo} />
+          )}
+          {!!state?.appointment_id && (
+            <ViewPatientDetails userDetail={usersInfo} />
+          )}
+        </Flex>
+      )}
 
       <Box marginTop={"auto"}>
         <Flex justifyContent={"center"} my={"3"}>

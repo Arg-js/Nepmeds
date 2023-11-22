@@ -1,8 +1,17 @@
-import { AspectRatio, Badge, Box } from "@chakra-ui/react";
+import { AspectRatio, Badge, Box, Flex, Text } from "@chakra-ui/react";
+import { IRoomUsersInfo } from "@nepMeds/hooks/useVideoCall";
 import { useEffect, useRef, useState } from "react";
 import { LocalParticipant } from "twilio-video";
 
-const Participant = ({ participant }: { participant: LocalParticipant }) => {
+const Participant = ({
+  participant,
+  usersInfo,
+  isDoctor,
+}: {
+  participant: LocalParticipant;
+  isDoctor?: boolean;
+  usersInfo: IRoomUsersInfo | undefined;
+}) => {
   const [videoTracks, setVideoTracks] = useState<any>([]);
   const [audioTracks, setAudioTracks] = useState<any>([]);
 
@@ -54,6 +63,10 @@ const Participant = ({ participant }: { participant: LocalParticipant }) => {
     return () => {
       setVideoTracks([]);
       setAudioTracks([]);
+      participant.videoTracks.forEach(publication => {
+        publication.track.stop();
+        publication.unpublish();
+      });
     };
   }, [participant]);
 
@@ -91,14 +104,29 @@ const Participant = ({ participant }: { participant: LocalParticipant }) => {
       >
         <video ref={videoRef} autoPlay={true} />
       </AspectRatio>
-      <Badge
-        justifyContent={"center"}
-        textAlign={"center"}
-        fontWeight={"bold"}
-        fontSize={"xl"}
-      >
-        {participant.identity}
-      </Badge>
+      <Flex flexDirection={"column"} justifyContent={"start"}>
+        <Text fontWeight={"bold"} fontSize={"xl"}>
+          {isDoctor ? usersInfo?.doctor.doctor_name : usersInfo?.patient.name}
+        </Text>
+        <Text fontWeight={"bold"} fontSize={"xl"}>
+          {isDoctor && usersInfo?.doctor.nmc_number}
+        </Text>
+        <Box>
+          {isDoctor &&
+            usersInfo?.doctor.specialization.map(e => (
+              <Badge
+                key={e}
+                borderRadius={"lg"}
+                colorScheme={"green"}
+                px={2}
+                m={1}
+              >
+                {e}
+              </Badge>
+            ))}
+        </Box>
+      </Flex>
+
       <audio ref={audioRef} autoPlay={true} />
     </Box>
   );

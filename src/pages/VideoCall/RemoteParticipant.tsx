@@ -1,4 +1,5 @@
-import { AspectRatio, Badge, Box, Flex, Icon } from "@chakra-ui/react";
+import { AspectRatio, Badge, Box, Flex, Icon, Text } from "@chakra-ui/react";
+import { IRoomUsersInfo } from "@nepMeds/hooks/useVideoCall";
 import { colors } from "@nepMeds/theme/colors";
 import {
   Dispatch,
@@ -6,10 +7,11 @@ import {
   SetStateAction,
   useEffect,
   useRef,
-  useState
+  useState,
 } from "react";
 import { MdMicOff, MdVideocamOff } from "react-icons/md";
 import { RemoteParticipant } from "twilio-video";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 
 // Here <Participants> and <Remoteparticipant> have same code
 // It was not possible to make a common component for both of them
@@ -21,7 +23,9 @@ const RemoteParticipants = ({
   isVideoEnabled,
   setIsAudioEnabled,
   setIsVideoEnabled,
-  videoRef
+  videoRef,
+  usersInfo,
+  isDoctor,
 }: {
   participant: RemoteParticipant;
   isAudioEnabled: boolean;
@@ -29,6 +33,8 @@ const RemoteParticipants = ({
   videoRef: RefObject<HTMLVideoElement>;
   setIsAudioEnabled: Dispatch<SetStateAction<boolean>>;
   setIsVideoEnabled: Dispatch<SetStateAction<boolean>>;
+  usersInfo: IRoomUsersInfo | undefined;
+  isDoctor?: boolean;
 }) => {
   const [videoTracks, setVideoTracks] = useState<any>([]);
   const [audioTracks, setAudioTracks] = useState<any>([]);
@@ -129,17 +135,38 @@ const RemoteParticipants = ({
         borderRadius={"10px"}
         overflow={"hidden"}
       >
-        <video ref={videoRef} autoPlay={true} />
+        <video
+          ref={videoRef}
+          autoPlay={true}
+          poster={appendServerUrl(
+            (!isDoctor
+              ? usersInfo?.doctor?.profile_picture
+              : usersInfo?.patient?.profile_picture) ?? ""
+          )}
+        />
       </AspectRatio>
-      <Flex flexDirection={"column"} gap={5} alignItems={"end"}>
-        <Badge
-          justifyContent={"center"}
-          textAlign={"center"}
-          fontWeight={"bold"}
-          fontSize={"xl"}
-        >
-          {participant.identity}
-        </Badge>
+
+      <Flex flexDirection={"column"} alignItems={"end"} gap={1}>
+        <Text fontWeight={"bold"} fontSize={"xl"}>
+          {!isDoctor ? usersInfo?.doctor.doctor_name : usersInfo?.patient.name}
+        </Text>
+        <Text fontWeight={"bold"} fontSize={"xl"}>
+          {!isDoctor && usersInfo?.doctor.nmc_number}
+        </Text>
+        <Box>
+          {!isDoctor &&
+            usersInfo?.doctor.specialization.map(e => (
+              <Badge
+                key={e}
+                borderRadius={"lg"}
+                colorScheme={"green"}
+                px={2}
+                m={1}
+              >
+                {e}
+              </Badge>
+            ))}
+        </Box>
 
         <Flex gap={5}>
           {!isVideoEnabled && (

@@ -6,7 +6,7 @@ import {
   FormErrorMessage,
   IconButton,
   Image,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 
@@ -23,11 +23,13 @@ const ImageUpload = ({
   // helperText,
   rules,
   error,
-  setValue
+  setValue,
+  handleRemoveFunction,
 }: ImageUploadProps) => {
   const handleRemoveImage = () => {
     setSelectedImage(null);
     setValue(name, undefined as undefined | File[]);
+    handleRemoveFunction && handleRemoveFunction();
   };
   const { register } = useFormContext();
   return (
@@ -139,4 +141,5 @@ interface ImageUploadProps {
   error?: string | boolean | null;
   //   setValue?: UseFormSetValue<IRegisterFields>;
   setValue?: any;
+  handleRemoveFunction?: () => void;
 }
