@@ -41,7 +41,8 @@ const TransactionBox = (data: Props) => {
     if (type === PAYMENTMODE.KHALTI.toString()) {
       handleKhaltiClick({
         product: {
-          amount: data.appointmentData.total_amount_paid,
+          // Khalti Requires amount in paisa
+          amount: data.appointmentData.total_amount_paid * 100,
           purchase_order_id: data?.doctorInfo?.id?.toString(),
           purchase_order_name: data?.doctorInfo?.name,
         },
