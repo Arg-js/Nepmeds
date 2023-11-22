@@ -6,15 +6,29 @@ const baseStyles = {
   fontWeight: "500",
   color: colors.black_60,
   fontFamily: "Inter",
-  mb: 3
+  mb: 3,
+};
+
+const small600 = {
+  fontSize: "sm",
+  fontWeight: "600",
+  color: colors.dark_blue,
+  fontFamily: "Inter",
+};
+
+const md600 = {
+  ...small600,
+  fontSize: "md",
 };
 
 const tableHeading = {
-  ...baseStyles
+  ...baseStyles,
 };
 
 export const TextTheme = defineStyleConfig({
   variants: {
-    tableHeading
-  }
+    tableHeading,
+    small600,
+    md600,
+  },
 });

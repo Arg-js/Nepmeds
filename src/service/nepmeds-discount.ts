@@ -30,13 +30,17 @@ interface IParams {
   previous: string;
 }
 
-export interface IDiscountReqBody {
-  title: string;
-  specialization: number[];
-  doctor: number[];
+export interface IDiscountBasicDetails {
   discount_type: AmountType;
   value: number;
   code: string;
+}
+
+export interface IDiscountReqBody extends IDiscountBasicDetails {
+  title: string;
+  specialization: number[];
+  doctor: number[];
+
   start_date: string;
   end_date: string;
   is_active: boolean;
@@ -61,7 +65,7 @@ const getDiscount = ({ page, page_size, search }: IPaginationParams) => {
   const response = HttpClient.get<NepMedsResponse<IDiscountResBody>>(
     api.discount.get,
     {
-      params: { page: page + 1, page_size, search }
+      params: { page: page + 1, page_size, search },
     }
   );
   return response;
@@ -72,7 +76,7 @@ const useGetDiscount = ({ page, page_size, search }: IPaginationParams) => {
     () => getDiscount({ page, page_size, search }),
     {
       select: ({ data }) => data?.data,
-      onError: e => toastFail(serverErrorResponse(e))
+      onError: e => toastFail(serverErrorResponse(e)),
     }
   );
 };
@@ -87,7 +91,7 @@ const useCreateDiscount = () => {
       toastSuccess("Discount created successfully");
       queryClient.invalidateQueries(api.discount.get);
     },
-    onError: e => toastFail(serverErrorResponse(e))
+    onError: e => toastFail(serverErrorResponse(e)),
   });
 };
 
@@ -104,7 +108,7 @@ const useUpdateDiscount = () => {
       toastSuccess("Updated discount successfully");
       queryClient.invalidateQueries(api.discount.get);
     },
-    onError: e => toastFail(serverErrorResponse(e))
+    onError: e => toastFail(serverErrorResponse(e)),
   });
 };
 
@@ -118,7 +122,7 @@ const useDeleteDiscount = () => {
       toastSuccess("Deleted discount successfully");
       queryClient.invalidateQueries(api.discount.get);
     },
-    onError: e => toastFail(serverErrorResponse(e))
+    onError: e => toastFail(serverErrorResponse(e)),
   });
 };
 
@@ -131,7 +135,23 @@ const useGetDiscountById = ({ id }: { id: string }) => {
   return useQuery([api.discount.getById, id], () => getDiscountById({ id }), {
     enabled: !!id,
     select: ({ data }) => data?.data,
-    onError: e => toastFail(serverErrorResponse(e))
+    onError: e => toastFail(serverErrorResponse(e)),
+  });
+};
+
+const getDiscountByCode = ({ code }: { code: string }) => {
+  return HttpClient.get<NepMedsResponse<IDiscountBasicDetails>>(
+    api.discount.getByCoupon,
+    {
+      params: {
+        code,
+      },
+    }
+  );
+};
+const useGetDiscountByCode = () => {
+  return useMutation(getDiscountByCode, {
+    onError: e => toastFail(serverErrorResponse(e)),
   });
 };
 
@@ -140,5 +160,6 @@ export {
   useGetDiscountById,
   useCreateDiscount,
   useUpdateDiscount,
-  useDeleteDiscount
+  useDeleteDiscount,
+  useGetDiscountByCode,
 };

@@ -163,6 +163,7 @@ export const api = {
     get: "/dashboard/coupon/",
     post: "/dashboard/coupon/",
     getById: "/dashboard/coupon/:id/",
+    getByCoupon: "/patient/code-detail/",
     patch: "/dashboard/coupon/:id/",
     delete: "/dashboard/coupon/:id/",
   },
