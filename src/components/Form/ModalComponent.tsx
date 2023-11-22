@@ -7,10 +7,11 @@ import {
   ModalBody,
   ModalCloseButton,
   ModalContent,
+  ModalContentProps,
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  ModalProps
+  ModalProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { ReactNode } from "react";
@@ -30,8 +31,9 @@ const ModalComponent = ({
   alignment,
   approve,
   reject,
+  maxW,
   ...props
-}: IModalProps & ModalProps) => {
+}: IModalProps & ModalProps & ModalContentProps) => {
   return (
     <>
       <Modal
@@ -42,14 +44,14 @@ const ModalComponent = ({
         {...props}
       >
         <ModalOverlay />
-        <ModalContent borderRadius={"12px"}>
+        <ModalContent borderRadius={"12px"} maxW={maxW}>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
           <Divider mb={3} />
           <ModalBody
             sx={{
               textAlign: alignment,
-              py: "0"
+              py: "0",
             }}
             overflowY="auto"
           >

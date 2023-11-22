@@ -34,9 +34,10 @@ const getAllNotification = async () => {
   return response.data;
 };
 
-const useGetAllNotification = () => {
+const useGetAllNotification = (enabled: boolean) => {
   return useQuery([api.notification.getAll()], getAllNotification, {
-    select: data => data.data.results
+    select: data => data.data.results,
+    enabled,
   });
 };
 
