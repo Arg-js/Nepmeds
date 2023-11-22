@@ -6,13 +6,13 @@ import {
   Image,
   Radio,
   RadioGroup,
-  Text
+  Text,
 } from "@chakra-ui/react";
 import { PAYMENTMODE } from "@nepMeds/config/enum";
 import usePaymentTransaction from "@nepMeds/hooks/usePaymentTransaction";
 import {
   IPatientAppointmentReqBody,
-  useCreatePatientAppointment
+  useCreatePatientAppointment,
 } from "@nepMeds/service/nepmeds-patient-appointment";
 import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useGetPaymentMethods } from "@nepMeds/service/nepmeds-payment";
@@ -41,22 +41,17 @@ const TransactionBox = (data: Props) => {
     if (type === PAYMENTMODE.KHALTI.toString()) {
       handleKhaltiClick({
         product: {
-          amount:
-            +data?.doctorInfo?.schedule_rate *
-            100 *
-            data?.appointmentData?.availabilities.length,
+          amount: data.appointmentData.total_amount_paid,
           purchase_order_id: data?.doctorInfo?.id?.toString(),
-          purchase_order_name: data?.doctorInfo?.name
+          purchase_order_name: data?.doctorInfo?.name,
         },
-        appointments: idList
+        appointments: idList,
       });
     } else if (type === PAYMENTMODE.ESEWA.toString()) {
       handleEsewaClick({
-        amount:
-          +data?.doctorInfo?.schedule_rate *
-          data?.appointmentData?.availabilities.length,
+        amount: data.appointmentData.total_amount_paid,
         appointments: idList,
-        purchase_order_id: data?.doctorInfo?.id?.toString()
+        purchase_order_id: data?.doctorInfo?.id?.toString(),
       });
     }
   };
@@ -89,8 +84,8 @@ const TransactionBox = (data: Props) => {
           try {
             const res = await createPatientAppointment({
               patientAppointmentDetails: {
-                ...data.appointmentData
-              }
+                ...data.appointmentData,
+              },
             });
 
             const idList = res?.data?.data?.map(e => +e?.id) ?? [];

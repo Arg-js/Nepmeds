@@ -10,6 +10,7 @@ import {
   Text,
   UnorderedList,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 import { BackArrowIcon, UniversityIcon } from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -35,6 +36,14 @@ import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
 import ReadMore from "@nepMeds/components/ReadMore";
+import Input from "@nepMeds/components/Form/Input";
+import {
+  IDiscountBasicDetails,
+  useGetDiscountByCode,
+} from "@nepMeds/service/nepmeds-discount";
+import { AmountType } from "@nepMeds/config/enum";
+import { DiscountDetailsSection } from "./components/DiscountDetailsSection";
+import DiscountDetailSkeleton from "./DiscountDetailSectionSkeleton";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -45,6 +54,8 @@ const DoctorDetails = () => {
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+  const [discountDetails, setDiscountDetails] =
+    useState<IDiscountBasicDetails | null>(null);
 
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
@@ -56,7 +67,9 @@ const DoctorDetails = () => {
       id: +id,
       target_date: formatDateToString(date) || currentDate,
     });
+  const { mutateAsync: discountCode, isLoading } = useGetDiscountByCode();
   // REACT QUERIES END
+
   const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
 
   const bookedDates = availability?.filter(data => {
@@ -76,6 +89,36 @@ const DoctorDetails = () => {
       .min(1, "This field is required"),
   });
   const formProps = useForm({ defaultValues, resolver: yupResolver(schema) });
+  const couponCode = formProps.watch("coupon");
+
+  // TODO: move this calculation somewhere else
+  const bookingFee =
+    (doctorList && +doctorList?.schedule_rate * selectedAvailability.length) ||
+    0;
+
+  const discountAmount =
+    (doctorList &&
+      discountDetails &&
+      (discountDetails.discount_type === AmountType.PERCENTAGE
+        ? (discountDetails.value *
+            +doctorList.schedule_rate *
+            selectedAvailability.length) /
+          100
+        : discountDetails.value * selectedAvailability.length)) ||
+    0;
+
+  const discountedAmount = bookingFee - discountAmount;
+
+  const onDiscountCouponApplied = async () => {
+    try {
+      const response = await discountCode({
+        code: couponCode,
+      });
+      setDiscountDetails(response.data.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   return (
     <Box bg={colors.white} height={"100vh"}>
@@ -377,11 +420,49 @@ const DoctorDetails = () => {
                       Please choose your payment method
                     </Text>
                   </Flex>
+
+                  {/* Discount Code*/}
+                  <Flex direction={"column"} gap={3} mt={4}>
+                    <Text variant={"small600"}>Promo Codes</Text>
+                    <Flex alignItems={"center"} gap={2}>
+                      <Input
+                        name={"coupon"}
+                        register={formProps.register}
+                        placeholder={"Enter Promo Code"}
+                      />
+                      <Button
+                        height={"40px"}
+                        borderRadius={"5px"}
+                        onClick={onDiscountCouponApplied}
+                      >
+                        Apply
+                      </Button>
+                    </Flex>
+                    {isLoading ? (
+                      <DiscountDetailSkeleton />
+                    ) : (
+                      <DiscountDetailsSection
+                        bookingFee={bookingFee}
+                        discountAmount={discountAmount}
+                        discountedAmount={discountedAmount}
+                        clearDiscount={() => {
+                          formProps.setValue("coupon", "");
+                          setDiscountDetails(null);
+                        }}
+                      />
+                    )}
+                  </Flex>
+                  {/* Discount Code Ends */}
+
+                  <Text variant={"small600"} mt={8} mb={4}>
+                    Select Payment Method
+                  </Text>
                   <TransactionBox
                     appointmentData={{
                       ...formProps.getValues(),
                       availabilities: selectedAvailability,
                       total_amount_paid:
+                        discountedAmount ||
                         (doctorList?.schedule_rate
                           ? +doctorList?.schedule_rate
                           : 0) * selectedAvailability.length,
