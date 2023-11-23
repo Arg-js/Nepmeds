@@ -41,9 +41,9 @@ import {
   IDiscountBasicDetails,
   useGetDiscountByCode,
 } from "@nepMeds/service/nepmeds-discount";
-import { AmountType } from "@nepMeds/config/enum";
-import { DiscountDetailsSection } from "./components/DiscountDetailsSection";
-import DiscountDetailSkeleton from "./DiscountDetailSectionSkeleton";
+import { DiscountDetailsSection } from "./components/DiscountDetails/DiscountDetailsSection";
+import DiscountDetailSkeleton from "./components/DiscountDetails/DiscountDetailSectionSkeleton";
+import { calcDiscountedAmount } from "./components/DiscountDetails/DiscountCalculation";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -91,23 +91,13 @@ const DoctorDetails = () => {
   const formProps = useForm({ defaultValues, resolver: yupResolver(schema) });
   const couponCode = formProps.watch("coupon");
 
-  // TODO: move this calculation somewhere else
-  const bookingFee =
-    (doctorList && +doctorList?.schedule_rate * selectedAvailability.length) ||
-    0;
-
-  const discountAmount =
-    (doctorList &&
-      discountDetails &&
-      (discountDetails.discount_type === AmountType.PERCENTAGE
-        ? (discountDetails.value *
-            +doctorList.schedule_rate *
-            selectedAvailability.length) /
-          100
-        : discountDetails.value * selectedAvailability.length)) ||
-    0;
-
-  const discountedAmount = bookingFee - discountAmount;
+  const { bookingFee, discountAmount, discountedAmount } = calcDiscountedAmount(
+    {
+      doctorInfo: doctorList,
+      discountDetails,
+      selectedAvailability,
+    }
+  );
 
   const onDiscountCouponApplied = async () => {
     try {
@@ -457,6 +447,7 @@ const DoctorDetails = () => {
                   <Text variant={"small600"} mt={8} mb={4}>
                     Select Payment Method
                   </Text>
+
                   <TransactionBox
                     appointmentData={{
                       ...formProps.getValues(),

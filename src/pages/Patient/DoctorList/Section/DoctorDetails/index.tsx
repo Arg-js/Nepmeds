@@ -12,11 +12,18 @@ import {
   UploadImageIcon,
 } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
+import Input from "@nepMeds/components/Form/Input";
 import { IOptionItem } from "@nepMeds/components/Form/MultiSelect";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMore from "@nepMeds/components/ReadMore";
 import AvailabilitySection from "@nepMeds/pages/Patient/DoctorDetails/components/AvailabilitySection";
+import { DiscountDetailsSection } from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountDetailsSection";
+import DiscountDetailSkeleton from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountDetailSectionSkeleton";
+import {
+  IDiscountBasicDetails,
+  useGetDiscountByCode,
+} from "@nepMeds/service/nepmeds-discount";
 import {
   IPatientAppointmentBasicDetails,
   useCreatePatientAppointment,
@@ -34,6 +41,7 @@ import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { calcDiscountedAmount } from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountCalculation";
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -54,6 +62,7 @@ const defaultValues = {
   description: "",
   // status: "",
   availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
+  coupon: "",
 };
 
 const schema = Yup.object({
@@ -76,11 +85,15 @@ const DoctorDetails: React.FC<{
   );
   const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
   const [appointment, setAppointment] = useState(true);
+  const [discountDetails, setDiscountDetails] =
+    useState<IDiscountBasicDetails | null>(null);
 
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
     useCreatePatientAppointment();
+  const { mutateAsync: discountCode, isLoading: isDiscountLoading } =
+    useGetDiscountByCode();
   // REACT QUERIES END
 
   const symptomDataOptions =
@@ -105,6 +118,26 @@ const DoctorDetails: React.FC<{
 
   const oldReportFileWatch = watch("old_report_file");
   const availabilityDateWatch = watch("availabilityDate");
+  const couponCode = watch("coupon");
+
+  const { bookingFee, discountAmount, discountedAmount } = calcDiscountedAmount(
+    {
+      doctorInfo,
+      discountDetails,
+      selectedAvailability,
+    }
+  );
+
+  const onDiscountCouponApplied = async () => {
+    try {
+      const response = await discountCode({
+        code: couponCode,
+      });
+      setDiscountDetails(response.data.data);
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   useEffect(() => {
     availabilityDateWatch && setTargeDate(availabilityDateWatch);
@@ -538,11 +571,50 @@ const DoctorDetails: React.FC<{
                       Please choose your payment method
                     </Text>
                   </Flex>
+
+                  {/* Discount Code*/}
+                  <Flex direction={"column"} gap={3} mt={4}>
+                    <Text variant={"small600"}>Promo Codes</Text>
+                    <Flex alignItems={"center"} gap={2}>
+                      <Input
+                        name={"coupon"}
+                        register={register}
+                        placeholder={"Enter Promo Code"}
+                      />
+                      <Button
+                        height={"40px"}
+                        borderRadius={"5px"}
+                        onClick={onDiscountCouponApplied}
+                      >
+                        Apply
+                      </Button>
+                    </Flex>
+                    {isDiscountLoading ? (
+                      <DiscountDetailSkeleton />
+                    ) : (
+                      <DiscountDetailsSection
+                        bookingFee={bookingFee}
+                        discountAmount={discountAmount}
+                        discountedAmount={discountedAmount}
+                        clearDiscount={() => {
+                          setValue("coupon", "");
+                          setDiscountDetails(null);
+                        }}
+                      />
+                    )}
+                  </Flex>
+                  {/* Discount Code Ends */}
+
+                  <Text variant={"small600"} mt={8} mb={4}>
+                    Select Payment Method
+                  </Text>
+
                   <TransactionBox
                     appointmentData={{
                       ...getValues(),
                       availabilities: selectedAvailability,
                       total_amount_paid:
+                        discountedAmount ||
                         (doctorInfo?.schedule_rate
                           ? +doctorInfo?.schedule_rate
                           : 0) * selectedAvailability.length,
