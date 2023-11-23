@@ -261,15 +261,6 @@ const PatientDetail = ({
                   )}
                 </Flex>
               </Box>
-              <Box mb={4}>
-                <FormControl
-                  control={"input"}
-                  name="coupon"
-                  label="Enter discount coupon code (if any)"
-                  placeholder={"Enter discount coupon code"}
-                  register={formProps.register}
-                />
-              </Box>
               {/* TODO: align this design*/}
               <Button
                 width="full"
