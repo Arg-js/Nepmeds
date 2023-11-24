@@ -62,6 +62,7 @@ const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
 const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
 const Faq = lazy(() => import("@nepMeds/pages/Faq"));
 const Discount = lazy(() => import("@nepMeds/pages/Admin/Discount"));
+const PatientProfile = lazy(() => import("@nepMeds/pages/Patient/Profile"));
 
 const routes = [
   {
@@ -135,6 +136,10 @@ const paientRoutes = [
       {
         path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
         element: <DoctorDetails />,
+      },
+      {
+        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
+        element: <PatientProfile />,
       },
       {
         path: NAVIGATION_ROUTES.VIDEOCALL,

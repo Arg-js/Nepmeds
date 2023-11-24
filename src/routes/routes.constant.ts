@@ -5,7 +5,7 @@ export const NAVIGATION_ROUTES = {
     PRIMARY_INFO: "/register/primary-info",
     ACADEMIC_INFO: "/register/academic-info",
     CERTIFICATION_INFO: "/register/certification-info",
-    EXPERIENCE_INFO: "/register/experience-info"
+    EXPERIENCE_INFO: "/register/experience-info",
   },
   LOGIN: "/",
   DOCTOR_LOGIN: "/login",
@@ -40,11 +40,12 @@ export const NAVIGATION_ROUTES = {
   AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
+  PATIENT_PROFILE: "/patient/profile",
   DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
   DOCTOR_CONSULTATION: "/patient/doctor-consultation",
   DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
   VIDEOCALL: "/video-call",
   NO_MATCH: "*",
 
-  PAYMENTS: "/payment"
+  PAYMENTS: "/payment",
 };

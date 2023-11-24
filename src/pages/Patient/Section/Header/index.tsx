@@ -264,13 +264,21 @@ const Header: React.FC<{
               <Menu>
                 <MenuButton
                   sx={{
-                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
+                    "&>span": {
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 2,
+                    },
                   }}
                 >
                   <Avatar />
                 </MenuButton>
                 <MenuList>
-                  <MenuItem>Profile</MenuItem>
+                  <MenuItem
+                    onClick={() => navigate(NAVIGATION_ROUTES.PATIENT_PROFILE)}
+                  >
+                    Profile
+                  </MenuItem>
                   <MenuItem onClick={() => logoutAction({})}>Logout</MenuItem>
                 </MenuList>
               </Menu>
