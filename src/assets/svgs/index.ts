@@ -49,6 +49,7 @@ export { ReactComponent as WhyChooseUs3Icon } from "./whyChoose3.svg";
 export { ReactComponent as WalletIcon } from "./wallet.svg";
 export { ReactComponent as CheckBoxIcon } from "./checkBox.svg";
 export { ReactComponent as NotificationWithDotIcon } from "./notificationWithDot.svg";
+export { ReactComponent as DownloadIcon } from "./download.svg";
 
 export const svgs = {
   image,

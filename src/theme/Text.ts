@@ -21,6 +21,20 @@ const md600 = {
   fontSize: "md",
 };
 
+const sm400 = {
+  fontSize: "sm",
+  fontWeight: "400",
+};
+
+const lg600 = {
+  fontSize: "lg",
+  fontWeight: "600",
+};
+
+const md500 = {
+  fontSize: "md",
+  fontWeight: "500",
+};
 const tableHeading = {
   ...baseStyles,
 };
@@ -28,7 +42,10 @@ const tableHeading = {
 export const TextTheme = defineStyleConfig({
   variants: {
     tableHeading,
+    sm400,
     small600,
+    md500,
     md600,
+    lg600,
   },
 });
