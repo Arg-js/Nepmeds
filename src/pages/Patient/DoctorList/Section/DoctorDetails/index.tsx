@@ -18,8 +18,11 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import ReadMore from "@nepMeds/components/ReadMore";
 import AvailabilitySection from "@nepMeds/pages/Patient/DoctorDetails/components/AvailabilitySection";
-import { DiscountDetailsSection } from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountDetailsSection";
-import DiscountDetailSkeleton from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountDetailSectionSkeleton";
+import {
+  calcDiscountedAmount,
+  DiscountDetailSkeleton,
+  DiscountDetailsSection,
+} from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails";
 import {
   IDiscountBasicDetails,
   useGetDiscountByCode,
@@ -41,7 +44,6 @@ import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
-import { calcDiscountedAmount } from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails/DiscountCalculation";
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -92,8 +94,11 @@ const DoctorDetails: React.FC<{
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
     useCreatePatientAppointment();
-  const { mutateAsync: discountCode, isLoading: isDiscountLoading } =
-    useGetDiscountByCode();
+  const {
+    mutateAsync: discountCode,
+    isLoading: isDiscountLoading,
+    isSuccess,
+  } = useGetDiscountByCode();
   // REACT QUERIES END
 
   const symptomDataOptions =
@@ -132,10 +137,12 @@ const DoctorDetails: React.FC<{
     try {
       const response = await discountCode({
         code: couponCode,
+        doctor_id: doctorInfo?.id || 0,
       });
       setDiscountDetails(response.data.data);
     } catch (e) {
-      console.error(e);
+      setDiscountDetails(null);
+      setValue("coupon", "");
     }
   };
 
@@ -592,15 +599,17 @@ const DoctorDetails: React.FC<{
                     {isDiscountLoading ? (
                       <DiscountDetailSkeleton />
                     ) : (
-                      <DiscountDetailsSection
-                        bookingFee={bookingFee}
-                        discountAmount={discountAmount}
-                        discountedAmount={discountedAmount}
-                        clearDiscount={() => {
-                          setValue("coupon", "");
-                          setDiscountDetails(null);
-                        }}
-                      />
+                      isSuccess && (
+                        <DiscountDetailsSection
+                          bookingFee={bookingFee}
+                          discountAmount={discountAmount}
+                          discountedAmount={discountedAmount}
+                          clearDiscount={() => {
+                            setValue("coupon", "");
+                            setDiscountDetails(null);
+                          }}
+                        />
+                      )
                     )}
                   </Flex>
                   {/* Discount Code Ends */}

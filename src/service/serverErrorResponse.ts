@@ -7,7 +7,10 @@ export interface ServerError {
 
 const serverErrorResponse = (error: any, customMessage?: string) => {
   try {
-    const firstErrorMessage = Object.values(error?.data?.errors[0])[0];
+    const e = error?.data?.errors[0];
+    const firstErrorMessage = e
+      ? Object.values(error?.data?.errors[0])[0]
+      : error?.data?.message;
 
     return (
       firstErrorMessage?.toString() || customMessage || "Something went wrong."
