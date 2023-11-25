@@ -193,7 +193,9 @@ const Header: React.FC<{
         <Image
           src={NepmedsLogo}
           alt={"Nepmemds logo"}
-          onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_CONSULTATION)}
+          onClick={() =>
+            navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION)
+          }
           cursor={"pointer"}
         />
         <Flex alignItems={"center"} justifyContent={"space-around"} gap={6}>
@@ -264,11 +266,7 @@ const Header: React.FC<{
               <Menu>
                 <MenuButton
                   sx={{
-                    "&>span": {
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 2,
-                    },
+                    "&>span": { display: "flex", alignItems: "center", gap: 2 },
                   }}
                 >
                   <Avatar />

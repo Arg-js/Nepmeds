@@ -40,10 +40,13 @@ export const NAVIGATION_ROUTES = {
   AMOUNT_HISTORY: "/rate-history/:id",
 
   // PATIENT MODULE
+  PATIENT: {
+    DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
+    DOCTOR_CONSULTATION: "/patient/doctor-consultation",
+    FAQ: "/patient/FAQ",
+    DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
+  },
   PATIENT_PROFILE: "/patient/profile",
-  DOCTOR_DETAILS: "/patient/doctor-consultation/doctor",
-  DOCTOR_CONSULTATION: "/patient/doctor-consultation",
-  DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
   VIDEOCALL: "/video-call",
   NO_MATCH: "*",
 

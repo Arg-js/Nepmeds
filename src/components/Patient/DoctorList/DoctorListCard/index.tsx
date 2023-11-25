@@ -55,7 +55,7 @@ const DoctorListCard: React.FC<{
     setDoctorId && setDoctorId(data.id);
     scrollToTop();
     isSidebarCollapsed &&
-      navigate(`${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${data.id}`);
+      navigate(`${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${data.id}`);
   };
   return (
     <Flex

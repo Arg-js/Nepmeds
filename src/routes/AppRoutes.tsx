@@ -1,6 +1,5 @@
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
-import FollowUp from "@nepMeds/pages/Doctor/FollowUp";
 import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
 import VideoCall from "@nepMeds/pages/VideoCall";
 import {
@@ -61,7 +60,9 @@ const ExperienceInfo = lazy(
 const PrimaryInfo = lazy(() => import("@nepMeds/pages/Register/PrimaryInfo"));
 const SignUp = lazy(() => import("@nepMeds/pages/SignUp/SignUp"));
 const Faq = lazy(() => import("@nepMeds/pages/Faq"));
+const FollowUp = lazy(() => import("@nepMeds/pages/Doctor/FollowUp"));
 const Discount = lazy(() => import("@nepMeds/pages/Admin/Discount"));
+const PatientFAQ = lazy(() => import("@nepMeds/pages/Patient/FAQ"));
 const PatientProfile = lazy(() => import("@nepMeds/pages/Patient/Profile"));
 
 const routes = [
@@ -103,11 +104,11 @@ const routes = [
         element: <UnApprovedDoctor />,
       },
       {
-        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION,
         element: <DoctorConsultation />,
       },
       {
-        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE,
         element: <DoctorList />,
       },
     ],
@@ -126,29 +127,36 @@ const paientRoutes = [
     path: NAVIGATION_ROUTES.LOGGEDIN,
     children: [
       {
-        path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION,
         element: <DoctorConsultation />,
       },
       {
-        path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE,
         element: <DoctorList />,
       },
       {
-        path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
+        path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
         element: <DoctorDetails />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
-        element: <PatientProfile />,
       },
       {
         path: NAVIGATION_ROUTES.VIDEOCALL,
         element: <VideoCall />,
       },
       {
+        path: NAVIGATION_ROUTES.PATIENT.FAQ,
+        element: <PatientFAQ />,
+      },
+      {
+        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
+        element: <PatientProfile />,
+      },
+      {
         path: NAVIGATION_ROUTES.NO_MATCH,
         element: (
-          <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />
+          <Navigate
+            to={NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}
+            replace
+          />
         ),
       },
     ],
@@ -279,20 +287,26 @@ const openRoutes = [
   //   element: <Dashboard />,
   // },
   {
-    path: NAVIGATION_ROUTES.DOCTOR_CONSULTATION,
+    path: NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION,
     element: <DoctorConsultation />,
   },
   {
-    path: NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE,
+    path: NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE,
     element: <DoctorList />,
   },
   {
-    path: `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/:id`,
+    path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
     element: <DoctorDetails />,
   },
   {
+    path: NAVIGATION_ROUTES.PATIENT.FAQ,
+    element: <PatientFAQ />,
+  },
+  {
     path: NAVIGATION_ROUTES.NO_MATCH,
-    element: <Navigate to={NAVIGATION_ROUTES.DOCTOR_CONSULTATION} replace />,
+    element: (
+      <Navigate to={NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION} replace />
+    ),
   },
 ];
 

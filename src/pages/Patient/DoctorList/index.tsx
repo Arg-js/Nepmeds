@@ -138,16 +138,16 @@ const DoctorList = () => {
               items={[
                 {
                   name: "Doctor Consultation",
-                  route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
+                  route: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}`,
                 },
                 {
                   name: "Doctor Lists",
-                  route: `${NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE}`,
+                  route: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE}`,
                 },
               ]}
               title={{
                 name: "Home",
-                route: `${NAVIGATION_ROUTES.DOCTOR_CONSULTATION}`,
+                route: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}`,
               }}
             />
           </Box>

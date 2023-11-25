@@ -32,6 +32,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import PatientFooter from "../Section/Footer";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
+import FAQ from "./Section/FAQ";
 
 export enum Type {
   SPECIALIST,
@@ -83,7 +84,7 @@ const DoctorConsultation = () => {
   const navigate = useNavigate();
 
   const handleViewSpecialists = (specialization: string) => {
-    navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE, {
+    navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE, {
       state: {
         specialization,
       },
@@ -92,7 +93,7 @@ const DoctorConsultation = () => {
   };
 
   const handleViewSymptom = (symptom: string) => {
-    navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE, {
+    navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE, {
       state: {
         symptom,
       },
@@ -114,7 +115,7 @@ const DoctorConsultation = () => {
             description={"Consult with top doctors across specialties"}
             btnText={"View All Specialists"}
             onClick={() =>
-              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+              navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
             }
           />
 
@@ -148,7 +149,7 @@ const DoctorConsultation = () => {
             description="Consult a doctor online for any health issue"
             btnText={"View All Symptoms"}
             onClick={() =>
-              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+              navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
             }
           />
 
@@ -195,7 +196,7 @@ const DoctorConsultation = () => {
             description="We hire best specialists to deliver top-notch services for you"
             btnText="View All Doctors"
             onClick={() =>
-              navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)
+              navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
             }
           />
 
@@ -213,7 +214,7 @@ const DoctorConsultation = () => {
                       mr={4}
                       onClick={() =>
                         navigate(
-                          `${NAVIGATION_ROUTES.DOCTOR_DETAILS}/${doctor.id}`
+                          `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctor.id}`
                         )
                       }
                     >
@@ -240,6 +241,12 @@ const DoctorConsultation = () => {
       {/* ADVERTISEMENT SECTION */}
       <AdvertisementBanner />
       {/* ADVERTISEMENT SECTION ENDS*/}
+
+      {/* FAQ */}
+      <WrapperBox backgroundColor={colors.background_blue}>
+        <FAQ />
+      </WrapperBox>
+      {/* FAQ ENDS */}
 
       {/* WHY CHOOSE US SECTION */}
       <WrapperBox backgroundColor={colors.background_blue}>
