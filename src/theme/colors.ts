@@ -59,6 +59,7 @@ export const colors = {
 
   /**light gray text*/
   light_gray: "#ABAFB1",
+  light_gray_border: "#DBE3EE",
   /**gray-700 */
   gray_700: "#2D3748",
   calendar_text: "#5B5B5B",

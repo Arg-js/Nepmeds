@@ -59,7 +59,9 @@ const HeroSection = () => {
         fontSize={"md"}
         width={"max-content"}
         borderRadius={6}
-        onClick={() => navigate(NAVIGATION_ROUTES.DOCTOR_LIST_PATIENT_MODULE)}
+        onClick={() =>
+          navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
+        }
       >
         Consult Now
       </Button>

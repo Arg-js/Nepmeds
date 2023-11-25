@@ -97,4 +97,33 @@ const useUpdateFaq = () => {
   });
 };
 
-export { useDeleteFaq, useUpdateFaq, useGetFaqList, useCreateFaq };
+const getAllFaq = ({ pageIndex, pageSize, search }: IPaginationParams) => {
+  return HttpClient.get<NepMedsResponse<IFaq>>(api.faqUnpaginated.get, {
+    params: { page: pageIndex + 1, page_size: pageSize, search },
+  });
+};
+const useGetALLFaq = ({ pageIndex, pageSize, search }: IPaginationParams) => {
+  return useQuery(
+    [api.faqUnpaginated.get, pageIndex, pageSize, search],
+    () =>
+      getAllFaq({
+        pageIndex,
+        pageSize,
+        search,
+      }),
+    {
+      select: ({ data }) => data?.data?.results,
+      onError: e => {
+        toastFail(serverErrorResponse(e));
+      },
+    }
+  );
+};
+
+export {
+  useDeleteFaq,
+  useUpdateFaq,
+  useGetFaqList,
+  useCreateFaq,
+  useGetALLFaq,
+};
