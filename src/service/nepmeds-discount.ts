@@ -139,12 +139,19 @@ const useGetDiscountById = ({ id }: { id: string }) => {
   });
 };
 
-const getDiscountByCode = ({ code }: { code: string }) => {
+const getDiscountByCode = ({
+  code,
+  doctor_id,
+}: {
+  code: string;
+  doctor_id: number;
+}) => {
   return HttpClient.get<NepMedsResponse<IDiscountBasicDetails>>(
     api.discount.getByCoupon,
     {
       params: {
         code,
+        doctor_id,
       },
     }
   );

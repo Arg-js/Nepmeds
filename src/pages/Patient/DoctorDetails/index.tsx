@@ -41,9 +41,11 @@ import {
   IDiscountBasicDetails,
   useGetDiscountByCode,
 } from "@nepMeds/service/nepmeds-discount";
-import { DiscountDetailsSection } from "./components/DiscountDetails/DiscountDetailsSection";
-import DiscountDetailSkeleton from "./components/DiscountDetails/DiscountDetailSectionSkeleton";
-import { calcDiscountedAmount } from "./components/DiscountDetails/DiscountCalculation";
+import {
+  calcDiscountedAmount,
+  DiscountDetailSkeleton,
+  DiscountDetailsSection,
+} from "./components/DiscountDetails";
 const currentDate = formatDateToString(new Date());
 
 const DoctorDetails = () => {
@@ -67,7 +69,11 @@ const DoctorDetails = () => {
       id: +id,
       target_date: formatDateToString(date) || currentDate,
     });
-  const { mutateAsync: discountCode, isLoading } = useGetDiscountByCode();
+  const {
+    mutateAsync: discountCode,
+    isLoading,
+    isSuccess,
+  } = useGetDiscountByCode();
   // REACT QUERIES END
 
   const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
@@ -103,10 +109,12 @@ const DoctorDetails = () => {
     try {
       const response = await discountCode({
         code: couponCode,
+        doctor_id: +id,
       });
       setDiscountDetails(response.data.data);
     } catch (e) {
-      console.error(e);
+      setDiscountDetails(null);
+      formProps.setValue("coupon", "");
     }
   };
 
@@ -431,15 +439,17 @@ const DoctorDetails = () => {
                     {isLoading ? (
                       <DiscountDetailSkeleton />
                     ) : (
-                      <DiscountDetailsSection
-                        bookingFee={bookingFee}
-                        discountAmount={discountAmount}
-                        discountedAmount={discountedAmount}
-                        clearDiscount={() => {
-                          formProps.setValue("coupon", "");
-                          setDiscountDetails(null);
-                        }}
-                      />
+                      isSuccess && (
+                        <DiscountDetailsSection
+                          bookingFee={bookingFee}
+                          discountAmount={discountAmount}
+                          discountedAmount={discountedAmount}
+                          clearDiscount={() => {
+                            formProps.setValue("coupon", "");
+                            setDiscountDetails(null);
+                          }}
+                        />
+                      )
                     )}
                   </Flex>
                   {/* Discount Code Ends */}
