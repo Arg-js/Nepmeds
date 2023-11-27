@@ -77,3 +77,14 @@ export function getFullDate(inputDateStr: string): string {
     return fullDate; // Output: '2023-08-28'
   }
 }
+
+export function getTime(inputDateStr: string) {
+  const dateObject = new Date(inputDateStr);
+
+  // Extracting time components
+  const hours = dateObject.getHours();
+  const minutes = `${dateObject.getMinutes()}`.padStart(2, "0");
+
+  // Formatting the time
+  return `${hours}:${minutes}`;
+}

@@ -14,7 +14,11 @@ const MoreInfoSection = ({
   const navigate = useNavigate();
   return (
     <Box bgColor={colors.primary} p={4} borderRadius={"12px"}>
-      <Flex justifyContent={"space-between"}>
+      <Flex
+        justifyContent={"space-between"}
+        direction={{ base: "column", md: "row" }}
+        gap={2}
+      >
         <Flex direction={"column"} gap={2}>
           <Text fontWeight={600} fontSize={"md"} color={colors.white}>
             Still have questions?
