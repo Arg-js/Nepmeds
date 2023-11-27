@@ -2,8 +2,12 @@ import { Flex, Grid, Image, Text } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
+import { usePatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details";
+import TokenService from "@nepMeds/service/service-token";
 
 const PatientDetails = () => {
+  const isAuthenticated = TokenService.isAuthenticated();
+  const { data: patientData } = usePatientBasicProfile(isAuthenticated);
   return (
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
       <Flex direction={"column"} gap={5}>
@@ -32,7 +36,7 @@ const PatientDetails = () => {
           textAlign={"center"}
           textTransform={"capitalize"}
         >
-          Brikram Shah
+          {patientData?.name ?? "---"}
         </Flex>
         <Text variant="sm400" color={colors.black_30}>
           PERSONAL INFORMATION
@@ -49,19 +53,19 @@ const PatientDetails = () => {
             Age:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            32
+            {patientData?.age ?? "---"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Gender:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            Male
+            {patientData?.gender ?? "---"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Date of Birth:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            02/02/1999
+            {patientData?.date_of_birth ?? "---"}
           </Text>
         </Grid>
         <Text variant="sm400" color={colors.black_30}>
@@ -78,20 +82,21 @@ const PatientDetails = () => {
             Contact:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            9860465367
+            {patientData?.mobile_number ?? "---"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Email:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            bishal@gmail.com
+            {patientData?.email ?? "---"}
           </Text>
-          <Text variant="md600" color={colors.black_60}>
+          {/* TODO: address never comes from api */}
+          {/* <Text variant="md600" color={colors.black_60}>
             Address:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            Kupondole, Lalitpur
-          </Text>
+            {patientData?.address ?? "---"}
+          </Text> */}
         </Grid>
       </Flex>
     </WrapperBox>

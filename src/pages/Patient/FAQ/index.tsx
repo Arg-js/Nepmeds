@@ -1,8 +1,10 @@
 import { Box, Container, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { BreadCrumb } from "@nepMeds/components/Breadcrumb";
 import SkeletonControl from "@nepMeds/components/Loader";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import SearchInput from "@nepMeds/components/Search";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useGetALLFaq } from "@nepMeds/service/nepmeds-faq";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
@@ -32,8 +34,20 @@ const PatientFAQ = () => {
     <>
       <Header />
       {/* HEADER */}
-      <Box bgColor={colors.sky_blue} py={14}>
-        <Container textAlign={"center"}>
+      <Box bgColor={colors.sky_blue} p={5}>
+        <BreadCrumb
+          items={[
+            {
+              name: "Frequently Asked Questions",
+              route: `${NAVIGATION_ROUTES.PATIENT.FAQ}`,
+            },
+          ]}
+          title={{
+            name: "Home",
+            route: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}`,
+          }}
+        />
+        <Container textAlign={"center"} py={14}>
           <Text fontSize={"sm"} fontWeight={600} color={colors.black_40}>
             FAQs
           </Text>

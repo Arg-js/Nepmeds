@@ -139,6 +139,10 @@ const paientRoutes = [
         element: <DoctorDetails />,
       },
       {
+        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
+        element: <PatientProfile />,
+      },
+      {
         path: NAVIGATION_ROUTES.VIDEOCALL,
         element: <VideoCall />,
       },
