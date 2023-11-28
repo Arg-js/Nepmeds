@@ -20,6 +20,7 @@ import { FormProvider, useForm } from "react-hook-form";
 import {
   useCreateFaq,
   useDeleteFaq,
+  useGetFaqById,
   useGetFaqList,
   useUpdateFaq,
 } from "@nepMeds/service/nepmeds-faq";
@@ -30,6 +31,7 @@ import { columns } from "./faqColumn";
 import { toastFail } from "@nepMeds/components/Toast";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import SkeletonControl from "@nepMeds/components/Loader";
 
 const schema = yup.object().shape({
   question: yup
@@ -81,6 +83,7 @@ const FAQ = () => {
     search: debouncedInputValue,
   });
   const { mutateAsync: deleteFaq, isLoading: isDeleting } = useDeleteFaq();
+  const { data: faqById, isFetching: isFetchingFaq } = useGetFaqById({ id });
   // React Query Ends
 
   const onModalClose = () => {
@@ -107,14 +110,13 @@ const FAQ = () => {
   };
 
   useEffect(() => {
-    if (isEdit) {
-      // TODO: api development in progress
+    if (isEdit && faqById) {
       reset({
-        question: "question",
-        answer: "answer",
+        question: faqById.question,
+        answer: faqById.answer,
       });
     }
-  }, [isEdit, tableData]);
+  }, [id, faqById]);
 
   return (
     <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
@@ -210,28 +212,34 @@ const FAQ = () => {
             </HStack>
           }
         >
-          <FormProvider {...formMethods}>
-            <form onSubmit={handleSubmit(submitFaq)}>
-              <Flex direction={"column"} gap={2}>
-                <FloatinglabelTextArea
-                  register={register}
-                  label="Question"
-                  name="question"
-                  required
-                  style={{ background: colors.forminput, border: "none" }}
-                  error={errors.question?.message ?? ""}
-                />
-                <FloatinglabelTextArea
-                  register={register}
-                  label="Answer"
-                  name="answer"
-                  required
-                  style={{ background: colors.forminput, border: "none" }}
-                  error={errors?.answer?.message ?? ""}
-                />
-              </Flex>
-            </form>
-          </FormProvider>
+          {isFetchingFaq ? (
+            <Flex gap={6} direction="column">
+              <SkeletonControl variant="skeleton" height={"30px"} length={3} />
+            </Flex>
+          ) : (
+            <FormProvider {...formMethods}>
+              <form onSubmit={handleSubmit(submitFaq)}>
+                <Flex direction={"column"} gap={2}>
+                  <FloatinglabelTextArea
+                    register={register}
+                    label="Question"
+                    name="question"
+                    required
+                    style={{ background: colors.forminput, border: "none" }}
+                    error={errors.question?.message ?? ""}
+                  />
+                  <FloatinglabelTextArea
+                    register={register}
+                    label="Answer"
+                    name="answer"
+                    required
+                    style={{ background: colors.forminput, border: "none" }}
+                    error={errors?.answer?.message ?? ""}
+                  />
+                </Flex>
+              </form>
+            </FormProvider>
+          )}
         </ModalComponent>
 
         <ModalComponent

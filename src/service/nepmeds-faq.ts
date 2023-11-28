@@ -120,10 +120,24 @@ const useGetALLFaq = ({ pageIndex, pageSize, search }: IPaginationParams) => {
   );
 };
 
+const getFaqById = ({ id }: { id: string }) => {
+  return HttpClient.get<NepMedsResponse<ICreateFaq>>(
+    generatePath(api.faq.getById, { id })
+  );
+};
+const useGetFaqById = ({ id }: { id: string }) => {
+  return useQuery([api.faq.getById, id], () => getFaqById({ id }), {
+    enabled: !!id,
+    select: ({ data }) => data?.data,
+    onError: e => toastFail(serverErrorResponse(e)),
+  });
+};
+
 export {
   useDeleteFaq,
   useUpdateFaq,
   useGetFaqList,
   useCreateFaq,
   useGetALLFaq,
+  useGetFaqById,
 };
