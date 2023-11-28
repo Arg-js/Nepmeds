@@ -23,7 +23,7 @@ export interface IPaginationParams {
   search?: string;
 }
 
-interface IParams {
+export interface IParams {
   count: number;
   page_count: number;
   next: string;

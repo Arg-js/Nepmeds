@@ -8,6 +8,10 @@ export interface IGetPatientBasicProfile {
   name: string;
   mobile_number: string;
   user: string;
+  gender: string;
+  date_of_birth: string;
+  address: string;
+  age: string;
 }
 
 const getBasicProfile = async () => {
@@ -21,6 +25,6 @@ export const usePatientBasicProfile = (enabled: boolean) => {
   return useQuery([api.patient.basicProfile], getBasicProfile, {
     select: data => data.data.data,
     staleTime: Infinity,
-    enabled
+    enabled,
   });
 };

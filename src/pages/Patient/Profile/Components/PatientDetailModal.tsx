@@ -1,36 +1,54 @@
-import { Flex, Grid, Divider, Text } from "@chakra-ui/react";
-import { DownloadIcon } from "@nepMeds/assets/svgs";
+import { Flex, Grid, Divider, Text, Tag } from "@chakra-ui/react";
+import { PAYMENTMODE } from "@nepMeds/config/enum";
+import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
+import { getFullDate, getTime } from "@nepMeds/helper/dateTImeConverter";
+import { IPatientDetailById } from "@nepMeds/service/nepmeds-patient-profile";
 import { colors } from "@nepMeds/theme/colors";
 
-const ModalForm = () => {
+const PatientDetailModal = ({
+  patientDetail,
+}: {
+  patientDetail: IPatientDetailById;
+}) => {
+  const followUpDate = patientDetail.follow_up_date_and_time;
   return (
     <Flex direction={"column"} gap={4}>
       <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
         <Text variant="sm400" color={colors.black_60}>
           Name:
         </Text>
-        <Text variant="md600" color={colors.black_60}>
-          Bishal Thapa
+        <Text
+          variant="md600"
+          color={colors.black_60}
+          textTransform={"capitalize"}
+        >
+          {patientDetail?.doctor}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Specialization:
         </Text>
-        <Text variant="md600" color={colors.black_60}>
-          Cardiologist
+        <Text
+          variant="md600"
+          color={colors.black_60}
+          textTransform={"capitalize"}
+        >
+          {patientDetail?.specialization?.map(({ name }) => `${name} `)}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Symptoms:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          Coughing
+          {patientDetail?.symptoms?.map(({ name }) => (
+            <Tag key={name}>{name}</Tag>
+          ))}
         </Text>
       </Grid>
-      <Flex gap={3} cursor="pointer">
+      {/* <Flex gap={3} cursor="pointer">
         <Text variant={"md500"} color={colors.main}>
           Download Prescriptions:
         </Text>
         <DownloadIcon />
-      </Flex>
+      </Flex> */}
       <Divider />
       <Text variant={"lg600"}>Payment Detail</Text>
       <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
@@ -38,49 +56,53 @@ const ModalForm = () => {
           Rate:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          Rs. 400
+          Rs. {patientDetail?.doctor_rate}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Paid Amount:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          Rs. 300
+          Rs. {patientDetail?.paid_amount}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Discount Applied:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          Yes
+          {patientDetail?.discount_applied ? "Yes" : "No"}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Transaction ID:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          68yvui7
+          {/* {patientDetail?.transaction_detail} */}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Order ID:
         </Text>
-        <Text variant="md600" color={colors.black_60}>
-          68yvui7
-        </Text>
+        <Text variant="md600" color={colors.black_60}></Text>
         <Text variant="sm400" color={colors.black_60}>
           Payment Method:
         </Text>
         <Text variant="md600" color={colors.green_button}>
-          Esewa
+          {
+            PAYMENTMODE[
+              patientDetail?.payment_method as keyof typeof PAYMENTMODE
+            ]
+          }
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Payment Date:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          12/21/2023
+          {patientDetail?.payment_date}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Payment Time:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          03:00 PM
+          {patientDetail?.payment_time
+            ? removeSeconds(patientDetail.payment_time)
+            : "---"}
         </Text>
       </Grid>
       <Text variant={"lg600"}>Follow Up</Text>
@@ -90,17 +112,18 @@ const ModalForm = () => {
           Follow up Date:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          12/23/2023
+          {/* TODO: find another way to solve this tedious task */}
+          {followUpDate ? getFullDate(followUpDate) : "---"}
         </Text>
         <Text variant="sm400" color={colors.black_60}>
           Follow up Time:
         </Text>
         <Text variant="md600" color={colors.black_60}>
-          03:00 PM
+          {followUpDate ? getTime(followUpDate) : "---"}
         </Text>
       </Grid>
     </Flex>
   );
 };
 
-export default ModalForm;
+export default PatientDetailModal;

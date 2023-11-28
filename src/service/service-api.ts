@@ -126,6 +126,10 @@ export const api = {
     login: {
       post: "/user-management/refresh-token/",
     },
+    detail: {
+      get: "/patient/patient-call-lists-in-dashboard/",
+      getById: "/patient/patient-call-detail-in-dashboard/",
+    },
     basicProfile: "/patient/patient-basic-info/",
 
     doctorList: {
