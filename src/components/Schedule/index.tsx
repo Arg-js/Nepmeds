@@ -330,10 +330,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                   <Spinner />
                 </Center>
               ) : (
-                <AddEvent
-                  doctorAvailabilityData={doctorAvailabilityData}
-                  {...formMethods}
-                />
+                <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
               )}
             </form>
           </FormProvider>
