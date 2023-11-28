@@ -9,19 +9,19 @@ import {
   Spinner,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import {
   DeleteIcon,
   EditIcon,
   TimeSquareIcon,
-  svgs
+  svgs,
 } from "@nepMeds/assets/svgs";
 
 import {
   convertMinutesToHoursAndMinutes,
   convertTo12HourFormat,
-  getTimeDifferenceInMinutes
+  getTimeDifferenceInMinutes,
 } from "@nepMeds/helper/checkTimeRange";
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
@@ -30,7 +30,7 @@ import {
   getSingleAvailability,
   useDeleteAvailability,
   useDoctorAvailability,
-  useUpdateDoctorAvailability
+  useUpdateDoctorAvailability,
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -43,14 +43,14 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast/index";
 import {
   formatToDate,
   formatToDayOfWeek,
-  formatToMonth
+  formatToMonth,
 } from "@nepMeds/helper/dateTImeConverter";
 import HourTimeSlot from "@nepMeds/components/Schedule/HourTimeSlot";
 import MinuteTImeSlot from "@nepMeds/components/Schedule/MinuteTimeSlot";
 import {
   ListOfTimeObject,
   boxPositions,
-  minuteTime
+  minuteTime,
 } from "@nepMeds/components/Schedule/scheduleHelper";
 import Checkbox from "../Form/Checkbox";
 
@@ -61,7 +61,7 @@ interface IScheduleComponent {
 }
 
 const ScheduleComponent: React.FC<IScheduleComponent> = ({
-  selectedFullDate
+  selectedFullDate,
 }) => {
   const availabilityData = useDoctorAvailability().data;
   const [isSingleAvailabilityLoading, setIsSingleAvailabilityLoading] =
@@ -72,19 +72,19 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
   const {
     isOpen: isEditModalOpen,
     onOpen: onEditModalOpen,
-    onClose: onEditModalClose
+    onClose: onEditModalClose,
   } = useDisclosure();
 
   const {
     isOpen: isViewModalOpen,
     onOpen: onViewModalOpen,
-    onClose: onViewModalClose
+    onClose: onViewModalClose,
   } = useDisclosure();
 
   const {
     isOpen: isDeleteModalOpen,
     onClose: onCloseDeleteModal,
-    onOpen: onOpenDeleteModal
+    onOpen: onOpenDeleteModal,
   } = useDisclosure();
 
   const deleteDoctorAvailability = useDeleteAvailability();
@@ -98,10 +98,10 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     try {
       const response = await updateDoctorAvailability.mutateAsync({
         id: availabilityId,
-        data: data
+        data: data,
       });
       if (response) {
-        toastSuccess("Event has been added successfully");
+        toastSuccess("Availability has been updated successfully");
         onEditModalClose();
         onViewModalClose();
       }
@@ -154,7 +154,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
 
       await deleteDoctorAvailability.mutateAsync({
         is_all_related_child: checkbox ?? false,
-        id: availabilityId
+        id: availabilityId,
       });
 
       onCloseDeleteModal();
@@ -330,7 +330,10 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                   <Spinner />
                 </Center>
               ) : (
-                <AddEvent doctorAvailabilityData={doctorAvailabilityData} />
+                <AddEvent
+                  doctorAvailabilityData={doctorAvailabilityData}
+                  {...formMethods}
+                />
               )}
             </form>
           </FormProvider>

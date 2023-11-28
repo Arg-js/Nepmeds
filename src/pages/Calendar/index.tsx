@@ -7,7 +7,7 @@ import {
   Text,
   VStack,
   useDisclosure,
-  useOutsideClick
+  useOutsideClick,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import { CustomButton } from "@nepMeds/components/Button/Button";
@@ -17,7 +17,7 @@ import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 
 import {
   IGetDoctorAvailability,
-  useCreateDoctorAvailability
+  useCreateDoctorAvailability,
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -31,7 +31,7 @@ import {
   startOfMonth,
   // setDate,
   startOfWeek,
-  subMonths
+  subMonths,
 } from "date-fns";
 import { useRef, useState } from "react";
 import Calendar from "react-calendar";
@@ -40,7 +40,7 @@ import { AiOutlinePlus } from "react-icons/ai";
 import {
   IoCalendar,
   IoChevronBackCircleOutline,
-  IoChevronForwardCircleOutline
+  IoChevronForwardCircleOutline,
 } from "react-icons/io5";
 import "../../assets/styles/fontFamily.css";
 import "@nepMeds/assets/styles/reactCalender.css";
@@ -98,7 +98,7 @@ export default CalendarView;
 const CalenderWeekView = ({
   handleDateSelection,
   selectedBox,
-  setSelectedBox
+  setSelectedBox,
 }: {
   handleDateSelection: (
     date: string,
@@ -118,7 +118,7 @@ const CalenderWeekView = ({
   };
   useOutsideClick({
     ref: ref,
-    handler: () => setShowCalendar(false)
+    handler: () => setShowCalendar(false),
   });
   const handleCalendarChange = (value: Value) => {
     const date = new Date(value as Date);
@@ -143,7 +143,7 @@ const CalenderWeekView = ({
   };
   const weekDates = eachDayOfInterval({
     start: startOfWeekDate,
-    end: endOfWeekDate
+    end: endOfWeekDate,
   });
 
   const CalenderWeeklyDatas = weekDates.map(date => ({
@@ -151,7 +151,7 @@ const CalenderWeekView = ({
     date: format(date, "do MMMM"),
     fullDate: format(date, "yyyy-MM-dd"),
     year: format(date, "yyyy"),
-    isToday: isToday(date)
+    isToday: isToday(date),
   }));
 
   return (
@@ -322,7 +322,7 @@ const CalenderWeekView = ({
 const CalendarDailyDetailView = ({
   selectedDate,
   selectedDay,
-  selectedFullDate
+  selectedFullDate,
 }: {
   selectedDate: string;
   selectedDay: string;
@@ -332,7 +332,7 @@ const CalendarDailyDetailView = ({
   const {
     isOpen: isAddEventOpen,
     onClose,
-    onOpen: onAddEventOpen
+    onOpen: onAddEventOpen,
   } = useDisclosure();
 
   const onAddEventClose = () => {
@@ -344,7 +344,7 @@ const CalendarDailyDetailView = ({
   const onSubmit = async (data: IGetDoctorAvailability) => {
     try {
       await createDoctorAvailabilityInfo.mutateAsync(data);
-      toastSuccess("Event has been added successfully");
+      toastSuccess("Availability has been added successfully");
       onAddEventClose();
       formMethods.reset({});
     } catch (error) {
@@ -387,7 +387,7 @@ const CalendarDailyDetailView = ({
               onSubmit={formMethods.handleSubmit(onSubmit)}
               style={{ width: "100%" }}
             >
-              <AddEvent selectedFullDate={selectedFullDate} />
+              <AddEvent selectedFullDate={selectedFullDate} {...formMethods} />
             </form>
           </FormProvider>
         </VStack>
@@ -401,17 +401,17 @@ const CalendarDailyDetailView = ({
           "&::-webkit-scrollbar": {
             width: "0.2rem",
             height: "0.6rem",
-            position: "absolute"
+            position: "absolute",
           },
           "&::-webkit-scrollbar-track": {
             position: "absolute",
             background: "#fff",
-            opacity: 0.1
+            opacity: 0.1,
           },
           "&::-webkit-scrollbar-thumb": {
             background: "#e9d8fd",
-            borderRadius: 20
-          }
+            borderRadius: 20,
+          },
         }}
         className="inter-font-family"
       >
