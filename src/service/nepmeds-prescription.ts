@@ -121,12 +121,41 @@ export function useEditAdditionalInfo() {
 }
 
 // Prescription Drug Referral Information
+
+export interface Root {
+  patient_info: PatientInfo;
+  drug_referral: IPrescriptionDrugReferralInfo[];
+  additional_info: AdditionalInfo;
+  prescription_image: PrescriptionImage[];
+}
+
+export interface PatientInfo {
+  history: any;
+  examination: any;
+  investigation: any;
+  diagnosis: any;
+  advice: any;
+}
+
 export interface IPrescriptionDrugReferralInfo {
+  id?: string;
   medicine: string;
   dose: string;
   frequency: string;
   remarks: string;
-  id?: string;
+}
+
+export interface AdditionalInfo {
+  recommendation: any;
+  follow_up_date: any;
+  remarks: any;
+  doctor_consult: any;
+  follow_up: any;
+}
+
+export interface PrescriptionImage {
+  id: number;
+  image: string;
 }
 
 // Add / Edit Prescription Drug Referral Information

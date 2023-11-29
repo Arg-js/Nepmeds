@@ -24,6 +24,15 @@ interface IPatientDetailResp extends IParams {
   results: IPatientDetail[];
 }
 
+interface ITransactionDetail {
+  fee: number;
+  pidx: string;
+  status: string;
+  refunded: boolean;
+  total_amount: number;
+  transaction_id: string;
+  refid: string;
+}
 export interface IPatientDetailById {
   id: number;
   doctor: number;
@@ -40,7 +49,7 @@ export interface IPatientDetailById {
   payment_method: string;
   discount_applied: string;
   paid_amount: number;
-  transaction_detail: string;
+  transaction_detail: ITransactionDetail;
   payment_date: string;
   payment_time: string;
   follow_up_date_and_time: string;
@@ -90,9 +99,12 @@ const useGetPatientDetails = ({
 };
 
 const getPatientById = ({ appointment_id }: { appointment_id: string }) => {
-  return HttpClient.get(api.patient.detail.getById, {
-    params: { appointment_id },
-  });
+  return HttpClient.get<NepMedsResponse<IPatientDetailById>>(
+    api.patient.detail.getById,
+    {
+      params: { appointment_id },
+    }
+  );
 };
 const useGetPatientDetailsById = ({
   appointment_id,

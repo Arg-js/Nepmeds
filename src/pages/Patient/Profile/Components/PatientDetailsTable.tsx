@@ -46,6 +46,8 @@ const PatientDetailsTable = () => {
           {isLoading ? (
             <Spinner />
           ) : (
+            // Todo: find another way to solve this problem
+            // patientDetail: IPatientDetailById | undefined
             <PatientDetailModal patientDetail={patientDetail} />
           )}
         </ModalComponent>
