@@ -6,10 +6,13 @@ import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 
 const PaymentHistory = () => {
-  const { data: history, isLoading } = useGetPaymentHistoryDoctor();
   const [pageParams, setPageParams] = useState({
     pageIndex: 0,
-    pageSize: 10
+    pageSize: 10,
+  });
+  const { data: history, isLoading } = useGetPaymentHistoryDoctor({
+    page_no: pageParams.pageIndex + 1,
+    page_size: pageParams.pageSize,
   });
   return (
     <div>
@@ -22,17 +25,17 @@ const PaymentHistory = () => {
       <DataTable
         data={history?.results || []}
         columns={paymentHistoryColumn({
-          pageParams
+          pageParams,
         })}
         isLoading={isLoading}
         pagination={{
           manual: true,
           pageParams: {
             pageIndex: pageParams.pageIndex,
-            pageSize: pageParams.pageSize
+            pageSize: pageParams.pageSize,
           },
           pageCount: history?.page_count,
-          onChangePagination: setPageParams
+          onChangePagination: setPageParams,
         }}
       />
     </div>

@@ -22,9 +22,9 @@ const StatusBadge = ({
 }) => {
   const { status, badgeText } = customProps;
   const textObj = { ...defaultBadgeText, ...badgeText };
-
   const text = textObj[status as keyof typeof textObj];
   const textColor = defaultBadgeColor[status as keyof typeof defaultBadgeColor];
+
   return (
     <Badge
       colorScheme={textColor}

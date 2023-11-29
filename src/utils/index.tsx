@@ -5,7 +5,7 @@ export { queryStringGenerator } from "./queryStringGenerator";
 export {
   generateHoursTimeArray,
   generateTimeWith15MinutesInterval,
-  generateYearRange
+  generateYearRange,
 } from "./timeRange";
 export { checkNumberMatch } from "./validation";
 export { dateFormatter } from "./dateFormatter";

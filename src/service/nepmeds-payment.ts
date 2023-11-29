@@ -1,11 +1,14 @@
 import { IFilterSearch } from "@nepMeds/types/searchFilter";
 import { useMutation, useQuery, useQueryClient } from "react-query";
-import { generatePath } from "react-router-dom";
+import { generatePath, useNavigate } from "react-router-dom";
 import { useProfileData } from "../context";
 import { queryStringGenerator } from "../utils";
 import { IUser } from "./nepmeds-doctor-profile";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { toastFail, toastSuccess } from "./service-toast";
+import serverErrorResponse from "./serverErrorResponse";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 export interface IPaymentMethod {
   instant_amount: number;
@@ -467,17 +470,163 @@ export interface IPaymentHistory {
   payment_status: string;
   consulting_type: number;
   payment_type: string;
+  disbural_status: boolean;
 }
 
 // Payment History for Doctor
-const getPaymentHistoryDoctor = async () => {
+const getPaymentHistoryDoctor = async (qs: string) => {
   return await HttpClient.get<PaginatedResponse<IPaymentHistory>>(
-    api.transaction.payment_history
+    `${api.transaction.payment_history}?${qs}`
   );
 };
 
-export const useGetPaymentHistoryDoctor = () => {
-  return useQuery([api.transaction.payment_history], getPaymentHistoryDoctor, {
-    select: data => data.data.data,
+export const useGetPaymentHistoryDoctor = ({
+  page_no,
+  page_size,
+}: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
   });
+  return useQuery(
+    [api.transaction.payment_history, qs],
+    () => getPaymentHistoryDoctor(qs),
+    {
+      select: data => data.data.data,
+    }
+  );
+};
+
+export interface IPaymentHistoryAdmin {
+  id: number;
+  created_at: string;
+  doctor: string;
+  patient: string;
+  transation_amount: number;
+  disbursal_status: boolean;
+  disbursal_date: string;
+}
+
+//Payment History for Admin
+const getPaymentHistoryAdmin = async ({
+  page_no,
+  page_size,
+  search,
+}: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    search,
+  });
+  return await HttpClient.get<PaginatedResponse<IPaymentHistoryAdmin>>(
+    `${api.transaction.payment_history_admin}?${qs}`
+  );
+};
+
+export const useGetPaymentHistoryAdmin = ({
+  page_no,
+  page_size,
+  search,
+}: IFilterSearch) => {
+  const qs = queryStringGenerator({
+    page: page_no,
+    page_size,
+    search,
+  });
+  return useQuery(
+    [api.transaction.payment_history_admin, qs],
+    () =>
+      getPaymentHistoryAdmin({
+        page_no,
+        page_size,
+        search,
+      }),
+    {
+      select: data => data.data.data,
+    }
+  );
+};
+
+// Disburse Payment for Admin
+const disbursePayment = async (id: string) => {
+  return await HttpClient.patch(
+    generatePath(api.transaction.disburse_payment, { id })
+  );
+};
+
+export const useDisbursePayment = () => {
+  const queryClient = useQueryClient();
+  return useMutation(disbursePayment, {
+    onSuccess: data => {
+      queryClient.invalidateQueries([api.transaction.payment_history_admin]);
+      toastSuccess(data.data?.message);
+    },
+    onError: data => {
+      const err = serverErrorResponse(data);
+      toastFail(err);
+    },
+  });
+};
+
+export interface IPaymentHistoryDoctor {
+  id: number;
+  payment_id: string;
+  order_id: string;
+  appointments: {
+    id: number;
+    call_status: boolean;
+    availability_time: string;
+  }[];
+}
+
+// Get Payment history for admin by payment Id
+const getPaymentHistoryById = async (id: string) => {
+  return await HttpClient.get<NepMedsResponse<IPaymentHistoryDoctor>>(
+    generatePath(api.transaction.get_payment_history, { id })
+  );
+};
+
+export const useGetPaymentHistoryById = (id: string, enabled: boolean) => {
+  return useQuery(
+    [api.transaction.get_payment_history, id],
+    () => getPaymentHistoryById(id),
+    {
+      select: ({ data }) => data.data,
+      enabled,
+    }
+  );
+};
+
+export interface IPaymentStatus {
+  transaction_message: string;
+  transaction_detail?: {
+    transaction_id: string;
+    amount: number;
+    date: string;
+    payment_method: string;
+  };
+}
+
+// Get Payment Status
+const getPaymentStatus = async (id: string) => {
+  return await HttpClient.get<NepMedsResponse<IPaymentStatus>>(
+    generatePath(api.transaction.get_payment_status, { id })
+  );
+};
+
+export const useGetPaymentStatus = (id: string) => {
+  const navigate = useNavigate();
+  return useQuery(
+    [api.transaction.get_payment_status, id],
+    () => getPaymentStatus(id),
+    {
+      select: data => data.data.data,
+      enabled: !!id,
+      onError: data => {
+        const err = serverErrorResponse(data);
+        toastFail(err);
+        navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION);
+      },
+    }
+  );
 };

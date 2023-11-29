@@ -16,6 +16,8 @@ import advertisementBackground from "./advertisementBg.png";
 import doctorImage from "./doctorImage.png";
 import bannerPhoneImage from "./bannerPhoneImage.png";
 import bannerPhoneImageBack from "./bannerPhoneImageBack.png";
+import paymentSuccess from "./payment_success.png";
+import paymentFail from "./payment_fail.png";
 export const images = {
   logo,
   smallLogo,
@@ -35,4 +37,6 @@ export const images = {
   doctorImage,
   bannerPhoneImage,
   bannerPhoneImageBack,
+  paymentSuccess,
+  paymentFail,
 };

@@ -1,5 +1,5 @@
-import { Image } from "@chakra-ui/react";
-import TableActions from "@nepMeds/components/DataTable/TableActions";
+import { Image, Text } from "@chakra-ui/react";
+import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { ADMINAPPOINTMENT } from "@nepMeds/config/enum";
 import { IPaymentHistory } from "@nepMeds/service/nepmeds-payment";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
@@ -9,7 +9,7 @@ import { CellProps } from "react-table";
 
 export const paymentHistoryColumn = ({
   paymentHistory,
-  pageParams
+  pageParams,
 }: {
   paymentHistory?: IPaymentHistory;
   pageParams: {
@@ -23,7 +23,7 @@ export const paymentHistoryColumn = ({
         header: "S.N",
         accessorFn: (_: any, index: number) => {
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        }
+        },
       },
       { header: "Patient Name", accessorKey: "patient_name" },
       {
@@ -32,14 +32,14 @@ export const paymentHistoryColumn = ({
           return convertToTitleCase(
             ADMINAPPOINTMENT[
               row.original?.consulting_type as keyof typeof ADMINAPPOINTMENT
-            ].toString()
+            ]?.toString() ?? ""
           );
-        }
+        },
       },
       {
         header: "Payment Type",
         cell: ({
-          row
+          row,
         }: CellProps<{
           payment_type: string;
         }>) => {
@@ -50,16 +50,33 @@ export const paymentHistoryColumn = ({
               w={"70px"}
             />
           );
-        }
+        },
       },
-      { header: "Rate", accessorKey: "transation_amount" },
+      {
+        header: "Rate",
+        cell: ({ row }: CellProps<{ transation_amount: string }>) => {
+          return <Text>Rs. {row?.original?.transation_amount}</Text>;
+        },
+      },
 
       {
-        header: "Actions",
-        cell: () => {
-          return <TableActions onView={() => console.error("view")} />;
-        }
-      }
+        header: "Disbursal Status",
+        cell: ({
+          row: { original },
+        }: CellProps<{ disbursal_status: boolean }>) => {
+          return (
+            <StatusBadge
+              customProps={{
+                status: original?.disbursal_status ? "1" : "2",
+                badgeText: {
+                  "1": "Disbursed",
+                  "2": "Pending",
+                },
+              }}
+            />
+          );
+        },
+      },
     ],
     [paymentHistory]
   );

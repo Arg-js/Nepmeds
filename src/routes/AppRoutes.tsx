@@ -9,6 +9,7 @@ import {
 import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import AllPaymentAdmin from "@nepMeds/pages/Admin/Payment/AllPayment";
 
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
@@ -20,6 +21,9 @@ const Layout = lazy(() => import("@nepMeds/components/Layout"));
 const DoctorsList = lazy(() => import("@nepMeds/components/Table/Doctor"));
 const PaymentList = lazy(
   () => import("@nepMeds/components/Table/Payment/PaymentList")
+);
+const PaymentStatus = lazy(
+  () => import("@nepMeds/components/Payment/PaymentStatus")
 );
 const RateHistory = lazy(
   () => import("@nepMeds/components/Table/Payment/RateHistory")
@@ -147,6 +151,14 @@ const paientRoutes = [
         element: <VideoCall />,
       },
       {
+        path: NAVIGATION_ROUTES.PAYMENT_SUCCESS,
+        element: <PaymentStatus isSuccess={true} />,
+      },
+      {
+        path: NAVIGATION_ROUTES.PAYMENT_FAILURE,
+        element: <PaymentStatus isSuccess={false} />,
+      },
+      {
         path: NAVIGATION_ROUTES.PATIENT.FAQ,
         element: <PatientFAQ />,
       },
@@ -212,6 +224,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
+      },
+      {
+        path: NAVIGATION_ROUTES.ADMIN_PAYMENT,
+        element: <AllPaymentAdmin />,
       },
       {
         path: NAVIGATION_ROUTES.AMOUNT_HISTORY,

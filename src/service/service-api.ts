@@ -151,6 +151,10 @@ export const api = {
     khalti: "/transaction/khalti-initiate/",
     esewa: "/transaction/esewa-initiate/",
     payment_history: "/transaction/get-payment-history/",
+    payment_history_admin: "/transaction/get-payment-history-admin/",
+    disburse_payment: "/transaction/disbursal-payment-history-admin/:id/",
+    get_payment_history: "/transaction/get-payment-history-admin/:id/",
+    get_payment_status: "/transaction/get-payment-status/:id/",
   },
 
   faq: {

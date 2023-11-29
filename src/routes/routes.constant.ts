@@ -20,6 +20,7 @@ export const NAVIGATION_ROUTES = {
   PATIENTS: "/patients",
   USER_ROLE: "user-role",
   CONSULT_REQUEST: "/instant-consult-request",
+  ADMIN_PAYMENT: "/payment",
   FAQ: "/faq",
   DISCOUNT: "/discount",
 
@@ -51,4 +52,6 @@ export const NAVIGATION_ROUTES = {
   NO_MATCH: "*",
 
   PAYMENTS: "/payment",
+  PAYMENT_SUCCESS: "/payment-success",
+  PAYMENT_FAILURE: "/payment-failure",
 };

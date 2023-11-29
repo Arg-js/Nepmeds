@@ -7,4 +7,5 @@ export interface IFilterSearch {
   name?: string;
   specialization?: string;
   consulting_type?: string;
+  search?: string;
 }

@@ -46,7 +46,7 @@ const UnApprovedDoctor = () => {
           width={"100%"}
           mt={"30px"}
         >
-          <svgs.Work height={"auto"} width={"auto"} />
+          <svgs.Work />
         </Box>
         <Stack justifyContent={"center"} alignItems={"center"}>
           <Heading color={"red"}>
