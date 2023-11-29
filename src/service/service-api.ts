@@ -182,7 +182,7 @@ export const api = {
 
   followup: {
     get: "/doctor-consult/follow-up/",
-    patch: "/doctor-consult/follow-up/:id/",
+    patch: "/doctor-consult/follow-up-update/:id/",
   },
 
   videoCall: {
@@ -215,6 +215,7 @@ export const api = {
 
     getAllInfo: "/doctor-consult/get-patient-history-info/:id/",
   },
+  booked_availability: "/doctor-consult/booked-availability/",
   notification: {
     base: "/notification",
     sendCallNotification: function () {
