@@ -110,7 +110,7 @@ const Appointment = () => {
                     fontSize={"sm"}
                   >
                     <Text>Consultation Fee</Text>
-                    <Text>Rs.500</Text>
+                    <Text>Rs. {appointmentDetail?.doctor_rate}</Text>
                   </Flex>
                 </Stack>
               </CardBody>
@@ -160,7 +160,7 @@ const Appointment = () => {
                     fontSize={"sm"}
                   >
                     <Text>Amount Paid</Text>
-                    <Text>Rs.500</Text>
+                    <Text>Rs. {appointmentDetail?.doctor_rate}</Text>
                   </Flex>
                 </Stack>
               </CardBody>
