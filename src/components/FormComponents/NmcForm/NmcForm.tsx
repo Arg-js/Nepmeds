@@ -86,7 +86,7 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
               checkPictureSize(watch("nmc.nmc_file")?.[0] as File)
             }
             rules={{
-              required: "Cetficiate is required",
+              required: "Certificate is required",
             }}
             setValue={setValue}
           />

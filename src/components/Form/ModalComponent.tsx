@@ -14,7 +14,7 @@ import {
   ModalProps,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { ReactNode } from "react";
+import { MutableRefObject, ReactNode } from "react";
 import { ApproveButton, RejectButton } from "../Button/Button";
 
 const ModalComponent = ({
@@ -32,6 +32,7 @@ const ModalComponent = ({
   approve,
   reject,
   maxW,
+  modalRef,
   ...props
 }: IModalProps & ModalProps & ModalContentProps) => {
   return (
@@ -44,7 +45,7 @@ const ModalComponent = ({
         {...props}
       >
         <ModalOverlay />
-        <ModalContent borderRadius={"12px"} maxW={maxW}>
+        <ModalContent borderRadius={"12px"} maxW={maxW} ref={modalRef}>
           <ModalHeader>{heading}</ModalHeader>
           <ModalCloseButton />
           <Divider mb={3} />
@@ -132,6 +133,7 @@ interface IModalProps {
   approve?: ReactNode;
   reject?: ReactNode;
   alignment?: any;
+  modalRef?: MutableRefObject<null>;
 }
 
 export default ModalComponent;
