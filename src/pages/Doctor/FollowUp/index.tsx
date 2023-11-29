@@ -1,27 +1,34 @@
 import { Button, Grid, Text, useDisclosure } from "@chakra-ui/react";
+import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { columns } from "@nepMeds/components/DataTable/Columns/Doctor/FollowUp";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import SearchInput from "@nepMeds/components/Search";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
-import {
-  useCreateFollowUp,
-  useGetFollowUp,
-} from "@nepMeds/service/nepmeds-followup";
+import { useCreateFollowUp } from "@nepMeds/service/nepmeds-doctor-availability";
+import { useGetFollowUp } from "@nepMeds/service/nepmeds-followup";
 import { colors } from "@nepMeds/theme/colors";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import FollowUpForm from "./Component/followUpForm";
+import { FollowUpFormNew } from "./Component/FollowUpFromNew";
+import * as Yup from "yup";
 
 // Format date to fit to BE api
 const nextDayDate = formatDateToString(
   new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
 );
+
 const defaultValues = {
-  availabilityDate: nextDayDate,
+  from_time: "",
+  to_time: "",
+  date: nextDayDate,
 };
+
+const schema = Yup.object().shape({
+  from_time: Yup.string().required("This field is required"),
+});
 
 const FollowUp = () => {
   // PAGINATION PARAMS
@@ -35,15 +42,16 @@ const FollowUp = () => {
   const debouncedInputValue = useDebounce(searchValue, 500);
 
   // TODO: remove the null as unknown as number
-  const [selectedAvailability, setSelectedAvailability] = useState<number>(
-    null as unknown as number
-  );
+  // const [selectedAvailability, setSelectedAvailability] = useState<number>(
+  //   null as unknown as number
+  // );
 
   const formMethods = useForm({
     defaultValues,
+    resolver: yupResolver(schema),
   });
 
-  const { reset } = formMethods;
+  const { reset, handleSubmit } = formMethods;
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   // React Query
@@ -59,14 +67,14 @@ const FollowUp = () => {
 
   const onModalClose = () => {
     reset(defaultValues);
-    setSelectedAvailability(null as unknown as number);
+    // setSelectedAvailability(null as unknown as number);
     onClose();
   };
 
-  const onCreateFollowUp = async () => {
+  const onCreateFollowUp = async (data: typeof defaultValues) => {
     await createFollowUp({
-      id,
-      availability: selectedAvailability,
+      ...data,
+      id: +id,
     });
     onModalClose();
   };
@@ -82,18 +90,23 @@ const FollowUp = () => {
             <Button variant={"reset"} flex={1} onClick={onModalClose}>
               Cancel
             </Button>
-            <Button flex={1} onClick={onCreateFollowUp} isLoading={isLoading}>
+            <Button
+              flex={1}
+              onClick={handleSubmit(onCreateFollowUp)}
+              isLoading={isLoading}
+            >
               Add
             </Button>
           </>
         }
       >
         <FormProvider {...formMethods}>
-          <FollowUpForm
+          {/* <FollowUpForm
             formMethods={formMethods}
             selectedAvailability={selectedAvailability}
             setSelectedAvailability={setSelectedAvailability}
-          />
+          /> */}
+          <FollowUpFormNew formMethods={formMethods} />
         </FormProvider>
       </ModalComponent>
       <WrapperBox

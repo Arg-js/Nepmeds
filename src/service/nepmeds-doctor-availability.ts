@@ -4,14 +4,20 @@ import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import serverErrorResponse from "./serverErrorResponse";
+import { generatePath } from "react-router-dom";
 
-export interface IChildTimeFrames {
-  id: number;
+export interface IChildTimeFrames extends IDate {
   date: string;
+}
+
+export interface IDate extends ITime {
+  id: number;
+}
+
+export interface ITime {
   from_time: string;
   to_time: string;
 }
-
 export interface IGetDoctorAvailability {
   id?: 0;
   doctor?: 0;
@@ -124,5 +130,34 @@ export const useSetDoctorOnline = () => {
     onError: e => {
       toastFail(serverErrorResponse(e));
     },
+  });
+};
+
+const getBookedAvailability = async ({ date }: { date: string }) => {
+  const data = await HttpClient.get<NepMedsResponse<IDate[]>>(
+    api.booked_availability,
+    {
+      params: { date },
+    }
+  );
+  return data;
+};
+export const useGetBookedAvailability = () => {
+  return useMutation(getBookedAvailability, {
+    onError: e => toastFail(serverErrorResponse(e)),
+  });
+};
+
+const createFollowUp = (data: IChildTimeFrames) => {
+  return HttpClient.patch(
+    generatePath(api.followup.patch, { id: `${data.id}` }),
+    data
+  );
+};
+export const useCreateFollowUp = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createFollowUp, {
+    onSuccess: () => queryClient.invalidateQueries(api.followup.get),
+    onError: e => toastFail(serverErrorResponse(e)),
   });
 };

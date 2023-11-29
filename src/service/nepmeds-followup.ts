@@ -61,9 +61,6 @@ const useGetFollowUp = ({
     () => getFollowUp({ pageIndex, pageSize, search }),
     {
       select: ({ data }) => data?.data,
-      onSuccess: () => {
-        toastSuccess("Fetched Followup successfully");
-      },
       onError: e => toastFail(serverErrorResponse(e)),
     }
   );
