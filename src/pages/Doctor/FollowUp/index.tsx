@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { useCreateFollowUp } from "@nepMeds/service/nepmeds-doctor-availability";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -17,6 +16,7 @@ import { FollowUpFormNew } from "./Component/FollowUpFromNew";
 import * as Yup from "yup";
 import FollowUpTab from "./FollowUpTab";
 import { nextDayDate } from "@nepMeds/utils/time";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const defaultValues = {
   from_time: "",
@@ -101,9 +101,7 @@ const FollowUp = () => {
           <FollowUpFormNew formMethods={formMethods} />
         </FormProvider>
       </ModalComponent>
-      <WrapperBox
-        style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
-      >
+      <TableWrapper>
         <Tabs
           fontSize="md"
           fontFamily={"Inter"}
@@ -127,7 +125,7 @@ const FollowUp = () => {
             ))}
           </TabPanels>
         </Tabs>
-      </WrapperBox>
+      </TableWrapper>
     </>
   );
 };

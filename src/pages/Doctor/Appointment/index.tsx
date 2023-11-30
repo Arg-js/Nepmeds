@@ -1,29 +1,29 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs } from "@chakra-ui/react";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useState } from "react";
 import AppointmentTab from "@nepMeds/pages/Doctor/Appointment/AppointmentTab/index";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const appointmentTabConfig = [
   { type: 0, heading: "All" },
   {
     type: STATUSTYPE.pending,
-    heading: "Pending"
+    heading: "Pending",
   },
   {
     type: STATUSTYPE.approved,
-    heading: "Approved"
+    heading: "Approved",
   },
   {
     type: STATUSTYPE.rejected,
-    heading: "Rejected"
-  }
+    heading: "Rejected",
+  },
 ];
 
 const Appointment: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <Tabs
         // variant="unstyled"
         fontSize="md"
@@ -66,7 +66,7 @@ const Appointment: React.FC = () => {
           ))}
         </TabPanels>
       </Tabs>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

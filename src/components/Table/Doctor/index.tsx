@@ -6,7 +6,7 @@ import {
   TabPanels,
   Tabs,
 } from "@chakra-ui/react";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
@@ -31,7 +31,7 @@ const doctorApprovalTabConfig = [
 const DoctorsList: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <Tabs
         variant="unstyled"
         fontSize="md"
@@ -69,7 +69,7 @@ const DoctorsList: React.FC = () => {
           ))}
         </TabPanels>
       </Tabs>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 export default DoctorsList;

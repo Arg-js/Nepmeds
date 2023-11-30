@@ -1,15 +1,15 @@
 import { Flex, Grid, Image, Text } from "@chakra-ui/react";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
 import { usePatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details";
 import TokenService from "@nepMeds/service/service-token";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const PatientDetails = () => {
   const isAuthenticated = TokenService.isAuthenticated();
   const { data: patientData } = usePatientBasicProfile(isAuthenticated);
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <Flex direction={"column"} gap={5}>
         <Text fontWeight={600} fontSize={"md"}>
           General Information
@@ -99,7 +99,7 @@ const PatientDetails = () => {
           </Text> */}
         </Grid>
       </Flex>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

@@ -16,9 +16,9 @@ import { IoAdd } from "react-icons/io5";
 import Specializations from "./Specialist";
 import Symptoms from "./Symptoms";
 
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import CollegeTab from "./College";
 import HospitalTab from "./Hospital";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const MasterData = () => {
   const {
@@ -100,7 +100,7 @@ const MasterData = () => {
   ];
 
   return (
-    <WrapperBox margin="5" borderRadius="12px" py="4" px="9">
+    <TableWrapper>
       <Tabs
         variant="unstyled"
         fontSize="md"
@@ -168,7 +168,7 @@ const MasterData = () => {
           })}
         </TabPanels>
       </Tabs>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

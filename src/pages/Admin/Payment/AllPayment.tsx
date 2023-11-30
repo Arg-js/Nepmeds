@@ -16,7 +16,6 @@ import {
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import { IoFunnelOutline } from "react-icons/io5";
 import { svgs } from "@nepMeds/assets/svgs";
@@ -29,6 +28,7 @@ import {
 } from "@nepMeds/service/nepmeds-payment";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import SearchInput from "@nepMeds/components/Search";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const AllPaymentAdmin = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -81,7 +81,7 @@ const AllPaymentAdmin = () => {
   };
 
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <>
         <Flex justifyContent={"flex-end"}>
           <HStack>
@@ -226,7 +226,7 @@ const AllPaymentAdmin = () => {
           </Box>
         </ModalComponent>
       </>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

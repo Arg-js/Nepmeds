@@ -24,9 +24,9 @@ import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
 import "../../assets/styles/reactCalender.css";
 import PendingDocList from "@nepMeds/components/Table/Doctor/PendingDocList";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import PendingPayment from "../Table/Payment/PendingPayment";
 import { STATUSTYPE } from "@nepMeds/config/enum";
+import TableWrapper from "../TableWrapper";
 
 interface IDashboardData {
   title: string;
@@ -143,9 +143,7 @@ const DashboardBody = () => {
       {/* ADMIN */}
       {profileData?.data?.is_superuser && (
         // TODO: check the wrapper
-        <WrapperBox
-          style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
-        >
+        <TableWrapper>
           <>
             <Text variant="tableHeading">Pending Doctors</Text>
             <Tabs>
@@ -167,7 +165,7 @@ const DashboardBody = () => {
               </TabPanels>
             </Tabs>
           </>
-        </WrapperBox>
+        </TableWrapper>
       )}
     </Box>
   );
