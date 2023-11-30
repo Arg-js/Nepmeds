@@ -71,12 +71,7 @@ export const BasicInfoForm = ({
       }}
       gap={4}
     >
-      <GridItem
-        // rowSpan={isEditable ? 3 : 2}
-        rowSpan={2}
-        //  colSpan={isEditable ? 3 : 1}
-        colSpan={{ base: 4, md: 2, lg: 1 }}
-      >
+      <GridItem rowSpan={2} colSpan={{ base: 4, md: 2, lg: 1 }}>
         <ImageUpload
           SelectedImage={selectedImage}
           setSelectedImage={setSelectedImage}

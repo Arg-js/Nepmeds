@@ -136,7 +136,7 @@ export const Pagination = ({
               );
             })}
           </HStack>
-          {/* TODO: make generic Icon button */}
+          {/* TODORegistration: make generic Icon button */}
           <IconButton
             aria-label="Search services"
             size="sm"

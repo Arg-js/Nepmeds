@@ -1,8 +1,8 @@
 import { Grid, Spinner, Text, useDisclosure } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import SearchInput from "@nepMeds/components/Search";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
   useGetPatientDetails,
@@ -13,7 +13,6 @@ import { columns } from "../../PatientDetail";
 import PatientDetailModal from "./PatientDetailModal";
 
 const PatientDetailsTable = () => {
-  // TODO: api development in progress
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [searchValue, setSearchValue] = useState("");
   const [appointmentId, setAppointmentId] = useState("");
@@ -34,7 +33,7 @@ const PatientDetailsTable = () => {
   // REACT QUERY ENDS
 
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <>
         <ModalComponent
           heading={<>Detail View</>}
@@ -70,7 +69,7 @@ const PatientDetailsTable = () => {
           }}
         />
       </>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

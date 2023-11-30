@@ -16,7 +16,7 @@ import {
   Spinner,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -25,11 +25,11 @@ import { toastFail } from "@nepMeds/components/Toast";
 import {
   useAcademicFileRegister,
   useAcademicInfoRegisterProfile,
-  useUpdateAcademicInfo
+  useUpdateAcademicInfo,
 } from "@nepMeds/service/nepmeds-academic";
 import {
   IDoctorAcademicInfo,
-  IGetDoctorProfile
+  IGetDoctorProfile,
 } from "@nepMeds/service/nepmeds-doctor-profile";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { colors } from "@nepMeds/theme/colors";
@@ -44,14 +44,14 @@ interface handleFormUpdateProps {
 }
 
 const EditAcademic = ({
-  doctorProfileData
+  doctorProfileData,
 }: {
   doctorProfileData: IGetDoctorProfile;
 }) => {
   const {
     isOpen: isDocImgOpen,
     onClose: onDocImgClose,
-    onOpen: onDocImgOpen
+    onOpen: onDocImgOpen,
   } = useDisclosure();
 
   const [showEditForm, setShowEditForm] = useState(false);
@@ -84,9 +84,9 @@ const EditAcademic = ({
           doctor: doctorProfileData?.id ?? 0,
           academic_documents: createAcademicFileResponse.data.data.map(
             (file: string) => ({
-              file: file
+              file: file,
             })
-          )
+          ),
         };
 
         const partialData: Partial<{
@@ -145,16 +145,16 @@ const EditAcademic = ({
         height={"85dvh"}
         css={{
           "&::-webkit-scrollbar": {
-            width: "4px"
+            width: "4px",
           },
           "&::-webkit-scrollbar-track": {
-            width: "6px"
+            width: "6px",
           },
           "&::-webkit-scrollbar-thumb": {
             background: `${colors.light_gray}`,
-            borderRadius: "24px"
+            borderRadius: "24px",
           },
-          overflowY: "scroll"
+          overflowY: "scroll",
         }}
       >
         <Box
@@ -179,7 +179,7 @@ const EditAcademic = ({
               onClick={handleEditMode}
               cursor="pointer"
             >
-              {/* TODO: add button with icon */}
+              {/* TODORegistration: add button with icon */}
               <Button px={6} borderRadius="xl">
                 <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
                 <Text
@@ -250,16 +250,16 @@ const EditAcademic = ({
                     height={"60vh"}
                     css={{
                       "&::-webkit-scrollbar": {
-                        width: "4px"
+                        width: "4px",
                       },
                       "&::-webkit-scrollbar-track": {
-                        width: "6px"
+                        width: "6px",
                       },
                       "&::-webkit-scrollbar-thumb": {
                         background: `${colors.light_gray}`,
-                        borderRadius: "24px"
+                        borderRadius: "24px",
                       },
-                      overflowY: "scroll"
+                      overflowY: "scroll",
                     }}
                   >
                     <AcademicInfoForm doctorProfileData={doctorProfileData} />
@@ -456,7 +456,7 @@ const EditAcademic = ({
 
 const SubmitButton: React.FC<handleFormUpdateProps> = ({
   handleCloseForm,
-  isLoading
+  isLoading,
 }) => {
   return (
     <Grid
@@ -465,7 +465,7 @@ const SubmitButton: React.FC<handleFormUpdateProps> = ({
       className="test"
       style={{
         display: "flex",
-        justifyContent: "space-between"
+        justifyContent: "space-between",
       }}
       gap={2}
     >

@@ -127,8 +127,8 @@ export const api = {
       post: "/user-management/refresh-token/",
     },
     detail: {
-      get: "/patient/patient-call-lists-in-dashboard/",
-      getById: "/patient/patient-call-detail-in-dashboard/",
+      get: "/patient/patient-call-in-dashboard/",
+      getById: "/patient/patient-call-in-dashboard/:appointment_id/",
     },
     basicProfile: "/patient/patient-basic-info/",
 

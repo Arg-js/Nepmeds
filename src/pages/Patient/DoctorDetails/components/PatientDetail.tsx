@@ -113,7 +113,7 @@ const PatientDetail = ({
                 {doctorList?.medical_licence_number ?? "N/A"}
               </Text>
             </Flex>
-            <Text fontWeight={600} fontSize="sm" my="4px">
+            <Text variant={"small600"} my="4px">
               Selected Date
             </Text>
 

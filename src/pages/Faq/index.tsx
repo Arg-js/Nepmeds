@@ -12,7 +12,6 @@ import {
 } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import { IoAdd, IoFunnelOutline } from "react-icons/io5";
 import { svgs } from "@nepMeds/assets/svgs";
@@ -32,6 +31,7 @@ import { toastFail } from "@nepMeds/components/Toast";
 import { useEffect, useState } from "react";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import SkeletonControl from "@nepMeds/components/Loader";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 
 const schema = yup.object().shape({
   question: yup
@@ -119,7 +119,7 @@ const FAQ = () => {
   }, [id, faqById]);
 
   return (
-    <WrapperBox style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}>
+    <TableWrapper>
       <>
         {/* Table Header */}
         <Flex justifyContent={"end"} mb={5}>
@@ -280,7 +280,7 @@ const FAQ = () => {
           </Text>
         </ModalComponent>
       </>
-    </WrapperBox>
+    </TableWrapper>
   );
 };
 

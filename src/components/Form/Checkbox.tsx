@@ -3,7 +3,7 @@ import {
   FormErrorMessage,
   FormLabel,
   CheckboxProps,
-  Checkbox as ChakraCheckbox
+  Checkbox as ChakraCheckbox,
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import {
@@ -11,7 +11,7 @@ import {
   FieldValues,
   Controller,
   Control,
-  FieldPath
+  FieldPath,
 } from "react-hook-form";
 
 const Checkbox = <T extends FieldValues>({
@@ -37,8 +37,6 @@ const Checkbox = <T extends FieldValues>({
               m={2}
               color={colors.grey_50}
             >
-              {/* TODO: remove this after QA test pass */}
-              {/* {label}: */}
               {label}
             </FormLabel>
           )}
