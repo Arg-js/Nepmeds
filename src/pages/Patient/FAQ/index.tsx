@@ -1,4 +1,4 @@
-import { Box, Container, Flex, SimpleGrid, Text } from "@chakra-ui/react";
+import { Box, Grid, SimpleGrid, Text } from "@chakra-ui/react";
 import { BreadCrumb } from "@nepMeds/components/Breadcrumb";
 import SkeletonControl from "@nepMeds/components/Loader";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
@@ -47,7 +47,12 @@ const PatientFAQ = () => {
             route: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}`,
           }}
         />
-        <Container textAlign={"center"} py={14}>
+        <Grid
+          justifyContent={"center"}
+          justifyItems={"center"}
+          textAlign={"center"}
+          py={14}
+        >
           <Text fontSize={"sm"} fontWeight={600} color={colors.black_40}>
             FAQs
           </Text>
@@ -57,14 +62,11 @@ const PatientFAQ = () => {
           <Text fontSize={"md"} fontWeight={400} color={colors.black_40}>
             Have any questions? We&apos;re here to assist you.
           </Text>
-          {/* TODO: check why why it needed justifyContent to align it to center when no other elements needed this; */}
-          <Flex justifyContent={"center"} mt={4}>
-            <SearchInput
-              setSearchValue={setSearchValue}
-              setPageParams={setPageParams}
-            />
-          </Flex>
-        </Container>
+          <SearchInput
+            setSearchValue={setSearchValue}
+            setPageParams={setPageParams}
+          />
+        </Grid>
       </Box>
       {/* HEADER ENDS */}
 

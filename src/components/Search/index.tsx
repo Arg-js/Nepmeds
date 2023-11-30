@@ -1,12 +1,13 @@
 import { SearchIcon } from "@chakra-ui/icons";
-import { InputGroup, InputLeftElement, Input } from "@chakra-ui/react";
+import {
+  InputGroup,
+  InputLeftElement,
+  Input,
+  InputGroupProps,
+} from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import { Dispatch, SetStateAction } from "react";
-
-const SearchInput = ({
-  setSearchValue,
-  setPageParams,
-}: {
+interface ISearchInput extends InputGroupProps {
   setSearchValue: Dispatch<SetStateAction<string>>;
   setPageParams: Dispatch<
     SetStateAction<{
@@ -14,9 +15,14 @@ const SearchInput = ({
       pageSize: number;
     }>
   >;
-}) => {
+}
+const SearchInput = ({
+  setSearchValue,
+  setPageParams,
+  ...rest
+}: ISearchInput) => {
   return (
-    <InputGroup borderColor={colors.grey_dark} w={60}>
+    <InputGroup borderColor={colors.grey_dark} w={60} {...rest}>
       <InputLeftElement pointerEvents="none" h={10}>
         <SearchIcon color={colors.grey_dark} boxSize={6} />
       </InputLeftElement>

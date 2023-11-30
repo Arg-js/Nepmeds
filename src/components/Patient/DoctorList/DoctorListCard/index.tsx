@@ -2,7 +2,7 @@ import { Flex, Text, Card, Box, Image, Grid, GridItem } from "@chakra-ui/react";
 import {
   LocationIcon,
   PayementIcon,
-  StethoscopeIcon
+  StethoscopeIcon,
 } from "@nepMeds/assets/svgs";
 import { colors } from "@nepMeds/theme/colors";
 import doctorImage from "@nepMeds/assets/images/userAvatar.png";
@@ -16,7 +16,7 @@ import useWindowResize from "@nepMeds/hooks/useWindowResize";
 
 export enum Size {
   sm,
-  lg
+  lg,
 }
 
 const DoctorListCard: React.FC<{
@@ -32,18 +32,18 @@ const DoctorListCard: React.FC<{
         id: 1,
         icon: <LocationIcon />,
         // description: `${data.municipality}, ${data.district}`,
-        description: ` ${data.district}`
+        description: ` ${data.district}`,
       },
       {
         id: 2,
         icon: <StethoscopeIcon />,
-        description: data.experience && `${data.experience} years experience`
+        description: data.experience && `${data.experience} years experience`,
       },
       {
         id: 3,
         icon: <PayementIcon />,
-        description: `Rs. ${data.schedule_rate}`
-      }
+        description: `Rs. ${data.schedule_rate}`,
+      },
     ],
     [data]
   );
@@ -55,6 +55,7 @@ const DoctorListCard: React.FC<{
     setDoctorId && setDoctorId(data.id);
     scrollToTop();
     isSidebarCollapsed &&
+      // todo: generatePath can be used here?
       navigate(`${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${data.id}`);
   };
   return (
@@ -75,8 +76,8 @@ const DoctorListCard: React.FC<{
             boxShadow: `${
               size === Size.lg &&
               ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 0.5px`
-            }`
-          }
+            }`,
+          },
         }}
         variant={"elevated"}
         w={"full"}
