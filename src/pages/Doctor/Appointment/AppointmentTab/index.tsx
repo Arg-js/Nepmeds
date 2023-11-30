@@ -220,7 +220,6 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
         </Text>
       </HStack>
       {/* TABLE HEADER ENDS*/}
-
       <DataTable
         data={appointment?.results || []}
         columns={column({

@@ -1,23 +1,26 @@
-import { Button, Grid } from "@chakra-ui/react";
-import { useAddPrescription } from "./usePrescriptionForm";
+import { Button, Divider, Flex } from "@chakra-ui/react";
+import { useAddPrescription } from "../usePrescriptionForm";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import { colors } from "@nepMeds/theme/colors";
 import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
+import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 
 const PatientInfoForm = ({
   appointment_id,
   follow_up,
   patient_info,
+  setTabIndex,
 }: {
   // If appointment_id is undefined, then it is a follow up
   appointment_id?: string;
   follow_up?: string;
   patient_info: IPrescriptionInfo["patient_info"] | undefined;
+  setTabIndex: React.Dispatch<React.SetStateAction<number>>;
 }) => {
   const {
     onSubmitPatientInfo,
     patientInfoLoading,
-    patientInfoForm: { register, formState, handleSubmit, setValue },
+    patientInfoForm: { register, handleSubmit, setValue },
   } = useAddPrescription();
 
   if (patient_info?.id) setValue("id", patient_info?.id);
@@ -32,86 +35,58 @@ const PatientInfoForm = ({
         })
       )}
     >
-      <Grid templateColumns="repeat(3, 1fr)" gap={2} mb={2}>
+      <Flex gap={2} mb={2} flexDirection={"column"}>
         <FloatingLabelInput
           label="History"
           name="history"
-          required
           register={register}
           defaultValue={patient_info?.history}
-          style={{
-            background: colors.forminput,
-            border: "none",
-          }}
-          error={formState?.errors.history?.message}
-          rules={{
-            required: "History is required.",
-          }}
         />
         <FloatingLabelInput
           label="Examination"
           name="examination"
-          required
           defaultValue={patient_info?.examination}
           register={register}
-          style={{
-            background: colors.forminput,
-            border: "none",
-          }}
-          error={formState?.errors.examination?.message}
-          rules={{
-            required: "Examination is required.",
-          }}
         />
         <FloatingLabelInput
           label="Investigation"
           name="investigation"
-          required
           register={register}
           defaultValue={patient_info?.investigation}
-          style={{
-            background: colors.forminput,
-            border: "none",
-          }}
-          error={formState?.errors.investigation?.message}
-          rules={{
-            required: "Investigation is required.",
-          }}
         />
         <FloatingLabelInput
           label="Diagnosis"
           name="diagnosis"
-          required
           defaultValue={patient_info?.diagnosis}
           register={register}
-          style={{
-            background: colors.forminput,
-            border: "none",
-          }}
-          error={formState?.errors.diagnosis?.message}
-          rules={{
-            required: "Diagnosis is required.",
-          }}
         />
-        <FloatingLabelInput
+
+        <FloatinglabelTextArea
           label="Advice"
           name="advice"
-          required
           register={register}
           defaultValue={patient_info?.advice}
           style={{
             background: colors.forminput,
             border: "none",
           }}
-          error={formState?.errors.advice?.message}
-          rules={{
-            required: "Advice is required.",
-          }}
         />
-      </Grid>
-      <Button type="submit" isLoading={patientInfoLoading}>
-        Save
-      </Button>
+      </Flex>
+      <Divider />
+      <Flex justifyContent={"space-between"} alignItems={"center"} mt={1}>
+        <Button
+          variant={"outline"}
+          color={colors.primary}
+          borderColor={colors.primary}
+          fontWeight={"bold"}
+          onClick={() => setTabIndex(prev => prev + 1)}
+        >
+          Skip
+        </Button>
+        <Button type="submit" isLoading={patientInfoLoading}>
+          Next
+        </Button>
+      </Flex>
     </form>
   );
 };

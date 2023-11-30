@@ -7,10 +7,12 @@ const Participant = ({
   participant,
   usersInfo,
   isDoctor,
+  isPrescriptionOpen,
 }: {
   participant: LocalParticipant;
   isDoctor?: boolean;
   usersInfo: IRoomUsersInfo | undefined;
+  isPrescriptionOpen?: boolean;
 }) => {
   const [videoTracks, setVideoTracks] = useState<any>([]);
   const [audioTracks, setAudioTracks] = useState<any>([]);
@@ -98,7 +100,7 @@ const Participant = ({
     <Box>
       <AspectRatio
         ratio={16 / 9}
-        width={"45vw"}
+        width={isPrescriptionOpen ? "36vw" : "45vw"}
         borderRadius={"10px"}
         overflow={"hidden"}
       >
@@ -108,9 +110,13 @@ const Participant = ({
         <Text fontWeight={"bold"} fontSize={"xl"}>
           {isDoctor ? usersInfo?.doctor.doctor_name : usersInfo?.patient.name}
         </Text>
-        <Text fontWeight={"bold"} fontSize={"xl"}>
-          {isDoctor && usersInfo?.doctor.nmc_number}
-        </Text>
+
+        {isDoctor && (
+          <Box display={"flex"} gap={3} alignItems={"center"}>
+            <Text fontWeight={"bold"}>NMC Number:</Text>
+            <Text fontSize={"xl"}>{usersInfo?.doctor.nmc_number}</Text>
+          </Box>
+        )}
         <Box>
           {isDoctor &&
             usersInfo?.doctor.specialization.map(e => (

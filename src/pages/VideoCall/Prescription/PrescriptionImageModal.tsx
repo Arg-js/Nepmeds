@@ -1,12 +1,12 @@
 import {
-  Avatar,
+  Box,
   Button,
+  Card,
+  Divider,
   Flex,
-  HStack,
-  Text,
-  useDisclosure,
+  Heading,
+  IconButton,
 } from "@chakra-ui/react";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { FormProvider, useForm } from "react-hook-form";
 import { IRoomUsersInfo } from "@nepMeds/hooks/useVideoCall";
@@ -20,13 +20,20 @@ import {
 } from "@nepMeds/service/nepmeds-prescription";
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { CloseIcon } from "@chakra-ui/icons";
+
+function isBase64Image(str: string): boolean {
+  // Check if the string starts with a common Base64 image prefix
+  return str.startsWith("data:image/");
+}
 
 const PrescriptionImageModal = ({
-  userDetail,
+  onClose,
 }: {
-  userDetail: IRoomUsersInfo | undefined;
+  userDetail?: IRoomUsersInfo | undefined;
+  onClose: () => void;
 }) => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
+  // TODO: Remove any type with location type
   const { state }: any = useLocation();
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
     null
@@ -92,31 +99,27 @@ const PrescriptionImageModal = ({
   }, [data]);
 
   return (
-    <div>
-      <ModalComponent
-        maxW={"45%"}
-        heading={
-          <HStack>
-            <Avatar
-              name={userDetail?.patient?.name}
-              src={appendServerUrl(userDetail?.patient?.profile_picture ?? "")}
-            />
-            <Text>{userDetail?.patient?.name}</Text>
-          </HStack>
-        }
-        isOpen={isOpen}
-        onClose={onClose}
-        footer={
-          <Flex gap={3} justifyContent={"end"}>
-            <Button flex={1} onClick={onClose}>
-              Done
-            </Button>
-          </Flex>
-        }
+    <Card align="center" maxW="sm" minW={"sm"}>
+      <Flex
+        justifyContent={"space-between"}
+        px={5}
+        alignItems={"center"}
+        w={"100%"}
       >
+        <Heading size="sm">Add Prescription Image</Heading>
+        <IconButton
+          variant="ghost"
+          colorScheme="gray"
+          aria-label="See menu"
+          icon={<CloseIcon />}
+          onClick={onClose}
+        />
+      </Flex>
+      <Divider w="94%" />
+      <Box minW={"sm"} p={2}>
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
-            <Flex my={5} gap={4}>
+            <Flex my={5} gap={4} flexDirection={"column"} width={"100dw"}>
               <ImageUpload
                 SelectedImage={selectedImage}
                 setSelectedImage={setSelectedImage}
@@ -145,15 +148,20 @@ const PrescriptionImageModal = ({
               />
             </Flex>
 
-            <Button type="submit" isLoading={isLoading}>
+            <Button
+              type="submit"
+              isLoading={isLoading}
+              isDisabled={
+                !isBase64Image((selectedImage as string) ?? "") &&
+                !isBase64Image((secondImage as string) ?? "")
+              }
+            >
               Save
             </Button>
           </form>
         </FormProvider>
-      </ModalComponent>
-
-      <Button onClick={onOpen}>Upload Prescription</Button>
-    </div>
+      </Box>
+    </Card>
   );
 };
 

@@ -93,6 +93,7 @@ export function useAddPrescription() {
     doctor_consult?: string;
     follow_up?: string;
   }) => {
+    console.log(drugReferralInfoForm.getValues().drug);
     const res = await drugReferralInfo.mutateAsync({
       drug: drugReferralInfoForm.getValues().drug,
       doctor_consult: doctor_consult || null,
