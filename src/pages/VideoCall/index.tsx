@@ -1,4 +1,14 @@
-import { Badge, Box, Flex, Icon, Tooltip } from "@chakra-ui/react";
+import {
+  Badge,
+  Box,
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  Icon,
+  Text,
+  Tooltip,
+} from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import { toastInfo } from "@nepMeds/components/Toast";
@@ -10,7 +20,7 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import { formatSecondsToMinuteAndSeconds } from "@nepMeds/utils/time";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   MdCallEnd,
   MdFullscreen,
@@ -18,15 +28,18 @@ import {
   MdMicOff,
   MdVideocam,
   MdVideocamOff,
+  MdOutlineUpload,
+  MdAddCircleOutline,
+  MdOutlineRemoveRedEye,
 } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router-dom";
 import * as Video from "twilio-video";
 import Participant from "./Participants";
 import "./VideoPlayer.css";
 import RemoteParticipants from "./RemoteParticipant";
-import AddPrescriptionModal from "./Prescription/AddPrescriptionModal";
 import PrescriptionImageModal from "./Prescription/PrescriptionImageModal";
-import ViewPatientDetails from "./ViewPatientDetails";
+import ViewPatientDetails from "./Prescription/ViewPatientDetails";
+import PrescriptionModal from "./Prescription/PrescriptionModal";
 
 const VideoCall = () => {
   const {
@@ -37,6 +50,8 @@ const VideoCall = () => {
     getDoctorPatientInfo,
     getCallerTokenFollowUp,
   } = useVideoCallToken();
+
+  // TODO: Remove any type with location type
   const { state }: any = useLocation();
 
   const {
@@ -60,9 +75,39 @@ const VideoCall = () => {
   } = useVideoCallState({ state });
   const navigate = useNavigate();
   const second = useTimerFromTime(new Date(call_start_time));
+  const [modalOpen, setModalOpen] = useState({
+    prescriptionSet: false,
+    prescriptionImage: false,
+    prescriptionView: false,
+  });
 
   const isPatient = !state?.appointment_id && !state?.follow_up_id;
   const isDoctor = !!state?.appointment_id || !!state?.follow_up_id;
+
+  const closePrescriptionModal = () => {
+    setModalOpen({
+      prescriptionSet: false,
+      prescriptionImage: false,
+      prescriptionView: false,
+    });
+  };
+
+  const openPrescriptionModal = (modalType: "view" | "add" | "image") => {
+    // only make give state true and other state false
+    const initialState = {
+      prescriptionSet: false,
+      prescriptionImage: false,
+      prescriptionView: false,
+    };
+
+    if (modalType === "view") {
+      setModalOpen({ ...initialState, prescriptionView: true });
+    } else if (modalType === "add") {
+      setModalOpen({ ...initialState, prescriptionSet: true });
+    } else if (modalType === "image") {
+      setModalOpen({ ...initialState, prescriptionImage: true });
+    }
+  };
 
   const remoteParticipants = participants.map(
     (participant: Video.RemoteParticipant, i: number) => (
@@ -75,7 +120,8 @@ const VideoCall = () => {
         setIsVideoEnabled={setIsVideoEnabled}
         videoRef={videoRef}
         usersInfo={usersInfo}
-        isDoctor={!!state?.appointment_id}
+        isDoctor={isDoctor}
+        isPrescriptionOpen={Object.values(modalOpen).includes(true)}
       />
     )
   );
@@ -90,6 +136,12 @@ const VideoCall = () => {
   };
 
   const endCall = async (room: Video.Room) => {
+    // Need to set state as false because when ending call, the modal still remains open
+    setModalOpen({
+      prescriptionImage: false,
+      prescriptionSet: false,
+      prescriptionView: false,
+    });
     try {
       setRoom(null);
       setParticipants([]);
@@ -225,26 +277,38 @@ const VideoCall = () => {
       </Flex>
       {!room && <CenterLoader h="100vh" alignItems={"center"} />}
 
-      <Flex gap={5} justifyContent={"center"}>
+      <Flex
+        gap={5}
+        justifyContent={"center"}
+        maxW={Object.values(modalOpen).includes(true) ? "100%" : "90%"}
+        margin={"auto"}
+      >
         {room && (
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
             usersInfo={usersInfo}
             isDoctor={isDoctor}
+            isPrescriptionOpen={Object.values(modalOpen).includes(true)}
           />
         )}
         {remoteParticipants}
+        {modalOpen.prescriptionSet && (
+          <PrescriptionModal onClose={closePrescriptionModal} />
+        )}
+        {modalOpen.prescriptionImage && (
+          <PrescriptionImageModal
+            userDetail={usersInfo}
+            onClose={closePrescriptionModal}
+          />
+        )}
+        {modalOpen.prescriptionView && (
+          <ViewPatientDetails
+            userDetail={usersInfo}
+            onClose={closePrescriptionModal}
+          />
+        )}
       </Flex>
-      {remoteParticipants.length > 0 && isDoctor && (
-        <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
-          <AddPrescriptionModal />
-
-          <PrescriptionImageModal userDetail={usersInfo} />
-
-          <ViewPatientDetails userDetail={usersInfo} />
-        </Flex>
-      )}
 
       <Box marginTop={"auto"}>
         <Flex justifyContent={"center"} my={"3"}>
@@ -263,100 +327,150 @@ const VideoCall = () => {
         </Flex>
 
         {room && (
-          <Flex justifyContent={"center"} gap={6} mt={3}>
-            <Tooltip label="End Call" fontSize="md" hasArrow>
-              <span>
-                <Icon
-                  as={MdCallEnd}
-                  color={colors.white}
-                  fontSize={"50"}
-                  bg={"red"}
-                  borderRadius={"50%"}
-                  p={"2"}
-                  cursor={"pointer"}
-                  onClick={() => endCall(room)}
-                />
-              </span>
-            </Tooltip>
+          <Grid templateColumns={"repeat(3,1fr)"}>
+            <GridItem colStart={2}>
+              <Flex justifyContent={"center"} gap={6} mt={3}>
+                <Tooltip label="End Call" fontSize="md" hasArrow>
+                  <span>
+                    <Icon
+                      as={MdCallEnd}
+                      color={colors.white}
+                      fontSize={"50"}
+                      bg={"red"}
+                      borderRadius={"50%"}
+                      p={"2"}
+                      cursor={"pointer"}
+                      onClick={() => endCall(room)}
+                    />
+                  </span>
+                </Tooltip>
 
-            <Tooltip
-              label={showVideo ? "Turn Camera Off" : "Turn Camera On"}
-              fontSize="md"
-              hasArrow
-            >
-              <span>
-                <Icon
-                  cursor={"pointer"}
-                  as={showVideo ? MdVideocam : MdVideocamOff}
-                  color={colors.white}
-                  fontSize={"50"}
-                  bg={colors.primary_blue}
-                  borderRadius={"50%"}
-                  p={"2"}
-                  onClick={() => {
-                    if (showVideo) {
-                      room.localParticipant.videoTracks.forEach(publication => {
-                        publication.track.disable();
-                      });
-                      setShowVideo(false);
-                    } else {
-                      room.localParticipant.videoTracks.forEach(publication => {
-                        publication.track.enable();
-                      });
-                      setShowVideo(true);
-                    }
-                  }}
-                />
-              </span>
-            </Tooltip>
+                <Tooltip
+                  label={showVideo ? "Turn Camera Off" : "Turn Camera On"}
+                  fontSize="md"
+                  hasArrow
+                >
+                  <span>
+                    <Icon
+                      cursor={"pointer"}
+                      as={showVideo ? MdVideocam : MdVideocamOff}
+                      color={colors.white}
+                      fontSize={"50"}
+                      bg={colors.primary_blue}
+                      borderRadius={"50%"}
+                      p={"2"}
+                      onClick={() => {
+                        if (showVideo) {
+                          room.localParticipant.videoTracks.forEach(
+                            publication => {
+                              publication.track.disable();
+                            }
+                          );
+                          setShowVideo(false);
+                        } else {
+                          room.localParticipant.videoTracks.forEach(
+                            publication => {
+                              publication.track.enable();
+                            }
+                          );
+                          setShowVideo(true);
+                        }
+                      }}
+                    />
+                  </span>
+                </Tooltip>
 
-            <Tooltip
-              label={showAudio ? "Mute Audio" : "Unmute Audio"}
-              fontSize="md"
-              hasArrow
-            >
-              <span>
-                <Icon
-                  cursor={"pointer"}
-                  color={colors.white}
-                  fontSize={"50"}
-                  bg={colors.primary_blue}
-                  borderRadius={"50%"}
-                  p={"2"}
-                  as={showAudio ? MdMic : MdMicOff}
-                  onClick={() => {
-                    if (showAudio) {
-                      room.localParticipant.audioTracks.forEach(publication => {
-                        publication.track.disable();
-                      });
-                      setShowAudio(false);
-                    } else {
-                      room.localParticipant.audioTracks.forEach(publication => {
-                        publication.track.enable();
-                      });
-                      setShowAudio(true);
-                    }
-                  }}
-                />
-              </span>
-            </Tooltip>
+                <Tooltip
+                  label={showAudio ? "Mute Audio" : "Unmute Audio"}
+                  fontSize="md"
+                  hasArrow
+                >
+                  <span>
+                    <Icon
+                      cursor={"pointer"}
+                      color={colors.white}
+                      fontSize={"50"}
+                      bg={colors.primary_blue}
+                      borderRadius={"50%"}
+                      p={"2"}
+                      as={showAudio ? MdMic : MdMicOff}
+                      onClick={() => {
+                        if (showAudio) {
+                          room.localParticipant.audioTracks.forEach(
+                            publication => {
+                              publication.track.disable();
+                            }
+                          );
+                          setShowAudio(false);
+                        } else {
+                          room.localParticipant.audioTracks.forEach(
+                            publication => {
+                              publication.track.enable();
+                            }
+                          );
+                          setShowAudio(true);
+                        }
+                      }}
+                    />
+                  </span>
+                </Tooltip>
 
-            {remoteParticipants.length > 0 && (
-              <Tooltip label="Full Screen" fontSize="md" hasArrow>
-                <span>
-                  <Icon
-                    as={MdFullscreen}
-                    color={colors.black}
-                    fontSize={"50"}
-                    borderRadius={"50%"}
-                    p={"2"}
-                    cursor={"pointer"}
-                    onClick={toggleFullScreen}
-                  />
-                </span>
-              </Tooltip>
-            )}
-          </Flex>
+                {remoteParticipants.length > 0 && (
+                  <Tooltip label="Full Screen" fontSize="md" hasArrow>
+                    <span>
+                      <Icon
+                        as={MdFullscreen}
+                        color={colors.black}
+                        fontSize={"50"}
+                        borderRadius={"50%"}
+                        p={"2"}
+                        cursor={"pointer"}
+                        onClick={toggleFullScreen}
+                      />
+                    </span>
+                  </Tooltip>
+                )}
+              </Flex>
+            </GridItem>
+            <GridItem colStart={3}>
+              {remoteParticipants.length > 0 && isDoctor && (
+                <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
+                  <Button
+                    onClick={() => openPrescriptionModal("add")}
+                    backgroundColor={colors.primary}
+                    gap={2}
+                  >
+                    <MdOutlineUpload fontSize={"26"} />
+                    <Text fontSize={"md"} fontWeight={400}>
+                      Add Prescription
+                    </Text>
+                  </Button>
+
+                  <Button
+                    onClick={() => openPrescriptionModal("image")}
+                    backgroundColor={colors.primary}
+                    gap={2}
+                  >
+                    <MdAddCircleOutline fontSize={"26"} />
+                    <Text fontSize={"md"} fontWeight={400}>
+                      Add Prescription Image
+                    </Text>
+                  </Button>
+
+                  <Button
+                    onClick={() => openPrescriptionModal("view")}
+                    gap={2}
+                    variant={"primaryOutline"}
+                  >
+                    <MdOutlineRemoveRedEye fontSize={"26"} />
+                    <Text fontSize={"md"} fontWeight={400}>
+                      View Symptoms
+                    </Text>
+                  </Button>
+                </Flex>
+              )}
+            </GridItem>
+          </Grid>
         )}
       </Box>
     </Box>

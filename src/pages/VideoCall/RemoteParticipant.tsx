@@ -26,6 +26,7 @@ const RemoteParticipants = ({
   videoRef,
   usersInfo,
   isDoctor,
+  isPrescriptionOpen,
 }: {
   participant: RemoteParticipant;
   isAudioEnabled: boolean;
@@ -35,6 +36,7 @@ const RemoteParticipants = ({
   setIsVideoEnabled: Dispatch<SetStateAction<boolean>>;
   usersInfo: IRoomUsersInfo | undefined;
   isDoctor?: boolean;
+  isPrescriptionOpen?: boolean;
 }) => {
   const [videoTracks, setVideoTracks] = useState<any>([]);
   const [audioTracks, setAudioTracks] = useState<any>([]);
@@ -131,7 +133,7 @@ const RemoteParticipants = ({
     <Box>
       <AspectRatio
         ratio={16 / 9}
-        width={"45vw"}
+        width={isPrescriptionOpen ? "36vw" : "45vw"}
         borderRadius={"10px"}
         overflow={"hidden"}
       >
@@ -150,9 +152,13 @@ const RemoteParticipants = ({
         <Text fontWeight={"bold"} fontSize={"xl"}>
           {!isDoctor ? usersInfo?.doctor.doctor_name : usersInfo?.patient.name}
         </Text>
-        <Text fontWeight={"bold"} fontSize={"xl"}>
-          {!isDoctor && usersInfo?.doctor.nmc_number}
-        </Text>
+
+        {!isDoctor && (
+          <Box display={"flex"} gap={3} alignItems={"center"}>
+            <Text fontWeight={"bold"}>NMC Number:</Text>
+            <Text fontSize={"xl"}>{usersInfo?.doctor.nmc_number}</Text>
+          </Box>
+        )}
         <Box>
           {!isDoctor &&
             usersInfo?.doctor.specialization.map(e => (
