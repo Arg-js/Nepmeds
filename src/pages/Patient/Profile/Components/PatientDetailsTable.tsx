@@ -13,7 +13,6 @@ import { columns } from "../../PatientDetail";
 import PatientDetailModal from "./PatientDetailModal";
 
 const PatientDetailsTable = () => {
-  // TODO: api development in progress
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [searchValue, setSearchValue] = useState("");
   const [appointmentId, setAppointmentId] = useState("");

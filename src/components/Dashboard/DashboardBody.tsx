@@ -142,7 +142,6 @@ const DashboardBody = () => {
 
       {/* ADMIN */}
       {profileData?.data?.is_superuser && (
-        // TODO: check the wrapper
         <TableWrapper>
           <>
             <Text variant="tableHeading">Pending Doctors</Text>

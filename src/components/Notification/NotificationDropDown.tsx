@@ -31,7 +31,7 @@ const NotificationDropDown = ({
   };
 }) => {
   return (
-    <Box position="relative">
+    <Box>
       <Menu>
         {({ isOpen, onClose }) => (
           <>

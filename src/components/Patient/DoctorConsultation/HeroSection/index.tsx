@@ -16,31 +16,7 @@ const HeroSection = () => {
         Consult Nepal’s Top Doctors Online, Safely From Home.
       </Text>
 
-      {/* TODO */}
-      {/* <Flex width="auto" position={"relative"}>
-          <Image
-          borderRadius="full"
-          boxSize="42px"
-          src="https://bit.ly/dan-abramov"
-          alt="Dan Abramov"
-          position="absolute"
-          />
-          <Image
-          borderRadius="full"
-          boxSize="42px"
-          src="https://bit.ly/dan-abramov"
-          alt="Dan Abramov"
-          position="absolute"
-          left={"150px"}
-          />
-          <Image
-          borderRadius="full"
-          boxSize="42px"
-          src="https://bit.ly/dan-abramov"
-          alt="Dan Abramov"
-          position="absolute"
-          />
-        </Flex> */}
+      {/* TODO: remove the static data to actual image */}
       <Flex gap={"4"} alignItems={"center"}>
         <AvatarGroup size="md" max={2}>
           <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />

@@ -106,7 +106,6 @@ const PatientFAQ = () => {
       </WrapperBox>
       {/* BODY ENDS */}
       <PatientFooter />
-      {/* TODO: pagination  */}
     </>
   );
 };

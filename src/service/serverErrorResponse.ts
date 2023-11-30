@@ -3,8 +3,6 @@ export interface ServerError {
   success: boolean;
 }
 
-// TODO: handleError instead of serverErrorResponse
-
 const serverErrorResponse = (error: any, customMessage?: string) => {
   try {
     const e = error?.data?.errors[0];
