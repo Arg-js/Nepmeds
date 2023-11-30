@@ -55,11 +55,12 @@ const ViewPatientDetails = ({
           </Box>
         </Flex>
 
-        <Flex justifyContent={"start"} flexDirection={"column"}>
+        <Flex justifyContent={"start"} flexDirection={"column"} mb={3}>
           <Text fontWeight={"bold"}>Description:</Text>
           <Box>{userDetail?.description}</Box>
         </Flex>
 
+        <Text fontWeight={"bold"}>Old Reports:</Text>
         {userDetail?.old_reports && (
           <Image src={appendServerUrl(userDetail?.old_reports)} />
         )}

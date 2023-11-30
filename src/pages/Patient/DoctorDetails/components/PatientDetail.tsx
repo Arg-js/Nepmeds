@@ -230,6 +230,7 @@ const PatientDetail = ({
                   id={"image"}
                   name={"old_report_file"}
                   display={"none"}
+                  accept={"image/png, image/jpeg"}
                 />
                 <Flex>
                   <FormLabel
