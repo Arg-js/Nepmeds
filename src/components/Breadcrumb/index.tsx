@@ -26,9 +26,8 @@ export const BreadCrumb = ({ items, title }: IBreadCrumb) => {
             <BreadcrumbLink>
               <Flex alignItems={"center"}>
                 <Text
-                  fontWeight={600}
+                  variant={"small600"}
                   color={colors.primary}
-                  fontSize="sm"
                   onClick={() => navigate(title.route)}
                 >
                   {title?.name}

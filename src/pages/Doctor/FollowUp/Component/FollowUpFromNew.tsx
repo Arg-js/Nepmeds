@@ -9,13 +9,11 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-availability";
 import { colors } from "@nepMeds/theme/colors";
 import { generateTimeWith15MinutesInterval } from "@nepMeds/utils/index";
-import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
+import { currentDate } from "@nepMeds/utils/time";
 import { CellContext } from "@tanstack/react-table";
 import { useCallback, useMemo, useState } from "react";
 import { UseFormReturn } from "react-hook-form";
 import { CellProps } from "react-table";
-
-const currentDate = formatDateToString(new Date(new Date().getTime()));
 
 const FollowUpFormNew = ({
   formMethods,

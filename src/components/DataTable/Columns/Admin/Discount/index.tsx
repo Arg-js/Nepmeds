@@ -6,7 +6,7 @@ import { CellContext } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
 
-// Todo: try to memorize the column
+// Todo: try to memorize the columns
 export const columns = ({
   setIsStatus,
   setIsEdit,

@@ -6,16 +6,9 @@ import appointment from "@nepMeds/pages/Admin/Appointments/appointment";
 import AvailabilitySection from "@nepMeds/pages/Patient/DoctorDetails/components/AvailabilitySection";
 import { useGetAvailability } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { colors } from "@nepMeds/theme/colors";
-import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
+import { currentDate, nextDayDate } from "@nepMeds/utils/time";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReturn } from "react-hook-form";
-
-// Format date to fit to BE api
-const nextDayDate = formatDateToString(
-  new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-);
-// todo: make a utility
-const todayDate = formatDateToString(new Date(new Date().getTime()));
 
 const FollowUpForm = ({
   formMethods,
@@ -66,7 +59,7 @@ const FollowUpForm = ({
             }}
             // Restricts selection of past date in Date picker
             defaultValues={nextDayDate}
-            min={todayDate}
+            min={currentDate}
             required
           />
         </Box>

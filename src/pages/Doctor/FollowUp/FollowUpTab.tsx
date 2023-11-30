@@ -8,17 +8,11 @@ import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useCreateFollowUp } from "@nepMeds/service/nepmeds-doctor-availability";
 import { useGetFollowUp } from "@nepMeds/service/nepmeds-followup";
 import { colors } from "@nepMeds/theme/colors";
-import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FollowUpFormNew } from "./Component/FollowUpFromNew";
 import * as Yup from "yup";
-
-// Format date to fit to BE api
-const nextDayDate = formatDateToString(
-  new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-);
-const currentDate = formatDateToString(new Date(new Date().getTime()));
+import { currentDate, nextDayDate } from "@nepMeds/utils/time";
 
 const defaultValues = {
   from_time: "",

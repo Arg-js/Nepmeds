@@ -1,5 +1,6 @@
 import { calculateAge } from "@nepMeds/helper/checkTimeRange";
 import { format } from "date-fns";
+import { formatDateToString } from "./TimeConverter/timeConverter";
 
 export const formatSecondsToMinuteAndSeconds = (time: number) => {
   const minutes = Math.floor(time / 60);
@@ -53,3 +54,9 @@ export const splitDateTime = (datetimeString: string) => {
 
   return [datePart, `${hours}:${minutes}`];
 };
+
+export const nextDayDate = formatDateToString(
+  new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
+);
+// Format date to fit to BE api
+export const currentDate = formatDateToString(new Date(new Date().getTime()));

@@ -15,7 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { columns } from "@nepMeds/components/DataTable/Columns/Admin/Discount";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import TableWrapper from "@nepMeds/components/TableWrapper";
 import { toastSuccess } from "@nepMeds/components/Toast";
 import { AmountType } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
@@ -271,9 +271,7 @@ const Discount = () => {
       </ModalComponent>
       {/* Delete Modal Ends*/}
 
-      <WrapperBox
-        style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
-      >
+      <TableWrapper>
         <>
           {/* TODO: make a generic search component */}
           <Flex justifyContent={"space-between"} alignItems={"center"}>
@@ -319,7 +317,7 @@ const Discount = () => {
             }}
           />
         </>
-      </WrapperBox>
+      </TableWrapper>
     </>
   );
 };

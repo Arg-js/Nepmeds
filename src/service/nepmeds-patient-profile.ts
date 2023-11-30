@@ -1,5 +1,7 @@
 import { useQuery } from "react-query";
+import { generatePath } from "react-router-dom";
 import { IPaginationParams, IParams } from "./nepmeds-discount";
+import { Availability } from "./nepmeds-doctor-patient-appointment";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
@@ -52,7 +54,7 @@ export interface IPatientDetailById {
   transaction_detail: ITransactionDetail;
   payment_date: string;
   payment_time: string;
-  follow_up_date_and_time: string;
+  follow_up_details: Availability;
 }
 
 export interface Symptom {
@@ -100,10 +102,7 @@ const useGetPatientDetails = ({
 
 const getPatientById = ({ appointment_id }: { appointment_id: string }) => {
   return HttpClient.get<NepMedsResponse<IPatientDetailById>>(
-    api.patient.detail.getById,
-    {
-      params: { appointment_id },
-    }
+    generatePath(api.patient.detail.getById, { appointment_id })
   );
 };
 const useGetPatientDetailsById = ({
