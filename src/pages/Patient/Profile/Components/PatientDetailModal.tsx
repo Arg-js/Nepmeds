@@ -11,7 +11,6 @@ import { DownloadIcon } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { PAYMENTMODE } from "@nepMeds/config/enum";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
-import { getFullDate, getTime } from "@nepMeds/helper/dateTImeConverter";
 import { IPatientDetailById } from "@nepMeds/service/nepmeds-patient-profile";
 import { useGetAllPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 import { colors } from "@nepMeds/theme/colors";
@@ -27,13 +26,13 @@ const PatientDetailModal = ({
   patientDetail: IPatientDetailById | undefined;
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const followUpDate = patientDetail?.follow_up_date_and_time;
 
   // React Queries
   const { data: prescription } = useGetAllPrescriptionInfo({
     appointment_id: patientDetail?.id.toString() ?? "",
   });
   // React Queries Ends
+  const followUpDetails = patientDetail?.follow_up_details;
   const printableContentRef = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => printableContentRef.current,
@@ -92,6 +91,7 @@ const PatientDetailModal = ({
           </Text>
         </Grid>
         <Flex gap={3} cursor="pointer" onClick={onOpen}>
+          {/* TODO: make api call inside the modal */}
           <Text variant={"md500"} color={colors.main}>
             Download Prescriptions:
           </Text>
@@ -164,13 +164,17 @@ const PatientDetailModal = ({
           </Text>
           <Text variant="md600" color={colors.black_60}>
             {/* TODO: find another way to solve this tedious task */}
-            {followUpDate ? getFullDate(followUpDate) : "---"}
+            {followUpDetails?.date ?? "---"}
           </Text>
           <Text variant="sm400" color={colors.black_60}>
             Follow up Time:
           </Text>
           <Text variant="md600" color={colors.black_60}>
-            {followUpDate ? getTime(followUpDate) : "---"}
+            {followUpDetails
+              ? `${removeSeconds(followUpDetails.from_time)} - ${removeSeconds(
+                  followUpDetails.to_time
+                )}`
+              : "---"}
           </Text>
         </Grid>
       </Flex>
