@@ -33,7 +33,11 @@ const PrescriptionImageModal = ({
   );
   const [secondImage, setSecondImage] = useState<File | string | null>(null);
   const { mutateAsync, isLoading } = useUploadPrescriptionImage();
-  const { data } = useGetAllPrescriptionInfo(state?.appointment_id ?? "");
+  // Either appointment or follow up id is sent from Link State
+  const { data } = useGetAllPrescriptionInfo({
+    appointment_id: state?.appointment_id ?? "",
+    followup_id: state?.follow_up_id ?? "",
+  });
   const { mutate: deleteImageMutate } = useDeletePrescriptionImage();
 
   const formMethods = useForm({
@@ -57,6 +61,7 @@ const PrescriptionImageModal = ({
     mutateAsync({
       images: formData,
       doctor_consult_id: state?.appointment_id ?? "",
+      follow_up_id: state?.follow_up_id ?? "",
     }).then(() => {
       setSelectedImage(null);
       setSecondImage(null);

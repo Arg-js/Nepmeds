@@ -2,6 +2,8 @@ import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { CellProps } from "react-table";
 import { IPaginationParams } from "@nepMeds/service/nepmeds-faq";
 import { Dispatch, SetStateAction } from "react";
+import { Flex } from "@chakra-ui/react";
+import { CallState } from "@nepMeds/config/enum";
 
 export const columns = ({
   setId,
@@ -47,12 +49,32 @@ export const columns = ({
     { header: "Last Appointment Date", accessorKey: "last_appointment_date" },
     {
       header: "Actions",
-      cell: ({ row }: CellProps<{ id: string }>) => {
+      cell: ({
+        row,
+      }: CellProps<{
+        id: string;
+        is_callable: boolean;
+        caller_id: string;
+        receiver_id: string;
+      }>) => {
         const onEdit = () => {
           setId(row.original?.id);
           onOpen();
         };
-        return <TableActions onEdit={onEdit} />;
+        const state = {
+          caller_user: row.original?.caller_id,
+          receiver_user: row.original?.receiver_id,
+          follow_up_id: row.original?.id,
+          call_state: CallState.INITIATE,
+        };
+        return (
+          <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
+            <TableActions
+              onEdit={onEdit}
+              onCall={{ state, isCallable: row?.original?.is_callable }}
+            />
+          </Flex>
+        );
       },
     },
   ];

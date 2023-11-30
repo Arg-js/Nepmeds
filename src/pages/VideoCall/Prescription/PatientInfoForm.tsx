@@ -6,9 +6,12 @@ import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 
 const PatientInfoForm = ({
   appointment_id,
+  follow_up,
   patient_info,
 }: {
-  appointment_id: string;
+  // If appointment_id is undefined, then it is a follow up
+  appointment_id?: string;
+  follow_up?: string;
   patient_info: IPrescriptionInfo["patient_info"] | undefined;
 }) => {
   const {
@@ -23,8 +26,9 @@ const PatientInfoForm = ({
     <form
       onSubmit={handleSubmit(() =>
         onSubmitPatientInfo({
-          doctor_consult: appointment_id,
+          doctor_consult: appointment_id ?? "",
           id: patient_info?.id,
+          follow_up: follow_up ?? "",
         })
       )}
     >

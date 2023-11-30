@@ -194,6 +194,9 @@ export const api = {
     initiate: function () {
       return this.base + "/video-call-initiate/";
     },
+    followUpInitiate: function () {
+      return this.base + "/followup-call-initiate/";
+    },
     receive: function () {
       return this.base + "/video-call-receive/";
     },
@@ -217,7 +220,7 @@ export const api = {
     uploadImages: "/doctor-consult/upload-patient-prescription-image/",
     deleteImages: "/doctor-consult/delete-prescription-image/:id/",
 
-    getAllInfo: "/doctor-consult/get-patient-history-info/:id/",
+    getAllInfo: "/doctor-consult/get-patient-history-info/",
   },
   booked_availability: "/doctor-consult/booked-availability/",
   notification: {

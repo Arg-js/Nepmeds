@@ -16,6 +16,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import { columns } from "@nepMeds/components/DataTable/Columns/Admin/Discount";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import { toastSuccess } from "@nepMeds/components/Toast";
 import { AmountType } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import {
@@ -133,6 +134,7 @@ const Discount = () => {
           // Note: status will automatically set to active once new discount is created
           is_active: isStatus,
         });
+        toastSuccess("Discount updated successfully");
       } else {
         await createDiscount({ ...request, is_active: true });
       }
@@ -145,6 +147,7 @@ const Discount = () => {
   const onStatusUpdate = async () => {
     try {
       await updateDiscount({ id: +id, is_active: !isStatus });
+      toastSuccess("Discount status updated successfully");
       onModalClose();
     } catch (e) {
       console.error(e);
@@ -210,7 +213,7 @@ const Discount = () => {
       {/* ADD and Edit Modal */}
       <ModalComponent
         size={"xl"}
-        heading={<>{isEdit ? "Edit" : "Add"}</>}
+        heading={<>{isEdit ? "Edit" : "Create"}</>}
         isOpen={isOpen}
         onClose={onModalClose}
         footer={
@@ -224,7 +227,7 @@ const Discount = () => {
               isDisabled={isLoading}
               onClick={handleSubmit(onSubmitHandler)}
             >
-              {isEdit ? "Edit" : "Add"}
+              {isEdit ? "Edit" : "Create"}
             </Button>
           </>
         }
@@ -292,7 +295,7 @@ const Discount = () => {
                 />
               </InputGroup>
               <Button leftIcon={<IoAdd />} onClick={() => onOpen()}>
-                Create
+                Create Discount
               </Button>
             </HStack>
           </Flex>

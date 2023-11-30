@@ -5,8 +5,12 @@ import {
   RejectIcon,
   ViewIcon,
 } from "@nepMeds/assets/svgs";
+import { CallState } from "@nepMeds/config/enum";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
+import { MdCall } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const TableActions = ({
   onView,
@@ -15,6 +19,7 @@ const TableActions = ({
   onEdit,
   onDelete,
   onChangePassword,
+  onCall,
 }: ITableActions) => {
   return (
     <Flex alignItems={"center"} justifyContent="center">
@@ -115,6 +120,13 @@ const TableActions = ({
           />
         </Tooltip>
       )}
+      {!!onCall?.isCallable && (
+        <Tooltip hasArrow placement="top" label="Call">
+          <Link to={NAVIGATION_ROUTES.VIDEOCALL} state={onCall.state}>
+            <MdCall size={"20"} color={colors.green_button} />
+          </Link>
+        </Tooltip>
+      )}
     </Flex>
   );
 };
@@ -126,6 +138,16 @@ interface ITableActions {
   onEdit?: () => void;
   onDelete?: () => void;
   onChangePassword?: () => void;
+  onCall?: {
+    state: {
+      caller_user: string;
+      receiver_user: string;
+      follow_up_id?: string;
+      appointment_id?: string;
+      call_state: CallState;
+    };
+    isCallable: boolean;
+  };
 }
 
 export default TableActions;

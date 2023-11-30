@@ -41,6 +41,18 @@ const useVideoCall = () => {
     return response.data;
   };
 
+  const getCallerTokenFollowUp = async (data: {
+    caller_user: string;
+    receiver_user: string;
+    follow_up_id: string;
+    call_state: CallState;
+  }) => {
+    const response = await HttpClient.post<
+      NepMedsResponse<IVideoCallInitiateResponse>
+    >(api.videoCall.followUpInitiate(), data);
+    return response.data;
+  };
+
   const getReceiverToken = async (data: {
     receiver_user: string;
     room_name: string;
@@ -84,6 +96,7 @@ const useVideoCall = () => {
     rejectCall,
     sendCallNotification,
     getDoctorPatientInfo,
+    getCallerTokenFollowUp,
   };
 };
 

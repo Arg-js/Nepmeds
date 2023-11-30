@@ -128,54 +128,46 @@ const routes = [
 ];
 const paientRoutes = [
   {
-    path: NAVIGATION_ROUTES.LOGGEDIN,
-    children: [
-      {
-        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION,
-        element: <DoctorConsultation />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE,
-        element: <DoctorList />,
-      },
-      {
-        path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
-        element: <DoctorDetails />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
-        element: <PatientProfile />,
-      },
-      {
-        path: NAVIGATION_ROUTES.VIDEOCALL,
-        element: <VideoCall />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PAYMENT_SUCCESS,
-        element: <PaymentStatus isSuccess={true} />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PAYMENT_FAILURE,
-        element: <PaymentStatus isSuccess={false} />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PATIENT.FAQ,
-        element: <PatientFAQ />,
-      },
-      {
-        path: NAVIGATION_ROUTES.PATIENT_PROFILE,
-        element: <PatientProfile />,
-      },
-      {
-        path: NAVIGATION_ROUTES.NO_MATCH,
-        element: (
-          <Navigate
-            to={NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION}
-            replace
-          />
-        ),
-      },
-    ],
+    path: NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION,
+    element: <DoctorConsultation />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE,
+    element: <DoctorList />,
+  },
+  {
+    path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
+    element: <DoctorDetails />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PATIENT_PROFILE,
+    element: <PatientProfile />,
+  },
+  {
+    path: NAVIGATION_ROUTES.VIDEOCALL,
+    element: <VideoCall />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PAYMENT_SUCCESS,
+    element: <PaymentStatus isSuccess={true} />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PAYMENT_FAILURE,
+    element: <PaymentStatus isSuccess={false} />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PATIENT.FAQ,
+    element: <PatientFAQ />,
+  },
+  {
+    path: NAVIGATION_ROUTES.PATIENT_PROFILE,
+    element: <PatientProfile />,
+  },
+  {
+    path: NAVIGATION_ROUTES.NO_MATCH,
+    element: (
+      <Navigate to={NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION} replace />
+    ),
   },
 ];
 const adminRoutes = [

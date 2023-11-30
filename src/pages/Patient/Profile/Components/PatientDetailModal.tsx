@@ -30,9 +30,9 @@ const PatientDetailModal = ({
   const followUpDate = patientDetail?.follow_up_date_and_time;
 
   // React Queries
-  const { data: prescription } = useGetAllPrescriptionInfo(
-    patientDetail?.id.toString() ?? ""
-  );
+  const { data: prescription } = useGetAllPrescriptionInfo({
+    appointment_id: patientDetail?.id.toString() ?? "",
+  });
   // React Queries Ends
   const printableContentRef = useRef(null);
   const handlePrint = useReactToPrint({

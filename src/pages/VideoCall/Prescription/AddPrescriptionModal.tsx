@@ -23,7 +23,12 @@ import { colors } from "@nepMeds/theme/colors";
 const AddPrescriptionModal = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
   const { state }: any = useLocation();
-  const { data } = useGetAllPrescriptionInfo(state?.appointment_id ?? "");
+
+  // Either appointment or follow up id is sent from Link State
+  const { data } = useGetAllPrescriptionInfo({
+    appointment_id: state?.appointment_id ?? "",
+    followup_id: state?.follow_up_id ?? "",
+  });
 
   return (
     <div>
@@ -61,6 +66,7 @@ const AddPrescriptionModal = () => {
                 <PatientInfoForm
                   appointment_id={state?.appointment_id ?? ""}
                   patient_info={data?.patient_info}
+                  follow_up={state?.follow_up_id ?? ""}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -79,6 +85,7 @@ const AddPrescriptionModal = () => {
                 <DrugReferralForm
                   appointment_id={state?.appointment_id ?? ""}
                   drug_referral={data?.drug_referral}
+                  follow_up={state?.follow_up_id ?? ""}
                 />
               </AccordionPanel>
             </AccordionItem>
@@ -96,6 +103,7 @@ const AddPrescriptionModal = () => {
                 <AdditionalInfoForm
                   appointment_id={state?.appointment_id ?? ""}
                   additional_info={data?.additional_info}
+                  follow_up={state?.follow_up_id ?? ""}
                 />
               </AccordionPanel>
             </AccordionItem>
