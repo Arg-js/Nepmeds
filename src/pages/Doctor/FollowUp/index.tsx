@@ -11,17 +11,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { useCreateFollowUp } from "@nepMeds/service/nepmeds-doctor-availability";
-import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FollowUpFormNew } from "./Component/FollowUpFromNew";
 import * as Yup from "yup";
 import FollowUpTab from "./FollowUpTab";
-
-// Format date to fit to BE api
-const nextDayDate = formatDateToString(
-  new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
-);
+import { nextDayDate } from "@nepMeds/utils/time";
 
 const defaultValues = {
   from_time: "",
