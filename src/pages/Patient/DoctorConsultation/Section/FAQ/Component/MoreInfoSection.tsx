@@ -23,7 +23,7 @@ const MoreInfoSection = ({
           <Text fontWeight={600} fontSize={"md"} color={colors.white}>
             Still have questions?
           </Text>
-          <Text fontWeight={400} fontSize="sm" color={colors.white}>
+          <Text variant={"sm400"} color={colors.white}>
             {`Can’t find the answer you’re looking for? You can ${infoText}`}
           </Text>
         </Flex>
