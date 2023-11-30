@@ -14,6 +14,8 @@ import { UseFormReturn } from "react-hook-form";
 const nextDayDate = formatDateToString(
   new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
 );
+// todo: make a utility
+const todayDate = formatDateToString(new Date(new Date().getTime()));
 
 const FollowUpForm = ({
   formMethods,
@@ -63,7 +65,8 @@ const FollowUpForm = ({
               borderRadius: "9px",
             }}
             // Restricts selection of past date in Date picker
-            min={nextDayDate}
+            defaultValues={nextDayDate}
+            min={todayDate}
             required
           />
         </Box>

@@ -37,20 +37,24 @@ export function useAddPrescription() {
   const onSubmitPatientInfo = async ({
     doctor_consult,
     id,
+    follow_up,
   }: {
     doctor_consult: string;
     id?: string;
+    follow_up?: string;
   }) => {
     if (id) {
       updatePatientInfo.mutate({
         ...patientInfoForm.getValues(),
         doctor_consult,
+        follow_up,
         id,
       });
     } else {
       const res = await patientInfo.mutateAsync({
         ...patientInfoForm.getValues(),
         doctor_consult,
+        follow_up,
       });
       patientInfoForm.setValue("id", res.data.id);
     }
@@ -59,20 +63,24 @@ export function useAddPrescription() {
   const onSubmitAdditionalInfo = async ({
     doctor_consult,
     id,
+    follow_up,
   }: {
-    doctor_consult: string;
+    doctor_consult?: string;
+    follow_up?: string;
     id?: string;
   }) => {
     if (id) {
       editAdditionalInfo.mutate({
         ...additionalInfoForm.getValues(),
         doctor_consult,
+        follow_up,
         id,
       });
     } else {
       const res = await additionalInfo.mutateAsync({
         ...additionalInfoForm.getValues(),
         doctor_consult,
+        follow_up,
       });
       patientInfoForm.setValue("id", res.data.id);
     }
@@ -80,12 +88,15 @@ export function useAddPrescription() {
 
   const onSubmitDrugReferralInfo = async ({
     doctor_consult,
+    follow_up,
   }: {
-    doctor_consult: string;
+    doctor_consult?: string;
+    follow_up?: string;
   }) => {
     const res = await drugReferralInfo.mutateAsync({
       drug: drugReferralInfoForm.getValues().drug,
-      doctor_consult,
+      doctor_consult: doctor_consult || null,
+      follow_up: follow_up || null,
     });
 
     drugReferralInfoForm.setValue("drug", res.data);

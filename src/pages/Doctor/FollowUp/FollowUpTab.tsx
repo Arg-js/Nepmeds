@@ -1,27 +1,24 @@
-import {
-  Button,
-  Tab,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { DataTable } from "@nepMeds/components/DataTable";
+import { columns } from "@nepMeds/components/DataTable/Columns/Doctor/FollowUp";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import SearchInput from "@nepMeds/components/Search";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useCreateFollowUp } from "@nepMeds/service/nepmeds-doctor-availability";
+import { useGetFollowUp } from "@nepMeds/service/nepmeds-followup";
+import { colors } from "@nepMeds/theme/colors";
 import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { FollowUpFormNew } from "./Component/FollowUpFromNew";
 import * as Yup from "yup";
-import FollowUpTab from "./FollowUpTab";
 
 // Format date to fit to BE api
 const nextDayDate = formatDateToString(
   new Date(new Date().getTime() + 24 * 60 * 60 * 1000)
 );
+const currentDate = formatDateToString(new Date(new Date().getTime()));
 
 const defaultValues = {
   from_time: "",
@@ -33,15 +30,16 @@ const schema = Yup.object().shape({
   from_time: Yup.string().required("This field is required"),
 });
 
-const followUpTabConfig = [
-  { type: 0, heading: "All" },
-  { type: 1, heading: "Today" },
-];
+const FollowUp = ({ type }: { type: number }) => {
+  // PAGINATION PARAMS
+  const [pageParams, setPageParams] = useState({
+    pageIndex: 0,
+    pageSize: 10,
+  });
+  const [id, setId] = useState("");
+  const [searchValue, setSearchValue] = useState("");
 
-const FollowUp = () => {
-  const [id] = useState("");
-
-  const [tabIndex, setTabIndex] = useState(0);
+  const debouncedInputValue = useDebounce(searchValue, 500);
 
   // TODO: remove the null as unknown as number
   // const [selectedAvailability, setSelectedAvailability] = useState<number>(
@@ -54,11 +52,17 @@ const FollowUp = () => {
   });
 
   const { reset, handleSubmit } = formMethods;
-  const { isOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   // React Query
   // FETCH DOCTOR ID
   const { mutateAsync: createFollowUp, isLoading } = useCreateFollowUp();
+  const { data: followUP, isFetching } = useGetFollowUp({
+    pageSize: pageParams.pageSize,
+    pageIndex: pageParams.pageIndex,
+    search: debouncedInputValue,
+    date: type ? currentDate : "",
+  });
 
   // React Query Ends
 
@@ -106,33 +110,36 @@ const FollowUp = () => {
           <FollowUpFormNew formMethods={formMethods} />
         </FormProvider>
       </ModalComponent>
-      <WrapperBox
-        style={{ margin: "5", borderRadius: "12px", py: "4", px: "9" }}
-      >
-        <Tabs
-          fontSize="md"
-          fontFamily={"Inter"}
-          index={tabIndex}
-          onChange={index => {
-            setTabIndex(index);
+
+      <>
+        {/* Table Header */}
+        <Grid display={"flex"} justifyContent={"space-between"}>
+          <Text color={colors.blue_100} variant="tableHeading">
+            Follow Up
+          </Text>
+          <SearchInput
+            setSearchValue={setSearchValue}
+            setPageParams={setPageParams}
+          />
+        </Grid>
+
+        {/* Table Header Ends */}
+
+        <DataTable
+          data={followUP?.results || []}
+          columns={columns({ setId, onOpen, pageParams })}
+          isLoading={isFetching}
+          pagination={{
+            manual: true,
+            pageParams: {
+              pageIndex: pageParams.pageIndex,
+              pageSize: pageParams.pageSize,
+            },
+            pageCount: followUP?.page_count,
+            onChangePagination: setPageParams,
           }}
-        >
-          <TabList borderBottom={"none"}>
-            {followUpTabConfig.map(({ heading }) => (
-              <Tab fontWeight="400" key={heading}>
-                {heading}
-              </Tab>
-            ))}
-          </TabList>
-          <TabPanels>
-            {followUpTabConfig.map(({ heading, type }, index) => (
-              <TabPanel px={0} pb={0} pt={6} key={heading}>
-                {tabIndex === index && <FollowUpTab type={type} />}
-              </TabPanel>
-            ))}
-          </TabPanels>
-        </Tabs>
-      </WrapperBox>
+        />
+      </>
     </>
   );
 };

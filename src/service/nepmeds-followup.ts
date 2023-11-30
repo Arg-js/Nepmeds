@@ -1,7 +1,6 @@
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
-import { IPaginationParams } from "./nepmeds-faq";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
@@ -38,12 +37,23 @@ interface IFollowUpReqBody {
   id: string;
 }
 
-const getFollowUp = ({ pageIndex, pageSize, search }: IPaginationParams) => {
+const getFollowUp = ({
+  pageIndex,
+  pageSize,
+  search,
+  date,
+}: {
+  pageIndex: number;
+  pageSize: number;
+  search: string;
+  date: string;
+}) => {
   return HttpClient<NepMedsResponse<IFollowUpResBody>>(api.followup.get, {
     params: {
       page: pageIndex + 1,
       page_size: pageSize,
       search,
+      date,
     },
   });
 };
@@ -51,14 +61,16 @@ const useGetFollowUp = ({
   pageIndex,
   pageSize,
   search,
+  date,
 }: {
   pageIndex: number;
   pageSize: number;
   search: string;
+  date: string;
 }) => {
   return useQuery(
-    [api.followup.get, pageIndex, pageSize, search],
-    () => getFollowUp({ pageIndex, pageSize, search }),
+    [api.followup.get, pageIndex, pageSize, search, date],
+    () => getFollowUp({ pageIndex, pageSize, search, date }),
     {
       select: ({ data }) => data?.data,
       onError: e => toastFail(serverErrorResponse(e)),

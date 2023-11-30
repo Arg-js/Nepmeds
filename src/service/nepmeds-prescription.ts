@@ -5,6 +5,7 @@ import { toastFail, toastSuccess } from "./service-toast";
 import serverErrorResponse from "./serverErrorResponse";
 import { generatePath } from "react-router-dom";
 import { objectToFormData } from "@nepMeds/utils/toFormData";
+import { queryStringGenerator } from "../utils";
 
 // Prescription Patient Info
 export interface IPrescriptionPatientInfo {
@@ -15,6 +16,7 @@ export interface IPrescriptionPatientInfo {
   advice: string;
   doctor_consult?: string;
   id?: string;
+  follow_up?: string;
 }
 
 const addPatientInfoPrescription = async (data: IPrescriptionPatientInfo) => {
@@ -69,6 +71,7 @@ export interface IPrescriptionAdditionalInfo {
   remarks: string;
   doctor_consult?: string;
   id?: string;
+  follow_up?: string;
 }
 
 const addAdditionalInfoPrescription = async (
@@ -161,13 +164,15 @@ export interface PrescriptionImage {
 // Add / Edit Prescription Drug Referral Information
 const addDrugReferralPrescription = async (data: {
   drug: IPrescriptionDrugReferralInfo[];
-  doctor_consult: string;
+  doctor_consult?: string | null;
+  follow_up?: string | null;
 }) => {
   const response = await HttpClient.patch<
     NepMedsResponse<IPrescriptionDrugReferralInfo[]>
   >(api.prescription.addDrugReferralInfo, {
     drugs: data.drug,
     doctor_consult: data.doctor_consult,
+    follow_up: data.follow_up,
   });
   return response.data;
 };
@@ -221,19 +226,36 @@ export interface IPrescriptionInfo {
 }
 
 // Get All Prescription Info
-const getAllPrescriptionInfo = async (id: string) => {
+const getAllPrescriptionInfo = async ({
+  appointment_id,
+  followup_id,
+}: {
+  appointment_id?: string;
+  followup_id?: string;
+}) => {
+  const qs = queryStringGenerator({
+    appointment_id,
+    follow_up_id: followup_id,
+  });
   const response = await HttpClient.get<NepMedsResponse<IPrescriptionInfo>>(
-    generatePath(api.prescription.getAllInfo, { id })
+    `${api.prescription.getAllInfo}?${qs}`
   );
   return response.data;
 };
 
-export function useGetAllPrescriptionInfo(id: string) {
+export function useGetAllPrescriptionInfo({
+  appointment_id,
+  followup_id,
+}: {
+  appointment_id?: string;
+  followup_id?: string;
+}) {
   return useQuery(
-    ["prescriptionPatientInfo", id],
-    () => getAllPrescriptionInfo(id),
+    ["prescriptionPatientInfo", followup_id, appointment_id],
+    () => getAllPrescriptionInfo({ appointment_id, followup_id }),
     {
       select: data => data.data,
+      enabled: !!appointment_id || !!followup_id,
     }
   );
 }

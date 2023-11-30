@@ -15,9 +15,11 @@ import { AddIcon } from "@chakra-ui/icons";
 const DrugReferralForm = ({
   appointment_id,
   drug_referral,
+  follow_up,
 }: {
-  appointment_id: string;
+  appointment_id?: string;
   drug_referral: IPrescriptionInfo["drug_referral"] | undefined;
+  follow_up?: string;
 }) => {
   const {
     drugReferralInfoForm: { handleSubmit, register, control, setValue },
@@ -46,7 +48,8 @@ const DrugReferralForm = ({
     <form
       onSubmit={handleSubmit(() =>
         onSubmit({
-          doctor_consult: appointment_id,
+          doctor_consult: appointment_id ?? "",
+          follow_up: follow_up ?? "",
         })
       )}
     >

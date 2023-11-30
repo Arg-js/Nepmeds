@@ -18,7 +18,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { HamburgerMenuIcon, SignInIcon, svgs } from "@nepMeds/assets/svgs";
+import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { toastFail } from "@nepMeds/components/Toast";
@@ -42,6 +42,7 @@ import ring from "@nepMeds/assets/sound/ring.mp3";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { useGetAllNotification } from "@nepMeds/service/nepmeds-notification";
 import NotificationDropDown from "@nepMeds/components/Notification/NotificationDropDown";
+import { images } from "@nepMeds/assets/images";
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -88,6 +89,7 @@ const Header: React.FC<{
       channel.bind(
         `${PUSHER_SUBSCRIBE_EVENT}-${data?.user}`,
         (data: IPusherNotification) => {
+          console.log({ data });
           data?.notification_type.toString() ===
             NotificationType.VIDEOCALL.toString() && callNotification(data);
           setUnReadNotification(true);
@@ -127,10 +129,10 @@ const Header: React.FC<{
         <ModalComponent
           closeOnOverlayClick={false}
           heading={
-            <Flex alignItems={"center"} gap={4}>
-              <svgs.logo_small />
-              Doctor&apos;s Call
-            </Flex>
+            <HStack>
+              <Image src={images.smallLogo} width={"30px"} />
+              <Text>Doctor&apos;s Call</Text>
+            </HStack>
           }
           isOpen={isOpen}
           onClose={modalClose}

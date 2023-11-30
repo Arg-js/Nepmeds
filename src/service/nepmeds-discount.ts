@@ -105,7 +105,6 @@ const useUpdateDiscount = () => {
   const queryClient = useQueryClient();
   return useMutation(updateDiscount, {
     onSuccess: () => {
-      toastSuccess("Updated discount successfully");
       queryClient.invalidateQueries(api.discount.get);
     },
     onError: e => toastFail(serverErrorResponse(e)),

@@ -8,8 +8,10 @@ import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 const AdditionalInfoForm = ({
   appointment_id,
   additional_info,
+  follow_up,
 }: {
-  appointment_id: string;
+  appointment_id?: string;
+  follow_up?: string;
 
   additional_info: IPrescriptionInfo["additional_info"] | undefined;
 }) => {
@@ -25,7 +27,8 @@ const AdditionalInfoForm = ({
     <form
       onSubmit={handleSubmit(() =>
         onSubmit({
-          doctor_consult: appointment_id,
+          doctor_consult: appointment_id ?? "",
+          follow_up: follow_up ?? "",
           id: additional_info?.id,
         })
       )}

@@ -103,6 +103,7 @@ const Navbar = ({
                 // Since there is a validation check to confirm whether the data represents a doctor,
                 // it is safe to assume that a doctor object will always be present in the response body.
                 // Therefore, using the following assertion (!) is secure:
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                 defaultChecked={profileData.data.doctor!.is_online}
                 onChange={e => {
                   setDoctorOnline({ is_online: e.target.checked });

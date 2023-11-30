@@ -35,6 +35,7 @@ const VideoCall = () => {
     endCallForUsers,
     sendCallNotification,
     getDoctorPatientInfo,
+    getCallerTokenFollowUp,
   } = useVideoCallToken();
   const { state }: any = useLocation();
 
@@ -59,6 +60,9 @@ const VideoCall = () => {
   } = useVideoCallState({ state });
   const navigate = useNavigate();
   const second = useTimerFromTime(new Date(call_start_time));
+
+  const isPatient = !state?.appointment_id && !state?.follow_up_id;
+  const isDoctor = !!state?.appointment_id || !!state?.follow_up_id;
 
   const remoteParticipants = participants.map(
     (participant: Video.RemoteParticipant, i: number) => (
@@ -102,18 +106,25 @@ const VideoCall = () => {
   const apiCall = async () => {
     try {
       let room_detail = state?.room_name;
-      if (state?.appointment_id) {
+
+      if (state?.appointment_id && !state?.follow_up_id) {
         const res = await getCallerToken({
           ...state,
         });
 
         setRoomDetail(() => res.data);
         room_detail = res.data.room_name;
-      } else {
+      } else if (isPatient) {
         const res = await getReceiverToken({
           receiver_user: state?.receiver_user,
           room_name: room_name,
           call_state: CallState.ACCEPTED,
+        });
+        setRoomDetail(() => res.data);
+        room_detail = res.data.room_name;
+      } else if (state?.follow_up_id && !state?.appointment_id) {
+        const res = await getCallerTokenFollowUp({
+          ...state,
         });
         setRoomDetail(() => res.data);
         room_detail = res.data.room_name;
@@ -156,10 +167,10 @@ const VideoCall = () => {
   }, []);
 
   useEffect(() => {
-    if (room && state?.appointment_id) {
+    if (room && (state?.appointment_id || state?.follow_up_id)) {
       sendNotification();
     }
-  }, [room, state?.appointment_id]);
+  }, [room, state?.appointment_id, state?.follow_up_id]);
 
   useEffect(() => {
     if (second === 899 && room && state?.appointment_id) {
@@ -220,20 +231,18 @@ const VideoCall = () => {
             key={room.localParticipant.sid}
             participant={room.localParticipant}
             usersInfo={usersInfo}
-            isDoctor={!!state?.appointment_id}
+            isDoctor={isDoctor}
           />
         )}
         {remoteParticipants}
       </Flex>
-      {remoteParticipants.length > 0 && (
+      {remoteParticipants.length > 0 && isDoctor && (
         <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
-          {!!state?.appointment_id && <AddPrescriptionModal />}
-          {!!state?.appointment_id && (
-            <PrescriptionImageModal userDetail={usersInfo} />
-          )}
-          {!!state?.appointment_id && (
-            <ViewPatientDetails userDetail={usersInfo} />
-          )}
+          <AddPrescriptionModal />
+
+          <PrescriptionImageModal userDetail={usersInfo} />
+
+          <ViewPatientDetails userDetail={usersInfo} />
         </Flex>
       )}
 

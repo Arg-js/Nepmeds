@@ -1,4 +1,3 @@
-import { Badge } from "@chakra-ui/react";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { ADMINAPPOINTMENT, CallState } from "@nepMeds/config/enum";
@@ -81,24 +80,15 @@ export const columns = ({
     {
       header: "Follow Up",
       cell: ({ row }: CellProps<{ follow_up: boolean }>) => (
-        // TODO: alternative to this
-        <Badge
-          p={1}
-          borderRadius={20}
-          fontSize={11}
-          w={15}
-          colorScheme={row.original?.follow_up ? "green" : "red"}
-          textAlign="center"
-          textTransform="capitalize"
-        >
-          {row.original?.follow_up ? "Yes" : "No"}
-        </Badge>
-        // <StatusBadge
-        //   customProps={{
-        //     status: row.original?.followUp,
-        //     badgeText: { true: "YES", false: "NO" },
-        //   }}
-        // />
+        <StatusBadge
+          customProps={{
+            status: row.original?.follow_up ? "1" : "3",
+            badgeText: {
+              "1": "Yes",
+              "3": "No",
+            },
+          }}
+        />
       ),
     },
     {
