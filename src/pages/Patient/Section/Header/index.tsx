@@ -89,7 +89,6 @@ const Header: React.FC<{
       channel.bind(
         `${PUSHER_SUBSCRIBE_EVENT}-${data?.user}`,
         (data: IPusherNotification) => {
-          console.log({ data });
           data?.notification_type.toString() ===
             NotificationType.VIDEOCALL.toString() && callNotification(data);
           setUnReadNotification(true);

@@ -6,3 +6,8 @@ export const getImageUrl = (filePath: string) =>
 // Accepts with '/' in the beginning e.g. '/media/doctor_profile/doctor_profile_1.jpg'
 export const appendServerUrl = (filePath: string) =>
   `${normalURL.replace("/backend", "")}${filePath}`;
+
+export const openLinkInNewTab = (url: string) => {
+  const newTab = window.open(url, "_blank", "noopener,noreferrer");
+  if (newTab) newTab.opener = null;
+};

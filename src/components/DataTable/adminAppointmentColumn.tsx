@@ -9,6 +9,8 @@ import { CellContext, PaginationState } from "@tanstack/react-table";
 import { CellProps } from "react-table";
 import StatusBadge from "../Common/StatusBadge";
 import TableActions from "./TableActions";
+import { CallState } from "@nepMeds/config/enum";
+import { convertToTitleCase } from "@nepMeds/utils/string";
 
 //Appointment Column
 export const appointmentColumn = (
@@ -28,13 +30,14 @@ export const appointmentColumn = (
     },
     {
       header: "Date",
-      accessorKey: "date",
+      cell: ({ row }: CellProps<IAppointmentAdmin>) => {
+        return row?.original?.date ?? "-";
+      },
     },
 
     {
       header: "Booking Time",
-      accessorKey: "time",
-      cell: ({ row: { original } }: CellContext<IAppointmentAdmin, any>) => {
+      cell: ({ row: { original } }: CellProps<IAppointmentAdmin>) => {
         return original.from_time && original.to_time
           ? removeSeconds(original?.from_time ?? "") +
               " - " +
@@ -49,10 +52,7 @@ export const appointmentColumn = (
     },
     {
       header: "Specialization",
-      accessorKey: "specialization",
-      cell: ({
-        row,
-      }: CellContext<{ specialization: Specialization[] }, any>) => {
+      cell: ({ row }: CellProps<{ specialization: Specialization[] }>) => {
         const specialization = row?.original?.specialization?.map(data => (
           <Tag key={data.id}>{data.name}</Tag>
         ));
@@ -74,15 +74,36 @@ export const appointmentColumn = (
       header: "Patient's Name",
       accessorKey: "patient_name",
     },
-
     {
-      header: "Payment Rate (RS)",
-      accessorKey: "rate",
+      header: "Call Status",
+      cell: ({ row }: CellProps<{ call_status: string }>) =>
+        row.original.call_status
+          ? convertToTitleCase(
+              CallState[
+                row.original.call_status as keyof typeof CallState
+              ].toString()
+            )
+          : "---",
     },
     {
-      header: "Status",
-      accessorKey: "Status",
-      cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
+      header: "Follow Up",
+      cell: ({ row }: CellProps<{ follow_up_status: boolean }>) => {
+        return (
+          <StatusBadge
+            customProps={{
+              status: row?.original?.follow_up_status ? "1" : "3",
+              badgeText: {
+                "1": "Yes",
+                "3": "No",
+              },
+            }}
+          />
+        );
+      },
+    },
+    {
+      header: "Appointment Status",
+      cell: ({ row }: CellProps<{ status: string }>) => {
         return (
           <StatusBadge
             customProps={{
