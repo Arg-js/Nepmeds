@@ -44,7 +44,7 @@ export const columns = ({
             doctorList.map(({ name }) => <Tag key={name}>{name}</Tag>)
           ) : (
             // TODO: make this dash appear in center
-            <Text>--ALL--</Text>
+            <Text>All</Text>
           )}
         </div>
       );
@@ -63,7 +63,7 @@ export const columns = ({
           {specializationList.length ? (
             specializationList.map(({ name }) => <Tag key={name}>{name}</Tag>)
           ) : (
-            <Text>--ALL--</Text>
+            <Text>All</Text>
           )}
         </div>
       );
