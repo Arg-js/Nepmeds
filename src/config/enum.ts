@@ -35,6 +35,7 @@ export enum CallState {
   ACCEPTED = 2,
   REJECTED = 3,
   COMPLETED = 4,
+  MISSED = 5,
 }
 
 //Notification Type
