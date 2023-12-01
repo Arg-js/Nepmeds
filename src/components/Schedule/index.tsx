@@ -365,7 +365,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
           </HStack>
         }
       >
-        <Text mb={3}>Are you sure you want to this availability ?</Text>
+        <Text mb={3}>Are you sure you want to delete availability?</Text>
         <FormProvider {...formMethods}>
           <Checkbox
             label="Do you want to delete all the instances"

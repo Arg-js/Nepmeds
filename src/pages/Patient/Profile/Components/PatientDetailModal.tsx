@@ -123,7 +123,7 @@ const PatientDetailModal = ({
           </Text>
           <Text variant="md600" color={colors.black_60}>
             {/* TODO: transaction_detail is sometimes not available */}
-            {patientDetail?.transaction_detail?.transaction_id}
+            {patientDetail?.transaction_detail?.transaction_id ?? "---"}
           </Text>
           <Text variant="sm400" color={colors.black_60}>
             Order ID:
@@ -170,7 +170,7 @@ const PatientDetailModal = ({
             Follow up Time:
           </Text>
           <Text variant="md600" color={colors.black_60}>
-            {followUpDetails
+            {followUpDetails?.from_time
               ? `${removeSeconds(followUpDetails.from_time)} - ${removeSeconds(
                   followUpDetails.to_time
                 )}`
