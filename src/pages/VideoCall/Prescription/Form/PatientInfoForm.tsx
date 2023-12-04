@@ -32,7 +32,7 @@ const PatientInfoForm = ({
           doctor_consult: appointment_id ?? "",
           id: patient_info?.id,
           follow_up: follow_up ?? "",
-        })
+        }).then(() => setTabIndex(prev => prev + 1))
       )}
     >
       <Flex gap={2} mb={2} flexDirection={"column"}>

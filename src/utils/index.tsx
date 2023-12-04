@@ -1,6 +1,6 @@
 export { calcMaxWordsLen, getArray } from "./ReadMore/arrayFunctions";
 // export { title } from "./choices";
-export { appendServerUrl, getImageUrl } from "./getImageUrl";
+export { appendServerUrl, getImageUrl, openLinkInNewTab } from "./getImageUrl";
 export { queryStringGenerator } from "./queryStringGenerator";
 export {
   generateHoursTimeArray,
