@@ -96,7 +96,7 @@ export const api = {
   adminAppointment: {
     appointment: "/dashboard/appointment-history/",
   },
-  appointmentDetail: "/dashboard/appointment-detail/:id",
+  appointmentDetail: "/dashboard/appointment-detail/:id/",
   doctorUserRole: "/dashboard/doctor-management/",
   patientUserRole: "/dashboard/patient-management/",
   adminUserRole: "/dashboard/admin-list/",
