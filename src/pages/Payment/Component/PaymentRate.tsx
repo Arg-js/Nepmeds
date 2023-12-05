@@ -1,13 +1,9 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   HStack,
   Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Stack,
   Text,
   VStack,
@@ -27,6 +23,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import useAmountForm from "../useAmountForm";
+import SearchInput from "@nepMeds/components/Search";
 
 const PaymentRate = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -192,22 +189,10 @@ const PaymentRate = () => {
           <HStack justifyContent="space-between">
             <Text fontWeight="medium">Rate History</Text>
             <HStack>
-              <InputGroup borderColor={colors.grey_dark}>
-                <InputLeftElement pointerEvents="none" h={10}>
-                  <SearchIcon color={colors.grey_dark} boxSize={6} />
-                </InputLeftElement>
-                <Input
-                  w={60}
-                  h={10}
-                  onChange={({ target: { value } }) => {
-                    setSearchFilter(value);
-                    setPagination({ pageIndex: 0, pageSize });
-                  }}
-                  // TODO: MAKE this left and add gap
-                  textAlign={"center"}
-                  placeholder={"Search"}
-                />
-              </InputGroup>
+              <SearchInput
+                setSearchValue={setSearchFilter}
+                setPageParams={setPagination}
+              />
             </HStack>
           </HStack>
 

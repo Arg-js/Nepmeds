@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/react";
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { colors } from "@nepMeds/theme/colors";
+import { ReactNode } from "react";
 
-const TableWrapper = ({ children }: { children: ReactJSXElement }) => {
+const TableWrapper = ({ children }: { children: ReactNode }) => {
   return (
     <Box margin="5" borderRadius="12px" py="4" px="9" bgColor={colors.white}>
       {children}

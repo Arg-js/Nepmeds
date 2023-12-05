@@ -1,6 +1,6 @@
 import { HStack } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
-import { followUpColumns } from "@nepMeds/components/DataTable/Columns/ndex";
+import { followUpColumns } from "@nepMeds/components/DataTable/Columns/Admin/FollowUp";
 import SearchInput from "@nepMeds/components/Search";
 import TableWrapper from "@nepMeds/components/TableWrapper";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";

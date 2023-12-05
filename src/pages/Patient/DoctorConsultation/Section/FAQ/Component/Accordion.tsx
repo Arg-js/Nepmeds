@@ -13,28 +13,26 @@ const AccordionItem = ({ faq }: { faq: ICreateFaq }) => {
   return (
     <>
       <ChakraAccordionItem border={"none"} bgColor={colors.white} py={2} px={6}>
-        <h2>
-          <AccordionButton
-            sx={{
-              textAlign: "center",
-              "&:hover": {
-                bg: colors.blue_10,
-              },
-            }}
+        <AccordionButton
+          sx={{
+            textAlign: "center",
+            "&:hover": {
+              bg: colors.blue_10,
+            },
+          }}
+        >
+          <Box
+            as="span"
+            flex="1"
+            textAlign="left"
+            fontWeight={600}
+            fontSize={"md"}
+            color={colors.primary}
           >
-            <Box
-              as="span"
-              flex="1"
-              textAlign="left"
-              fontWeight={600}
-              fontSize={"md"}
-              color={colors.primary}
-            >
-              {faq.question}
-            </Box>
-            <AccordionIcon />
-          </AccordionButton>
-        </h2>
+            {faq.question}
+          </Box>
+          <AccordionIcon />
+        </AccordionButton>
         <AccordionPanel
           pb={4}
           color={colors.black_40}

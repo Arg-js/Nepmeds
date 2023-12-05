@@ -1,11 +1,7 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Spinner,
   Text,
   useDisclosure,
@@ -15,6 +11,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { DataTable } from "@nepMeds/components/DataTable";
 import { columns } from "@nepMeds/components/DataTable/Columns/Admin/Discount";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import SearchInput from "@nepMeds/components/Search";
 import TableWrapper from "@nepMeds/components/TableWrapper";
 import { toastSuccess } from "@nepMeds/components/Toast";
 import { AmountType } from "@nepMeds/config/enum";
@@ -26,7 +23,6 @@ import {
   useGetDiscountById,
   useUpdateDiscount,
 } from "@nepMeds/service/nepmeds-discount";
-import { colors } from "@nepMeds/theme/colors";
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { IoAdd } from "react-icons/io5";
@@ -272,51 +268,37 @@ const Discount = () => {
       {/* Delete Modal Ends*/}
 
       <TableWrapper>
-        <>
-          {/* TODO: make a generic search component */}
-          <Flex justifyContent={"space-between"} alignItems={"center"}>
-            <Text variant={"tableHeading"}>Discount </Text>
-            <HStack>
-              <InputGroup borderColor={colors.grey_dark} w={60}>
-                <InputLeftElement pointerEvents="none" h={10}>
-                  <SearchIcon color={colors.grey_dark} boxSize={6} />
-                </InputLeftElement>
-                <Input
-                  h={10}
-                  onChange={({ target: { value } }) => {
-                    setSearchValue(value);
-                    setPageParams({ pageIndex: 0, pageSize: 10 });
-                  }}
-                  // TODO: MAKE this left and add gap
-                  textAlign={"center"}
-                  placeholder={"Search"}
-                />
-              </InputGroup>
-              <Button leftIcon={<IoAdd />} onClick={() => onOpen()}>
-                Create Discount
-              </Button>
-            </HStack>
-          </Flex>
-          <DataTable
-            data={discounts?.results ?? []}
-            columns={columns({
-              setIsStatus,
-              setIsEdit,
-              setId,
-              onSwitchOpen,
-              onDeleteModalOpen,
-              onOpen,
-              pageParams,
-            })}
-            isLoading={isFetching}
-            pagination={{
-              manual: true,
-              pageParams: pageParams,
-              pageCount: discounts?.page_count,
-              onChangePagination: setPageParams,
-            }}
-          />
-        </>
+        <Flex justifyContent={"space-between"} alignItems={"center"}>
+          <Text variant={"tableHeading"}>Discount </Text>
+          <HStack>
+            <SearchInput
+              setSearchValue={setSearchValue}
+              setPageParams={setPageParams}
+            />
+            <Button leftIcon={<IoAdd />} onClick={() => onOpen()}>
+              Create Discount
+            </Button>
+          </HStack>
+        </Flex>
+        <DataTable
+          data={discounts?.results ?? []}
+          columns={columns({
+            setIsStatus,
+            setIsEdit,
+            setId,
+            onSwitchOpen,
+            onDeleteModalOpen,
+            onOpen,
+            pageParams,
+          })}
+          isLoading={isFetching}
+          pagination={{
+            manual: true,
+            pageParams: pageParams,
+            pageCount: discounts?.page_count,
+            onChangePagination: setPageParams,
+          }}
+        />
       </TableWrapper>
     </>
   );

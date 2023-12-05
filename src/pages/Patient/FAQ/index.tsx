@@ -1,6 +1,7 @@
 import { Box, Grid, SimpleGrid, Text } from "@chakra-ui/react";
 import { BreadCrumb } from "@nepMeds/components/Breadcrumb";
 import SkeletonControl from "@nepMeds/components/Loader";
+import NoData from "@nepMeds/components/NoData";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import SearchInput from "@nepMeds/components/Search";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
@@ -76,8 +77,9 @@ const PatientFAQ = () => {
           <SimpleGrid minChildWidth={"300px"}>
             {isLoading ? (
               <SkeletonControl variant={"skeletonText"} length={15} m={8} />
-            ) : (
+            ) : faqList?.length ? (
               faqList?.map(faq => (
+                // TODO: make this a different
                 <Box key={faq.question} m={8}>
                   <Text
                     fontWeight={600}
@@ -96,6 +98,8 @@ const PatientFAQ = () => {
                   </Text>
                 </Box>
               ))
+            ) : (
+              <NoData mb={10} />
             )}
           </SimpleGrid>
           <MoreInfoSection

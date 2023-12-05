@@ -11,8 +11,8 @@ const FAQ = () => {
   });
   // React Query Ends
 
-  const FaqColFirst = faqList?.slice(0, faqList.length / 2) ?? [];
-  const FaqColSecond = faqList?.slice(faqList.length / 2) ?? [];
+  const FaqColFirst = faqList?.slice(faqList.length / 2) ?? [];
+  const FaqColSecond = faqList?.slice(0, faqList.length / 2) ?? [];
 
   const renderAccordionItems = (faqList: ICreateFaq[]) => {
     return faqList?.map(faq => <AccordionItem faq={faq} key={faq.answer} />);
