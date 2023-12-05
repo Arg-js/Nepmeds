@@ -1,4 +1,15 @@
-import { Button, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import {
@@ -16,6 +27,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import SkeletonControl from "@nepMeds/components/Loader";
 import HospitalForm from "./Component/HospitalForm";
 import { hospitalColumns } from "@nepMeds/components/DataTable/Columns/Admin/MasterData/Hospital";
+import { colors } from "@nepMeds/theme/colors";
+import { SearchIcon } from "@chakra-ui/icons";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 
 const defaultValues = {
   name: "",
@@ -53,6 +67,7 @@ const HospitalTab = ({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [searchValue, setSearchValue] = useState("");
   const [id, setId] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
@@ -62,10 +77,13 @@ const HospitalTab = ({
     isOpen: isDeleteModalOpen,
   } = useDisclosure();
 
+  const debouncedInputValue = useDebounce(searchValue, 500);
+
   // React Query
   const { data: tableData, isFetching } = useGetAllHospitalDetails({
     page: paginationParams.pageIndex + 1,
     page_size: paginationParams.pageSize,
+    search: debouncedInputValue,
   });
   const { mutateAsync: createHospital, isLoading } = useCreateHospital();
   const { mutateAsync: updateHospital, isLoading: isUpdating } =
@@ -158,17 +176,11 @@ const HospitalTab = ({
         onClose={onModalClose}
         footer={
           <HStack w={"full"} justifyContent={"flex-end"}>
-            <Button
-              variant={"reset"}
-              flex={1}
-              // w={"150px"}
-              onClick={onModalClose}
-            >
+            <Button variant={"reset"} flex={1} onClick={onModalClose}>
               Cancel
             </Button>
             <Button
               flex={1}
-              // w={"150px"}
               isLoading={isDeleting}
               onClick={async () => {
                 await deleteHospital(id);
@@ -185,6 +197,24 @@ const HospitalTab = ({
         </Text>
       </ModalComponent>
       {/* Delete Modal Ends */}
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Hospital
+          </Text>
+        </GridItem>
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color={colors.black} boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="Search"
+              onChange={e => setSearchValue(e.target.value)}
+            />
+          </InputGroup>
+        </GridItem>
+      </Grid>
 
       <DataTable
         data={tableData?.results ?? []}

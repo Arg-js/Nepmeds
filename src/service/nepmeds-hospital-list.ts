@@ -31,6 +31,7 @@ interface IHospitalResp {
 interface IPaginationParams {
   page: number;
   page_size: number;
+  search?: string;
 }
 
 const getHospital = () => {
@@ -51,15 +52,19 @@ const useGetAllHospital = () => {
   });
 };
 
-const getAllHospital = ({ page, page_size }: IPaginationParams) => {
+const getAllHospital = ({ page, page_size, search }: IPaginationParams) => {
   return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_list.get, {
-    params: { page, page_size },
+    params: { page, page_size, search },
   });
 };
-const useGetAllHospitalDetails = ({ page, page_size }: IPaginationParams) => {
+const useGetAllHospitalDetails = ({
+  page,
+  page_size,
+  search,
+}: IPaginationParams) => {
   return useQuery(
-    [api.hospital_list.get, page, page_size],
-    () => getAllHospital({ page, page_size }),
+    [api.hospital_list.get, page, page_size, search],
+    () => getAllHospital({ page, page_size, search }),
     {
       select: ({ data }) => data?.data,
       onError: error => {
