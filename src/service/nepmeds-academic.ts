@@ -21,7 +21,7 @@ export const useAcademicInfoRegister = () => {
         queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
-    },
+    }
   );
 
   return mutation;
@@ -43,7 +43,7 @@ export const useAcademicInfoRegisterProfile = () => {
         queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
-    },
+    }
   );
 
   return mutation;
@@ -97,7 +97,7 @@ export const useDeleteAcademicInfo = () => {
         queryClient.invalidateQueries(api.doctor_profile);
         queryClient.fetchQuery(api.doctor_profile);
       },
-    },
+    }
   );
 
   return mutation;
@@ -107,12 +107,12 @@ export const useDeleteAcademicInfo = () => {
 export const getSingleAcademicInfo = async (id: number, isDoctor?: boolean) => {
   if (!isDoctor) {
     const response = await HttpClient.get<NepMedsResponse<IDoctorAcademicInfo>>(
-      `${api.doctor_profile}/doctor_id=${id}/`,
+      `${api.doctor_profile}/doctor_id=${id}/`
     );
     return response.data.data;
   }
   const response = await HttpClient.get<NepMedsResponse<IDoctorAcademicInfo>>(
-    api.doctor_profile,
+    api.doctor_profile
   );
   return response.data.data;
 };
@@ -132,6 +132,6 @@ export const useDeleteAcademicFile = () => {
       onSuccess: () => {
         queryClient.invalidateQueries(api.doctor_profile);
       },
-    },
+    }
   );
 };

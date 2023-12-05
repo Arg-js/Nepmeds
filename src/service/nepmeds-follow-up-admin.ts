@@ -1,15 +1,10 @@
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { useQuery } from "react-query";
 import { IParams } from "./nepmeds-discount";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
 import { toastFail } from "./service-toast";
-
-interface IPaginationParams {
-  page: number;
-  page_size: number;
-  search?: string;
-}
 
 export interface IFollowUp {
   id: number;
