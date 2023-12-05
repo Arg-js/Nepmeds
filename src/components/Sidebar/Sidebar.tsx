@@ -104,11 +104,19 @@ const AdminSidebarOptions: ISidebarOption[] = [
     text: "Patients",
     link: "/patients",
   },
+
   {
     icon: TimeCircle,
     set: "light",
     text: "Appointments",
     link: "/appointments",
+  },
+  {
+    // todo: CHANGE THE ICON
+    icon: Category,
+    set: "light",
+    text: "Discount",
+    link: "/discount",
   },
   {
     icon: User,
@@ -123,6 +131,12 @@ const AdminSidebarOptions: ISidebarOption[] = [
     link: "/instant-consult-request",
   },
   {
+    icon: Paper,
+    set: "light",
+    text: "Follow Up",
+    link: "/follow-up",
+  },
+  {
     icon: Wallet,
     set: "light",
     text: "Payment",
@@ -133,13 +147,6 @@ const AdminSidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "FAQ",
     link: "/faq",
-  },
-  {
-    // todo: CHANGE THE ICON
-    icon: Category,
-    set: "light",
-    text: "Discount",
-    link: "/discount",
   },
 ];
 
