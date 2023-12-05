@@ -3,11 +3,16 @@ import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
 
 export const columns = ({
+  paginationParams,
   onOpenDeleteModal,
   setId,
   setIsEdit,
   onOpenCollegeModal,
 }: {
+  paginationParams: {
+    pageIndex: number;
+    pageSize: number;
+  };
   onOpenDeleteModal: () => void;
   setId: Dispatch<SetStateAction<string>>;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
@@ -15,8 +20,10 @@ export const columns = ({
 }) => [
   {
     header: "S.N.",
-    accessorFn: (_: any, index: number) => {
-      return `${index + 1}.`;
+    accessorFn: (_: unknown, index: number) => {
+      return `${
+        paginationParams.pageIndex * paginationParams.pageSize + index + 1
+      }.`;
     },
   },
   { header: "Name", accessorKey: "name" },
