@@ -11,15 +11,15 @@ const AdminAppointment = () => {
     <BoxWrapper>
       <Tabs onChange={index => setActiveTab(index)} index={activeTab}>
         <TabList border={"none"}>
-          <Tab>Instant Consultant</Tab>
           <Tab>Appointment</Tab>
+          <Tab>Instant Consultant</Tab>
           <Tab>Follow Up</Tab>
           <Tab>Instant Consultant Request</Tab>
         </TabList>
 
         <TabPanels>
-          <TabPanel>{activeTab === 0 && <InstantConsultant />}</TabPanel>
-          <TabPanel>{activeTab === 1 && <Appointment />}</TabPanel>
+          <TabPanel>{activeTab === 0 && <Appointment />}</TabPanel>
+          <TabPanel>{activeTab === 1 && <InstantConsultant />}</TabPanel>
           <TabPanel>{activeTab === 2 && <p>Consultant</p>}</TabPanel>
           <TabPanel>
             {activeTab === 3 && <p>Instant Consultant Request</p>}
