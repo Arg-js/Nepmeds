@@ -68,6 +68,7 @@ const FollowUp = lazy(() => import("@nepMeds/pages/Doctor/FollowUp"));
 const Discount = lazy(() => import("@nepMeds/pages/Admin/Discount"));
 const PatientFAQ = lazy(() => import("@nepMeds/pages/Patient/FAQ"));
 const PatientProfile = lazy(() => import("@nepMeds/pages/Patient/Profile"));
+const AdminFollowUp = lazy(() => import("@nepMeds/pages/Admin/FollowUp"));
 
 const routes = [
   {
@@ -216,6 +217,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.CONSULT_REQUEST,
         element: <>Consult Request</>,
+      },
+      {
+        path: NAVIGATION_ROUTES.FOLLOWUP,
+        element: <AdminFollowUp />,
       },
       {
         path: NAVIGATION_ROUTES.ADMIN_PAYMENT,

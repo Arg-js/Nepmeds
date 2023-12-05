@@ -121,6 +121,9 @@ export const api = {
     patient: {
       get: "/dashboard/patient-all-data/",
     },
+    follow_up: {
+      get: "/dashboard/doctor-follow-up/",
+    },
   },
   patient: {
     login: {
