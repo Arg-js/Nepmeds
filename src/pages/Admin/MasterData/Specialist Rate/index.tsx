@@ -1,4 +1,3 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Badge,
   Box,
@@ -8,9 +7,6 @@ import {
   GridItem,
   HStack,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Spinner,
   Text,
   VStack,
@@ -45,6 +41,7 @@ import { Fragment, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import * as yup from "yup";
+import SearchInput from "@nepMeds/components/Search";
 
 const schema = yup.object().shape({
   doctorprofile: yup.string().trim().required("Doctor is required!"),
@@ -516,15 +513,10 @@ const SpecialistRates = ({
         </GridItem>
 
         <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color={colors.black} boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="Search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
+          <SearchInput
+            setSearchValue={setSearchFilter}
+            setPageParams={setPagination}
+          />
         </GridItem>
       </Grid>
       {isSuccess && (
