@@ -8,7 +8,7 @@ import { useFormContext } from "react-hook-form";
 const RejectionModalForm = () => {
   const {
     register,
-    formState: { errors }
+    formState: { errors },
   } = useFormContext<{ reject_title: string; reject_remarks: string }>();
 
   //   REACT QUERIES
@@ -21,6 +21,7 @@ const RejectionModalForm = () => {
         <Select
           name="reject_title"
           label="Reason for Rejection"
+          placeholder=""
           required
           register={register}
           error={errors?.reject_title?.message || ""}
@@ -28,7 +29,7 @@ const RejectionModalForm = () => {
           style={{
             background: colors.forminput,
             border: "none",
-            paddingTop: "15px"
+            paddingTop: "15px",
           }}
         />
         <FloatinglabelTextArea

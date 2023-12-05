@@ -44,14 +44,14 @@ const getProvince = async () => {
 
 export const useGetProvince = () =>
   useQuery(api.province, getProvince, {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 
 const getDistrict = (provinceId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<District[]>>(
     api.district,
     {
-      params: { province_id: provinceId }
+      params: { province_id: provinceId },
     }
   );
   return response;
@@ -59,7 +59,7 @@ const getDistrict = (provinceId: number | null) => async () => {
 
 export const useGetDistricts = (provinceId: number | null) => {
   return useQuery([api.district, provinceId], getDistrict(provinceId), {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 };
 
@@ -72,7 +72,7 @@ const getAllDistrict = () => async () => {
 
 export const useGetAllDistricts = () =>
   useQuery([api.district], getAllDistrict(), {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 
 const getDetailAddress = () => async () => {
@@ -84,14 +84,14 @@ const getDetailAddress = () => async () => {
 
 export const useGetDetailAddress = () =>
   useQuery([api.detail_address], getDetailAddress(), {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 
 const getMunicipalities = (districtId: number | null) => async () => {
   const response = await HttpClient.get<NepMedsResponse<Municipality[]>>(
     api.municipality,
     {
-      params: { district_id: districtId }
+      params: { district_id: districtId },
     }
   );
   return response;
@@ -99,7 +99,7 @@ const getMunicipalities = (districtId: number | null) => async () => {
 
 export const useGetMunicipalities = (districtId: number | null) =>
   useQuery([api.municipality, districtId], getMunicipalities(districtId), {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 
 const getAllCollege = () => async () => {
@@ -111,7 +111,7 @@ const getAllCollege = () => async () => {
 
 export const useGetAllCollege = () =>
   useQuery([api.college_list.get], getAllCollege(), {
-    select: res => res.data.data
+    select: res => res.data.data,
   });
 
 const createCollege = async (collegeReqBody: { name: string }) => {
@@ -123,10 +123,10 @@ export const useCreateCollege = () => {
   return useMutation(createCollege, {
     onSuccess: () => {
       toastSuccess("Created college successfully");
-      queryClient.invalidateQueries(api.college_list.get);
+      queryClient.invalidateQueries(api.college.get);
     },
     onError: e => {
       toastFail(serverErrorResponse(e));
-    }
+    },
   });
 };

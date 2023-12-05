@@ -143,27 +143,22 @@ const DashboardBody = () => {
       {/* ADMIN */}
       {profileData?.data?.is_superuser && (
         <TableWrapper>
-          <>
-            <Text variant="tableHeading">Pending Doctors</Text>
-            <Tabs>
-              <TabList border={"none"}>
-                <Tab>Registration</Tab>
-                <Tab>Rate</Tab>
-              </TabList>
+          <Text variant="tableHeading">Pending Doctors</Text>
+          <Tabs>
+            <TabList border={"none"}>
+              <Tab>Registration</Tab>
+              <Tab>Rate</Tab>
+            </TabList>
 
-              <TabPanels>
-                <TabPanel>
-                  <PendingDocList showFilter={false} />
-                </TabPanel>
-                <TabPanel>
-                  <PendingPayment
-                    type={STATUSTYPE.pending}
-                    heading={"Pending"}
-                  />
-                </TabPanel>
-              </TabPanels>
-            </Tabs>
-          </>
+            <TabPanels>
+              <TabPanel>
+                <PendingDocList showFilter={false} />
+              </TabPanel>
+              <TabPanel>
+                <PendingPayment type={STATUSTYPE.pending} heading={"Pending"} />
+              </TabPanel>
+            </TabPanels>
+          </Tabs>
         </TableWrapper>
       )}
     </Box>

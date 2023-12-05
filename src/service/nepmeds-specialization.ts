@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { objectToFormData } from "@nepMeds/utils/toFormData";
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 
 export interface Specialization {
   id: number;
@@ -20,31 +21,31 @@ export interface Symptom {
   file?: string;
 }
 
-const getSpecializationData = async (
-  page_no: number,
-  pageSize: number,
-  name: string
-) => {
+const getSpecializationData = async ({
+  params,
+}: {
+  params: { name: string } & IPaginationParams;
+}) => {
   const response = await HttpClient.get<PaginatedResponse<Specialization[]>>(
-    `${api.specialization}?page=${page_no}&page_size=${pageSize}&search=${name}`
+    api.specialization,
+    { params }
   );
   return response;
 };
 
 export const useSpecializationData = ({
-  page_no,
-  pageSize,
+  page,
+  page_size,
   name,
   activeTab,
 }: {
-  page_no: number;
-  pageSize: number;
   name: string;
   activeTab: number;
-}) => {
+} & IPaginationParams) => {
+  const params = { page, page_size, name };
   return useQuery(
-    `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`,
-    () => getSpecializationData(page_no, pageSize, name),
+    `${api.specialization}?page=${page}&page_size=${page_size}&name=${name}`,
+    () => getSpecializationData({ params }),
     {
       select: res => res.data.data,
       enabled: activeTab === 1,

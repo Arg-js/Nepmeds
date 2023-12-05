@@ -4,6 +4,7 @@ import { HttpClient } from "@nepMeds/service/service-axios";
 import { generatePath } from "react-router-dom";
 import { toastFail } from "./service-toast";
 import serverErrorResponse from "./serverErrorResponse";
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 
 export interface IDoctorList {
   count: number;
@@ -60,11 +61,7 @@ export interface IAvailability {
   to_time: string;
 }
 
-export interface IPaginatinParams {
-  search: string;
-  page_size: number;
-  page: number;
-  // make different interface
+export interface IPaginatinParams extends IPaginationParams {
   gender?: string;
   specialization?: string;
   symptom?: string;
