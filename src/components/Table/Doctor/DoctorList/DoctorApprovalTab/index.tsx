@@ -1,12 +1,8 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Flex,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Text,
   VStack,
   useDisclosure,
@@ -24,7 +20,6 @@ import { useProfileData } from "@nepMeds/context/index";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import useDoctorStatusForm from "@nepMeds/pages/DoctorProfile/useDoctorStatusForm";
 import { useDoctorList } from "@nepMeds/service/nepmeds-doctorlist";
-import { colors } from "@nepMeds/theme/colors";
 import { PaginationState } from "@tanstack/react-table";
 import { useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
@@ -32,6 +27,7 @@ import { IoFunnelOutline } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
+import SearchInput from "@nepMeds/components/Search";
 
 interface Props {
   showFilter?: boolean;
@@ -306,21 +302,10 @@ const PendingDocList = ({ type, heading, showFilter = true }: Props) => {
 
         {showFilter && (
           <HStack>
-            <InputGroup borderColor={colors.grey_dark} w={60}>
-              <InputLeftElement pointerEvents="none" h={10}>
-                <SearchIcon color={colors.grey_dark} boxSize={6} />
-              </InputLeftElement>
-              <Input
-                h={10}
-                onChange={({ target: { value } }) => {
-                  setSearchFilter(value);
-                  setPageParams({ pageIndex: 0, pageSize: 10 });
-                }}
-                // TODO: MAKE this left and add gap
-                textAlign={"center"}
-                placeholder={"Search"}
-              />
-            </InputGroup>
+            <SearchInput
+              setSearchValue={setSearchFilter}
+              setPageParams={setPageParams}
+            />
 
             <Button
               variant={"filterButton"}
