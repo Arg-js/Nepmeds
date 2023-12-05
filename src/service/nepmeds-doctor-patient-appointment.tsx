@@ -3,6 +3,7 @@ import { generatePath } from "react-router-dom";
 import { api, NepMedsResponse } from "@nepMeds/service/service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
 import { toastFail } from "@nepMeds/service/service-toast";
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 
 export interface IGetAppointmentRequest {
   count: number;
@@ -50,10 +51,8 @@ const getAppointmentRequest = async ({
   page_size,
   status,
 }: {
-  page: number;
-  page_size: number;
   status?: number | string;
-}) => {
+} & IPaginationParams) => {
   const response = await HttpClient.get<
     NepMedsResponse<IGetAppointmentRequest>
   >(api.doctor.appointments.get, {
@@ -67,10 +66,8 @@ const useGetAppointmentRequest = ({
   page_size,
   status,
 }: {
-  page: number;
-  page_size: number;
   status?: number | string;
-}) => {
+} & IPaginationParams) => {
   return useQuery(
     [api.doctor.appointments.get, page, page_size, status],
     () => getAppointmentRequest({ page, page_size, status }),

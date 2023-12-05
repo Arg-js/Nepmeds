@@ -1,6 +1,7 @@
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { useQuery } from "react-query";
 import { generatePath } from "react-router-dom";
-import { IPaginationParams, IParams } from "./nepmeds-discount";
+import {  IParams } from "./nepmeds-discount";
 import { Availability } from "./nepmeds-doctor-patient-appointment";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";

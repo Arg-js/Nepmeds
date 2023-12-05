@@ -4,6 +4,7 @@ import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 import { generatePath } from "react-router-dom";
 import { toastFail, toastSuccess } from "@nepMeds/service/service-toast";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 
 export interface ICollegeList {
   id: number;
@@ -16,12 +17,6 @@ export interface ICollegeResp {
   next: string;
   previous: string;
   results: ICollegeList[];
-}
-
-interface IPaginationParams {
-  page: number;
-  page_size: number;
-  search?: string;
 }
 
 //Get Hospital List
@@ -63,7 +58,7 @@ const useGetAllCollegeDetails = ({
         const formattedError = serverErrorResponse(error);
         toastFail(formattedError);
       },
-    },
+    }
   );
 };
 
@@ -73,7 +68,7 @@ const updateCollege = (collegeUpdateRequestBody: ICollegeList) => {
     generatePath(api.college.patch, {
       id: collegeUpdateRequestBody.id.toString(),
     }),
-    collegeUpdateRequestBody,
+    collegeUpdateRequestBody
   );
 };
 
@@ -108,7 +103,7 @@ const useDeleteCollege = () => {
 //GetById
 const getCollegeById = ({ id }: { id: string }) => {
   return HttpClient.get<NepMedsResponse<ICollegeList>>(
-    generatePath(api.college.getById, { id }),
+    generatePath(api.college.getById, { id })
   );
 };
 const useGetCollegeById = ({ id }: { id: string }) => {

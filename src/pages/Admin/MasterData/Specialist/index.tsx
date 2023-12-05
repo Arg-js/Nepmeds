@@ -84,8 +84,8 @@ const Specializations = ({
 
   const { data, isFetching } = useSpecializationData({
     activeTab,
-    page_no: pageIndex + 1,
-    pageSize: pageSize,
+    page: pageIndex + 1,
+    page_size: pageSize,
     name: debouncedInputValue,
   });
   const saveSpecializationAction = useSaveSpecialization(

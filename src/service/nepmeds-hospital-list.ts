@@ -1,3 +1,4 @@
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
 import serverErrorResponse from "./serverErrorResponse";
@@ -28,12 +29,6 @@ interface IHospitalResp {
   previous: string;
 }
 
-interface IPaginationParams {
-  page: number;
-  page_size: number;
-  search?: string;
-}
-
 const getHospital = () => {
   return HttpClient.get<NepMedsResponse<IHospital[]>>(api.hospital_lists.get);
 };
@@ -52,19 +47,15 @@ const useGetAllHospital = () => {
   });
 };
 
-const getAllHospital = ({ page, page_size, search }: IPaginationParams) => {
+const getAllHospital = (params: IPaginationParams) => {
   return HttpClient.get<NepMedsResponse<IHospitalResp>>(api.hospital_list.get, {
-    params: { page, page_size, search },
+    params,
   });
 };
-const useGetAllHospitalDetails = ({
-  page,
-  page_size,
-  search,
-}: IPaginationParams) => {
+const useGetAllHospitalDetails = (params: IPaginationParams) => {
   return useQuery(
-    [api.hospital_list.get, page, page_size, search],
-    () => getAllHospital({ page, page_size, search }),
+    [api.hospital_list.get, params],
+    () => getAllHospital(params),
     {
       select: ({ data }) => data?.data,
       onError: error => {

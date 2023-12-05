@@ -22,6 +22,12 @@ interface IPagination {
   pageCount?: number;
 }
 
+export interface IPaginationParams {
+  page: number;
+  page_size: number;
+  search?: string;
+}
+
 function Pagination({ isBackendPaginated, pageIndex, table }: IPagination) {
   const totalPage = useMemo(() => {
     return table.getPageCount();

@@ -49,11 +49,11 @@ const PrimaryInfo = ({
   const getMunicipalities = (provinceId: string, districtId: string) => {
     let municipalities = [];
     const province = detailedAddress?.find(
-      item => item.id.toString() === provinceId,
+      item => item.id.toString() === provinceId
     );
 
     const district = province?.province_district.find(
-      item => item.id.toString() === districtId,
+      item => item.id.toString() === districtId
     );
 
     municipalities =
@@ -68,7 +68,7 @@ const PrimaryInfo = ({
   function getDistrictsByProvince(provinceId: string) {
     let districts = [];
     const province = detailedAddress?.find(
-      item => item.id.toString() === provinceId,
+      item => item.id.toString() === provinceId
     );
 
     if (!province) {
@@ -88,12 +88,12 @@ const PrimaryInfo = ({
   });
 
   const districtOptions = getDistrictsByProvince(
-    watch("province")?.toString() ?? "",
+    watch("province")?.toString() ?? ""
   );
 
   const municipalityOptions = getMunicipalities(
     watch("province")?.toString() ?? "",
-    watch("district")?.toString() ?? "",
+    watch("district")?.toString() ?? ""
   );
 
   const allDistrictOptions =
@@ -156,7 +156,7 @@ const PrimaryInfo = ({
       setSelectedFrontImage(
         `${normalURL.replace("/backend", "")}/media/${
           doctorProfileData.id_front_image
-        }`,
+        }`
       );
     } else setSelectedFrontImage(getValues("id_front_image")?.[0] ?? null);
 
@@ -164,7 +164,7 @@ const PrimaryInfo = ({
       setSelectedBackFrontImage(
         `${normalURL.replace("/backend", "")}/media/${
           doctorProfileData.id_back_image
-        }`,
+        }`
       );
     } else setSelectedBackFrontImage(getValues("id_back_image")?.[0] ?? null);
   }, [doctorProfileData]);
@@ -219,7 +219,7 @@ const PrimaryInfo = ({
   const maxDate = new Date(
     today.getFullYear() - 18,
     today.getMonth(),
-    today.getDate(),
+    today.getDate()
   );
 
   return (
