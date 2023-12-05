@@ -4,6 +4,7 @@ import { NepMedsResponse, api } from "@nepMeds/service/service-api";
 import { generatePath } from "react-router-dom";
 import { toastFail, toastSuccess } from "@nepMeds/service/service-toast";
 import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 
 export interface ICollegeList {
   id: number;
@@ -16,11 +17,6 @@ export interface ICollegeResp {
   next: string;
   previous: string;
   results: ICollegeList[];
-}
-
-interface IPaginationParams {
-  page: number;
-  page_size: number;
 }
 
 //Get Hospital List
@@ -42,16 +38,20 @@ const useGetCollege = () => {
   });
 };
 
-const getAllCollege = ({ page, page_size }: IPaginationParams) => {
+const getAllCollege = ({ page, page_size, search }: IPaginationParams) => {
   return HttpClient.get<NepMedsResponse<ICollegeResp>>(api.college.get, {
-    params: { page, page_size },
+    params: { page, page_size, search },
   });
 };
 
-const useGetAllCollegeDetails = ({ page, page_size }: IPaginationParams) => {
+const useGetAllCollegeDetails = ({
+  page,
+  page_size,
+  search,
+}: IPaginationParams) => {
   return useQuery(
-    [api.college.get, page, page_size],
-    () => getAllCollege({ page, page_size }),
+    [api.college.get, page, page_size, search],
+    () => getAllCollege({ page, page_size, search }),
     {
       select: ({ data }) => data?.data,
       onError: error => {
@@ -76,7 +76,7 @@ const useUpdateCollege = () => {
   const queryClient = useQueryClient();
   return useMutation(updateCollege, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.college_list.get);
+      queryClient.invalidateQueries(api.college.get);
       toastSuccess("College updated successfully!");
     },
     onError: e => {
@@ -95,7 +95,7 @@ const useDeleteCollege = () => {
   return useMutation(deleteCollege, {
     onSuccess: () => {
       toastSuccess("College deleted successfully");
-      queryClient.invalidateQueries([api.college_list.get]);
+      queryClient.invalidateQueries([api.college.get]);
     },
   });
 };

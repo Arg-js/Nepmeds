@@ -1,3 +1,4 @@
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { toastFail } from "@nepMeds/components/Toast";
 import { AmountType } from "@nepMeds/config/enum";
 import { useMutation, useQuery, useQueryClient } from "react-query";
@@ -15,12 +16,6 @@ interface ISpecialization {
 interface IDoctor {
   id: number;
   name: string;
-}
-
-export interface IPaginationParams {
-  page: number;
-  page_size: number;
-  search?: string;
 }
 
 export interface IParams {

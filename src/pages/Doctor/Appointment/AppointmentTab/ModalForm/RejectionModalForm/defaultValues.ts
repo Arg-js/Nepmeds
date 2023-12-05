@@ -4,6 +4,7 @@ export interface IRejectionData {
 }
 
 export const defaultValues = {
-  reject_title: -1,
+  // Todo: find another way
+  reject_title: "" as unknown as number,
   reject_remarks: "",
 };
