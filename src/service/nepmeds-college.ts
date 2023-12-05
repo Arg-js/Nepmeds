@@ -20,6 +20,7 @@ export interface ICollegeResp {
 interface IPaginationParams {
   page: number;
   page_size: number;
+  search?: string;
 }
 
 //Get Hospital List
@@ -41,23 +42,27 @@ const useGetCollege = () => {
   });
 };
 
-const getAllCollege = ({ page, page_size }: IPaginationParams) => {
+const getAllCollege = ({ page, page_size, search }: IPaginationParams) => {
   return HttpClient.get<NepMedsResponse<ICollegeResp>>(api.college.get, {
-    params: { page, page_size },
+    params: { page, page_size, search },
   });
 };
 
-const useGetAllCollegeDetails = ({ page, page_size }: IPaginationParams) => {
+const useGetAllCollegeDetails = ({
+  page,
+  page_size,
+  search,
+}: IPaginationParams) => {
   return useQuery(
-    [api.college.get, page, page_size],
-    () => getAllCollege({ page, page_size }),
+    [api.college.get, page, page_size, search],
+    () => getAllCollege({ page, page_size, search }),
     {
       select: ({ data }) => data?.data,
       onError: error => {
         const formattedError = serverErrorResponse(error);
         toastFail(formattedError);
       },
-    }
+    },
   );
 };
 
@@ -67,7 +72,7 @@ const updateCollege = (collegeUpdateRequestBody: ICollegeList) => {
     generatePath(api.college.patch, {
       id: collegeUpdateRequestBody.id.toString(),
     }),
-    collegeUpdateRequestBody
+    collegeUpdateRequestBody,
   );
 };
 
@@ -75,7 +80,7 @@ const useUpdateCollege = () => {
   const queryClient = useQueryClient();
   return useMutation(updateCollege, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.college_list.get);
+      queryClient.invalidateQueries(api.college.get);
       toastSuccess("College updated successfully!");
     },
     onError: e => {
@@ -95,7 +100,7 @@ const useDeleteCollege = () => {
   return useMutation(deleteCollege, {
     onSuccess: () => {
       toastSuccess("College deleted successfully");
-      queryClient.invalidateQueries([api.college_list.get]);
+      queryClient.invalidateQueries([api.college.get]);
     },
   });
 };
@@ -103,7 +108,7 @@ const useDeleteCollege = () => {
 //GetById
 const getCollegeById = ({ id }: { id: string }) => {
   return HttpClient.get<NepMedsResponse<ICollegeList>>(
-    generatePath(api.college.getById, { id })
+    generatePath(api.college.getById, { id }),
   );
 };
 const useGetCollegeById = ({ id }: { id: string }) => {

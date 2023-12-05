@@ -123,7 +123,7 @@ export const useCreateCollege = () => {
   return useMutation(createCollege, {
     onSuccess: () => {
       toastSuccess("Created college successfully");
-      queryClient.invalidateQueries(api.college_list.get);
+      queryClient.invalidateQueries(api.college.get);
     },
     onError: e => {
       toastFail(serverErrorResponse(e));

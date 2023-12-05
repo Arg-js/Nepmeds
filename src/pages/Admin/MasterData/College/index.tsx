@@ -1,4 +1,15 @@
-import { Button, Flex, HStack, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Button,
+  Flex,
+  Grid,
+  GridItem,
+  HStack,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { svgs } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
@@ -17,6 +28,9 @@ import {
 import { useState, useEffect } from "react";
 import { toastFail } from "@nepMeds/components/Toast";
 import SkeletonControl from "@nepMeds/components/Loader";
+import { SearchIcon } from "@chakra-ui/icons";
+import { colors } from "@nepMeds/theme/colors";
+import { useDebounce } from "@nepMeds/hooks/useDebounce";
 const defaultValues = { name: "" };
 const schema = Yup.object().shape({
   name: Yup.string().required("This field is required"),
@@ -33,6 +47,8 @@ const CollegeTab = ({
 }) => {
   const [id, setId] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const debouncedInputValue = useDebounce(searchValue, 500);
   const formMethods = useForm({ defaultValues, resolver: yupResolver(schema) });
   const {
     register,
@@ -57,6 +73,7 @@ const CollegeTab = ({
     useGetAllCollegeDetails({
       page: paginationParams.pageIndex + 1,
       page_size: paginationParams.pageSize,
+      search: debouncedInputValue,
     });
 
   const { mutateAsync: createCollege, isLoading } = useCreateCollege();
@@ -97,9 +114,28 @@ const CollegeTab = ({
 
   return (
     <>
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <GridItem alignSelf={"end"}>
+          <Text fontWeight="medium" fontSize={"2xl"}>
+            Colleges
+          </Text>
+        </GridItem>
+        <GridItem display={"flex"}>
+          <InputGroup>
+            <InputLeftElement pointerEvents="none">
+              <SearchIcon color={colors.black} boxSize={3} />
+            </InputLeftElement>
+            <Input
+              placeholder="Search"
+              onChange={e => setSearchValue(e.target.value)}
+            />
+          </InputGroup>
+        </GridItem>
+      </Grid>
       <DataTable
         data={tableData?.results ?? []}
         columns={columns({
+          paginationParams,
           onOpenDeleteModal,
           setId,
           setIsEdit,

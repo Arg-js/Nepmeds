@@ -134,7 +134,7 @@ const EditPrimary = ({
           : editSpecializationData
         ).map(
           (e: { label: string; value: string; id?: number }) =>
-            Number(e.value) || Number(e.id)
+            Number(e.value) || Number(e.id),
         ),
         pan_number: getValues("pan_number"),
         id_type: getValues("id_type"),
@@ -493,7 +493,7 @@ const EditPrimary = ({
                     onClick={() =>
                       window.open(
                         getImageUrl(String(doctorProfileData?.id_front_image)),
-                        "_blank"
+                        "_blank",
                       )
                     }
                   />
@@ -508,7 +508,7 @@ const EditPrimary = ({
                     onClick={() =>
                       window.open(
                         getImageUrl(String(doctorProfileData?.id_back_image)),
-                        "_blank"
+                        "_blank",
                       )
                     }
                   />
