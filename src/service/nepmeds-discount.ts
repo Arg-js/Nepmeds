@@ -39,6 +39,7 @@ export interface IDiscountReqBody extends IDiscountBasicDetails {
   start_date: string;
   end_date: string;
   is_active: boolean;
+  onetime_coupon: boolean;
 }
 
 interface IDiscountUpdateReqBody extends Partial<IDiscountReqBody> {
