@@ -7,6 +7,19 @@ import { CellContext } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
 
+// TODO: move this to some utils
+// Function to convert seconds to minutes and remaining seconds
+function secondsToMinSec(seconds: number) {
+  // Calculate minutes
+  const minutes = Math.floor(seconds / 60);
+
+  // Calculate remaining seconds
+  const remainingSeconds = Math.round(seconds % 60);
+
+  // Return an object with minutes and remaining seconds
+  return `${minutes} : ${remainingSeconds}`;
+}
+
 export const columns = ({
   pagination,
   setAppointmentId,
@@ -30,7 +43,7 @@ export const columns = ({
     {
       header: "Appointment Date",
       cell: ({ row }: CellProps<{ appointment_date: string }>) =>
-        row.original?.appointment_date ?? "---",
+        row.original?.appointment_date ?? "-",
     },
     {
       header: "Appointment Time",
@@ -44,7 +57,7 @@ export const columns = ({
         return startTime
           ? `${removeSeconds(startTime)} -
                     ${removeSeconds(row.original?.appointment_endtime)}`
-          : "---";
+          : "-";
       },
     },
     {
@@ -65,9 +78,11 @@ export const columns = ({
       ),
     },
     {
-      header: "Call Duration",
-      cell: ({ row }: CellProps<{ call_duration: string }>) =>
-        row.original?.call_duration ?? "---",
+      header: "Call Duration (mins)",
+      cell: ({ row }: CellProps<{ call_duration: string }>) => {
+        const seconds = row.original?.call_duration;
+        return seconds ? secondsToMinSec(parseFloat(seconds)) : "-";
+      },
     },
     {
       header: "Call Status",
@@ -75,7 +90,7 @@ export const columns = ({
       cell: ({ row }: CellProps<{ call_status: string }>) =>
         row.original.call_status
           ? CallState[row.original.call_status as keyof typeof CallState]
-          : "---",
+          : "-",
     },
     {
       header: "Follow Up",

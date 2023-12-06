@@ -83,7 +83,7 @@ export const appointmentColumn = (
                 row.original.call_status as keyof typeof CallState
               ].toString()
             )
-          : "---",
+          : "-",
     },
     {
       header: "Follow Up",

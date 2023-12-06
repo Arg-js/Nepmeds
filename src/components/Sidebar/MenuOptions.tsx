@@ -63,6 +63,7 @@ const MenuOption = ({
             height="56px"
             pl={4}
             borderRadius={12}
+            color={colors?.black_50}
             sx={
               isActiveFn("/doctor-list/*")
                 ? {
@@ -71,7 +72,7 @@ const MenuOption = ({
                   }
                 : {}
             }
-            _hover={{ cursor: "pointer" }}
+            _hover={{ cursor: "pointer", bgColor: colors.forminput }}
             onClick={() => setIsActive(prev => !prev)}
             mb={2}
           >
@@ -116,21 +117,21 @@ const MenuOption = ({
                   alignItems={"center"}
                   justifyContent={sidebarCollapsed ? "center" : "left"}
                   as={NavLink}
-                  p={2}
+                  px={5}
+                  py={3}
                   borderRadius={8}
                   _activeLink={{
                     color: colors.blue_100,
                     bg: colors.primary
                   }}
                   to={item.link}
+                  _hover={{ cursor: "pointer", bgColor: colors.forminput }}
                 >
-                  {sidebarCollapsed && (
-                    <item.icon
-                      set={item.set}
-                      color={colors?.black_50}
-                      size={15}
-                    />
-                  )}
+                  <item.icon
+                    set={item.set}
+                    color={colors?.black_50}
+                    size={15}
+                  />
                   {/* TODO: need to reload page for the calculation to happen */}
                   {!sidebarCollapsed && (
                     <Text
@@ -170,6 +171,7 @@ const MenuOption = ({
               }}
               to={sidebarOption.link}
               mb={2}
+              _hover={{ cursor: "pointer", bgColor: colors.forminput }}
             >
               <sidebarOption.icon
                 set={sidebarOption.set}

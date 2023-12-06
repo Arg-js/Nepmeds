@@ -80,11 +80,9 @@ const Select = ({
 
         // pr={8}
       >
-        {placeholder && (
-          <option value={""} hidden disabled={enabled}>
-            {placeholder}
-          </option>
-        )}
+        <option value={""} hidden disabled={enabled}>
+          {placeholder ?? ""}
+        </option>
         {options?.map(({ label, value }) => (
           <option key={value} value={value}>
             {label}

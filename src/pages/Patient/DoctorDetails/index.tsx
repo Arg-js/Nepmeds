@@ -264,7 +264,6 @@ const DoctorDetails = () => {
                                 key={name}
                                 size={"md"}
                                 variant="outline"
-                                colorScheme="blue"
                                 borderRadius="full"
                                 justifyContent={"center"}
                                 alignItems={"center"}
