@@ -179,7 +179,7 @@ const EditAcademic = ({
               onClick={handleEditMode}
               cursor="pointer"
             >
-              {/* TODORegistration: add button with icon */}
+              {/* TODR: add button with icon */}
               <Button px={6} borderRadius="xl">
                 <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />
                 <Text
