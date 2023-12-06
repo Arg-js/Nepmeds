@@ -1,4 +1,3 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -6,9 +5,6 @@ import {
   GridItem,
   HStack,
   IconButton,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Text,
   useDisclosure,
   FormLabel,
@@ -21,6 +17,7 @@ import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
+import SearchInput from "@nepMeds/components/Search";
 import SimpleImageUpload from "@nepMeds/components/SimpleImageUpload";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
@@ -461,15 +458,10 @@ const Symptoms = ({
           </Text>
         </GridItem>
         <GridItem display={"flex"}>
-          <InputGroup>
-            <InputLeftElement pointerEvents="none">
-              <SearchIcon color={colors.black} boxSize={3} />
-            </InputLeftElement>
-            <Input
-              placeholder="Search"
-              onChange={({ target: { value } }) => setSearchFilter(value)}
-            />
-          </InputGroup>
+          <SearchInput
+            setSearchValue={setSearchFilter}
+            setPageParams={setPagination}
+          />
         </GridItem>
       </Grid>
 

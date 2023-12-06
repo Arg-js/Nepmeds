@@ -26,7 +26,7 @@ export const columns = ({
       cell: ({
         row,
       }: CellProps<{ followup_availability: { date: string } }>) => {
-        return row.original?.followup_availability?.date ?? "---";
+        return row.original?.followup_availability?.date ?? "-";
       },
     },
     {
@@ -42,7 +42,7 @@ export const columns = ({
               0,
               5
             )} - ${followUpAvailability.to_time.slice(0, 5)}`
-          : "---";
+          : "-";
       },
     },
     { header: "Patient Name", accessorKey: "patient_name" },
