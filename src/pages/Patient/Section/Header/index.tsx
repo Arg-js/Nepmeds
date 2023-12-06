@@ -18,7 +18,15 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
-import { HamburgerMenuIcon, SignInIcon } from "@nepMeds/assets/svgs";
+import {
+  AmbulanceIcon,
+  BloodBankIcon,
+  BmiIcon,
+  HamburgerMenuIcon,
+  HealthLibrary,
+  HospitalIcon,
+  SignInIcon,
+} from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { toastFail } from "@nepMeds/components/Toast";
@@ -43,6 +51,34 @@ import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { useGetAllNotification } from "@nepMeds/service/nepmeds-notification";
 import NotificationDropDown from "@nepMeds/components/Notification/NotificationDropDown";
 import { images } from "@nepMeds/assets/images";
+
+const HeaderItems = [
+  {
+    icon: <BloodBankIcon />,
+    text: "Blood Bank",
+    link: "https://www.nepmeds.com.np/blood-bank",
+  },
+  {
+    icon: <AmbulanceIcon />,
+    text: "Ambulance",
+    link: "https://www.nepmeds.com.np/ambulance",
+  },
+  {
+    icon: <HospitalIcon />,
+    text: "Hospital",
+    link: "https://www.nepmeds.com.np/hospitals",
+  },
+  {
+    icon: <BmiIcon />,
+    text: "BMI",
+    link: "https://www.nepmeds.com.np/bmi",
+  },
+  {
+    icon: <HealthLibrary />,
+    text: "Health Library",
+    link: "https://www.nepmeds.com.np/health-library",
+  },
+];
 
 const Header: React.FC<{
   onClick?: () => void;
@@ -115,10 +151,12 @@ const Header: React.FC<{
   // REACT QUERY
   const { mutate: logoutAction } = useLogoutMutation({ user: "PATIENT" });
   // REACT QUERY ENDS
+
   return (
     <WrapperBox
-      height={"100px"}
-      padding={"6"}
+      // TODO: remove this once QA confirms
+      // height={"150px"}
+      // padding={"6"}
       boxShadow={"rgba(99, 99, 99, 0.2) 0px 0px 10px 0px"}
       style={{
         mb: "2px",
@@ -298,6 +336,24 @@ const Header: React.FC<{
         )}
         {/* ENDS */}
       </Flex>
+      {/* SUB HEADER */}
+      <Flex gap={6}>
+        {HeaderItems.map(({ icon, text, link }) => (
+          <Flex
+            gap={2}
+            justifyContent={"flex-start"}
+            mt={4}
+            alignItems={"flex-end"}
+            cursor="pointer"
+            onClick={() => navigate(link)}
+            key={link}
+          >
+            {icon}
+            <Text variant={"small600"}>{text}</Text>
+          </Flex>
+        ))}
+      </Flex>
+      {/* SUB HEADER ENDS*/}
     </WrapperBox>
   );
 };

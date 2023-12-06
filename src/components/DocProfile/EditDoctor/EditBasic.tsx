@@ -142,7 +142,7 @@ const EditBasic = ({
           onClick={() => setEditBasicFormToggle(true)}
           cursor="pointer"
         >
-          {/* TODORegistration: icon button */}
+          {/* TODR: icon button */}
           {!editBasicFormToggle && (
             <Button borderRadius="xl">
               <Icon as={EditIcon} boxSize={5} color={colors?.white} mr={3} />

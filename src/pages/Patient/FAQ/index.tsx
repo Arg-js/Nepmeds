@@ -79,7 +79,7 @@ const PatientFAQ = () => {
               <SkeletonControl variant={"skeletonText"} length={15} m={8} />
             ) : faqList?.length ? (
               faqList?.map(faq => (
-                // TODO: make this a different
+                // TODO: make this box a different component
                 <Box key={faq.question} m={8}>
                   <Text
                     fontWeight={600}

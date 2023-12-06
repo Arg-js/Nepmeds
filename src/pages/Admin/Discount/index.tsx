@@ -42,6 +42,7 @@ const defaultValues = {
   start_date: "",
   end_date: "",
   is_active: false,
+  onetime_coupon: false,
 };
 
 const schema = yup.object().shape({
