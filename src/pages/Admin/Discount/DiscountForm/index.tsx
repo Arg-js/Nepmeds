@@ -1,6 +1,8 @@
 import { Flex } from "@chakra-ui/react";
+import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import { AmountType } from "@nepMeds/config/enum";
+import { IDiscountReqBody } from "@nepMeds/service/nepmeds-discount";
 import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
@@ -11,8 +13,11 @@ const discountTypeOptions = [
   { label: "Percentage", value: AmountType.PERCENTAGE },
   { label: "Amount", value: AmountType.AMOUNT },
 ];
-interface IDiscountForm {
-  title: string;
+interface IDiscountForm
+  extends Omit<
+    IDiscountReqBody,
+    "specialization" | "doctor" | "discount_type" | "value"
+  > {
   specialization: IOptionItem[];
   doctor: IOptionItem[];
   discount_type: {
@@ -20,10 +25,6 @@ interface IDiscountForm {
     value: AmountType;
   };
   value: string;
-  code: string;
-  start_date: string;
-  end_date: string;
-  is_active: boolean;
 }
 
 const DiscountForm = ({
@@ -150,6 +151,11 @@ const DiscountForm = ({
         register={register}
         error={errors?.end_date?.message ?? ""}
         isRequired
+      />
+      <Checkbox
+        label="Make this a one time coupon?"
+        name="onetime_coupon"
+        control={formMethods.control}
       />
     </Flex>
   );
