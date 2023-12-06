@@ -126,7 +126,6 @@ export const columns = (
     },
     {
       header: "Doctor's Name",
-      accessorKey: "first_name",
       accessorFn: (_cell: PendingCellContextSearch) => {
         return _cell?.user?.first_name + " " + _cell?.user?.last_name;
       },
@@ -164,7 +163,6 @@ export const columns = (
     },
     {
       header: "Status",
-      accessorKey: "profile_status",
       cell: ({ row }: CellContext<IGetDoctorList, any>) => {
         const { status } = row.original;
 
@@ -179,7 +177,6 @@ export const columns = (
     },
     {
       header: "Actions",
-      accessorKey: "actions",
       cell: (cell: CellContext<any, any>) => {
         const isPending =
           cell.row.original?.status === STATUSTYPE.pending.toString();

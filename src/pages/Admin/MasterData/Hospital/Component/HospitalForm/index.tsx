@@ -54,7 +54,7 @@ const HospitalForm = ({
           label="Province"
           options={provinceOptions}
           register={register}
-          errors={errors.province?.message ?? ""}
+          error={errors.province?.message ?? ""}
           bgColor={colors.forminput}
           border={"none"}
         />
@@ -65,7 +65,7 @@ const HospitalForm = ({
           options={districtOptions}
           isDisabled={!districtOptions.length}
           register={register}
-          errors={errors.district?.message ?? ""}
+          error={errors.district?.message ?? ""}
           bgColor={colors.forminput}
           border={"none"}
         />

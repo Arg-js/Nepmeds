@@ -123,7 +123,7 @@ const PatientDetailModal = ({
           </Text>
           <Text variant="md600" color={colors.black_60}>
             {/* TODO: transaction_detail is sometimes not available */}
-            {patientDetail?.transaction_detail?.transaction_id ?? "---"}
+            {patientDetail?.transaction_detail?.transaction_id ?? "-"}
           </Text>
           <Text variant="sm400" color={colors.black_60}>
             Order ID:
@@ -153,7 +153,7 @@ const PatientDetailModal = ({
           <Text variant="md600" color={colors.black_60}>
             {patientDetail?.payment_time
               ? removeSeconds(patientDetail.payment_time)
-              : "---"}
+              : "-"}
           </Text>
         </Grid>
         <Text variant={"lg600"}>Follow Up</Text>
@@ -164,7 +164,7 @@ const PatientDetailModal = ({
           </Text>
           <Text variant="md600" color={colors.black_60}>
             {/* TODO: find another way to solve this tedious task */}
-            {followUpDetails?.date ?? "---"}
+            {followUpDetails?.date ?? "-"}
           </Text>
           <Text variant="sm400" color={colors.black_60}>
             Follow up Time:
@@ -174,7 +174,7 @@ const PatientDetailModal = ({
               ? `${removeSeconds(followUpDetails.from_time)} - ${removeSeconds(
                   followUpDetails.to_time
                 )}`
-              : "---"}
+              : "-"}
           </Text>
         </Grid>
       </Flex>

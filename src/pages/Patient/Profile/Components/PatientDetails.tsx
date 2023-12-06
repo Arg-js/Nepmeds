@@ -36,7 +36,7 @@ const PatientDetails = () => {
           textAlign={"center"}
           textTransform={"capitalize"}
         >
-          {patientData?.name ?? "---"}
+          {patientData?.name ?? "-"}
         </Flex>
         <Text variant="sm400" color={colors.black_30}>
           PERSONAL INFORMATION
@@ -47,25 +47,26 @@ const PatientDetails = () => {
             lg: "repeat(1, 1fr)",
             xl: "repeat(2, 1fr)",
           }}
+          alignItems="center"
         >
           {/* TODO: check if this can be refactored */}
           <Text variant="md600" color={colors.black_60}>
             Age:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.age ?? "---"}
+            {patientData?.age ?? "-"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Gender:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.gender ?? "---"}
+            {patientData?.gender ?? "-"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Date of Birth:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.date_of_birth ?? "---"}
+            {patientData?.date_of_birth ?? "-"}
           </Text>
         </Grid>
         <Text variant="sm400" color={colors.black_30}>
@@ -77,25 +78,26 @@ const PatientDetails = () => {
             lg: "repeat(1, 1fr)",
             xl: "repeat(2, 1fr)",
           }}
+          alignItems="center"
         >
           <Text variant="md600" color={colors.black_60}>
             Contact:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.mobile_number ?? "---"}
+            {patientData?.mobile_number ?? "-"}
           </Text>
           <Text variant="md600" color={colors.black_60}>
             Email:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.email ?? "---"}
+            {patientData?.email ?? "-"}
           </Text>
           {/* TODO: address never comes from api */}
           {/* <Text variant="md600" color={colors.black_60}>
             Address:
           </Text>
           <Text variant="sm400" color={colors.black_60}>
-            {patientData?.address ?? "---"}
+            {patientData?.address ?? "-"}
           </Text> */}
         </Grid>
       </Flex>
