@@ -26,6 +26,7 @@ import {
 import { AddEvent } from "@nepMeds/pages/Calendar/Component/AddEvent";
 import CalendarAppointmentBox from "@nepMeds/pages/NewCalendar/Component/CalendarAppointmentBox";
 import {
+  IAvailabilityBookingInfo,
   IGetDoctorAvailability,
   getSingleAvailability,
   useDeleteAvailability,
@@ -48,6 +49,7 @@ import {
 import HourTimeSlot from "@nepMeds/components/Schedule/HourTimeSlot";
 import MinuteTImeSlot from "@nepMeds/components/Schedule/MinuteTimeSlot";
 import {
+  ListOfChildTimeFrame,
   ListOfTimeObject,
   boxPositions,
   minuteTime,
@@ -68,6 +70,10 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     useState(false);
 
   const listOfTimeObject = ListOfTimeObject(availabilityData, selectedFullDate);
+  const timeFrameWithBookingInfo = ListOfChildTimeFrame(
+    availabilityData,
+    selectedFullDate
+  );
 
   const {
     isOpen: isEditModalOpen,
@@ -175,6 +181,21 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
     return listOfTimeObject.find(item => item?.timeFrame?.includes(timeConcat));
   };
 
+  const shouldAddAppBox = (
+    time: string,
+    minute: string
+  ): undefined | IAvailabilityBookingInfo => {
+    const timeConcat =
+      String(time.split(":")[0]) +
+      ":" +
+      minuteTime[minute as keyof typeof minuteTime] +
+      ":00";
+
+    if (!listOfTimeObject) return undefined;
+    return timeFrameWithBookingInfo?.find(e => e.from_time === timeConcat)
+      ?.booking_info;
+  };
+
   return (
     <Box>
       {/* Minute time Slot */}
@@ -197,6 +218,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = ({
                     leftPosition={boxPosition}
                     time={data.time}
                     timeObject={shouldColorBlock(data.time, boxPosition)}
+                    bookingInfo={shouldAddAppBox(data.time, boxPosition)}
                   />
                 </Box>
               ))}

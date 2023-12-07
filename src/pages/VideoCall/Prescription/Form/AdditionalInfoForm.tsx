@@ -3,6 +3,7 @@ import { useAddPrescription } from "../usePrescriptionForm";
 import FloatingLabelInput from "@nepMeds/components/Form/FloatingLabelInput";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
+import { formatDateToString } from "@nepMeds/utils/TimeConverter/timeConverter";
 
 const AdditionalInfoForm = ({
   appointment_id,
@@ -45,6 +46,7 @@ const AdditionalInfoForm = ({
           label="Follow Up Date"
           register={register}
           type="date"
+          min={formatDateToString(new Date())}
           defaultValue={additional_info?.follow_up_date}
           _hover={{ cursor: "pointer" }}
         />
