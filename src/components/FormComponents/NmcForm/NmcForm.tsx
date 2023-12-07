@@ -97,15 +97,9 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             name="nmc.nmc_number"
             register={register}
             required
-            maxLength={5}
             style={{ background: colors.forminput, border: "none" }}
             rules={{
               required: "NMC No. is required.",
-
-              minLength: {
-                value: 5,
-                message: "NMC No. should be 5 digits.",
-              },
             }}
             error={errors.nmc?.nmc_number?.message?.toString()}
           />
