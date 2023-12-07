@@ -1,3 +1,5 @@
+// Returns Date type into string "2023-12-07"
+
 export const formatDateToString = (date: Date) => {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, "0"); // Month is zero-based

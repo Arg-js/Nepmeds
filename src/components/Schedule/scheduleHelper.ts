@@ -38,3 +38,25 @@ export const ListOfTimeObject = (
       };
     });
 };
+
+export const ListOfChildTimeFrame = (
+  availabilityData: IGetDoctorAvailability[] | undefined,
+  selectedFullDate: string
+): IGetDoctorAvailability["child_time_frames"] | undefined => {
+  return availabilityData
+    ?.filter(event => {
+      if (event.date) {
+        const todayEvent = isSameDay(
+          parseISO(event.date),
+          parseISO(selectedFullDate)
+        );
+
+        return todayEvent;
+      } else if (event.frequency === "Daily") {
+        return true;
+      }
+
+      return false;
+    })
+    .map(e => e.child_time_frames)[0];
+};

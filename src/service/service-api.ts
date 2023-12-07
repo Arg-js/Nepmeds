@@ -63,6 +63,9 @@ export const api = {
   },
 
   doctor_availability: "/doctor-consult/doctor-availability/",
+  doctor_availability_table: "/doctor-consult/doctor-table-availability/",
+  doctor_availability_details: "/doctor-consult/doctor-table-availability/:id/",
+
   set_doctor_availability: "/doctor-consult/set-online-offline/",
 
   rejectedDoctorList: "/dashboard/rejected-doctor-list",
