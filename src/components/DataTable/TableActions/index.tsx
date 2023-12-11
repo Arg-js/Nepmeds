@@ -3,6 +3,7 @@ import {
   AcceptIcon,
   PasswordKey,
   RejectIcon,
+  RescheduleIcon,
   ViewIcon,
 } from "@nepMeds/assets/svgs";
 import { CallState } from "@nepMeds/config/enum";
@@ -20,6 +21,7 @@ const TableActions = ({
   onDelete,
   onChangePassword,
   onCall,
+  onReschedule,
 }: ITableActions) => {
   return (
     <Flex alignItems={"center"} justifyContent="center">
@@ -120,10 +122,25 @@ const TableActions = ({
           />
         </Tooltip>
       )}
-      {!!onCall?.isCallable && (
+      {onCall?.state && (
         <Tooltip hasArrow placement="top" label="Call">
-          <Link to={NAVIGATION_ROUTES.VIDEOCALL} state={onCall.state}>
-            <MdCall size={"20"} color={colors.green_button} />
+          {onCall?.isCallable ? (
+            <Link to={NAVIGATION_ROUTES.VIDEOCALL} state={onCall.state}>
+              <MdCall size={"20"} color={colors.green_button} />
+            </Link>
+          ) : (
+            <MdCall size={"20"} color={colors.gray} />
+          )}
+        </Tooltip>
+      )}
+
+      {!!onReschedule?.canReschedule && (
+        <Tooltip hasArrow placement="top" label="Reschedule">
+          <Link
+            to={NAVIGATION_ROUTES.PATIENT.RESCHEDULE_APPOINTMENT}
+            state={onReschedule.state}
+          >
+            <RescheduleIcon />
           </Link>
         </Tooltip>
       )}
@@ -140,13 +157,17 @@ interface ITableActions {
   onChangePassword?: () => void;
   onCall?: {
     state: {
-      caller_user: string;
-      receiver_user: string;
+      caller_usesr?: string;
+      receiver_user?: string;
       follow_up_id?: string;
       appointment_id?: string;
       call_state: CallState;
     };
     isCallable: boolean;
+  };
+  onReschedule?: {
+    state: { appointment_id: string; doctor_id: string };
+    canReschedule: boolean;
   };
 }
 

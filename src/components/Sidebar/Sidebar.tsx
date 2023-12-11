@@ -10,7 +10,7 @@ import {
   User,
   Document,
 } from "react-iconly";
-
+import { FaRegCalendarCheck } from "react-icons/fa";
 import { images } from "@nepMeds/assets/images";
 import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import MenuOption from "@nepMeds/components/Sidebar/MenuOptions";
@@ -38,6 +38,12 @@ const sidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "Appointments",
     link: "/appointments",
+  },
+  {
+    icon: FaRegCalendarCheck,
+    set: "light",
+    text: "Rescheduled",
+    link: "/reschedule",
   },
   {
     icon: Call,
@@ -110,6 +116,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
     set: "light",
     text: "Appointments",
     link: "/appointments",
+  },
+
+  {
+    icon: FaRegCalendarCheck,
+    set: "light",
+    text: "Rescheduled",
+    link: "/reschedule",
   },
   {
     // todo: CHANGE THE ICON

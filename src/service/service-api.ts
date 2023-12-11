@@ -116,6 +116,10 @@ export const api = {
       patch: "/doctor-consult/new-appointment-request/:id/",
       getById: "/doctor-consult/new-appointment-request/:id/",
     },
+    reschedule: {
+      get: "/doctor-consult/doctor-appointment-reschedule/",
+      patch: "/doctor-consult/doctor-appointment-reschedule/:id/",
+    },
   },
   refresh_token: {
     post: "/user-management/refresh-token/",
@@ -126,6 +130,10 @@ export const api = {
     },
     follow_up: {
       get: "/dashboard/doctor-follow-up/",
+    },
+    reschedule: {
+      get: "/dashboard/appointment-reschedule-list/",
+      detail: "/dashboard/appointment-reschedule-detail/:id/",
     },
   },
   patient: {
@@ -150,6 +158,10 @@ export const api = {
     },
     doctor_availability: {
       get: "/patient/doctor-booking-availabilities/:id/",
+    },
+    reschedule: {
+      post: "/patient/appointment-reschedule/",
+      getAvailability: "/patient/doctor-reschedule-availabilities/:id/",
     },
   },
 

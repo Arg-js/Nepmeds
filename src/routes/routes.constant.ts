@@ -33,6 +33,7 @@ export const NAVIGATION_ROUTES = {
   CALENDER: "calendar",
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",
+  RESCHEDULE: "reschedule",
 
   DOC_PROFILE: "/doctor-profile/:id",
 
@@ -46,6 +47,7 @@ export const NAVIGATION_ROUTES = {
     DOCTOR_CONSULTATION: "/patient/doctor-consultation",
     FAQ: "/patient/FAQ",
     DOCTOR_LIST_PATIENT_MODULE: "/patient/doctor-list",
+    RESCHEDULE_APPOINTMENT: "/patient/reschedule-appointment/",
   },
   PATIENT_PROFILE: "/patient/profile",
   VIDEOCALL: "/video-call",

@@ -20,7 +20,7 @@ export interface IDoctorListResult {
   title: string;
 
   specialization_names: SpecializationName[];
-  medical_licence_number: string;
+  doctor_nmc_info: string;
   workplace: string;
   district: string;
   municipality: string;
@@ -36,7 +36,7 @@ export interface IDoctorListById {
   specialization_names: SpecializationName[];
   bio_detail: string;
   schedule_rate: string;
-  medical_licence_number: string;
+  doctor_nmc_info: string;
   doctor_experience: DoctorExperience[];
   availability: IAvailability[];
 }
@@ -161,15 +161,17 @@ const getDoctorListById = ({
 export const useGetDoctorListById = ({
   id,
   target_date,
+  enabled,
 }: {
   id: number;
   target_date: string;
+  enabled?: boolean;
 }) => {
   return useQuery(
     [api.patient.doctorList.getById, id],
     () => getDoctorListById({ id, target_date }),
     {
-      enabled: !!id,
+      enabled: !!id && enabled,
       select: data => data?.data?.data,
     }
   );

@@ -55,6 +55,7 @@ export { ReactComponent as AmbulanceIcon } from "./ambulance.svg";
 export { ReactComponent as HospitalIcon } from "./hospital.svg";
 export { ReactComponent as BmiIcon } from "./bmi.svg";
 export { ReactComponent as HealthLibrary } from "./healthLibrary.svg";
+export { ReactComponent as RescheduleIcon } from "./reschedule.svg";
 
 export const svgs = {
   image,
