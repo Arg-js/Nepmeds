@@ -292,7 +292,8 @@ const DoctorDetails = () => {
                         >
                           Biography
                         </Text>
-                        <Text
+                        {/* TODO: if the read more has some issue */}
+                        <Box
                           color={colors.black_50}
                           fontWeight={500}
                           fontSize={"sm"}
@@ -304,7 +305,7 @@ const DoctorDetails = () => {
                             bio_detail={doctorList?.bio_detail ?? ""}
                             maxWords={50}
                           />
-                        </Text>
+                        </Box>
                       </Flex>
 
                       {/* Experience  */}

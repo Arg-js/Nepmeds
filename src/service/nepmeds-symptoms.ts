@@ -125,7 +125,7 @@ export const useSymptomsDataWithPagination = ({
   activeTab: number;
 }) => {
   return useQuery(
-    `${api.symptom}/?page=${page_no}&page_size=${page_size}&name=${name}`,
+    [api.symptom, page_no, page_size, name],
     () => getSymptomsDataWithPagination(page_no, page_size, name),
     { select: res => res.data.data, enabled: activeTab === 0 }
   );

@@ -5,7 +5,6 @@ import {
   FormLabel,
   Grid,
   Image,
-  Spinner,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -25,6 +24,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { columns } from "../../PatientDetail";
 import PatientDetailModal from "./PatientDetailModal";
+import PatientPrescriptionSkeletion from "./PatientPrescriptionSkeletion";
 
 const PatientDetailsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -65,7 +65,7 @@ const PatientDetailsTable = () => {
           size={"2xl"}
         >
           {isLoading ? (
-            <Spinner />
+            <PatientPrescriptionSkeletion />
           ) : (
             // Todo: find another way to solve this problem
             // patientDetail: IPatientDetailById | undefined
@@ -139,7 +139,7 @@ const PatientDetailsTable = () => {
           </>
         </ModalComponent>
         <Grid display={"flex"} justifyContent={"space-between"}>
-          <Text variant="tableHeading">Patient Details</Text>
+          <Text variant="tableHeading">Appointment Details</Text>
           <SearchInput
             setSearchValue={setSearchValue}
             setPageParams={setPagination}

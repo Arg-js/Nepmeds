@@ -61,7 +61,7 @@ const getSpecialistRateById = async (id: string) => {
 };
 export const useFetchSpecialistRateById = (id: string) => {
   return useQuery(
-    api.specialistRate.fetchAll + "/" + id + "/",
+    [api.specialistRate.fetchAll, id],
     () => getSpecialistRateById(id),
     {
       select: res => res.data.data,
@@ -96,15 +96,11 @@ export const useSaveSpecialistRate = (
 
   const qs = queryStringGenerator({ page_no, page_size, name });
 
-  return useMutation(
-    ["post" + api.specialistRate.fetchAll + "/"],
-    saveSpecialistRate,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
-      },
-    }
-  );
+  return useMutation(saveSpecialistRate, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
+    },
+  });
 };
 const deleteSpecialistRate = async (SpecialistRateInfo: {
   doctorprofile: string | null;
@@ -151,7 +147,7 @@ export const useSpecialistRateDataWithPagination = ({
   const qs = queryStringGenerator({ page_no, page_size, name });
 
   return useQuery(
-    `${api.specialistRate.fetchAll}/?${qs}`,
+    [api.specialistRate.fetchAll, qs],
     () => getSpecialistRateDataWithPagination(qs),
 
     { select: response => response.data.data, enabled: activeTab === 2 }
@@ -184,16 +180,12 @@ export const useUpdateSpecialistRate = (
   const queryClient = useQueryClient();
   const qs = queryStringGenerator({ page_no, page_size: pageSize, name });
 
-  return useMutation(
-    ["patch" + api.specialistRate.fetchAll + "/"],
-    updateSpecialistRate,
-    {
-      onSuccess: (body: any) => {
-        queryClient.invalidateQueries(
-          api.specialistRate.fetchAll + "/" + body?.data?.data?.id + "/"
-        );
-        queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
-      },
-    }
-  );
+  return useMutation(updateSpecialistRate, {
+    onSuccess: (body: any) => {
+      queryClient.invalidateQueries(
+        api.specialistRate.fetchAll + "/" + body?.data?.data?.id + "/"
+      );
+      queryClient.invalidateQueries(`${api.specialistRate.fetchAll}/?${qs}`);
+    },
+  });
 };

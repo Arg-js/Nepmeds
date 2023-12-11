@@ -44,7 +44,7 @@ export const useSpecializationData = ({
 } & IPaginationParams) => {
   const params = { page, page_size, name };
   return useQuery(
-    `${api.specialization}?page=${page}&page_size=${page_size}&name=${name}`,
+    [api.specialization, page, page_size, name],
     () => getSpecializationData({ params }),
     {
       select: res => res.data.data,

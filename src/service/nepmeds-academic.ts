@@ -125,13 +125,9 @@ const deleteAcademicFile = async (id: number) => {
 
 export const useDeleteAcademicFile = () => {
   const queryClient = useQueryClient();
-  return useMutation(
-    ["delete" + api.academic_file_delete],
-    deleteAcademicFile,
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(api.doctor_profile);
-      },
-    }
-  );
+  return useMutation(deleteAcademicFile, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.doctor_profile);
+    },
+  });
 };
