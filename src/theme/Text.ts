@@ -26,6 +26,11 @@ const sm400 = {
   fontWeight: "400",
 };
 
+const sm500 = {
+  fontSize: "sm",
+  fontWeight: "500",
+};
+
 const lg600 = {
   fontSize: "lg",
   fontWeight: "600",
@@ -43,6 +48,7 @@ export const TextTheme = defineStyleConfig({
   variants: {
     tableHeading,
     sm400,
+    sm500,
     small600,
     md500,
     md600,

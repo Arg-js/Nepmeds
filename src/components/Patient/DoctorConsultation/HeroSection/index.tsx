@@ -4,11 +4,16 @@ import { Avatar, AvatarGroup } from "@chakra-ui/react";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
+import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
 
 const HeroSection = () => {
   const navigate = useNavigate();
   return (
-    <Flex direction={"column"} gap={4}>
+    <Flex
+      direction={"column"}
+      gap={4}
+      backgroundImage={`url(${heroSectionBg})`}
+    >
       <Text color={colors.dark_blue} fontWeight={600} fontSize={"md"}>
         The right care, is wherever you are.
       </Text>

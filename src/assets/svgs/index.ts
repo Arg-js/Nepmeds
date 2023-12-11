@@ -50,6 +50,11 @@ export { ReactComponent as WalletIcon } from "./wallet.svg";
 export { ReactComponent as CheckBoxIcon } from "./checkBox.svg";
 export { ReactComponent as NotificationWithDotIcon } from "./notificationWithDot.svg";
 export { ReactComponent as DownloadIcon } from "./download.svg";
+export { ReactComponent as BloodBankIcon } from "./bloodBank.svg";
+export { ReactComponent as AmbulanceIcon } from "./ambulance.svg";
+export { ReactComponent as HospitalIcon } from "./hospital.svg";
+export { ReactComponent as BmiIcon } from "./bmi.svg";
+export { ReactComponent as HealthLibrary } from "./healthLibrary.svg";
 
 export const svgs = {
   image,

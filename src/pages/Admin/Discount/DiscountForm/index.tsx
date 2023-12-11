@@ -1,6 +1,8 @@
-import { Flex } from "@chakra-ui/react";
+import { Divider, Flex, Tooltip } from "@chakra-ui/react";
+import Checkbox from "@nepMeds/components/Form/Checkbox";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import { AmountType } from "@nepMeds/config/enum";
+import { IDiscountReqBody } from "@nepMeds/service/nepmeds-discount";
 import { useGetDoctorListUnpaginated } from "@nepMeds/service/nepmeds-patient-doctorList";
 import { useSpecializationRegisterData } from "@nepMeds/service/nepmeds-specialization";
 import { colors } from "@nepMeds/theme/colors";
@@ -11,8 +13,15 @@ const discountTypeOptions = [
   { label: "Percentage", value: AmountType.PERCENTAGE },
   { label: "Amount", value: AmountType.AMOUNT },
 ];
-interface IDiscountForm {
-  title: string;
+interface IDiscountForm
+  extends Omit<
+    IDiscountReqBody,
+    | "specialization"
+    | "doctor"
+    | "discount_type"
+    | "value"
+    | "coupon_applicable_number"
+  > {
   specialization: IOptionItem[];
   doctor: IOptionItem[];
   discount_type: {
@@ -20,10 +29,7 @@ interface IDiscountForm {
     value: AmountType;
   };
   value: string;
-  code: string;
-  start_date: string;
-  end_date: string;
-  is_active: boolean;
+  coupon_applicable_number: string;
 }
 
 const DiscountForm = ({
@@ -64,24 +70,23 @@ const DiscountForm = ({
         error={errors?.title?.message ?? ""}
         isRequired
       />
-      <Flex gap={3}>
-        <FormControl
-          control="multiSelect"
-          label={"Discount Type"}
-          name={"discount_type"}
-          placeholder={"Select Discount Type"}
-          variant={"outline"}
-          register={register}
-          selectControl={control}
-          options={discountTypeOptions}
-          isMulti={false}
-          required
-          style={{
-            background: colors.white,
-            minHeight: "35px",
-          }}
-        />
-      </Flex>
+      <FormControl
+        control="multiSelect"
+        label={"Discount Type"}
+        name={"discount_type"}
+        placeholder={"Select Discount Type"}
+        variant={"outline"}
+        register={register}
+        selectControl={control}
+        options={discountTypeOptions}
+        isMulti={false}
+        required
+        error={errors?.discount_type?.label?.message ?? ""}
+        style={{
+          background: colors.white,
+          minHeight: "35px",
+        }}
+      />
       <Flex gap={3}>
         {/* TODO: validation should trigger right when the user types and not when the submit button is pressed */}
         <FormControl
@@ -103,6 +108,7 @@ const DiscountForm = ({
           isRequired
         />
       </Flex>
+      <Divider />
       <Flex gap={2}>
         <FormControl
           control="multiSelect"
@@ -133,6 +139,7 @@ const DiscountForm = ({
           }}
         />
       </Flex>
+      <Divider />
       <FormControl
         control={"input"}
         type={"date"}
@@ -142,6 +149,7 @@ const DiscountForm = ({
         error={errors?.start_date?.message ?? ""}
         isRequired
       />
+
       <FormControl
         control={"input"}
         type={"date"}
@@ -150,6 +158,26 @@ const DiscountForm = ({
         register={register}
         error={errors?.end_date?.message ?? ""}
         isRequired
+      />
+      <Tooltip
+        label="Number of times coupon can be used by a user, default: 'every time'"
+        hasArrow
+      >
+        <Flex>
+          <FormControl
+            control="input"
+            label={"Coupon applicable number"}
+            name={"coupon_applicable_number"}
+            placeholder={"Enter coupon applicable number"}
+            register={register}
+            type={"number"}
+          />
+        </Flex>
+      </Tooltip>
+      <Checkbox
+        label="Make this a one time coupon?"
+        name="onetime_coupon"
+        control={formMethods.control}
       />
     </Flex>
   );
