@@ -24,10 +24,12 @@ export const columns = ({
   pagination,
   setAppointmentId,
   onOpen,
+  onEditModalOpen,
 }: {
   pagination: IPaginationParams;
   setAppointmentId: Dispatch<SetStateAction<string>>;
   onOpen: () => void;
+  onEditModalOpen: () => void;
 }) => {
   return [
     {
@@ -113,6 +115,10 @@ export const columns = ({
           onView={() => {
             setAppointmentId(row.original?.id);
             onOpen();
+          }}
+          onEdit={() => {
+            setAppointmentId(row.original?.id);
+            onEditModalOpen();
           }}
         />
       ),
