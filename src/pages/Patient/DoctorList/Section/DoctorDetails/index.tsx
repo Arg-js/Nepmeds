@@ -106,9 +106,12 @@ const DoctorDetails: React.FC<{
       label: p.name,
       value: p.id,
     })) || [];
+
   useEffect(() => {
     setIsAvailability("0");
+    setSelectedAvailability([]);
   }, [doctorInfo]);
+
   const {
     register,
     formState: { errors },
@@ -284,29 +287,29 @@ const DoctorDetails: React.FC<{
                       </Text>
                     </Flex>
                     <Divider borderWidth={"0.5px"} />
-                    <Flex alignSelf={"flex-end"}>
-                      {/* TODO: add this */}
-                      {/* <Text fontWeight={700} fontSize={"13px"}>
-                      Available time
-                    </Text> */}
-                      <FormControl
-                        control={"input"}
-                        label={""}
-                        type={"date"}
-                        name={"availabilityDate"}
-                        placeholder={""}
-                        error={errors?.availabilityDate?.message ?? ""}
-                        register={register}
-                        variant={"outline"}
-                        style={{
-                          minHeight: "35px",
-                          width: "180px",
-                          borderRadius: "9px",
-                        }}
-                        // Restricts selection of past date in Datepicker
-                        min={today}
-                        required
-                      />
+                    <Flex alignItems={"center"}>
+                      <Flex flex={0.5}>
+                        <Text variant={"md600"}>Available time</Text>
+                      </Flex>
+                      <Flex flex={0.5}>
+                        <FormControl
+                          control={"input"}
+                          label={""}
+                          type={"date"}
+                          name={"availabilityDate"}
+                          placeholder={""}
+                          error={errors?.availabilityDate?.message ?? ""}
+                          register={register}
+                          variant={"outline"}
+                          style={{
+                            minHeight: "35px",
+                            borderRadius: "9px",
+                          }}
+                          // Restricts selection of past date in Datepicker
+                          min={today}
+                          required
+                        />
+                      </Flex>
                     </Flex>
 
                     {!!availability?.length && (
@@ -670,7 +673,7 @@ const DoctorDetails: React.FC<{
                   There are no details here.
                 </Text>
                 <Text fontWeight={400} fontSize={"xs"} textAlign="center">
-                  Please Click on the doctor list to view detail doctor`&apos;`s
+                  Please Click on the doctor list to view detail doctor &apos;s
                   profile.
                 </Text>
               </>

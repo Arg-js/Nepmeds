@@ -44,7 +44,7 @@ const PatientDetailModal = ({
         heading={<>Prescription</>}
         isOpen={isOpen}
         onClose={onClose}
-        size={"2xl"}
+        size={"3xl"}
         footer={
           // Todo: add download svg
           <Flex justifyContent={"flex-end"} width={"full"}>
