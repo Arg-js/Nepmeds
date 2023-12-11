@@ -70,11 +70,16 @@ export const AddEvent = ({
           isDisabled={!!doctorAvailabilityData}
           defaultValue={doctorAvailabilityData?.frequency}
           options={FrequencyType}
+          required
+          rules={{
+            required: "Frequency is required.",
+          }}
           style={{
             background: colors.forminput,
             border: "none",
             paddingTop: "15px",
           }}
+          error={errors.frequency?.message}
         />
       </GridItem>
 

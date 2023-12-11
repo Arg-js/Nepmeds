@@ -117,7 +117,7 @@ const MultiSelect = ({
             {helperText && <FormHelperText>{helperText}</FormHelperText>}
             {fieldState.error && (
               <FormErrorMessage fontSize={"xs"}>
-                {fieldState.error.message}
+                {error || fieldState.error.message}
               </FormErrorMessage>
             )}
           </FormControl>

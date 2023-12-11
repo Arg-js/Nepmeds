@@ -40,6 +40,7 @@ export interface IDiscountReqBody extends IDiscountBasicDetails {
   end_date: string;
   is_active: boolean;
   onetime_coupon: boolean;
+  coupon_applicable_number: number;
 }
 
 interface IDiscountUpdateReqBody extends Partial<IDiscountReqBody> {
@@ -102,6 +103,7 @@ const useUpdateDiscount = () => {
   return useMutation(updateDiscount, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.discount.get);
+      queryClient.invalidateQueries(api.discount.getById);
     },
     onError: e => toastFail(serverErrorResponse(e)),
   });

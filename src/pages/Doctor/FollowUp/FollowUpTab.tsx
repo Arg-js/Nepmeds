@@ -35,11 +35,6 @@ const FollowUp = ({ type }: { type: number }) => {
 
   const debouncedInputValue = useDebounce(searchValue, 500);
 
-  // TODO: remove the null as unknown as number
-  // const [selectedAvailability, setSelectedAvailability] = useState<number>(
-  //   null as unknown as number
-  // );
-
   const formMethods = useForm({
     defaultValues,
     resolver: yupResolver(schema),

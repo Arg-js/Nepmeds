@@ -38,11 +38,6 @@ const FollowUp = () => {
 
   const [tabIndex, setTabIndex] = useState(0);
 
-  // TODO: remove the null as unknown as number
-  // const [selectedAvailability, setSelectedAvailability] = useState<number>(
-  //   null as unknown as number
-  // );
-
   const formMethods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
@@ -59,7 +54,6 @@ const FollowUp = () => {
 
   const onModalClose = () => {
     reset(defaultValues);
-    // setSelectedAvailability(null as unknown as number);
     onClose();
   };
 

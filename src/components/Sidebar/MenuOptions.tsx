@@ -3,22 +3,23 @@ import { useProfileData } from "@nepMeds/context/index";
 import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { ChevronUp, ChevronDown } from "react-iconly";
-import { useMatch, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { ISidebarOption } from "@nepMeds/components/Sidebar/Sidebar";
 
 const MenuOption = ({
   sidebarOption,
-  sidebarCollapsed
+  sidebarCollapsed,
 }: {
   sidebarOption: ISidebarOption;
   sidebarCollapsed: boolean;
 }) => {
   const [isActive, setIsActive] = useState(false);
 
-  const isActiveFn = (to: string) => {
-    const match = useMatch({ path: to, end: true });
-    return match;
-  };
+  // TODO: remove this once QA confrims
+  // const isActiveFn = (to: string) => {
+  //   const match = useMatch({ path: to, end: true });
+  //   return match;
+  // };
 
   //  USER DATA
   const userInfo = useProfileData();
@@ -34,7 +35,7 @@ const MenuOption = ({
     isDoctor,
     isPayment,
     payment_status,
-    text
+    text,
   }: {
     isAdmin: boolean | undefined;
     isDoctor: boolean | undefined;
@@ -63,27 +64,30 @@ const MenuOption = ({
             height="56px"
             pl={4}
             borderRadius={12}
-            color={colors?.black_50}
-            sx={
-              isActiveFn("/doctor-list/*")
-                ? {
-                    background: colors.primary,
-                    color: colors.white
-                  }
-                : {}
-            }
+            color={colors.black_50}
+            cursor={"pointer"}
             _hover={{ cursor: "pointer", bgColor: colors.forminput }}
+            // TODO: remove this once the QA confirms
+            // sx={
+            //   isActiveFn("/doctor-list/*")
+            //     ? {
+            //         background: colors.primary,
+            //         color: colors.white
+            //       }
+            //     : { ":hover": { bgColor: colors.forminput } }
+            // }
             onClick={() => setIsActive(prev => !prev)}
             mb={2}
           >
             <Flex justifyContent={"space-around"} alignItems={"center"}>
               <sidebarOption.icon
                 set={sidebarOption.set}
-                color={
-                  isActiveFn("/doctor-list/*")
-                    ? colors?.white
-                    : colors?.black_50
-                }
+                color={colors.black_50}
+                // color={
+                //   isActiveFn("/doctor-list/*")
+                //     ? colors?.white
+                //     : colors?.black_50
+                // }
                 size={20}
               />
               {!sidebarCollapsed && (
@@ -120,25 +124,21 @@ const MenuOption = ({
                   px={5}
                   py={3}
                   borderRadius={8}
-                  _activeLink={{
-                    color: colors.blue_100,
-                    bg: colors.primary
-                  }}
                   to={item.link}
                   _hover={{ cursor: "pointer", bgColor: colors.forminput }}
+                  _activeLink={{
+                    color: colors.blue_100,
+                    bg: colors.primary,
+                  }}
                 >
-                  <item.icon
-                    set={item.set}
-                    color={colors?.black_50}
-                    size={15}
-                  />
+                  <item.icon set={item.set} color={colors.black_50} size={15} />
                   {/* TODO: need to reload page for the calculation to happen */}
                   {!sidebarCollapsed && (
                     <Text
                       fontWeight={"400"}
                       fontSize={"sm"}
                       lineHeight={"17px"}
-                      color={colors?.black_50}
+                      color={colors.black_50}
                       ml={"18px"}
                     >
                       {item.text}
@@ -156,7 +156,7 @@ const MenuOption = ({
             isDoctor,
             isPayment,
             payment_status,
-            text: sidebarOption?.text
+            text: sidebarOption?.text,
           }) && (
             <ListItem
               display={"flex"}
@@ -165,17 +165,21 @@ const MenuOption = ({
               height="56px"
               p={4}
               borderRadius={12}
+              color={colors.black_50}
+              _hover={{
+                cursor: "pointer",
+                bgColor: colors.forminput,
+              }}
               _activeLink={{
                 background: colors.primary,
-                color: colors.white
+                color: colors.white,
               }}
               to={sidebarOption.link}
               mb={2}
-              _hover={{ cursor: "pointer", bgColor: colors.forminput }}
             >
               <sidebarOption.icon
                 set={sidebarOption.set}
-                color={colors?.black_50}
+                color={colors.black_50}
                 size={20}
               />
               {/* TODO: need to reload page for the calculation to happen */}
@@ -184,7 +188,6 @@ const MenuOption = ({
                   fontWeight={"400"}
                   fontSize={"sm"}
                   lineHeight={"17px"}
-                  color={colors?.black_50}
                   ml={"18px"}
                 >
                   {sidebarOption?.text}

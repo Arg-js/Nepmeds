@@ -16,7 +16,9 @@ import {
   ImageCancelIcon,
   UploadImageIcon,
 } from "@nepMeds/assets/svgs";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import WrapperBox, {
+  boxShadow,
+} from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import FormControl from "@nepMeds/components/Form/FormControl";
 import {
@@ -68,11 +70,7 @@ const PatientDetail = ({
   };
 
   return (
-    <WrapperBox
-      px={"5"}
-      boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-      borderRadius="2"
-    >
+    <WrapperBox px={"5"} boxShadow={boxShadow} borderRadius="2">
       <>
         <Flex
           alignItems={"center"}
@@ -144,21 +142,6 @@ const PatientDetail = ({
                   name={"full_name"}
                   placeholder={"Enter patient name"}
                   error={formProps.formState.errors?.full_name?.message ?? ""}
-                  register={formProps.register}
-                  variant={"outline"}
-                  style={{
-                    minHeight: "35px",
-                  }}
-                  required
-                />
-              </Box>
-              <Box mb={4}>
-                <FormControl
-                  control={"input"}
-                  label={"Enter Contact Number"}
-                  name={"contact"}
-                  placeholder={"Enter contact number"}
-                  error={formProps.formState.errors?.contact?.message ?? ""}
                   register={formProps.register}
                   variant={"outline"}
                   style={{
