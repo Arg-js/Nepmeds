@@ -243,7 +243,7 @@ const DoctorDetails: React.FC<{
                             )}
                         </Text>
                         <Text fontWeight={400} fontSize={"xs"}>
-                          NMC No: {doctorInfo?.medical_licence_number || "N/A"}
+                          NMC No: {doctorInfo?.doctor_nmc_info || "N/A"}
                         </Text>
                       </Box>
                       <Divider borderWidth={"0.5px"} />
@@ -405,7 +405,7 @@ const DoctorDetails: React.FC<{
                             )}
                         </Text>
                         <Text fontWeight={400} fontSize={"xs"}>
-                          NMC No: {doctorInfo?.medical_licence_number || "N/A"}
+                          NMC No: {doctorInfo?.doctor_nmc_info || "N/A"}
                         </Text>
                         <Box>
                           {bookedDates?.map(bookedDate => (

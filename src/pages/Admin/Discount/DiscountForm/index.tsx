@@ -171,6 +171,7 @@ const DiscountForm = ({
             placeholder={"Enter coupon applicable number"}
             register={register}
             type={"number"}
+            min={0}
           />
         </Flex>
       </Tooltip>

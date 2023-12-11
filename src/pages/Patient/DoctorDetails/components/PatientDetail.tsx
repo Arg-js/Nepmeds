@@ -108,7 +108,7 @@ const PatientDetail = ({
             <Flex my={"3px"} fontSize={"sm"} fontWeight={500}>
               <Text>NMC No: &nbsp;</Text>
               <Text color={colors.primary}>
-                {doctorList?.medical_licence_number ?? "N/A"}
+                {doctorList?.doctor_nmc_info ?? "N/A"}
               </Text>
             </Flex>
             <Text variant={"small600"} my="4px">
