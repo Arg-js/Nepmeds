@@ -1,3 +1,4 @@
+import ImageUpload from "./ImageUpload";
 import Input from "./Input";
 import MultiSelect from "./MultiSelect";
 import Password from "./Password";
@@ -20,6 +21,8 @@ function FormControl(props: any) {
       return <TextArea {...rest} />;
     case "multiSelect":
       return <MultiSelect {...rest} />;
+    case "imageUpload":
+      return <ImageUpload {...rest} />;
     default:
       return null;
   }

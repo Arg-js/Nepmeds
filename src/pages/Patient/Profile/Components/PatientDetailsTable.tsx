@@ -1,5 +1,16 @@
-import { Grid, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Flex,
+  FormLabel,
+  Grid,
+  Image,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
+import { ImageCancelIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
 import { DataTable } from "@nepMeds/components/DataTable";
+import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import SearchInput from "@nepMeds/components/Search";
 import TableWrapper from "@nepMeds/components/TableWrapper";
@@ -8,7 +19,9 @@ import {
   useGetPatientDetails,
   useGetPatientDetailsById,
 } from "@nepMeds/service/nepmeds-patient-profile";
+import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { columns } from "../../PatientDetail";
 import PatientDetailModal from "./PatientDetailModal";
 import PatientPrescriptionSkeletion from "./PatientPrescriptionSkeletion";
@@ -19,6 +32,11 @@ const PatientDetailsTable = () => {
   const [appointmentId, setAppointmentId] = useState("");
 
   const { onOpen, onClose, isOpen } = useDisclosure();
+  const {
+    onOpen: onEditModalOpen,
+    onClose: onEditModalClose,
+    isOpen: isEditModalOpen,
+  } = useDisclosure();
 
   const debouncedValue = useDebounce(searchValue, 500);
 
@@ -32,6 +50,9 @@ const PatientDetailsTable = () => {
     appointment_id: appointmentId,
   });
   // REACT QUERY ENDS
+
+  const { register, watch, setValue } = useForm();
+  const imageWatch = watch("image");
 
   return (
     <TableWrapper>
@@ -51,6 +72,72 @@ const PatientDetailsTable = () => {
             <PatientDetailModal patientDetail={patientDetail} />
           )}
         </ModalComponent>
+        <ModalComponent
+          heading={<>Add Lab Report</>}
+          isOpen={isEditModalOpen}
+          onClose={onEditModalClose}
+          footer={
+            <>
+              <Button variant={"reset"} flex={0.5} onClick={onEditModalClose}>
+                Cancel
+              </Button>
+              <Button flex={0.5}>Add</Button>
+            </>
+          }
+        >
+          <>
+            <FormLabel
+              fontFamily={"500"}
+              fontSize={"13px"}
+              fontWeight={"Quicksand"}
+            >
+              Upload your lab reports :
+            </FormLabel>
+            <FormControl
+              name={"image"}
+              register={register}
+              control={"input"}
+              type={"file"}
+              id={"image"}
+              display={"none"}
+              accept={"image/png, image/jpeg"}
+              multiple
+            />
+            <Flex>
+              <FormLabel
+                htmlFor="image"
+                cursor={"pointer"}
+                border={`1px dashed ${colors.gray}`}
+                width={"76px"}
+              >
+                <UploadImageIcon />
+              </FormLabel>
+              <Flex gap={4}>
+                {imageWatch &&
+                  Object.keys(imageWatch).map(index => (
+                    <Flex key={Math.random()}>
+                      <Image
+                        src={
+                          imageWatch &&
+                          URL.createObjectURL(
+                            imageWatch[index] as unknown as Blob
+                          )
+                        }
+                        width={"76px"}
+                        height={"76px"}
+                        objectFit={"contain"}
+                      />
+                      <Box onClick={() => setValue("image", null)}>
+                        {/* <Box onClick={() => removeAtIndex(index, imageWatch)}> */}
+                        {/* <Box> */}
+                        <ImageCancelIcon style={{ cursor: "pointer" }} />
+                      </Box>
+                    </Flex>
+                  ))}
+              </Flex>
+            </Flex>
+          </>
+        </ModalComponent>
         <Grid display={"flex"} justifyContent={"space-between"}>
           <Text variant="tableHeading">Appointment Details</Text>
           <SearchInput
@@ -60,7 +147,12 @@ const PatientDetailsTable = () => {
         </Grid>
         <DataTable
           data={tableData?.results ?? []}
-          columns={columns({ pagination, setAppointmentId, onOpen })}
+          columns={columns({
+            pagination,
+            setAppointmentId,
+            onOpen,
+            onEditModalOpen,
+          })}
           isLoading={isFetching}
           pagination={{
             manual: true,

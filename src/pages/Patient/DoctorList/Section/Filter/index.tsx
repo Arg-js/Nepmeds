@@ -290,7 +290,9 @@ const DoctorListFilter: React.FC<{
                     }}
                   >
                     <Flex justifyContent={"space-between"} width={"100%"}>
-                      <Flex>
+                      <Flex
+                        direction={{ base: "row", lg: "column", xl: "row" }}
+                      >
                         <Text
                           fontWeight={600}
                           fontSize={"md"}
@@ -306,9 +308,8 @@ const DoctorListFilter: React.FC<{
                               fontWeight={600}
                               fontSize={"md"}
                               mb={3}
-                              flex="1"
                               textAlign="center"
-                              mx={4}
+                              mx={1}
                               bgColor={colors.primary}
                               borderRadius={"100%"}
                               width={"20px"}
