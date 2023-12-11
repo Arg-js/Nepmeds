@@ -78,7 +78,7 @@ const PatientDetailsTable = () => {
           onClose={onEditModalClose}
           footer={
             <>
-              <Button variant={"reset"} flex={0.5}>
+              <Button variant={"reset"} flex={0.5} onClick={onEditModalClose}>
                 Cancel
               </Button>
               <Button flex={0.5}>Add</Button>
