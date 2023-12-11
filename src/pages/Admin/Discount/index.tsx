@@ -37,7 +37,7 @@ const defaultValues = {
   specialization: [] as IOptionItem[],
   doctor: [] as IOptionItem[],
   // discount_type: null as unknown as { label: string; value: AmountType },
-  discount_type: { label: "", value: "" as AmountType },
+  discount_type: { label: "Enter Discount Type", value: "" as AmountType },
   value: "",
   code: "",
   start_date: "",
@@ -52,7 +52,7 @@ const schema = yup.object().shape({
   // TODO: remove this after the QA approval
   // discount_type: yup.mixed().required("This field is required"),
   discount_type: yup.object().shape({
-    label: yup.string().required("This field is required"),
+    value: yup.string().required("This field is required"),
   }),
   value: yup
     .string()
