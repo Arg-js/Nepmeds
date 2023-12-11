@@ -21,7 +21,7 @@ const rejectDoc = async ({
 export const useRejectDoc = () => {
   const queryClient = useQueryClient();
 
-  return useMutation([api.rejectsingledoctor], rejectDoc, {
+  return useMutation(rejectDoc, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.registereddoctor);
     },

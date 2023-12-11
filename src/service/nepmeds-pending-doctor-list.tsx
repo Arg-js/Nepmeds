@@ -10,10 +10,6 @@ const getPendingDoctorList = async (page_no: number) => {
 };
 
 export const usePendingDoctorList = ({ page_no }: { page_no: number }) =>
-  useQuery(
-    `${api.pendingdoctor}/?page_no=${page_no}`,
-    () => getPendingDoctorList(page_no),
-    {
-      select: data => data.data.data,
-    }
-  );
+  useQuery([api.pendingdoctor, page_no], () => getPendingDoctorList(page_no), {
+    select: data => data.data.data,
+  });

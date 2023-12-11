@@ -97,7 +97,7 @@ export const updateDoctorAvailability = async ({
 export const useUpdateDoctorAvailability = () => {
   const queryClient = useQueryClient();
 
-  return useMutation(api.doctor_availability, updateDoctorAvailability, {
+  return useMutation(updateDoctorAvailability, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.doctor_availability);
     },

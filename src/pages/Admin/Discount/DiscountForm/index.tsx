@@ -81,7 +81,7 @@ const DiscountForm = ({
         options={discountTypeOptions}
         isMulti={false}
         required
-        error={errors?.discount_type?.label?.message ?? ""}
+        error={errors?.discount_type?.value?.message ?? ""}
         style={{
           background: colors.white,
           minHeight: "35px",

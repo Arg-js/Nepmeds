@@ -1,12 +1,8 @@
-import { SearchIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
   Grid,
   HStack,
-  Input,
-  InputGroup,
-  InputLeftElement,
   Text,
   useDisclosure,
 } from "@chakra-ui/react";
@@ -32,6 +28,7 @@ import { useEffect, useState } from "react";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import SkeletonControl from "@nepMeds/components/Loader";
 import TableWrapper from "@nepMeds/components/TableWrapper";
+import SearchInput from "@nepMeds/components/Search";
 
 const schema = yup.object().shape({
   question: yup
@@ -133,18 +130,10 @@ const FAQ = () => {
             Frequently Asked Questions
           </Text>
           <HStack>
-            <InputGroup w="190px" borderColor={colors.grey_dark}>
-              <InputLeftElement pointerEvents="none" h={8}>
-                <SearchIcon color={colors.grey_dark} boxSize={4} />
-              </InputLeftElement>
-              <Input
-                w={40}
-                h={8}
-                placeholder="Search"
-                onChange={e => setSearchValue(e.target.value)}
-              />
-            </InputGroup>
-
+            <SearchInput
+              setSearchValue={setSearchValue}
+              setPageParams={setPagination}
+            />
             <Button
               color={colors.grey_dark}
               bg={colors.white}

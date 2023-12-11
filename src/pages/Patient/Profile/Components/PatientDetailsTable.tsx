@@ -1,4 +1,4 @@
-import { Grid, Spinner, Text, useDisclosure } from "@chakra-ui/react";
+import { Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import SearchInput from "@nepMeds/components/Search";
@@ -11,6 +11,7 @@ import {
 import { useState } from "react";
 import { columns } from "../../PatientDetail";
 import PatientDetailModal from "./PatientDetailModal";
+import PatientPrescriptionSkeletion from "./PatientPrescriptionSkeletion";
 
 const PatientDetailsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -43,7 +44,7 @@ const PatientDetailsTable = () => {
           size={"2xl"}
         >
           {isLoading ? (
-            <Spinner />
+            <PatientPrescriptionSkeletion />
           ) : (
             // Todo: find another way to solve this problem
             // patientDetail: IPatientDetailById | undefined
@@ -51,7 +52,7 @@ const PatientDetailsTable = () => {
           )}
         </ModalComponent>
         <Grid display={"flex"} justifyContent={"space-between"}>
-          <Text variant="tableHeading">Patient Details</Text>
+          <Text variant="tableHeading">Appointment Details</Text>
           <SearchInput
             setSearchValue={setSearchValue}
             setPageParams={setPagination}
