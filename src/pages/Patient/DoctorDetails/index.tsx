@@ -60,15 +60,12 @@ const DoctorDetails = () => {
   } = useGetDiscountByCode();
   // REACT QUERIES END
 
-  const phoneRegExp = /^(9\d{9}|4\d{6}|01\d{7})$/;
-
   const bookedDates = availability?.filter(data => {
     return selectedAvailability.includes(data.id);
   });
 
   const schema = Yup.object({
     full_name: Yup.string().required("This field is required"),
-    contact: Yup.string().matches(phoneRegExp, "Phone number is not valid"),
     // TODO: need to make sure if this is required or not
     // age: Yup.number()
     //   .max(115, "age must be at most 115 years")

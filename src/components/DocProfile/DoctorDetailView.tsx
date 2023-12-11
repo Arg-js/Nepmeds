@@ -13,7 +13,9 @@ import {
 } from "@chakra-ui/react";
 import { BackArrowIcon, UniversityIcon } from "@nepMeds/assets/svgs";
 import { scrollToTop } from "@nepMeds/utils/scrollToTop";
-import WrapperBox from "../Patient/DoctorConsultation/WrapperBox";
+import WrapperBox, {
+  boxShadow,
+} from "../Patient/DoctorConsultation/WrapperBox";
 import ReadMore from "../ReadMore";
 import { useNavigate } from "react-router-dom";
 import { colors } from "@nepMeds/theme/colors";
@@ -38,7 +40,7 @@ const DoctorDetailView = ({
   return (
     <WrapperBox
       style={{
-        boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+        boxShadow,
         borderRadius: "2",
         px: 6,
       }}
@@ -181,6 +183,7 @@ const DoctorDetailView = ({
                 <Text fontWeight={600} fontSize={"lg"} color={colors.black_60}>
                   Biography
                 </Text>
+                {/* TODO: if the read more has some issue */}
                 <Box
                   color={colors.black_50}
                   fontWeight={500}
