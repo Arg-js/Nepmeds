@@ -13,7 +13,9 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { BackArrowIcon, UniversityIcon } from "@nepMeds/assets/svgs";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import WrapperBox, {
+  boxShadow,
+} from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import "react-calendar/dist/Calendar.css";
 import "@nepMeds/assets/styles/reactCalender.css";
@@ -121,7 +123,7 @@ const DoctorDetails = () => {
   return (
     <Box bg={colors.white} height={"100vh"}>
       <Header />
-      <WrapperBox style={{ px: 5 }}>
+      <WrapperBox>
         <Grid
           templateColumns={{ lg: "repeat(3,1fr)", xl: "repeat(12,1fr)" }}
           justifyContent={"center"}
@@ -130,7 +132,7 @@ const DoctorDetails = () => {
           <GridItem colSpan={{ lg: 2, xl: 7 }}>
             <WrapperBox
               style={{
-                boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px",
+                boxShadow,
                 borderRadius: "2",
                 px: 6,
               }}

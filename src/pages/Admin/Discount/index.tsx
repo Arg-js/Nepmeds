@@ -36,18 +36,24 @@ const defaultValues = {
   // TODO: check if this is the correct way
   specialization: [] as IOptionItem[],
   doctor: [] as IOptionItem[],
-  discount_type: null as unknown as { label: string; value: AmountType },
+  // discount_type: null as unknown as { label: string; value: AmountType },
+  discount_type: { label: "", value: "" as AmountType },
   value: "",
   code: "",
   start_date: "",
   end_date: "",
   is_active: false,
   onetime_coupon: false,
+  coupon_applicable_number: "",
 };
 
 const schema = yup.object().shape({
   title: yup.string().required("This field is required"),
-  discount_type: yup.mixed().required("This field is required"),
+  // TODO: remove this after the QA approval
+  // discount_type: yup.mixed().required("This field is required"),
+  discount_type: yup.object().shape({
+    label: yup.string().required("This field is required"),
+  }),
   value: yup
     .string()
     .matches(/^[0-9]*$/, "Please enter a valid number")
@@ -123,6 +129,7 @@ const Discount = () => {
         specialization: data?.specialization?.map(({ value }) => value),
         // TODO: try avoid conversion, such conversion is required since input field always returns string value
         value: +data?.value,
+        coupon_applicable_number: +data.coupon_applicable_number,
       };
       if (isEdit) {
         await updateDiscount({
@@ -133,7 +140,10 @@ const Discount = () => {
         });
         toastSuccess("Discount updated successfully");
       } else {
-        await createDiscount({ ...request, is_active: true });
+        await createDiscount({
+          ...request,
+          is_active: true,
+        });
       }
       onModalClose();
     } catch (e) {
@@ -156,6 +166,8 @@ const Discount = () => {
       reset({
         ...discount,
         value: discount?.value?.toString(),
+        coupon_applicable_number:
+          discount?.coupon_applicable_number?.toString(),
         // TODO: move this conversion logic
         discount_type: {
           label:

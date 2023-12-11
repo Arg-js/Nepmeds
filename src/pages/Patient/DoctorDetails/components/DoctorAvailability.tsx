@@ -1,6 +1,6 @@
-import { Button, Flex, FormLabel, Text } from "@chakra-ui/react";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import { Box, Button, Flex, FormLabel, Text } from "@chakra-ui/react";
 import SkeletonControl from "@nepMeds/components/Loader";
+import { boxShadow } from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { IAvailability } from "@nepMeds/service/nepmeds-patient-doctorList";
 import TokenService from "@nepMeds/service/service-token";
 import { colors } from "@nepMeds/theme/colors";
@@ -44,9 +44,9 @@ const DoctorAvailability = ({
     }
   };
   return (
-    <WrapperBox
+    <Box
       p={{ base: 5, md: 10, lg: 5, xl: 10 }}
-      boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
+      boxShadow={boxShadow}
       borderRadius="2"
     >
       <>
@@ -118,7 +118,7 @@ const DoctorAvailability = ({
           </Flex>
         </Flex>
       </>
-    </WrapperBox>
+    </Box>
   );
 };
 

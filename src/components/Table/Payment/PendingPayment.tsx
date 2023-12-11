@@ -226,7 +226,7 @@ const PendingPayment = ({
                 )}
                 isLoading={rejectLoading}
               >
-                Filter
+                Done
               </Button>
             </HStack>
           }
