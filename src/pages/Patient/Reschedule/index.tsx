@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Flex,
   FormLabel,
@@ -8,7 +9,7 @@ import {
 } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
 import Header from "@nepMeds/pages/Patient/Section/Header";
-import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
+import { boxShadow } from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import DoctorDetailView from "@nepMeds/components/DocProfile/DoctorDetailView";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Value } from "react-calendar/dist/cjs/shared/types";
@@ -66,115 +67,109 @@ const RescheduleAppointment = () => {
   return (
     <>
       <Header />
-      <WrapperBox>
-        <Grid
-          templateColumns={{ lg: "repeat(3,1fr)", xl: "repeat(12,1fr)" }}
-          justifyContent={"center"}
-          gap={5}
-        >
-          <GridItem colSpan={{ lg: 2, xl: 7 }}>
-            <DoctorDetailView id={state?.doctor_id} enabled={true} />
-          </GridItem>
+      <Grid
+        templateColumns={{ lg: "repeat(3,1fr)", xl: "repeat(12,1fr)" }}
+        justifyContent={"center"}
+        gap={5}
+      >
+        <GridItem colSpan={{ lg: 2, xl: 7 }}>
+          <DoctorDetailView id={state?.doctor_id} enabled={true} />
+        </GridItem>
 
-          <GridItem colSpan={{ lg: 1, xl: 5 }}>
-            <WrapperBox
-              p={{ base: 5, md: 10, lg: 5, xl: 10 }}
-              boxShadow={"rgba(99, 99, 99, 0.2) 0px 2px 8px 0px"}
-              borderRadius="2"
-            >
-              <>
-                {/* TODO: this is being repeated */}
-                <Text fontWeight={600} fontSize={"xl"} color={colors.black_60}>
-                  Select Date and Time for Reschedule
+        <GridItem colSpan={{ lg: 1, xl: 5 }}>
+          <Box
+            p={{ base: 5, md: 10, lg: 5, xl: 10 }}
+            boxShadow={boxShadow}
+            borderRadius="2"
+          >
+            <>
+              {/* TODO: this is being repeated */}
+              <Text fontWeight={600} fontSize={"xl"} color={colors.black_60}>
+                Select Date and Time for Reschedule
+              </Text>
+              <Flex gap={4} direction={"column"}>
+                <Flex alignItems={"center"} justifyContent={"center"}>
+                  <Calendar
+                    onChange={value => handleCalendarChange(value)}
+                    value={date}
+                    minDate={new Date()}
+                  />
+                </Flex>
+                <Text fontWeight={600} fontSize={"lg"} color={colors.black_60}>
+                  Available Time
                 </Text>
-                <Flex gap={4} direction={"column"}>
-                  <Flex alignItems={"center"} justifyContent={"center"}>
-                    <Calendar
-                      onChange={value => handleCalendarChange(value)}
-                      value={date}
-                      minDate={new Date()}
+                {/* AVAILABLE TIME */}
+                {isAvailabilityFetching && (
+                  <Flex textAlign={"center"} gap={2}>
+                    <SkeletonControl
+                      variant={"skeleton"}
+                      height={"30px"}
+                      flex={0.19}
+                      length={5}
                     />
                   </Flex>
-                  <Text
-                    fontWeight={600}
-                    fontSize={"lg"}
-                    color={colors.black_60}
-                  >
-                    Available Time
-                  </Text>
-                  {/* AVAILABLE TIME */}
-                  {isAvailabilityFetching && (
-                    <Flex textAlign={"center"} gap={2}>
-                      <SkeletonControl
-                        variant={"skeleton"}
-                        height={"30px"}
-                        flex={0.19}
-                        length={5}
-                      />
-                    </Flex>
-                  )}
-                  {!!availability?.length && (
-                    <>
-                      <AvailabilitySection
-                        title="Morning"
-                        availability={availability}
-                        selectedAvailability={selectedAvailability}
-                        setSelectedAvailability={setSelectedAvailability}
-                      />
-                      <AvailabilitySection
-                        title="Evening"
-                        availability={availability}
-                        selectedAvailability={selectedAvailability}
-                        setSelectedAvailability={setSelectedAvailability}
-                      />
-                    </>
-                  )}
-                  {!isAvailabilityFetching && (
-                    <FormLabel
-                      color={colors.error}
-                      fontSize={"xs"}
-                      textAlign={"center"}
-                    >
-                      {!availability?.length
-                        ? "This doctor is not available on this date, choose another date"
-                        : selectedAvailability === 0 &&
-                          "Please Choose the availability*"}
-                    </FormLabel>
-                  )}
-                  {/* AVAILABLE TIME ENDS */}
-
-                  <form onSubmit={handleSubmit(handleSubmitForm)}>
-                    <FloatinglabelTextArea
-                      label="Remarks"
-                      name="remarks"
-                      register={register}
-                      required
-                      rules={{
-                        required: "Remarks is required!",
-                      }}
-                      error={errors?.remarks?.message?.toString()}
-                      pb={4}
+                )}
+                {!!availability?.length && (
+                  <>
+                    <AvailabilitySection
+                      title="Morning"
+                      availability={availability}
+                      selectedAvailability={selectedAvailability}
+                      setSelectedAvailability={setSelectedAvailability}
                     />
+                    <AvailabilitySection
+                      title="Evening"
+                      availability={availability}
+                      selectedAvailability={selectedAvailability}
+                      setSelectedAvailability={setSelectedAvailability}
+                    />
+                  </>
+                )}
+                {!isAvailabilityFetching && (
+                  <FormLabel
+                    color={colors.error}
+                    fontSize={"xs"}
+                    textAlign={"center"}
+                  >
+                    {!availability?.length
+                      ? "This doctor is not available on this date, choose another date"
+                      : selectedAvailability === 0 &&
+                        "Please Choose the availability*"}
+                  </FormLabel>
+                )}
+                {/* AVAILABLE TIME ENDS */}
 
-                    <Flex justifyContent="flex-end">
-                      <Button
-                        variant={"secondary"}
-                        height="40px"
-                        borderRadius="4px"
-                        type="submit"
-                        isLoading={isLoading}
-                        mt={4}
-                      >
-                        Reschedule Appointment
-                      </Button>
-                    </Flex>
-                  </form>
-                </Flex>
-              </>
-            </WrapperBox>
-          </GridItem>
-        </Grid>
-      </WrapperBox>
+                <form onSubmit={handleSubmit(handleSubmitForm)}>
+                  <FloatinglabelTextArea
+                    label="Remarks"
+                    name="remarks"
+                    register={register}
+                    required
+                    rules={{
+                      required: "Remarks is required!",
+                    }}
+                    error={errors?.remarks?.message?.toString()}
+                    pb={4}
+                  />
+
+                  <Flex justifyContent="flex-end">
+                    <Button
+                      variant={"secondary"}
+                      height="40px"
+                      borderRadius="4px"
+                      type="submit"
+                      isLoading={isLoading}
+                      mt={4}
+                    >
+                      Reschedule Appointment
+                    </Button>
+                  </Flex>
+                </form>
+              </Flex>
+            </>
+          </Box>
+        </GridItem>
+      </Grid>
     </>
   );
 };
