@@ -1,12 +1,10 @@
-import { Badge, Flex, Tooltip } from "@chakra-ui/react";
+import { Badge, Flex } from "@chakra-ui/react";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import { CallState, STATUSTYPE } from "@nepMeds/config/enum";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IGetAppointmentRequest } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
 import { Dispatch, SetStateAction, useMemo } from "react";
-import { MdCall } from "react-icons/md";
-import { Link } from "react-router-dom";
 import { CellProps } from "react-table";
 
 const statusInfo: {
@@ -19,26 +17,26 @@ const statusInfo: {
   "1": {
     label: "Approved",
     color: "green",
-    textColor: colors.dark_green
+    textColor: colors.dark_green,
   },
   "2": {
     label: "Pending",
     color: "orange",
-    textColor: colors.maroon
+    textColor: colors.maroon,
   },
   "3": { label: "Rejected", color: "red", textColor: colors.maroon },
   "4": {
     label: "Completed",
     color: "green",
-    textColor: colors.dark_green
-  }
+    textColor: colors.dark_green,
+  },
 };
 
 export const column = ({
   appointment,
   pageParams,
   setAppointmentId,
-  onModalOpen
+  onModalOpen,
 }: {
   appointment?: IGetAppointmentRequest;
   pageParams: {
@@ -58,13 +56,13 @@ export const column = ({
         header: "S.N",
         accessorFn: (_: any, index: number) => {
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
-        }
+        },
       },
       {
         header: "Date",
         accessorFn: ({
           availability,
-          extra_data
+          extra_data,
         }: {
           availability: { date: string };
           extra_data: {
@@ -75,13 +73,13 @@ export const column = ({
             availability?.date.substr(0, 10) ||
             extra_data?.cancelled_availability?.date
           );
-        }
+        },
       },
       { header: "Patient Name", accessorKey: "full_name" },
       {
         header: "Appointment Time",
         cell: ({
-          row
+          row,
         }: CellProps<{
           availability: { from_time: string; to_time: string };
           extra_data: {
@@ -99,7 +97,7 @@ export const column = ({
                 row.original?.extra_data?.cancelled_availability?.to_time
               )}`
             : "N/A";
-        }
+        },
       },
 
       {
@@ -115,18 +113,18 @@ export const column = ({
               fontSize={"xs"}
               textTransform="capitalize"
               sx={{
-                color: statusInfo[row.original?.status].textColor
+                color: statusInfo[row.original?.status].textColor,
               }}
             >
               {statusInfo[row.original?.status].label}
             </Badge>
           );
-        }
+        },
       },
       {
         header: "Actions",
         cell: ({
-          row
+          row,
         }: CellProps<{
           id: string;
           status: string;
@@ -150,33 +148,24 @@ export const column = ({
           const isPending =
             row.original?.status === STATUSTYPE.pending.toString();
 
+          const state = {
+            caller_user: row.original?.doctor_user_id,
+            receiver_user: row.original?.patient_user_id,
+            appointment_id: row.original?.id,
+            call_state: CallState.INITIATE,
+          };
           return (
             <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
-              {row?.original?.is_callable && (
-                <Tooltip hasArrow placement="top" label="Call">
-                  <Link
-                    to={"/video-call"}
-                    state={{
-                      caller_user: row.original?.doctor_user_id,
-                      receiver_user: row.original?.patient_user_id,
-                      appointment_id: row.original?.id,
-                      call_state: CallState.INITIATE
-                    }}
-                  >
-                    <MdCall size={"20"} color={colors.green_button} />
-                  </Link>
-                </Tooltip>
-              )}
-
               <TableActions
                 onView={onView}
                 onAccept={isPending ? onAccept : undefined}
                 onReject={isPending ? onReject : undefined}
+                onCall={{ state, isCallable: row?.original?.is_callable }}
               />
             </Flex>
           );
-        }
-      }
+        },
+      },
     ],
     [appointment]
   );

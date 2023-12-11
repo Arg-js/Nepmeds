@@ -1,7 +1,7 @@
 import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { useQuery } from "react-query";
 import { generatePath } from "react-router-dom";
-import {  IParams } from "./nepmeds-discount";
+import { IParams } from "./nepmeds-discount";
 import { Availability } from "./nepmeds-doctor-patient-appointment";
 import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
@@ -21,6 +21,8 @@ interface IPatientDetail {
   call_status: string;
   call_duration: string;
   follow_up: string;
+  can_reschedule: boolean;
+  doctor_id: string;
 }
 
 interface IPatientDetailResp extends IParams {

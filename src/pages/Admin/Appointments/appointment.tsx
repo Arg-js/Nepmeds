@@ -221,7 +221,9 @@ const Appointment = () => {
                       fontSize={"sm"}
                     >
                       <Text>Amount Paid</Text>
-                      <Text>Rs. {appointmentDetail?.doctor_rate}</Text>
+                      <Text>
+                        Rs. {appointmentDetail?.transaction?.paid_amount}
+                      </Text>
                     </Flex>
                   </Stack>
                 </CardBody>
