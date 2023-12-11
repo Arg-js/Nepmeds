@@ -11,7 +11,7 @@ const getApprovedDoctorList = async (page_no: number) => {
 
 export const useApprovedDoctorList = ({ page_no }: { page_no: number }) =>
   useQuery(
-    `${api.approveddoctor}/?page_np=${page_no}`,
+    [api.approveddoctor, page_no],
     () => getApprovedDoctorList(page_no),
     {
       select: data => data.data.data,
@@ -26,7 +26,7 @@ const getRejectedDoctorList = async (page_no: number) => {
 };
 export const useFetchRejectedDoctorList = ({ page_no }: { page_no: number }) =>
   useQuery(
-    `${api.rejectedDoctorList}/?page_no=${page_no}`,
+    [api.rejectedDoctorList, page_no],
     () => getRejectedDoctorList(page_no),
     {
       select: data => data.data.data,

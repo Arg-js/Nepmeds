@@ -251,7 +251,7 @@ export function useGetAllPrescriptionInfo({
   followup_id?: string;
 }) {
   return useQuery(
-    ["prescriptionPatientInfo", followup_id, appointment_id],
+    [api.prescription.getAllInfo, followup_id, appointment_id],
     () => getAllPrescriptionInfo({ appointment_id, followup_id }),
     {
       select: data => data.data,
