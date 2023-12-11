@@ -223,6 +223,8 @@ export interface IPrescriptionInfo {
     id: string;
     image: string;
   }[];
+  doctor_name: string;
+  doctor_nmc_number: string;
 }
 
 // Get All Prescription Info

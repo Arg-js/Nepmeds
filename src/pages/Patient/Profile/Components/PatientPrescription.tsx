@@ -91,8 +91,8 @@ const PatientPrescription = ({
             <Tbody>
               {InfoForPatient?.map(({ title, value }) => (
                 <Tr key={title}>
-                  <Td>{title}:</Td>
-                  <Td>{value}</Td>
+                  <Td borderBottom={"none"}>{title}:</Td>
+                  <Td borderBottom={"none"}>{value}</Td>
                 </Tr>
               ))}
             </Tbody>
@@ -113,22 +113,62 @@ const PatientPrescription = ({
             <Thead>
               <Tr>
                 {/* TODO: convert the key to text  */}
-                <Th>S.N.</Th>
-                <Th>Medicine</Th>
-                <Th>Dose</Th>
-                <Th>Frequency</Th>
-                <Th>Remarks</Th>
+                <Th
+                  borderRight={`1px solid ${colors.gray_border}`}
+                  borderLeft={`1px solid ${colors.gray_border}`}
+                  borderTop={`1px solid ${colors.gray_border}`}
+                >
+                  S.N.
+                </Th>
+                <Th
+                  borderRight={`1px solid ${colors.gray_border}`}
+                  borderTop={`1px solid ${colors.gray_border}`}
+                >
+                  Medicine
+                </Th>
+                <Th
+                  borderRight={`1px solid ${colors.gray_border}`}
+                  borderTop={`1px solid ${colors.gray_border}`}
+                >
+                  Dose
+                </Th>
+                <Th
+                  borderRight={`1px solid ${colors.gray_border}`}
+                  borderTop={`1px solid ${colors.gray_border}`}
+                >
+                  Frequency
+                </Th>
+                <Th
+                  borderRight={`1px solid ${colors.gray_border}`}
+                  borderTop={`1px solid ${colors.gray_border}`}
+                >
+                  Remarks
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
               {prescription?.drug_referral?.map(
                 ({ medicine, dose, frequency, remarks }, index) => (
                   <Tr key={medicine}>
-                    <Td>{index + 1}.</Td>
-                    <Td>{medicine}</Td>
-                    <Td>{dose}</Td>
-                    <Td>{frequency}</Td>
-                    <Td>{remarks}</Td>
+                    {/* TODO: refactor this */}
+                    <Td
+                      borderRight={`1px solid ${colors.gray_border}`}
+                      borderLeft={`1px solid ${colors.gray_border}`}
+                    >
+                      {index + 1}.
+                    </Td>
+                    <Td borderRight={`1px solid ${colors.gray_border}`}>
+                      {medicine}
+                    </Td>
+                    <Td borderRight={`1px solid ${colors.gray_border}`}>
+                      {dose}
+                    </Td>
+                    <Td borderRight={`1px solid ${colors.gray_border}`}>
+                      {frequency}
+                    </Td>
+                    <Td borderRight={`1px solid ${colors.gray_border}`}>
+                      {remarks}
+                    </Td>
                   </Tr>
                 )
               )}
@@ -146,15 +186,37 @@ const PatientPrescription = ({
         </Box>
 
         <TableContainer>
-          <Table variant="simple">
+          <Table
+            variant="simple"
+            sx={{
+              "tr:nth-of-type(even)": {
+                background: "none",
+              },
+            }}
+          >
             <Tbody>
               <Tr>
-                <Td> Recommendation:</Td>
-                <Td> {prescription?.additional_info?.recommendation}</Td>
+                <Td borderBottom={"none"}> Recommendation:</Td>
+                <Td borderBottom={"none"}>
+                  {prescription?.additional_info?.recommendation}
+                </Td>
               </Tr>
               <Tr>
-                <Td> Follow Up date:</Td>
-                <Td> {prescription?.additional_info?.follow_up_date}</Td>
+                <Td borderBottom={"none"}> Follow Up date:</Td>
+                <Td borderBottom={"none"}>
+                  {prescription?.additional_info?.follow_up_date}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td borderBottom={"none"} fontSize="sm" fontWeight={"600"}>
+                  {" "}
+                  Dr.{prescription?.doctor_name}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td borderBottom={"none"} fontSize="sm" fontWeight={"600"}>
+                  NMC no: {prescription?.doctor_nmc_number}
+                </Td>
               </Tr>
             </Tbody>
           </Table>
@@ -166,15 +228,15 @@ const PatientPrescription = ({
         <Text variant="md600" color={colors.black_60}>
           {prescription?.additional_info?.follow_up_date}
         </Text> */}
-        <Text variant="sm400" color={colors.black_60}>
-          Dr.
-        </Text>
-        <Text variant="sm400" color={colors.black_60}>
+        {/* <Text variant="sm400" color={colors.black_60}>
+          Dr. {prescription?.doctor_name}
+        </Text> */}
+        {/* <Text variant="sm400" color={colors.black_60}>
           NMC no:
-        </Text>
-        <Text variant="md600" color={colors.black_60}>
-          NMC no:
-        </Text>
+        </Text> */}
+        {/* <Text variant="sm400" color={colors.black_60}>
+          NMC no: {prescription?.doctor_nmc_number}
+        </Text> */}
       </Grid>
     </>
   );
