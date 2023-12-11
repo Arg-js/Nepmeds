@@ -10,6 +10,9 @@ import { Suspense, lazy } from "react";
 import { Navigate, useRoutes } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import AllPaymentAdmin from "@nepMeds/pages/Admin/Payment/AllPayment";
+import RescheduleAppointment from "@nepMeds/pages/Patient/Reschedule";
+import DoctorRescheduled from "@nepMeds/pages/Doctor/Rescheduled";
+import RescheduledListAdmin from "@nepMeds/pages/Admin/Rescheduled";
 
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
@@ -84,6 +87,11 @@ const routes = [
         element: <Appointment />,
       },
       {
+        path: NAVIGATION_ROUTES.RESCHEDULE,
+        element: <DoctorRescheduled />,
+      },
+
+      {
         path: NAVIGATION_ROUTES.FOLLOWUP,
         element: <FollowUp />,
       },
@@ -140,6 +148,11 @@ const paientRoutes = [
     path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
     element: <DoctorDetails />,
   },
+  {
+    path: NAVIGATION_ROUTES.PATIENT.RESCHEDULE_APPOINTMENT,
+    element: <RescheduleAppointment />,
+  },
+
   {
     path: NAVIGATION_ROUTES.PATIENT_PROFILE,
     element: <PatientProfile />,
@@ -205,6 +218,10 @@ const adminRoutes = [
       {
         path: NAVIGATION_ROUTES.PATIENTS,
         element: <Patients />,
+      },
+      {
+        path: NAVIGATION_ROUTES.RESCHEDULE,
+        element: <RescheduledListAdmin />,
       },
       {
         path: NAVIGATION_ROUTES.APPOINTMENTS,

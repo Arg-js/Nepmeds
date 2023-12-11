@@ -110,11 +110,25 @@ export const columns = ({
     },
     {
       header: "Actions",
-      cell: ({ row }: CellProps<{ id: string }>) => (
+      cell: ({
+        row,
+      }: CellProps<{
+        id: string;
+        can_reschedule: boolean;
+        doctor_id: string;
+      }>) => (
         <TableActions
           onView={() => {
             setAppointmentId(row.original?.id);
             onOpen();
+          }}
+          onReschedule={{
+            canReschedule: row?.original?.can_reschedule,
+
+            state: {
+              appointment_id: row?.original?.id,
+              doctor_id: row?.original?.doctor_id,
+            },
           }}
           onEdit={() => {
             setAppointmentId(row.original?.id);
