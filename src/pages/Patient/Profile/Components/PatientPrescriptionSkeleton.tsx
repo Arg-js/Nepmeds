@@ -1,7 +1,7 @@
 import { Grid, GridItem, Divider } from "@chakra-ui/react";
 import SkeletonControl from "@nepMeds/components/Loader";
 
-const PatientPrescriptionSkeletion = () => {
+const PatientPrescriptionSkeleton = () => {
   return (
     <Grid templateColumns={"repeat(4, 1fr)"} gap={6}>
       <SkeletonControl variant={"skeleton"} length={8} height={2} />
@@ -25,4 +25,4 @@ const PatientPrescriptionSkeletion = () => {
   );
 };
 
-export default PatientPrescriptionSkeletion;
+export default PatientPrescriptionSkeleton;

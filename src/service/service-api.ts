@@ -159,6 +159,11 @@ export const api = {
     doctor_availability: {
       get: "/patient/doctor-booking-availabilities/:id/",
     },
+    lab_report: {
+      get: "/patient/get-patient-lab-report/?appointment_id=:id",
+      delete: "/patient/get-patient-lab-report/?labreport_id=:id",
+      post: "/patient/upload-lab-report/",
+    },
     reschedule: {
       post: "/patient/appointment-reschedule/",
       getAvailability: "/patient/doctor-reschedule-availabilities/:id/",

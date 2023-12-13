@@ -1,22 +1,28 @@
-import { Box, Flex, FormLabel, HStack, Image } from "@chakra-ui/react";
+import { Box, Flex, FormLabel, Image } from "@chakra-ui/react";
 import { ImageCancelIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
 import { colors } from "@nepMeds/theme/colors";
 import { UseFormRegister } from "react-hook-form";
+import { InputProps } from "react-select";
 import FormControl from "./FormControl";
 
 const ImageUpload = ({
+  label,
   register,
-  imageWatch,
-  setValue,
+  fileList,
+  name,
+  onImageRemove,
 }: {
+  label: string;
+  name: string;
+  // TODO: remove any
   register: UseFormRegister<any>;
-  imageWatch: any;
-  setValue: any;
-}) => {
+  fileList: FileList;
+  onImageRemove: (index: string) => void;
+} & InputProps) => {
   return (
-    <>
+    <Box>
       <FormLabel fontFamily={"500"} fontSize={"13px"} fontWeight={"Quicksand"}>
-        Upload your lab reports :
+        {label}
       </FormLabel>
       <FormControl
         register={register}
@@ -24,7 +30,7 @@ const ImageUpload = ({
         type={"file"}
         id={"image"}
         display={"none"}
-        name={"lab_report_file"}
+        name={name}
         accept={"image/png, image/jpeg"}
         multiple
       />
@@ -37,20 +43,24 @@ const ImageUpload = ({
         >
           <UploadImageIcon />
         </FormLabel>
-        {imageWatch && (
-          <HStack>
-            <Image
-              src={URL.createObjectURL(imageWatch[0] as unknown as Blob)}
-              width={"76px"}
-              objectFit={"cover"}
-            />
-            <Box onClick={() => setValue("old_report_file", null)}>
-              <ImageCancelIcon style={{ cursor: "pointer" }} />
-            </Box>
-          </HStack>
-        )}
+        {!!fileList?.length &&
+          Object.keys(fileList).map(index => (
+            <Flex key={Math.random()}>
+              {/* TODO: fix this issue of as unknown as Blob)
+                }*/}
+              <Image
+                src={URL.createObjectURL(fileList[+index] as unknown as Blob)}
+                width={"76px"}
+                height={"76px"}
+                objectFit={"contain"}
+              />
+              <Box onClick={() => onImageRemove(index)}>
+                <ImageCancelIcon style={{ cursor: "pointer" }} />
+              </Box>
+            </Flex>
+          ))}
       </Flex>
-    </>
+    </Box>
   );
 };
 

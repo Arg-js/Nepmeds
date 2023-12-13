@@ -14,7 +14,7 @@ import {
 import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { colors } from "@nepMeds/theme/colors";
-
+const DrugReferralHeader = ["Medicine", "Dose", "Frequency", "Remarks"];
 const PatientPrescription = ({
   prescription,
 }: {
@@ -61,26 +61,9 @@ const PatientPrescription = ({
           <Text variant="sm400">Information for Patient</Text>
         </Box>
         {/* TODO: design in progress */}
-        {/* <Flex alignItems={"flex-end"} gap={3}>
-          <Text variant="sm400" color={colors.black_60}>
-            Recommendation:
-          </Text>
-          <Text variant="md600" color={colors.black_60}>
-            {prescription?.additional_info?.recommendation}
-          </Text>
-        </Flex> */}
-        {/* {InfoForPatient?.map(({title, value}) => (
-          <Flex alignItems={"flex-end"} justifyContent={"flex-start"} gap={3}>
-            <Text variant="sm400" color={colors.black_60}>
-              {title}:
-            </Text>
-            <Text variant="md600" color={colors.black_60}>
-              {value}
-            </Text>
-          </Flex>
-        ))} */}
         <TableContainer>
           <Table
+            size="sm"
             variant="simple"
             sx={{
               "tr:nth-of-type(even)": {
@@ -109,41 +92,25 @@ const PatientPrescription = ({
         </Box>
 
         <TableContainer>
-          <Table variant="simple">
+          <Table variant="simple" size="sm">
             <Thead>
               <Tr>
                 {/* TODO: convert the key to text  */}
                 <Th
-                  borderRight={`1px solid ${colors.gray_border}`}
-                  borderLeft={`1px solid ${colors.gray_border}`}
-                  borderTop={`1px solid ${colors.gray_border}`}
+                  border={`1px solid ${colors.gray_border}`}
+                  borderBottom="none"
                 >
                   S.N.
                 </Th>
-                <Th
-                  borderRight={`1px solid ${colors.gray_border}`}
-                  borderTop={`1px solid ${colors.gray_border}`}
-                >
-                  Medicine
-                </Th>
-                <Th
-                  borderRight={`1px solid ${colors.gray_border}`}
-                  borderTop={`1px solid ${colors.gray_border}`}
-                >
-                  Dose
-                </Th>
-                <Th
-                  borderRight={`1px solid ${colors.gray_border}`}
-                  borderTop={`1px solid ${colors.gray_border}`}
-                >
-                  Frequency
-                </Th>
-                <Th
-                  borderRight={`1px solid ${colors.gray_border}`}
-                  borderTop={`1px solid ${colors.gray_border}`}
-                >
-                  Remarks
-                </Th>
+                {DrugReferralHeader?.map(title => (
+                  <Th
+                    key={title}
+                    borderRight={`1px solid ${colors.gray_border}`}
+                    borderTop={`1px solid ${colors.gray_border}`}
+                  >
+                    {title}
+                  </Th>
+                ))}
               </Tr>
             </Thead>
             <Tbody>
@@ -157,6 +124,13 @@ const PatientPrescription = ({
                     >
                       {index + 1}.
                     </Td>
+                    {/* todo: there are few todos in this file since the design is not finalized */}
+                    {/* todo: i have medicine as a string i want it as a key */}
+                    {/* {DrugReferralHeader?.map(title => (
+                      <Td borderRight={`1px solid ${colors.gray_border}`}>
+                        {title.toLowerCase()}
+                      </Td>
+                    ))} */}
                     <Td borderRight={`1px solid ${colors.gray_border}`}>
                       {medicine}
                     </Td>
@@ -186,8 +160,10 @@ const PatientPrescription = ({
         </Box>
 
         <TableContainer>
+          {/* todo: make a variant for table */}
           <Table
             variant="simple"
+            size="sm"
             sx={{
               "tr:nth-of-type(even)": {
                 background: "none",
@@ -207,9 +183,9 @@ const PatientPrescription = ({
                   {prescription?.additional_info?.follow_up_date}
                 </Td>
               </Tr>
+              {/* TODO: find alternative to this */}
               <Tr>
                 <Td borderBottom={"none"} fontSize="sm" fontWeight={"600"}>
-                  {" "}
                   Dr.{prescription?.doctor_name}
                 </Td>
               </Tr>
