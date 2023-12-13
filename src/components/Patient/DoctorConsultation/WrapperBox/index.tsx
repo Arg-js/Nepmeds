@@ -18,7 +18,7 @@ const WrapperBox: React.FC<IWrapperBox> = ({ children, style, ...rest }) => {
       border="none"
       boxShadow="none"
       fontFamily="Quicksand"
-      px={{ base: "5", md: "15", xl: "15", "2xl": "60" }}
+      px={{ base: "5", md: "15", xl: "15", "2xl": "80" }}
       sx={style}
       {...rest}
     >

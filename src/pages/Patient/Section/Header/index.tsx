@@ -16,6 +16,7 @@ import {
   MenuList,
   Text,
   useDisclosure,
+  useMediaQuery,
 } from "@chakra-ui/react";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import {
@@ -151,6 +152,8 @@ const Header: React.FC<{
   // REACT QUERY
   const { mutate: logoutAction } = useLogoutMutation({ user: "PATIENT" });
   // REACT QUERY ENDS
+
+  const [isLargerThan768] = useMediaQuery("(min-width: 768px)");
 
   return (
     <WrapperBox
@@ -337,22 +340,29 @@ const Header: React.FC<{
         {/* ENDS */}
       </Flex>
       {/* SUB HEADER */}
-      <Flex gap={6}>
-        {HeaderItems.map(({ icon, text, link }) => (
-          <Flex
-            gap={2}
-            justifyContent={"flex-start"}
-            mt={4}
-            alignItems={"flex-end"}
-            cursor="pointer"
-            onClick={() => navigate(link)}
-            key={link}
-          >
-            {icon}
-            <Text variant={"small600"}>{text}</Text>
-          </Flex>
-        ))}
-      </Flex>
+      {isLargerThan768 && (
+        <Flex gap={6} justifyContent={"center"}>
+          {HeaderItems.map(({ icon, text, link }) => (
+            <Flex
+              gap={2}
+              mt={4}
+              cursor="pointer"
+              onClick={() => navigate(link)}
+              key={link}
+            >
+              {icon}
+              <Text
+                // TODO: md500 is doesn't work
+                variant={"md600"}
+                color={colors.black_40}
+                fontFamily={"Quicksand"}
+              >
+                {text}
+              </Text>
+            </Flex>
+          ))}
+        </Flex>
+      )}
       {/* SUB HEADER ENDS*/}
     </WrapperBox>
   );

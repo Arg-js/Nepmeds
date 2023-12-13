@@ -1,3 +1,4 @@
+export { removeFileFromFileList } from "./removeFileFromFileLIst";
 export { calcMaxWordsLen, getArray } from "./ReadMore/arrayFunctions";
 // export { title } from "./choices";
 export { appendServerUrl, getImageUrl, openLinkInNewTab } from "./getImageUrl";
