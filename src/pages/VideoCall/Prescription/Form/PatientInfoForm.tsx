@@ -10,12 +10,14 @@ const PatientInfoForm = ({
   follow_up,
   patient_info,
   setTabIndex,
+  isEditable,
 }: {
   // If appointment_id is undefined, then it is a follow up
   appointment_id?: string;
   follow_up?: string;
   patient_info: IPrescriptionInfo["patient_info"] | undefined;
   setTabIndex: React.Dispatch<React.SetStateAction<number>>;
+  isEditable?: boolean;
 }) => {
   const {
     onSubmitPatientInfo,
@@ -41,23 +43,27 @@ const PatientInfoForm = ({
           name="history"
           register={register}
           defaultValue={patient_info?.history}
+          isDisabled={!isEditable}
         />
         <FloatingLabelInput
           label="Examination"
           name="examination"
           defaultValue={patient_info?.examination}
           register={register}
+          isDisabled={!isEditable}
         />
         <FloatingLabelInput
           label="Investigation"
           name="investigation"
           register={register}
           defaultValue={patient_info?.investigation}
+          isDisabled={!isEditable}
         />
         <FloatingLabelInput
           label="Diagnosis"
           name="diagnosis"
           defaultValue={patient_info?.diagnosis}
+          isDisabled={!isEditable}
           register={register}
         />
 
@@ -66,6 +72,7 @@ const PatientInfoForm = ({
           name="advice"
           register={register}
           defaultValue={patient_info?.advice}
+          isDisabled={!isEditable}
           style={{
             background: colors.forminput,
             border: "none",
@@ -73,20 +80,22 @@ const PatientInfoForm = ({
         />
       </Flex>
       <Divider />
-      <Flex justifyContent={"space-between"} alignItems={"center"} mt={1}>
-        <Button
-          variant={"outline"}
-          color={colors.primary}
-          borderColor={colors.primary}
-          fontWeight={"bold"}
-          onClick={() => setTabIndex(prev => prev + 1)}
-        >
-          Skip
-        </Button>
-        <Button type="submit" isLoading={patientInfoLoading}>
-          Next
-        </Button>
-      </Flex>
+      {isEditable && (
+        <Flex justifyContent={"space-between"} alignItems={"center"} mt={1}>
+          <Button
+            variant={"outline"}
+            color={colors.primary}
+            borderColor={colors.primary}
+            fontWeight={"bold"}
+            onClick={() => setTabIndex(prev => prev + 1)}
+          >
+            Skip
+          </Button>
+          <Button type="submit" isLoading={patientInfoLoading}>
+            Next
+          </Button>
+        </Flex>
+      )}
     </form>
   );
 };

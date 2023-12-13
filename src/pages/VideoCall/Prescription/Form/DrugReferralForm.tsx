@@ -26,12 +26,14 @@ const BetaDrug = ({
   drug_referral,
   follow_up,
   setTabIndex,
+  isEditable,
 }: {
   // If appointment_id is undefined, then it is a follow up
   appointment_id?: string;
   follow_up?: string;
   drug_referral: IPrescriptionInfo["drug_referral"] | undefined;
   setTabIndex: React.Dispatch<React.SetStateAction<number>>;
+  isEditable?: boolean;
 }) => {
   const {
     drugReferralInfoForm: { handleSubmit, register, control, setValue },
@@ -92,7 +94,7 @@ const BetaDrug = ({
                 Drug {index + 1}
               </Tab>
             ))}
-            {fields?.length < 10 && (
+            {fields?.length < 10 && isEditable && (
               <IconButton
                 aria-label=""
                 icon={<CgAddR color={colors.primary} />}
@@ -121,24 +123,28 @@ const BetaDrug = ({
                     label="Medicine"
                     name={`drug.${index}.medicine`}
                     register={register}
+                    isDisabled={!isEditable}
                   />
 
                   <FloatingLabelInput
                     label="Dose"
                     name={`drug.${index}.dose`}
                     register={register}
+                    isDisabled={!isEditable}
                   />
 
                   <FloatingLabelInput
                     label="Frequency"
                     name={`drug.${index}.frequency`}
                     register={register}
+                    isDisabled={!isEditable}
                   />
 
                   <FloatinglabelTextArea
                     flex={1}
                     label="Remarks"
                     name={`drug.${index}.remarks`}
+                    isDisabled={!isEditable}
                     register={register}
                     style={{
                       background: colors.forminput,
@@ -147,37 +153,39 @@ const BetaDrug = ({
                   />
                 </Flex>
                 <Divider />
-                <Flex
-                  justifyContent={"space-between"}
-                  alignItems={"center"}
-                  mt={1}
-                >
-                  <Button
-                    variant={"outline"}
-                    color={colors.primary}
-                    borderColor={colors.primary}
-                    fontWeight={"bold"}
-                    onClick={() => setTabIndex(prev => prev + 1)}
+                {isEditable && (
+                  <Flex
+                    justifyContent={"space-between"}
+                    alignItems={"center"}
+                    mt={1}
                   >
-                    Skip
-                  </Button>
-                  {fields?.length > 1 && (
                     <Button
-                      onClick={() => {
-                        handleRemoveDrug(index);
-                      }}
                       variant={"outline"}
-                      color={"red"}
-                      borderColor={"red"}
-                      isLoading={deleteLoading}
+                      color={colors.primary}
+                      borderColor={colors.primary}
+                      fontWeight={"bold"}
+                      onClick={() => setTabIndex(prev => prev + 1)}
                     >
-                      Remove
+                      Skip
                     </Button>
-                  )}
-                  <Button type="submit" isLoading={drugReferralInfoLoading}>
-                    Next
-                  </Button>
-                </Flex>
+                    {fields?.length > 1 && (
+                      <Button
+                        onClick={() => {
+                          handleRemoveDrug(index);
+                        }}
+                        variant={"outline"}
+                        color={"red"}
+                        borderColor={"red"}
+                        isLoading={deleteLoading}
+                      >
+                        Remove
+                      </Button>
+                    )}
+                    <Button type="submit" isLoading={drugReferralInfoLoading}>
+                      Next
+                    </Button>
+                  </Flex>
+                )}
               </TabPanel>
             ))}
           </TabPanels>
