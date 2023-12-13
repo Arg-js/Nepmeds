@@ -248,16 +248,18 @@ const getAllPrescriptionInfo = async ({
 export function useGetAllPrescriptionInfo({
   appointment_id,
   followup_id,
+  isEditable,
 }: {
   appointment_id?: string;
   followup_id?: string;
+  isEditable?: boolean;
 }) {
   return useQuery(
     [api.prescription.getAllInfo, followup_id, appointment_id],
     () => getAllPrescriptionInfo({ appointment_id, followup_id }),
     {
       select: data => data.data,
-      enabled: !!appointment_id || !!followup_id,
+      enabled: (!!appointment_id || !!followup_id) && !!isEditable,
     }
   );
 }
@@ -314,4 +316,31 @@ export function useDeletePrescriptionImage() {
       toastFail(err);
     },
   });
+}
+
+// Get Patient prescription info by Appointment ID
+const getAllAppPrescriptionInfo = async ({
+  appointment_id,
+}: {
+  appointment_id?: string;
+}) => {
+  const response = await HttpClient.get<NepMedsResponse<IPrescriptionInfo>>(
+    generatePath(api.prescription.getOldAppointment, { id: appointment_id })
+  );
+  return response.data;
+};
+
+export function useGetAppPrescriptionInfo({
+  appointment_id,
+}: {
+  appointment_id?: string;
+}) {
+  return useQuery(
+    [api.prescription.getOldAppointment, appointment_id],
+    () => getAllAppPrescriptionInfo({ appointment_id }),
+    {
+      select: data => data.data,
+      enabled: !!appointment_id,
+    }
+  );
 }

@@ -20,7 +20,7 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import { formatSecondsToMinuteAndSeconds } from "@nepMeds/utils/time";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
   MdCallEnd,
   MdFullscreen,
@@ -79,25 +79,30 @@ const VideoCall = () => {
     prescriptionSet: false,
     prescriptionImage: false,
     prescriptionView: false,
+    oldPrescription: false,
   });
 
   const isPatient = !state?.appointment_id && !state?.follow_up_id;
   const isDoctor = !!state?.appointment_id || !!state?.follow_up_id;
 
-  const closePrescriptionModal = () => {
+  const closePrescriptionModal = useCallback(() => {
     setModalOpen({
       prescriptionSet: false,
       prescriptionImage: false,
       prescriptionView: false,
+      oldPrescription: false,
     });
-  };
+  }, [modalOpen]);
 
-  const openPrescriptionModal = (modalType: "view" | "add" | "image") => {
+  const openPrescriptionModal = (
+    modalType: "view" | "add" | "image" | "old"
+  ) => {
     // only make give state true and other state false
     const initialState = {
       prescriptionSet: false,
       prescriptionImage: false,
       prescriptionView: false,
+      oldPrescription: false,
     };
 
     if (modalType === "view") {
@@ -106,6 +111,8 @@ const VideoCall = () => {
       setModalOpen({ ...initialState, prescriptionSet: true });
     } else if (modalType === "image") {
       setModalOpen({ ...initialState, prescriptionImage: true });
+    } else if (modalType === "old") {
+      setModalOpen({ ...initialState, oldPrescription: true });
     }
   };
 
@@ -141,6 +148,7 @@ const VideoCall = () => {
       prescriptionImage: false,
       prescriptionSet: false,
       prescriptionView: false,
+      oldPrescription: false,
     });
     try {
       setRoom(null);
@@ -293,6 +301,12 @@ const VideoCall = () => {
           />
         )}
         {remoteParticipants}
+        {modalOpen.oldPrescription && (
+          <PrescriptionModal
+            onClose={closePrescriptionModal}
+            isEditable={false}
+          />
+        )}
         {modalOpen.prescriptionSet && (
           <PrescriptionModal onClose={closePrescriptionModal} />
         )}
@@ -328,6 +342,33 @@ const VideoCall = () => {
 
         {room && (
           <Grid templateColumns={"repeat(3,1fr)"}>
+            <GridItem colStart={1}>
+              {remoteParticipants.length > 0 && isDoctor && (
+                <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
+                  <Button
+                    onClick={() => openPrescriptionModal("add")}
+                    backgroundColor={colors.primary}
+                    gap={2}
+                  >
+                    <MdOutlineUpload fontSize={"md"} />
+                    <Text fontSize={"md"} fontWeight={400}>
+                      Add Prescription
+                    </Text>
+                  </Button>
+
+                  <Button
+                    onClick={() => openPrescriptionModal("image")}
+                    backgroundColor={colors.primary}
+                    gap={2}
+                  >
+                    <MdAddCircleOutline fontSize={"md"} />
+                    <Text fontSize={"md"} fontWeight={400}>
+                      Add Prescription Image
+                    </Text>
+                  </Button>
+                </Flex>
+              )}
+            </GridItem>
             <GridItem colStart={2}>
               <Flex justifyContent={"center"} gap={6} mt={3}>
                 <Tooltip label="End Call" fontSize="md" hasArrow>
@@ -434,35 +475,25 @@ const VideoCall = () => {
             </GridItem>
             <GridItem colStart={3}>
               {remoteParticipants.length > 0 && isDoctor && (
-                <Flex gap={1} justifyContent={"end"} mt={1} mr={"4%"}>
-                  <Button
-                    onClick={() => openPrescriptionModal("add")}
-                    backgroundColor={colors.primary}
-                    gap={2}
-                  >
-                    <MdOutlineUpload fontSize={"26"} />
-                    <Text fontSize={"md"} fontWeight={400}>
-                      Add Prescription
-                    </Text>
-                  </Button>
-
-                  <Button
-                    onClick={() => openPrescriptionModal("image")}
-                    backgroundColor={colors.primary}
-                    gap={2}
-                  >
-                    <MdAddCircleOutline fontSize={"26"} />
-                    <Text fontSize={"md"} fontWeight={400}>
-                      Add Prescription Image
-                    </Text>
-                  </Button>
-
+                <Flex gap={1} mt={1} mr={"4%"} justifyContent={"flex-end"}>
+                  {!!state?.follow_up_id && (
+                    <Button
+                      onClick={() => openPrescriptionModal("old")}
+                      gap={2}
+                      variant={"primaryOutline"}
+                    >
+                      <MdOutlineRemoveRedEye fontSize={"md"} />
+                      <Text fontSize={"md"} fontWeight={400}>
+                        View Prescription
+                      </Text>
+                    </Button>
+                  )}
                   <Button
                     onClick={() => openPrescriptionModal("view")}
                     gap={2}
                     variant={"primaryOutline"}
                   >
-                    <MdOutlineRemoveRedEye fontSize={"26"} />
+                    <MdOutlineRemoveRedEye fontSize={"md"} />
                     <Text fontSize={"md"} fontWeight={400}>
                       View Symptoms
                     </Text>

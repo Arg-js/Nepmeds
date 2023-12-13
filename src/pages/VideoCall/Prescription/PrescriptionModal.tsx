@@ -15,21 +15,37 @@ import {
 } from "@chakra-ui/react";
 import PatientInfoForm from "./Form/PatientInfoForm";
 import { useLocation } from "react-router-dom";
-import { useGetAllPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
-import { useState } from "react";
+import {
+  useGetAllPrescriptionInfo,
+  useGetAppPrescriptionInfo,
+} from "@nepMeds/service/nepmeds-prescription";
+import { memo, useState } from "react";
 import AdditionalInfoForm from "./Form/AdditionalInfoForm";
 import { CloseIcon } from "@chakra-ui/icons";
 
-const PrescriptionModal = ({ onClose }: { onClose: () => void }) => {
+const PrescriptionModal = ({
+  onClose,
+  isEditable = true,
+}: {
+  onClose: () => void;
+  isEditable?: boolean;
+}) => {
   // TODO: Remove any type with location type
   const { state }: any = useLocation();
   const [tabIndex, setTabIndex] = useState(0);
 
   // Either appointment or follow up id is sent from Link State
-  const { data } = useGetAllPrescriptionInfo({
+  const { data, isLoading } = useGetAllPrescriptionInfo({
     appointment_id: state?.appointment_id ?? "",
     followup_id: state?.follow_up_id ?? "",
+    isEditable,
   });
+
+  const { data: prescriptionInfo, isLoading: isLoadingPrescriptionInfo } =
+    useGetAppPrescriptionInfo({
+      appointment_id: state?.appointmentold_id ?? "",
+    });
+  const dataInfo = isEditable ? data : prescriptionInfo;
 
   return (
     <Card align="center" maxW="sm">
@@ -39,7 +55,9 @@ const PrescriptionModal = ({ onClose }: { onClose: () => void }) => {
         alignItems={"center"}
         w={"100%"}
       >
-        <Heading size="sm">Add Prescription</Heading>
+        <Heading size="sm">
+          {isEditable ? "Add Prescription" : "View Prescription"}
+        </Heading>
         <IconButton
           variant="ghost"
           colorScheme="gray"
@@ -57,36 +75,41 @@ const PrescriptionModal = ({ onClose }: { onClose: () => void }) => {
             <Tab fontSize={"sm"}>Additional Information</Tab>
           </TabList>
         </CardHeader>
-        <CardBody p={0}>
-          <TabPanels>
-            <TabPanel>
-              <PatientInfoForm
-                appointment_id={state?.appointment_id ?? ""}
-                patient_info={data?.patient_info}
-                follow_up={state?.follow_up_id ?? ""}
-                setTabIndex={setTabIndex}
-              />
-            </TabPanel>
-            <TabPanel>
-              <DrugReferralForm
-                appointment_id={state?.appointment_id ?? ""}
-                drug_referral={data?.drug_referral}
-                follow_up={state?.follow_up_id ?? ""}
-                setTabIndex={setTabIndex}
-              />
-            </TabPanel>
-            <TabPanel>
-              <AdditionalInfoForm
-                appointment_id={state?.appointment_id ?? ""}
-                additional_info={data?.additional_info}
-                follow_up={state?.follow_up_id ?? ""}
-              />
-            </TabPanel>
-          </TabPanels>
-        </CardBody>
+        {!isLoading && !isLoadingPrescriptionInfo && (
+          <CardBody p={0}>
+            <TabPanels>
+              <TabPanel>
+                <PatientInfoForm
+                  appointment_id={state?.appointment_id ?? ""}
+                  patient_info={dataInfo?.patient_info}
+                  follow_up={state?.follow_up_id ?? ""}
+                  setTabIndex={setTabIndex}
+                  isEditable={isEditable}
+                />
+              </TabPanel>
+              <TabPanel>
+                <DrugReferralForm
+                  appointment_id={state?.appointment_id ?? ""}
+                  drug_referral={dataInfo?.drug_referral}
+                  follow_up={state?.follow_up_id ?? ""}
+                  setTabIndex={setTabIndex}
+                  isEditable={isEditable}
+                />
+              </TabPanel>
+              <TabPanel>
+                <AdditionalInfoForm
+                  appointment_id={state?.appointment_id ?? ""}
+                  additional_info={dataInfo?.additional_info}
+                  follow_up={state?.follow_up_id ?? ""}
+                  isEditable={isEditable}
+                />
+              </TabPanel>
+            </TabPanels>
+          </CardBody>
+        )}
       </Tabs>
     </Card>
   );
 };
 
-export default PrescriptionModal;
+export default memo(PrescriptionModal);

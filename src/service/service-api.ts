@@ -239,6 +239,7 @@ export const api = {
     deleteImages: "/doctor-consult/delete-prescription-image/:id/",
 
     getAllInfo: "/doctor-consult/get-patient-history-info/",
+    getOldAppointment: "/doctor-consult/get-appointment-prescription-info/:id/",
   },
   booked_availability: "/doctor-consult/booked-availability/",
   notification: {

@@ -9,10 +9,11 @@ const AdditionalInfoForm = ({
   appointment_id,
   additional_info,
   follow_up,
+  isEditable,
 }: {
   appointment_id?: string;
   follow_up?: string;
-
+  isEditable?: boolean;
   additional_info: IPrescriptionInfo["additional_info"] | undefined;
 }) => {
   const {
@@ -39,6 +40,7 @@ const AdditionalInfoForm = ({
           name="recommendation"
           register={register}
           defaultValue={additional_info?.recommendation}
+          isDisabled={!isEditable}
         />
 
         <FloatingLabelInput
@@ -49,6 +51,7 @@ const AdditionalInfoForm = ({
           min={formatDateToString(new Date())}
           defaultValue={additional_info?.follow_up_date}
           _hover={{ cursor: "pointer" }}
+          isDisabled={!isEditable}
         />
 
         <FloatinglabelTextArea
@@ -57,14 +60,17 @@ const AdditionalInfoForm = ({
           name="remarks"
           register={register}
           defaultValue={additional_info?.remarks}
+          isDisabled={!isEditable}
         />
       </Flex>
       <Divider />
-      <Flex justifyContent={"center"} alignItems={"center"} mt={1}>
-        <Button type="submit" isLoading={additionalInfoLoading}>
-          Confirm
-        </Button>
-      </Flex>
+      {isEditable && (
+        <Flex justifyContent={"center"} alignItems={"center"} mt={3}>
+          <Button type="submit" isLoading={additionalInfoLoading}>
+            Confirm
+          </Button>
+        </Flex>
+      )}
     </form>
   );
 };
