@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
 
-// TODO: issue, on minimizing the screen the sidebar doesn't collapse, it needs refreshing
-const isMobileSize = window.innerWidth <= 768;
 const useWindowResize = () => {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(isMobileSize);
+  // When the screen size is decreased,
+  // the width decreases but rerendering doesn't occur,
+  // so defining a constant for `window.innerWidth <= 768`
+  // will prevent recalculation of width
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(
+    window.innerWidth <= 768
+  );
 
   useEffect(() => {
     const handleResize = () => {
-      setIsSidebarCollapsed(isMobileSize);
+      setIsSidebarCollapsed(window.innerWidth <= 768);
     };
 
     window.addEventListener("resize", handleResize);

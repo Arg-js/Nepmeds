@@ -1,30 +1,20 @@
-import {
-  Box,
-  Button,
-  Flex,
-  FormLabel,
-  Grid,
-  Image,
-  Text,
-  useDisclosure,
-} from "@chakra-ui/react";
-import { ImageCancelIcon, UploadImageIcon } from "@nepMeds/assets/svgs";
+import { Button, Grid, Text, useDisclosure } from "@chakra-ui/react";
 import { DataTable } from "@nepMeds/components/DataTable";
-import FormControl from "@nepMeds/components/Form/FormControl";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import SearchInput from "@nepMeds/components/Search";
 import TableWrapper from "@nepMeds/components/TableWrapper";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
+import { useCreateLabReport } from "@nepMeds/service/nepmeds-lab-report";
 import {
   useGetPatientDetails,
   useGetPatientDetailsById,
 } from "@nepMeds/service/nepmeds-patient-profile";
-import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { columns } from "../../PatientDetail";
+import LabReportForm from "./LabReportForm";
 import PatientDetailModal from "./PatientDetailModal";
-import PatientPrescriptionSkeletion from "./PatientPrescriptionSkeletion";
+import PatientPrescriptionSkeleton from "./PatientPrescriptionSkeleton";
 
 const PatientDetailsTable = () => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
@@ -49,10 +39,27 @@ const PatientDetailsTable = () => {
   const { data: patientDetail, isLoading } = useGetPatientDetailsById({
     appointment_id: appointmentId,
   });
+  const { mutateAsync: createLabReport, isLoading: isCreatingLabReport } =
+    useCreateLabReport();
   // REACT QUERY ENDS
 
-  const { register, watch, setValue } = useForm();
+  const onModalClose = () => {
+    onEditModalClose();
+    // TODO: reset({ image: new FileList() });
+    reset({ image: [] as unknown as FileList });
+  };
+  // todo: use default value and schema
+  const formMethods = useForm<{ image: FileList }>();
+  const { watch, reset } = formMethods;
   const imageWatch = watch("image");
+
+  // todo: use handleSubmit
+  const onSubmitHandler = async () => {
+    await createLabReport({
+      image: imageWatch,
+      appointment_id: +appointmentId,
+    });
+  };
 
   return (
     <TableWrapper>
@@ -65,7 +72,7 @@ const PatientDetailsTable = () => {
           size={"2xl"}
         >
           {isLoading ? (
-            <PatientPrescriptionSkeletion />
+            <PatientPrescriptionSkeleton />
           ) : (
             // Todo: find another way to solve this problem
             // patientDetail: IPatientDetailById | undefined
@@ -75,69 +82,32 @@ const PatientDetailsTable = () => {
         <ModalComponent
           heading={<>Add Lab Report</>}
           isOpen={isEditModalOpen}
-          onClose={onEditModalClose}
+          onClose={onModalClose}
           footer={
             <>
-              <Button variant={"reset"} flex={0.5} onClick={onEditModalClose}>
+              <Button variant={"reset"} flex={0.5} onClick={onModalClose}>
                 Cancel
               </Button>
-              <Button flex={0.5}>Add</Button>
+              <Button
+                flex={0.5}
+                isDisabled={!imageWatch?.length}
+                isLoading={isCreatingLabReport}
+                onClick={async () => {
+                  await onSubmitHandler();
+                  onModalClose();
+                }}
+              >
+                Add
+              </Button>
             </>
           }
         >
-          <>
-            <FormLabel
-              fontFamily={"500"}
-              fontSize={"13px"}
-              fontWeight={"Quicksand"}
-            >
-              Upload your lab reports :
-            </FormLabel>
-            <FormControl
-              name={"image"}
-              register={register}
-              control={"input"}
-              type={"file"}
-              id={"image"}
-              display={"none"}
-              accept={"image/png, image/jpeg"}
-              multiple
-            />
-            <Flex>
-              <FormLabel
-                htmlFor="image"
-                cursor={"pointer"}
-                border={`1px dashed ${colors.gray}`}
-                width={"76px"}
-              >
-                <UploadImageIcon />
-              </FormLabel>
-              <Flex gap={4}>
-                {imageWatch &&
-                  Object.keys(imageWatch).map(index => (
-                    <Flex key={Math.random()}>
-                      <Image
-                        src={
-                          imageWatch &&
-                          URL.createObjectURL(
-                            imageWatch[index] as unknown as Blob
-                          )
-                        }
-                        width={"76px"}
-                        height={"76px"}
-                        objectFit={"contain"}
-                      />
-                      <Box onClick={() => setValue("image", null)}>
-                        {/* <Box onClick={() => removeAtIndex(index, imageWatch)}> */}
-                        {/* <Box> */}
-                        <ImageCancelIcon style={{ cursor: "pointer" }} />
-                      </Box>
-                    </Flex>
-                  ))}
-              </Flex>
-            </Flex>
-          </>
+          <LabReportForm
+            formMethods={formMethods}
+            appointmentId={appointmentId}
+          />
         </ModalComponent>
+
         <Grid display={"flex"} justifyContent={"space-between"}>
           <Text variant="tableHeading">Appointment Details</Text>
           <SearchInput
