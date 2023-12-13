@@ -22,6 +22,7 @@ const appointmentTabConfig = [
 
 const Appointment: React.FC = () => {
   const [tabIndex, setTabIndex] = useState(0);
+
   return (
     <TableWrapper>
       <Tabs

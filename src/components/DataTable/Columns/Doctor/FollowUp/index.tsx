@@ -56,6 +56,7 @@ export const columns = ({
         is_callable: boolean;
         caller_id: string;
         receiver_id: string;
+        doctor_consult_id: string;
       }>) => {
         const onEdit = () => {
           setId(row.original?.id);
@@ -66,6 +67,7 @@ export const columns = ({
           receiver_user: row.original?.receiver_id,
           follow_up_id: row.original?.id,
           call_state: CallState.INITIATE,
+          appointmentold_id: row.original?.doctor_consult_id,
         };
         return (
           <Flex justifyContent={"center"} alignItems={"center"} gap={1}>

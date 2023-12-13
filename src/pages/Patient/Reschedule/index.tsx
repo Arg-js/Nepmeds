@@ -148,6 +148,7 @@ const RescheduleAppointment = () => {
                     rules={{
                       required: "Remarks is required!",
                     }}
+                    style={{ background: colors.white, border: "none" }}
                     error={errors?.remarks?.message?.toString()}
                     pb={4}
                   />
@@ -161,7 +162,7 @@ const RescheduleAppointment = () => {
                       isLoading={isLoading}
                       mt={4}
                     >
-                      Reschedule Appointment
+                      Request for Reschedule
                     </Button>
                   </Flex>
                 </form>
