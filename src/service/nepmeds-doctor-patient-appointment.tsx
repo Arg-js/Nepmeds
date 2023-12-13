@@ -33,6 +33,7 @@ export interface IGetAppointmentReqRes {
   old_report_file: string;
   doctor_user_id: string;
   patient_user_id: string;
+  can_add_prescription: boolean;
 }
 
 export interface ISymptom {

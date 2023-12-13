@@ -48,6 +48,7 @@ export const column = ({
     onViewModalOpen: () => void;
     onApproveModalOpen: () => void;
     onRejectionModalOpen: () => void;
+    onPrescriptionClick: () => void;
   };
 }) => {
   return useMemo(
@@ -131,6 +132,7 @@ export const column = ({
           patient_user_id: string;
           doctor_user_id: string;
           is_callable: boolean;
+          can_add_prescription: boolean;
         }>) => {
           const onView = () => {
             setAppointmentId(row.original?.id);
@@ -143,6 +145,11 @@ export const column = ({
           const onReject = () => {
             setAppointmentId(row.original?.id);
             onModalOpen.onRejectionModalOpen();
+          };
+
+          const onPrescriptionClick = () => {
+            setAppointmentId(row.original?.id);
+            onModalOpen.onPrescriptionClick();
           };
 
           const isPending =
@@ -161,6 +168,10 @@ export const column = ({
                 onAccept={isPending ? onAccept : undefined}
                 onReject={isPending ? onReject : undefined}
                 onCall={{ state, isCallable: row?.original?.is_callable }}
+                onPrescription={{
+                  isShown: row?.original?.can_add_prescription,
+                  onClick: onPrescriptionClick,
+                }}
               />
             </Flex>
           );
