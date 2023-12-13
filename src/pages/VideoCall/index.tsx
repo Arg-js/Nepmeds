@@ -311,10 +311,7 @@ const VideoCall = () => {
           <PrescriptionModal onClose={closePrescriptionModal} />
         )}
         {modalOpen.prescriptionImage && (
-          <PrescriptionImageModal
-            userDetail={usersInfo}
-            onClose={closePrescriptionModal}
-          />
+          <PrescriptionImageModal onClose={closePrescriptionModal} />
         )}
         {modalOpen.prescriptionView && (
           <ViewPatientDetails
