@@ -33,7 +33,6 @@ export type IOptionItem = { label: string; value: number };
 
 const defaultValues = {
   title: "",
-  // TODO: check if this is the correct way
   specialization: [] as IOptionItem[],
   doctor: [] as IOptionItem[],
   // discount_type: null as unknown as { label: string; value: AmountType },
