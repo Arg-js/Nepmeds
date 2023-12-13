@@ -199,7 +199,7 @@ const AllPaymentAdmin = () => {
                 <Thead>
                   <Tr>
                     <Th>Time</Th>
-                    <Th>Appointment Status</Th>
+                    <Th>Call Status</Th>
                   </Tr>
                 </Thead>
                 <Tbody>

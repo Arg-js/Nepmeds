@@ -21,6 +21,7 @@ import {
 } from "./ModalForm/RejectionModalForm/defaultValues";
 import ViewModal from "./ModalForm/ViewModal";
 import ViewModalSkeleton from "./ModalForm/ViewModal/ViewModalSkeleton";
+import AppointmentPrescriptionModal from "./ModalForm/PrescriptionModal";
 
 const schema = Yup.object({
   reject_title: Yup.number().required("This field is required"),
@@ -56,6 +57,12 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     onClose: onViewModalClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isPrescriptionOpen,
+    onOpen: onPrescriptionClick,
+    onClose: onPrescriptionClose,
+  } = useDisclosure();
+
   const formMethods = useForm({
     defaultValues,
     resolver: yupResolver(schema),
@@ -88,6 +95,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
     setAppointmentId("");
     onApproveModalClose();
     onRejectionModalClose();
+    onPrescriptionClose();
     formMethods.reset(defaultValues);
   };
 
@@ -213,6 +221,15 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
       </ModalComponent>
       {/* Rejection Modal ENDS*/}
 
+      {/* Prescription Modal */}
+
+      <AppointmentPrescriptionModal
+        isPrescriptionOpen={isPrescriptionOpen}
+        onPrescriptionClose={onPrescriptionClose}
+        appointmentId={appointmentId}
+      />
+      {/* Prescription Modal ENDS*/}
+
       {/* TABLE HEADER */}
       <HStack justifyContent="space-between">
         <Text fontSize="md" fontWeight="500" color={colors.black_60}>
@@ -230,6 +247,7 @@ const AppointmentTab: React.FC<{ type: StatusType; heading: string }> = ({
             onViewModalOpen,
             onApproveModalOpen,
             onRejectionModalOpen,
+            onPrescriptionClick,
           },
         })}
         isLoading={appointmentFetching}

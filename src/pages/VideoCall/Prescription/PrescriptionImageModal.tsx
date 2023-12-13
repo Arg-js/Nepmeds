@@ -9,7 +9,6 @@ import {
 } from "@chakra-ui/react";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { FormProvider, useForm } from "react-hook-form";
-import { IRoomUsersInfo } from "@nepMeds/hooks/useVideoCall";
 import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { useState } from "react";
 import { fileToString } from "@nepMeds/utils/fileToString";
@@ -29,20 +28,24 @@ function isBase64Image(str: string): boolean {
 
 const PrescriptionImageModal = ({
   onClose,
+  appointmentId,
 }: {
-  userDetail?: IRoomUsersInfo | undefined;
-  onClose: () => void;
+  onClose?: () => void;
+  appointmentId?: string;
 }) => {
   // TODO: Remove any type with location type
   const { state }: any = useLocation();
   const [selectedImage, setSelectedImage] = useState<File | string | null>(
     null
   );
+  const isOpenInModal = !!appointmentId;
+  const maxW = isOpenInModal ? "100%" : "sm";
+
   const [secondImage, setSecondImage] = useState<File | string | null>(null);
   const { mutateAsync, isLoading } = useUploadPrescriptionImage();
   // Either appointment or follow up id is sent from Link State
   const { data } = useGetAllPrescriptionInfo({
-    appointment_id: state?.appointment_id ?? "",
+    appointment_id: state?.appointment_id ?? appointmentId,
     followup_id: state?.follow_up_id ?? "",
   });
   const { mutate: deleteImageMutate } = useDeletePrescriptionImage();
@@ -67,12 +70,12 @@ const PrescriptionImageModal = ({
     const formData = data?.images?.map((item: FileList) => item[0] as File);
     mutateAsync({
       images: formData,
-      doctor_consult_id: state?.appointment_id ?? "",
+      doctor_consult_id: state?.appointment_id ?? appointmentId,
       follow_up_id: state?.follow_up_id ?? "",
     }).then(() => {
       setSelectedImage(null);
       setSecondImage(null);
-      onClose();
+      onClose && onClose();
     });
   };
 
@@ -99,24 +102,26 @@ const PrescriptionImageModal = ({
   }, [data]);
 
   return (
-    <Card align="center" maxW="sm" minW={"sm"}>
-      <Flex
-        justifyContent={"space-between"}
-        px={5}
-        alignItems={"center"}
-        w={"100%"}
-      >
-        <Heading size="sm">Add Prescription Image</Heading>
-        <IconButton
-          variant="ghost"
-          colorScheme="gray"
-          aria-label="See menu"
-          icon={<CloseIcon />}
-          onClick={onClose}
-        />
-      </Flex>
+    <Card align="center" maxW={maxW}>
+      {!isOpenInModal && (
+        <Flex
+          justifyContent={"space-between"}
+          px={5}
+          alignItems={"center"}
+          w={"100%"}
+        >
+          <Heading size="sm">Add Prescription Image</Heading>
+          <IconButton
+            variant="ghost"
+            colorScheme="gray"
+            aria-label="See menu"
+            icon={<CloseIcon />}
+            onClick={onClose}
+          />
+        </Flex>
+      )}
       <Divider w="94%" />
-      <Box minW={"sm"} p={2}>
+      <Box minW={maxW} p={2}>
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
             <Flex my={5} gap={4} flexDirection={"column"} width={"100dw"}>

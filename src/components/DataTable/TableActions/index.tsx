@@ -12,6 +12,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { AiOutlineDelete, AiOutlineEdit } from "react-icons/ai";
 import { MdCall } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { FaPrescriptionBottleAlt } from "react-icons/fa";
 
 const TableActions = ({
   onView,
@@ -22,6 +23,7 @@ const TableActions = ({
   onChangePassword,
   onCall,
   onReschedule,
+  onPrescription,
 }: ITableActions) => {
   return (
     <Flex alignItems={"center"} justifyContent="center">
@@ -144,6 +146,25 @@ const TableActions = ({
           </Link>
         </Tooltip>
       )}
+
+      {!!onPrescription?.isShown && (
+        <Tooltip hasArrow placement="top" label="Prescription">
+          <IconButton
+            height={"min-content"}
+            aria-label="view"
+            icon={
+              <FaPrescriptionBottleAlt size={20} fill={colors.green_light} />
+            }
+            onClick={onPrescription.onClick}
+            sx={{
+              bg: "transparent",
+              "&:hover": {
+                bg: "transparent",
+              },
+            }}
+          />
+        </Tooltip>
+      )}
     </Flex>
   );
 };
@@ -168,6 +189,10 @@ interface ITableActions {
   onReschedule?: {
     state: { appointment_id: string; doctor_id: string };
     canReschedule: boolean;
+  };
+  onPrescription?: {
+    isShown: boolean;
+    onClick?: () => void;
   };
 }
 

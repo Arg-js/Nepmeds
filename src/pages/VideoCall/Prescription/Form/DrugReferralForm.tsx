@@ -74,7 +74,6 @@ const BetaDrug = ({
           index={tabIdx}
           onChange={index => setTabIdx(index)}
           variant={"enclosed"}
-          maxW={"sm"}
           p={0}
         >
           <TabList
