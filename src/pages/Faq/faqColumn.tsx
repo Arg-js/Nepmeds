@@ -9,7 +9,7 @@ export const columns = ({
   onOpenDeleteModal,
   setId,
   onOpen,
-  setIsEdit
+  setIsEdit,
 }: {
   pagination: IPaginationParams;
   onOpenDeleteModal: () => void;
@@ -21,26 +21,26 @@ export const columns = ({
     header: "S.N.",
     accessorFn: (_cell: CellContext<number, number>, index: number) => {
       return `${pagination.pageSize * pagination.pageIndex + (index + 1)}.`;
-    }
+    },
   },
   {
     header: "Questions",
-    accessorKey: "question"
+    accessorKey: "question",
   },
   {
     header: "Answers",
-    accessorKey: "answer"
+    accessorKey: "answer",
   },
   {
     header: "Date",
-    accessorKey: "date",
+    accessorKey: "created_at",
     cell: ({ row }: CellProps<IFaqList>) => {
       return row?.original.created_at?.split("T")?.[0] ?? "";
-    }
+    },
   },
   {
     header: "Actions",
-    accessorKey: "actions",
+    accessorKey: "id",
     cell: ({ row }: CellProps<{ id: string }>) => {
       const onDelete = () => {
         setId(row.original?.id);
@@ -52,6 +52,6 @@ export const columns = ({
         setIsEdit(true);
       };
       return <TableActions onDelete={onDelete} onEdit={onEdit} />;
-    }
-  }
+    },
+  },
 ];

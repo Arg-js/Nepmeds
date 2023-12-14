@@ -35,7 +35,7 @@ export const pendingColumns = (
     },
     {
       header: "Doctor's Name",
-      accessorKey: "first_name",
+      accessorKey: "user.first_name",
       accessorFn: (_cell: PendingCellContextSearch) => {
         return _cell?.user?.first_name + " " + _cell?.user?.last_name;
       },
@@ -58,7 +58,7 @@ export const pendingColumns = (
     },
     {
       header: "Specialization",
-      accessorKey: "specialization",
+      accessorKey: "specialization_names",
       cell: ({
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
@@ -150,7 +150,7 @@ export const columns = (
     },
     {
       header: "Specialization",
-      accessorKey: "specialization",
+      accessorKey: "specialization_names",
       cell: ({
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
@@ -258,7 +258,7 @@ export const rejectedColumns = (
     },
     {
       header: "Specialization",
-      accessorKey: "specialization",
+      accessorKey: "specialization_names",
       cell: ({
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {
@@ -274,7 +274,7 @@ export const rejectedColumns = (
     },
     {
       header: "Reason",
-      accessorKey: "specialization",
+      accessorKey: "rejected_remarks",
       cell: ({ row }: CellContext<{ rejected_remarks: string }, any>) => {
         const rejected_remarks = row?.original?.rejected_remarks ?? "";
         return (
@@ -287,7 +287,7 @@ export const rejectedColumns = (
 
     {
       header: "Actions",
-      accessorKey: "actions",
+      accessorKey: "id",
       cell: (cell: CellContext<any, any>) => {
         return (
           <TableActions

@@ -32,10 +32,6 @@ export const paymentHistoryColumn = ({
         accessorKey: "availability.booking_info.patient_name",
       },
       {
-        header: "Patient Name",
-        accessorKey: "availability.booking_info.patient_name",
-      },
-      {
         header: "Call Type",
         accessorKey: "consult_history.consulting_type",
         cell: ({
