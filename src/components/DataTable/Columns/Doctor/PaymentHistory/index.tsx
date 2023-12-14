@@ -1,9 +1,11 @@
 import { Image, Text } from "@chakra-ui/react";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { ADMINAPPOINTMENT } from "@nepMeds/config/enum";
+import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IPaymentHistory } from "@nepMeds/service/nepmeds-payment";
 import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { convertToTitleCase } from "@nepMeds/utils/string";
+import { splitDateTime } from "@nepMeds/utils/time";
 import { useMemo } from "react";
 import { CellProps } from "react-table";
 
@@ -25,13 +27,19 @@ export const paymentHistoryColumn = ({
           return `${pageParams.pageIndex * pageParams.pageSize + (index + 1)}.`;
         },
       },
-      { header: "Patient Name", accessorKey: "patient_name" },
+      {
+        header: "Patient Name",
+        accessorKey: "availability.booking_info.patient_name",
+      },
       {
         header: "Call Type",
-        cell: ({ row }: CellProps<{ consulting_type: string }>) => {
+        cell: ({
+          row,
+        }: CellProps<{ consult_history: { consulting_type: string } }>) => {
           return convertToTitleCase(
             ADMINAPPOINTMENT[
-              row.original?.consulting_type as keyof typeof ADMINAPPOINTMENT
+              row.original?.consult_history
+                ?.consulting_type as keyof typeof ADMINAPPOINTMENT
             ]?.toString() ?? ""
           );
         },
@@ -41,24 +49,52 @@ export const paymentHistoryColumn = ({
         cell: ({
           row,
         }: CellProps<{
-          payment_type: string;
+          consult_history: {
+            payment_type: string;
+          };
         }>) => {
+          const paymentType = row.original?.consult_history?.payment_type;
           return (
-            <Image
-              src={getImageUrl(row.original.payment_type)}
-              h={"70px"}
-              w={"70px"}
-            />
+            paymentType && (
+              <Image src={getImageUrl(paymentType)} h={"50px"} w={"50px"} />
+            )
           );
         },
       },
       {
-        header: "Rate",
-        cell: ({ row }: CellProps<{ transation_amount: string }>) => {
-          return <Text>Rs. {row?.original?.transation_amount}</Text>;
+        header: "Appointment Time",
+        cell: ({
+          row,
+        }: CellProps<{
+          availability: { from_time: string; to_time: string };
+        }>) => {
+          const availability = row.original?.availability;
+          return `${removeSeconds(availability.from_time)} - ${removeSeconds(
+            availability.to_time
+          )}`;
         },
       },
-
+      {
+        header: "Appointment Date",
+        accessorKey: "availability.date",
+      },
+      {
+        header: "Rate",
+        cell: ({ row }: CellProps<{ doctor_rate: string }>) => {
+          return <Text>Rs. {row.original?.doctor_rate}</Text>;
+        },
+      },
+      {
+        header: "Payment Date",
+        cell: ({
+          row,
+        }: CellProps<{ consult_history: { payment_date: string } }>) => {
+          const paymentDate = row.original?.consult_history?.payment_date;
+          return (
+            <Text>{paymentDate ? splitDateTime(paymentDate)[0] : "-"}</Text>
+          );
+        },
+      },
       {
         header: "Disbursal Status",
         cell: ({

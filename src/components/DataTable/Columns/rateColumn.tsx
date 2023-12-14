@@ -18,7 +18,7 @@ export const paymentRateColumn = (pageParams: PaginationState) => {
       header: "Requested Date",
       accessorKey: "requested_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return getFullDate(row?.original?.requested_date) ?? "-";
+        return getFullDate(row?.original?.requested_date);
       },
       size: 22,
     },
@@ -27,7 +27,7 @@ export const paymentRateColumn = (pageParams: PaginationState) => {
       header: "Verified Date",
       accessorKey: "approved_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return row?.original?.approved_date ?? "-";
+        return row?.original?.approved_date;
       },
       size: 22,
     },
@@ -72,7 +72,7 @@ export const rateHistoryColumn = ({ pageIndex, pageSize }: PaginationState) => {
       header: "Requested Date",
       accessorKey: "requested_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return getFullDate(row?.original?.requested_date) ?? "-";
+        return getFullDate(row?.original?.requested_date);
       },
       size: 22,
     },
@@ -81,7 +81,7 @@ export const rateHistoryColumn = ({ pageIndex, pageSize }: PaginationState) => {
       header: "Verified Date",
       accessorKey: "approval_date",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
-        return row?.original?.approved_date ?? "-";
+        return row?.original?.approved_date;
       },
       size: 22,
     },
@@ -93,6 +93,7 @@ export const rateHistoryColumn = ({ pageIndex, pageSize }: PaginationState) => {
     },
     {
       header: "Appointment Rate",
+      accessorKey: "schedule_amount",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         return <Text pl={"12px"}>Rs. {row?.original?.schedule_amount}</Text>;
       },

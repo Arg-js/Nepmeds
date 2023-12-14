@@ -75,6 +75,7 @@ export const colors = {
   /**green-button*/
   green_button: "#32936F",
   green_light: "#59C3C8",
+  green_action: "#17C147",
 
   /* Purple/Purple-900 */
   purple_900: "#322659",
