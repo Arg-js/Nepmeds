@@ -159,6 +159,7 @@ const Specializations = ({
     },
     {
       header: "Symptom",
+      accessorKey: "symptom_list",
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack>
@@ -173,6 +174,7 @@ const Specializations = ({
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: (cell: CellContext<Specialization, any>) => {
         return (
           <HStack justifyContent="center">

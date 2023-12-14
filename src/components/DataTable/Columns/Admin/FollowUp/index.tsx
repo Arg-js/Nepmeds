@@ -30,6 +30,7 @@ export const followUpColumns = ({
   },
   {
     header: "Symptoms",
+    accessorKey: "symptoms",
     cell: ({ row }: CellProps<{ symptoms: { name: string }[] }>) =>
       row.original?.symptoms?.map(({ name }) => <Tag key={name}>{name}</Tag>),
   },
@@ -39,6 +40,7 @@ export const followUpColumns = ({
   },
   {
     header: "FollowUp Time",
+    accessorKey: "followup_availability.from_time",
     cell: ({
       row,
     }: CellProps<{

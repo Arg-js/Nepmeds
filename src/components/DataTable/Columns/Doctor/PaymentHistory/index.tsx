@@ -33,6 +33,7 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Call Type",
+        accessorKey: "consult_history.consulting_type",
         cell: ({
           row,
         }: CellProps<{ consult_history: { consulting_type: string } }>) => {
@@ -46,6 +47,7 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Payment Type",
+        accessorKey: "consult_history.payment_type",
         cell: ({
           row,
         }: CellProps<{
@@ -63,6 +65,7 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Appointment Time",
+        accessorKey: "availability.from_time",
         cell: ({
           row,
         }: CellProps<{
@@ -80,12 +83,14 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Rate",
+        accessorKey: "doctor_rate",
         cell: ({ row }: CellProps<{ doctor_rate: string }>) => {
           return <Text>Rs. {row.original?.doctor_rate}</Text>;
         },
       },
       {
         header: "Payment Date",
+        accessorKey: "consult_history.payment_date",
         cell: ({
           row,
         }: CellProps<{ consult_history: { payment_date: string } }>) => {
@@ -97,6 +102,7 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Disbursal Status",
+        accessorKey: "disbursal_status",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_status: boolean }>) => {
