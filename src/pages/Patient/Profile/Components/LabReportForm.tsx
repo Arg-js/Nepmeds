@@ -1,7 +1,6 @@
-import { Box, Flex, Image } from "@chakra-ui/react";
+import { Box, Flex, Image, Spinner } from "@chakra-ui/react";
 import { ImageCancelIcon } from "@nepMeds/assets/svgs";
 import FormControl from "@nepMeds/components/Form/FormControl";
-import SkeletonControl from "@nepMeds/components/Loader";
 import {
   useDeleteLabReport,
   useGetLabReport,
@@ -40,7 +39,7 @@ const LabReportForm = ({
   };
 
   return (
-    <Flex alignItems={"flex-end"} gap={1}>
+    <Flex alignItems={"flex-end"} gap={2}>
       <FormControl
         control="imageUpload"
         label={"Upload your lab reports"}
@@ -50,12 +49,7 @@ const LabReportForm = ({
         onImageRemove={onImageRemove}
       />
       {isLoadingLabReport ? (
-        <SkeletonControl
-          variant={"skeleton"}
-          width={"76px"}
-          height={"76px"}
-          length={2}
-        />
+        <Spinner alignSelf={"center"} mt={3} />
       ) : (
         labReport?.map(({ image, id }, index) => (
           <Flex key={index}>
