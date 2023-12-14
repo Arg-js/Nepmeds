@@ -114,28 +114,34 @@ export const columns = ({
         row,
       }: CellProps<{
         id: string;
+        appointment_status: string;
         can_reschedule: boolean;
         doctor_id: string;
-      }>) => (
-        <TableActions
-          onView={() => {
-            setAppointmentId(row.original?.id);
-            onOpen();
-          }}
-          onReschedule={{
-            canReschedule: row?.original?.can_reschedule,
-
-            state: {
-              appointment_id: row?.original?.id,
-              doctor_id: row?.original?.doctor_id,
-            },
-          }}
-          onEdit={() => {
-            setAppointmentId(row.original?.id);
-            onEditModalOpen();
-          }}
-        />
-      ),
+      }>) => {
+        const appointmentStatus = row.original?.appointment_status;
+        const isEditDisabled = ["2", "3"].includes(appointmentStatus);
+        const onEdit = () => {
+          setAppointmentId(row.original?.id);
+          onEditModalOpen();
+        };
+        return (
+          <TableActions
+            onView={() => {
+              setAppointmentId(row.original?.id);
+              onOpen();
+            }}
+            onReschedule={{
+              canReschedule: row?.original?.can_reschedule,
+              state: {
+                appointment_id: row?.original?.id,
+                doctor_id: row?.original?.doctor_id,
+              },
+            }}
+            onEdit={!isEditDisabled ? onEdit : undefined}
+            editText={"Upload lab reports"}
+          />
+        );
+      },
     },
   ];
 };
