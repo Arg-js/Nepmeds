@@ -34,7 +34,7 @@ export const paymentRateColumn = (pageParams: PaginationState) => {
 
     {
       header: "Status",
-      accessorKey: "status",
+      accessorKey: "rate_status",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         return (
           <StatusBadge
@@ -102,7 +102,7 @@ export const rateHistoryColumn = ({ pageIndex, pageSize }: PaginationState) => {
 
     {
       header: "Status",
-      accessorKey: "status",
+      accessorKey: "rate_status",
       cell: ({ row }: CellContext<IAmountListDoctor, any>) => {
         return (
           <StatusBadge
