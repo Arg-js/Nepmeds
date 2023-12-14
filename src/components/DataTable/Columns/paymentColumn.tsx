@@ -71,6 +71,7 @@ export const paymentColumn = (
     },
     {
       header: "Instant Rate",
+      accessorKey: "doctor_amount_detail.instant_amount",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
@@ -84,6 +85,7 @@ export const paymentColumn = (
     },
     {
       header: "Schedule Rate",
+      accessorKey: "doctor_amount_detail.schedule_amount",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Text pl={"12px"}>
@@ -96,6 +98,7 @@ export const paymentColumn = (
     },
     {
       header: "Payment Method",
+      accessorKey: "payment_modes",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <Flex gap={3}>
@@ -129,6 +132,7 @@ export const paymentColumn = (
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         const isStatusPending =
           +row.original?.payment_status === +STATUSTYPE.pending;

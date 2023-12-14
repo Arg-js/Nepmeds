@@ -30,13 +30,12 @@ export const appointmentColumn = (
     },
     {
       header: "Date",
-      cell: ({ row }: CellProps<IAppointmentAdmin>) => {
-        return row?.original?.date ?? "-";
-      },
+      accessorKey: "date",
     },
 
     {
       header: "Booking Time",
+      accessorKey: "from_time",
       cell: ({ row: { original } }: CellProps<IAppointmentAdmin>) => {
         return original.from_time && original.to_time
           ? removeSeconds(original?.from_time ?? "") +
@@ -52,6 +51,7 @@ export const appointmentColumn = (
     },
     {
       header: "Specialization",
+      accessorKey: "specialization",
       cell: ({ row }: CellProps<{ specialization: Specialization[] }>) => {
         const specialization = row?.original?.specialization?.map(data => (
           <Tag key={data.id}>{data.name}</Tag>
@@ -76,6 +76,7 @@ export const appointmentColumn = (
     },
     {
       header: "Call Status",
+      accessorKey: "call_status",
       cell: ({ row }: CellProps<{ call_status: string }>) =>
         row.original.call_status
           ? convertToTitleCase(
@@ -87,6 +88,7 @@ export const appointmentColumn = (
     },
     {
       header: "Follow Up",
+      accessorKey: "follow_up_status",
       cell: ({ row }: CellProps<{ follow_up_status: boolean }>) => {
         return (
           <StatusBadge
@@ -103,6 +105,7 @@ export const appointmentColumn = (
     },
     {
       header: "Appointment Status",
+      accessorKey: "status",
       cell: ({ row }: CellProps<{ status: string }>) => {
         return (
           <StatusBadge
@@ -121,7 +124,7 @@ export const appointmentColumn = (
     },
     {
       header: "Actions",
-      accessorKey: "actions",
+      accessorKey: "id",
       cell: ({ row }: CellProps<IAppointmentDetail>) => {
         return (
           <TableActions
@@ -202,6 +205,7 @@ export const instantConsultantColumn = (pageParams: PaginationState) => {
     },
     {
       header: "Status",
+      accessorKey: "status",
       cell: ({ row }: CellContext<IAppointmentAdmin, any>) => {
         return (
           <StatusBadge

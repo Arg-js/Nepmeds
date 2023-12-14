@@ -79,6 +79,7 @@ export const column = ({
       { header: "Patient Name", accessorKey: "full_name" },
       {
         header: "Appointment Time",
+        accessorKey: "availability.from_time",
         cell: ({
           row,
         }: CellProps<{
@@ -103,6 +104,7 @@ export const column = ({
 
       {
         header: "Status",
+        accessorKey: "status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <Badge
@@ -124,6 +126,7 @@ export const column = ({
       },
       {
         header: "Actions",
+        accessorKey: "id",
         cell: ({
           row,
         }: CellProps<{

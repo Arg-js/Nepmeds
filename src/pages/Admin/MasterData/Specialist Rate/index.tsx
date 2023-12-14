@@ -252,6 +252,7 @@ const SpecialistRates = ({
 
     {
       header: "Specialization",
+      accessorKey: "specialization",
       cell: (cell: CellContext<SpecialistRate, any>) => {
         return (
           <HStack>
@@ -290,6 +291,7 @@ const SpecialistRates = ({
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: (cell: CellContext<SpecialistRate, any>) => {
         return (
           <HStack justifyContent="center">

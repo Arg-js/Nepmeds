@@ -30,6 +30,7 @@ export const paymentColumnAdmin = ({
       },
       {
         header: "Payment Date",
+        accessorKey: "created_at",
         cell: ({ row: { original } }: CellProps<{ created_at: string }>) => {
           const [date] = splitDateTime(original?.created_at ?? "");
           return date;
@@ -54,12 +55,14 @@ export const paymentColumnAdmin = ({
 
       {
         header: "Tranaction Rate",
+        accessorKey: "transation_amount",
         cell: ({ row }: CellProps<{ transation_amount: string }>) => {
           return `Rs. ${row.original.transation_amount}`;
         },
       },
       {
         header: "Disbursal Date",
+        accessorKey: "disbursal_date",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_date: string }>) => {
@@ -71,6 +74,7 @@ export const paymentColumnAdmin = ({
 
       {
         header: "Disbursal Status",
+        accessorKey: "disbursal_status",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_status: boolean; id: number }>) => {
@@ -86,6 +90,7 @@ export const paymentColumnAdmin = ({
       },
       {
         header: "Action",
+        accessorKey: "id",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_status: boolean; id: number }>) => {

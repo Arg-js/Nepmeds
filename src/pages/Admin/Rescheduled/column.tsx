@@ -35,12 +35,14 @@ export const rescheduledAdminColumn = ({
       { header: "Patient Name", accessorKey: "patient" },
       {
         header: "Previous Date",
+        accessorKey: "old_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return original?.old_availability?.date;
         },
       },
       {
         header: "Previous Time",
+        accessorKey: "old_availability.from_time",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             original?.old_availability?.from_time
@@ -50,6 +52,7 @@ export const rescheduledAdminColumn = ({
 
       {
         header: "Status",
+        accessorKey: "status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <StatusBadge
@@ -62,6 +65,7 @@ export const rescheduledAdminColumn = ({
       },
       {
         header: "Actions",
+        accessorKey: "id",
         cell: ({
           row,
         }: CellProps<{

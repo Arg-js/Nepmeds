@@ -7,7 +7,7 @@ export const hospitalColumns = ({
   setIsEdit,
   setId,
   onOpenHospitalModal,
-  onDeleteModalOpen
+  onDeleteModalOpen,
 }: {
   paginationParams: {
     pageIndex: number;
@@ -24,11 +24,12 @@ export const hospitalColumns = ({
       return `${
         paginationParams.pageIndex * paginationParams.pageSize + index + 1
       }.`;
-    }
+    },
   },
   { header: "name", accessorKey: "name" },
   {
     header: "Actions",
+    accessorKey: "id",
     cell: ({ row }: CellProps<{ id: string }>) => {
       const onEdit = () => {
         setIsEdit(true);
@@ -40,6 +41,6 @@ export const hospitalColumns = ({
         onDeleteModalOpen();
       };
       return <TableActions onEdit={onEdit} onDelete={onDelete} />;
-    }
-  }
+    },
+  },
 ];
