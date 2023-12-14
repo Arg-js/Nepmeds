@@ -32,7 +32,7 @@ export const paymentColumn = (
 
     {
       header: "Doctor's Name",
-      accessorKey: "first_name",
+      accessorKey: "user.first_name",
       cell: ({ row }: CellContext<IAllPaymentResponse, any>) => {
         return (
           <ChakraLink
@@ -55,7 +55,7 @@ export const paymentColumn = (
 
     {
       header: "Specialization",
-      accessorKey: "specialization",
+      accessorKey: "specialization_names",
       cell: ({
         row,
       }: CellContext<{ specialization_names: Specialization[] }, any>) => {

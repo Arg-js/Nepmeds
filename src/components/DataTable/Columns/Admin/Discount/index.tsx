@@ -73,6 +73,7 @@ export const columns = ({
   },
   {
     header: "Value",
+    accessorKey: "value",
     cell: ({
       row,
     }: CellProps<{
