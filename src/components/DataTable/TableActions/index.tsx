@@ -24,6 +24,8 @@ const TableActions = ({
   onCall,
   onReschedule,
   onPrescription,
+  isEditDisabled,
+  editText,
 }: ITableActions) => {
   return (
     <Flex alignItems={"center"} justifyContent="center">
@@ -93,8 +95,9 @@ const TableActions = ({
       )}
 
       {!!onEdit && (
-        <Tooltip hasArrow placement="top" label="Edit">
+        <Tooltip hasArrow placement="top" label={editText ?? "Edit"}>
           <IconButton
+            isDisabled={isEditDisabled}
             height={"min-content"}
             aria-label="view"
             icon={<AiOutlineEdit size={20} fill={colors.blue_100} />}
@@ -176,6 +179,8 @@ interface ITableActions {
   onEdit?: () => void;
   onDelete?: () => void;
   onChangePassword?: () => void;
+  isEditDisabled?: boolean;
+  editText?: string;
   onCall?: {
     state: {
       caller_usesr?: string;

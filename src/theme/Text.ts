@@ -9,18 +9,6 @@ const baseStyles = {
   mb: 3,
 };
 
-const small600 = {
-  fontSize: "sm",
-  fontWeight: "600",
-  color: colors.dark_blue,
-  fontFamily: "Inter",
-};
-
-const md600 = {
-  ...small600,
-  fontSize: "md",
-};
-
 const sm400 = {
   fontSize: "sm",
   fontWeight: "400",
@@ -31,15 +19,28 @@ const sm500 = {
   fontWeight: "500",
 };
 
-const lg600 = {
-  fontSize: "lg",
+const small600 = {
+  fontSize: "sm",
   fontWeight: "600",
+  color: colors.dark_blue,
+  fontFamily: "Inter",
 };
 
 const md500 = {
   fontSize: "md",
   fontWeight: "500",
 };
+
+const md600 = {
+  ...small600,
+  fontSize: "md",
+};
+
+const lg600 = {
+  fontSize: "lg",
+  fontWeight: "600",
+};
+
 const tableHeading = {
   ...baseStyles,
 };
