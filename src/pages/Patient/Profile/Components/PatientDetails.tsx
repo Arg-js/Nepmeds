@@ -5,6 +5,11 @@ import TokenService from "@nepMeds/service/service-token";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { useMemo } from "react";
 
+// TODO: move this somewhere else
+export const fallbackToDash = (value: any) => {
+  return value ?? "-";
+};
+
 const PatientDetails = () => {
   const isAuthenticated = TokenService.isAuthenticated();
   const { data: patientData } = usePatientBasicProfile(isAuthenticated);
@@ -13,15 +18,15 @@ const PatientDetails = () => {
     () => [
       {
         title: "Age",
-        value: patientData?.age ?? "-",
+        value: fallbackToDash(patientData?.age),
       },
       {
         title: "Gender",
-        value: patientData?.gender ?? "-",
+        value: fallbackToDash(patientData?.gender),
       },
       {
         title: "Date of Birth",
-        value: patientData?.date_of_birth ?? "-",
+        value: fallbackToDash(patientData?.date_of_birth),
       },
     ],
     [patientData]
@@ -31,11 +36,11 @@ const PatientDetails = () => {
     () => [
       {
         title: "Contact",
-        value: patientData?.mobile_number ?? "-",
+        value: fallbackToDash(patientData?.mobile_number),
       },
       {
         title: "Email",
-        value: patientData?.email ?? "-",
+        value: fallbackToDash(patientData?.email),
       },
     ],
     [patientData]
@@ -49,14 +54,14 @@ const PatientDetails = () => {
       >
         <Box>
           <Text fontWeight={600} fontSize={"2xl"}>
-            {patientData?.name ?? "-"}
+            {fallbackToDash(patientData?.name)}
           </Text>
           <Flex justifyContent={"space-between"} mb={1}>
             <Text variant={"md600"} color={colors.black_60}>
               Patient ID:
             </Text>
             <Text variant={"md500"} color={colors.primary}>
-              {patientData?.user ?? "-"}
+              {fallbackToDash(patientData?.user)}
             </Text>
           </Flex>
           <Tag

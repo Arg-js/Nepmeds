@@ -1,6 +1,6 @@
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
-import { ADMINAPPOINTMENT, CallState } from "@nepMeds/config/enum";
+import { ADMINAPPOINTMENT, CallState, STATUSTYPE } from "@nepMeds/config/enum";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IPaginationParams } from "@nepMeds/service/nepmeds-faq";
 import { CellContext } from "@tanstack/react-table";
@@ -44,11 +44,11 @@ export const columns = ({
     },
     {
       header: "Appointment Date",
-      cell: ({ row }: CellProps<{ appointment_date: string }>) =>
-        row.original?.appointment_date ?? "-",
+      accessorKey: "appointment_date",
     },
     {
       header: "Appointment Time",
+      accessorKey: "appointment_endtime",
       cell: ({
         row,
       }: CellProps<{
@@ -64,6 +64,7 @@ export const columns = ({
     },
     {
       header: "Call Type",
+      accessorKey: "call_type",
       cell: ({ row }: CellProps<{ call_type: string }>) =>
         ADMINAPPOINTMENT[
           row.original?.call_type as keyof typeof ADMINAPPOINTMENT
@@ -71,6 +72,7 @@ export const columns = ({
     },
     {
       header: "Appointment Status",
+      accessorKey: "appointment_status",
       cell: ({ row }: CellProps<{ appointment_status: string }>) => (
         <StatusBadge
           customProps={{
@@ -81,14 +83,16 @@ export const columns = ({
     },
     {
       header: "Call Duration (mins)",
+      accessorKey: "call_duration",
       cell: ({ row }: CellProps<{ call_duration: string }>) => {
         const seconds = row.original?.call_duration;
-        return seconds ? secondsToMinSec(parseFloat(seconds)) : "-";
+        return secondsToMinSec(parseFloat(seconds));
       },
     },
     {
       header: "Call Status",
       // TODO: alternative to this
+      accessorKey: "call_status",
       cell: ({ row }: CellProps<{ call_status: string }>) =>
         row.original.call_status
           ? CallState[row.original.call_status as keyof typeof CallState]
@@ -96,6 +100,7 @@ export const columns = ({
     },
     {
       header: "Follow Up",
+      accessorKey: "follow_up",
       cell: ({ row }: CellProps<{ follow_up: boolean }>) => (
         <StatusBadge
           customProps={{
@@ -110,16 +115,20 @@ export const columns = ({
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: ({
         row,
       }: CellProps<{
         id: string;
-        appointment_status: string;
+        appointment_status: STATUSTYPE;
         can_reschedule: boolean;
         doctor_id: string;
       }>) => {
         const appointmentStatus = row.original?.appointment_status;
-        const isEditDisabled = ["2", "3"].includes(appointmentStatus);
+        const isEditDisabled = [
+          STATUSTYPE.pending,
+          STATUSTYPE.rejected,
+        ].includes(+appointmentStatus);
         const onEdit = () => {
           setAppointmentId(row.original?.id);
           onEditModalOpen();
