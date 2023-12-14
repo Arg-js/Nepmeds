@@ -303,7 +303,7 @@ const DoctorDetail = ({
 
               <Box>
                 <p style={{ fontSize: "small" }}>Currently Working</p>
-                <p>{experience_info?.currently_working || "----"}</p>
+                <p>{experience_info?.currently_working || "-"}</p>
               </Box>
 
               <Box>

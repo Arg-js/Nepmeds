@@ -9,7 +9,7 @@ const PatientProfile = () => {
       <Header />
       {/*  */}
       <Flex
-        background={"linear-gradient(270deg, #3B6BB3 -25.14%, #13ADE1 102.12%)"}
+        background={`linear-gradient(270deg, ${colors.main} -25.14%, ${colors.primary} 102.12%)`}
         height={"150px"}
         color={colors.white}
         fontWeight="600"

@@ -129,7 +129,7 @@ const PatientDetailModal = ({
             Order ID:
           </Text>
           <Text variant="md600" color={colors.black_60}>
-            ---
+            -
           </Text>
           <Text variant="sm400" color={colors.black_60}>
             Payment Method:
