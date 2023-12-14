@@ -49,6 +49,7 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
     },
     {
       header: "Status",
+      accessorKey: "status",
       cell: ({ row }: CellContext<IUserRoleAdmin, any>) => {
         const [status, setStatus] = useState(row?.original?.status);
         const { mutate } = useUpdateDoctorStatus();
@@ -134,6 +135,7 @@ export const patientRoleColumn = (pageParams: PaginationState) => {
     },
     {
       header: "Status",
+      accessorKey: "status",
       cell: ({ row }: CellContext<IUserPatient, any>) => {
         const [patientStatus, setPatientStatus] = useState(
           row?.original?.status
@@ -199,6 +201,7 @@ export const adminRoleColumn = ({
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: ({ row }: CellProps<IAdminUserList>) => {
         return (
           <TableActions

@@ -42,6 +42,7 @@ export const pendingColumns = (
     },
     {
       header: "Contact Number",
+      accessorKey: "user.mobile_number",
       cell: ({
         row,
       }: CellContext<
@@ -74,6 +75,7 @@ export const pendingColumns = (
 
     {
       header: "Actions",
+      accessorKey: "id",
       cell: (cell: CellContext<any, any>) => {
         return (
           <TableActions
@@ -132,6 +134,7 @@ export const columns = (
     },
     {
       header: "Contact Number",
+      accessorKey: "user.mobile_number",
       cell: ({
         row,
       }: CellContext<
@@ -163,6 +166,7 @@ export const columns = (
     },
     {
       header: "Status",
+      accessorKey: "status",
       cell: ({ row }: CellContext<IGetDoctorList, any>) => {
         const { status } = row.original;
 
@@ -177,6 +181,7 @@ export const columns = (
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: (cell: CellContext<any, any>) => {
         const isPending =
           cell.row.original?.status === STATUSTYPE.pending.toString();
@@ -237,6 +242,7 @@ export const rejectedColumns = (
     },
     {
       header: "Contact Number",
+      accessorKey: "user.mobile_number",
       cell: ({
         row,
       }: CellContext<

@@ -60,6 +60,7 @@ const FollowUpFormNew = ({
     },
     {
       header: "Booked Time",
+      accessorKey: "from_time",
       cell: ({ row }: CellProps<{ from_time: string; to_time: string }>) => {
         return `${removeSeconds(row.original?.from_time)}-
           ${removeSeconds(row.original?.to_time)}

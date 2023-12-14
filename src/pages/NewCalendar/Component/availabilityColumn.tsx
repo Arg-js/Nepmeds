@@ -33,6 +33,7 @@ export const availabilityColumn = ({
     },
     {
       header: "Time",
+      accessorKey: "from_time",
       cell: ({ row }: CellProps<{ from_time: string; to_time: string }>) => {
         return (
           <>
@@ -44,12 +45,14 @@ export const availabilityColumn = ({
     },
     {
       header: "Date",
+      accessorKey: "date",
       cell: ({ row }: CellProps<{ date: string; to_date: string }>) => {
         return `${row.original.date} - ${row.original.to_date}`;
       },
     },
     {
       header: "Frequency",
+      accessorKey: "frequency",
       cell: ({ row }: CellProps<{ frequency: string }>) => {
         const frequency =
           AVAILABILITYFREQUENCY[
@@ -61,6 +64,7 @@ export const availabilityColumn = ({
     { header: "Booking Numbers", accessorKey: "booking_count" },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: ({
         row,
       }: CellProps<{ id: string; date: string; to_date: string }>) => {
