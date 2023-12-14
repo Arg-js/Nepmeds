@@ -35,12 +35,14 @@ export const rescheduledColumn = ({
       { header: "Patient Name", accessorKey: "patient" },
       {
         header: "Previous Date",
+        accessorKey: "old_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return original?.old_availability?.date;
         },
       },
       {
         header: "Previous Time",
+        accessorKey: "old_availability.to_time",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             original?.old_availability?.from_time
@@ -50,6 +52,7 @@ export const rescheduledColumn = ({
 
       {
         header: "New Time",
+        accessorKey: "request_availability.from_time",
         cell: ({ row }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             row.original?.request_availability?.from_time
@@ -59,6 +62,7 @@ export const rescheduledColumn = ({
 
       {
         header: "New Date",
+        accessorKey: "old_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return original?.old_availability?.date;
         },
@@ -66,6 +70,7 @@ export const rescheduledColumn = ({
 
       {
         header: "Status",
+        accessorKey: "status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <StatusBadge
@@ -78,6 +83,7 @@ export const rescheduledColumn = ({
       },
       {
         header: "Actions",
+        accessorKey: "id",
         cell: ({
           row,
         }: CellProps<{
@@ -134,12 +140,14 @@ export const rescheduledHistoryColumn = ({
       { header: "Patient Name", accessorKey: "patient" },
       {
         header: "Previous Date",
+        accessorKey: "old_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return original?.old_availability?.date;
         },
       },
       {
         header: "Previous Time",
+        accessorKey: "old_availability.from_time",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             original?.old_availability?.from_time
@@ -149,6 +157,7 @@ export const rescheduledHistoryColumn = ({
 
       {
         header: "Rescheduled Time",
+        accessorKey: "extra_data.cancelled_availability.from_time",
         cell: ({ row }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             row.original?.extra_data?.cancelled_availability?.from_time ??
@@ -162,6 +171,7 @@ export const rescheduledHistoryColumn = ({
 
       {
         header: "Rescheduled Date",
+        accessorKey: "extra_data.cancelled_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return (
             original?.extra_data?.cancelled_availability?.date ??
@@ -172,6 +182,7 @@ export const rescheduledHistoryColumn = ({
 
       {
         header: "Status",
+        accessorKey: "status",
         cell: ({ row }: CellProps<{ status: string }>) => {
           return (
             <StatusBadge

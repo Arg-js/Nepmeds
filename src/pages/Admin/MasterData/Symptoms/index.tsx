@@ -129,6 +129,7 @@ const Symptoms = ({
     },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: (cell: CellContext<any, any>) => {
         return (
           <HStack justifyContent="center">

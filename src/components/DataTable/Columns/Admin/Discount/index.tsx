@@ -36,6 +36,7 @@ export const columns = ({
   },
   {
     header: "Doctor",
+    accessorKey: "doctor_list",
     cell: ({ row }: CellProps<{ doctor_list: { name: string }[] }>) => {
       const doctorList = row.original?.doctor_list;
       return (
@@ -52,6 +53,7 @@ export const columns = ({
   },
   {
     header: "Specialization",
+    accessorKey: "specialization_list",
     cell: ({
       row,
     }: CellProps<{
@@ -96,6 +98,7 @@ export const columns = ({
   },
   {
     header: "Status",
+    accessorKey: "is_active",
     cell: ({ row }: CellProps<{ is_active: boolean; id: string }>) => {
       return (
         <Switch
@@ -112,6 +115,7 @@ export const columns = ({
   },
   {
     header: "Actions",
+    accessorKey: "id",
     cell: ({ row }: CellProps<{ id: string }>) => {
       return (
         <TableActions

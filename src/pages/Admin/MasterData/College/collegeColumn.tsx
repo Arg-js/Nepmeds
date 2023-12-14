@@ -29,6 +29,7 @@ export const columns = ({
   { header: "Name", accessorKey: "name" },
   {
     header: "Actions",
+    accessorKey: "id",
     cell: ({ row }: CellProps<{ id: string }>) => {
       const onDelete = () => {
         setId(row.original?.id);

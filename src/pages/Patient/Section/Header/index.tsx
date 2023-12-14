@@ -249,15 +249,17 @@ const Header: React.FC<{
           >
             <InputRightElement pointerEvents="none">
               <IconButton
-                right="1px"
+                top="1"
+                right="2"
                 aria-label="button"
                 height="38px"
                 size="sm"
-                borderLeftRadius={0}
-                borderRightRadius="30px"
+                borderRadius={"50px"}
+                // borderLeftRadius={0}
+                // borderRightRadius="30px"
                 width={{ base: "30px", md: "61px" }}
               >
-                <SearchIcon fill="#fff" />
+                <SearchIcon fontSize={20} fill="#fff" />
               </IconButton>
             </InputRightElement>
             <Input
@@ -266,6 +268,7 @@ const Header: React.FC<{
               borderRadius="30px"
               borderColor={colors.primary}
               color={colors.gray_text_header}
+              size={"lg"}
             />
           </InputGroup>
           {/* Search Field ends */}

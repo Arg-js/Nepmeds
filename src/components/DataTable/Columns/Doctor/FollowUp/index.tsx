@@ -23,6 +23,7 @@ export const columns = ({
     },
     {
       header: "FollowUp Date",
+      accessorKey: "followup_availability.date",
       cell: ({
         row,
       }: CellProps<{ followup_availability: { date: string } }>) => {
@@ -31,6 +32,7 @@ export const columns = ({
     },
     {
       header: "FollowUp Time",
+      accessorKey: "followup_availability.from_time",
       cell: ({
         row,
       }: CellProps<{
@@ -49,6 +51,7 @@ export const columns = ({
     { header: "Last Appointment Date", accessorKey: "last_appointment_date" },
     {
       header: "Actions",
+      accessorKey: "id",
       cell: ({
         row,
       }: CellProps<{
