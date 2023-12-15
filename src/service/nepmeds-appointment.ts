@@ -81,11 +81,10 @@ export interface IAppointmentDetail {
 }
 
 // Single appointment detail
-const getAdminAppointmentDetail = async (id: string) => {
-  const response = await HttpClient.get<NepMedsResponse<IAppointmentDetail>>(
+const getAdminAppointmentDetail = (id: string) => {
+  return HttpClient.get<NepMedsResponse<IAppointmentDetail>>(
     generatePath(api.appointmentDetail, { id })
   );
-  return response;
 };
 
 export const useAdminAppointmentDetail = (id: string) => {

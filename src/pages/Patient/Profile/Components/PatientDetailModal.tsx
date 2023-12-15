@@ -90,13 +90,15 @@ const PatientDetailModal = ({
             ))}
           </Text>
         </Grid>
-        <Flex gap={3} cursor="pointer" onClick={onOpen}>
-          {/* TODO: make api call inside the modal */}
-          <Text variant={"md500"} color={colors.main}>
-            Download Prescriptions:
-          </Text>
-          <DownloadIcon />
-        </Flex>
+        {patientDetail?.is_prescription_available && (
+          <Flex gap={3} cursor="pointer" onClick={onOpen}>
+            {/* TODO: make api call inside the modal */}
+            <Text variant={"md500"} color={colors.main}>
+              Download Prescriptions:
+            </Text>
+            <DownloadIcon />
+          </Flex>
+        )}
         <Divider />
         <Text variant={"lg600"}>Payment Detail</Text>
         <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
