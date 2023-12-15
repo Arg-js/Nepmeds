@@ -225,6 +225,8 @@ export interface IPrescriptionInfo {
   }[];
   doctor_name: string;
   doctor_nmc_number: string;
+  patient_name: string;
+  gender: "1" | "2" | "3";
 }
 
 // Get All Prescription Info
@@ -248,7 +250,7 @@ const getAllPrescriptionInfo = async ({
 export function useGetAllPrescriptionInfo({
   appointment_id,
   followup_id,
-  isEditable,
+  isEditable = true,
 }: {
   appointment_id?: string;
   followup_id?: string;

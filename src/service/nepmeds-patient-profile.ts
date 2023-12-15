@@ -58,6 +58,7 @@ export interface IPatientDetailById {
   payment_date: string;
   payment_time: string;
   follow_up_details: Availability;
+  is_prescription_available: boolean;
 }
 
 export interface Symptom {

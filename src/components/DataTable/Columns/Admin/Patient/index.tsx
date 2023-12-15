@@ -4,6 +4,7 @@ export const patientColumn = (): ColumnDef<unknown>[] => {
   return [
     {
       header: "S.N.",
+      accessorKey: "id",
       cell: info => info.row.index + 1,
     },
     {
