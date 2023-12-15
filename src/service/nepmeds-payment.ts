@@ -483,10 +483,12 @@ const getPaymentHistoryDoctor = async (qs: string) => {
 export const useGetPaymentHistoryDoctor = ({
   page_no,
   page_size,
+  ...filterValue
 }: IFilterSearch) => {
   const qs = queryStringGenerator({
     page: page_no,
     page_size,
+    ...filterValue,
   });
   return useQuery(
     [api.transaction.payment_history, qs],

@@ -26,6 +26,7 @@ export interface IDoctorListResult {
   municipality: string;
   experience: string;
   schedule_rate: string;
+  nmc_number?: number;
 }
 
 export interface IDoctorListById {

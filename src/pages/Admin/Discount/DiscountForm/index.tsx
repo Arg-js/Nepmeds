@@ -47,9 +47,9 @@ const DiscountForm = ({
   // TODO: check if specialization is being used as options on most of the places
   const { data: specialization = [] } = useSpecializationRegisterData();
   const { data: doctorList } = useGetDoctorListUnpaginated();
-  const doctorListOptions = doctorList?.map(({ name, id }) => {
+  const doctorListOptions = doctorList?.map(({ name, nmc_number, id }) => {
     return {
-      label: name,
+      label: `${name} - ${nmc_number}`,
       value: id,
     };
   });
@@ -159,10 +159,7 @@ const DiscountForm = ({
         error={errors?.end_date?.message ?? ""}
         isRequired
       />
-      <Tooltip
-        label="Number of times coupon can be used by a user, default: 'every time'"
-        hasArrow
-      >
+      <Tooltip label="Number of times coupon can be used by a user" hasArrow>
         <Flex>
           <FormControl
             control="input"

@@ -3,7 +3,7 @@ import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { ADMINAPPOINTMENT } from "@nepMeds/config/enum";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IPaymentHistory } from "@nepMeds/service/nepmeds-payment";
-import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 import { convertToTitleCase } from "@nepMeds/utils/string";
 import { splitDateTime } from "@nepMeds/utils/time";
 import { useMemo } from "react";
@@ -58,7 +58,7 @@ export const paymentHistoryColumn = ({
           const paymentType = row.original?.consult_history?.payment_type;
           return (
             paymentType && (
-              <Image src={getImageUrl(paymentType)} h={"50px"} w={"50px"} />
+              <Image src={appendServerUrl(paymentType)} h={"50px"} w={"50px"} />
             )
           );
         },
@@ -102,7 +102,7 @@ export const paymentHistoryColumn = ({
       },
       {
         header: "Disbursal Status",
-        accessorKey: "disbursal_status",
+        accessorKey: "id",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_status: boolean }>) => {
