@@ -1,5 +1,6 @@
 import {
   Box,
+  Flex,
   Grid,
   Image,
   Table,
@@ -14,6 +15,7 @@ import {
 import { IPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 import NepmedsLogo from "@nepMeds/assets/images/logo.png";
 import { colors } from "@nepMeds/theme/colors";
+import { getGender } from "@nepMeds/pages/Doctor/Appointment/AppointmentTab/ModalForm/ViewModal";
 const DrugReferralHeader = ["Medicine", "Dose", "Frequency", "Remarks"];
 const PatientPrescription = ({
   prescription,
@@ -58,6 +60,33 @@ const PatientPrescription = ({
           mb={3}
           textAlign={"center"}
         >
+          <Text variant="sm400">Patient Information</Text>
+        </Box>
+        <Box mx={3}>
+          <Flex alignItems={"center"} gap={3}>
+            <Text variant="sm400" color={colors.black_60}>
+              Patient&apos;s name:
+            </Text>
+            <Text variant="md600" color={colors.black_60}>
+              {prescription?.patient_name}
+            </Text>
+          </Flex>
+          <Flex alignItems={"center"} gap={3}>
+            <Text variant="sm400" color={colors.black_60}>
+              Sex:
+            </Text>
+            <Text variant="md600" color={colors.black_60}>
+              {prescription?.gender && getGender(prescription.gender)}
+            </Text>
+          </Flex>
+        </Box>
+        <Box
+          bgColor={colors.primary}
+          color={colors.white}
+          p={2}
+          mb={3}
+          textAlign={"center"}
+        >
           <Text variant="sm400">Information for Patient</Text>
         </Box>
         {/* TODO: design in progress */}
@@ -95,13 +124,7 @@ const PatientPrescription = ({
           <Table variant="simple" size="sm">
             <Thead>
               <Tr>
-                {/* TODO: convert the key to text  */}
-                <Th
-                  border={`1px solid ${colors.gray_border}`}
-                  borderBottom="none"
-                >
-                  S.N.
-                </Th>
+                <Th border={`1px solid ${colors.gray_border}`}>S.N.</Th>
                 {DrugReferralHeader?.map(title => (
                   <Th
                     key={title}
@@ -183,36 +206,19 @@ const PatientPrescription = ({
                   {prescription?.additional_info?.follow_up_date}
                 </Td>
               </Tr>
-              {/* TODO: find alternative to this */}
-              <Tr>
-                <Td borderBottom={"none"} fontSize="sm" fontWeight={"600"}>
-                  Dr.{prescription?.doctor_name}
-                </Td>
-              </Tr>
-              <Tr>
-                <Td borderBottom={"none"} fontSize="sm" fontWeight={"600"}>
-                  NMC no: {prescription?.doctor_nmc_number}
-                </Td>
-              </Tr>
             </Tbody>
           </Table>
         </TableContainer>
 
-        {/* <Text variant="sm400" color={colors.black_60}>
-          Follow Up date:
-        </Text>
-        <Text variant="md600" color={colors.black_60}>
-          {prescription?.additional_info?.follow_up_date}
-        </Text> */}
-        {/* <Text variant="sm400" color={colors.black_60}>
-          Dr. {prescription?.doctor_name}
-        </Text> */}
-        {/* <Text variant="sm400" color={colors.black_60}>
-          NMC no:
-        </Text> */}
-        {/* <Text variant="sm400" color={colors.black_60}>
-          NMC no: {prescription?.doctor_nmc_number}
-        </Text> */}
+        <Flex direction={"column"} gap={1} mx={4}>
+          <Text variant="md600" color={colors.black_60}>
+            Dr. {prescription?.doctor_name}
+          </Text>
+
+          <Text variant="md600" color={colors.black_60}>
+            NMC no: {prescription?.doctor_nmc_number}
+          </Text>
+        </Flex>
       </Grid>
     </>
   );

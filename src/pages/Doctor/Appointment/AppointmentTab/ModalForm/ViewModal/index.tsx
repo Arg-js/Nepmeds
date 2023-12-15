@@ -6,7 +6,7 @@ import {
 } from "@nepMeds/service/nepmeds-doctor-patient-appointment";
 import { colors } from "@nepMeds/theme/colors";
 
-const getGender = (gender: Gender) => {
+export const getGender = (gender: Gender) => {
   const genderMap = {
     "1": "Male",
     "2": "Female",

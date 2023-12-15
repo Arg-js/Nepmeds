@@ -38,7 +38,7 @@ export const paymentColumnAdmin = ({
       },
       {
         header: "Payment Time",
-        accessorKey: "time",
+        accessorKey: "created_at",
         cell: ({ row: { original } }: CellProps<{ created_at: string }>) => {
           const [, time] = splitDateTime(original?.created_at ?? "");
           return time;
@@ -74,7 +74,7 @@ export const paymentColumnAdmin = ({
 
       {
         header: "Disbursal Status",
-        accessorKey: "disbursal_status",
+        accessorKey: "id",
         cell: ({
           row: { original },
         }: CellProps<{ disbursal_status: boolean; id: number }>) => {
