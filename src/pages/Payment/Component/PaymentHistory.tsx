@@ -102,9 +102,7 @@ const PaymentHistory = () => {
         <Button
           aria-label="filter"
           leftIcon={<IoFunnelOutline pointerEvents={"none"} />}
-          onClick={() => {
-            onModalOpen();
-          }}
+          onClick={onModalOpen}
         >
           &nbsp; Filter
         </Button>
