@@ -10,6 +10,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Link as ChakraLink,
   Menu,
   MenuButton,
   MenuItem,
@@ -346,23 +347,18 @@ const Header: React.FC<{
       {isLargerThan768 && (
         <Flex gap={6} justifyContent={"center"}>
           {HeaderItems.map(({ icon, text, link }) => (
-            <Flex
-              gap={2}
-              mt={4}
-              cursor="pointer"
-              onClick={() => navigate(link)}
-              key={link}
-            >
-              {icon}
-              <Text
-                // TODO: md500 is doesn't work
-                variant={"md600"}
-                color={colors.black_40}
-                fontFamily={"Quicksand"}
-              >
-                {text}
-              </Text>
-            </Flex>
+            <ChakraLink href={link} key={link}>
+              <Flex gap={2} mt={4} cursor="pointer">
+                {icon}
+                <Text
+                  variant={"md500"}
+                  color={colors.black_40}
+                  fontFamily={"Quicksand"}
+                >
+                  {text}
+                </Text>
+              </Flex>
+            </ChakraLink>
           ))}
         </Flex>
       )}
