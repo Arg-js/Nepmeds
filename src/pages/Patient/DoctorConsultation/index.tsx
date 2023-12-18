@@ -32,6 +32,7 @@ import PatientFooter from "../Section/Footer";
 import ChooseUsSection from "./Section/ChooseUs";
 import ConsultationStepSection from "./Section/CosultationStep";
 import FAQ from "./Section/FAQ";
+import JoinDoctor from "./Section/JoinDoctor";
 
 export enum Type {
   SPECIALIST,
@@ -177,6 +178,10 @@ const DoctorConsultation = () => {
           </Box>
           {/* Health Concern / Symptoms SECTION ENDS */}
 
+          {/* JOIN DOCTOR STARTS HERE */}
+          <JoinDoctor />
+          {/* JOIN DOCTOR ENDS HERE */}
+
           {/* ADVERTISEMENT SECTION */}
           <Box my={{ base: 5, md: 10 }}>
             <Image
@@ -236,7 +241,6 @@ const DoctorConsultation = () => {
           {/* DOCTOR CONSULTATION WORKING STEPS ENDS */}
         </>
       </WrapperBox>
-
       {/* ADVERTISEMENT SECTION */}
       <AdvertisementBanner />
       {/* ADVERTISEMENT SECTION ENDS*/}

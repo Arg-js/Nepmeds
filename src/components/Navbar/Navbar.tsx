@@ -7,25 +7,21 @@ import {
   MenuItem,
   MenuList,
   Stack,
-  Switch,
   Text,
 } from "@chakra-ui/react";
-
 import { useLogoutMutation } from "@nepMeds/service/nepmeds-auth";
 import { colors } from "@nepMeds/theme/colors";
-
 import { useProfileData } from "@nepMeds/context/index";
 import { Link, useLocation } from "react-router-dom";
 import { HamburgerMenuIcon } from "@nepMeds/assets/svgs";
 import { Dispatch, SetStateAction } from "react";
-import { useSetDoctorOnline } from "@nepMeds/service/nepmeds-doctor-availability";
 
 const Navbar = ({
   setSidebarCollapsed,
 }: {
   setSidebarCollapsed: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { mutateAsync: setDoctorOnline } = useSetDoctorOnline();
+  // const { mutateAsync: setDoctorOnline } = useSetDoctorOnline();
   const logoutAction = useLogoutMutation({});
   const logout = () => {
     logoutAction.mutate({});
@@ -96,7 +92,7 @@ const Navbar = ({
                 <MenuItem onClick={logout}>Logout</MenuItem>
               </MenuList>
             </Menu>
-            {profileData?.data?.is_doctor && (
+            {/* {profileData?.data?.is_doctor && (
               <Switch
                 size={"lg"}
                 colorScheme={"green"}
@@ -109,7 +105,7 @@ const Navbar = ({
                   setDoctorOnline({ is_online: e.target.checked });
                 }}
               />
-            )}
+            )} */}
           </HStack>
         </HStack>
         {/* TODO: consult with design */}
