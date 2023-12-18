@@ -22,7 +22,7 @@ import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
 import Input from "@nepMeds/components/Form/Input";
 import {
-  IDiscountBasicDetails,
+  IDiscountDetails,
   useGetDiscountByCode,
 } from "@nepMeds/service/nepmeds-discount";
 import {
@@ -41,7 +41,7 @@ const DoctorDetails = () => {
     []
   );
   const [discountDetails, setDiscountDetails] =
-    useState<IDiscountBasicDetails | null>(null);
+    useState<IDiscountDetails | null>(null);
 
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
@@ -77,6 +77,7 @@ const DoctorDetails = () => {
   });
   const formProps = useForm({ defaultValues, resolver: yupResolver(schema) });
   const couponCode = formProps.watch("coupon");
+  const onetimeCoupon = discountDetails?.onetime_coupon ? 1 : 0;
 
   const { bookingFee, discountAmount, discountedAmount } = calcDiscountedAmount(
     {
@@ -178,8 +179,13 @@ const DoctorDetails = () => {
                     {isLoading ? (
                       <DiscountDetailSkeleton />
                     ) : (
-                      isSuccess && (
+                      isSuccess &&
+                      discountDetails && (
                         <DiscountDetailsSection
+                          discountApplicableNumber={
+                            onetimeCoupon ||
+                            discountDetails.coupon_applicable_number
+                          }
                           bookingFee={bookingFee}
                           discountAmount={discountAmount}
                           discountedAmount={discountedAmount}
