@@ -1,28 +1,49 @@
-import { Grid, GridItem, Flex, Divider, Text, Image } from "@chakra-ui/react";
+import {
+  Grid,
+  GridItem,
+  Flex,
+  Divider,
+  Text,
+  Image,
+  Link,
+} from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import esewaImage from "@nepMeds/assets/images/esewaImage.png";
 import khaltiImage from "@nepMeds/assets/images/khaltiImage.png";
 import { AppStoreIcon, BankTransferIcon } from "@nepMeds/assets/svgs";
 import { images } from "@nepMeds/assets/images";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const FooterContents = [
   {
     title: "How can we help you?",
-    contents: ["Return & Cancelation", "FAQ’s"],
+    contents: [
+      { title: "Return & Cancelation", link: "" },
+      { title: "FAQ’s", link: NAVIGATION_ROUTES.PATIENT.FAQ },
+    ],
   },
   {
     title: "For Doctor & Nurse",
-    contents: ["Consult Online", "Register as a doctor"],
+    contents: [
+      { title: "Consult Online", link: "" },
+      { title: "Register as a doctor", link: NAVIGATION_ROUTES.SIGNUP },
+    ],
   },
   {
     title: "Know Us",
     contents: [
-      "About Us",
-      "Contact Us",
-      "Careers",
-      "Terms and condition",
-      "Privacy Policy",
+      { title: "About Us", link: "https://www.nepmeds.com.np/page/aboutus" },
+      { title: "Contact Us", link: "https://www.nepmeds.com.np/contact-us" },
+      { title: "Careers", link: "https://www.nepmeds.com.np/page/career" },
+      {
+        title: "Terms and Condition",
+        link: "https://www.nepmeds.com.np/page/terms-condition",
+      },
+      {
+        title: "Privacy Policy",
+        link: "https://www.nepmeds.com.np/page/privacy-policy",
+      },
     ],
   },
   // TODO: add valid link to these footer elements
@@ -74,14 +95,15 @@ const PatientFooter: React.FC = () => {
                     </Text>
                     {footerContent.contents.map(content => {
                       return (
-                        <Text
+                        <Link
                           fontSize={"sm"}
                           fontWeight={500}
-                          key={content}
+                          key={content.title}
                           textAlign={{ base: "center", md: "left" }}
+                          href={content.link}
                         >
-                          {content}
-                        </Text>
+                          {content.title}
+                        </Link>
                       );
                     })}
                   </Flex>
