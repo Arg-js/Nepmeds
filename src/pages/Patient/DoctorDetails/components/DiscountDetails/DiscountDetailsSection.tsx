@@ -5,14 +5,18 @@ import { colors } from "@nepMeds/theme/colors";
 const DiscountDetailRow = ({
   label,
   value,
+  isAmount = true,
 }: {
   label: string;
   value: number;
+  isAmount?: boolean;
 }) => {
   return (
     <Flex justifyContent={"space-between"}>
       <Text variant={"small600"}>{label} :</Text>
-      <Text variant={"small600"}>Rs. {value}</Text>
+      <Text variant={"small600"}>
+        {isAmount ? "Rs." : ""} {value}
+      </Text>
     </Flex>
   );
 };
@@ -22,11 +26,13 @@ export const DiscountDetailsSection = ({
   bookingFee,
   discountAmount,
   discountedAmount,
+  discountApplicableNumber,
 }: {
   clearDiscount: () => void;
   bookingFee: number;
   discountAmount: number;
   discountedAmount: number;
+  discountApplicableNumber: number;
 }) => {
   return (
     <>
@@ -52,6 +58,11 @@ export const DiscountDetailsSection = ({
           </Button>
         </Flex>
       </Box>
+      <DiscountDetailRow
+        label="Discount Coupon Remaining"
+        value={discountApplicableNumber}
+        isAmount={false}
+      />
       <DiscountDetailRow label="Booking Fee" value={bookingFee} />
       <DiscountDetailRow label="Discount Amount" value={discountAmount} />
       <Divider />
