@@ -1,7 +1,6 @@
 import CenterLoader from "@nepMeds/components/Common/Loader";
 import Appointment from "@nepMeds/pages/Doctor/Appointment";
 import DoctorDetails from "@nepMeds/pages/Patient/DoctorDetails";
-import VideoCall from "@nepMeds/pages/VideoCall";
 import {
   useAuthentication,
   useLoginTokenDetailQuery,
@@ -13,6 +12,7 @@ import AllPaymentAdmin from "@nepMeds/pages/Admin/Payment/AllPayment";
 import RescheduleAppointment from "@nepMeds/pages/Patient/Reschedule";
 import DoctorRescheduled from "@nepMeds/pages/Doctor/Rescheduled";
 import RescheduledListAdmin from "@nepMeds/pages/Admin/Rescheduled";
+import VideoIndex from "@nepMeds/pages/VideoCall/VideoIndex";
 
 const Patients = lazy(() => import("@nepMeds/pages/Admin/Patients"));
 const UserRole = lazy(() => import("@nepMeds/pages/Admin/UserRole"));
@@ -128,7 +128,7 @@ const routes = [
   },
   {
     path: NAVIGATION_ROUTES.VIDEOCALL,
-    element: <VideoCall />,
+    element: <VideoIndex />,
   },
   {
     path: NAVIGATION_ROUTES.NO_MATCH,
@@ -159,7 +159,7 @@ const paientRoutes = [
   },
   {
     path: NAVIGATION_ROUTES.VIDEOCALL,
-    element: <VideoCall />,
+    element: <VideoIndex />,
   },
   {
     path: NAVIGATION_ROUTES.PAYMENT_SUCCESS,
