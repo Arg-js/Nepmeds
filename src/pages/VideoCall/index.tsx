@@ -20,7 +20,14 @@ import serverErrorResponse from "@nepMeds/service/serverErrorResponse";
 import { toastFail } from "@nepMeds/service/service-toast";
 import { colors } from "@nepMeds/theme/colors";
 import { formatSecondsToMinuteAndSeconds } from "@nepMeds/utils/time";
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   MdCallEnd,
   MdFullscreen,
@@ -40,8 +47,20 @@ import RemoteParticipants from "./RemoteParticipant";
 import PrescriptionImageModal from "./Prescription/PrescriptionImageModal";
 import ViewPatientDetails from "./Prescription/ViewPatientDetails";
 import PrescriptionModal from "./Prescription/PrescriptionModal";
+import CallEndConfirmationModal from "./CallEndConfirmationModal";
 
-const VideoCall = () => {
+interface VideoCallPageProps {
+  onOpen?: () => void;
+  setMessage?: Dispatch<SetStateAction<string>>;
+}
+
+// Constant for Video Call end
+// Currently 15 minutes in seconds
+const END_CALL_DURATION = 900;
+// Currently 13 minutes in seconds
+const NOTIFY_USERS_IN = 780;
+
+const VideoCall = ({ onOpen, setMessage }: VideoCallPageProps) => {
   const {
     getCallerToken,
     getReceiverToken,
@@ -142,6 +161,10 @@ const VideoCall = () => {
     );
   };
 
+  const callEndStatus = useRef({ isAuto: false, isSelfInitiated: false });
+
+  const childRef = useRef<{ onRefOpen(): void }>(null);
+
   const endCall = async (room: Video.Room) => {
     // Need to set state as false because when ending call, the modal still remains open
     setModalOpen({
@@ -150,6 +173,7 @@ const VideoCall = () => {
       prescriptionView: false,
       oldPrescription: false,
     });
+    callEndStatus.current.isSelfInitiated = true;
     try {
       setRoom(null);
       setParticipants([]);
@@ -233,9 +257,10 @@ const VideoCall = () => {
   }, [room, state?.appointment_id, state?.follow_up_id]);
 
   useEffect(() => {
-    if (second === 899 && room && state?.appointment_id) {
+    if (second === END_CALL_DURATION && room && state?.appointment_id) {
       endCall(room);
-    } else if (second === 780) {
+      callEndStatus.current.isAuto = true;
+    } else if (second === NOTIFY_USERS_IN) {
       toastInfo("Call about to end!!");
     }
   }, [second]);
@@ -251,7 +276,20 @@ const VideoCall = () => {
           room.participants.forEach(participantConnected);
 
           room.on("disconnected", () => {
-            navigate(-1);
+            if (callEndStatus?.current?.isAuto) {
+              setMessage && setMessage("Call Auto Ended");
+              onOpen && onOpen();
+            } else if (!callEndStatus?.current?.isSelfInitiated) {
+              setMessage &&
+                setMessage(
+                  isDoctor
+                    ? "Call Ended with Patient"
+                    : "Call Ended with Doctor"
+                );
+              onOpen && onOpen();
+            } else {
+              navigate(-1);
+            }
           });
         },
         error => {
@@ -280,6 +318,12 @@ const VideoCall = () => {
       flexDirection={"column"}
       height={"100vh"}
     >
+      {room && (
+        <CallEndConfirmationModal
+          onClick={() => endCall(room)}
+          ref={childRef}
+        />
+      )}
       <Flex justifyContent={"flex-start"} pb={"15px"} pr={"50px"} mt={"1%"}>
         <svgs.logo />
       </Flex>
@@ -378,7 +422,7 @@ const VideoCall = () => {
                       borderRadius={"50%"}
                       p={"2"}
                       cursor={"pointer"}
-                      onClick={() => endCall(room)}
+                      onClick={() => childRef?.current?.onRefOpen()}
                     />
                   </span>
                 </Tooltip>

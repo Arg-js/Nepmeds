@@ -165,7 +165,7 @@ export const useApproveReschedule = () => {
 
   return useMutation(approveRescheduledAppointment, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.doctor.reschedule.get);
+      queryClient.invalidateQueries([api.patient.doctor_availability.get]);
     },
     onError: () => {
       toastFail("Something went wrong!");
@@ -196,7 +196,7 @@ export const useRejectRescheduled = () => {
   const queryClient = useQueryClient();
   return useMutation(rejectRescheduled, {
     onSuccess: () => {
-      queryClient.invalidateQueries(api.doctor.reschedule.get);
+      queryClient.invalidateQueries([api.patient.doctor_availability.get]);
     },
     onError: () => {
       toastFail("Something went wrong!");

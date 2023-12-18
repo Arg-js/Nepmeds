@@ -42,7 +42,7 @@ const sidebarOptions: ISidebarOption[] = [
   {
     icon: FaRegCalendarCheck,
     set: "light",
-    text: "Rescheduled",
+    text: "Reschedule",
     link: "/reschedule",
   },
   {
@@ -121,7 +121,7 @@ const AdminSidebarOptions: ISidebarOption[] = [
   {
     icon: FaRegCalendarCheck,
     set: "light",
-    text: "Rescheduled",
+    text: "Reschedule",
     link: "/reschedule",
   },
   {
