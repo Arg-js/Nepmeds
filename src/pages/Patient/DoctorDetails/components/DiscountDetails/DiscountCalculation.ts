@@ -1,5 +1,5 @@
 import { AmountType } from "@nepMeds/config/enum";
-import { IDiscountBasicDetails } from "@nepMeds/service/nepmeds-discount";
+import { IDiscountDetails } from "@nepMeds/service/nepmeds-discount";
 import { IDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
 
 interface ICalcBookingFee {
@@ -8,7 +8,7 @@ interface ICalcBookingFee {
 }
 
 interface ICalcDiscountedAmt extends ICalcBookingFee {
-  discountDetails: IDiscountBasicDetails | null;
+  discountDetails: IDiscountDetails | null;
 }
 
 export const calcDiscountedAmount = ({
@@ -30,12 +30,31 @@ export const calcDiscountedAmount = ({
     selectedAvailability,
   }: ICalcDiscountedAmt) => {
     if (!doctorInfo || !discountDetails) return 0;
+    let discountedAmountWithApplicableNo;
+    const remaining_applicable_coupon =
+      discountDetails.remaining_applicable_coupon;
+    const onetime_coupon = discountDetails.onetime_coupon ? 1 : 0;
+
+    if (
+      (onetime_coupon || remaining_applicable_coupon) &&
+      selectedAvailability.length >
+        (onetime_coupon || remaining_applicable_coupon)!
+    ) {
+      discountedAmountWithApplicableNo =
+        +doctorInfo.schedule_rate *
+        (onetime_coupon || remaining_applicable_coupon);
+    }
 
     const baseAmount = +doctorInfo.schedule_rate * selectedAvailability.length;
 
     return discountDetails.discount_type === AmountType.PERCENTAGE
-      ? (discountDetails.value * baseAmount) / 100
-      : discountDetails.value * selectedAvailability.length;
+      ? (discountDetails.value *
+          (discountedAmountWithApplicableNo || baseAmount)) /
+          100
+      : discountDetails.value *
+          (discountedAmountWithApplicableNo
+            ? onetime_coupon || remaining_applicable_coupon
+            : selectedAvailability.length);
   };
 
   const bookingFee = calculateBookingFee({ doctorInfo, selectedAvailability });

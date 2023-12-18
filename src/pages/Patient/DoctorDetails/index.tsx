@@ -22,7 +22,7 @@ import TransactionBox from "@nepMeds/components/Payment/TransactionBox";
 import { useForm } from "react-hook-form";
 import Input from "@nepMeds/components/Form/Input";
 import {
-  IDiscountBasicDetails,
+  IDiscountDetails,
   useGetDiscountByCode,
 } from "@nepMeds/service/nepmeds-discount";
 import {
@@ -41,7 +41,7 @@ const DoctorDetails = () => {
     []
   );
   const [discountDetails, setDiscountDetails] =
-    useState<IDiscountBasicDetails | null>(null);
+    useState<IDiscountDetails | null>(null);
 
   // REACT QUERIES
   const { data: doctorList } = useGetDoctorListById({
@@ -180,6 +180,13 @@ const DoctorDetails = () => {
                     ) : (
                       isSuccess && (
                         <DiscountDetailsSection
+                          discountApplicableNumber={
+                            discountDetails
+                              ? discountDetails?.onetime_coupon
+                                ? 1
+                                : 0 || discountDetails?.coupon_applicable_number //discountDetails is always available since there is a isSuccess check
+                              : 0
+                          }
                           bookingFee={bookingFee}
                           discountAmount={discountAmount}
                           discountedAmount={discountedAmount}

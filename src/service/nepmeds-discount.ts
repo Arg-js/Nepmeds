@@ -31,6 +31,12 @@ export interface IDiscountBasicDetails {
   code: string;
 }
 
+export interface IDiscountDetails extends IDiscountBasicDetails {
+  coupon_applicable_number: number;
+  remaining_applicable_coupon: number;
+  onetime_coupon: boolean;
+}
+
 export interface IDiscountReqBody extends IDiscountBasicDetails {
   title: string;
   specialization: number[];
@@ -143,7 +149,7 @@ const getDiscountByCode = ({
   code: string;
   doctor_id: number;
 }) => {
-  return HttpClient.get<NepMedsResponse<IDiscountBasicDetails>>(
+  return HttpClient.get<NepMedsResponse<IDiscountDetails>>(
     api.discount.getByCoupon,
     {
       params: {

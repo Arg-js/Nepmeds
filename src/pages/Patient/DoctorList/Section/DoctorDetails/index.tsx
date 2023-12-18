@@ -24,7 +24,7 @@ import {
   DiscountDetailsSection,
 } from "@nepMeds/pages/Patient/DoctorDetails/components/DiscountDetails";
 import {
-  IDiscountBasicDetails,
+  IDiscountDetails,
   useGetDiscountByCode,
 } from "@nepMeds/service/nepmeds-discount";
 import {
@@ -88,7 +88,7 @@ const DoctorDetails: React.FC<{
   const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
   const [appointment, setAppointment] = useState(true);
   const [discountDetails, setDiscountDetails] =
-    useState<IDiscountBasicDetails | null>(null);
+    useState<IDiscountDetails | null>(null);
 
   // REACT QUERIES
   const { data: symptomData } = useGetSymptoms();
@@ -605,6 +605,15 @@ const DoctorDetails: React.FC<{
                     ) : (
                       isSuccess && (
                         <DiscountDetailsSection
+                          // TODO: fix this
+                          discountApplicableNumber={
+                            discountDetails
+                              ? discountDetails?.onetime_coupon
+                                ? 1
+                                : 0 ||
+                                  discountDetails?.remaining_applicable_coupon //discountDetails is always available since there is a isSuccess check
+                              : 0
+                          }
                           bookingFee={bookingFee}
                           discountAmount={discountAmount}
                           discountedAmount={discountedAmount}
