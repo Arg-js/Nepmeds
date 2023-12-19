@@ -1,4 +1,12 @@
-import { Box, Flex, Grid, GridItem, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Grid,
+  GridItem,
+  Text,
+  Button,
+  Tooltip,
+} from "@chakra-ui/react";
 import { BackArrowIcon } from "@nepMeds/assets/svgs";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
@@ -168,13 +176,21 @@ const DoctorDetails = () => {
                         register={formProps.register}
                         placeholder={"Enter Promo Code"}
                       />
-                      <Button
-                        height={"40px"}
-                        borderRadius={"5px"}
-                        onClick={onDiscountCouponApplied}
+                      <Tooltip
+                        hasArrow
+                        label={"Please click Apply to claim the discount"}
+                        placement="bottom-start"
                       >
-                        Apply
-                      </Button>
+                        <Button
+                          height={"40px"}
+                          borderRadius={"5px"}
+                          isDisabled={!couponCode}
+                          bgColor={couponCode ? colors.reset : colors.primary}
+                          onClick={onDiscountCouponApplied}
+                        >
+                          Apply
+                        </Button>
+                      </Tooltip>
                     </Flex>
                     {isLoading ? (
                       <DiscountDetailSkeleton />
