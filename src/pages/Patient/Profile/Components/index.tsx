@@ -1,5 +1,5 @@
 import ModalForm from "./PatientDetailModal";
 import PatientDetails from "./PatientDetails";
-import PatientDetailsTable from "./PatientDetailsTable";
+import PatientDetailsTable from "./PatientDetailsTab";
 
 export { ModalForm, PatientDetails, PatientDetailsTable };
