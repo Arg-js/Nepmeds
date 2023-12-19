@@ -142,7 +142,7 @@ export const rescheduledHistoryColumn = ({
         header: "Previous Date",
         accessorKey: "old_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
-          return original?.old_availability?.date;
+          return original?.extra_data?.previous_availability?.date;
         },
       },
       {
@@ -150,28 +150,30 @@ export const rescheduledHistoryColumn = ({
         accessorKey: "old_availability.from_time",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
-            original?.old_availability?.from_time
-          )} - ${removeSeconds(original?.old_availability?.to_time)}`;
-        },
-      },
-
-      {
-        header: "Rescheduled Time",
-        accessorKey: "extra_data.cancelled_availability.from_time",
-        cell: ({ row }: CellProps<IGetRescheduledList>) => {
-          return `${removeSeconds(
-            row.original?.extra_data?.cancelled_availability?.from_time ??
-              row.original?.request_availability?.from_time
+            original?.extra_data?.previous_availability?.from_time ?? ""
           )} - ${removeSeconds(
-            row.original?.extra_data?.cancelled_availability?.to_time ??
-              row.original?.request_availability?.to_time
+            original?.extra_data?.previous_availability?.to_time ?? ""
           )}`;
         },
       },
 
       {
+        header: "Rescheduled Time",
+        accessorKey: "id",
+        cell: ({ row }: CellProps<IGetRescheduledList>) => {
+          const from_time =
+            row.original?.extra_data?.cancelled_availability?.from_time ??
+            row.original?.request_availability?.from_time;
+          const to_time =
+            row.original?.extra_data?.cancelled_availability?.to_time ??
+            row.original?.request_availability?.to_time;
+          return `${removeSeconds(from_time)} - ${removeSeconds(to_time)}`;
+        },
+      },
+
+      {
         header: "Rescheduled Date",
-        accessorKey: "extra_data.cancelled_availability.date",
+        accessorKey: "id",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return (
             original?.extra_data?.cancelled_availability?.date ??
