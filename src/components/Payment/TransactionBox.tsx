@@ -1,4 +1,6 @@
 import {
+  Alert,
+  AlertIcon,
   Box,
   Button,
   Divider,
@@ -57,9 +59,15 @@ const TransactionBox = (data: Props) => {
     }
   };
 
+  {
+    methodLoading && <CenterLoader />;
+  }
   return (
     <div>
-      {methodLoading && <CenterLoader />}
+      <Alert status="info">
+        <AlertIcon />
+        Please complete payment in 10 Minutes.
+      </Alert>
       <RadioGroup onChange={setPaymentMethod} value={paymentMethod} my={2}>
         {methods &&
           methods.map((e, index) => (
