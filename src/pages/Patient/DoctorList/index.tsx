@@ -182,13 +182,11 @@ const DoctorList = () => {
             <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 4 }}>
               <Box>
                 <>
-                  {isLoading &&
+                  {isLoading ? (
                     Array.from({ length: 5 }, (_, index) => (
                       <DoctorCardSkeleton key={index} />
-                    ))}
-                  {/* TODO: check this might throw error when doctorData itself is undefined */}
-                  {DoctorListError && <Text>Oops something went wrong!!</Text>}
-                  {doctorData?.results?.length ? (
+                    ))
+                  ) : doctorData?.results?.length ? (
                     doctorData?.results?.map(doctorData => {
                       return (
                         <Box key={doctorData.id} mb={6}>
@@ -204,6 +202,7 @@ const DoctorList = () => {
                   ) : (
                     <NoData />
                   )}
+                  {DoctorListError && <Text>Oops something went wrong!!</Text>}
 
                   {doctorData && doctorData.count > 5 && (
                     <Box display={{ base: "block" }}>

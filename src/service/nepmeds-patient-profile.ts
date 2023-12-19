@@ -69,7 +69,8 @@ const getPatientDetails = async ({
   page,
   page_size,
   search,
-}: IPaginationParams) => {
+  appointment_status,
+}: IPaginationParams & { appointment_status: string }) => {
   const response = await HttpClient.get<NepMedsResponse<IPatientDetailResp>>(
     api.patient.detail.get,
     {
@@ -77,6 +78,7 @@ const getPatientDetails = async ({
         page: page + 1,
         page_size,
         search,
+        appointment_status,
       },
     }
   );
@@ -86,14 +88,16 @@ const useGetPatientDetails = ({
   page,
   page_size,
   search,
-}: IPaginationParams) => {
+  appointment_status,
+}: IPaginationParams & { appointment_status: string }) => {
   return useQuery(
-    [api.patient.detail.get, page, page_size, search],
+    [api.patient.detail.get, page, page_size, search, appointment_status],
     () =>
       getPatientDetails({
         page,
         page_size,
         search,
+        appointment_status,
       }),
     {
       select: ({ data }) => data.data,
