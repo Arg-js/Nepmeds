@@ -128,6 +128,7 @@ const DoctorDetails: React.FC<{
   const availabilityDateWatch = watch("availabilityDate");
   const couponCode = watch("coupon");
 
+  const onetimeCoupon = discountDetails?.onetime_coupon ? 1 : 0;
   const { bookingFee, discountAmount, discountedAmount } = calcDiscountedAmount(
     {
       doctorInfo,
@@ -603,16 +604,12 @@ const DoctorDetails: React.FC<{
                     {isDiscountLoading ? (
                       <DiscountDetailSkeleton />
                     ) : (
-                      isSuccess && (
+                      isSuccess &&
+                      discountDetails && (
                         <DiscountDetailsSection
-                          // TODO: fix this
                           discountApplicableNumber={
-                            discountDetails
-                              ? discountDetails?.onetime_coupon
-                                ? 1
-                                : 0 ||
-                                  discountDetails?.remaining_applicable_coupon //discountDetails is always available since there is a isSuccess check
-                              : 0
+                            onetimeCoupon ||
+                            discountDetails?.remaining_applicable_coupon
                           }
                           bookingFee={bookingFee}
                           discountAmount={discountAmount}

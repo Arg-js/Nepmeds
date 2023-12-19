@@ -31,18 +31,16 @@ export const calcDiscountedAmount = ({
   }: ICalcDiscountedAmt) => {
     if (!doctorInfo || !discountDetails) return 0;
     let discountedAmountWithApplicableNo;
-    const remaining_applicable_coupon =
+    const remainingApplicableCoupon =
       discountDetails.remaining_applicable_coupon;
     const onetime_coupon = discountDetails.onetime_coupon ? 1 : 0;
+    const isConditionApplied = onetime_coupon || remainingApplicableCoupon;
 
-    if (
-      (onetime_coupon || remaining_applicable_coupon) &&
-      selectedAvailability.length >
-        (onetime_coupon || remaining_applicable_coupon)!
-    ) {
-      discountedAmountWithApplicableNo =
-        +doctorInfo.schedule_rate *
-        (onetime_coupon || remaining_applicable_coupon);
+    if (isConditionApplied) {
+      if (selectedAvailability.length > isConditionApplied) {
+        discountedAmountWithApplicableNo =
+          +doctorInfo.schedule_rate * isConditionApplied;
+      }
     }
 
     const baseAmount = +doctorInfo.schedule_rate * selectedAvailability.length;
@@ -53,7 +51,7 @@ export const calcDiscountedAmount = ({
           100
       : discountDetails.value *
           (discountedAmountWithApplicableNo
-            ? onetime_coupon || remaining_applicable_coupon
+            ? isConditionApplied
             : selectedAvailability.length);
   };
 

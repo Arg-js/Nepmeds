@@ -77,6 +77,7 @@ const DoctorDetails = () => {
   });
   const formProps = useForm({ defaultValues, resolver: yupResolver(schema) });
   const couponCode = formProps.watch("coupon");
+  const onetimeCoupon = discountDetails?.onetime_coupon ? 1 : 0;
 
   const { bookingFee, discountAmount, discountedAmount } = calcDiscountedAmount(
     {
@@ -178,14 +179,12 @@ const DoctorDetails = () => {
                     {isLoading ? (
                       <DiscountDetailSkeleton />
                     ) : (
-                      isSuccess && (
+                      isSuccess &&
+                      discountDetails && (
                         <DiscountDetailsSection
                           discountApplicableNumber={
-                            discountDetails
-                              ? discountDetails?.onetime_coupon
-                                ? 1
-                                : 0 || discountDetails?.coupon_applicable_number //discountDetails is always available since there is a isSuccess check
-                              : 0
+                            onetimeCoupon ||
+                            discountDetails.coupon_applicable_number
                           }
                           bookingFee={bookingFee}
                           discountAmount={discountAmount}
