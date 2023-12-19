@@ -1,7 +1,7 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Button } from "@chakra-ui/button";
 import { Box, Divider, Flex, Text, VStack } from "@chakra-ui/layout";
-import { FormLabel, HStack, Image } from "@chakra-ui/react";
+import { FormLabel, HStack, Image, Tooltip } from "@chakra-ui/react";
 import { Spinner } from "@chakra-ui/spinner";
 import { yupResolver } from "@hookform/resolvers/yup";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
@@ -593,13 +593,21 @@ const DoctorDetails: React.FC<{
                         register={register}
                         placeholder={"Enter Promo Code"}
                       />
-                      <Button
-                        height={"40px"}
-                        borderRadius={"5px"}
-                        onClick={onDiscountCouponApplied}
+                      <Tooltip
+                        hasArrow
+                        label={"Please click Apply to claim the discount"}
+                        placement="bottom-start"
                       >
-                        Apply
-                      </Button>
+                        <Button
+                          height={"40px"}
+                          borderRadius={"5px"}
+                          isDisabled={!couponCode}
+                          bgColor={couponCode ? colors.reset : colors.primary}
+                          onClick={onDiscountCouponApplied}
+                        >
+                          Apply
+                        </Button>
+                      </Tooltip>
                     </Flex>
                     {isDiscountLoading ? (
                       <DiscountDetailSkeleton />
