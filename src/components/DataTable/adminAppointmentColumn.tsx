@@ -112,10 +112,10 @@ export const appointmentColumn = (
             customProps={{
               status: row?.original?.status,
               badgeText: {
-                "1": "Done",
+                "1": "Approved",
                 "2": "Pending",
-                "3": "Missed",
-                "4": "Cancelled",
+                "3": "Rejected",
+                "4": "Completed",
               },
             }}
           />
