@@ -3,6 +3,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import SearchInput from "@nepMeds/components/Search";
 import TableWrapper from "@nepMeds/components/TableWrapper";
+import { STATUSTYPE } from "@nepMeds/config/enum";
 import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import { useCreateLabReport } from "@nepMeds/service/nepmeds-lab-report";
 import {
@@ -16,7 +17,7 @@ import LabReportForm from "./LabReportForm";
 import PatientDetailModal from "./PatientDetailModal";
 import PatientPrescriptionSkeleton from "./PatientPrescriptionSkeleton";
 
-const PatientDetailsTable = () => {
+const PatientDetailsTable = ({ type }: { type?: STATUSTYPE }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
   const [searchValue, setSearchValue] = useState("");
   const [appointmentId, setAppointmentId] = useState("");
@@ -35,6 +36,7 @@ const PatientDetailsTable = () => {
     page: pagination.pageIndex,
     page_size: pagination.pageSize,
     search: debouncedValue,
+    appointment_status: type?.toString() ?? "",
   });
   const { data: patientDetail, isLoading } = useGetPatientDetailsById({
     appointment_id: appointmentId,
@@ -60,78 +62,75 @@ const PatientDetailsTable = () => {
       appointment_id: +appointmentId,
     });
   };
-
   return (
     <TableWrapper>
-      <>
-        <ModalComponent
-          heading={<>Detail View</>}
-          isOpen={isOpen}
-          onClose={onClose}
-          footer={<></>}
-          size={"2xl"}
-        >
-          {isLoading ? (
-            <PatientPrescriptionSkeleton />
-          ) : (
-            // Todo: find another way to solve this problem
-            // patientDetail: IPatientDetailById | undefined
-            <PatientDetailModal patientDetail={patientDetail} />
-          )}
-        </ModalComponent>
-        <ModalComponent
-          heading={<>Add Lab Report</>}
-          isOpen={isEditModalOpen}
-          onClose={onModalClose}
-          footer={
-            <>
-              <Button variant={"reset"} flex={0.5} onClick={onModalClose}>
-                Cancel
-              </Button>
-              <Button
-                flex={0.5}
-                isDisabled={!imageWatch?.length}
-                isLoading={isCreatingLabReport}
-                onClick={async () => {
-                  await onSubmitHandler();
-                  onModalClose();
-                }}
-              >
-                Add
-              </Button>
-            </>
-          }
-        >
-          <LabReportForm
-            formMethods={formMethods}
-            appointmentId={appointmentId}
-          />
-        </ModalComponent>
-
-        <Grid display={"flex"} justifyContent={"space-between"}>
-          <Text variant="tableHeading">Appointment Details</Text>
-          <SearchInput
-            setSearchValue={setSearchValue}
-            setPageParams={setPagination}
-          />
-        </Grid>
-        <DataTable
-          data={tableData?.results ?? []}
-          columns={columns({
-            pagination,
-            setAppointmentId,
-            onOpen,
-            onEditModalOpen,
-          })}
-          isLoading={isFetching}
-          pagination={{
-            manual: true,
-            pageParams: pagination,
-            pageCount: tableData?.page_count,
-            onChangePagination: setPagination,
-          }}
+      <ModalComponent
+        heading={<>Detail View</>}
+        isOpen={isOpen}
+        onClose={onClose}
+        footer={<></>}
+        size={"2xl"}
+      >
+        {isLoading ? (
+          <PatientPrescriptionSkeleton />
+        ) : (
+          // Todo: find another way to solve this problem
+          // patientDetail: IPatientDetailById | undefined
+          <PatientDetailModal patientDetail={patientDetail} />
+        )}
+      </ModalComponent>
+      <ModalComponent
+        heading={<>Add Lab Report</>}
+        isOpen={isEditModalOpen}
+        onClose={onModalClose}
+        footer={
+          <>
+            <Button variant={"reset"} flex={0.5} onClick={onModalClose}>
+              Cancel
+            </Button>
+            <Button
+              flex={0.5}
+              isDisabled={!imageWatch?.length}
+              isLoading={isCreatingLabReport}
+              onClick={async () => {
+                await onSubmitHandler();
+                onModalClose();
+              }}
+            >
+              Add
+            </Button>
+          </>
+        }
+      >
+        <LabReportForm
+          formMethods={formMethods}
+          appointmentId={appointmentId}
         />
-      </>
+      </ModalComponent>
+
+      <Grid display={"flex"} justifyContent={"space-between"}>
+        <Text variant="tableHeading">Appointment Details</Text>
+        <SearchInput
+          setSearchValue={setSearchValue}
+          setPageParams={setPagination}
+        />
+      </Grid>
+      <DataTable
+        data={tableData?.results ?? []}
+        columns={columns({
+          pagination,
+          setAppointmentId,
+          onOpen,
+          onEditModalOpen,
+        })}
+        isLoading={isFetching}
+        pagination={{
+          manual: true,
+          pageParams: pagination,
+          pageCount: tableData?.page_count,
+          onChangePagination: setPagination,
+        }}
+      />
     </TableWrapper>
   );
 };
