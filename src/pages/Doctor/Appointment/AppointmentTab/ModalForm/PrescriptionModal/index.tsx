@@ -47,7 +47,10 @@ const AppointmentPrescriptionModal = ({
             <PrescriptionModal appointmentId={appointmentId} />
           </TabPanel>
           <TabPanel>
-            <PrescriptionImageModal appointmentId={appointmentId} />
+            <PrescriptionImageModal
+              appointmentId={appointmentId}
+              onClose={onPrescriptionClose}
+            />
           </TabPanel>
         </TabPanels>
       </Tabs>

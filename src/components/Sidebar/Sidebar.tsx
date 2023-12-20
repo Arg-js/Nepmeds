@@ -60,7 +60,7 @@ const sidebarOptions: ISidebarOption[] = [
   {
     icon: Calendar,
     set: "light",
-    text: "Calender",
+    text: "Calendar",
     link: "/calendar",
   },
 

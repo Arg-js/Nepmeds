@@ -113,6 +113,7 @@ export interface IGetRescheduledList {
   extra_data?: {
     doctor_remarks?: string;
     cancelled_availability?: AvailabilityBooking;
+    previous_availability?: AvailabilityBooking;
   };
 
   remarks: string;

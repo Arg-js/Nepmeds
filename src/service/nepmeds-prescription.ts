@@ -288,6 +288,7 @@ export function useUploadPrescriptionImage() {
   return useMutation(uploadPrescriptionImage, {
     onSuccess: () => {
       queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription Image added successfully");
     },
     onError: e => {
@@ -311,6 +312,7 @@ export function useDeletePrescriptionImage() {
   return useMutation(deletePrescriptionImage, {
     onSuccess: () => {
       queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription Image deleted successfully");
     },
     onError: e => {
