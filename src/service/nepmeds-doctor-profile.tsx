@@ -59,7 +59,7 @@ export interface IDoctorExperience {
   from_date: string;
   to_date?: string;
   experience_document: File[];
-
+  hospital_id?: string;
   doctor: number;
   id?: number;
 }
