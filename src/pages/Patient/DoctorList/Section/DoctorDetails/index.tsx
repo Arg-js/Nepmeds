@@ -639,6 +639,8 @@ const DoctorDetails: React.FC<{
                   <TransactionBox
                     appointmentData={{
                       ...getValues(),
+                      coupon: discountDetails ? getValues("coupon") : "",
+                      discounted_amount: discountAmount ?? "",
                       availabilities: selectedAvailability,
                       total_amount_paid:
                         discountedAmount ||
