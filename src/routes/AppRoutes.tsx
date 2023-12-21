@@ -174,10 +174,6 @@ const paientRoutes = [
     element: <PatientFAQ />,
   },
   {
-    path: NAVIGATION_ROUTES.PATIENT_PROFILE,
-    element: <PatientProfile />,
-  },
-  {
     path: NAVIGATION_ROUTES.NO_MATCH,
     element: (
       <Navigate to={NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION} replace />

@@ -48,10 +48,7 @@ const PatientDetails = () => {
 
   return (
     <WrapperBox>
-      <Flex
-        gap={{ base: 5, lg: 10, xl: 20 }}
-        direction={{ base: "column", lg: "row" }}
-      >
+      <Flex gap={{ base: 5, lg: 10 }} direction={{ base: "column", lg: "row" }}>
         <Box>
           <Text fontWeight={600} fontSize={"2xl"}>
             {fallbackToDash(patientData?.name)}
