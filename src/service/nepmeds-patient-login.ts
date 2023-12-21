@@ -20,4 +20,8 @@ const useAuthenticatePatient = () => {
   });
 };
 
-export { useAuthenticatePatient };
+const logout = async ({ refresh }: { refresh?: string }) => {
+  return await HttpClient.post(api.logout, { refresh });
+};
+
+export { useAuthenticatePatient, logout };
