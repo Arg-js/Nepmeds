@@ -7,6 +7,17 @@ import { CellContext } from "@tanstack/react-table";
 import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
 
+export interface IExtraData {
+  extra_data: {
+    cancelled_availability: {
+      id: number;
+      date: string;
+      to_time: string;
+      from_time: string;
+    };
+  };
+}
+
 // TODO: move this to some utils
 // Function to convert seconds to minutes and remaining seconds
 function secondsToMinSec(seconds: number) {
@@ -44,21 +55,35 @@ export const columns = ({
     },
     {
       header: "Appointment Date",
-      accessorKey: "appointment_date",
+      accessorKey: "id",
+      cell: ({
+        row: { original },
+      }: CellProps<{ appointment_date: string } & IExtraData>) => {
+        return (
+          original?.appointment_date ??
+          original?.extra_data?.cancelled_availability?.date
+        );
+      },
     },
     {
       header: "Appointment Time",
-      accessorKey: "appointment_endtime",
+      accessorKey: "id",
       cell: ({
         row,
-      }: CellProps<{
-        appointment_starttime: string;
-        appointment_endtime: string;
-      }>) => {
+      }: CellProps<
+        {
+          appointment_starttime: string;
+          appointment_endtime: string;
+        } & IExtraData
+      >) => {
         const startTime = row.original?.appointment_starttime;
+        const extraDataStartTime =
+          row.original?.extra_data?.cancelled_availability;
         return startTime
           ? `${removeSeconds(startTime)} -
                     ${removeSeconds(row.original?.appointment_endtime)}`
+          : extraDataStartTime
+          ? `${extraDataStartTime.from_time} - ${extraDataStartTime.to_time}`
           : "-";
       },
     },

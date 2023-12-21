@@ -6,8 +6,9 @@ import { NepMedsResponse, PaginatedResponse, api } from "./service-api";
 import { HttpClient } from "./service-axios";
 import { CallState } from "@nepMeds/config/enum";
 import { IPrescriptionInfo } from "./nepmeds-prescription";
+import { IExtraData } from "@nepMeds/pages/Patient/PatientDetail";
 
-export interface IAppointmentAdmin {
+export interface IAppointmentAdmin extends IExtraData {
   id: number;
   doctor_name: string;
   patient_name: string;
