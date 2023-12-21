@@ -222,6 +222,11 @@ const DoctorDetails = () => {
                   <TransactionBox
                     appointmentData={{
                       ...formProps.getValues(),
+                      // set coupon only when the discount is applied, else set to empty string
+                      coupon: discountDetails
+                        ? formProps.getValues("coupon")
+                        : "",
+                      discounted_amount: discountAmount ?? "",
                       availabilities: selectedAvailability,
                       total_amount_paid:
                         discountedAmount ||

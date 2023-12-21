@@ -69,7 +69,10 @@ const DoctorConsultation = () => {
         });
         TokenService.setToken({
           access: response?.data?.data?.[0]?.access,
-          refresh: TokenService?.getToken()?.refresh || "",
+          refresh:
+            location.search.replace("?key=", "") ||
+            TokenService?.getToken()?.refresh ||
+            "",
         });
       }
     } catch (e) {
