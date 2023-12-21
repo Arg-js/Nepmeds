@@ -136,6 +136,7 @@ export const api = {
       detail: "/dashboard/appointment-reschedule-detail/:id/",
     },
   },
+  logout: "/user-management/logout/",
   patient: {
     login: {
       post: "/user-management/refresh-token/",
