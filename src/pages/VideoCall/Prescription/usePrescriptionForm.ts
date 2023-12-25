@@ -69,16 +69,20 @@ export function useAddPrescription() {
     follow_up?: string;
     id?: string;
   }) => {
+    const infoValue = {
+      ...additionalInfoForm.getValues(),
+    };
+    if (!infoValue.follow_up_date) delete infoValue?.follow_up_date;
     if (id) {
       editAdditionalInfo.mutate({
-        ...additionalInfoForm.getValues(),
+        ...infoValue,
         doctor_consult,
         follow_up,
         id,
       });
     } else {
       const res = await additionalInfo.mutateAsync({
-        ...additionalInfoForm.getValues(),
+        ...infoValue,
         doctor_consult,
         follow_up,
       });

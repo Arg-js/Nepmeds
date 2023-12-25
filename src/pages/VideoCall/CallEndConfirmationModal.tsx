@@ -47,7 +47,7 @@ const CallEndConfirmationModal = forwardRef(function CallEndConfirmationModal(
       onClose={onClose}
       footer={
         <HStack w="100%" gap={3}>
-          <Button variant="outline" onClick={onClose} flex={1}>
+          <Button flex={1} onClick={onClose} variant={"primaryOutline"}>
             No
           </Button>
           <Button
@@ -55,7 +55,7 @@ const CallEndConfirmationModal = forwardRef(function CallEndConfirmationModal(
             onClick={onClick}
             borderColor={colors.red}
             color={colors.red}
-            variant="outline"
+            variant={"primaryOutline"}
           >
             Yes
           </Button>
