@@ -7,11 +7,13 @@ import { images } from "@nepMeds/assets/images";
 
 const VideoIndex = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isNavigate, setIsNavigate] = useState(isOpen);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
   const onCloseModal = () => {
     navigate(-1);
+    setIsNavigate(true);
     onClose();
   };
 
@@ -36,7 +38,9 @@ const VideoIndex = () => {
         <>{message}</>
       </ModalComponent>
 
-      {!isOpen && <VideoCall onOpen={onOpen} setMessage={setMessage} />}
+      {!isOpen && !isNavigate && (
+        <VideoCall onOpen={onOpen} setMessage={setMessage} />
+      )}
     </div>
   );
 };
