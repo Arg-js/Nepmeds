@@ -18,7 +18,6 @@ const FloatingLabelInput = ({
   error = "",
   rules,
   register,
-  isDisabled,
   labelDisabled,
   isRequired,
   type,
@@ -31,12 +30,7 @@ const FloatingLabelInput = ({
   ...rest
 }: IInput) => {
   return (
-    <FormControl
-      isInvalid={!!error}
-      isRequired={isRequired}
-      isDisabled={isDisabled}
-      variant="floating"
-    >
+    <FormControl isInvalid={!!error} isRequired={isRequired} variant="floating">
       {startIcon ? (
         <InputLeftElement top="12%" pointerEvents="none" onClick={onIconClick}>
           {startIcon}
