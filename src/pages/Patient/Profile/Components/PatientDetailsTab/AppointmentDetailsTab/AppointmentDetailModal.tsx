@@ -14,7 +14,7 @@ import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IPatientDetailById } from "@nepMeds/service/nepmeds-patient-profile";
 import { useGetAllPrescriptionInfo } from "@nepMeds/service/nepmeds-prescription";
 import { colors } from "@nepMeds/theme/colors";
-import PatientPrescription from "./PatientPrescription";
+import PatientPrescription from "./AppointmentDetailActions/PatientPrescription";
 import { useReactToPrint } from "react-to-print";
 import { useRef } from "react";
 import { BsDownload } from "react-icons/bs";

@@ -72,6 +72,12 @@ const Discount = lazy(() => import("@nepMeds/pages/Admin/Discount"));
 const PatientFAQ = lazy(() => import("@nepMeds/pages/Patient/FAQ"));
 const PatientProfile = lazy(() => import("@nepMeds/pages/Patient/Profile"));
 const AdminFollowUp = lazy(() => import("@nepMeds/pages/Admin/FollowUp"));
+const PatientHistory = lazy(
+  () => import("@nepMeds/pages/Admin/PatientHistory")
+);
+const PatientHistoryDetails = lazy(
+  () => import("@nepMeds/pages/Admin/PatientHistory/PatientHistoryDetails")
+);
 
 const routes = [
   {
@@ -97,7 +103,11 @@ const routes = [
       },
       {
         path: NAVIGATION_ROUTES.PATIENT_HISTORY,
-        element: <>patient history</>,
+        element: <PatientHistory />,
+      },
+      {
+        path: NAVIGATION_ROUTES.PATIENT_HISTORY_ID,
+        element: <PatientHistoryDetails />,
       },
       {
         path: NAVIGATION_ROUTES.CALENDER,

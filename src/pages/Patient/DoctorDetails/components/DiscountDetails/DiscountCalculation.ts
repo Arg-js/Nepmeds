@@ -30,10 +30,19 @@ export const calcDiscountedAmount = ({
     selectedAvailability,
   }: ICalcDiscountedAmt) => {
     if (!doctorInfo || !discountDetails) return 0;
+
     let discountedAmountWithApplicableNo;
+
     const remainingApplicableCoupon =
       discountDetails.remaining_applicable_coupon;
     const onetime_coupon = discountDetails.onetime_coupon ? 1 : 0;
+
+    // There is three types of coupon
+    // ie. 1. onetime_coupon and
+    // 2. coupon that is applicable for certain number of time
+    // or 3. those which are available every time until coupon expires
+
+    // TYPE 1 or 2
     const isConditionApplied = onetime_coupon || remainingApplicableCoupon;
 
     if (isConditionApplied) {
@@ -43,6 +52,7 @@ export const calcDiscountedAmount = ({
       }
     }
 
+    // TYPE 3
     const baseAmount = +doctorInfo.schedule_rate * selectedAvailability.length;
 
     return discountDetails.discount_type === AmountType.PERCENTAGE
