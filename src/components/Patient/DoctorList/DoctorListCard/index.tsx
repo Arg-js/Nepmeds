@@ -85,7 +85,7 @@ const DoctorListCard: React.FC<{
         <Grid
           templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
-          h={size === Size.sm ? "310px" : "176px"}
+          h={size === Size.sm ? "340px" : "176px"}
           borderRadius={0.5}
         >
           <GridItem colSpan={2} h={size === Size.sm ? "159px" : "inherit"}>

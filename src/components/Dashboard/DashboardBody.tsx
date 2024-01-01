@@ -27,6 +27,8 @@ import PendingDocList from "@nepMeds/components/Table/Doctor/PendingDocList";
 import PendingPayment from "../Table/Payment/PendingPayment";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import TableWrapper from "../TableWrapper";
+import { useMemo } from "react";
+import { fallbackToDash } from "@nepMeds/pages/Patient/Profile/Components/PatientDetails";
 
 interface IDashboardData {
   title: string;
@@ -34,32 +36,35 @@ interface IDashboardData {
   path: string;
 }
 
-const dashboardDatas: IDashboardData[] = [
-  {
-    title: "No. of Patient",
-    no: "-",
-    path: images?.dashboard1,
-  },
-  {
-    title: "Appointments",
-    no: "-",
-    path: images?.dashboard2,
-  },
-  {
-    title: "Pending",
-    no: "-",
-    path: images?.dashboard3,
-  },
-  {
-    title: "Follow - Ups",
-    no: "-",
-    path: images?.dashboard4,
-  },
-];
-
-const DashboardBody = () => {
+export const DashboardBody = () => {
   const profileData = useProfileData();
   const navigate = useNavigate();
+  const dashboardData: IDashboardData[] = useMemo(
+    () => [
+      {
+        title: "No. of Patient",
+        no: fallbackToDash(profileData?.data?.no_of_patient),
+        // TODO: better approach for this if any
+        path: images?.dashboard1 ?? "",
+      },
+      {
+        title: "Appointments",
+        no: fallbackToDash(profileData?.data?.appointment),
+        path: images?.dashboard2 ?? "",
+      },
+      {
+        title: "Pending",
+        no: fallbackToDash(profileData?.data?.pending),
+        path: images?.dashboard3 ?? "",
+      },
+      {
+        title: "Follow - Ups",
+        no: fallbackToDash(profileData?.data?.follow_ups),
+        path: images?.dashboard4 ?? "",
+      },
+    ],
+    [profileData]
+  );
 
   return (
     <Box m={4}>
@@ -93,10 +98,10 @@ const DashboardBody = () => {
         )}
 
       <SimpleGrid spacing={8} minChildWidth="252px" my={"28px"}>
-        {dashboardDatas.map(dashboardData => {
+        {dashboardData.map(dashboardDetails => {
           return (
             <Card
-              key={dashboardData.title.trim()}
+              key={dashboardDetails.title.trim()}
               boxShadow={"4px 5px 40px rgba(43, 102, 177, 0.05)"}
               backdropFilter={"blur(11px)"}
               borderRadius={"20px"}
@@ -104,14 +109,14 @@ const DashboardBody = () => {
               height={"96px"}
             >
               <Flex gap={2}>
-                <Image src={dashboardData?.path} />
+                <Image src={dashboardDetails.path} />
                 <Box>
                   <Text
                     fontSize={"sm"}
                     fontWeight={"500"}
                     color={colors?.primary_blue}
                   >
-                    {dashboardData?.title}
+                    {dashboardDetails.title}
                   </Text>
 
                   <Text
@@ -119,7 +124,7 @@ const DashboardBody = () => {
                     fontWeight={"600"}
                     color={colors?.gray_700}
                   >
-                    {dashboardData?.no}
+                    {dashboardDetails.no}
                   </Text>
                 </Box>
               </Flex>
@@ -164,5 +169,3 @@ const DashboardBody = () => {
     </Box>
   );
 };
-
-export default DashboardBody;

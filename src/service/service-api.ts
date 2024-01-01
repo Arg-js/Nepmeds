@@ -41,6 +41,11 @@ export const api = {
   certificate_update: "/user-management/certificate/{id}",
   experience_update: "/user-management/experience/{id}",
 
+  patient_history: {
+    get: "doctor-consult/patient-appointment-history/",
+    getById: "doctor-consult/patient-appointment-history/:id/",
+  },
+
   province: "core/provinces/",
   district: "core/districts/",
   municipality: "/core/municipalities/",
@@ -168,6 +173,13 @@ export const api = {
     reschedule: {
       post: "/patient/appointment-reschedule/",
       getAvailability: "/patient/doctor-reschedule-availabilities/:id/",
+    },
+    doctor_count: {
+      get: "core/doctor-count/",
+    },
+    invoices: {
+      get: "transaction/get-payment-history-patient/",
+      getById: "transaction/get-payment-history-patient/:id/",
     },
   },
 

@@ -1,7 +1,6 @@
 import { Box, Divider, Flex, Tag, Text } from "@chakra-ui/react";
 import { colors } from "@nepMeds/theme/colors";
-import { usePatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details";
-import TokenService from "@nepMeds/service/service-token";
+import { IGetPatientBasicProfile } from "@nepMeds/service/nepmeds-patient-details";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { useMemo } from "react";
 
@@ -10,10 +9,11 @@ export const fallbackToDash = (value: any) => {
   return value ?? "-";
 };
 
-const PatientDetails = () => {
-  const isAuthenticated = TokenService.isAuthenticated();
-  const { data: patientData } = usePatientBasicProfile(isAuthenticated);
-
+const PatientDetails = ({
+  patientData,
+}: {
+  patientData: IGetPatientBasicProfile | undefined;
+}) => {
   const PersonalInfo = useMemo(
     () => [
       {
