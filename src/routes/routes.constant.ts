@@ -30,6 +30,7 @@ export const NAVIGATION_ROUTES = {
   APPOINTMENTS: "appointments",
   FOLLOWUP: "follow-up",
   PATIENT_HISTORY: "patient's-history",
+  PATIENT_HISTORY_ID: "/patient's-history/:id",
   CALENDER: "calendar",
   BANK_DETAILS: "bank-details",
   PAYMENT: "payment",

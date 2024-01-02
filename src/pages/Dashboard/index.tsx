@@ -1,4 +1,4 @@
-import DashboardBody from "@nepMeds/components/Dashboard/DashboardBody";
+import { DashboardBody } from "@nepMeds/components/Dashboard/DashboardBody";
 const Dashboard = () => {
   return <DashboardBody />;
 };

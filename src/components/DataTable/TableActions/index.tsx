@@ -129,13 +129,15 @@ const TableActions = ({
       )}
       {onCall?.state && (
         <Tooltip hasArrow placement="top" label="Call">
-          {onCall?.isCallable ? (
-            <Link to={NAVIGATION_ROUTES.VIDEOCALL} state={onCall.state}>
-              <MdCall size={"20"} color={colors.green_button} />
-            </Link>
-          ) : (
-            <MdCall size={"20"} color={colors.gray} />
-          )}
+          <>
+            {onCall?.isCallable ? (
+              <Link to={NAVIGATION_ROUTES.VIDEOCALL} state={onCall.state}>
+                <MdCall size={"20"} color={colors.green_button} />
+              </Link>
+            ) : (
+              <MdCall size={"20"} color={colors.gray} />
+            )}
+          </>
         </Tooltip>
       )}
 
@@ -145,7 +147,7 @@ const TableActions = ({
             to={NAVIGATION_ROUTES.PATIENT.RESCHEDULE_APPOINTMENT}
             state={onReschedule.state}
           >
-            <RescheduleIcon />
+            <RescheduleIcon color={colors.primary_blue} />
           </Link>
         </Tooltip>
       )}

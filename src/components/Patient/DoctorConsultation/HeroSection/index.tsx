@@ -5,9 +5,13 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
 import heroSectionBg from "@nepMeds/assets/images/heroSectionBg.png";
+import { useGetDoctorCount } from "@nepMeds/service/nepmeds-doctor-count";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const { data: doctorCount } = useGetDoctorCount();
+  const count = doctorCount?.doctor_count;
   return (
     <Flex
       direction={"column"}
@@ -21,18 +25,22 @@ const HeroSection = () => {
         Consult Nepal’s Top Doctors Online, Safely From Home.
       </Text>
 
-      {/* TODO: remove the static data to actual image */}
       <Flex gap={"4"} alignItems={"center"}>
-        <AvatarGroup size="md" max={2}>
-          <Avatar name="Ryan Florence" src="https://bit.ly/ryan-florence" />
-          <Avatar name="Segun Adebayo" src="https://bit.ly/sage-adebayo" />
-          <Avatar name="Kent Dodds" src="https://bit.ly/kent-c-dodds" />
-          <Avatar name="Prosper Otemuyiwa" src="https://bit.ly/prosper-baba" />
-          <Avatar name="Christian Nwamba" src="https://bit.ly/code-beast" />
+        <AvatarGroup size="md" max={3}>
+          {/*  TODO: test if 3 images are displayed or not*/}
+          {doctorCount?.images?.map(image => {
+            return (
+              <Avatar
+                key={image}
+                name="doctor image"
+                src={appendServerUrl(image)}
+              />
+            );
+          })}
         </AvatarGroup>
 
         <Text fontWeight={500} fontSize={"md"} fontFamily={"Quicksand"}>
-          +128 Doctors enlisted
+          {count && `+${count} Doctor${count > 1 ? "s" : ""} enlisted`}
         </Text>
       </Flex>
       <Button
