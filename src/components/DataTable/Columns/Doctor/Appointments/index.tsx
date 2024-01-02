@@ -127,6 +127,7 @@ export const column = ({
       {
         header: "Actions",
         accessorKey: "id",
+
         cell: ({
           row,
         }: CellProps<{
@@ -165,7 +166,7 @@ export const column = ({
             call_state: CallState.INITIATE,
           };
           return (
-            <Flex justifyContent={"center"} alignItems={"center"} gap={1}>
+            <Flex alignItems={"center"} gap={1}>
               <TableActions
                 onView={onView}
                 onAccept={isPending ? onAccept : undefined}
