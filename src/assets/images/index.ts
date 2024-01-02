@@ -20,6 +20,7 @@ import paymentSuccess from "./payment_success.png";
 import paymentFail from "./payment_fail.png";
 import areYouADoctorBg from "./areYouADoctorBg.png";
 import doctorJoin from "./doctorJoin.png";
+import editSquare from "./editSquare.png";
 export const images = {
   logo,
   smallLogo,
@@ -43,4 +44,5 @@ export const images = {
   paymentFail,
   areYouADoctorBg,
   doctorJoin,
+  editSquare,
 };

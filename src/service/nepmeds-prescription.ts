@@ -31,7 +31,7 @@ export function useAddPatientInfo() {
 
   return useMutation(addPatientInfoPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription added successfully");
     },
     onError: e => {
@@ -54,7 +54,7 @@ export function useEditPatientInfo() {
 
   return useMutation(editPatientInfoPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription edited successfully");
     },
     onError: e => {
@@ -67,7 +67,7 @@ export function useEditPatientInfo() {
 // Prescription Additional Information
 export interface IPrescriptionAdditionalInfo {
   recommendation: string;
-  follow_up_date: string;
+  follow_up_date?: string;
   remarks: string;
   doctor_consult?: string;
   id?: string;
@@ -88,7 +88,7 @@ export function useAddAdditionalInfo() {
 
   return useMutation(addAdditionalInfoPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Additional Information added successfully");
     },
     onError: e => {
@@ -113,7 +113,7 @@ export function useEditAdditionalInfo() {
 
   return useMutation(editAdditionalInfoPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Additional Information edited successfully");
     },
     onError: e => {
@@ -182,7 +182,7 @@ export function useDrugReferralInfo() {
 
   return useMutation(addDrugReferralPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Drug Referral Information added successfully");
     },
     onError: e => {
@@ -205,7 +205,7 @@ export function useDeleteDrugReferralInfo() {
 
   return useMutation(deleteDrugReferralPrescription, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Drug Referral Information deleted successfully");
     },
     onError: e => {
@@ -287,7 +287,7 @@ export function useUploadPrescriptionImage() {
 
   return useMutation(uploadPrescriptionImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription Image added successfully");
     },
@@ -311,7 +311,7 @@ export function useDeletePrescriptionImage() {
 
   return useMutation(deletePrescriptionImage, {
     onSuccess: () => {
-      queryClient.invalidateQueries("prescriptionPatientInfo");
+      queryClient.invalidateQueries([api.prescription.getAllInfo]);
       queryClient.invalidateQueries([api.prescription.getAllInfo]);
       toastSuccess("Prescription Image deleted successfully");
     },
@@ -345,6 +345,7 @@ export function useGetAppPrescriptionInfo({
     {
       select: data => data.data,
       enabled: !!appointment_id,
+      staleTime: 0,
     }
   );
 }

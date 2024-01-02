@@ -69,7 +69,10 @@ const DoctorConsultation = () => {
         });
         TokenService.setToken({
           access: response?.data?.data?.[0]?.access,
-          refresh: TokenService?.getToken()?.refresh || "",
+          refresh:
+            location.search.replace("?key=", "") ||
+            TokenService?.getToken()?.refresh ||
+            "",
         });
       }
     } catch (e) {
@@ -109,6 +112,48 @@ const DoctorConsultation = () => {
       </WrapperBox>
       <WrapperBox backgroundColor={colors.background_blue}>
         <>
+          {/* Doctors SECTION */}
+
+          <SectionHeading
+            heading={"Our Doctors"}
+            description="We hire best specialists to deliver top-notch services for you"
+            btnText="View All Doctors"
+            onClick={() =>
+              navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
+            }
+          />
+
+          {(doctorListError as AxiosError)?.response?.status === 500 ? (
+            <Flex width={"255px"} height={"282px"} alignItems={"center"}>
+              Oops something went wrong!!
+            </Flex>
+          ) : (
+            doctorList?.length && (
+              <Carousel responsive={responsiveDoctorCard}>
+                {doctorList.map(doctor => {
+                  return (
+                    <Box
+                      key={doctor.id}
+                      mr={4}
+                      onClick={() =>
+                        navigate(
+                          `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctor.id}`
+                        )
+                      }
+                    >
+                      <DoctorListCard
+                        data={doctor}
+                        error={doctorListError as AxiosError}
+                        size={Size.sm}
+                      />
+                    </Box>
+                  );
+                })}
+              </Carousel>
+            )
+          )}
+          {/* Doctors SECTION ENDS*/}
+
           {/* Specialist Doctors SECTION*/}
           <SectionHeading
             heading={"Our Specialist Doctors"}
@@ -192,47 +237,6 @@ const DoctorConsultation = () => {
             />
           </Box>
           {/* ADVERTISEMENT SECTION ENDS*/}
-
-          {/* Doctors SECTION */}
-
-          <SectionHeading
-            heading={"Our Doctors"}
-            description="We hire best specialists to deliver top-notch services for you"
-            btnText="View All Doctors"
-            onClick={() =>
-              navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_LIST_PATIENT_MODULE)
-            }
-          />
-
-          {(doctorListError as AxiosError)?.response?.status === 500 ? (
-            <Flex width={"255px"} height={"282px"} alignItems={"center"}>
-              Oops something went wrong!!
-            </Flex>
-          ) : (
-            doctorList && (
-              <Carousel responsive={responsiveDoctorCard}>
-                {doctorList.map(doctor => {
-                  return (
-                    <Box
-                      key={doctor.id}
-                      mr={4}
-                      onClick={() =>
-                        navigate(
-                          `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctor.id}`
-                        )
-                      }
-                    >
-                      <DoctorListCard
-                        data={doctor}
-                        error={doctorListError as AxiosError}
-                        size={Size.sm}
-                      />
-                    </Box>
-                  );
-                })}
-              </Carousel>
-            )
-          )}
 
           {/* DOCTOR CONSULTATION WORKING STEPS */}
           <Box mt={10}>

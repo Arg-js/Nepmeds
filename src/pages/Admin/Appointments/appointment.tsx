@@ -20,7 +20,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import { appointmentColumn } from "@nepMeds/components/DataTable/adminAppointmentColumn";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { ADMINAPPOINTMENT, PAYMENTMODE } from "@nepMeds/config/enum";
-import PatientPrescription from "@nepMeds/pages/Patient/Profile/Components/PatientPrescription";
+import PatientPrescription from "@nepMeds/pages/Patient/Profile/Components/PatientDetailsTab/AppointmentDetailsTab/AppointmentDetailActions/PatientPrescription";
 import {
   useAdminAppointment,
   useAdminAppointmentDetail,

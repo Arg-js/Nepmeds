@@ -116,6 +116,11 @@ export interface IGetDoctorBasicProfile {
 
   is_doctor?: boolean;
   is_superuser?: boolean;
+
+  no_of_patient: number;
+  appointment: number;
+  pending: number;
+  follow_ups: number;
 }
 
 const getDoctorProfile = async () => {

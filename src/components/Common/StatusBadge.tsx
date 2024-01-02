@@ -5,12 +5,14 @@ const defaultBadgeText = {
   [STATUSTYPE.approved.toString()]: "Approved",
   [STATUSTYPE.pending.toString()]: "Pending",
   [STATUSTYPE.rejected.toString()]: "Rejected",
+  [STATUSTYPE.completed.toString()]: "Completed",
 };
 
 const defaultBadgeColor = {
   [STATUSTYPE.approved.toString()]: "green",
   [STATUSTYPE.pending.toString()]: "yellow",
   [STATUSTYPE.rejected.toString()]: "red",
+  [STATUSTYPE.completed.toString()]: "orange",
 };
 
 const StatusBadge = ({

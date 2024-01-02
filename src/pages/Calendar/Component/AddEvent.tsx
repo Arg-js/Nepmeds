@@ -7,7 +7,7 @@ import { IGetDoctorAvailability } from "@nepMeds/service/nepmeds-doctor-availabi
 import { colors } from "@nepMeds/theme/colors";
 import { FrequencyType } from "@nepMeds/utils/choices";
 import { generateTimeWith15MinutesInterval } from "@nepMeds/utils/timeRange";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useFormContext } from "react-hook-form";
 import { BiTime } from "react-icons/bi";
 
@@ -24,11 +24,16 @@ export const AddEvent = ({
     register,
     watch,
     control,
+    reset,
     formState: { errors },
   } = useFormContext<IGetDoctorAvailability>();
   const options = useMemo(() => {
     return generateTimeWith15MinutesInterval();
   }, []);
+
+  useEffect(() => {
+    reset({ frequency: doctorAvailabilityData?.frequency });
+  }, [doctorAvailabilityData]);
 
   const [secondOptions, setSecondOptions] = useState<any>(
     doctorAvailabilityData

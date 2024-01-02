@@ -30,17 +30,26 @@ export const appointmentColumn = (
     },
     {
       header: "Date",
-      accessorKey: "date",
+      accessorKey: "id",
+      cell: ({ row: { original } }: CellProps<IAppointmentAdmin>) => {
+        return (
+          original.extra_data?.cancelled_availability?.date || original.date
+        );
+      },
     },
 
     {
       header: "Booking Time",
-      accessorKey: "from_time",
+      accessorKey: "id",
       cell: ({ row: { original } }: CellProps<IAppointmentAdmin>) => {
-        return original.from_time && original.to_time
-          ? removeSeconds(original?.from_time ?? "") +
-              " - " +
-              removeSeconds(original?.to_time ?? "")
+        const cancelledAvailability =
+          original.extra_data?.cancelled_availability;
+        return original.to_time
+          ? `${removeSeconds(original.from_time)} -
+              ${removeSeconds(original.to_time)}`
+          : original.extra_data
+          ? `${removeSeconds(cancelledAvailability.from_time)} -
+            ${removeSeconds(cancelledAvailability.to_time)}`
           : "-";
       },
     },

@@ -10,10 +10,10 @@ import {
   User,
   Document,
 } from "react-iconly";
-import { FaRegCalendarCheck } from "react-icons/fa";
 import { images } from "@nepMeds/assets/images";
 import { useLoginTokenDetailQuery } from "@nepMeds/service/nepmeds-auth";
 import MenuOption from "@nepMeds/components/Sidebar/MenuOptions";
+import { DiscountIcon, RescheduleIcon } from "@nepMeds/assets/svgs";
 
 type IconSet = "two-tone" | "light" | "bold" | "bulk" | "broken" | "curved";
 interface ISidebarItem {
@@ -40,7 +40,7 @@ const sidebarOptions: ISidebarOption[] = [
     link: "/appointments",
   },
   {
-    icon: FaRegCalendarCheck,
+    icon: RescheduleIcon,
     set: "light",
     text: "Reschedule",
     link: "/reschedule",
@@ -119,14 +119,13 @@ const AdminSidebarOptions: ISidebarOption[] = [
   },
 
   {
-    icon: FaRegCalendarCheck,
+    icon: RescheduleIcon,
     set: "light",
     text: "Reschedule",
     link: "/reschedule",
   },
   {
-    // todo: CHANGE THE ICON
-    icon: Category,
+    icon: DiscountIcon,
     set: "light",
     text: "Discount",
     link: "/discount",

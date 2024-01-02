@@ -31,7 +31,7 @@ const ImageUpload = ({
         id={"image"}
         display={"none"}
         name={name}
-        accept={"image/png, image/jpeg"}
+        accept={"image/png, image/jpeg, image/jpg"}
         multiple
       />
       <Flex>
