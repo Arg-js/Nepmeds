@@ -138,7 +138,6 @@ const ScheduleComponent: React.FC<IScheduleComponent> = memo(
     };
 
     const handleEdit = async (id: number) => {
-      onEditModalOpen();
       setIsSingleAvailabilityLoading(true);
       try {
         const res = await getSingleAvailability(id);
@@ -149,6 +148,7 @@ const ScheduleComponent: React.FC<IScheduleComponent> = memo(
         const err = serverErrorResponse(error as AxiosError);
         toastFail(err);
       }
+      onEditModalOpen();
       setIsSingleAvailabilityLoading(false);
     };
 

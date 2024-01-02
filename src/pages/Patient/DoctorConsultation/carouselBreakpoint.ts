@@ -11,7 +11,7 @@ export const responsive = {
 };
 export const responsiveDoctorCard = {
   ...responsive,
-  desktop: { ...responsive.desktop, items: 4.5 },
+  desktop: { ...responsive.desktop, items: 5.5 },
   laptopLarge: { ...responsive.laptopLarge, items: 4 },
   laptop: { ...responsive.laptop, items: 3.2 },
   tablet: { breakpoint: { max: 768, min: 464 }, slidesToSlide: 1, items: 2.5 },

@@ -1,35 +1,36 @@
 import { Tab, TabList, TabPanels, Tabs } from "@chakra-ui/react";
 import TableWrapper from "@nepMeds/components/TableWrapper";
-import { STATUSTYPE } from "@nepMeds/config/enum";
+import { colors } from "@nepMeds/theme/colors";
 import { useState } from "react";
-import PatientDetailsTable from "./PatientDetailsTable";
+import { AppointmentDetails, Invoices } from "./PatientDetailsTab/index";
 
 const PatientDetailsTab = () => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <TableWrapper>
-      <Tabs
-        fontSize="md"
-        index={tabIndex}
-        fontFamily={"Inter"}
-        onChange={index => setTabIndex(index)}
-      >
-        <TabList borderBottom={"none"}>
-          <Tab>All</Tab>
-          <Tab>Completed</Tab>
-          <Tab>Approved</Tab>
-          <Tab>Pending</Tab>
-          <Tab>Rejected</Tab>
+      <Tabs index={tabIndex} onChange={index => setTabIndex(index)}>
+        <TabList borderBottom={"none"} mb={4}>
+          {/* TODO: find better way of doing this */}
+          <Tab
+            borderLeftRadius={"8px"}
+            _selected={{ color: "white", bg: colors.primary }}
+            bg={colors.grey_light}
+            color={colors.light_gray}
+          >
+            Appointment Details
+          </Tab>
+          <Tab
+            borderRightRadius={"8px"}
+            _selected={{ color: "white", bg: colors.primary }}
+            bg={colors.grey_light}
+            color={colors.light_gray}
+            width={"10%"}
+          >
+            Invoices
+          </Tab>
         </TabList>
-        <TabPanels>
-          {tabIndex === 0 && <PatientDetailsTable />}
-          {tabIndex === 1 && (
-            <PatientDetailsTable type={STATUSTYPE.completed} />
-          )}
-          {tabIndex === 2 && <PatientDetailsTable type={STATUSTYPE.approved} />}
-          {tabIndex === 3 && <PatientDetailsTable type={STATUSTYPE.pending} />}
-          {tabIndex === 4 && <PatientDetailsTable type={STATUSTYPE.rejected} />}
-        </TabPanels>
+        <TabPanels>{tabIndex === 0 && <AppointmentDetails />}</TabPanels>
+        <TabPanels>{tabIndex === 1 && <Invoices />}</TabPanels>
       </Tabs>
     </TableWrapper>
   );

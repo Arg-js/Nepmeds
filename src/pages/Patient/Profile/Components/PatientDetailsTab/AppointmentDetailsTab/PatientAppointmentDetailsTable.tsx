@@ -12,10 +12,12 @@ import {
 } from "@nepMeds/service/nepmeds-patient-profile";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { columns } from "../../PatientDetail";
-import LabReportForm from "./LabReportForm";
-import PatientDetailModal from "./PatientDetailModal";
-import PatientPrescriptionSkeleton from "./PatientPrescriptionSkeleton";
+import { columns } from "../../../../PatientDetail";
+import {
+  LabReportForm,
+  PatientPrescriptionSkeleton,
+} from "./AppointmentDetailActions/index";
+import PatientDetailModal from "./AppointmentDetailModal";
 
 const PatientDetailsTable = ({ type }: { type?: STATUSTYPE }) => {
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
