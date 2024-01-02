@@ -147,7 +147,7 @@ const TableActions = ({
             to={NAVIGATION_ROUTES.PATIENT.RESCHEDULE_APPOINTMENT}
             state={onReschedule.state}
           >
-            <RescheduleIcon />
+            <RescheduleIcon color={colors.primary_blue} />
           </Link>
         </Tooltip>
       )}
