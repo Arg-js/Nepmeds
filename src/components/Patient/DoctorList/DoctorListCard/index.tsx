@@ -108,7 +108,7 @@ const DoctorListCard: React.FC<{
               color={colors.dark_blue}
               textTransform={"capitalize"}
             >
-              {data.name}
+              Dr. {data.name}
             </Text>
             {/* TODO: generic component for dash */}
             <Flex gap={`${size === Size.sm ? "0" : "1"}`} direction={"column"}>
