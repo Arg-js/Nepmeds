@@ -62,9 +62,9 @@ export const rescheduledColumn = ({
 
       {
         header: "New Date",
-        accessorKey: "old_availability.date",
+        accessorKey: "request_availability.date",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
-          return original?.old_availability?.date;
+          return original?.request_availability?.date;
         },
       },
 
@@ -147,7 +147,7 @@ export const rescheduledHistoryColumn = ({
       },
       {
         header: "Previous Time",
-        accessorKey: "old_availability.from_time",
+        accessorKey: "extra_data.previous_availability.to_time",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return `${removeSeconds(
             original?.extra_data?.previous_availability?.from_time ?? ""
@@ -173,7 +173,7 @@ export const rescheduledHistoryColumn = ({
 
       {
         header: "Rescheduled Date",
-        accessorKey: "id",
+        accessorKey: "is_appointment",
         cell: ({ row: { original } }: CellProps<IGetRescheduledList>) => {
           return (
             original?.extra_data?.cancelled_availability?.date ??

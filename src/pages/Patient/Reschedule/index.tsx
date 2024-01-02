@@ -148,7 +148,10 @@ const RescheduleAppointment = () => {
                     rules={{
                       required: "Remarks is required!",
                     }}
-                    style={{ background: colors.white, border: "none" }}
+                    style={{
+                      background: colors.white,
+                      border: "none",
+                    }}
                     error={errors?.remarks?.message?.toString()}
                     pb={4}
                   />
