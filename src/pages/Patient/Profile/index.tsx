@@ -8,10 +8,17 @@ import {
   PatientDetailsTable,
 } from "./Components/PatientDetailsTab/AppointmentDetailsTab";
 import { images } from "@nepMeds/assets/images";
+import PatientProfileUpload from "./Components/PatientProfileUpload";
+import { useState } from "react";
+import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
+import { useUpdatePatientProfile } from "@nepMeds/service/nepmeds-patient-profile";
 
 const PatientProfile = () => {
   const isAuthenticated = TokenService.isAuthenticated();
   const { data: patientData } = usePatientBasicProfile(isAuthenticated);
+  const { mutateAsync, isLoading } = useUpdatePatientProfile();
+
+  const [isEdit, setIsEdit] = useState(false);
 
   return (
     <>
@@ -27,22 +34,31 @@ const PatientProfile = () => {
         fontFamily="Quicksand"
         alignItems="center"
       >
-        <Avatar
-          src=""
-          name={patientData?.name}
-          size="2xl"
-          mt={{ base: "4%", "2xl": "7%" }}
-          ml={"8%"}
-        >
-          <AvatarBadge
-            bg="white"
-            top={-2}
-            width={"10"}
-            height={"10"}
-            bgImage={images.editSquare}
-            cursor={"pointer"}
+        {isEdit ? (
+          <PatientProfileUpload
+            setIsEdit={setIsEdit}
+            uploadFn={mutateAsync}
+            isLoading={isLoading}
           />
-        </Avatar>
+        ) : (
+          <Avatar
+            src={appendServerUrl(patientData?.profile_picture ?? "")}
+            name={patientData?.name}
+            size="2xl"
+            mt={{ base: "4%", "2xl": "7%" }}
+            ml={"8%"}
+          >
+            <AvatarBadge
+              bg="white"
+              top={-2}
+              width={"10"}
+              height={"10"}
+              bgImage={images.editSquare}
+              cursor={"pointer"}
+              onClick={() => setIsEdit(!isEdit)}
+            />
+          </Avatar>
+        )}
         <Container>General Information</Container>
       </Flex>
       {/*  */}

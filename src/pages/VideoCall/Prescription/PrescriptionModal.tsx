@@ -49,7 +49,7 @@ const PrescriptionModal = ({
 
   const { data: prescriptionInfo, isLoading: isLoadingPrescriptionInfo } =
     useGetAppPrescriptionInfo({
-      appointment_id: state?.appointmentold_id ?? "",
+      appointment_id: state?.appointmentold_id ?? appointmentId,
     });
   const dataInfo = isEditable ? data : prescriptionInfo;
 

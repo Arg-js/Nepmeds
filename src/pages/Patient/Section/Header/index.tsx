@@ -49,7 +49,7 @@ import { MutableRefObject, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import ring from "@nepMeds/assets/sound/ring.mp3";
-import { getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { appendServerUrl, getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { useGetAllNotification } from "@nepMeds/service/nepmeds-notification";
 import NotificationDropDown from "@nepMeds/components/Notification/NotificationDropDown";
 import { images } from "@nepMeds/assets/images";
@@ -315,7 +315,7 @@ const Header: React.FC<{
                     "&>span": { display: "flex", alignItems: "center", gap: 2 },
                   }}
                 >
-                  <Avatar />
+                  <Avatar src={appendServerUrl(data?.profile_picture ?? "")} />
                 </MenuButton>
                 <MenuList>
                   <MenuItem
