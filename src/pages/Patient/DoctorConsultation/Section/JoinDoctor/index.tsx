@@ -12,7 +12,6 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { colors } from "@nepMeds/theme/colors";
 import { images } from "@nepMeds/assets/images";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
-import { svgs } from "@nepMeds/assets/svgs";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
@@ -57,7 +56,8 @@ const JoinDoctor = () => {
       <ModalComponent
         heading={
           <HStack>
-            <svgs.logo_small />
+            <Image src={images.smallLogo} width={"30px"} />
+
             <Text>Join Us as A Doctor</Text>
           </HStack>
         }

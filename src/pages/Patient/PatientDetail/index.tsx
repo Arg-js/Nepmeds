@@ -55,7 +55,7 @@ export const columns = ({
     },
     {
       header: "Appointment Date",
-      accessorKey: "id",
+      accessorKey: "appointment_date",
       cell: ({
         row: { original },
       }: CellProps<{ appointment_date: string } & IExtraData>) => {
@@ -67,7 +67,7 @@ export const columns = ({
     },
     {
       header: "Appointment Time",
-      accessorKey: "id",
+      accessorKey: "appointment_starttime",
       cell: ({
         row,
       }: CellProps<
@@ -140,7 +140,7 @@ export const columns = ({
     },
     {
       header: "Actions",
-      accessorKey: "id",
+      accessorKey: "action",
       cell: ({
         row,
       }: CellProps<{

@@ -234,14 +234,6 @@ const PrimaryInfo = ({
             required
             rules={{
               required: "Basic Information is required.",
-              minLength: {
-                value: 50,
-                message: "Basic Information must be atleast 50 characters.",
-              },
-              maxLength: {
-                value: 250,
-                message: "Basic Information must be less than 250 characters.",
-              },
             }}
             error={errors.bio_detail?.message}
           />
