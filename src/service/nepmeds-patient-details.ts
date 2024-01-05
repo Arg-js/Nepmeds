@@ -12,6 +12,7 @@ export interface IGetPatientBasicProfile {
   date_of_birth: string;
   address: string;
   age: string;
+  profile_picture: string;
 }
 
 const getBasicProfile = async () => {

@@ -181,6 +181,7 @@ export const api = {
       get: "transaction/get-payment-history-patient/",
       getById: "transaction/get-payment-history-patient/:id/",
     },
+    updateProfile: "/patient/update-profile/",
   },
 
   transaction: {

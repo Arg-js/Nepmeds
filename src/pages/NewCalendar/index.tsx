@@ -112,6 +112,7 @@ const NewCalendar: React.FC = () => {
                   <Calendar
                     onChange={value => setDate(value as Date)}
                     value={date}
+                    className={"react-calendar"}
                   />
                 </GridItem>
                 <GridItem colSpan={5}>

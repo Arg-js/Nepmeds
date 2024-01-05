@@ -24,6 +24,7 @@ const ImageUpload = ({
   rules,
   error,
   setValue,
+  isEditable = true,
   handleRemoveFunction,
 }: ImageUploadProps) => {
   const handleRemoveImage = () => {
@@ -57,69 +58,75 @@ const ImageUpload = ({
               width="100%"
               height="100%"
             />
-            <CloseIcon
-              color={colors.black_30}
-              position="absolute"
-              top="6px"
-              right="10px"
-              onClick={handleRemoveImage}
-              cursor={"pointer"}
-            />
+            {isEditable && (
+              <CloseIcon
+                color={colors.black_30}
+                position="absolute"
+                top="6px"
+                right="10px"
+                onClick={handleRemoveImage}
+                cursor={"pointer"}
+              />
+            )}
           </Box>
         ) : (
-          <Box
-            width={"100%"}
-            height="160px"
-            borderRadius="4px"
-            border="2px dashed"
-            borderColor="#E1E2E9"
-            cursor="pointer"
-            display="flex"
-            flexDirection="column"
-            backgroundColor={background ?? "#fff"}
-            alignItems="center"
-            justifyContent="center"
-            {...register(name)}
-            onClick={() => document.getElementById(name)?.click()}
-          >
-            <IconButton
-              icon={<AddIcon />}
-              variant="unstyled"
-              _hover={{ bg: "transparent" }}
-              color={"#D1D5DB"}
-              aria-label="Upload Image"
-              padding={6}
-              display={"flex"}
-              alignItems={"center"}
-              justifyContent={"center"}
-              border={"1px dashed #D1D5DB"}
-            />
-            <Box
-              display="flex"
-              flexDirection={"column"}
-              alignItems="center"
-              mt={4}
-            >
-              <Text color="#14B8A6" fontWeight={600} fontSize="sm">
-                {upload_text}
-              </Text>
-              {/* TODO: upload image by dragging it to the component */}
-              {/* {helperText && (
+          <>
+            {isEditable && (
+              <Box
+                width={"100%"}
+                height="160px"
+                borderRadius="4px"
+                border="2px dashed"
+                borderColor="#E1E2E9"
+                cursor="pointer"
+                display="flex"
+                flexDirection="column"
+                backgroundColor={background ?? "#fff"}
+                alignItems="center"
+                justifyContent="center"
+                {...register(name)}
+                onClick={() => document.getElementById(name)?.click()}
+              >
+                <IconButton
+                  icon={<AddIcon />}
+                  variant="unstyled"
+                  _hover={{ bg: "transparent" }}
+                  color={"#D1D5DB"}
+                  aria-label="Upload Image"
+                  padding={6}
+                  display={"flex"}
+                  alignItems={"center"}
+                  justifyContent={"center"}
+                  border={"1px dashed #D1D5DB"}
+                />
+                <Box
+                  display="flex"
+                  flexDirection={"column"}
+                  alignItems="center"
+                  mt={4}
+                >
+                  <Text color="#14B8A6" fontWeight={600} fontSize="sm">
+                    {upload_text}
+                  </Text>
+                  {/* TODO: upload image by dragging it to the component */}
+                  {/* {helperText && (
                 <Text color="#4B5563" fontWeight={400} fontSize="sm">
                   or drag and drop
                 </Text>
               )} */}
-            </Box>
+                </Box>
 
-            <input
-              type="file"
-              id={name}
-              {...register(name, rules)}
-              accept="image/jpeg, image/png, image/jpg"
-              style={{ display: "none" }}
-              onChange={handleImageChange}
-            />
-          </Box>
+                <input
+                  type="file"
+                  id={name}
+                  {...register(name, rules)}
+                  accept="image/jpeg, image/png, image/jpg"
+                  style={{ display: "none" }}
+                  onChange={handleImageChange}
+                />
+              </Box>
+            )}
+          </>
         )}
         {error && <FormErrorMessage fontSize={"xs"}>{error}</FormErrorMessage>}
       </FormControl>
@@ -141,5 +148,6 @@ interface ImageUploadProps {
   error?: string | boolean | null;
   //   setValue?: UseFormSetValue<IRegisterFields>;
   setValue?: any;
+  isEditable?: boolean;
   handleRemoveFunction?: () => void;
 }

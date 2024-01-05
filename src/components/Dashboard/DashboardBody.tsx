@@ -15,14 +15,11 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-
 import { images } from "@nepMeds/assets/images";
 import { useProfileData } from "@nepMeds/context/index";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { colors } from "@nepMeds/theme/colors";
 import { useNavigate } from "react-router-dom";
-import "../../assets/styles/reactCalender.css";
 import PendingDocList from "@nepMeds/components/Table/Doctor/PendingDocList";
 import PendingPayment from "../Table/Payment/PendingPayment";
 import { STATUSTYPE } from "@nepMeds/config/enum";
