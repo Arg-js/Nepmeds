@@ -1,6 +1,8 @@
 import { lazy } from "react";
 import { Navigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
+import PatientHistory from "@nepMeds/pages/Admin/PatientHistory";
+import PatientHistoryDetails from "@nepMeds/pages/Admin/PatientHistory/PatientHistoryDetails";
 
 const Appointment = lazy(() => import("@nepMeds/pages/Doctor/Appointment"));
 const DoctorDetails = lazy(
@@ -176,7 +178,11 @@ export const doctorRoutes = [
       },
       {
         path: NAVIGATION_ROUTES.PATIENT_HISTORY,
-        element: <>patient history</>,
+        element: <PatientHistory />,
+      },
+      {
+        path: NAVIGATION_ROUTES.PATIENT_HISTORY_ID,
+        element: <PatientHistoryDetails />,
       },
       {
         path: NAVIGATION_ROUTES.CALENDER,

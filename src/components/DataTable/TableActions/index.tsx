@@ -1,4 +1,4 @@
-import { Flex, IconButton, Tooltip } from "@chakra-ui/react";
+import { Flex, FlexProps, IconButton, Tooltip } from "@chakra-ui/react";
 import {
   AcceptIcon,
   PasswordKey,
@@ -26,9 +26,10 @@ const TableActions = ({
   onPrescription,
   isEditDisabled,
   editText,
+  flexProps,
 }: ITableActions) => {
   return (
-    <Flex alignItems={"center"} justifyContent="center">
+    <Flex alignItems={"center"} justifyContent="center" {...flexProps}>
       {!!onChangePassword && (
         <Tooltip hasArrow placement="top" label="Change Password">
           <IconButton
@@ -201,6 +202,7 @@ interface ITableActions {
     isShown: boolean;
     onClick?: () => void;
   };
+  flexProps?: FlexProps;
 }
 
 export default TableActions;

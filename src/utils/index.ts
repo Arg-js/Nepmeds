@@ -11,3 +11,4 @@ export {
 export { checkNumberMatch } from "./validation";
 export { dateFormatter } from "./dateFormatter";
 export { convertToTitleCase } from "./string";
+export { removeEmptyProperties } from "./objectRefine";

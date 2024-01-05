@@ -290,7 +290,7 @@ const RegistrationForm = () => {
             doctor_nmc_info: {
               nmc_number: Number(nmcData.nmc_number),
               nmc_issued_date: nmcData.nmc_issued_date,
-              nmc_expiry_date: nmcData.nmc_expiry_date,
+              nmc_expiry_date: nmcData.nmc_expiry_date || null,
               nmc_file:
                 nmcData.nmc_file?.[0] &&
                 (await imageToBase64(nmcData.nmc_file?.[0] as File)),

@@ -124,16 +124,11 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
             label="Expire Date"
             register={register}
             type="date"
-            required
             _hover={{ cursor: "pointer" }}
             style={{
               background: colors.forminput,
               border: "none",
             }}
-            rules={{
-              required: "Expire Date is required.",
-            }}
-            error={errors.nmc?.nmc_expiry_date?.message}
           />
         </SimpleGrid>
       </Box>

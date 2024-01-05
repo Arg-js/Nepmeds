@@ -1,12 +1,4 @@
-import {
-  Box,
-  Button,
-  Card,
-  Divider,
-  Flex,
-  Heading,
-  IconButton,
-} from "@chakra-ui/react";
+import { Box, Button, Card, Flex, Heading, IconButton } from "@chakra-ui/react";
 import ImageUpload from "@nepMeds/components/ImageUpload";
 import { FormProvider, useForm } from "react-hook-form";
 import { appendServerUrl } from "@nepMeds/utils/getImageUrl";
@@ -29,9 +21,11 @@ function isBase64Image(str: string): boolean {
 const PrescriptionImageModal = ({
   onClose,
   appointmentId,
+  isEditable = true,
 }: {
   onClose?: () => void;
   appointmentId?: string;
+  isEditable?: boolean;
 }) => {
   // TODO: Remove any type with location type
   const { state }: any = useLocation();
@@ -120,7 +114,6 @@ const PrescriptionImageModal = ({
           />
         </Flex>
       )}
-      <Divider w="94%" />
       <Box minW={maxW} p={2}>
         <FormProvider {...formMethods}>
           <form onSubmit={formMethods.handleSubmit(onSubmitForm)}>
@@ -137,6 +130,7 @@ const PrescriptionImageModal = ({
                 handleRemoveFunction={() => {
                   handleRemoveImage(0);
                 }}
+                isEditable={isEditable}
               />
               <ImageUpload
                 SelectedImage={secondImage}
@@ -150,19 +144,22 @@ const PrescriptionImageModal = ({
                 handleRemoveFunction={() => {
                   handleRemoveImage(1);
                 }}
+                isEditable={isEditable}
               />
             </Flex>
 
-            <Button
-              type="submit"
-              isLoading={isLoading}
-              isDisabled={
-                !isBase64Image((selectedImage as string) ?? "") &&
-                !isBase64Image((secondImage as string) ?? "")
-              }
-            >
-              Save
-            </Button>
+            {isEditable && (
+              <Button
+                type="submit"
+                isLoading={isLoading}
+                isDisabled={
+                  !isBase64Image((selectedImage as string) ?? "") &&
+                  !isBase64Image((secondImage as string) ?? "")
+                }
+              >
+                Save
+              </Button>
+            )}
           </form>
         </FormProvider>
       </Box>
