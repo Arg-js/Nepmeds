@@ -174,6 +174,9 @@ export const columns = (
           <StatusBadge
             customProps={{
               status: status?.toString() ?? "",
+              badgeText: {
+                "4": "On-Hold",
+              },
             }}
           />
         );
