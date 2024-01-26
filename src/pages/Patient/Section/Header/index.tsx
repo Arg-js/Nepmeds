@@ -1,15 +1,11 @@
-import { CheckIcon, SearchIcon } from "@chakra-ui/icons";
+import { CheckIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
   Button,
   Flex,
   HStack,
-  IconButton,
   Image,
-  Input,
-  InputGroup,
-  InputRightElement,
   Link as ChakraLink,
   Menu,
   MenuButton,
@@ -243,7 +239,7 @@ const Header: React.FC<{
         />
         <Flex alignItems={"center"} justifyContent={"space-around"} gap={6}>
           {/* Search Field */}
-          <InputGroup
+          {/* <InputGroup
             style={{ height: "46px" }}
             width={{ base: "auto", lg: "561px" }}
             display={{ base: "none", md: "block" }}
@@ -271,7 +267,7 @@ const Header: React.FC<{
               color={colors.gray_text_header}
               size={"lg"}
             />
-          </InputGroup>
+          </InputGroup> */}
           {/* Search Field ends */}
 
           {/* Notificaiton Dropdown with Login */}
