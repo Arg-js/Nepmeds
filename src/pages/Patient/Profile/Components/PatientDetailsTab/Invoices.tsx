@@ -1,15 +1,24 @@
-import { Spinner, Text, useDisclosure } from "@chakra-ui/react";
+import {
+  Box,
+  Divider,
+  Flex,
+  Grid,
+  Spinner,
+  Text,
+  useDisclosure,
+} from "@chakra-ui/react";
 import StatusBadge from "@nepMeds/components/Common/StatusBadge";
 import { DataTable } from "@nepMeds/components/DataTable";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import TableWrapper from "@nepMeds/components/TableWrapper";
-import { getFullDate } from "@nepMeds/helper/dateTImeConverter";
+import { getFullDate, getTime } from "@nepMeds/helper/dateTImeConverter";
 import {
   IInvoices,
   useGetAllInvoices,
   useGetInvoices,
 } from "@nepMeds/service/nepmeds-invoices";
+import { colors } from "@nepMeds/theme/colors";
 import { useMemo, useState } from "react";
 import { CellProps } from "react-table";
 
@@ -18,13 +27,20 @@ const Invoices = () => {
   const [id, setId] = useState("");
 
   const [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });
-  // TODO: add pagination
-  const { data: tableData, isFetching } = useGetAllInvoices();
+  const { data: tableData, isFetching } = useGetAllInvoices({
+    pagination: {
+      page: pagination.pageIndex + 1,
+      page_size: pagination.pageSize,
+    },
+  });
   const { data: invoicesDetails, isFetching: isFetchingInvoices } =
     useGetInvoices({ id });
 
+  const createdDate = invoicesDetails?.created_at;
+
   const { onOpen, onClose, isOpen } = useDisclosure();
 
+  // TODO: move the column
   const columns = useMemo(
     () => [
       {
@@ -90,7 +106,9 @@ const Invoices = () => {
   );
   return (
     <TableWrapper>
+      {/* TODO: move the modal component */}
       <ModalComponent
+        size={"4xl"}
         heading={<>Invoices Details</>}
         isOpen={isOpen}
         footer={<></>}
@@ -99,7 +117,73 @@ const Invoices = () => {
         {isFetchingInvoices ? (
           <Spinner />
         ) : (
-          <Text>{invoicesDetails?.transaction_amount}</Text>
+          <>
+            <Flex
+              bg={colors.grey_light}
+              p={3}
+              alignItems={"center"}
+              gap={5}
+              borderRadius={"16px"}
+              mb={4}
+            >
+              <Box
+                height={"50px"}
+                width={"50px"}
+                borderRadius={"50%"}
+                bgColor={"red"}
+              />
+              <Box>
+                <Text fontSize={"md"} fontWeight={700}>
+                  Total Amount Paid: {invoicesDetails?.transaction_amount}
+                </Text>
+                {createdDate && (
+                  <Text fontSize={"sm"} fontWeight={400}>
+                    {getFullDate(createdDate)}
+                    {getTime(createdDate)}
+                  </Text>
+                )}
+              </Box>
+            </Flex>
+            <Grid templateColumns={"repeat(4, 1fr)"} gap={8}>
+              <Text variant="sm400" color={colors.black_60}>
+                Transaction ID :
+              </Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.transaction_id}
+              </Text>
+              <Text>Payment ID :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.payment_id}
+              </Text>
+              <Text>Order ID :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.order_id}
+              </Text>
+            </Grid>
+            <Divider my={3} />
+            <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
+              <Text>Sender name :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.from_user}
+              </Text>
+              <Text>Receiver name :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.to_user}
+              </Text>
+              <Text>Payment Type :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.payment_type}
+              </Text>
+              <Text>Payment Status :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.transaction_amount}
+              </Text>
+              <Text>Discounted Amount :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.discounted_amount}
+              </Text>
+            </Grid>
+          </>
         )}
       </ModalComponent>
       <DataTable

@@ -1,5 +1,5 @@
 import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { generatePath } from "react-router-dom";
 import { IParams } from "./nepmeds-discount";
 import { Availability } from "./nepmeds-doctor-patient-appointment";
@@ -7,6 +7,7 @@ import serverErrorResponse from "./serverErrorResponse";
 import { api, NepMedsResponse } from "./service-api";
 import { HttpClient } from "./service-axios";
 import { toastFail } from "./service-toast";
+import { objectToFormData } from "@nepMeds/utils/toFormData";
 
 interface IPatientDetail {
   id: number;
@@ -132,4 +133,27 @@ const useGetPatientDetailsById = ({
   );
 };
 
-export { useGetPatientDetails, useGetPatientDetailsById };
+const updatePatientProfile = async (file: File | undefined) => {
+  const data = objectToFormData({
+    profile_picture: file,
+  });
+  return await HttpClient.patch(api.patient.updateProfile, data);
+};
+
+const useUpdatePatientProfile = () => {
+  const queryClient = useQueryClient();
+  return useMutation(updatePatientProfile, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.patient.basicProfile);
+    },
+    onError: err => {
+      toastFail(serverErrorResponse(err));
+    },
+  });
+};
+
+export {
+  useGetPatientDetails,
+  useGetPatientDetailsById,
+  useUpdatePatientProfile,
+};

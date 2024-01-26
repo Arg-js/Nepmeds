@@ -1,3 +1,4 @@
+import { IPaginationParams } from "@nepMeds/components/DataTable/Pagination";
 import { useQuery } from "react-query";
 import { generatePath } from "react-router-dom";
 import serverErrorResponse from "./serverErrorResponse";
@@ -15,21 +16,43 @@ export interface IInvoices {
   discounted_amount: string;
 }
 
-const getAllInvoices = async () => {
+export interface InvoicesDetails extends IInvoices {
+  from_user: string;
+  payment_status: string;
+  payment_id: string;
+  transaction_id: string;
+  order_id: string;
+  coupon: string;
+}
+
+const getAllInvoices = async ({
+  pagination,
+}: {
+  pagination: IPaginationParams;
+}) => {
   const response = await HttpClient.get<PaginatedResponse<IInvoices>>(
-    api.patient.invoices.get
+    api.patient.invoices.get,
+    { params: pagination }
   );
   return response;
 };
-const useGetAllInvoices = () => {
-  return useQuery([api.patient.invoices.get], getAllInvoices, {
-    select: ({ data }) => data.data,
-    onError: e => toastFail(serverErrorResponse(e)),
-  });
+const useGetAllInvoices = ({
+  pagination,
+}: {
+  pagination: IPaginationParams;
+}) => {
+  return useQuery(
+    [api.patient.invoices.get, pagination],
+    () => getAllInvoices({ pagination }),
+    {
+      select: ({ data }) => data.data,
+      onError: e => toastFail(serverErrorResponse(e)),
+    }
+  );
 };
 
 const getInvoices = async ({ id }: { id: string }) => {
-  const response = await HttpClient.get<NepMedsResponse<IInvoices>>(
+  const response = await HttpClient.get<NepMedsResponse<InvoicesDetails>>(
     generatePath(api.patient.invoices.getById, { id })
   );
   return response;

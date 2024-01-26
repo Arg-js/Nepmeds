@@ -26,8 +26,7 @@ const HeroSection = () => {
       </Text>
 
       <Flex gap={"4"} alignItems={"center"}>
-        <AvatarGroup size="md" max={3}>
-          {/*  TODO: test if 3 images are displayed or not*/}
+        <AvatarGroup size="md" max={2}>
           {doctorCount?.images?.map(image => {
             return (
               <Avatar

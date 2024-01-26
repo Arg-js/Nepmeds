@@ -7,7 +7,7 @@ import { NepMedsResponse, api } from "./service-api";
 type NMCINFO = {
   nmc_number?: number;
   nmc_issued_date?: string;
-  nmc_expiry_date?: string;
+  nmc_expiry_date?: string | null;
   nmc_file?: File | string;
 };
 

@@ -16,12 +16,14 @@ interface Props {
   isPrescriptionOpen: boolean;
   onPrescriptionClose: () => void;
   appointmentId: string;
+  isEditable?: boolean;
 }
 
 const AppointmentPrescriptionModal = ({
   isPrescriptionOpen,
   onPrescriptionClose,
   appointmentId,
+  isEditable = true,
 }: Props) => {
   return (
     <ModalComponent
@@ -44,12 +46,16 @@ const AppointmentPrescriptionModal = ({
 
         <TabPanels>
           <TabPanel>
-            <PrescriptionModal appointmentId={appointmentId} />
+            <PrescriptionModal
+              isEditable={isEditable}
+              appointmentId={appointmentId}
+            />
           </TabPanel>
           <TabPanel>
             <PrescriptionImageModal
               appointmentId={appointmentId}
               onClose={onPrescriptionClose}
+              isEditable={isEditable}
             />
           </TabPanel>
         </TabPanels>
