@@ -36,6 +36,7 @@ export const api = {
   approveddoctor: "/dashboard/approved-doctor-list",
   approvesingledoctor: "/dashboard/approve-doctor/{id}/",
   rejectsingledoctor: "/dashboard/reject-doctor/{id}/",
+  holdDoctor: "/dashboard/on-hold-doctor/:id/",
   doctordetails: "/dashboard/view-doctor-profile/{id}",
   // certificate fetch garda ko id
   certificate_update: "/user-management/certificate/{id}",

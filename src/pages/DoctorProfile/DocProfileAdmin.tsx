@@ -13,19 +13,24 @@ import {
   Tabs,
   Text,
   VStack,
-  useDisclosure
+  useDisclosure,
 } from "@chakra-ui/react";
 import { svgs } from "@nepMeds/assets/svgs";
 import DocUpdateProfile from "@nepMeds/components/DocProfile/DocUpdateProfile";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { RejectionForm } from "@nepMeds/components/FormComponents";
+import { OnHoldForm } from "@nepMeds/components/FormComponents/OnHoldForm/OnHoldForm";
 import { toastFail, toastSuccess } from "@nepMeds/components/Toast";
 import { STATUSTYPE } from "@nepMeds/config/enum";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 import { useApproveDoc } from "@nepMeds/service/nepmeds-approve-doc";
 import { fetchDoctorProfileById } from "@nepMeds/service/nepmeds-doctor-profile";
-import { useRejectDoc } from "@nepMeds/service/nepmeds-reject-doc";
+import {
+  useHoldDoctor,
+  useRejectDoc,
+} from "@nepMeds/service/nepmeds-reject-doc";
 import { FormProvider, useForm } from "react-hook-form";
+import { RxCross1 } from "react-icons/rx";
 import { useNavigate, useParams } from "react-router-dom";
 
 const DocProfileAdmin = () => {
@@ -38,32 +43,56 @@ const DocProfileAdmin = () => {
   const {
     isOpen: isRejectModalOpen,
     onOpen: onRejectModalOpen,
-    onClose: onRejectModalClose
+    onClose: onRejectModalClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isOnHoldOpen,
+    onOpen: onOnHoldOpen,
+    onClose: onOnHoldClose,
   } = useDisclosure();
 
   const approvePendingDoc = useApproveDoc();
   const rejectPendingDoc = useRejectDoc();
+  const holdDoc = useHoldDoctor();
+
   const navigate = useNavigate();
 
   const onSubmitForm = async () => {
     try {
       await rejectPendingDoc.mutateAsync({
         id: doctorProfileData?.data?.id?.toString() ?? "",
-        title_id: formMethods.getValues("title_id"),
-        remarks: formMethods.getValues("remarks")
+        remarks: formMethods.getValues("remarks"),
       });
       onRejectModalClose();
       toastSuccess("Doctor Rejected!");
       formMethods.reset();
-      navigate(NAVIGATION_ROUTES.DOCTOR_LIST);
+      navigate(NAVIGATION_ROUTES.DOCTOR_LIST_REGISTRATION);
     } catch (error) {
       toastFail("Doctor cannot be rejected. Try Again!!");
     }
   };
 
-  const RejectDoctorModal = () => {
+  const onHoldForm = async () => {
+    try {
+      await holdDoc.mutateAsync({
+        id: doctorProfileData?.data?.id?.toString() ?? "",
+        title_id: formMethods.getValues("title_id"),
+        remarks: formMethods.getValues("remarks"),
+      });
+      onRejectModalClose();
+      toastSuccess("Doctor On Hold!");
+      formMethods.reset();
+      navigate(NAVIGATION_ROUTES.DOCTOR_LIST_REGISTRATION);
+    } catch (error) {
+      toastFail("Doctor cannot be set to hold. Try Again!!");
+    }
+  };
+
+  const closeModal = () => {
     formMethods.reset();
     onRejectModalClose();
+    onOnHoldClose();
   };
 
   if (isLoading)
@@ -75,7 +104,7 @@ const DocProfileAdmin = () => {
           display: "block",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "25%"
+          marginTop: "25%",
         }}
       />
     );
@@ -105,6 +134,15 @@ const DocProfileAdmin = () => {
                   onClick={onRejectModalOpen}
                   sx={{ "&:hover": { bg: "#CC5F5F", color: "white" } }}
                 >
+                  REJECT &nbsp;
+                  <Icon as={RxCross1} />
+                </Button>
+                <Button
+                  bg={"#fab157"}
+                  color={"white"}
+                  m={"10px"}
+                  onClick={onOnHoldOpen}
+                >
                   ON HOLD &nbsp;
                   <Icon as={WarningIcon} />
                 </Button>
@@ -130,32 +168,64 @@ const DocProfileAdmin = () => {
         </TabPanels>
       </Tabs>
 
-      {/*TODO: make component Remarks for rejection */}
       <ModalComponent
-        isOpen={isRejectModalOpen}
-        onClose={RejectDoctorModal}
+        isOpen={isOnHoldOpen}
+        onClose={closeModal}
         approve
         reject
         size="xl"
         heading={
           <HStack>
             <svgs.logo_small />
-            <Text>Remarks for rejection</Text>
+            <Text>On Hold Reason</Text>
           </HStack>
         }
         footer={
           <HStack w="100%" gap={3}>
+            <Button variant="primaryOutline" onClick={closeModal} flex={1}>
+              Cancel
+            </Button>
             <Button
-              variant="primaryOutline"
-              onClick={RejectDoctorModal}
               flex={1}
+              onClick={formMethods.handleSubmit(onHoldForm)}
+              isLoading={rejectPendingDoc.isLoading}
             >
+              Done
+            </Button>
+          </HStack>
+        }
+        primaryText="Done"
+        secondaryText="Cancel"
+        otherAction={onRejectModalClose}
+      >
+        <FormProvider {...formMethods}>
+          <form onSubmit={formMethods.handleSubmit(onHoldForm)}>
+            <OnHoldForm />
+          </form>
+        </FormProvider>
+      </ModalComponent>
+
+      <ModalComponent
+        isOpen={isRejectModalOpen}
+        onClose={closeModal}
+        approve
+        reject
+        size="xl"
+        heading={
+          <HStack>
+            <svgs.logo_small />
+            <Text>Remarks For Rejection</Text>
+          </HStack>
+        }
+        footer={
+          <HStack w="100%" gap={3}>
+            <Button variant="primaryOutline" onClick={closeModal} flex={1}>
               Cancel
             </Button>
             <Button
               flex={1}
               onClick={formMethods.handleSubmit(onSubmitForm)}
-              isLoading={rejectPendingDoc.isLoading}
+              isLoading={holdDoc.isLoading}
             >
               Done
             </Button>

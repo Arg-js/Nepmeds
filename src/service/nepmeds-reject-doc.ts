@@ -1,19 +1,37 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 import { NepMedsResponse, api } from "./service-api";
 import { HttpClient } from "@nepMeds/service/service-axios";
+import { generatePath } from "react-router-dom";
 
-const rejectDoc = async ({
+const onHoldDoc = async ({
   id,
   remarks,
   title_id,
 }: {
   id: string;
-  remarks: string;
   title_id: string;
+  remarks: string;
 }) => {
+  return await HttpClient.post(generatePath(api.holdDoctor, { id }), {
+    remarks,
+    title_id,
+  });
+};
+
+export const useHoldDoctor = () => {
+  const queryClient = useQueryClient();
+  return useMutation(onHoldDoc, {
+    onSuccess: () => {
+      queryClient.invalidateQueries(api.registereddoctor);
+      queryClient.invalidateQueries(api.doctordetails);
+    },
+  });
+};
+
+const rejectDoc = async ({ id, remarks }: { id: string; remarks: string }) => {
   const response = await HttpClient.post(
     api.rejectsingledoctor.replace("{id}", id),
-    { remarks, title_id }
+    { remarks }
   );
   return response;
 };
@@ -24,6 +42,7 @@ export const useRejectDoc = () => {
   return useMutation(rejectDoc, {
     onSuccess: () => {
       queryClient.invalidateQueries(api.registereddoctor);
+      queryClient.invalidateQueries(api.doctordetails);
     },
   });
 };
