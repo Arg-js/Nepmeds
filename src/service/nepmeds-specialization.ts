@@ -95,18 +95,12 @@ const saveSpecialization = async (specializationInfo: {
   }
 };
 
-export const useSaveSpecialization = (
-  page_no: number,
-  pageSize: number,
-  name: string
-) => {
+export const useSaveSpecialization = () => {
   const queryClient = useQueryClient();
 
   return useMutation(saveSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
-      );
+      queryClient.invalidateQueries(api.specialization);
     },
   });
 };
@@ -120,18 +114,12 @@ const deleteSpecialization = async (specializationInfo: {
   return response;
 };
 
-export const useDeleteSpecialization = (
-  page_no: number,
-  pageSize: number,
-  name: string
-) => {
+export const useDeleteSpecialization = () => {
   const queryClient = useQueryClient();
 
   return useMutation(deleteSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
-      );
+      queryClient.invalidateQueries(api.specialization);
     },
   });
 };
@@ -181,18 +169,12 @@ const updateSpecialization = async (specializationInfo: {
   return response;
 };
 
-export const useUpdateSpecialization = (
-  page_no: number,
-  pageSize: number,
-  name: string
-) => {
+export const useUpdateSpecialization = () => {
   const queryClient = useQueryClient();
 
   return useMutation(updateSpecialization, {
     onSuccess: () => {
-      queryClient.invalidateQueries(
-        `${api.specialization}?page=${page_no}&page_size=${pageSize}&name=${name}`
-      );
+      queryClient.invalidateQueries(api.specialization);
     },
   });
 };

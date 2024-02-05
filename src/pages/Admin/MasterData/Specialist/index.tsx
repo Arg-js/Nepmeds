@@ -88,22 +88,10 @@ const Specializations = ({
     page_size: pageSize,
     name: debouncedInputValue,
   });
-  const saveSpecializationAction = useSaveSpecialization(
-    pageIndex + 1,
-    pageSize,
-    ""
-  );
-  const updateSpecializationAction = useUpdateSpecialization(
-    pageIndex + 1,
-    pageSize,
-    ""
-  );
+  const saveSpecializationAction = useSaveSpecialization();
+  const updateSpecializationAction = useUpdateSpecialization();
   // const deleteBulkSpecialization = useDeleteBulkSpecialization();
-  const deleteSpecializationAction = useDeleteSpecialization(
-    pageIndex + 1,
-    pageSize,
-    ""
-  );
+  const deleteSpecializationAction = useDeleteSpecialization();
 
   // const {
   //   isOpen: isBulkOpen,

@@ -83,8 +83,8 @@ const Symptoms = ({
     page_size: pageSize,
     name: debouncedInputValue,
   });
-  const saveSymptomAction = useSaveSymptoms(pageIndex + 1, pageSize, "");
-  const deleteSymptomAction = useDeleteSymptom(pageIndex + 1, pageSize, "");
+  const saveSymptomAction = useSaveSymptoms();
+  const deleteSymptomAction = useDeleteSymptom();
 
   const {
     isOpen: isDeleteModalOpen,
