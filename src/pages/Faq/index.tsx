@@ -19,8 +19,7 @@ import {
   useGetFaqList,
   useUpdateFaq,
 } from "@nepMeds/service/nepmeds-faq";
-import * as yup from "yup";
-import { yupResolver } from "@hookform/resolvers/yup";
+
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
 import { columns } from "./faqColumn";
 import { toastFail } from "@nepMeds/components/Toast";
@@ -29,17 +28,6 @@ import { useDebounce } from "@nepMeds/hooks/useDebounce";
 import SkeletonControl from "@nepMeds/components/Loader";
 import TableWrapper from "@nepMeds/components/TableWrapper";
 import SearchInput from "@nepMeds/components/Search";
-
-const schema = yup.object().shape({
-  question: yup
-    .string()
-    .required("Question is required")
-    .max(50, "Question can only be 50 characters long"),
-  answer: yup
-    .string()
-    .required("Answer is required")
-    .max(250, "Answer can only be 250 characters long"),
-});
 
 const defaultValues = {
   question: "",
@@ -61,7 +49,6 @@ const FAQ = () => {
 
   const formMethods = useForm({
     defaultValues,
-    resolver: yupResolver(schema),
   });
   const {
     register,

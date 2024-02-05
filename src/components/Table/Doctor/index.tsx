@@ -23,8 +23,12 @@ const doctorApprovalTabConfig = [
     heading: "Approved",
   },
   {
-    type: STATUSTYPE.rejected,
+    type: STATUSTYPE.completed,
     heading: "On-Hold Doctors",
+  },
+  {
+    type: STATUSTYPE.rejected,
+    heading: "Rejected Doctors",
   },
 ];
 
