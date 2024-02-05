@@ -103,7 +103,7 @@ const PatientFAQ = () => {
             )}
           </SimpleGrid>
           <MoreInfoSection
-            infoText={"contact our Officials Desk"}
+            infoText={"call our expert team at 9802345348"}
             btnText={"Get in Touch"}
           />
         </>

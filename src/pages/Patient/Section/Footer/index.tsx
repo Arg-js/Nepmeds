@@ -17,24 +17,24 @@ import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const FooterContents = [
   {
-    title: "How can we help you?",
+    title: "Need help?",
     contents: [
-      { title: "Return & Cancelation", link: "" },
+      {
+        title: "Reward Points",
+        link: "https://www.nepmeds.com.np/page/reward-point",
+      },
+      { title: "Contact Us", link: "https://www.nepmeds.com.np/contact-us" },
       { title: "FAQ’s", link: NAVIGATION_ROUTES.PATIENT.FAQ },
     ],
   },
   {
-    title: "For Doctor & Nurse",
-    contents: [
-      { title: "Consult Online", link: "" },
-      { title: "Register as a doctor", link: NAVIGATION_ROUTES.SIGNUP },
-    ],
-  },
-  {
-    title: "Know Us",
+    title: "Information",
     contents: [
       { title: "About Us", link: "https://www.nepmeds.com.np/page/aboutus" },
-      { title: "Contact Us", link: "https://www.nepmeds.com.np/contact-us" },
+      {
+        title: "Health Library",
+        link: "https://www.nepmeds.com.np/health-library",
+      },
       { title: "Careers", link: "https://www.nepmeds.com.np/page/career" },
       {
         title: "Terms and Condition",
@@ -46,17 +46,32 @@ const FooterContents = [
       },
     ],
   },
-  // TODO: add valid link to these footer elements
-  // {
-  //   title: "Social",
-  //   contents: ["Facebook", "Instagram", "Twitter", "Youtube", "LinkedIn"],
-  // },
+  {
+    title: "Social Links",
+    contents: [
+      { title: "Facebook", link: "https://facebook.com/nepmeds" },
+      { title: "Instagram", link: "https://www.instagram.com/nepmeds/" },
+      { title: "Twitter", link: "https://twitter.com/nepmeds" },
+      {
+        title: "Youtube",
+        link: "https://www.youtube.com/channel/UCANNmxTco0dYxWkl_YPYkQA",
+      },
+      { title: "LinkedIn", link: "https://www.linkedin.com/" },
+    ],
+  },
   // {
   //   title: "Don’t miss updates from us !",
   //   contents: [
   //     "Get an email subscription and lots of interesting news and other updates on health will be sent to you regularly.",
   //   ],
   // },
+  {
+    title: "For Doctor & Nurse",
+    contents: [
+      { title: "Consult Online", link: "" },
+      { title: "Register as a doctor", link: NAVIGATION_ROUTES.SIGNUP },
+    ],
+  },
 ];
 
 const PatientFooter: React.FC = () => {
@@ -67,16 +82,10 @@ const PatientFooter: React.FC = () => {
           <Grid
             templateColumns={{
               base: `1fr`,
-              md: `repeat(4,1fr)`,
+              md: `repeat(5,1fr)`,
             }}
             gap={10}
           >
-            <GridItem
-              cursor={"pointer"}
-              justifySelf={{ base: "center", md: "start" }}
-            >
-              <Image alt={"nepmeds logo"} src={images.logo} />
-            </GridItem>
             {FooterContents.map(footerContent => {
               return (
                 <GridItem key={footerContent.title}>
@@ -86,9 +95,9 @@ const PatientFooter: React.FC = () => {
                     gap={1}
                   >
                     <Text
-                      fontSize={"sm"}
+                      fontSize={"lg"}
                       fontWeight={700}
-                      color={colors.main}
+                      color={colors.black}
                       mb={1}
                     >
                       {footerContent.title}
@@ -96,7 +105,7 @@ const PatientFooter: React.FC = () => {
                     {footerContent.contents.map(content => {
                       return (
                         <Link
-                          fontSize={"sm"}
+                          fontSize={"md"}
                           fontWeight={500}
                           key={content.title}
                           textAlign={{ base: "center", md: "left" }}
@@ -110,6 +119,12 @@ const PatientFooter: React.FC = () => {
                 </GridItem>
               );
             })}
+            <GridItem
+              cursor={"pointer"}
+              justifySelf={{ base: "center", md: "start" }}
+            >
+              <Image alt={"nepmeds logo"} src={images.logo} />
+            </GridItem>
           </Grid>
           <Divider my={10} borderColor={colors.gray_text_header} />
           <Flex
@@ -117,16 +132,24 @@ const PatientFooter: React.FC = () => {
             direction={{ base: "column", md: "row" }}
             gap={3}
           >
-            <Flex direction={"column"} gap={3.5} alignItems={"center"}>
-              <Text fontWeight={600} fontSize={"sm"} color={colors.primary}>
+            <Flex
+              direction={"column"}
+              gap={3.5}
+              alignItems={{ base: "center", lg: "flex-start" }}
+            >
+              <Text fontWeight={900} fontSize={"md"} color={colors.black}>
                 Download App
               </Text>
               <Flex gap={2.5} direction={{ base: "column", lg: "row" }}>
                 <AppStoreIcon />
               </Flex>
             </Flex>
-            <Flex direction={"column"} gap={3.5} alignItems={"center"}>
-              <Text fontWeight={600} fontSize={"sm"} color={colors.primary}>
+            <Flex
+              direction={"column"}
+              gap={3.5}
+              alignItems={{ base: "center", lg: "flex-start" }}
+            >
+              <Text fontWeight={900} fontSize={"md"} color={colors.black}>
                 Payment Method
               </Text>
               <Flex
