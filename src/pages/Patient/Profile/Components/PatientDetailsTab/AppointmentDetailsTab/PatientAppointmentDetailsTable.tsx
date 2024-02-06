@@ -110,7 +110,11 @@ const PatientDetailsTable = ({ type }: { type?: STATUSTYPE }) => {
         />
       </ModalComponent>
 
-      <Grid display={"flex"} justifyContent={"space-between"}>
+      <Grid
+        display={"flex"}
+        flexDirection={{ base: "column", md: "row" }}
+        justifyContent={"space-between"}
+      >
         <Text variant="tableHeading">Appointment Details</Text>
         <SearchInput
           setSearchValue={setSearchValue}

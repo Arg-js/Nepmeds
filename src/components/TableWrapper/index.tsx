@@ -4,7 +4,13 @@ import { ReactNode } from "react";
 
 const TableWrapper = ({ children }: { children: ReactNode }) => {
   return (
-    <Box margin="5" borderRadius="12px" py="4" px="9" bgColor={colors.white}>
+    <Box
+      margin="5"
+      borderRadius="12px"
+      py="4"
+      px={{ base: "2", md: "3", lg: "9" }}
+      bgColor={colors.white}
+    >
       {children}
     </Box>
   );

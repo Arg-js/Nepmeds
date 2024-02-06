@@ -1,7 +1,6 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   HStack,
@@ -301,7 +300,7 @@ const Header: React.FC<{
           ) : (
             <Flex
               cursor={"pointer"}
-              display={{ base: "none", md: "flex" }}
+              display={"flex"}
               alignItems={"center"}
               gap={3}
             >
@@ -328,14 +327,15 @@ const Header: React.FC<{
         </Flex>
 
         {/\/patient\/doctor-list/.test(window.location.href) && (
-          <Box
+          <Flex
             display={{ base: "block", md: "none" }}
+            alignSelf={"center"}
             ref={btnRef}
             onClick={onClick}
             cursor={"pointer"}
           >
             <HamburgerMenuIcon />
-          </Box>
+          </Flex>
         )}
         {/* ENDS */}
       </Flex>

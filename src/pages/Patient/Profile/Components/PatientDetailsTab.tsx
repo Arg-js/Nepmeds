@@ -8,7 +8,11 @@ const PatientDetailsTab = () => {
   const [tabIndex, setTabIndex] = useState(0);
   return (
     <TableWrapper>
-      <Tabs index={tabIndex} onChange={index => setTabIndex(index)}>
+      <Tabs
+        index={tabIndex}
+        onChange={index => setTabIndex(index)}
+        overflowY={"auto"}
+      >
         <TabList borderBottom={"none"} mb={4}>
           {/* TODO: find better way of doing this */}
           <Tab
@@ -24,7 +28,7 @@ const PatientDetailsTab = () => {
             _selected={{ color: "white", bg: colors.primary }}
             bg={colors.grey_light}
             color={colors.light_gray}
-            width={"10%"}
+            width={{ base: "auto", lg: "10%" }}
           >
             Invoices
           </Tab>
