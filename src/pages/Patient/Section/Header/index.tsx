@@ -1,4 +1,4 @@
-import { CheckIcon } from "@chakra-ui/icons";
+import { CheckIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import {
   Button,
   Flex,
@@ -18,7 +18,6 @@ import {
   AmbulanceIcon,
   BloodBankIcon,
   BmiIcon,
-  DownIcon,
   HamburgerMenuIcon,
   HealthLibrary,
   HospitalIcon,
@@ -318,7 +317,7 @@ const Header: React.FC<{
                   >
                     {data?.name || "N/A"}
                   </Text>
-                  <DownIcon />
+                  <TriangleDownIcon w={3} h={2} color={colors.gray_text} />
                 </MenuButton>
                 <MenuList>
                   <MenuItem
