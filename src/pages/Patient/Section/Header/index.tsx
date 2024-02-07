@@ -218,7 +218,7 @@ const Header: React.FC<{
               )}
 
               <Text fontWeight={"bold"} fontSize={"xl"}>
-                {doctorInfo?.doctor_name}
+                Dr. {doctorInfo?.doctor_name}
               </Text>
             </Flex>
 

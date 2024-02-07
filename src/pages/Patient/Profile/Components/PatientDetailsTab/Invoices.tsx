@@ -12,6 +12,7 @@ import { DataTable } from "@nepMeds/components/DataTable";
 import TableActions from "@nepMeds/components/DataTable/TableActions";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import TableWrapper from "@nepMeds/components/TableWrapper";
+import { PAYMENTMODE } from "@nepMeds/config/enum";
 import { getFullDate, getTime } from "@nepMeds/helper/dateTImeConverter";
 import {
   IInvoices,
@@ -159,6 +160,10 @@ const Invoices = () => {
               <Text variant="md600" color={colors.black_60}>
                 {invoicesDetails?.order_id}
               </Text>
+              <Text>Transaction Amount :</Text>
+              <Text variant="md600" color={colors.black_60}>
+                {invoicesDetails?.transaction_amount}
+              </Text>
             </Grid>
             <Divider my={3} />
             <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
@@ -172,15 +177,15 @@ const Invoices = () => {
               </Text>
               <Text>Payment Type :</Text>
               <Text variant="md600" color={colors.black_60}>
-                {invoicesDetails?.payment_type}
-              </Text>
-              <Text>Payment Status :</Text>
-              <Text variant="md600" color={colors.black_60}>
-                {invoicesDetails?.transaction_amount}
+                {
+                  PAYMENTMODE[
+                    invoicesDetails?.payment_type as keyof typeof PAYMENTMODE
+                  ]
+                }
               </Text>
               <Text>Discounted Amount :</Text>
               <Text variant="md600" color={colors.black_60}>
-                {invoicesDetails?.discounted_amount}
+                {invoicesDetails?.discounted_amount ?? "-"}
               </Text>
             </Grid>
           </>
