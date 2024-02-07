@@ -1,6 +1,5 @@
 import { CheckIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Button,
   Flex,
   HStack,
@@ -19,6 +18,7 @@ import {
   AmbulanceIcon,
   BloodBankIcon,
   BmiIcon,
+  DownIcon,
   HamburgerMenuIcon,
   HealthLibrary,
   HospitalIcon,
@@ -44,7 +44,7 @@ import { MutableRefObject, useState } from "react";
 import { RxCrossCircled } from "react-icons/rx";
 import { Link, useNavigate } from "react-router-dom";
 import ring from "@nepMeds/assets/sound/ring.mp3";
-import { appendServerUrl, getImageUrl } from "@nepMeds/utils/getImageUrl";
+import { getImageUrl } from "@nepMeds/utils/getImageUrl";
 import { useGetAllNotification } from "@nepMeds/service/nepmeds-notification";
 import NotificationDropDown from "@nepMeds/components/Notification/NotificationDropDown";
 import { images } from "@nepMeds/assets/images";
@@ -309,8 +309,16 @@ const Header: React.FC<{
                   sx={{
                     "&>span": { display: "flex", alignItems: "center", gap: 2 },
                   }}
+                  _hover={{ textDecoration: "underline" }}
                 >
-                  <Avatar src={appendServerUrl(data?.profile_picture ?? "")} />
+                  <Text
+                    cursor={"pointer"}
+                    variant={"sm500"}
+                    color={colors.gray_text}
+                  >
+                    {data?.name || "N/A"}
+                  </Text>
+                  <DownIcon />
                 </MenuButton>
                 <MenuList>
                   <MenuItem

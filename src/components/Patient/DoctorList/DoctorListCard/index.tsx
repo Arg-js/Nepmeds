@@ -69,28 +69,23 @@ const DoctorListCard: React.FC<{
           ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
           : "none"
       }
+      borderRadius={"5px"}
+      sx={{
+        "&:hover": {
+          border: `1px solid ${colors.primary}`,
+        },
+      }}
     >
-      <Card
-        sx={{
-          "&:hover": {
-            boxShadow: `${
-              size === Size.lg &&
-              ` rgba(0, 0, 0, 0.05) 0px 10px 24px 0px, ${colors.primary} 0px 0px 0px 0.5px`
-            }`,
-          },
-        }}
-        variant={"elevated"}
-        w={"full"}
-      >
+      <Card variant={"elevated"} w={"full"}>
         <Grid
           templateColumns={size === Size.sm ? "1fr" : "repeat(5, 1fr)}"}
           templateRows={size === Size.sm ? "1fr 1fr" : "1fr"}
           h={size === Size.sm ? "340px" : "176px"}
-          borderRadius={0.5}
         >
           <GridItem colSpan={2} h={size === Size.sm ? "159px" : "inherit"}>
             {/* TODO: what happens when width and height not provided in image */}
             <Image
+              borderTopLeftRadius={"5px"}
               src={data.profile_picture ?? doctorImage}
               alt="doctorImage"
               w={"full"}
