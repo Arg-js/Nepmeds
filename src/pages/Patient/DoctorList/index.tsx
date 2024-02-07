@@ -62,7 +62,7 @@ const DoctorList = () => {
   // PAGINATION
   const [pageParams, setPageParams] = useState({
     page: 1,
-    limit: 5,
+    limit: 10,
   });
   // PAGINATION ENDS
 
@@ -180,7 +180,28 @@ const DoctorList = () => {
 
             {/* Doctor card */}
             <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 4 }}>
-              <Box>
+              <Box
+                p={3}
+                sx={{
+                  h: "100vh",
+                  "@supports (min-height: 100dvh)": {
+                    h: "100dvh",
+                  },
+                }}
+                css={{
+                  "&::-webkit-scrollbar": {
+                    width: "4px",
+                  },
+                  "&::-webkit-scrollbar-track": {
+                    width: "6px",
+                  },
+                  "&::-webkit-scrollbar-thumb": {
+                    background: `${colors.light_gray}`,
+                    borderRadius: "24px",
+                  },
+                  overflowY: "scroll",
+                }}
+              >
                 <>
                   {isLoading ? (
                     Array.from({ length: 5 }, (_, index) => (

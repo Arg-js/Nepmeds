@@ -1,7 +1,7 @@
 import { useMutation } from "react-query";
 import { api } from "./service-api";
 import { HttpClient } from "./service-axios";
-import { toastFail, toastSuccess } from "./service-toast";
+import { toastFail } from "./service-toast";
 
 const authenticatePatient = async ({
   patientToken,
@@ -15,7 +15,6 @@ const authenticatePatient = async ({
 };
 const useAuthenticatePatient = () => {
   return useMutation(authenticatePatient, {
-    onSuccess: () => toastSuccess("Login Successful!"),
     onError: () => toastFail("Something Went wrong!"),
   });
 };
