@@ -312,7 +312,8 @@ const Header: React.FC<{
                 >
                   <Text
                     cursor={"pointer"}
-                    variant={"sm500"}
+                    fontWeight={"600"}
+                    fontSize={"15px"}
                     color={colors.gray_text}
                   >
                     {data?.name || "N/A"}
