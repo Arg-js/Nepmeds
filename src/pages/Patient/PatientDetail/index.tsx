@@ -140,7 +140,8 @@ export const columns = ({
     },
     {
       header: "Actions",
-      accessorKey: "action",
+      id: "action",
+      accessorKey: "id",
       cell: ({
         row,
       }: CellProps<{
