@@ -59,7 +59,28 @@ const NotificationDropDown = ({
             >
               Actions
             </MenuButton>
-            <MenuList minW={"300"}>
+            <MenuList
+              maxW={{ base: "300px", md: "450px" }}
+              overflowY={"scroll"}
+              height={"100vh"}
+              css={{
+                scrollbarGutter: "stable",
+                "&::-webkit-scrollbar": {
+                  width: "0.2rem",
+                  height: "0.6rem",
+                  position: "absolute",
+                },
+                "&::-webkit-scrollbar-track": {
+                  position: "absolute",
+                  background: "#fff",
+                  opacity: 0.1,
+                },
+                "&::-webkit-scrollbar-thumb": {
+                  background: "#e9d8fd",
+                  borderRadius: 20,
+                },
+              }}
+            >
               {notificationData?.map(notification => (
                 <Box
                   p={3}

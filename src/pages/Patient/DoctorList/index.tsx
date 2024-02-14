@@ -204,7 +204,7 @@ const DoctorList = () => {
               >
                 <>
                   {isLoading ? (
-                    Array.from({ length: 5 }, (_, index) => (
+                    Array.from({ length: 4 }, (_, index) => (
                       <DoctorCardSkeleton key={index} />
                     ))
                   ) : doctorData?.results?.length ? (

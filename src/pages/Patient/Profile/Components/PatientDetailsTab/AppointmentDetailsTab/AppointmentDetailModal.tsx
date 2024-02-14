@@ -101,7 +101,10 @@ const PatientDetailModal = ({
         )}
         <Divider />
         <Text variant={"lg600"}>Payment Detail</Text>
-        <Grid templateColumns={"repeat(4, 1fr)"} gap={3}>
+        <Grid
+          templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
+          gap={3}
+        >
           <Text variant="sm400" color={colors.black_60}>
             Rate:
           </Text>
@@ -123,7 +126,11 @@ const PatientDetailModal = ({
           <Text variant="sm400" color={colors.black_60}>
             Transaction ID:
           </Text>
-          <Text variant="md600" color={colors.black_60}>
+          <Text
+            variant="md600"
+            color={colors.black_60}
+            sx={{ wordBreak: "break-word" }}
+          >
             {/* TODO: transaction_detail is sometimes not available */}
             {patientDetail?.transaction_detail?.transaction_id ?? "-"}
           </Text>

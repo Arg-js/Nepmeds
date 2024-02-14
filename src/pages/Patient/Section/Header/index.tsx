@@ -21,6 +21,7 @@ import {
   HamburgerMenuIcon,
   HealthLibrary,
   HospitalIcon,
+  PharmacyIcon,
   SignInIcon,
 } from "@nepMeds/assets/svgs";
 import ModalComponent from "@nepMeds/components/Form/ModalComponent";
@@ -73,6 +74,11 @@ const HeaderItems = [
     icon: <HealthLibrary />,
     text: "Health Library",
     link: "https://www.nepmeds.com.np/health-library",
+  },
+  {
+    icon: <PharmacyIcon />,
+    text: "pharmacy",
+    link: "https://www.nepmeds.com.np/category/pharmacy",
   },
 ];
 
