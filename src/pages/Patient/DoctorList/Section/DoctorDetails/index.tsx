@@ -63,6 +63,7 @@ const defaultValues = {
   // symptoms: [{ label: "", value: "" }],
   description: "",
   // status: "",
+  age: "",
   availabilityDate: new Date(Date.now()).toISOString().split("T")[0],
   coupon: "",
 };
@@ -73,6 +74,10 @@ const schema = Yup.object({
     .required("This field is required")
     .min(1, "This field is required"),
   description: Yup.string().required("This field is required"),
+  age: Yup.number()
+    .max(115, "age must be at most 115 years")
+    .positive("age must be greater than zero")
+    .typeError("age must be a number"),
 });
 
 const DoctorDetails: React.FC<{
@@ -454,7 +459,14 @@ const DoctorDetails: React.FC<{
                           { label: "Others", value: "3" },
                         ]}
                       />
-
+                      <FormControl
+                        control={"input"}
+                        label={"Enter age:"}
+                        name={"age"}
+                        register={register}
+                        error={errors?.age?.message ?? ""}
+                        required
+                      />
                       <FormControl
                         control={"multiSelect"}
                         label={"Select Health Issue"}
@@ -483,7 +495,6 @@ const DoctorDetails: React.FC<{
                         }}
                         error={errors?.description?.message ?? ""}
                         register={register}
-                        required
                       />
                       <Box>
                         <FormLabel

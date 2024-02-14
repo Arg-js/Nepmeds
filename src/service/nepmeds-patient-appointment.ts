@@ -10,6 +10,7 @@ export interface IPatientAppointmentBasicDetails {
   gender: string;
   description: string;
   status?: string;
+  age: string;
 }
 
 interface IPostPatientAppointmentResponse extends IPatientAppointmentReqBody {

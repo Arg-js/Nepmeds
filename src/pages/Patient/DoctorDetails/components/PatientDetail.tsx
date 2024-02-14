@@ -150,8 +150,8 @@ const PatientDetail = ({
                   required
                 />
               </Box>
-              <Grid gap={4} mb={4} templateColumns={"repeat(5,1fr)"}>
-                <GridItem gridColumn={1}>
+              <Grid gap={4} mb={4} templateColumns={"repeat(3,1fr)"}>
+                <GridItem gridColumn={1} colSpan={2}>
                   <FormControl
                     control={"radio"}
                     label={"Choose Gender"}
@@ -164,6 +164,14 @@ const PatientDetail = ({
                     ]}
                   />
                 </GridItem>
+                <FormControl
+                  control={"input"}
+                  label={"Enter age:"}
+                  name={"age"}
+                  register={formProps.register}
+                  error={formProps.formState.errors?.age?.message ?? ""}
+                  required
+                />
               </Grid>
               <Box mb={4}>
                 <FormControl

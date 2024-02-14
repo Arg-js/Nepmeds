@@ -49,6 +49,8 @@ const ViewModal: React.FC<{ patient: IGetAppointmentReqRes | undefined }> = ({
           label={"Gender"}
           content={patient?.gender ? getGender(patient.gender) : ""}
         />
+
+        <InfoSection label={"age"} content={patient?.age ?? ""} />
       </Flex>
       <Divider />
       <Flex direction={"column"} gap={2}>
