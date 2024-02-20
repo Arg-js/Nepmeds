@@ -296,10 +296,11 @@ const Header: React.FC<{
                   import.meta.env.VITE_APP_NEPMEDS_LOGIN_ROUTE)
               }
               display={"flex"}
+              alignItems={"flex-end"}
             >
               <SignInIcon />
               <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
-                Login/SignUp
+                Account
               </Text>
             </Flex>
           ) : (

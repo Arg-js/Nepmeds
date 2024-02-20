@@ -196,7 +196,7 @@ const DoctorList = () => {
                     width: "6px",
                   },
                   "&::-webkit-scrollbar-thumb": {
-                    background: `${colors.light_gray}`,
+                    background: `${colors.light_blue}`,
                     borderRadius: "24px",
                   },
                   overflowY: "scroll",

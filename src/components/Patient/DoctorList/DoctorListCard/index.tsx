@@ -65,14 +65,13 @@ const DoctorListCard: React.FC<{
       onClick={onDoctorSelected}
       cursor="pointer"
       boxShadow={
-        doctorId === data.id
-          ? ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.primary} 0px 0px 0px 0.5px`
-          : "none"
+        doctorId === data.id ? `${colors.light_blue} 0px 0px 0px 2px` : "none"
       }
       borderRadius={"5px"}
       sx={{
         "&:hover": {
-          border: `1px solid ${colors.primary}`,
+          // border: `1px solid ${colors.primary}`,
+          boxShadow: ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.gray_border} 1px 1px 1px 1px`,
         },
       }}
     >

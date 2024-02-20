@@ -8,8 +8,6 @@ import {
   Checkbox,
   Divider,
   Flex,
-  Grid,
-  GridItem,
   Input,
   InputGroup,
   InputLeftElement,
@@ -77,7 +75,7 @@ const DoctorListFilter: React.FC<{
   paginationParams: IPaginationParams;
   dateParams: IDateParams;
   reference: IRefIterface;
-}> = ({ filterParams, dateParams, paginationParams, reference }) => {
+}> = ({ filterParams, paginationParams, reference }) => {
   const location = useLocation();
   const state = location.state as ILocationState;
 
@@ -209,7 +207,7 @@ const DoctorListFilter: React.FC<{
           </Flex>
           <Divider />
           {/* TODO: the content will overflow with max-content */}
-          <Grid
+          {/* <Grid
             templateColumns={{ md: "1fr", xl: "max-content 1fr" }}
             gap={4}
             mb={4}
@@ -262,7 +260,7 @@ const DoctorListFilter: React.FC<{
                 borderRadius={"6px"}
               />
             </GridItem>
-          </Grid>
+          </Grid> */}
 
           {/*  */}
           <Accordion defaultIndex={[0, 1, 2]} allowMultiple>
@@ -334,7 +332,7 @@ const DoctorListFilter: React.FC<{
                         width: "6px",
                       },
                       "&::-webkit-scrollbar-thumb": {
-                        background: `${colors.light_gray}`,
+                        background: `${colors.light_blue}`,
                         borderRadius: "24px",
                       },
                       overflowY: "scroll",

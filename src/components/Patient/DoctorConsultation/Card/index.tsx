@@ -27,6 +27,13 @@ const Card: React.FC<{
       mb={1}
       pb={4}
       cursor={"pointer"}
+      sx={{
+        "&:hover": {
+          // border: `1px solid ${colors.primary}`,
+          boxShadow: ` rgba(0, 0, 0, 0.05) 0px 10px 24px, ${colors.gray_border} 0px 0px 0px 0.5px`,
+        },
+      }}
+      borderRadius={"5px"}
     >
       <Flex gap={3} direction={"column"}>
         <Image
