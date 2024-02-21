@@ -297,9 +297,23 @@ const Header: React.FC<{
               }
               display={"flex"}
               alignItems={"flex-end"}
+              sx={{
+                "&:hover": {
+                  color: colors.primary,
+                },
+              }}
             >
               <SignInIcon />
-              <Text fontWeight={500} fontSize={"sm"} color={colors.black}>
+              <Text
+                fontWeight={600}
+                fontSize={"sm"}
+                color={colors.black}
+                sx={{
+                  "&:hover": {
+                    color: colors.primary,
+                  },
+                }}
+              >
                 Account
               </Text>
             </Flex>
