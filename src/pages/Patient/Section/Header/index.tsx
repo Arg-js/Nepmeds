@@ -306,8 +306,8 @@ const Header: React.FC<{
               <SignInIcon />
               <Text
                 fontWeight={600}
-                fontSize={"sm"}
-                color={colors.black}
+                fontSize={"15px"}
+                color={colors.gray_55}
                 sx={{
                   "&:hover": {
                     color: colors.primary,
