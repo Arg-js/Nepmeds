@@ -125,6 +125,7 @@ const EditPrimary = ({
         gender: getValues("gender"),
         mobile_number: getValues("mobile_number"),
         date_of_birth: getValues("date_of_birth"),
+        email: getValues("email"),
       };
 
       const doctorProfile = {
