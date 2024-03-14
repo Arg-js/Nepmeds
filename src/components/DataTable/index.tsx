@@ -229,7 +229,7 @@ export function DataTable({
                   {row.getVisibleCells().map(cell => {
                     return (
                       <Td key={cell.id} pl={4}>
-                        {cell.getValue()
+                        {cell.getValue() || cell.getValue() === false
                           ? flexRender(
                               cell.column.columnDef.cell,
                               cell.getContext()

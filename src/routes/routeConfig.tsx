@@ -3,6 +3,7 @@ import { Navigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "./routes.constant";
 import PatientHistory from "@nepMeds/pages/Admin/PatientHistory";
 import PatientHistoryDetails from "@nepMeds/pages/Admin/PatientHistory/PatientHistoryDetails";
+import VisaPayment from "@nepMeds/pages/Payment/Component/VisaPayment";
 
 const Appointment = lazy(() => import("@nepMeds/pages/Doctor/Appointment"));
 const DoctorDetails = lazy(
@@ -143,6 +144,7 @@ export const openRoutes = [
     path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
     element: <DoctorDetails />,
   },
+
   {
     path: NAVIGATION_ROUTES.PATIENT.FAQ,
     element: <PatientFAQ />,
@@ -233,6 +235,10 @@ export const paientRoutes = [
   {
     path: `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/:id`,
     element: <DoctorDetails />,
+  },
+  {
+    path: `${NAVIGATION_ROUTES.VISA_PAYMENT}`,
+    element: <VisaPayment />,
   },
   {
     path: NAVIGATION_ROUTES.PATIENT.RESCHEDULE_APPOINTMENT,

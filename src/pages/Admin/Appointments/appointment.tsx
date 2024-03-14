@@ -132,7 +132,8 @@ const Appointment = () => {
                           color={colors.primary}
                           textTransform={"capitalize"}
                         >
-                          Dr. {appointmentDetail?.doctor_detail?.doctor_name}
+                          {appointmentDetail?.doctor_detail?.title}{" "}
+                          {appointmentDetail?.doctor_detail?.doctor_name}
                         </Text>
                       </Flex>
                       <Heading size={"sx"}>

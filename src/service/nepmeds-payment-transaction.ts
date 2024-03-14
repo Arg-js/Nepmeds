@@ -69,3 +69,31 @@ const esewaPayment = async (paymentMethods: IEsewaToBackendPost) => {
 export const useCreateEsewaPaymentMethods = () => {
   return useMutation(esewaPayment);
 };
+
+export interface IBankToBackendRes {
+  userInfo: {
+    name: string;
+    email: string;
+    state: string;
+    address: string;
+  };
+  businessName: string;
+  currency: string;
+  price: string;
+  callbackUrl: {
+    successUrl: string;
+    failUrl: string;
+  };
+}
+
+const bankPayment = async (paymentMethods: IEsewaToBackendPost) => {
+  const response = await HttpClient.post<NepMedsResponse<IBankToBackendRes>>(
+    api.transaction.bank,
+    paymentMethods
+  );
+  return response;
+};
+
+export const useCreateBankPaymentMethods = () => {
+  return useMutation(bankPayment);
+};

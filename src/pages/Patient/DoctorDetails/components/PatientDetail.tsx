@@ -49,7 +49,6 @@ interface PatientDetailProps {
 }
 
 const PatientDetail = ({
-  doctorList,
   setFormState,
   formProps,
   bookedDates,
@@ -86,31 +85,6 @@ const PatientDetail = ({
         </Flex>
         <VStack display={"start"}>
           <Box marginBottom={"12px"}>
-            <Text
-              fontWeight={600}
-              fontSize="md"
-              mb="4px"
-              textTransform={"capitalize"}
-            >
-              {doctorList?.title}. {doctorList?.name}
-            </Text>
-            <Flex>
-              {doctorList?.specialization_names?.map((speciality, index) => {
-                return (
-                  <Text key={speciality.id} fontSize={"sm"} fontWeight={500}>
-                    {speciality.name}{" "}
-                    {index !== doctorList?.specialization_names.length - 1 &&
-                      ` - `}
-                  </Text>
-                );
-              })}
-            </Flex>
-            <Flex my={"3px"} fontSize={"sm"} fontWeight={500}>
-              <Text>NMC No: &nbsp;</Text>
-              <Text color={colors.primary}>
-                {doctorList?.doctor_nmc_info ?? "N/A"}
-              </Text>
-            </Flex>
             <Text variant={"small600"} my="4px">
               Selected Date
             </Text>
@@ -164,14 +138,16 @@ const PatientDetail = ({
                     ]}
                   />
                 </GridItem>
-                <FormControl
-                  control={"input"}
-                  label={"Enter age:"}
-                  name={"age"}
-                  register={formProps.register}
-                  error={formProps.formState.errors?.age?.message ?? ""}
-                  required
-                />
+                <GridItem gridColumn={1} colSpan={2}>
+                  <FormControl
+                    control={"input"}
+                    label={"Enter age:"}
+                    name={"age"}
+                    register={formProps.register}
+                    error={formProps.formState.errors?.age?.message ?? ""}
+                    required
+                  />
+                </GridItem>
               </Grid>
               <Box mb={4}>
                 <FormControl

@@ -3,6 +3,7 @@ import {
   IEsewaToBackendPost,
   IEsewaToBackendRes,
   IKhaltiPost,
+  useCreateBankPaymentMethods,
   useCreateEsewaPaymentMethods,
   useCreateKhaltiPaymentMethods,
 } from "@nepMeds/service/nepmeds-payment-transaction";
@@ -18,6 +19,7 @@ interface KhaltiProps {
 function usePaymentTransaction() {
   const khaltiPay = useCreateKhaltiPaymentMethods();
   const esewaPay = useCreateEsewaPaymentMethods();
+  const bankPay = useCreateBankPaymentMethods();
 
   const handleKhaltiClick = async ({ appointments, product }: KhaltiProps) => {
     const payload = {
@@ -72,11 +74,23 @@ function usePaymentTransaction() {
     }
   };
 
+  const handleBankClick = async (data: IEsewaToBackendPost) => {
+    try {
+      const res = await bankPay.mutateAsync(data);
+      return res;
+    } catch (e) {
+      const error = serverErrorResponse(e);
+      toastFail(error);
+    }
+  };
+
   return {
     handleKhaltiClick,
     khaltiLoading: khaltiPay.isLoading,
     handleEsewaClick,
     esewaLoading: esewaPay.isLoading,
+    handleBankClick,
+    bankLoading: bankPay.isLoading,
   };
 }
 

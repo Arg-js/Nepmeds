@@ -7,6 +7,10 @@ interface ImportMetaEnv {
   readonly VITE_APP_PUSHER_SUBSCRIBE_CHANNEL: string;
   readonly VITE_APP_PUSHER_SUBSCRIBE_EVENT: string;
   readonly VITE_APP_ESEWA_URL: string;
+  readonly VITE_APP_PAP_INFO: string;
+  readonly VITE_APP_OPR_KEY: string;
+  readonly VITE_APP_INS_KEY: string;
+  readonly VITE_APP_VISA_BUNDLE_URL: string;
 }
 
 interface ImportMeta {

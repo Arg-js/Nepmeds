@@ -393,7 +393,7 @@ const DoctorDetails: React.FC<{
                           fontSize={"md"}
                           textTransform="capitalize"
                         >
-                          DR. {doctorInfo?.name}
+                          {doctorInfo?.title} {doctorInfo?.name}
                         </Text>
                         <Text fontWeight={400} fontSize={"xs"}>
                           {doctorInfo?.specialization_names &&
