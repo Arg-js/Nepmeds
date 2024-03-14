@@ -74,6 +74,7 @@ const Invoices = () => {
                 badgeText: {
                   "1": "Esewa",
                   "2": "Khalti",
+                  "3": "Bank",
                 },
               }}
             />

@@ -107,7 +107,7 @@ const DoctorDetailView = ({
                     textAlign={"center"}
                     textTransform={"capitalize"}
                   >
-                    Dr. {doctorList?.name}
+                    {doctorList?.title} {doctorList?.name}
                   </Flex>
                 </Flex>
 

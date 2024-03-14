@@ -52,9 +52,10 @@ export const NAVIGATION_ROUTES = {
   },
   PATIENT_PROFILE: "/patient/profile",
   VIDEOCALL: "/video-call",
-  NO_MATCH: "*",
-
+  VISA_PAYMENT: "/patient/doctor-consultation/visa-payment",
   PAYMENTS: "/payment",
   PAYMENT_SUCCESS: "/payment-success",
   PAYMENT_FAILURE: "/payment-failure",
+
+  NO_MATCH: "*",
 };

@@ -187,6 +187,7 @@ export const api = {
 
   transaction: {
     khalti: "/transaction/khalti-initiate/",
+    bank: "/transaction/bank-initiate/",
     esewa: "/transaction/esewa-initiate/",
     payment_history: "/transaction/get-payment-history/",
     payment_history_admin: "/transaction/get-payment-history-admin/",
