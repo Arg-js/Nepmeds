@@ -1,3 +1,4 @@
 .svg
 *.css
 dist
+src/assets/js/*.js

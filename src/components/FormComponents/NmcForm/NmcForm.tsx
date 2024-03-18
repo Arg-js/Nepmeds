@@ -93,13 +93,13 @@ export const NmcForm = ({ data }: { data?: IProp }) => {
         </GridItem>
         <SimpleGrid columns={{ base: 1, lg: 3 }} mt={4} mb={8} gap={4}>
           <FloatingLabelInput
-            label="NMC No."
+            label="NMC/ NHPC/ NAMC No."
             name="nmc.nmc_number"
             register={register}
             required
             style={{ background: colors.forminput, border: "none" }}
             rules={{
-              required: "NMC No. is required.",
+              required: "NMC/ NHPC/ NAMC No. is required.",
             }}
             error={errors.nmc?.nmc_number?.message?.toString()}
           />
