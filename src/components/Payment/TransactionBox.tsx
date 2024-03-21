@@ -47,7 +47,19 @@ const options = {
     name: true,
     email: true,
     state: true,
+    city: true,
     address: true,
+    zipcode: true,
+    country: true,
+  },
+  disableFields: {
+    name: false,
+    email: false,
+    state: false,
+    city: false,
+    address: false,
+    zipcode: false,
+    country: false,
   },
 
   onError: () => {
