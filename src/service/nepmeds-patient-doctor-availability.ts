@@ -22,6 +22,7 @@ interface IGetAvailability {
 
 interface IAvailabilityRes {
   availability: IAvailability[];
+  next_availability?: IAvailability;
 }
 
 const getAvailability = async ({ id, target_date }: IGetAvailability) => {
@@ -41,7 +42,7 @@ export const useGetAvailability = ({ id, target_date }: IGetAvailability) => {
     () => getAvailability({ id, target_date }),
     {
       enabled: !!id && !!target_date,
-      select: ({ data }) => data?.data?.availability,
+      select: ({ data }) => data?.data,
       onError: (error: AxiosError<{ message: string; error: string }>) =>
         toastFail(error.message ?? "Something went wrong"),
     }
@@ -97,7 +98,7 @@ export const useGetRescheduleAvailability = ({
     () => getRescheduleAvailability({ id, target_date }),
     {
       enabled: !!id && !!target_date,
-      select: ({ data }) => data?.data?.availability,
+      select: ({ data }) => data?.data,
     }
   );
 };

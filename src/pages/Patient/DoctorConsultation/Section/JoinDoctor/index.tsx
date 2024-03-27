@@ -1,22 +1,11 @@
-import {
-  Button,
-  Grid,
-  GridItem,
-  HStack,
-  Image,
-  Text,
-  VStack,
-  useDisclosure,
-} from "@chakra-ui/react";
+import { Button, Grid, GridItem, Image, Text, VStack } from "@chakra-ui/react";
 import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBox";
 import { colors } from "@nepMeds/theme/colors";
 import { images } from "@nepMeds/assets/images";
-import ModalComponent from "@nepMeds/components/Form/ModalComponent";
 import { useNavigate } from "react-router-dom";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const JoinDoctor = () => {
-  const { isOpen, onClose, onOpen } = useDisclosure();
   const navigate = useNavigate();
 
   return (
@@ -44,7 +33,7 @@ const JoinDoctor = () => {
                 fontWeight={600}
                 fontSize={"md"}
                 variant={"primary"}
-                onClick={onOpen}
+                onClick={() => navigate(NAVIGATION_ROUTES.SIGNUP)}
                 rounded={"none"}
               >
                 JOIN US
@@ -53,29 +42,6 @@ const JoinDoctor = () => {
           </GridItem>
         </Grid>
       </WrapperBox>
-      <ModalComponent
-        heading={
-          <HStack>
-            <Image src={images.smallLogo} width={"30px"} />
-
-            <Text>Join Us as A Doctor</Text>
-          </HStack>
-        }
-        isOpen={isOpen}
-        onClose={onClose}
-        footer={
-          <HStack w="100%" justifyContent={"center"} gap={3}>
-            <Button onClick={() => navigate(NAVIGATION_ROUTES.SIGNUP)} px={16}>
-              Join Us
-            </Button>
-          </HStack>
-        }
-      >
-        <Text>
-          Be a part of our panel of specialist and connect with your patients
-          from anywhere.
-        </Text>
-      </ModalComponent>
     </>
   );
 };

@@ -113,7 +113,7 @@ const Participant = ({
 
         {isDoctor && (
           <Box display={"flex"} gap={3} alignItems={"center"}>
-            <Text fontWeight={"bold"}>NMC Number:</Text>
+            <Text fontWeight={"bold"}>NMC/ NHPC/ NAMC Number:</Text>
             <Text fontSize={"xl"}>{usersInfo?.doctor.nmc_number}</Text>
           </Box>
         )}

@@ -26,6 +26,7 @@ import { STATUSTYPE } from "@nepMeds/config/enum";
 import TableWrapper from "../TableWrapper";
 import { useMemo } from "react";
 import { fallbackToDash } from "@nepMeds/pages/Patient/Profile/Components/PatientDetails";
+import { useAdminProfile } from "@nepMeds/service/nepmeds-doctor-profile";
 
 interface IDashboardData {
   title: string;
@@ -35,28 +36,31 @@ interface IDashboardData {
 
 export const DashboardBody = () => {
   const profileData = useProfileData();
+  const { data } = useAdminProfile(profileData?.data?.is_superuser);
   const navigate = useNavigate();
   const dashboardData: IDashboardData[] = useMemo(
     () => [
       {
         title: "No. of Patient",
-        no: fallbackToDash(profileData?.data?.no_of_patient),
+        no: fallbackToDash(
+          data?.no_of_patient ?? profileData?.data?.no_of_patient
+        ),
         // TODO: better approach for this if any
         path: images?.dashboard1 ?? "",
       },
       {
         title: "Appointments",
-        no: fallbackToDash(profileData?.data?.appointment),
+        no: fallbackToDash(data?.appointment ?? profileData?.data?.appointment),
         path: images?.dashboard2 ?? "",
       },
       {
         title: "Pending",
-        no: fallbackToDash(profileData?.data?.pending),
+        no: fallbackToDash(data?.pending ?? profileData?.data?.pending),
         path: images?.dashboard3 ?? "",
       },
       {
         title: "Follow - Ups",
-        no: fallbackToDash(profileData?.data?.follow_ups),
+        no: fallbackToDash(data?.follow_ups ?? profileData?.data?.follow_ups),
         path: images?.dashboard4 ?? "",
       },
     ],

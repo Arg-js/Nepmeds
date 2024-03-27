@@ -24,7 +24,7 @@ export interface Symptom {
 const getSpecializationData = async ({
   params,
 }: {
-  params: { name: string } & IPaginationParams;
+  params: IPaginationParams;
 }) => {
   const response = await HttpClient.get<PaginatedResponse<Specialization[]>>(
     api.specialization,
@@ -36,15 +36,14 @@ const getSpecializationData = async ({
 export const useSpecializationData = ({
   page,
   page_size,
-  name,
+  search,
   activeTab,
 }: {
-  name: string;
   activeTab: number;
 } & IPaginationParams) => {
-  const params = { page, page_size, name };
+  const params = { page, page_size, search };
   return useQuery(
-    [api.specialization, page, page_size, name],
+    [api.specialization, page, page_size, search],
     () => getSpecializationData({ params }),
     {
       select: res => res.data.data,

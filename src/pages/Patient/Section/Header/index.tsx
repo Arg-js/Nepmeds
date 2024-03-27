@@ -78,7 +78,7 @@ const HeaderItems = [
   {
     icon: <PharmacyIcon />,
     text: "pharmacy",
-    link: "https://www.nepmeds.com.np/category/pharmacy",
+    link: "https://www.nepmeds.com.np/",
   },
 ];
 

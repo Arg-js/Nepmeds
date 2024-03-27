@@ -44,6 +44,7 @@ import { HttpStatusCode } from "axios";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
+import { format } from "date-fns";
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -85,7 +86,14 @@ const DoctorDetails: React.FC<{
   isFetching: boolean;
   availability: IAvailability[] | undefined;
   setTargeDate: Dispatch<SetStateAction<string>>;
-}> = ({ doctorInfo, availability, isFetching, setTargeDate }) => {
+  next_availability: IAvailability | undefined;
+}> = ({
+  doctorInfo,
+  availability,
+  isFetching,
+  setTargeDate,
+  next_availability,
+}) => {
   const isAuthenticated = TokenService.isAuthenticated();
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
@@ -249,7 +257,8 @@ const DoctorDetails: React.FC<{
                             )}
                         </Text>
                         <Text fontWeight={400} fontSize={"xs"}>
-                          NMC No: {doctorInfo?.doctor_nmc_info || "N/A"}
+                          NMC/ NHPC/ NAMC No:{" "}
+                          {doctorInfo?.doctor_nmc_info || "N/A"}
                         </Text>
                       </Box>
                       <Divider borderWidth={"0.5px"} />
@@ -334,19 +343,28 @@ const DoctorDetails: React.FC<{
                         />
                       </>
                     )}
-                    {!isFetching && (
-                      <FormLabel
-                        color={colors.error}
-                        fontSize={"xs"}
-                        textAlign={"center"}
-                      >
-                        {!availability?.length
-                          ? "This doctor is not available on this date, choose another date"
-                          : selectedAvailability?.length === 0 &&
-                            !appointment &&
-                            "Please Choose the availability*"}
-                      </FormLabel>
-                    )}
+                    {!isFetching &&
+                      (next_availability && !availability?.length ? (
+                        <Text fontSize={"xs"} textAlign={"center"}>
+                          This doctor is available on{" "}
+                          {format(
+                            new Date(next_availability.date),
+                            "do 'of' MMMM yyyy"
+                          )}
+                        </Text>
+                      ) : (
+                        <FormLabel
+                          color={colors.error}
+                          fontSize={"xs"}
+                          textAlign={"center"}
+                        >
+                          {!availability?.length
+                            ? "This doctor is not available on this date."
+                            : selectedAvailability?.length === 0 &&
+                              !appointment &&
+                              "Please Choose the availability*"}
+                        </FormLabel>
+                      ))}
                   </Flex>
                 </>
               </WrapperBox>
@@ -411,7 +429,8 @@ const DoctorDetails: React.FC<{
                             )}
                         </Text>
                         <Text fontWeight={400} fontSize={"xs"}>
-                          NMC No: {doctorInfo?.doctor_nmc_info || "N/A"}
+                          NMC/ NHPC/ NAMC No:{" "}
+                          {doctorInfo?.doctor_nmc_info || "N/A"}
                         </Text>
                         <Box>
                           {bookedDates?.map(bookedDate => (
@@ -642,30 +661,35 @@ const DoctorDetails: React.FC<{
                     )}
                   </Flex>
                   {/* Discount Code Ends */}
+                  {discountedAmount === 0 ? (
+                    <Box>Discount is 0</Box>
+                  ) : (
+                    <>
+                      <Text variant={"small600"} mt={8} mb={4}>
+                        Select Payment Method
+                      </Text>
 
-                  <Text variant={"small600"} mt={8} mb={4}>
-                    Select Payment Method
-                  </Text>
-
-                  <TransactionBox
-                    appointmentData={{
-                      ...getValues(),
-                      coupon: discountDetails ? getValues("coupon") : "",
-                      discounted_amount: discountAmount ?? "",
-                      availabilities: selectedAvailability,
-                      total_amount_paid:
-                        discountedAmount ||
-                        (doctorInfo?.schedule_rate
-                          ? +doctorInfo?.schedule_rate
-                          : 0) * selectedAvailability.length,
-                      symptoms: getValues()?.symptoms.map(
-                        ({ value }) => +value
-                      ),
-                      old_report_file: getValues()?.old_report_file?.[0],
-                      doctor: doctorInfo?.id as number,
-                    }}
-                    doctorInfo={doctorInfo as IDoctorListById}
-                  />
+                      <TransactionBox
+                        appointmentData={{
+                          ...getValues(),
+                          coupon: discountDetails ? getValues("coupon") : "",
+                          discounted_amount: discountAmount ?? "",
+                          availabilities: selectedAvailability,
+                          total_amount_paid:
+                            discountedAmount ||
+                            (doctorInfo?.schedule_rate
+                              ? +doctorInfo?.schedule_rate
+                              : 0) * selectedAvailability.length,
+                          symptoms: getValues()?.symptoms.map(
+                            ({ value }) => +value
+                          ),
+                          old_report_file: getValues()?.old_report_file?.[0],
+                          doctor: doctorInfo?.id as number,
+                        }}
+                        doctorInfo={doctorInfo as IDoctorListById}
+                      />
+                    </>
+                  )}
                 </>
               </WrapperBox>
             </>

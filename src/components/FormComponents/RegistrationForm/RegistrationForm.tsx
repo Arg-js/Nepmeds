@@ -566,7 +566,7 @@ const RegistrationForm = () => {
       content: <PrimaryInfo />,
     },
     {
-      title: "NMC Info",
+      title: "NMC/ NHPC/ NAMC Info",
       content: <NmcInfo />,
     },
     {

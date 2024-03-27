@@ -141,7 +141,7 @@ const EditCertification = ({
             lineHeight={"22px"}
             color={colors?.primary_dark1}
           >
-            NMC Info
+            NMC/ NHPC/ NAMC Info
           </Text>
           {!editForm && (
             <Box
@@ -220,7 +220,7 @@ const EditCertification = ({
                       color={colors.grey_100}
                       w={"100px"}
                     >
-                      NMC Number
+                      NMC/ NHPC/ NAMC Number
                     </Text>
 
                     <Text

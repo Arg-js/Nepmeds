@@ -96,7 +96,7 @@ export interface IGetDoctorProfile {
   rejected_remarks: string;
   status?: string;
 }
-export interface IGetDoctorBasicProfile {
+export interface IGetDoctorBasicProfile extends IDashboardCount {
   id: number;
   doctor?: {
     id: number;
@@ -116,7 +116,9 @@ export interface IGetDoctorBasicProfile {
 
   is_doctor?: boolean;
   is_superuser?: boolean;
+}
 
+export interface IDashboardCount {
   no_of_patient: number;
   appointment: number;
   pending: number;
@@ -163,4 +165,18 @@ export const fetchDoctorProfileById = (DoctorId: string) => {
       select: ({ data }) => data,
     }
   );
+};
+
+// Admin Dashboard
+const getAdminDashboardData = async () => {
+  const response = await HttpClient.get<NepMedsResponse<IDashboardCount>>(
+    api.admin_profile
+  );
+  return response;
+};
+export const useAdminProfile = (enabled?: boolean) => {
+  return useQuery([api.admin_profile], getAdminDashboardData, {
+    select: data => data.data.data,
+    enabled,
+  });
 };

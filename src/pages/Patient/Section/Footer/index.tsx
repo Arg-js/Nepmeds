@@ -11,7 +11,8 @@ import WrapperBox from "@nepMeds/components/Patient/DoctorConsultation/WrapperBo
 import { colors } from "@nepMeds/theme/colors";
 import esewaImage from "@nepMeds/assets/images/esewaImage.png";
 import khaltiImage from "@nepMeds/assets/images/khaltiImage.png";
-import { AppStoreIcon, BankTransferIcon } from "@nepMeds/assets/svgs";
+
+import { AppStoreIcon } from "@nepMeds/assets/svgs";
 import { images } from "@nepMeds/assets/images";
 import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
@@ -158,14 +159,14 @@ const PatientFooter: React.FC = () => {
                 width={{ base: "30%", md: "auto" }}
                 alignItems={"center"}
               >
-                <BankTransferIcon />
+                <Image alt="Visa Payment" src={images.visaImage} />
                 <Image alt="App Store" src={esewaImage} />
                 <Image alt="App Store" src={khaltiImage} />
               </Flex>
             </Flex>
           </Flex>
           <Text fontWeight={500} fontSize={"lg"} textAlign={"center"} mt={15}>
-            Copyright © NepMeds 2023. All rights reserved
+            Copyright © NepMeds {new Date().getFullYear()}. All rights reserved
           </Text>
         </>
       </WrapperBox>

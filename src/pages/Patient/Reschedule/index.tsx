@@ -24,6 +24,7 @@ import {
 } from "@nepMeds/service/nepmeds-patient-doctor-availability";
 import { useForm } from "react-hook-form";
 import FloatinglabelTextArea from "@nepMeds/components/Form/FloatingLabeltextArea";
+import { format } from "date-fns";
 
 const currentDate = formatDateToString(new Date());
 
@@ -34,11 +35,14 @@ const RescheduleAppointment = () => {
   const navigate = useNavigate();
   const [selectedAvailability, setSelectedAvailability] = useState<number>(0);
   const [date, setDate] = useState(new Date());
-  const { data: availability, isFetching: isAvailabilityFetching } =
+  const { data: availabilityData, isFetching: isAvailabilityFetching } =
     useGetRescheduleAvailability({
       id: +state?.doctor_id,
       target_date: formatDateToString(date) || currentDate,
     });
+
+  const availability = availabilityData?.availability;
+  const next_availability = availabilityData?.next_availability;
   const { mutateAsync, isLoading } = useRescheduleAppointment();
   const {
     register,
@@ -125,18 +129,27 @@ const RescheduleAppointment = () => {
                     />
                   </>
                 )}
-                {!isAvailabilityFetching && (
-                  <FormLabel
-                    color={colors.error}
-                    fontSize={"xs"}
-                    textAlign={"center"}
-                  >
-                    {!availability?.length
-                      ? "This doctor is not available on this date, choose another date"
-                      : selectedAvailability === 0 &&
-                        "Please Choose the availability*"}
-                  </FormLabel>
-                )}
+                {!isAvailabilityFetching &&
+                  (next_availability && !availability?.length ? (
+                    <Text fontSize={"xs"} textAlign={"center"}>
+                      This doctor is available on{" "}
+                      {format(
+                        new Date(next_availability.date),
+                        "do 'of' MMMM yyyy"
+                      )}
+                    </Text>
+                  ) : (
+                    <FormLabel
+                      color={colors.error}
+                      fontSize={"xs"}
+                      textAlign={"center"}
+                    >
+                      {!availability?.length
+                        ? "This doctor is not available on this date."
+                        : selectedAvailability === 0 &&
+                          "Please Choose the availability*"}
+                    </FormLabel>
+                  ))}
                 {/* AVAILABLE TIME ENDS */}
 
                 <form onSubmit={handleSubmit(handleSubmitForm)}>

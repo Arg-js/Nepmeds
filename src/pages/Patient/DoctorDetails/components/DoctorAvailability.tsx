@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import Calendar from "react-calendar";
 import { Value } from "react-calendar/dist/cjs/shared/types";
 import AvailabilitySection from "./AvailabilitySection";
+import { format } from "date-fns";
 
 const DoctorAvailability = ({
   setFormState,
@@ -17,12 +18,14 @@ const DoctorAvailability = ({
   availability,
   selectedAvailability,
   setSelectedAvailability,
+  next_availability,
 }: {
   setFormState: Dispatch<SetStateAction<number>>;
   setDate: Dispatch<SetStateAction<Date>>;
   date: Date;
   isAvailabilityFetching: boolean;
   availability: IAvailability[] | undefined;
+  next_availability: IAvailability | undefined;
   selectedAvailability: number[];
   setSelectedAvailability: Dispatch<SetStateAction<number[]>>;
 }) => {
@@ -92,19 +95,25 @@ const DoctorAvailability = ({
               />
             </>
           )}
-          {!isAvailabilityFetching && (
-            <FormLabel
-              color={colors.error}
-              fontSize={"xs"}
-              textAlign={"center"}
-            >
-              {!availability?.length
-                ? "This doctor is not available on this date, choose another date"
-                : selectedAvailability?.length === 0 &&
-                  !appointment &&
-                  "Please Choose the availability*"}
-            </FormLabel>
-          )}
+          {!isAvailabilityFetching &&
+            (next_availability && !availability?.length ? (
+              <Text fontSize={"xs"} textAlign={"center"}>
+                This doctor is available on{" "}
+                {format(new Date(next_availability.date), "do 'of' MMMM yyyy")}
+              </Text>
+            ) : (
+              <FormLabel
+                color={colors.error}
+                fontSize={"xs"}
+                textAlign={"center"}
+              >
+                {!availability?.length
+                  ? "This doctor is not available on this date."
+                  : selectedAvailability?.length === 0 &&
+                    !appointment &&
+                    "Please Choose the availability*"}
+              </FormLabel>
+            ))}
           {/* AVAILABLE TIME ENDS */}
           <Flex justifyContent="flex-end">
             <Button
