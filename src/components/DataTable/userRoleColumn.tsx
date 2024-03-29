@@ -32,7 +32,7 @@ export const doctorRoleColumn = (pageParams: PaginationState) => {
     },
 
     {
-      header: "NMC/ NHPC/ NAMC No.",
+      header: "NMC No.",
       accessorKey: "nmc_no",
     },
     {

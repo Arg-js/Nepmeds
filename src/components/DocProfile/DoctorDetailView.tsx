@@ -126,7 +126,7 @@ const DoctorDetailView = ({
                     fontSize={"sm"}
                     color={colors.black_30}
                   >
-                    NMC/ NHPC/ NAMC No : {doctorList?.doctor_nmc_info || "N/A"}
+                    NMC No : {doctorList?.doctor_nmc_info || "N/A"}
                   </Text>
                   <Flex gap={"12px"} alignItems={"center"}>
                     <UniversityIcon />

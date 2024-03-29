@@ -141,7 +141,7 @@ const Appointment = () => {
                       </Heading>
 
                       <Flex gap={2}>
-                        <Text>NMC/ NHPC/ NAMC No. :</Text>
+                        <Text>NMC No. :</Text>
                         <Text>{appointmentDetail?.doctor_detail?.nmc_no}</Text>
                       </Flex>
                     </Box>

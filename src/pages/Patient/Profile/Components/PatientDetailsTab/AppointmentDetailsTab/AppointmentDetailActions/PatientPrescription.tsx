@@ -216,7 +216,7 @@ const PatientPrescription = ({
           </Text>
 
           <Text variant="md600" color={colors.black_60}>
-            NMC/ NHPC/ NAMC no: {prescription?.doctor_nmc_number}
+            NMC no: {prescription?.doctor_nmc_number}
           </Text>
         </Flex>
       </Grid>
