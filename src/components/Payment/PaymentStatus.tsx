@@ -44,8 +44,7 @@ const PaymentStatus = ({ isSuccess }: { isSuccess: boolean }) => {
       <Box
         display={"flex"}
         justifyContent={"flex-start"}
-        // pb={"15px"}
-        // pr={"50px"}
+        onClick={() => navigate(NAVIGATION_ROUTES.PATIENT.DOCTOR_CONSULTATION)}
         mt={"1%"}
       >
         <svgs.logo />

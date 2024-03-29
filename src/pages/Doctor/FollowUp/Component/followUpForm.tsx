@@ -9,6 +9,7 @@ import { colors } from "@nepMeds/theme/colors";
 import { currentDate, nextDayDate } from "@nepMeds/utils/time";
 import { Dispatch, SetStateAction } from "react";
 import { UseFormReturn } from "react-hook-form";
+import { format } from "date-fns";
 
 const FollowUpForm = ({
   formMethods,
@@ -29,12 +30,14 @@ const FollowUpForm = ({
 
   //   React Queries
   const profileData = useProfileData();
-  const { data: availability, isLoading: isAvailabilityFetching } =
+  const { data: availabilityData, isLoading: isAvailabilityFetching } =
     useGetAvailability({
       // TODO: remove this 0
       id: profileData?.data?.doctor?.id ?? 0,
       target_date: watch("availabilityDate") || nextDayDate,
     });
+  const availability = availabilityData?.availability;
+  const next_availability = availabilityData?.next_availability;
   //   React Queries ENDS
 
   return (
@@ -75,6 +78,11 @@ const FollowUpForm = ({
             length={5}
           />
         </Flex>
+      ) : next_availability && !availability?.length ? (
+        <Text fontSize={"xs"} textAlign={"center"}>
+          This doctor is available on{" "}
+          {format(new Date(next_availability.date), "do 'of' MMMM yyyy")}
+        </Text>
       ) : (
         <FormLabel
           color={colors.error}
@@ -83,7 +91,7 @@ const FollowUpForm = ({
           mt={4}
         >
           {!availability?.length
-            ? "This doctor is not available on this date, choose another date"
+            ? "This doctor is not available on this date."
             : !!selectedAvailability &&
               !appointment &&
               "Please Choose the availability*"}

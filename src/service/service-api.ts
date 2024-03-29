@@ -27,6 +27,7 @@ export const api = {
   certificate_file: "doctor-consult/certificate-files-upload/",
   experience_file: "doctor-consult/experience-files-upload/",
   doctor_profile: "/doctor-consult/doctor-profile/",
+  admin_profile: "/dashboard/admin-dashboard-info/",
   edit_doctor_profile: "/doctor-consult/doctor-profile-update/",
   specialization_fetch: "/core/specialization-list-auth",
   specialization: "/core/specialization/",

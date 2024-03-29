@@ -93,11 +93,15 @@ const DoctorList = () => {
     id: doctorId,
     target_date: targetDate || currentDate,
   });
-  const { data: availability, isFetching: isAvailabilityFetching } =
+  const { data: availabilityData, isFetching: isAvailabilityFetching } =
     useGetAvailability({
       id: doctorId,
       target_date: targetDate || currentDate,
     });
+
+  const availability = availabilityData?.availability;
+  const next_availability = availabilityData?.next_availability;
+
   // REACT QUERIES END
 
   const genderFiltersRef = useRef<HTMLInputElement[]>([]);
@@ -182,12 +186,6 @@ const DoctorList = () => {
             <GridItem colSpan={{ base: 1, md: 3, lg: 5, "2xl": 4 }}>
               <Box
                 p={3}
-                sx={{
-                  h: "100vh",
-                  "@supports (min-height: 100dvh)": {
-                    h: "100dvh",
-                  },
-                }}
                 css={{
                   "&::-webkit-scrollbar": {
                     width: "4px",
@@ -199,7 +197,6 @@ const DoctorList = () => {
                     background: `${colors.light_blue}`,
                     borderRadius: "24px",
                   },
-                  overflowY: "scroll",
                 }}
               >
                 <>
@@ -252,6 +249,7 @@ const DoctorList = () => {
                 // TODO: on doing so the loader for the availability button is disappearing
                 isFetching={isFetching || isAvailabilityFetching}
                 setTargeDate={setTargeDate}
+                next_availability={next_availability}
               />
             </GridItem>
             {/* Doctor detail section ends */}

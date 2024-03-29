@@ -86,7 +86,7 @@ const Specializations = ({
     activeTab,
     page: pageIndex + 1,
     page_size: pageSize,
-    name: debouncedInputValue,
+    search: debouncedInputValue,
   });
   const saveSpecializationAction = useSaveSpecialization();
   const updateSpecializationAction = useUpdateSpecialization();

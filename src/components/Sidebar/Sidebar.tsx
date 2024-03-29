@@ -136,12 +136,12 @@ const AdminSidebarOptions: ISidebarOption[] = [
     text: "User Role",
     link: "/user-role",
   },
-  {
-    icon: Call,
-    set: "light",
-    text: "Instant Consult",
-    link: "/instant-consult-request",
-  },
+  // {
+  //   icon: Call,
+  //   set: "light",
+  //   text: "Instant Consult",
+  //   link: "/instant-consult-request",
+  // },
   {
     icon: Paper,
     set: "light",

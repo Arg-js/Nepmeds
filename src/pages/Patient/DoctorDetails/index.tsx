@@ -56,11 +56,13 @@ const DoctorDetails = () => {
     id: +id,
     target_date: formatDateToString(date) || currentDate,
   });
-  const { data: availability, isFetching: isAvailabilityFetching } =
+  const { data: availabilityData, isFetching: isAvailabilityFetching } =
     useGetAvailability({
       id: +id,
       target_date: formatDateToString(date) || currentDate,
     });
+  const availability = availabilityData?.availability;
+  const next_availability = availabilityData?.next_availability;
   const {
     mutateAsync: discountCode,
     isLoading,
@@ -130,6 +132,7 @@ const DoctorDetails = () => {
                 availability={availability}
                 selectedAvailability={selectedAvailability}
                 setSelectedAvailability={setSelectedAvailability}
+                next_availability={next_availability}
               />
             )}
             {bookedDates && formState === 1 && (
@@ -214,33 +217,39 @@ const DoctorDetails = () => {
                   </Flex>
                   {/* Discount Code Ends */}
 
-                  <Text variant={"small600"} mt={8} mb={4}>
-                    Select Payment Method
-                  </Text>
+                  {discountedAmount === 0 ? (
+                    <Box>Discount is 0</Box>
+                  ) : (
+                    <>
+                      <Text variant={"small600"} mt={8} mb={4}>
+                        Select Payment Method
+                      </Text>
 
-                  <TransactionBox
-                    appointmentData={{
-                      ...formProps.getValues(),
-                      // set coupon only when the discount is applied, else set to empty string
-                      coupon: discountDetails
-                        ? formProps.getValues("coupon")
-                        : "",
-                      discounted_amount: discountAmount ?? "",
-                      availabilities: selectedAvailability,
-                      total_amount_paid:
-                        discountedAmount ||
-                        (doctorList?.schedule_rate
-                          ? +doctorList?.schedule_rate
-                          : 0) * selectedAvailability.length,
-                      symptoms: formProps
-                        .getValues()
-                        ?.symptoms.map(({ value }) => +value),
-                      old_report_file:
-                        formProps.getValues()?.old_report_file?.[0],
-                      doctor: doctorList?.id as number,
-                    }}
-                    doctorInfo={doctorList as IDoctorListById}
-                  />
+                      <TransactionBox
+                        appointmentData={{
+                          ...formProps.getValues(),
+                          // set coupon only when the discount is applied, else set to empty string
+                          coupon: discountDetails
+                            ? formProps.getValues("coupon")
+                            : "",
+                          discounted_amount: discountAmount ?? "",
+                          availabilities: selectedAvailability,
+                          total_amount_paid:
+                            discountedAmount ||
+                            (doctorList?.schedule_rate
+                              ? +doctorList?.schedule_rate
+                              : 0) * selectedAvailability.length,
+                          symptoms: formProps
+                            .getValues()
+                            ?.symptoms.map(({ value }) => +value),
+                          old_report_file:
+                            formProps.getValues()?.old_report_file?.[0],
+                          doctor: doctorList?.id as number,
+                        }}
+                        doctorInfo={doctorList as IDoctorListById}
+                      />
+                    </>
+                  )}
                 </>
               </WrapperBox>
             )}
