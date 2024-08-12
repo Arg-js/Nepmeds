@@ -107,6 +107,7 @@ const DoctorDetails: React.FC<{
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
     useCreatePatientAppointment();
+
   const {
     mutateAsync: discountCode,
     isLoading: isDiscountLoading,
@@ -613,7 +614,7 @@ const DoctorDetails: React.FC<{
                   </Flex>
 
                   {/* Discount Code*/}
-                  <Flex direction={"column"} gap={3} mt={4}>
+                  <Flex direction={"column"} gap={3} my={4}>
                     <Text variant={"small600"}>Promo Codes</Text>
                     <Flex alignItems={"center"} gap={2}>
                       <Input
@@ -659,35 +660,35 @@ const DoctorDetails: React.FC<{
                     )}
                   </Flex>
                   {/* Discount Code Ends */}
-                  {discountedAmount === 0 ? (
-                    <Box>Discount is 0</Box>
-                  ) : (
-                    <>
+
+                  <>
+                    {discountedAmount !== 0 && (
                       <Text variant={"small600"} mt={8} mb={4}>
                         Select Payment Method
                       </Text>
+                    )}
 
-                      <TransactionBox
-                        appointmentData={{
-                          ...getValues(),
-                          coupon: discountDetails ? getValues("coupon") : "",
-                          discounted_amount: discountAmount ?? "",
-                          availabilities: selectedAvailability,
-                          total_amount_paid:
-                            discountedAmount ||
-                            (doctorInfo?.schedule_rate
-                              ? +doctorInfo?.schedule_rate
-                              : 0) * selectedAvailability.length,
-                          symptoms: getValues()?.symptoms.map(
-                            ({ value }) => +value
-                          ),
-                          old_report_file: getValues()?.old_report_file?.[0],
-                          doctor: doctorInfo?.id as number,
-                        }}
-                        doctorInfo={doctorInfo as IDoctorListById}
-                      />
-                    </>
-                  )}
+                    <TransactionBox
+                      appointmentData={{
+                        ...getValues(),
+                        coupon: discountDetails ? getValues("coupon") : "",
+                        discounted_amount: discountAmount ?? "",
+                        availabilities: selectedAvailability,
+                        total_amount_paid:
+                          discountedAmount ||
+                          (doctorInfo?.schedule_rate
+                            ? +doctorInfo?.schedule_rate
+                            : 0) * selectedAvailability.length,
+                        symptoms: getValues()?.symptoms.map(
+                          ({ value }) => +value
+                        ),
+                        old_report_file: getValues()?.old_report_file?.[0],
+                        doctor: doctorInfo?.id as number,
+                      }}
+                      discountAmount={discountedAmount}
+                      doctorInfo={doctorInfo as IDoctorListById}
+                    />
+                  </>
                 </>
               </WrapperBox>
             </>
