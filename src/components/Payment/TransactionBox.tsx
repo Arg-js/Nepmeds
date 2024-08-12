@@ -144,7 +144,7 @@ const TransactionBox = (data: Props) => {
 
       const idList = res?.data?.data?.map(e => +e?.id) ?? [];
 
-      data.appointmentData.discounted_amount === 0
+      data.appointmentData.total_amount_paid === 0
         ? fullDiscountAsync({
             appointments: idList,
             purchase_order_id: data?.doctorInfo?.id?.toString(),
@@ -162,14 +162,14 @@ const TransactionBox = (data: Props) => {
   return (
     <>
       <div>
-        {discounted_amount && (
+        {discounted_amount > 0 && (
           <Alert status="info" mt={4}>
             <AlertIcon />
             Please complete payment in 10 Minutes.
           </Alert>
         )}
         <>
-          {discounted_amount && (
+          {discounted_amount > 0 && (
             <RadioGroup
               onChange={setPaymentMethod}
               value={paymentMethod}

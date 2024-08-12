@@ -234,11 +234,11 @@ const DoctorDetails = () => {
                           : "",
                         discounted_amount: discountAmount ?? "",
                         availabilities: selectedAvailability,
-                        total_amount_paid:
-                          discountedAmount ||
-                          (doctorList?.schedule_rate
-                            ? +doctorList?.schedule_rate
-                            : 0) * selectedAvailability.length,
+                        total_amount_paid: discountedAmount,
+                        //  ||
+                        // (doctorList?.schedule_rate
+                        //   ? +doctorList?.schedule_rate
+                        //   : 0) * selectedAvailability.length,
                         symptoms: formProps
                           .getValues()
                           ?.symptoms.map(({ value }) => +value),

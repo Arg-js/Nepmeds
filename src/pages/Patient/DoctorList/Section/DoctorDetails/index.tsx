@@ -45,6 +45,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -98,6 +100,7 @@ const DoctorDetails: React.FC<{
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+  const navigate = useNavigate();
   const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
   const [appointment, setAppointment] = useState(true);
   const [discountDetails, setDiscountDetails] =
@@ -238,6 +241,12 @@ const DoctorDetails: React.FC<{
                         fontWeight={600}
                         fontSize={"md"}
                         textTransform="capitalize"
+                        cursor={"pointer"}
+                        onClick={() =>
+                          navigate(
+                            `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctorInfo.id}`
+                          )
+                        }
                       >
                         {doctorInfo?.name}
                       </Text>
@@ -674,11 +683,11 @@ const DoctorDetails: React.FC<{
                         coupon: discountDetails ? getValues("coupon") : "",
                         discounted_amount: discountAmount ?? "",
                         availabilities: selectedAvailability,
-                        total_amount_paid:
-                          discountedAmount ||
-                          (doctorInfo?.schedule_rate
-                            ? +doctorInfo?.schedule_rate
-                            : 0) * selectedAvailability.length,
+                        total_amount_paid: discountedAmount,
+                        //  ||
+                        // (doctorInfo?.schedule_rate
+                        //   ? +doctorInfo?.schedule_rate
+                        //   : 0) * selectedAvailability.length,
                         symptoms: getValues()?.symptoms.map(
                           ({ value }) => +value
                         ),
