@@ -101,6 +101,7 @@ export const useCreateBankPaymentMethods = () => {
 export interface IFullDiscountPayment {
   purchase_order_id: string;
   appointments: number[];
+  redirect_url?: string;
 }
 
 const fullDiscountPayment = async (data: IFullDiscountPayment) => {

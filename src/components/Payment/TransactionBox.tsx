@@ -148,6 +148,13 @@ const TransactionBox = (data: Props) => {
         ? fullDiscountAsync({
             appointments: idList,
             purchase_order_id: data?.doctorInfo?.id?.toString(),
+          }).then(data => {
+            const url = new URL(data.data.data.redirect_url ?? ""); // Create a URL object to extract the path
+            const path = url.pathname + url.search; // Get the path and query string
+
+            navigate(path, {
+              replace: true,
+            });
           })
         : handlePaymentType(paymentMethod, idList);
     } catch (error) {
