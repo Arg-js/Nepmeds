@@ -75,6 +75,7 @@ const Invoices = () => {
                   "1": "Esewa",
                   "2": "Khalti",
                   "3": "Bank",
+                  "4": "Promo",
                 },
               }}
             />

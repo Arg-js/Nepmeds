@@ -45,6 +45,8 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { format } from "date-fns";
+import { useNavigate } from "react-router-dom";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 interface IPatientAppointment extends IPatientAppointmentBasicDetails {
   symptoms: IOptionItem[];
@@ -98,6 +100,7 @@ const DoctorDetails: React.FC<{
   const [selectedAvailability, setSelectedAvailability] = useState<number[]>(
     []
   );
+  const navigate = useNavigate();
   const [isAvailability, setIsAvailability] = useState<"0" | "1" | "2">("0");
   const [appointment, setAppointment] = useState(true);
   const [discountDetails, setDiscountDetails] =
@@ -107,6 +110,7 @@ const DoctorDetails: React.FC<{
   const { data: symptomData } = useGetSymptoms();
   const { mutateAsync: createPatientAppointment, isLoading } =
     useCreatePatientAppointment();
+
   const {
     mutateAsync: discountCode,
     isLoading: isDiscountLoading,
@@ -237,6 +241,12 @@ const DoctorDetails: React.FC<{
                         fontWeight={600}
                         fontSize={"md"}
                         textTransform="capitalize"
+                        cursor={"pointer"}
+                        onClick={() =>
+                          navigate(
+                            `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctorInfo.id}`
+                          )
+                        }
                       >
                         {doctorInfo?.name}
                       </Text>
@@ -613,7 +623,7 @@ const DoctorDetails: React.FC<{
                   </Flex>
 
                   {/* Discount Code*/}
-                  <Flex direction={"column"} gap={3} mt={4}>
+                  <Flex direction={"column"} gap={3} my={4}>
                     <Text variant={"small600"}>Promo Codes</Text>
                     <Flex alignItems={"center"} gap={2}>
                       <Input
@@ -659,35 +669,35 @@ const DoctorDetails: React.FC<{
                     )}
                   </Flex>
                   {/* Discount Code Ends */}
-                  {discountedAmount === 0 ? (
-                    <Box>Discount is 0</Box>
-                  ) : (
-                    <>
+
+                  <>
+                    {discountedAmount !== 0 && (
                       <Text variant={"small600"} mt={8} mb={4}>
                         Select Payment Method
                       </Text>
+                    )}
 
-                      <TransactionBox
-                        appointmentData={{
-                          ...getValues(),
-                          coupon: discountDetails ? getValues("coupon") : "",
-                          discounted_amount: discountAmount ?? "",
-                          availabilities: selectedAvailability,
-                          total_amount_paid:
-                            discountedAmount ||
-                            (doctorInfo?.schedule_rate
-                              ? +doctorInfo?.schedule_rate
-                              : 0) * selectedAvailability.length,
-                          symptoms: getValues()?.symptoms.map(
-                            ({ value }) => +value
-                          ),
-                          old_report_file: getValues()?.old_report_file?.[0],
-                          doctor: doctorInfo?.id as number,
-                        }}
-                        doctorInfo={doctorInfo as IDoctorListById}
-                      />
-                    </>
-                  )}
+                    <TransactionBox
+                      appointmentData={{
+                        ...getValues(),
+                        coupon: discountDetails ? getValues("coupon") : "",
+                        discounted_amount: discountAmount ?? "",
+                        availabilities: selectedAvailability,
+                        total_amount_paid: discountedAmount,
+                        //  ||
+                        // (doctorInfo?.schedule_rate
+                        //   ? +doctorInfo?.schedule_rate
+                        //   : 0) * selectedAvailability.length,
+                        symptoms: getValues()?.symptoms.map(
+                          ({ value }) => +value
+                        ),
+                        old_report_file: getValues()?.old_report_file?.[0],
+                        doctor: doctorInfo?.id as number,
+                      }}
+                      discountAmount={discountedAmount}
+                      doctorInfo={doctorInfo as IDoctorListById}
+                    />
+                  </>
                 </>
               </WrapperBox>
             </>

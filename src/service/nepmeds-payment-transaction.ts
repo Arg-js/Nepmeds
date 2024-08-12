@@ -97,3 +97,20 @@ const bankPayment = async (paymentMethods: IEsewaToBackendPost) => {
 export const useCreateBankPaymentMethods = () => {
   return useMutation(bankPayment);
 };
+
+export interface IFullDiscountPayment {
+  purchase_order_id: string;
+  appointments: number[];
+}
+
+const fullDiscountPayment = async (data: IFullDiscountPayment) => {
+  const response = await HttpClient.post<NepMedsResponse<IFullDiscountPayment>>(
+    api.transaction.full_discount,
+    data
+  );
+  return response;
+};
+
+export const useFullDiscountPayment = () => {
+  return useMutation(fullDiscountPayment);
+};

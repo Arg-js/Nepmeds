@@ -21,6 +21,7 @@ import { useNavigate } from "react-router-dom";
 import { colors } from "@nepMeds/theme/colors";
 import { useGetDoctorListById } from "@nepMeds/service/nepmeds-patient-doctorList";
 import userAvatar from "@nepMeds/assets/images/userAvatar.png";
+import { NAVIGATION_ROUTES } from "@nepMeds/routes/routes.constant";
 
 const DoctorDetailView = ({
   id,
@@ -106,6 +107,11 @@ const DoctorDetailView = ({
                     transform={"skew(-15deg)"}
                     textAlign={"center"}
                     textTransform={"capitalize"}
+                    onClick={() =>
+                      navigate(
+                        `${NAVIGATION_ROUTES.PATIENT.DOCTOR_DETAILS}/${doctorList?.id}`
+                      )
+                    }
                   >
                     {doctorList?.title} {doctorList?.name}
                   </Flex>

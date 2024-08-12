@@ -21,6 +21,7 @@ export enum PAYMENTMODE {
   ESEWA = 1,
   KHALTI = 2,
   BANK = 3,
+  PROMO = 4,
 }
 
 export enum ADMINAPPOINTMENT {
