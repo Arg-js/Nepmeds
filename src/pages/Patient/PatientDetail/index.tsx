@@ -4,6 +4,7 @@ import { ADMINAPPOINTMENT, CallState, STATUSTYPE } from "@nepMeds/config/enum";
 import { removeSeconds } from "@nepMeds/helper/checkTimeRange";
 import { IPaginationParams } from "@nepMeds/service/nepmeds-faq";
 import { CellContext } from "@tanstack/react-table";
+import { intervalToDuration } from "date-fns";
 import { Dispatch, SetStateAction } from "react";
 import { CellProps } from "react-table";
 
@@ -21,14 +22,21 @@ export interface IExtraData {
 // TODO: move this to some utils
 // Function to convert seconds to minutes and remaining seconds
 function secondsToMinSec(seconds: number) {
-  // Calculate minutes
-  const minutes = Math.floor(seconds / 60);
+  const duration = intervalToDuration({ start: 0, end: seconds * 1000 });
 
-  // Calculate remaining seconds
-  const remainingSeconds = Math.round(seconds % 60);
+  // Build the formatted string
+  const parts = [];
+  if (duration.hours) {
+    parts.push(`${duration.hours}hr`);
+  }
+  if (duration.minutes) {
+    parts.push(`${duration.minutes}min`);
+  }
+  if (duration.seconds || !parts.length) {
+    parts.push(`${duration.seconds}sec`);
+  }
 
-  // Return an object with minutes and remaining seconds
-  return `${minutes} : ${remainingSeconds}`;
+  return parts.join(" ");
 }
 
 export const columns = ({
